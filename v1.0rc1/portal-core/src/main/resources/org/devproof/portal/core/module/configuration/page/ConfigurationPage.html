@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:extend>
+	<h2><wicket:message key="contentTitle">[edit configuration]</wicket:message></h2><br/>
+	<form wicket:id="form">
+	<table class="dataview" cellspacing="0">
+		<tr>
+			<th><wicket:message key="table_description">[description]</wicket:message></th>
+			<th><wicket:message key="table_field">[field]</wicket:message></th>
+		</tr><!--
+		<tr wicket:id="tableGroupHeader">
+			<td colspan="2"><h3 wicket:id="groupHeader">[group header]</h3></td>
+		</tr>	
+		-->
+		<tr wicket:id="tableRow">
+			<td wicket:id="description">[configuration description]</td>
+			<td wicket:id="editor">[configuration field]</td>	
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" wicket:message="value:save" class="button"/></td>
+		</tr>	
+	</table>
+	</form>
+	<wicket:fragment wicket:id="booleanEditor">
+		<input type="checkbox" wicket:id="edit"/>
+	</wicket:fragment>
+	
+	<wicket:fragment wicket:id="valueEditor">
+		<input type="text" wicket:id="edit"/>
+	</wicket:fragment>
+		
+	<wicket:fragment wicket:id="enumEditor">
+		<select wicket:id="edit"></select>
+	</wicket:fragment>
+
+	<wicket:fragment wicket:id="springBeanEditor">
+		<select wicket:id="edit"></select>
+	</wicket:fragment>
+	
+	<wicket:fragment wicket:id="dateEditor">
+		<input type="text" wicket:id="edit" />
+	</wicket:fragment>
+	
+	<wicket:fragment wicket:id="groupHeader">
+		<h3 wicket:id="headline">[group header]</h3>
+	</wicket:fragment>
+</wicket:extend>
+</body>
+</html>

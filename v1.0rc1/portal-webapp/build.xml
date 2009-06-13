@@ -1,0 +1,49 @@
+<project name="SQLBuilder" default="generatesql" basedir=".">
+    <description>
+        Builds the hsql and mysql file
+    </description>
+  <property name="targetsql" location="target/sql/"/>
+  <property name="webinflib" location="target/devproof-portal-${project_version}/WEB-INF/lib/"/>
+  
+  <target name="generatesql">
+  	<delete file="${targetsql}"/>
+  	
+  	<unzip dest="${targetsql}">
+  	    <patternset>
+  	        <include name="sql/**/*.sql"/>
+  	    </patternset>
+  	    <fileset dir="${webinflib}">
+  	        <include name="*.jar"/>
+  	    </fileset>
+  	</unzip>
+  	
+  	<!-- Create mysql -->
+    <concat destfile="${targetsql}/install_devproof_mysql.sql">
+        <!-- create core issues at first --> 
+   		<fileset dir="${targetsql}/sql">
+      		<include name="create_tables_mysql_core.sql"/>
+   			<include name="insert_core.sql"/>
+      	</fileset>
+    	<!-- then create other modules -->
+   		<fileset dir="${targetsql}/sql">
+      		<include name="create_tables_mysql_*.sql"/>
+   			<include name="insert_*.sql"/>
+   			<exclude name="*core.sql"/>
+      	</fileset>
+    </concat>
+  	<!-- Create hsql -->
+    <concat destfile="${targetsql}/install_devproof_hsql.sql">
+        <!-- create core issues at first --> 
+   		<fileset dir="${targetsql}/sql">
+      		<include name="create_tables_hsql_core.sql"/>
+   			<include name="insert_core.sql"/>
+      	</fileset>
+    	<!-- then create other modules -->
+   		<fileset dir="${targetsql}/sql">
+      		<include name="create_tables_hsql_*.sql"/>
+   			<include name="insert_*.sql"/>
+   			<exclude name="*core.sql"/>
+      	</fileset>
+    </concat>
+  </target>
+</project>

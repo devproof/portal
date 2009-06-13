@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<head>
+</head>
+<body>
+    <form wicket:id="uploadForm">
+     <fieldset>
+      <legend><wicket:message key="contentTitle"/></legend>
+        <p>
+        <input wicket:id="fileInput" id="upload" type="file" class="mfuex"/>
+        </p>
+        <input type="submit" wicket:message="value:uploadButton" class="button"/>
+        <span wicket:id="progress">[[ajax upload progressbar]]</span>
+     </fieldset>
+    </form>
+    <div>
+        <span wicket:id="uploadFeedback"/>
+     </div>
+</body>
+</html>

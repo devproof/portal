@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<wicket:extend>	
+	<form wicket:id="form">
+	<table cellspacing="10">
+		<tr>
+			<td><label for="contentId"><wicket:message key="contentId"/></label></td>
+			<td><input type="text" wicket:id="contentId" class="editTitle"/></td>
+		</tr>
+		<tr>
+			<td><label for="content"><wicket:message key="content"/></label></td>
+			<td><textarea wicket:id="content" cols="85" rows="45"></textarea></td>
+		</tr>
+		<tr>
+			<td><label><wicket:message key="rights"/></label></td>
+			<td>
+				<span wicket:id="viewright">[rights]</span>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" wicket:message="value:save" class="button"/></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<wicket:message key="placeholder"/>
+			</td>
+		</tr>
+	</table>
+	</form>	
+</wicket:extend>
+</html>
