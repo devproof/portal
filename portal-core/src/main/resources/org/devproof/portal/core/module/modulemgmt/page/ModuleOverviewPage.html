@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:extend>
+	<h2><wicket:message key="contentTitle">[module overview]</wicket:message></h2><br/>
+	<table class="dataview" cellspacing="0">
+		<tr>
+			<th><wicket:message key="table_name">[name]</wicket:message></th>
+			<th><wicket:message key="table_moduleversion">[moduleversion]</wicket:message></th>
+			<th><wicket:message key="table_author">[author]</wicket:message></th>
+			<th><wicket:message key="table_portalversion">[portalversion]</wicket:message></th>
+			<th><wicket:message key="table_location">[location]</wicket:message></th>
+		</tr>
+		<tr wicket:id="tableRow">
+			<td wicket:id="name">[name]</td>
+			<td wicket:id="moduleVersion">[module version]</td>	
+			<td><a href="#" wicket:id="authorHomepageLink" target="_blank">[author]</a></td>	
+			<td wicket:id="portalVersion">[portal version]</td>	
+			<td wicket:id="location" nowrap="nowrap">[location]</td>	
+		</tr>	
+	</table>
+</wicket:extend>
+</body>
+</html>
