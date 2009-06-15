@@ -132,7 +132,7 @@ public abstract class TemplatePage extends WebPage {
 				buf.append(TemplatePage.this.configurationService.findAsString(CommonConstants.CONF_GOOGLE_WEBPROPERTY_ID));
 				buf.append("\");\n");
 				buf.append("pageTracker._trackPageview();");
-				buf.append("} catch(err) {})");
+				buf.append("} catch(err) {}");
 				replaceComponentTagBody(markupStream, openTag, buf.toString());
 			}
 		};
