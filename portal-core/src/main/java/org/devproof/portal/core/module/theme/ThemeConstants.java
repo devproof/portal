@@ -30,5 +30,5 @@ public class ThemeConstants {
 
 	final public static String CONF_SELECTED_THEME_UUID = "hidden.selected_theme_uuid";
 	final public static String CONF_SELECTED_THEME_DEFAULT = "_default_";
-	final public static String PORTAL_THEME_VERSION = "1.0-rc1";
+	final public static String PORTAL_THEME_VERSION = "1.0-rc2";
 }

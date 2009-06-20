@@ -9,7 +9,7 @@
 	<artifactId>devproof-portal-build</artifactId>
 	<packaging>pom</packaging>
 	<name>devproof portal build project</name>
-	<version>1.0-rc1</version>
+	<version>1.0-rc2</version>
 	
 	<properties>
 		<wicket.version>1.4-rc4</wicket.version>
