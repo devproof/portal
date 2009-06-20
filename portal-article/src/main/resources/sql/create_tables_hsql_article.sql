@@ -6,7 +6,7 @@ CREATE TABLE article
    modified_at timestamp,
    modified_by varchar(30),
    content_id varchar(255),
-   teaser varchar(10000),
+   teaser longvarchar,
    title varchar(255),
    PRIMARY KEY(id)
 )
@@ -15,7 +15,7 @@ CREATE TABLE article_page
 (
    content_id varchar(255) NOT NULL,
    page int NOT NULL,
-   content varchar(10000),
+   content longvarchar,
    article_id int NOT NULL,
    PRIMARY KEY (content_id,page)
 )

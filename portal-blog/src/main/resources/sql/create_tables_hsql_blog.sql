@@ -5,7 +5,7 @@ CREATE TABLE blog
    created_by varchar(30),
    modified_at timestamp,
    modified_by varchar(30),
-   content varchar(10000),
+   content longvarchar,
    headline varchar(255),
    PRIMARY KEY(id)
 )

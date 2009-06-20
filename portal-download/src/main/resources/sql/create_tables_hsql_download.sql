@@ -6,7 +6,7 @@ CREATE TABLE download
    modified_at timestamp,
    modified_by varchar(30),
    broken bit,
-   description varchar(10000),
+   description longvarchar,
    hits int,
    number_of_votes int,
    sum_of_rating int,

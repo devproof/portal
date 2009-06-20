@@ -38,7 +38,7 @@ public class CommonConstants {
 	final public static String HIBERNATE_DEFAULT_DIALECT = "org.hibernate.dialect.MySQLDialect";
 	final public static String HIBERNATE_DEFAULT_SHOW_SQL = "false";
 	final public static String HIBERNATE_DEFAULT_FORMAT_SQL = "false";
-	final public static String HIBERNATE_DEFAULT_HBM2DDL_AUTO = "false";
+	final public static String HIBERNATE_DEFAULT_HBM2DDL_AUTO = "none";
 
 	final public static String CONF_GOOGLE_ANALYTICS_ENABLED = "google_analytics_enabled";
 	final public static String CONF_GOOGLE_WEBPROPERTY_ID = "google_webproperty_id";
