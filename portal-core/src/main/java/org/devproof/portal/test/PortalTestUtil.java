@@ -22,18 +22,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Session;
+import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.app.PortalApplication;
+import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.page.LoginPage;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jndi.JndiTemplate;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -50,8 +57,9 @@ public class PortalTestUtil {
 	/**
 	 * Returns the content of a file as String
 	 */
-	public static String getFileContent(final ApplicationContext context, final String file) throws IOException {
-		Resource r = context.getResource("classpath:/sql/" + file);
+	public static String getFileContent(final String file) throws IOException {
+		ResourceLoader resourceLoader = new DefaultResourceLoader();
+		Resource r = resourceLoader.getResource("classpath:/sql/" + file);
 		final InputStream is = r.getInputStream();
 		final byte buffer[] = new byte[is.available()];
 		is.read(buffer);
@@ -64,23 +72,25 @@ public class PortalTestUtil {
 	 * spring-test-datasource.xml
 	 */
 	public static void createDataStructure(final List<String> files) throws SQLException, IOException {
-		final ClassPathXmlApplicationContext dsAppContext = new ClassPathXmlApplicationContext("classpath:/devproof-test-datasource.xml");
-		final DataSource ds = (DataSource) dsAppContext.getBean("dataSource");
-		Connection connection = ds.getConnection();
-		Statement stmt = connection.createStatement();
-		// clean db
-		stmt.execute("SHUTDOWN;");
-		stmt.close();
-		connection.close();
-		connection = ds.getConnection();
-		for (final String file : files) {
-			stmt = connection.createStatement();
-			stmt.addBatch(PortalTestUtil.getFileContent(dsAppContext, file));
-			stmt.executeBatch();
+		try {
+			final DataSource ds = (DataSource) new JndiTemplate().lookup(CommonConstants.JNDI_DATASOURCE);
+			Connection connection = ds.getConnection();
+			Statement stmt = connection.createStatement();
+			// clean db
+			stmt.execute("SHUTDOWN;");
 			stmt.close();
+			connection.close();
+			connection = ds.getConnection();
+			for (final String file : files) {
+				stmt = connection.createStatement();
+				stmt.addBatch(PortalTestUtil.getFileContent(file));
+				stmt.executeBatch();
+				stmt.close();
+			}
+			connection.close();
+		} catch (NamingException e) {
+			throw new UnhandledException(e);
 		}
-		connection.close();
-		dsAppContext.close();
 	}
 
 	/**
@@ -112,7 +122,7 @@ public class PortalTestUtil {
 					return System.getProperty("java.io.tmpdir");
 				}
 			};
-			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/devproof-test.xml\nclasspath*:/**/devproof-module.xml");
+			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/devproof-portal-core.xml\nclasspath*:/**/devproof-module.xml");
 			final ContextLoader contextLoader = new ContextLoader();
 			contextLoader.initWebApplicationContext(sandbox);
 		}
@@ -134,8 +144,31 @@ public class PortalTestUtil {
 	 * Create database and spring context
 	 */
 	public static WicketTester createWicketTesterWithSpringAndDatabase(final String... sqlFiles) throws SQLException, IOException {
+		registerJndiBindings();
 		createDefaultDataStructure(sqlFiles);
 		return createWicketTesterWithSpring();
+	}
+
+	/**
+	 * Registers JNDI bindings
+	 */
+	public static void registerJndiBindings() {
+		SimpleDriverDataSource datasource = new SimpleDriverDataSource();
+		datasource.setUrl("jdbc:hsqldb:mem:testdb");
+		datasource.setUsername("sa");
+		datasource.setPassword("");
+		datasource.setDriverClass(org.hsqldb.jdbcDriver.class);
+		registerResource(CommonConstants.JNDI_DATASOURCE, datasource);
+		registerResource(CommonConstants.JNDI_MAIL_SESSION, Session.getDefaultInstance(new Properties()));
+		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, "org.hibernate.dialect.HSQLDialect");
+	}
+
+	private static void registerResource(final String jndiName, final Object jndiObj) {
+		try {
+			new org.mortbay.jetty.plus.naming.Resource(jndiName, jndiObj);
+		} catch (NamingException e) {
+			throw new UnhandledException(e);
+		}
 	}
 
 	public static void destroy(final WicketTester tester) {

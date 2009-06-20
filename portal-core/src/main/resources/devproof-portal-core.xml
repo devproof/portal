@@ -16,19 +16,28 @@
 	<import resource="classpath:/org/devproof/portal/core/module/tag/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/theme/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/user/devproof-core-module.xml"/>
+	
+	<bean id="jndiConfig" class="org.devproof.portal.core.module.common.util.JndiConfiguration"/>
+				
+	<bean id="dataSource"  lazy-init="true" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<bean factory-bean="jndiConfig" factory-method="getDataSourceJndiName"/>
+		</property>
+	</bean> 
+
+	<bean id="mailSenderService" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="session">
+			<bean lazy-init="true" class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="jndiName">
+					<bean factory-bean="jndiConfig" factory-method="getMailSessionJndiName"/>
+				</property>
+			 </bean> 
+		</property>
+	</bean>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" lazy-init="false">
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">${persistence.dialect}</prop>
-				<prop key="hibernate.show_sql">${persistence.sql.show}</prop>
-				<prop key="hibernate.format_sql">${persistence.sql.format}</prop>
-				<prop key="hibernate.hbm2ddl.auto">${persistence.create.tables}</prop>
-				<!--
-					<prop key="hibernate.cache.use_second_level_cache">true</prop> <prop key="hibernate.hibernate.cache.use_query_cache">true</prop> <prop
-					key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</prop> <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
-				-->
-			</props>
+		<property name="hibernateProperties" >
+			<bean factory-bean="jndiConfig" factory-method="resolveHibernateProperties"/>
 		</property>
 		<property name="dataSource">
 			<ref bean="dataSource" />
@@ -44,7 +53,6 @@
 	</bean>
 
 	<bean id="hibernateDaoSupport" class="org.springframework.orm.hibernate3.support.HibernateDaoSupport" abstract="true">
-		<property name="sessionFactory" ref="sessionFactory" />
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 

@@ -49,9 +49,9 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 	public void afterPropertiesSet() throws Exception {
 		List<String> modules = new ArrayList<String>();
 		modules.add("classpath:/devproof-portal-core.xml");
-		modules.add("classpath:/devproof-portal-datasource.xml");
-		modules.add("classpath:/devproof-portal-mail.xml");
-		modules.add("classpath:/devproof-portal-placeholder.xml");
+		// modules.add("classpath:/devproof-portal-datasource.xml");
+		// modules.add("classpath:/devproof-portal-mail.xml");
+		// modules.add("classpath:/devproof-portal-placeholder.xml");
 
 		@SuppressWarnings("unchecked")
 		Set<String> libs = this.servletContext.getResourcePaths("/WEB-INF/lib");

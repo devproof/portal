@@ -22,6 +22,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.devproof.portal.core.module.common.CommonConstants;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
@@ -65,7 +66,7 @@ public class JettyStart {
 		datasource.setUsername(args[0]);
 		datasource.setPassword(args[0]);
 		datasource.setDriverClassName(Driver.class.getName());
-		new Resource("java:/comp/env/jdbc/devproof/portal", datasource);
+		new Resource(CommonConstants.JNDI_DATASOURCE, datasource);
 
 		Properties props = System.getProperties();
 		props.put("mail.smtp.host", args[2]);
@@ -83,7 +84,7 @@ public class JettyStart {
 		};
 
 		Session mailSession = Session.getDefaultInstance(props, auth);
-		new Resource("java:/comp/env/mail/Session", mailSession);
+		new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
 
 		// START JMX SERVER
 		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
@@ -92,7 +93,7 @@ public class JettyStart {
 		// mBeanContainer.start();
 
 		try {
-			System.out.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");
+			System.out.println(">>> STARTING DEVPROOF PORTAL, PRESS ANY KEY TO STOP");
 			server.start();
 			while (System.in.available() == 0) {
 				Thread.sleep(5000);

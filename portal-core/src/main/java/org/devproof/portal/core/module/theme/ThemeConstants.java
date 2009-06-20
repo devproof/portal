@@ -26,7 +26,7 @@ public class ThemeConstants {
 			"org/devproof/portal/core/module/common/img/", "org/devproof/portal/core/module/common/page/" };
 	final public static String COMPLETE_THEME_PATHS[] = { "/" }; // everything
 	final public static String ALLOWED_THEME_EXT[] = { ".html", ".css", ".gif", ".jpg", ".png", ".properties" };
-	final public static String FILTER_PATHS[] = { "META-INF", "portal.properties", "portal-test.properties", "log4j.properties", "org/devproof/portal/core/module/common/component/richtext" };
+	final public static String FILTER_PATHS[] = { "META-INF", "log4j.properties", "org/devproof/portal/core/module/common/component/richtext" };
 
 	final public static String CONF_SELECTED_THEME_UUID = "hidden.selected_theme_uuid";
 	final public static String CONF_SELECTED_THEME_DEFAULT = "_default_";
