@@ -46,6 +46,7 @@ public class DevproofWebstartLauncher extends JFrame {
 		buf.append("\n");
 		buf.append("  Start the browser and open URL: http://localhost:8888/\n");
 		buf.append("  Username: admin     Password: 12345\n\n");
+		buf.append("  When closing this window, the server will be stopped.\n\n");
 		buf.append("  Download the portal: http://portal.devproof.org\n\n");
 		buf.append("       --- devproof.org ---");
 
@@ -65,7 +66,6 @@ public class DevproofWebstartLauncher extends JFrame {
 			public void actionPerformed(final ActionEvent e) {
 				startServer();
 			}
-
 		});
 
 		this.stopButton.addActionListener(new ActionListener() {

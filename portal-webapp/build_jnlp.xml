@@ -24,13 +24,12 @@ This will prompt you for a password. Generating the certificate may take a few m
 http://wiki.plexinfo.net/index.php?title=How_to_sign_JAR_files
 	
 	 -->
-	<property name="project_version" location="1.0-rc2"/>
 	 
 	<target name="dist">
 		<delete dir="target/jnlp/"/>
 		
 		<unzip dest="target/jnlp/unjar/">
-	  	    <fileset dir="target/devproof-portal-${project_version}/WEB-INF/lib/">
+	  	    <fileset dir="target/devproof-portal-1.0-rc2/WEB-INF/lib/">
 	  	        <include name="*.jar"/>
 	  	    </fileset>
 	  	</unzip>
@@ -43,5 +42,9 @@ http://wiki.plexinfo.net/index.php?title=How_to_sign_JAR_files
 		<signjar jar="target/jnlp/dist/devproof-portal.jar" 
 			alias="devproof" storepass="testen" keystore="config/jnlp/keystore"/>
 		<copy file="config/jnlp/devproof-portal.jnlp" tofile="target/jnlp/dist/devproof-portal.jnlp"/>
+		
+		<copy todir="/opt/devproof/public/devproof-dws/">
+			<fileset dir="target/jnlp/dist/"/>			
+		</copy>		
 	</target>
 </project> 
