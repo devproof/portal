@@ -12,7 +12,7 @@
 	</security>
     <resources>
         <j2se version="1.6+"/>
-        <jar href="devproof-portal.jar"/>
+        <jar href="devproof-portal.jar" download="eager"/>
     </resources>
     <application-desc main-class="org.devproof.portal.test.DevproofWebstartLauncher"/>
 </jnlp>
