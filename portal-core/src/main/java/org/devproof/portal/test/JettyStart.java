@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -22,12 +24,16 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.wicket.protocol.http.WicketFilter;
+import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.plus.naming.Resource;
+import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
+import org.springframework.web.context.ContextLoaderListener;
 
 import com.mysql.jdbc.Driver;
 
@@ -54,11 +60,18 @@ public class JettyStart {
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
 		bb.setContextPath("/");
-		bb.setWar("src/main/webapp");
+		bb.setWar(System.getProperty("java.io.tmpdir"));
+		bb.addEventListener(new ContextLoaderListener());
+		Map<String, String> initParams = new HashMap<String, String>();
+		initParams.put("contextConfigLocation", "classpath:/devproof-portal.xml");
+		bb.setInitParams(initParams);
+		FilterHolder servlet = new FilterHolder();
+		servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
+		servlet.setInitParameter("configuration", "deployment");
+		servlet.setClassName(WicketFilter.class.getName());
+		servlet.setName(WicketFilter.class.getName());
+		bb.addFilter(servlet, "/*", 0);
 		server.addHandler(bb);
-
-		// This is needed to avoid error on subsequent Environment registrations
-		// NamingEntry.setScope(NamingEntry.SCOPE_GLOBAL);
 
 		BasicDataSource datasource = new BasicDataSource();
 		datasource.setUrl("jdbc:mysql://localhost/" + args[0]);

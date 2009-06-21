@@ -68,9 +68,6 @@ public class JettyWebstart {
 		bb.addFilter(servlet, "/*", 0);
 		server.addHandler(bb);
 
-		// This is needed to avoid error on subsequent Environment registrations
-		// NamingEntry.setScope(NamingEntry.SCOPE_GLOBAL);
-
 		SimpleDriverDataSource datasource = new SimpleDriverDataSource();
 		datasource.setUrl("jdbc:hsqldb:mem:testdb");
 		datasource.setUsername("sa");
