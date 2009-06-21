@@ -43,7 +43,7 @@ http://wiki.plexinfo.net/index.php?title=How_to_sign_JAR_files
 			alias="devproof" storepass="testen" keystore="config/jnlp/keystore"/>
 		<copy file="config/jnlp/devproof-portal.jnlp" tofile="target/jnlp/dist/devproof-portal.jnlp"/>
 		
-		<copy todir="/var/devproof/public/devproof-dws/">
+		<copy todir="/var/devproof/public/devproof-jws/">
 			<fileset dir="target/jnlp/dist/"/>			
 		</copy>		
 	</target>
