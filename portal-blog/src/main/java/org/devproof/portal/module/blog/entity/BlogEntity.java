@@ -97,7 +97,7 @@ final public class BlogEntity extends BaseEntity {
 
 	@Transient
 	public List<RightEntity> getViewRights() {
-		return this.getRightsStartingWith(this.allRights, "blog.view");
+		return getRightsStartingWith(this.allRights, "blog.view");
 	}
 
 	public List<BlogTagEntity> getTags() {

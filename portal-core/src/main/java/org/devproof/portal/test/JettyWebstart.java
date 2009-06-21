@@ -27,6 +27,7 @@ import javax.swing.JTextArea;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.hibernate.dialect.HSQLDialect;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
@@ -79,7 +80,9 @@ public class JettyWebstart {
 		Properties props = System.getProperties();
 		Session mailSession = Session.getDefaultInstance(props);
 		new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
-		PortalTestUtil.createDataStructure(Arrays.asList("install_devproof_hsql.sql"));
+		new Resource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, HSQLDialect.class.getName());
+		PortalTestUtil.createDataStructure(Arrays.asList("file:///E:/Workspaces/devproof/portal-webapp/target/sql/install_devproof_hsql.sql"));
+		// PortalTestUtil.createDataStructure(Arrays.asList("install_devproof_hsql.sql"));
 		try {
 			System.out.println(">>> STARTING DEVPROOF PORTAL, PRESS ANY KEY TO STOP");
 			server.start();

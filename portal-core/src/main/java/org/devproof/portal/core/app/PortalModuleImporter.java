@@ -68,7 +68,7 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 		// Webstart modules
 		if (libs.isEmpty()) {
 			Resource modulesTxt = this.applicationContext.getResource("classpath:/devproof-modules.txt");
-			if (modulesTxt != null) {
+			if (modulesTxt.exists()) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(modulesTxt.getInputStream()));
 				String line;
 				while ((line = reader.readLine()) != null) {
@@ -76,17 +76,6 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 				}
 				reader.close();
 			}
-			// String jarFile = StringUtils.substringBefore(url.getFile(), "!");
-			// if (jarFile.endsWith(".jar")) {
-			// JarFile file = new JarFile(jarFile);
-			// Enumeration<JarEntry> entries = file.entries();
-			// while (entries.hasMoreElements()) {
-			// JarEntry jarEntry = entries.nextElement();
-			// if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
-			// modules.add("classpath:/" + jarEntry.getName());
-			// }
-			// }
-			// }
 		}
 		// For development mode when the lib and classes dir is empty
 		if (libs.isEmpty()) {
