@@ -83,8 +83,8 @@ public class JettyWebstart {
 			Session mailSession = Session.getDefaultInstance(props);
 			new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
 			new Resource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, HSQLDialect.class.getName());
-			PortalTestUtil.createDataStructure(Arrays.asList("file:///E:/Workspaces/devproof/portal-webapp/target/sql/install_devproof_hsql.sql"));
-			// PortalTestUtil.createDataStructure(Arrays.asList("install_devproof_hsql.sql"));
+			// PortalTestUtil.createDataStructure(Arrays.asList("file:///E:/Workspaces/devproof/portal-webapp/target/sql/install_devproof_hsql.sql"));
+			PortalTestUtil.createDataStructure(Arrays.asList("install_devproof_hsql.sql"));
 		} catch (NamingException e) {
 			throw new UnhandledException(e);
 		} catch (SQLException e) {
