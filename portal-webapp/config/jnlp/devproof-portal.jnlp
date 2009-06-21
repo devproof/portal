@@ -5,6 +5,7 @@
         <vendor>devproof.org</vendor>
         <homepage href="http://www.devproof.org"/>
         <description>Devproof Portal</description>
+        <offline-allowed/>
      </information>
 	 <security>
 		<all-permissions/>
