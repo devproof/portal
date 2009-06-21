@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://stuff.devproof.org/devproof-jws/" href="devproof-portal.jnlp">
+<jnlp spec="1.0+" codebase="http://stuff.devproof.org/jws/" href="devproof-portal.jnlp">
     <information>
         <title>Devproof Portal</title>
         <vendor>devproof.org</vendor>
