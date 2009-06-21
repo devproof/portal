@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="file:///E:/Workspaces/devproof/portal-webapp/target/jnlp/dist/" href="devproof-portal.jnlp">
+    <information>
+        <title>Devproof Portal</title>
+        <vendor>devproof.org</vendor>
+        <homepage href="http://www.devproof.org"/>
+        <description>Portal Portal</description>
+     </information>
+	 <security>
+		<all-permissions/>
+	</security>
+    <resources>
+        <j2se version="1.6+"/>
+        <jar href="devproof-portal.jar"/>
+    </resources>
+    <application-desc main-class="org.devproof.portal.test.JettyWebstart"/>
+</jnlp>

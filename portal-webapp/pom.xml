@@ -116,27 +116,27 @@
 			</dependencies>
 		</profile>
 	</profiles>
-	
+
 	<build>
-	    <plugins>
-	      <plugin>
-	        <artifactId>maven-antrun-plugin</artifactId>
-	        <executions>
-	          <execution>
-	            <id>build-config-files</id>
-	            <phase>package</phase>
-	            <goals>
-	              <goal>run</goal>
-	            </goals>
-	            <configuration>
-	              <tasks>
-	                <property name="project_version" value="${project.version}"/>
-	                <ant target="generatesql" inheritRefs="true"/>
-	              </tasks>
-	            </configuration>
-	          </execution>
-	        </executions>
-	      </plugin>
-	    </plugins>
-  	</build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>build-config-files</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<property name="project_version" value="${project.version}" />
+								<ant target="generatesql" inheritRefs="true" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

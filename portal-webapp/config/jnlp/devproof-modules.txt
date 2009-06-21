@@ -1,0 +1,7 @@
+org/devproof/portal/module/blog/devproof-module.xml
+org/devproof/portal/module/article/devproof-module.xml
+org/devproof/portal/module/bookmark/devproof-module.xml
+org/devproof/portal/module/download/devproof-module.xml
+org/devproof/portal/module/deadlinkcheck/devproof-module.xml
+org/devproof/portal/module/otherpage/devproof-module.xml
+org/devproof/portal/module/uploadcenter/devproof-module.xml

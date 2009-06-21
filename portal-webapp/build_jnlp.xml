@@ -1,0 +1,21 @@
+<project default="dist">
+	<target name="dist">
+		
+		<delete dir="target/jnlp/"/>
+		
+		<unzip dest="target/jnlp/unjar/">
+	  	    <fileset dir="target/devproof-portal-1.0-rc2/WEB-INF/lib/">
+	  	        <include name="*.jar"/>
+	  	    </fileset>
+	  	</unzip>
+	  	
+	  	<copy file="config/jnlp/devproof-modules.txt" tofile="target/jnlp/unjar/devproof-modules.txt"/>
+	  	<copy file="target/sql/install_devproof_hsql.sql" tofile="target/jnlp/unjar/sql/install_devproof_hsql.sql"/>
+	  	
+	  	<mkdir dir="target/jnlp/dist/"/>
+	  	<jar destfile="target/jnlp/dist/devproof-portal.jar"  basedir="target/jnlp/unjar/"/>		
+		<signjar jar="target/jnlp/dist/devproof-portal.jar" 
+			alias="devproof" storepass="testen" keystore="config/jnlp/keystore"/>
+		<copy file="config/jnlp/devproof-portal.jnlp" tofile="target/jnlp/dist/devproof-portal.jnlp"/>
+	</target>
+</project> 

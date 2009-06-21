@@ -15,93 +15,89 @@
  */
 package org.devproof.portal.test;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.wicket.protocol.http.WicketFilter;
+import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.plus.naming.Resource;
+import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
-
-import com.mysql.jdbc.Driver;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.web.context.ContextLoaderListener;
 
 /**
- * Test jetty start class for development
+ * Test jetty start class for Java Webstart
  * 
  * @author Carsten Hufe
  */
-public class JettyStart {
+public class JettyWebstart {
 
 	public static void main(final String[] args) throws Exception {
-		if (args.length != 5) {
-			System.out.println("JettyStart <DbUser/Pass/Schema> <httpport> <smtphost> <smtpuser> <smtppass>");
-			return;
-		}
 		Server server = new Server();
 		SocketConnector connector = new SocketConnector();
 		// Set some timeout options to make debugging easier.
 		connector.setMaxIdleTime(1000 * 60 * 60);
 		connector.setSoLingerTime(-1);
-		connector.setPort(Integer.valueOf(args[1]));
+		connector.setPort(8888);
 		server.setConnectors(new Connector[] { connector });
-
 		WebAppContext bb = new WebAppContext();
 		bb.setServer(server);
 		bb.setContextPath("/");
-		bb.setWar("src/main/webapp");
+		bb.setWar(System.getProperty("java.io.tmpdir"));
+		bb.addEventListener(new ContextLoaderListener());
+		Map<String, String> initParams = new HashMap<String, String>();
+		initParams.put("contextConfigLocation", "classpath:/devproof-portal.xml");
+		bb.setInitParams(initParams);
+		FilterHolder servlet = new FilterHolder();
+		servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
+		servlet.setInitParameter("configuration", "deployment");
+		servlet.setClassName(WicketFilter.class.getName());
+		servlet.setName(WicketFilter.class.getName());
+		bb.addFilter(servlet, "/*", 0);
 		server.addHandler(bb);
 
 		// This is needed to avoid error on subsequent Environment registrations
 		// NamingEntry.setScope(NamingEntry.SCOPE_GLOBAL);
 
-		BasicDataSource datasource = new BasicDataSource();
-		datasource.setUrl("jdbc:mysql://localhost/" + args[0]);
-		datasource.setUsername(args[0]);
-		datasource.setPassword(args[0]);
-		datasource.setDriverClassName(Driver.class.getName());
+		SimpleDriverDataSource datasource = new SimpleDriverDataSource();
+		datasource.setUrl("jdbc:hsqldb:mem:testdb");
+		datasource.setUsername("sa");
+		datasource.setPassword("");
+		datasource.setDriverClass(org.hsqldb.jdbcDriver.class);
 		new Resource(CommonConstants.JNDI_DATASOURCE, datasource);
-
 		Properties props = System.getProperties();
-		props.put("mail.smtp.host", args[2]);
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.port", "25");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.debug", "true");
-
-		Authenticator auth = new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(args[3], args[4]);
-			}
-		};
-
-		Session mailSession = Session.getDefaultInstance(props, auth);
+		Session mailSession = Session.getDefaultInstance(props);
 		new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
-
-		// START JMX SERVER
-		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-		// MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
-		// server.getContainer().addEventListener(mBeanContainer);
-		// mBeanContainer.start();
-
+		PortalTestUtil.createDataStructure(Arrays.asList("install_devproof_hsql.sql"));
 		try {
 			System.out.println(">>> STARTING DEVPROOF PORTAL, PRESS ANY KEY TO STOP");
 			server.start();
-			while (System.in.available() == 0) {
-				Thread.sleep(5000);
-			}
-			server.stop();
-			server.join();
+			// while (true) {
+			// Thread.sleep(5000);
+			// }
+			// server.stop();
+			// server.join();
+			JFrame frame = new JFrame("Hallo1");
+			frame.show();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(100);
+			JFrame frame = new JFrame("Hallo1");
+			frame.add(new JTextArea(e.toString()));
+			frame.show();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			// System.exit(100);
 		}
 	}
 }

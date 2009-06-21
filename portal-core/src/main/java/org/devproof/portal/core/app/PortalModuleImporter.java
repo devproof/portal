@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.app;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -27,11 +27,11 @@ import java.util.jar.JarFile;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.lang.UnhandledException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.io.Resource;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.ServletContextAware;
 
@@ -49,38 +49,49 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 	public void afterPropertiesSet() throws Exception {
 		List<String> modules = new ArrayList<String>();
 		modules.add("classpath:/devproof-portal-core.xml");
-		// modules.add("classpath:/devproof-portal-datasource.xml");
-		// modules.add("classpath:/devproof-portal-mail.xml");
-		// modules.add("classpath:/devproof-portal-placeholder.xml");
 
+		// Prod modules
 		@SuppressWarnings("unchecked")
 		Set<String> libs = this.servletContext.getResourcePaths("/WEB-INF/lib");
-		if (libs.isEmpty()) {
-			// For development mode when the lib and classes dir is empty
-			modules.add("classpath*:**/devproof-module.xml");
-		} else {
-			// for production mode, e.g. in tomcat, because
-			// classpath*:**/devproof-module.xml import
-			// does not work
-			try {
-				for (String lib : libs) {
-					URL url = this.servletContext.getResource(lib);
-					JarFile file = new JarFile(url.getFile());
-					Enumeration<JarEntry> entries = file.entries();
-					while (entries.hasMoreElements()) {
-						JarEntry jarEntry = entries.nextElement();
-						if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
-							modules.add("classpath:/" + jarEntry.getName());
-						}
-					}
+		for (String lib : libs) {
+			URL url = this.servletContext.getResource(lib);
+			JarFile file = new JarFile(url.getFile());
+			Enumeration<JarEntry> entries = file.entries();
+			while (entries.hasMoreElements()) {
+				JarEntry jarEntry = entries.nextElement();
+				if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
+					modules.add("classpath:/" + jarEntry.getName());
 				}
-			} catch (MalformedURLException e) {
-				throw new UnhandledException(e);
-			} catch (IOException e) {
-				throw new UnhandledException(e);
 			}
 		}
 
+		// Webstart modules
+		if (libs.isEmpty()) {
+			Resource modulesTxt = this.applicationContext.getResource("classpath:/devproof-modules.txt");
+			if (modulesTxt != null) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(modulesTxt.getInputStream()));
+				String line;
+				while ((line = reader.readLine()) != null) {
+					modules.add("classpath:/" + line);
+				}
+				reader.close();
+			}
+			// String jarFile = StringUtils.substringBefore(url.getFile(), "!");
+			// if (jarFile.endsWith(".jar")) {
+			// JarFile file = new JarFile(jarFile);
+			// Enumeration<JarEntry> entries = file.entries();
+			// while (entries.hasMoreElements()) {
+			// JarEntry jarEntry = entries.nextElement();
+			// if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
+			// modules.add("classpath:/" + jarEntry.getName());
+			// }
+			// }
+			// }
+		}
+		// For development mode when the lib and classes dir is empty
+		if (libs.isEmpty()) {
+			modules.add("classpath*:**/devproof-module.xml");
+		}
 		String[] configs = convertListToArray(modules);
 		this.applicationContext.setConfigLocations(configs);
 		this.applicationContext.refresh();

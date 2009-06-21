@@ -29,6 +29,7 @@ import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
@@ -59,12 +60,19 @@ public class PortalTestUtil {
 	 */
 	public static String getFileContent(final String file) throws IOException {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		Resource r = resourceLoader.getResource("classpath:/sql/" + file);
+		Resource r = null;
+		if (file.startsWith("file:/")) {
+			r = resourceLoader.getResource(file);
+		} else {
+			r = resourceLoader.getResource("classpath:/sql/" + file);
+		}
 		final InputStream is = r.getInputStream();
 		final byte buffer[] = new byte[is.available()];
 		is.read(buffer);
 		is.close();
-		return new String(buffer);
+		String str = new String(buffer);
+		str = StringUtils.remove(str, "\\n\n");
+		return StringUtils.remove(str, "\\n");
 	}
 
 	/**
