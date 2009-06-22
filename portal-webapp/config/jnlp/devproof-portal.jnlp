@@ -14,6 +14,6 @@
         <j2se version="1.6+"/>
         <jar href="devproof-portal.jar" download="eager"/>
     </resources>
-    <update check="background" policy="prompt-update"/>
+    <update check="timeout" policy="prompt-update"/>
     <application-desc main-class="org.devproof.portal.test.DevproofWebstartLauncher"/>
 </jnlp>
