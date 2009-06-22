@@ -12,73 +12,7 @@
 	</security>
     <resources>
         <j2se version="1.6+"/>
-		<jar href="devproof-portal-core-1.0-rc2.jar main="true"/>
-		<jar href="activation-1.1.jar"/>
-		<jar href="ant-1.7.0.jar"/>
-		<jar href="ant-launcher-1.7.0.jar"/>
-		<jar href="antlr-2.7.6.jar"/>
-		<jar href="aopalliance-1.0.jar"/>
-		<jar href="asm-1.5.3.jar"/>
-		<jar href="asm-attrs-1.5.3.jar"/>
-		<jar href="cglib-2.1_3.jar"/>
-		<jar href="cglib-nodep-2.1_3.jar"/>
-		<jar href="commons-codec-1.2.jar"/>
-		<jar href="commons-collections-2.1.1.jar"/>
-		<jar href="commons-dbcp-1.2.jar"/>
-		<jar href="commons-httpclient-3.1.jar"/>
-		<jar href="commons-io-1.4.jar"/>
-		<jar href="commons-lang-2.4.jar"/>
-		<jar href="commons-logging-1.0.4.jar"/>
-		<jar href="commons-pool-1.2.jar"/>
-		<jar href="concurrent-1.3.4.jar"/>
-		<jar href="devproof-portal-article-1.0-rc2.jar"/>
-		<jar href="devproof-portal-blog-1.0-rc2.jar"/>
-		<jar href="devproof-portal-bookmark-1.0-rc2.jar"/>
-		<jar href="devproof-portal-config.jar"/>
-		<jar href="devproof-portal-deadlinkcheck-1.0-rc2.jar"/>
-		<jar href="devproof-portal-download-1.0-rc2.jar"/>
-		<jar href="devproof-portal-otherpage-1.0-rc2.jar"/>
-		<jar href="devproof-portal-uploadcenter-1.0-rc2.jar"/>
-		<jar href="dom4j-1.6.1.jar"/>
-		<jar href="ehcache-1.2.3.jar"/>
-		<jar href="ejb3-persistence-1.0.1.GA.jar"/>
-		<jar href="geronimo-spec-jta-1.0.1B-rc4.jar"/>
-		<jar href="groovy-all-1.5.1.jar"/>
-		<jar href="hibernate-3.2.6.ga.jar"/>
-		<jar href="hibernate-annotations-3.3.1.GA.jar"/>
-		<jar href="hibernate-commons-annotations-3.0.0.ga.jar"/>
-		<jar href="hibernate-entitymanager-3.3.2.GA.jar"/>
-		<jar href="hsqldb-1.8.0.7.jar"/>
-		<jar href="javassist-3.4.GA.jar"/>
-		<jar href="jetty-6.1.18.jar"/>
-		<jar href="jetty-management-6.1.18.jar"/>
-		<jar href="jetty-naming-6.1.18.jar"/>
-		<jar href="jetty-plus-6.1.18.jar"/>
-		<jar href="jetty-util-6.1.18.jar"/>
-		<jar href="jline-0.9.93.jar"/>
-		<jar href="joda-time-1.4.jar"/>
-		<jar href="jta-1.0.1B.jar"/>
-		<jar href="junit-3.8.2.jar"/>
-		<jar href="log4j-1.2.14.jar"/>
-		<jar href="mail-1.4.jar"/>
-		<jar href="persistence-api-1.0.jar"/>
-		<jar href="servlet-api-2.5-20081211.jar"/>
-		<jar href="slf4j-api-1.4.2.jar"/>
-		<jar href="slf4j-log4j12-1.4.2.jar"/>
-		<jar href="spring-2.5.6.jar"/>
-		<jar href="spring-aop-2.5.6.jar"/>
-		<jar href="spring-beans-2.5.6.jar"/>
-		<jar href="spring-core-2.5.6.jar"/>
-		<jar href="spring-mock-2.0.8.jar"/>
-		<jar href="wicket-1.4-rc4.jar"/>
-		<jar href="wicket-datetime-1.4-rc4.jar"/>
-		<jar href="wicket-extensions-1.4-rc4.jar"/>
-		<jar href="wicket-ioc-1.4-rc4.jar"/>
-		<jar href="wicket-spring-1.4-rc4.jar"/>
-		<jar href="xercesImpl-2.4.0.jar"/>
-		<jar href="xml-apis-1.0.b2.jar"/>
-		<jar href="xpp3_min-1.1.4c.jar"/>
-		<jar href="xstream-1.3.1.jar"/>
+        <jar href="devproof-portal.jar" download="eager"/>
     </resources>
     <application-desc main-class="org.devproof.portal.test.DevproofWebstartLauncher"/>
 </jnlp>
