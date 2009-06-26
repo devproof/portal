@@ -38,7 +38,11 @@ public class BoxServiceImpl implements BoxService {
 
 	@Override
 	public Integer getMaxSortNum() {
-		return this.boxDao.getMaxSortNum();
+		Integer sort = this.boxDao.getMaxSortNum();
+		if (sort == null) {
+			return 1;
+		}
+		return sort + 1;
 	}
 
 	@Override
