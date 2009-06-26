@@ -31,8 +31,8 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
-import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
+import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -50,13 +50,13 @@ public class BlogPage extends BlogBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "blogService")
-	private BlogService blogService;
+	private transient BlogService blogService;
 	@SpringBean(name = "blogDataProvider")
-	private QueryDataProvider<BlogEntity> blogDataProvider;
+	private transient QueryDataProvider<BlogEntity> blogDataProvider;
 	@SpringBean(name = "blogTagService")
-	private TagService<BlogTagEntity> blogTagService;
+	private transient TagService<BlogTagEntity> blogTagService;
 	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+	private transient ConfigurationService configurationService;
 	private final BlogDataView dataView;
 
 	public BlogPage(final PageParameters params) {

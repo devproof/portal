@@ -103,7 +103,7 @@ public class BoxServiceImplTest extends TestCase {
 	public void testGetMaxSortNum() {
 		EasyMock.expect(this.mock.getMaxSortNum()).andReturn(5);
 		EasyMock.replay(this.mock);
-		assertEquals(Integer.valueOf(5), this.impl.getMaxSortNum());
+		assertEquals(Integer.valueOf(6), this.impl.getMaxSortNum());
 		EasyMock.verify(this.mock);
 	}
 

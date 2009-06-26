@@ -51,11 +51,11 @@ public class ForgotPasswordPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "emailService")
-	private EmailService emailService;
+	private transient EmailService emailService;
 	@SpringBean(name = "userService")
-	private UserService userService;
+	private transient UserService userService;
 	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+	private transient ConfigurationService configurationService;
 
 	public ForgotPasswordPage(final PageParameters params) {
 		super(params);

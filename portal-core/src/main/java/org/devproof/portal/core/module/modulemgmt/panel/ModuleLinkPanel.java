@@ -46,11 +46,11 @@ public class ModuleLinkPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "moduleLinkDataProvider")
-	private QueryDataProvider<ModuleLinkEntity> moduleLinkDataProvider;
+	private transient QueryDataProvider<ModuleLinkEntity> moduleLinkDataProvider;
 	@SpringBean(name = "moduleService")
-	private ModuleService moduleService;
+	private transient ModuleService moduleService;
 	@SpringBean(name = "registryService")
-	private RegistryService registryService;
+	private transient RegistryService registryService;
 
 	private final WebMarkupContainer container;
 	private final Form<ModuleLinkEntity> form;
@@ -136,7 +136,7 @@ public class ModuleLinkPanel extends Panel {
 
 				@Override
 				public String getObject() {
-					return (item.getIndex() % 2 == 1) ? "even" : "odd";
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
 			}));
 		}

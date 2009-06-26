@@ -38,9 +38,9 @@ public class DownloadBoxPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "downloadService")
-	private DownloadService downloadService;
+	private transient DownloadService downloadService;
 	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+	private transient ConfigurationService configurationService;
 
 	public DownloadBoxPanel(final String id) {
 		super(id);

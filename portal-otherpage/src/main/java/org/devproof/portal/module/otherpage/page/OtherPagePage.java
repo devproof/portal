@@ -39,9 +39,9 @@ public class OtherPagePage extends OtherPageBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "otherPageService")
-	private OtherPageService otherPageService;
+	private transient OtherPageService otherPageService;
 	@SpringBean(name = "otherPageDataProvider")
-	private ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
+	private transient ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
 
 	public OtherPagePage(final PageParameters params) {
 		super(params);
@@ -94,7 +94,7 @@ public class OtherPagePage extends OtherPageBasePage {
 
 				@Override
 				public String getObject() {
-					return (item.getIndex() % 2 == 1) ? "even" : "odd";
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
 			}));
 		}

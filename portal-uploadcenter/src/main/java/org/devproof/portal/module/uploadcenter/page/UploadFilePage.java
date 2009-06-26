@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
@@ -42,7 +43,6 @@ import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
  * @author Carsten Hufe
  */
 public class UploadFilePage extends WebPage {
-
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private final File uploadFolder;
@@ -67,11 +67,14 @@ public class UploadFilePage extends WebPage {
 
 					UploadFilePage.this.deleteFile(newFile);
 					try {
-						newFile.createNewFile();
-						upload.writeTo(newFile);
-						UploadFilePage.this.info(new StringResourceModel("msg.uploaded", UploadFilePage.this, null, new Object[] { upload.getClientFileName() }).getString());
+						if (newFile.createNewFile()) {
+							upload.writeTo(newFile);
+							UploadFilePage.this.info(new StringResourceModel("msg.uploaded", UploadFilePage.this, null, new Object[] { upload.getClientFileName() }).getString());
+						} else {
+							throw new IllegalStateException("Unable to write file" + newFile);
+						}
 					} catch (Exception e) {
-						throw new IllegalStateException("Unable to write file");
+						throw new UnhandledException(e);
 					}
 				}
 				super.onSubmit();

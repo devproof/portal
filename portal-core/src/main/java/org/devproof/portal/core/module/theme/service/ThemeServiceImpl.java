@@ -252,6 +252,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 				}
 			}
 			zos.finish();
+			zos.close();
 			fos.close();
 			return back;
 		} catch (FileNotFoundException e) {

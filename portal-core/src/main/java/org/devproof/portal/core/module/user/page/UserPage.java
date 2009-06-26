@@ -51,9 +51,9 @@ public class UserPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "userDataProvider")
-	private QueryDataProvider<UserEntity> userDataProvider;
+	private transient QueryDataProvider<UserEntity> userDataProvider;
 	@SpringBean(name = "userService")
-	private UserService userService;
+	private transient UserService userService;
 	@SpringBean(name = "dateFormat")
 	private SimpleDateFormat dateFormat;
 
@@ -195,7 +195,7 @@ public class UserPage extends TemplatePage {
 
 				@Override
 				public String getObject() {
-					return (item.getIndex() % 2 == 1) ? "even" : "odd";
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
 			}));
 		}

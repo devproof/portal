@@ -45,11 +45,11 @@ public class BoxPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "boxDataProvider")
-	private SortableDataProvider<BoxEntity> boxDataProvider;
+	private transient SortableDataProvider<BoxEntity> boxDataProvider;
 	@SpringBean(name = "boxService")
-	private BoxService boxService;
+	private transient BoxService boxService;
 	@SpringBean(name = "boxRegistry")
-	private BoxRegistry boxRegistry;
+	private transient BoxRegistry boxRegistry;
 
 	private final ModalWindow modalWindow;
 	private final WebMarkupContainer container;
@@ -168,7 +168,7 @@ public class BoxPage extends TemplatePage {
 
 				@Override
 				public String getObject() {
-					return (item.getIndex() % 2 == 1) ? "even" : "odd";
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
 			}));
 		}

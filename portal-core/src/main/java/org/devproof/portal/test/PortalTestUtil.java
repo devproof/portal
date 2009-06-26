@@ -122,18 +122,7 @@ public class PortalTestUtil {
 	 * Returns the wicket tester instance for PortalApplication
 	 */
 	public static WicketTester createWicketTesterWithSpring() {
-		if (sandbox == null) {
-			sandbox = new MockServletContext("") {
-				// this is for the theme page test
-				@Override
-				public String getRealPath(final String arg0) {
-					return System.getProperty("java.io.tmpdir");
-				}
-			};
-			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/devproof-portal-core.xml\nclasspath*:/**/devproof-module.xml");
-			final ContextLoader contextLoader = new ContextLoader();
-			contextLoader.initWebApplicationContext(sandbox);
-		}
+		final MockServletContext sandbox = getSandbox();
 		final PortalApplication app = new PortalApplication() {
 			@Override
 			public ServletContext getServletContext() {
@@ -146,6 +135,22 @@ public class PortalTestUtil {
 		app.unmount("/login");
 
 		return new WicketTester(app);
+	}
+
+	private static MockServletContext getSandbox() {
+		if (sandbox == null) {
+			sandbox = new MockServletContext("") {
+				// this is for the theme page test
+				@Override
+				public String getRealPath(final String arg0) {
+					return System.getProperty("java.io.tmpdir");
+				}
+			};
+			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/devproof-portal-core.xml\nclasspath*:/**/devproof-module.xml");
+			final ContextLoader contextLoader = new ContextLoader();
+			contextLoader.initWebApplicationContext(sandbox);
+		}
+		return sandbox;
 	}
 
 	/**

@@ -45,9 +45,9 @@ public class RightPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "rightDataProvider")
-	private QueryDataProvider<RightEntity> rightDataProvider;
+	private transient QueryDataProvider<RightEntity> rightDataProvider;
 	@SpringBean(name = "rightService")
-	private RightService rightService;
+	private transient RightService rightService;
 
 	private final WebMarkupContainer container;
 	private final ModalWindow modalWindow;
@@ -163,7 +163,7 @@ public class RightPage extends TemplatePage {
 
 				@Override
 				public String getObject() {
-					return (item.getIndex() % 2 == 1) ? "even" : "odd";
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
 			}));
 		}

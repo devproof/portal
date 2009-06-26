@@ -45,7 +45,6 @@ public class String2ImageResource extends RenderedDynamicImageResource {
 		this.font = font;
 		final BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
 		this.width = 0;
-		this.height = this.size + (this.size / 2);
 		this.size = font.getSize();
 		Graphics2D g = (Graphics2D) image.getGraphics();
 		for (String str : lines) {

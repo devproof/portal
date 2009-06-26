@@ -32,7 +32,7 @@ public class OtherPageBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	private final boolean isAuthor;
 	@SpringBean(name = "otherPageService")
-	private OtherPageService otherPageService;
+	private transient OtherPageService otherPageService;
 
 	public OtherPageBasePage(final PageParameters params) {
 		super(params);

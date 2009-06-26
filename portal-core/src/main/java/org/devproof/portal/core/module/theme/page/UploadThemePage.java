@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.lang.UnhandledException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
@@ -37,6 +39,8 @@ import org.devproof.portal.core.module.theme.service.ThemeService.ValidationKey;
  * @author Carsten Hufe
  */
 public class UploadThemePage extends WebPage {
+	private static final Log LOG = LogFactory.getLog(UploadThemePage.class);
+
 	@SpringBean(name = "themeService")
 	private ThemeService themeService;
 
@@ -67,7 +71,9 @@ public class UploadThemePage extends WebPage {
 					} else if (key == ValidationKey.WRONG_VERSION) {
 						this.error(this.getString("wrong_version"));
 					}
-					tmpFile.delete();
+					if (!tmpFile.delete()) {
+						LOG.error("Could not delete " + tmpFile);
+					}
 				} catch (IOException e) {
 					throw new UnhandledException(e);
 				}

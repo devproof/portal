@@ -40,7 +40,7 @@ public class UploadFilePageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(new UploadFilePage(new File("/")));
+		this.tester.startPage(new UploadFilePage(new File("./")));
 		this.tester.assertRenderedPage(UploadFilePage.class);
 	}
 }

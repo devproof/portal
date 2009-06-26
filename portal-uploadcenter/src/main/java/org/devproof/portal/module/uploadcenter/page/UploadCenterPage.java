@@ -16,10 +16,8 @@
 package org.devproof.portal.module.uploadcenter.page;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -49,6 +47,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
+import org.devproof.portal.module.uploadcenter.bean.FileBean;
 import org.devproof.portal.module.uploadcenter.panel.CreateFolderPanel;
 import org.devproof.portal.module.uploadcenter.panel.UploadCenterPanel;
 
@@ -61,7 +60,7 @@ public class UploadCenterPage extends TemplatePage {
 	@SpringBean(name = "dateTimeFormat")
 	private DateFormat dateFormat;
 	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+	private transient ConfigurationService configurationService;
 	private final TreeTable tree;
 	private final File rootFolder;
 	private File selectedFolder;
@@ -167,7 +166,7 @@ public class UploadCenterPage extends TemplatePage {
 
 	private TreeModel createTreeModel() {
 
-		this.rootNode = new DefaultMutableTreeNode(new FileBean(this.rootFolder));
+		this.rootNode = new DefaultMutableTreeNode(new FileBean(this.rootFolder, this.dateFormat));
 		this.selectedNode = this.rootNode;
 		TreeModel model = new DefaultTreeModel(this.rootNode);
 		this.add(this.rootNode, this.rootFolder);
@@ -181,7 +180,7 @@ public class UploadCenterPage extends TemplatePage {
 			File tmpFiles[] = folder.listFiles();
 			if (tmpFiles != null) {
 				for (File file : tmpFiles) {
-					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new FileBean(file));
+					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new FileBean(file, this.dateFormat));
 					if (file.isDirectory()) {
 						parent.add(child);
 						this.add(child, file);
@@ -192,42 +191,7 @@ public class UploadCenterPage extends TemplatePage {
 			}
 		}
 		for (File file : files) {
-			parent.add(new DefaultMutableTreeNode(new FileBean(file)));
-		}
-	}
-
-	private class FileBean implements Serializable {
-		private static final long serialVersionUID = 1L;
-		private final File file;
-		private final String name;
-		private final String size;
-		private final String date;
-
-		public FileBean(final File file) {
-			this.file = file;
-			this.date = UploadCenterPage.this.dateFormat.format(new Date(file.lastModified()));
-			if (file.isFile()) {
-				this.size = Long.toString(file.length() / 1024) + " KB";
-			} else {
-				this.size = "";
-			}
-			this.name = file.getName();
-		}
-
-		public File getFile() {
-			return this.file;
-		}
-
-		public String getDate() {
-			return this.date;
-		}
-
-		public String getName() {
-			return this.name;
-		}
-
-		public String getSize() {
-			return this.size;
+			parent.add(new DefaultMutableTreeNode(new FileBean(file, this.dateFormat)));
 		}
 	}
 

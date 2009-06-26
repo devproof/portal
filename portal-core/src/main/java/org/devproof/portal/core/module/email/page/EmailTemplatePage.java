@@ -36,7 +36,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "emailService")
-	private EmailService emailService;
+	private transient EmailService emailService;
 	@SpringBean(name = "emailTemplateDataProvider")
 	private ISortableDataProvider<EmailTemplateEntity> emailTemplateDataProvider;
 
@@ -86,7 +86,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 				@Override
 				public String getObject() {
-					return (item.getIndex() % 2 == 1) ? "even" : "odd";
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
 			}));
 		}

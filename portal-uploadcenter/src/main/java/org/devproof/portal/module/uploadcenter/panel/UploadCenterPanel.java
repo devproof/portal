@@ -20,6 +20,8 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.UnhandledException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -41,7 +43,7 @@ import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
  */
 public abstract class UploadCenterPanel extends Panel {
 	private static final long serialVersionUID = 1L;
-
+	private static final Log LOG = LogFactory.getLog(UploadCenterPanel.class);
 	@SpringBean(name = "sharedRegistry")
 	private SharedRegistry sharedRegistry;
 
@@ -93,7 +95,9 @@ public abstract class UploadCenterPanel extends Panel {
 								throw new UnhandledException(e);
 							}
 						} else {
-							file.delete();
+							if (!file.delete()) {
+								LOG.error("Error deleting file " + file);
+							}
 						}
 						UploadCenterPanel.this.onDelete(target);
 						modalWindow.close(target);

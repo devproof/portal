@@ -53,7 +53,7 @@ public class ExtendedLabel extends Panel {
 	private static final Map<String, ImgResourceReference> images = new ConcurrentHashMap<String, ImgResourceReference>();
 
 	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+	private transient ConfigurationService configurationService;
 
 	public ExtendedLabel(final String id, final String content) {
 		super(id);
@@ -112,7 +112,7 @@ public class ExtendedLabel extends Panel {
 				if (imgResource == null) {
 					imgResource = new ImgResourceReference(uuid, resource);
 					// is internally syncronized
-					if (!images.containsKey(hash)) {
+					if (!images.containsKey(hash.toString())) {
 						Iterator<String> it = images.keySet().iterator();
 						while (it.hasNext()) {
 							String key = it.next();
@@ -142,7 +142,7 @@ public class ExtendedLabel extends Panel {
 		}
 	}
 
-	public class ImgResourceReference extends ResourceReference {
+	public static class ImgResourceReference extends ResourceReference {
 		private static final long serialVersionUID = 1L;
 		private static final long MAX_AGE = 1000 * 60 * 10; // TEN MINUTES
 		private final Resource resource;

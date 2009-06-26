@@ -41,7 +41,7 @@ public abstract class BaseTagEntity<T> extends BaseEntity {
 	}
 
 	public void setTagname(final String tagname) {
-		this.tagname = tagname != null ? tagname.toLowerCase() : tagname;
+		this.tagname = tagname != null ? tagname.toLowerCase() : null;
 	}
 
 	public abstract void setReferencedObjects(List<T> refObjs);

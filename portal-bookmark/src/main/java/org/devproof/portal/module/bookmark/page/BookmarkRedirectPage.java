@@ -30,7 +30,7 @@ public class BookmarkRedirectPage extends WebPage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "bookmarkService")
-	private BookmarkService bookmarkService;
+	private transient BookmarkService bookmarkService;
 
 	public BookmarkRedirectPage(final PageParameters params) {
 		super(params);

@@ -71,7 +71,7 @@ final public class ConfigurationEntity implements Serializable {
 
 	@Transient
 	public Boolean getBooleanValue() {
-		return new Boolean(this.value);
+		return Boolean.valueOf(this.value);
 	}
 
 	@Transient

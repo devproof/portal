@@ -79,7 +79,7 @@ abstract public class BoxEditPanel extends Panel {
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				if (box.getSort() == null) {
 					Integer sort = BoxEditPanel.this.boxService.getMaxSortNum();
-					box.setSort(sort == null ? 1 : ++sort);
+					box.setSort(sort);
 				}
 				box.setBoxType(selectBoxModel.getObject().getKey());
 				BoxEditPanel.this.boxService.save(box);

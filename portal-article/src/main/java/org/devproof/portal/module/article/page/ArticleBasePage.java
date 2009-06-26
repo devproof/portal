@@ -34,7 +34,7 @@ public class ArticleBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	private final boolean isAuthor;
 	@SpringBean(name = "articleService")
-	private ArticleService articleService;
+	private transient ArticleService articleService;
 
 	public ArticleBasePage(final PageParameters params) {
 		super(params);

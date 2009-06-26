@@ -39,9 +39,9 @@ public class BlogEditPage extends BlogBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "blogService")
-	private BlogService blogService;
+	private transient BlogService blogService;
 	@SpringBean(name = "blogTagService")
-	private TagService<BlogTagEntity> blogTagService;
+	private transient TagService<BlogTagEntity> blogTagService;
 
 	public BlogEditPage(final BlogEntity blog) {
 		super(new PageParameters());

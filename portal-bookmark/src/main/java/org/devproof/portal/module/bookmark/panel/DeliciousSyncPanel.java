@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.bookmark.panel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +44,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.bean.DeliciousBean;
+import org.devproof.portal.module.bookmark.bean.DeliciousFormBean;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
@@ -58,11 +58,11 @@ public class DeliciousSyncPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "synchronizeService")
-	private SynchronizeService synchronizeService;
+	private transient SynchronizeService synchronizeService;
 	@SpringBean(name = "bookmarkTagService")
-	private TagService<BookmarkTagEntity> tagService;
+	private transient TagService<BookmarkTagEntity> tagService;
 	@SpringBean(name = "bookmarkService")
-	private BookmarkService bookmarkService;
+	private transient BookmarkService bookmarkService;
 
 	private int actualItem = 0;
 	private int maxItem = 0;
@@ -83,8 +83,8 @@ public class DeliciousSyncPanel extends Panel {
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
 		this.add(feedback);
-		final DeliciousModelBean formBean = new DeliciousModelBean();
-		final Form<DeliciousModelBean> form = new Form<DeliciousModelBean>("form", new CompoundPropertyModel<DeliciousModelBean>(formBean));
+		final DeliciousFormBean formBean = new DeliciousFormBean();
+		final Form<DeliciousFormBean> form = new Form<DeliciousFormBean>("form", new CompoundPropertyModel<DeliciousFormBean>(formBean));
 		form.setOutputMarkupId(true);
 		this.add(form);
 
@@ -213,12 +213,5 @@ public class DeliciousSyncPanel extends Panel {
 				setVisible(false);
 			}
 		});
-	}
-
-	private class DeliciousModelBean implements Serializable {
-		private static final long serialVersionUID = 1L;
-		public String username;
-		public String password;
-		public String tags;
 	}
 }

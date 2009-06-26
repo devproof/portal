@@ -35,7 +35,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
  */
 public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> {
 	private static final long serialVersionUID = 1L;
-	private final TagService<T> tagService;
+	private transient TagService<T> tagService;
 
 	public TagField(final String id, final String tags, final TagService<T> tagService) {
 		super(id, Model.of(tags));
@@ -49,13 +49,13 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 	}
 
 	private static <T extends BaseTagEntity<?>> String createModelString(final List<T> tags) {
-		String concat = "";
+		StringBuilder concat = new StringBuilder();
 		if (tags != null) {
 			for (final T tag : tags) {
-				concat += tag.getTagname() + TagConstants.TAG_DEFAULT_SEPERATOR;
+				concat.append(tag.getTagname()).append(TagConstants.TAG_DEFAULT_SEPERATOR);
 			}
 		}
-		return concat;
+		return concat.toString();
 	}
 
 	@Override

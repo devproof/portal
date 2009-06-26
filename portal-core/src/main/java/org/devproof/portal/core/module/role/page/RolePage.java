@@ -55,15 +55,15 @@ public class RolePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "roleDataProvider")
-	private QueryDataProvider<RoleEntity> roleDataProvider;
+	private transient QueryDataProvider<RoleEntity> roleDataProvider;
 	@SpringBean(name = "roleService")
-	private RoleService roleService;
+	private transient RoleService roleService;
 	@SpringBean(name = "userService")
-	private UserService userService;
+	private transient UserService userService;
 	@SpringBean(name = "rightService")
-	private RightService rightService;
+	private transient RightService rightService;
 	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+	private transient ConfigurationService configurationService;
 	private final WebMarkupContainer container;
 	private final ModalWindow modalWindow;
 
@@ -210,7 +210,7 @@ public class RolePage extends TemplatePage {
 
 				@Override
 				public String getObject() {
-					return (item.getIndex() % 2 == 1) ? "even" : "odd";
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
 			}));
 		}
