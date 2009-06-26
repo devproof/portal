@@ -71,13 +71,24 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendEmail(final EmailTemplateEntity template, final EmailPlaceholderBean placeholder) {
-		String from = this.configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME);
-		from += " <" + this.configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS) + ">";
 		// Create email
 		try {
 			MimeMessage msg = this.javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(msg);
-			helper.setFrom(from);
+			if (placeholder.getContactEmail() != null) {
+				String from = "";
+				if (placeholder.getContactFullname() != null) {
+					from += placeholder.getContactFullname();
+				} else {
+					from += placeholder.getContactEmail();
+				}
+				from += " <" + placeholder.getContactEmail() + ">";
+				helper.setFrom(from);
+			} else {
+				String from = this.configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME);
+				from += " <" + this.configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS) + ">";
+				helper.setFrom(from);
+			}
 			if (placeholder.getToEmail() != null) {
 				String name = placeholder.getToFirstname() != null ? placeholder.getToFirstname() : "";
 				name += " " + (placeholder.getToLastname() != null ? placeholder.getToLastname() : "");
