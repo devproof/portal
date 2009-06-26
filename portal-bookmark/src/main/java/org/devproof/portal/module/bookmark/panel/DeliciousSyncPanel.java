@@ -151,7 +151,6 @@ public class DeliciousSyncPanel extends Panel {
 				allRights.addAll(viewRights.getSelectedRights());
 				allRights.addAll(visitRights.getSelectedRights());
 				allRights.addAll(voteRights.getSelectedRights());
-				// FIXME Thread holds reference to page :(
 				new Thread() {
 					@Override
 					public void run() {

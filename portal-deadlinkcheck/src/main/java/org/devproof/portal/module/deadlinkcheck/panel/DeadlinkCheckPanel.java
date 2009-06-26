@@ -100,7 +100,6 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				bar.start(target);
-				// FIXME Thread holds reference to page :(
 				new Thread() {
 					@Override
 					public void run() {
