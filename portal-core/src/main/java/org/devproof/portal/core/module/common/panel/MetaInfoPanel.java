@@ -71,7 +71,18 @@ public class MetaInfoPanel extends Panel {
 		modified.add(new Label("modifiedAt", this.dateFormat.format(entity.getModifiedAt())));
 		modified.add(new UsernamePanel("modifiedBy", entity.getModifiedBy(), modifiedBy, user != null));
 		this.add(modified);
-		modified.setVisible(showModifiedBy && !entity.getCreatedBy().equals(entity.getModifiedBy()));
-	}
 
+		WebMarkupContainer sameModified = new WebMarkupContainer("sameModified");
+		sameModified.add(new Label("modifiedAt", this.dateFormat.format(entity.getModifiedAt())));
+		this.add(sameModified);
+
+		if (showModifiedBy && !entity.getCreatedAt().equals(entity.getModifiedAt())) {
+			boolean sameAuthor = entity.getCreatedBy().equals(entity.getModifiedBy());
+			modified.setVisible(!sameAuthor);
+			sameModified.setVisible(sameAuthor);
+		} else {
+			modified.setVisible(false);
+			sameModified.setVisible(false);
+		}
+	}
 }
