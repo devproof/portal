@@ -50,6 +50,7 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.devproof.portal.core.module.theme.bean.ThemeBean;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
@@ -318,6 +319,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		this.servletContext = servletContext;
 	}
 
+	@Required
 	public void setConfigurationService(final ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}

@@ -22,6 +22,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.download.dao.DownloadDao;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -83,10 +84,12 @@ public class DownloadServiceImpl implements DownloadService {
 		this.downloadTagService.deleteUnusedTags();
 	}
 
+	@Required
 	public void setDownloadDao(final DownloadDao downloadDao) {
 		this.downloadDao = downloadDao;
 	}
 
+	@Required
 	public void setDownloadTagService(final TagService<DownloadTagEntity> downloadTagService) {
 		this.downloadTagService = downloadTagService;
 	}

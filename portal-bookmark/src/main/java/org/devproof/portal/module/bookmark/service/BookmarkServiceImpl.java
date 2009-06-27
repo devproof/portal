@@ -23,6 +23,7 @@ import org.devproof.portal.module.bookmark.dao.BookmarkDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -89,10 +90,12 @@ public class BookmarkServiceImpl implements BookmarkService {
 		this.bookmarkTagService.deleteUnusedTags();
 	}
 
+	@Required
 	public void setBookmarkDao(final BookmarkDao bookmarkDao) {
 		this.bookmarkDao = bookmarkDao;
 	}
 
+	@Required
 	public void setBookmarkTagService(final TagService<BookmarkTagEntity> bookmarkTagService) {
 		this.bookmarkTagService = bookmarkTagService;
 	}

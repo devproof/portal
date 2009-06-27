@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.wicket.RequestCycle;
-import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.common.util.PortalUtil;
+import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -42,7 +42,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class GenericHibernateDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericDao<T, PK> {
 	private static final Log LOG = LogFactory.getLog(GenericHibernateDaoImpl.class);
-
+	private UsernameResolver usernameResolver;
 	private Class<T> type;
 
 	public GenericHibernateDaoImpl(final Class<T> type) {
@@ -66,24 +66,20 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 			holder.setTransaction(holder.getSession().beginTransaction());
 		}
 		LOG.debug("save " + this.type);
-		// FIXME Sorry a little bit crucial stuff! No wicket stuff in the
-		// DAO!!!!
 
 		if (entity instanceof BaseEntity) {
 			final BaseEntity base = (BaseEntity) entity;
 			// only works in the request
-			if (RequestCycle.get() != null) {
-				LOG.debug("BaseEntity " + entity + "set creation date and user");
-				final PortalSession session = ((PortalSession) org.apache.wicket.Session.get());
-				if (base.getCreatedAt() == null) {
-					base.setCreatedAt(PortalUtil.now());
-				}
-				if (base.getCreatedBy() == null) {
-					base.setCreatedBy(session.getUser().getUsername());
-				}
-				base.setModifiedAt(PortalUtil.now());
-				base.setModifiedBy(session.getUser().getUsername());
+			String username = this.usernameResolver.getUsername();
+			LOG.debug("BaseEntity " + entity + "set creation date and user");
+			if (base.getCreatedAt() == null) {
+				base.setCreatedAt(PortalUtil.now());
 			}
+			if (base.getCreatedBy() == null) {
+				base.setCreatedBy(username);
+			}
+			base.setModifiedAt(PortalUtil.now());
+			base.setModifiedBy(username);
 		}
 		this.getSession().merge(entity);
 	}
@@ -144,7 +140,13 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		return this.type;
 	}
 
+	@Required
 	public void setType(final Class<T> type) {
 		this.type = type;
+	}
+
+	@Required
+	public void setUsernameResolver(final UsernameResolver usernameResolver) {
+		this.usernameResolver = usernameResolver;
 	}
 }

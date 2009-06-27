@@ -21,6 +21,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -56,10 +57,12 @@ public class BlogServiceImpl implements BlogService {
 		return new BlogEntity();
 	}
 
+	@Required
 	public void setBlogDao(final BlogDao blogDao) {
 		this.blogDao = blogDao;
 	}
 
+	@Required
 	public void setBlogTagService(final TagService<BlogTagEntity> blogTagService) {
 		this.blogTagService = blogTagService;
 	}

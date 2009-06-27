@@ -82,6 +82,9 @@
 		<property name="emailService" ref="emailService"/>
 		<property name="roleService" ref="roleService"/>
 	</bean>
+
+	<bean id="usernameResolver" class="org.devproof.portal.core.module.user.service.UsernameResolverImpl"/>
+
 	
 	<!--  DataProvider  -->
 	<bean id="userDataProvider" parent="persistenceDataProvider" scope="prototype">

@@ -30,6 +30,7 @@ import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -148,18 +149,22 @@ public class EmailServiceImpl implements EmailService {
 		return content;
 	}
 
+	@Required
 	public void setEmailTemplateDao(final EmailTemplateDao emailTemplateDao) {
 		this.emailTemplateDao = emailTemplateDao;
 	}
 
+	@Required
 	public void setConfigurationService(final ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 
+	@Required
 	public void setJavaMailSender(final JavaMailSender javaMailSender) {
 		this.javaMailSender = javaMailSender;
 	}
 
+	@Required
 	public void setDateFormat(final SimpleDateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 	}

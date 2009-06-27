@@ -25,6 +25,7 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -90,14 +91,17 @@ public class ArticleServiceImpl implements ArticleService {
 		return this.articlePageDao.findById(new ArticlePageId(contentId, page));
 	}
 
+	@Required
 	public void setArticleDao(final ArticleDao articleDao) {
 		this.articleDao = articleDao;
 	}
 
+	@Required
 	public void setArticlePageDao(final ArticlePageDao articlePageDao) {
 		this.articlePageDao = articlePageDao;
 	}
 
+	@Required
 	public void setArticleTagService(final TagService<ArticleTagEntity> articleTagService) {
 		this.articleTagService = articleTagService;
 	}

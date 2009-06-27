@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 import org.devproof.portal.core.module.configuration.dao.ConfigurationDao;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistry;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -153,18 +154,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		this.configurationDao.save(entity);
 	}
 
+	@Required
 	public void setConfigurationDao(final ConfigurationDao configurationDao) {
 		this.configurationDao = configurationDao;
 	}
 
+	@Required
 	public void setDateFormat(final SimpleDateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 	}
 
+	@Required
 	public void setDateTimeFormat(final SimpleDateFormat dateTimeFormat) {
 		this.dateTimeFormat = dateTimeFormat;
 	}
 
+	@Required
 	public void setConfigurationRegistry(final ConfigurationRegistry configurationRegistry) {
 		this.configurationRegistry = configurationRegistry;
 	}

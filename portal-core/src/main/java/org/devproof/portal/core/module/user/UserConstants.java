@@ -22,6 +22,7 @@ public class UserConstants {
 	private UserConstants() {
 	}
 
+	final public static String UNKNOWN_USERNAME = "unknown";
 	final public static String CONF_REGISTRATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.regemail";
 	final public static String CONF_RECONFIRMATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.reconfirmemail";
 	final public static String CONF_PASSWORDFORGOT_EMAIL = "spring.emailTemplateDao.findAll.subject.id.forgotemail";

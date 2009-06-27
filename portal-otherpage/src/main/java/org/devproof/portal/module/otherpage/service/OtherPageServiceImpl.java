@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -61,6 +62,7 @@ public class OtherPageServiceImpl implements OtherPageService {
 		this.otherPageDao.save(entity);
 	}
 
+	@Required
 	public void setOtherPageDao(final OtherPageDao otherPageDao) {
 		this.otherPageDao = otherPageDao;
 	}

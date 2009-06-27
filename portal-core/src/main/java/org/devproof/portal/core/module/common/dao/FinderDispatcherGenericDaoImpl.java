@@ -22,10 +22,12 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
+import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -55,12 +57,14 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	private Object servicesImpl;
 	private Class<T> entityClass;
 	private Class<GenericDao<T, PK>> daoInterface;
+	private UsernameResolver usernameResolver;
 
 	public Object getObject() throws Exception {
 		ProxyFactory result = new ProxyFactory();
 		GenericHibernateDaoImpl<T, PK> genericDao = new GenericHibernateDaoImpl<T, PK>(this.entityClass);
 		genericDao.setSessionFactory(getSessionFactory());
 		genericDao.setHibernateTemplate(getHibernateTemplate());
+		genericDao.setUsernameResolver(this.usernameResolver);
 		result.setTarget(genericDao);
 		result.setInterfaces(new Class[] { this.daoInterface });
 		result.addAdvice(new MethodInterceptor() {
@@ -149,6 +153,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		return this.entityClass;
 	}
 
+	@Required
 	public void setEntityClass(final Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
@@ -157,7 +162,13 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		return this.daoInterface;
 	}
 
+	@Required
 	public void setDaoInterface(final Class<GenericDao<T, PK>> daoInterface) {
 		this.daoInterface = daoInterface;
+	}
+
+	@Required
+	public void setUsernameResolver(final UsernameResolver usernameResolver) {
+		this.usernameResolver = usernameResolver;
 	}
 }

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.devproof.portal.core.module.role.dao.RoleDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -56,6 +57,7 @@ public class RoleServiceImpl implements RoleService {
 		this.roleDao.save(entity);
 	}
 
+	@Required
 	public void setRoleDao(final RoleDao roleDao) {
 		this.roleDao = roleDao;
 	}

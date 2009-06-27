@@ -27,6 +27,7 @@ import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.dao.UserDao;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -44,6 +45,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean existsUsername(final String username) {
+		if (UserConstants.UNKNOWN_USERNAME.equalsIgnoreCase(username)) {
+			return true;
+		}
 		return this.userDao.existsUsername(username) > 0;
 	}
 
@@ -146,18 +150,22 @@ public class UserServiceImpl implements UserService {
 		this.userDao.save(user);
 	}
 
+	@Required
 	public void setRoleService(final RoleService roleService) {
 		this.roleService = roleService;
 	}
 
+	@Required
 	public void setEmailService(final EmailService emailService) {
 		this.emailService = emailService;
 	}
 
+	@Required
 	public void setConfigurationService(final ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 
+	@Required
 	public void setUserDao(final UserDao userDao) {
 		this.userDao = userDao;
 	}

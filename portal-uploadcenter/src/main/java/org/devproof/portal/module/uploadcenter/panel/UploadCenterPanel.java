@@ -95,7 +95,7 @@ public abstract class UploadCenterPanel extends Panel {
 								throw new UnhandledException(e);
 							}
 						} else {
-							if (!file.delete()) {
+							if(!file.delete()) {
 								LOG.error("Error deleting file " + file);
 							}
 						}

@@ -19,6 +19,7 @@ import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -41,14 +42,17 @@ public class RegistryServiceImpl implements RegistryService {
 		}
 	}
 
+	@Required
 	public void setMainNavigationRegistry(final MainNavigationRegistry mainNavigationRegistry) {
 		this.mainNavigationRegistry = mainNavigationRegistry;
 	}
 
+	@Required
 	public void setGlobalAdminPageRegistry(final GlobalAdminPageRegistry globalAdminPageRegistry) {
 		this.globalAdminPageRegistry = globalAdminPageRegistry;
 	}
 
+	@Required
 	public void setPageAdminPageRegistry(final PageAdminPageRegistry pageAdminPageRegistry) {
 		this.pageAdminPageRegistry = pageAdminPageRegistry;
 	}

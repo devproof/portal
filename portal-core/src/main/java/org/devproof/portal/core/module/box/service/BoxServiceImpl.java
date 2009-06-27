@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.devproof.portal.core.module.box.dao.BoxDao;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -105,6 +106,7 @@ public class BoxServiceImpl implements BoxService {
 		}
 	}
 
+	@Required
 	public void setBoxDao(final BoxDao boxDao) {
 		this.boxDao = boxDao;
 	}

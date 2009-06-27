@@ -34,6 +34,7 @@ import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -233,10 +234,12 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 		this.applicationContext = applicationContext;
 	}
 
+	@Required
 	public void setModuleLinkDao(final ModuleLinkDao moduleLinkDao) {
 		this.moduleLinkDao = moduleLinkDao;
 	}
 
+	@Required
 	public void setPageLocator(final PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}

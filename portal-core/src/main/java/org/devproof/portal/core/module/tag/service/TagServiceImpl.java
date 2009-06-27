@@ -21,6 +21,7 @@ import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.dao.TagDao;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -88,10 +89,12 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 		this.tagDao.save(entity);
 	}
 
+	@Required
 	public void setTagDao(final TagDao<T> tagDao) {
 		this.tagDao = tagDao;
 	}
 
+	@Required
 	public void setRelatedTagRight(final String relatedTagRight) {
 		this.relatedTagRight = relatedTagRight;
 	}

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.devproof.portal.core.module.right.dao.RightDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
@@ -88,6 +89,7 @@ public class RightServiceImpl implements RightService {
 		this.rightDao.save(entity);
 	}
 
+	@Required
 	public void setRightDao(final RightDao rightDao) {
 		this.rightDao = rightDao;
 	}
