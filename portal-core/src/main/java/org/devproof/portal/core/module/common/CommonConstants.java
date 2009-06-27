@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.common;
 
 import org.apache.wicket.ResourceReference;
 import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
+import org.hibernate.dialect.MySQL5Dialect;
 
 /**
  * Contains common constants
@@ -30,12 +31,12 @@ public class CommonConstants {
 	final public static String JNDI_DATASOURCE = "java:comp/env/jdbc/devproof/portal";
 	final public static String JNDI_MAIL_SESSION = "java:comp/env/mail/Session";
 
-	final public static String JNDI_PROP_HIBERNATE_DIALECT = "java:comp/env/prop/hibernate_dialect";
-	final public static String JNDI_PROP_HIBERNATE_SHOW_SQL = "java:comp/env/prop/hibernate_show_sql";
-	final public static String JNDI_PROP_HIBERNATE_FORMAT_SQL = "java:comp/env/prop/hibernate_format_sql";
-	final public static String JNDI_PROP_HIBERNATE_HBM2DDL_AUTO = "java:comp/env/prop/hibernate_hbm2ddl_auto";
+	final public static String JNDI_PROP_HIBERNATE_DIALECT = "java:comp/env/prop/devproof/hibernate_dialect";
+	final public static String JNDI_PROP_HIBERNATE_SHOW_SQL = "java:comp/env/prop/devproof/hibernate_show_sql";
+	final public static String JNDI_PROP_HIBERNATE_FORMAT_SQL = "java:comp/env/prop/devproof/hibernate_format_sql";
+	final public static String JNDI_PROP_HIBERNATE_HBM2DDL_AUTO = "java:comp/env/prop/devproof/hibernate_hbm2ddl_auto";
 
-	final public static String HIBERNATE_DEFAULT_DIALECT = "org.hibernate.dialect.MySQLDialect";
+	final public static String HIBERNATE_DEFAULT_DIALECT = MySQL5Dialect.class.getName();// HSQLDialect.class.getName();//
 	final public static String HIBERNATE_DEFAULT_SHOW_SQL = "false";
 	final public static String HIBERNATE_DEFAULT_FORMAT_SQL = "false";
 	final public static String HIBERNATE_DEFAULT_HBM2DDL_AUTO = "none";

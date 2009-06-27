@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.app;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -31,7 +29,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.io.Resource;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.ServletContextAware;
 
@@ -62,19 +59,6 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 				if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
 					modules.add("classpath:/" + jarEntry.getName());
 				}
-			}
-		}
-
-		// Webstart modules
-		if (libs.isEmpty()) {
-			Resource modulesTxt = this.applicationContext.getResource("classpath:/devproof-modules.txt");
-			if (modulesTxt.exists()) {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(modulesTxt.getInputStream()));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					modules.add("classpath:/" + line);
-				}
-				reader.close();
 			}
 		}
 		// For development mode when the lib and classes dir is empty

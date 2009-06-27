@@ -21,18 +21,18 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.BlogPage');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('blog_entries_per_page','Blog entries per page','Blog','java.lang.Integer','5');
 
 INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2009-01-06 19:27:20.000'},'admin',{ts '2009-01-06 19:27:20.000'},'admin','<p>Hello Welcome to the Devproof Portal,</p>
-\n<p>this is a sample blog entry. You can use highlighted code:</p>
-\n<p><textarea cols="50" rows="15" name="code" class="java">add(HeaderContributor.forJavaScript(TooltipLabel.class, "TooltipLabel.js"));
-\n		add(HeaderContributor.forCss(TooltipLabel.class, "TooltipLabel.css"));
-\n		tooltip.setMarkupId("tooltip");
-\n		label.setMarkupId("label");
-\n		WebMarkupContainer link = new WebMarkupContainer("link");</textarea></p>
-\n<p>and [string2img size=14]string to image feature [/string2img].</p>
-\n<p>The default users are:</p>
-\n<ul>
-\n<li>admin (password: 12345)&nbsp; (admin rights)</li>
-\n<li>testuser (password: 12345)&nbsp; (registered user rights)</li>
-\n</ul>','Welcome to Devproof Portal');
+<p>this is a sample blog entry. You can use highlighted code:</p>
+<p><textarea cols="50" rows="15" name="code" class="java">add(HeaderContributor.forJavaScript(TooltipLabel.class, "TooltipLabel.js"));
+		add(HeaderContributor.forCss(TooltipLabel.class, "TooltipLabel.css"));
+		tooltip.setMarkupId("tooltip");
+		label.setMarkupId("label");
+		WebMarkupContainer link = new WebMarkupContainer("link");</textarea></p>
+<p>and [string2img size=14]string to image feature [/string2img].</p>
+<p>The default users are:</p>
+<ul>
+<li>admin (password: 12345)&nbsp; (admin rights)</li>
+<li>testuser (password: 12345)&nbsp; (registered user rights)</li>
+</ul>','Welcome to Devproof Portal');
 
 
 
