@@ -24,6 +24,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -36,7 +37,6 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
-import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.component.StatelessRatingPanel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -185,18 +185,13 @@ public class DownloadPage extends DownloadBasePage {
 			}.setVisible(voteEnabled));
 
 			final BookmarkablePageLink<?> downloadLink = new BookmarkablePageLink<Void>("downloadLink", DownloadRedirectPage.class);
-			downloadLink.add(new ExternalImage("downloadImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG));
+			downloadLink.add(new Image("downloadImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG));
 			downloadLink.setParameter("0", downloadEntity.getId());
-
 			final String labelKey = allowedToDownload ? "downloadNow" : "loginToDownload";
-
 			final Label downloadLinkLabel = new Label("downloadLinkLabel", DownloadPage.this.getString(labelKey));
 			this.add(downloadLink.add(downloadLinkLabel).setEnabled(allowedToDownload));
-
 			final String[] infoFields = new String[] { "softwareVersion", "downloadSize", "manufacturer", "licence", "price" };
-
 			final RepeatingView repeating = new RepeatingView("infoFieldsRepeating");
-
 			for (final String fieldName : infoFields) {
 				try {
 					final String getter = PortalUtil.addGet(fieldName);

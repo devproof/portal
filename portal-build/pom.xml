@@ -25,6 +25,7 @@
 		<module>../portal-otherpage</module>
 		<module>../portal-uploadcenter</module>
 		<module>../portal-webapp</module>
+		<module>../portal-bundle</module>
 	</modules>
 	
 	<repositories>

@@ -121,6 +121,12 @@
 		<copy todir="target/devproof-portal-${project_version}-with-tomcat6/apache-tomcat-${tomcat6_version}/lib/">
 			<fileset dir="server/tomcat6/lib/"/>
 		</copy>
+		<tar destfile="target/tmp/devproof-portal-${project_version}-with-tomcat6.tar">
+			<tarfileset dir="target/">
+				<include name="devproof-portal-${project_version}-with-tomcat6/**"/>
+			</tarfileset>
+		</tar>
+		<gzip destfile="target/devproof-portal-${project_version}-with-tomcat6.tar.gz" src="target/tmp/devproof-portal-${project_version}-with-tomcat6.tar"/>
 	</target>
 	
 	<target name="cleanup">
