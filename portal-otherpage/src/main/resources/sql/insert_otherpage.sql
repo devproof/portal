@@ -12,7 +12,7 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'otherPage.view.gu
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'otherPage.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'otherPage.view.registered');
 
-INSERT INTO other_page (id,created_at,created_by,modified_at,modified_by,content,content_id) VALUES (1,{ts '2009-01-06 19:40:23.000'},'admin',{ts '2009-01-06 19:40:23.000'},'admin','<p>Sample about page is an "Other Page"</p>','impressum');
+INSERT INTO other_page (id,created_at,created_by,modified_at,modified_by,content,content_id) VALUES (1,{ts '2009-01-06 19:40:23.000'},'admin',{ts '2009-01-06 19:40:23.000'},'admin','<p>Sample about page is an "Other Page"</p>','about');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (1,'otherPage.view.preview');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (1,'otherPage.view.guest');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (1,'otherPage.view.registered');
