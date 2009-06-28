@@ -1,0 +1,25 @@
+DEVPROOF PORTAL
+---------------
+- Bundled with Apache Tomcat -
+
+Apache License 2.0
+http://www.devproof.org
+Author: Carsten Hufe (carsten.hufe@devproof.org)
+
+
+Portal overview: 
+	http://portal.devproof.org
+
+Installation instructions: 
+	http://www.devproof.org/article/portal_getting_started
+
+
+Starting the Tomcat
+-------------------
+
+cd devproof-portal-<version>-with-tomcat6/apache-tomcat-<version>/bin/
+
+On Windows run: startup.bat 
+On Linux run: startup.sh
+
+Have fun with it.
