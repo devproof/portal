@@ -21,9 +21,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.component.ExternalImage;
 
 /**
  * Shows the edit and delete button
@@ -54,7 +54,7 @@ public abstract class AuthorPanel<T> extends Panel {
 			public void onClick(final AjaxRequestTarget target) {
 				AuthorPanel.this.onEdit(target);
 			}
-		}.add(new ExternalImage("editImage", CommonConstants.REF_EDIT_IMG)));
+		}.add(new Image("editImage", CommonConstants.REF_EDIT_IMG)));
 
 		this.add(new AjaxLink<T>("deleteLink") {
 			private static final long serialVersionUID = 1L;
@@ -85,7 +85,7 @@ public abstract class AuthorPanel<T> extends Panel {
 				modalWindow.setContent(confirmDeletePanel);
 				modalWindow.show(target);
 			}
-		}.add(new ExternalImage("deleteImage", CommonConstants.REF_DELETE_IMG)));
+		}.add(new Image("deleteImage", CommonConstants.REF_DELETE_IMG)));
 	}
 
 	public T getEntity() {
