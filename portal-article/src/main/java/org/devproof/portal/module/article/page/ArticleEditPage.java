@@ -51,9 +51,9 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "articleService")
-	private transient ArticleService articleService;
+	private ArticleService articleService;
 	@SpringBean(name = "articleTagService")
-	private transient TagService<ArticleTagEntity> articleTagService;
+	private TagService<ArticleTagEntity> articleTagService;
 
 	public ArticleEditPage(final ArticleEntity article) {
 		super(new PageParameters());

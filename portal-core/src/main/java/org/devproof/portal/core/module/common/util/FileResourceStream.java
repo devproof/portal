@@ -34,7 +34,7 @@ import org.apache.wicket.util.time.Time;
 public class FileResourceStream implements IResourceStream {
 
 	private static final long serialVersionUID = 1L;
-	private transient final FileInputStream fis;
+	private final FileInputStream fis;
 	private final File file;
 
 	public FileResourceStream(final File file) throws FileNotFoundException {

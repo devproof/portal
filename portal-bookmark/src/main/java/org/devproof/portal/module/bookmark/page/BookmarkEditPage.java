@@ -42,9 +42,9 @@ public class BookmarkEditPage extends BookmarkBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "bookmarkService")
-	private transient BookmarkService bookmarkService;
+	private BookmarkService bookmarkService;
 	@SpringBean(name = "bookmarkTagService")
-	private transient TagService<BookmarkTagEntity> bookmarkTagService;
+	private TagService<BookmarkTagEntity> bookmarkTagService;
 
 	public BookmarkEditPage(final BookmarkEntity bookmark) {
 		super(new PageParameters());

@@ -36,7 +36,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "emailService")
-	private transient EmailService emailService;
+	private EmailService emailService;
 	@SpringBean(name = "emailTemplateDataProvider")
 	private ISortableDataProvider<EmailTemplateEntity> emailTemplateDataProvider;
 

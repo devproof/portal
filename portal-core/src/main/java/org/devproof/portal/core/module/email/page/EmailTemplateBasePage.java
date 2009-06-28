@@ -29,7 +29,7 @@ import org.devproof.portal.core.module.email.service.EmailService;
 public class EmailTemplateBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "emailService")
-	private transient EmailService emailService;
+	private EmailService emailService;
 
 	public EmailTemplateBasePage(final PageParameters params) {
 		super(params);

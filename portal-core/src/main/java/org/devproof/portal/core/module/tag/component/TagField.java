@@ -35,7 +35,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
  */
 public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> {
 	private static final long serialVersionUID = 1L;
-	private transient TagService<T> tagService;
+	private TagService<T> tagService;
 
 	public TagField(final String id, final String tags, final TagService<T> tagService) {
 		super(id, Model.of(tags));

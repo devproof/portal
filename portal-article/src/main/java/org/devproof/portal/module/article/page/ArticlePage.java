@@ -52,13 +52,13 @@ public class ArticlePage extends ArticleBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "articleService")
-	private transient ArticleService articleService;
+	private ArticleService articleService;
 	@SpringBean(name = "articleDataProvider")
-	private transient QueryDataProvider<ArticleEntity> articleDataProvider;
+	private QueryDataProvider<ArticleEntity> articleDataProvider;
 	@SpringBean(name = "articleTagService")
-	private transient TagService<ArticleTagEntity> articleTagService;
+	private TagService<ArticleTagEntity> articleTagService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 	private final ArticleDataView dataView;
 
 	public ArticlePage(final PageParameters params) {

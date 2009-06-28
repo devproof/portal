@@ -40,7 +40,7 @@ public class PageAdminBoxPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "pageAdminPageRegistry")
-	private transient PageAdminPageRegistry adminPageRegistry;
+	private PageAdminPageRegistry adminPageRegistry;
 	private final RepeatingView repeating;
 
 	public PageAdminBoxPanel(final String id) {

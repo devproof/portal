@@ -51,9 +51,9 @@ public class UserPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "userDataProvider")
-	private transient QueryDataProvider<UserEntity> userDataProvider;
+	private QueryDataProvider<UserEntity> userDataProvider;
 	@SpringBean(name = "userService")
-	private transient UserService userService;
+	private UserService userService;
 	@SpringBean(name = "dateFormat")
 	private SimpleDateFormat dateFormat;
 

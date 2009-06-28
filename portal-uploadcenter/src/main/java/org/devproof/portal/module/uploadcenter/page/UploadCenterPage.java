@@ -60,7 +60,7 @@ public class UploadCenterPage extends TemplatePage {
 	@SpringBean(name = "dateTimeFormat")
 	private DateFormat dateFormat;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 	private final TreeTable tree;
 	private final File rootFolder;
 	private File selectedFolder;

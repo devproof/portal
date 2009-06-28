@@ -39,9 +39,9 @@ public class MetaInfoPanel extends Panel {
 	@SpringBean(name = "dateFormat")
 	private SimpleDateFormat dateFormat;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 	@SpringBean(name = "userService")
-	private transient UserService userService;
+	private UserService userService;
 
 	public MetaInfoPanel(final String id, final BaseEntity entity) {
 		super(id);

@@ -42,11 +42,11 @@ public class ReenterEmailPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "emailService")
-	private transient EmailService emailService;
+	private EmailService emailService;
 	@SpringBean(name = "userService")
-	private transient UserService userService;
+	private UserService userService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 
 	public ReenterEmailPage(final String username) {
 		super(new PageParameters("username=" + username));

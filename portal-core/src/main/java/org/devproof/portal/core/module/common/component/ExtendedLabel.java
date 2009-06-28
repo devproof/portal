@@ -53,7 +53,7 @@ public class ExtendedLabel extends Panel {
 	private static final Map<String, ImgResourceReference> images = new ConcurrentHashMap<String, ImgResourceReference>();
 
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 
 	public ExtendedLabel(final String id, final String content) {
 		super(id);

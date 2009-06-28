@@ -45,9 +45,9 @@ public class ThemePage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 	@SpringBean(name = "themeService")
-	private transient ThemeService themeService;
+	private ThemeService themeService;
 
 	public ThemePage(final PageParameters params) {
 		super(params);

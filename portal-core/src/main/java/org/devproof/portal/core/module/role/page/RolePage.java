@@ -55,15 +55,15 @@ public class RolePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "roleDataProvider")
-	private transient QueryDataProvider<RoleEntity> roleDataProvider;
+	private QueryDataProvider<RoleEntity> roleDataProvider;
 	@SpringBean(name = "roleService")
-	private transient RoleService roleService;
+	private RoleService roleService;
 	@SpringBean(name = "userService")
-	private transient UserService userService;
+	private UserService userService;
 	@SpringBean(name = "rightService")
-	private transient RightService rightService;
+	private RightService rightService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 	private final WebMarkupContainer container;
 	private final ModalWindow modalWindow;
 

@@ -45,9 +45,9 @@ public class RightPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "rightDataProvider")
-	private transient QueryDataProvider<RightEntity> rightDataProvider;
+	private QueryDataProvider<RightEntity> rightDataProvider;
 	@SpringBean(name = "rightService")
-	private transient RightService rightService;
+	private RightService rightService;
 
 	private final WebMarkupContainer container;
 	private final ModalWindow modalWindow;

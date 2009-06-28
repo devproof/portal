@@ -42,7 +42,7 @@ public class ResetPasswordPage extends TemplatePage {
 	public static final String PARAM_KEY = "forgot";
 
 	@SpringBean(name = "userService")
-	private transient UserService userService;
+	private UserService userService;
 
 	public ResetPasswordPage(final PageParameters params) {
 		super(params);

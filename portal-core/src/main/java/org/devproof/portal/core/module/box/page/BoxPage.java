@@ -45,11 +45,11 @@ public class BoxPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "boxDataProvider")
-	private transient SortableDataProvider<BoxEntity> boxDataProvider;
+	private SortableDataProvider<BoxEntity> boxDataProvider;
 	@SpringBean(name = "boxService")
-	private transient BoxService boxService;
+	private BoxService boxService;
 	@SpringBean(name = "boxRegistry")
-	private transient BoxRegistry boxRegistry;
+	private BoxRegistry boxRegistry;
 
 	private final ModalWindow modalWindow;
 	private final WebMarkupContainer container;

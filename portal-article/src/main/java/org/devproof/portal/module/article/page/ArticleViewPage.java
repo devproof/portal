@@ -47,9 +47,9 @@ public class ArticleViewPage extends ArticleBasePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "articleService")
-	private transient ArticleService articleService;
+	private ArticleService articleService;
 	@SpringBean(name = "articleTagService")
-	private transient TagService<ArticleTagEntity> articleTagService;
+	private TagService<ArticleTagEntity> articleTagService;
 
 	public ArticleViewPage(final PageParameters params) {
 		super(params);

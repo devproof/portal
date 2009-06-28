@@ -58,11 +58,11 @@ public class DeliciousSyncPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "synchronizeService")
-	private transient SynchronizeService synchronizeService;
+	private SynchronizeService synchronizeService;
 	@SpringBean(name = "bookmarkTagService")
-	private transient TagService<BookmarkTagEntity> tagService;
+	private TagService<BookmarkTagEntity> tagService;
 	@SpringBean(name = "bookmarkService")
-	private transient BookmarkService bookmarkService;
+	private BookmarkService bookmarkService;
 
 	private int actualItem = 0;
 	private int maxItem = 0;

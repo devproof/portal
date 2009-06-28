@@ -42,9 +42,9 @@ public class RegisterPage extends TemplatePage {
 	public static final String PARAM_KEY = "confirm";
 
 	@SpringBean(name = "userService")
-	private transient UserService userService;
+	private UserService userService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 
 	public RegisterPage(final PageParameters params) {
 		super(params);

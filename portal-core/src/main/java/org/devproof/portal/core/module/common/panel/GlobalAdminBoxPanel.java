@@ -37,7 +37,7 @@ public class GlobalAdminBoxPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "globalAdminPageRegistry")
-	private transient GlobalAdminPageRegistry adminPageRegistry;
+	private GlobalAdminPageRegistry adminPageRegistry;
 
 	public GlobalAdminBoxPanel(final String id) {
 		super(id);

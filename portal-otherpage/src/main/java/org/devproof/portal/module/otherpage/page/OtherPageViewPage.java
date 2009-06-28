@@ -36,7 +36,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "otherPageService")
-	private transient OtherPageService otherPageService;
+	private OtherPageService otherPageService;
 
 	public OtherPageViewPage(final PageParameters params) {
 		super(params);

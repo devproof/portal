@@ -38,9 +38,9 @@ public class BookmarkBoxPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "bookmarkService")
-	private transient BookmarkService bookmarkService;
+	private BookmarkService bookmarkService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 
 	public BookmarkBoxPanel(final String id) {
 		super(id);

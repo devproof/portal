@@ -33,8 +33,8 @@ import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.component.StatelessRatingPanel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
-import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
+import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -54,13 +54,13 @@ public class BookmarkPage extends BookmarkBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "bookmarkService")
-	private transient BookmarkService bookmarkService;
+	private BookmarkService bookmarkService;
 	@SpringBean(name = "bookmarkDataProvider")
-	private transient QueryDataProvider<BookmarkEntity> bookmarkDataProvider;
+	private QueryDataProvider<BookmarkEntity> bookmarkDataProvider;
 	@SpringBean(name = "bookmarkTagService")
-	private transient TagService<BookmarkTagEntity> bookmarkTagService;
+	private TagService<BookmarkTagEntity> bookmarkTagService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 
 	public BookmarkPage(final PageParameters params) {
 		super(params);

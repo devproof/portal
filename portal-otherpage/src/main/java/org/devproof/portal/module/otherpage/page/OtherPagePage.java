@@ -39,9 +39,9 @@ public class OtherPagePage extends OtherPageBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "otherPageService")
-	private transient OtherPageService otherPageService;
+	private OtherPageService otherPageService;
 	@SpringBean(name = "otherPageDataProvider")
-	private transient ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
+	private ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
 
 	public OtherPagePage(final PageParameters params) {
 		super(params);

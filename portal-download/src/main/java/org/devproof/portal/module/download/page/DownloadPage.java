@@ -40,8 +40,8 @@ import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.component.StatelessRatingPanel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
-import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
+import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
@@ -62,13 +62,13 @@ public class DownloadPage extends DownloadBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "downloadService")
-	private transient DownloadService downloadService;
+	private DownloadService downloadService;
 	@SpringBean(name = "downloadDataProvider")
-	private transient QueryDataProvider<DownloadEntity> downloadDataProvider;
+	private QueryDataProvider<DownloadEntity> downloadDataProvider;
 	@SpringBean(name = "downloadTagService")
-	private transient TagService<DownloadTagEntity> downloadTagService;
+	private TagService<DownloadTagEntity> downloadTagService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 
 	public DownloadPage(final PageParameters params) {
 		super(params);

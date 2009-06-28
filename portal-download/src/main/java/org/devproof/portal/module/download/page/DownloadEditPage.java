@@ -42,9 +42,9 @@ public class DownloadEditPage extends DownloadBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "downloadService")
-	private transient DownloadService downloadService;
+	private DownloadService downloadService;
 	@SpringBean(name = "downloadTagService")
-	private transient TagService<DownloadTagEntity> downloadTagService;
+	private TagService<DownloadTagEntity> downloadTagService;
 
 	public DownloadEditPage(final DownloadEntity download) {
 		super(new PageParameters());

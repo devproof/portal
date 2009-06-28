@@ -51,10 +51,10 @@ public class PortalSession extends WebSession {
 	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(PortalSession.class);
 	private static final int COOKIE_MAX_AGE = 3600 * 24 * 7; // 7 Days
-	private transient UserService userService = null;
-	private transient RoleService roleService = null;
-	private transient ConfigurationService configurationService = null;
-	private transient RightService rightService = null;
+	private UserService userService = null;
+	private RoleService roleService = null;
+	private ConfigurationService configurationService = null;
+	private RightService rightService = null;
 	private long dirtyTime = 0l;
 	private UserEntity user;
 

@@ -37,7 +37,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "otherPageService")
-	private transient OtherPageService otherPageService;
+	private OtherPageService otherPageService;
 
 	public OtherPageEditPage(final OtherPageEntity otherPage) {
 		super(new PageParameters());

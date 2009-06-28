@@ -36,7 +36,7 @@ public class ModuleOverviewPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "moduleService")
-	private transient ModuleService moduleService;
+	private ModuleService moduleService;
 
 	public ModuleOverviewPage(final PageParameters params) {
 		super(params);

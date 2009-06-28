@@ -39,9 +39,9 @@ public class ArticleBoxPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "articleService")
-	private transient ArticleService articleService;
+	private ArticleService articleService;
 	@SpringBean(name = "configurationService")
-	private transient ConfigurationService configurationService;
+	private ConfigurationService configurationService;
 
 	public ArticleBoxPanel(final String id) {
 		super(id);

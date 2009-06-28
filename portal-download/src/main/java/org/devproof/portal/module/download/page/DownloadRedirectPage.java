@@ -37,7 +37,7 @@ public class DownloadRedirectPage extends WebPage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "downloadService")
-	private transient DownloadService downloadService;
+	private DownloadService downloadService;
 
 	public DownloadRedirectPage(final PageParameters params) {
 		super(params);

@@ -38,7 +38,7 @@ public class SortablePersistenceDataProviderImpl<T> extends SortableDataProvider
 	private static final long serialVersionUID = 1L;
 
 	private Class<T> entityClass;
-	private transient DataProviderDao<T> dataProviderDao;
+	private DataProviderDao<T> dataProviderDao;
 	private Serializable queryObject;
 	private List<String> prefetch;
 	private String countQuery;

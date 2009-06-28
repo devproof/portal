@@ -46,11 +46,11 @@ public class ModuleLinkPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "moduleLinkDataProvider")
-	private transient QueryDataProvider<ModuleLinkEntity> moduleLinkDataProvider;
+	private QueryDataProvider<ModuleLinkEntity> moduleLinkDataProvider;
 	@SpringBean(name = "moduleService")
-	private transient ModuleService moduleService;
+	private ModuleService moduleService;
 	@SpringBean(name = "registryService")
-	private transient RegistryService registryService;
+	private RegistryService registryService;
 
 	private final WebMarkupContainer container;
 	private final Form<ModuleLinkEntity> form;
