@@ -26,12 +26,12 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.component.InternalDownloadLink;
 import org.devproof.portal.core.module.common.factory.CommonPageFactory;
 import org.devproof.portal.core.module.common.panel.ConfirmDeletePanel;
@@ -61,7 +61,7 @@ public abstract class UploadCenterPanel extends Panel {
 
 		};
 		createDownloadLink.setVisible((file == null || file.isFile()) && createDownload && this.sharedRegistry.isResourceAvailable("createDownloadPage"));
-		createDownloadLink.add(new ExternalImage("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
+		createDownloadLink.add(new Image("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
 		this.add(createDownloadLink);
 
 		final InternalDownloadLink downloadLink = new InternalDownloadLink("downloadLink") {
@@ -73,7 +73,7 @@ public abstract class UploadCenterPanel extends Panel {
 			}
 
 		};
-		downloadLink.add(new ExternalImage("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
+		downloadLink.add(new Image("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
 		downloadLink.setVisible(file == null || file.isFile());
 		this.add(downloadLink);
 
@@ -95,7 +95,7 @@ public abstract class UploadCenterPanel extends Panel {
 								throw new UnhandledException(e);
 							}
 						} else {
-							if(!file.delete()) {
+							if (!file.delete()) {
 								LOG.error("Error deleting file " + file);
 							}
 						}
@@ -107,7 +107,7 @@ public abstract class UploadCenterPanel extends Panel {
 				modalWindow.setContent(confirmDeletePanel);
 				modalWindow.show(target);
 			}
-		}.add(new ExternalImage("deleteImage", CommonConstants.REF_DELETE_IMG)));
+		}.add(new Image("deleteImage", CommonConstants.REF_DELETE_IMG)));
 	}
 
 	public abstract void onDelete(final AjaxRequestTarget target);

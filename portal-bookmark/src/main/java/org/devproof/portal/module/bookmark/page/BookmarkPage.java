@@ -19,6 +19,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
@@ -29,7 +30,6 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
-import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.component.StatelessRatingPanel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -149,7 +149,7 @@ public class BookmarkPage extends BookmarkBasePage {
 			this.add(new MetaInfoPanel("metaInfo", bookmarkEntity));
 			if (isAuthor && bookmarkEntity.getSource() == Source.DELICIOUS) {
 				// be aware... images are stateful
-				this.add(new ExternalImage("delicious", BookmarkConstants.REF_DELICIOUS));
+				this.add(new Image("delicious", BookmarkConstants.REF_DELICIOUS));
 			} else {
 				this.add(new WebMarkupContainer("delicious").setVisible(false));
 			}
@@ -176,7 +176,7 @@ public class BookmarkPage extends BookmarkBasePage {
 			}.setVisible(voteEnabled));
 
 			final BookmarkablePageLink<?> bookmarkLink = new BookmarkablePageLink<Void>("bookmarkLink", BookmarkRedirectPage.class);
-			bookmarkLink.add(new ExternalImage("bookmarkImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG));
+			bookmarkLink.add(new Image("bookmarkImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG));
 			bookmarkLink.setParameter("0", bookmarkEntity.getId());
 			final String labelKey = allowedToVisit ? "visitNow" : "loginToVisit";
 			final Label bookmarkLinkLabel = new Label("bookmarkLinkLabel", BookmarkPage.this.getString(labelKey));
