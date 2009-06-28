@@ -9,6 +9,7 @@ Devproof Portal 1.0-rc2
 - error on calling url: http://www.devproof.org/download/id/3
 - portal tested with findbugs
 - FIXME marked lines are fixed
+- support more database dialects
 - some small bugfixes
 
 Devproof Portal 1.0-rc1
