@@ -22,6 +22,6 @@ cd devproof-portal-<version>-with-tomcat6/apache-tomcat-<version>/bin/
 On Windows run: startup.bat 
 On Linux run: startup.sh
 
-Data will be stored in a HSQLDB, so it is only for non-productive usage!
+Data will be stored in a HSQLDB, so it is only for non-productive use!
 
 Have fun with it.
