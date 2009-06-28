@@ -22,6 +22,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -30,7 +31,6 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.service.RegistryService;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
@@ -118,7 +118,7 @@ public class ModuleLinkPanel extends Panel {
 					ModuleLinkPanel.this.registryService.rebuildRegistries(link.getLinkType());
 					target.addComponent(ModuleLinkPanel.this.container);
 				}
-			}.add(new ExternalImage("upImage", CommonConstants.REF_UP_IMG)));
+			}.add(new Image("upImage", CommonConstants.REF_UP_IMG)));
 
 			item.add(new AjaxLink<ModuleLinkEntity>("downLink") {
 				private static final long serialVersionUID = 1L;
@@ -129,7 +129,7 @@ public class ModuleLinkPanel extends Panel {
 					ModuleLinkPanel.this.registryService.rebuildRegistries(link.getLinkType());
 					target.addComponent(ModuleLinkPanel.this.container);
 				}
-			}.add(new ExternalImage("downImage", CommonConstants.REF_DOWN_IMG)));
+			}.add(new Image("downImage", CommonConstants.REF_DOWN_IMG)));
 
 			item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;

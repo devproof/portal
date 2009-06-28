@@ -24,6 +24,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -32,7 +33,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.ConfirmDeletePanel;
@@ -161,7 +161,7 @@ public class RolePage extends TemplatePage {
 					RolePage.this.modalWindow.setContent(editRolePanel);
 					RolePage.this.modalWindow.show(target);
 				}
-			}.add(new ExternalImage("editImage", CommonConstants.REF_EDIT_IMG)));
+			}.add(new Image("editImage", CommonConstants.REF_EDIT_IMG)));
 
 			item.add(new AjaxLink<RoleEntity>("deleteLink") {
 				private static final long serialVersionUID = 1L;
@@ -203,7 +203,7 @@ public class RolePage extends TemplatePage {
 					}
 					RolePage.this.modalWindow.show(target);
 				}
-			}.add(new ExternalImage("deleteImage", CommonConstants.REF_DELETE_IMG)));
+			}.add(new Image("deleteImage", CommonConstants.REF_DELETE_IMG)));
 			//            
 			item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;

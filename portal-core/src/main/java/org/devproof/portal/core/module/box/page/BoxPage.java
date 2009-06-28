@@ -23,6 +23,7 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
@@ -33,7 +34,6 @@ import org.devproof.portal.core.module.box.panel.BoxEditPanel;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.component.ExternalImage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 
@@ -151,7 +151,7 @@ public class BoxPage extends TemplatePage {
 					BoxPage.this.boxService.moveUp(box);
 					target.addComponent(BoxPage.this.container);
 				}
-			}.add(new ExternalImage("upImage", CommonConstants.REF_UP_IMG)));
+			}.add(new Image("upImage", CommonConstants.REF_UP_IMG)));
 
 			item.add(new AjaxLink<BoxEntity>("downLink") {
 				private static final long serialVersionUID = 1L;
@@ -161,7 +161,7 @@ public class BoxPage extends TemplatePage {
 					BoxPage.this.boxService.moveDown(box);
 					target.addComponent(BoxPage.this.container);
 				}
-			}.add(new ExternalImage("downImage", CommonConstants.REF_DOWN_IMG)));
+			}.add(new Image("downImage", CommonConstants.REF_DOWN_IMG)));
 
 			item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
