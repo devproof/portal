@@ -64,7 +64,7 @@
 		<mkdir dir="target/devproof-portal-${project_version}-war/"/>
 		<mkdir dir="target/tmp/"/>
 		<copy file="../portal-webapp/target/devproof-portal-${project_version}.war" 
-			tofile="target/devproof-portal-${project_version}-war/devproof-portal-${project_version}.war"/>
+			tofile="target/devproof-portal-${project_version}-war/war/devproof-portal-${project_version}.war"/>
 		<copy file="CHANGES" 
 					tofile="target/devproof-portal-${project_version}-war/CHANGES"/>
 		<copy file="README_WAR" 
