@@ -17,6 +17,8 @@ package org.devproof.portal.module.blog.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -43,5 +45,18 @@ public class BlogEditPageTest extends TestCase {
 		this.tester.startPage(new BlogEditPage(new BlogEntity()));
 		// assert rendered page class
 		this.tester.assertRenderedPage(BlogEditPage.class);
+		String msgs[] = new String[] { this.tester.getLastRenderedPage().getString("msg.saved") };
+		FormTester form = this.tester.newFormTester("form");
+		form.setValue("tags", "these are tags");
+		form.setValue("headline", "testing headline");
+		form.setValue("content", "testing content");
+		form.submit();
+		this.tester.assertRenderedPage(BlogPage.class);
+		this.tester.assertInfoMessages(msgs);
+		assertEquals(this.tester.getMessages(FeedbackMessage.INFO).size(), 1);
+		this.tester.startPage(BlogPage.class);
+		this.tester.assertRenderedPage(BlogPage.class);
+		this.tester.assertContains("testing headline");
+		this.tester.assertContains("testing content");
 	}
 }
