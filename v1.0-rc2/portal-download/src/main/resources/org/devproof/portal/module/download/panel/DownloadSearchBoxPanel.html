@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<wicket:panel>
+
+	<h1><wicket:message key="boxTitle">[Search]</wicket:message></h1>
+	<form wicket:id="searchForm">
+	<div>
+		<input type="text"  class="boxinput" wicket:id="allTextFields"/><br/>
+		<select wicket:id="broken">
+			  <option wicket:id="chooseBroken"><wicket:message key="chooseBroken"/></option>
+              <option wicket:id="brokenTrue"><wicket:message key="brokenTrue"/></option>
+              <option wicket:id="brokenFalse"><wicket:message key="brokenFalse"/></option>
+        </select><br/>
+	</div>
+	</form>
+</wicket:panel>
+</html>

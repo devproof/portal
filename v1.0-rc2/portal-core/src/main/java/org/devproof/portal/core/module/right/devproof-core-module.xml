@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+    
+    <!-- Module configuration -->
+    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
+    	<property name="name" value="Core: Rights"/>
+    	<property name="moduleVersion" value="core"/>
+    	<property name="portalVersion" value="core"/>
+    	<property name="author" value="devproof - Carsten Hufe"/>
+    	<property name="url" value="http://devproof.org"/>	 		
+    	
+    	<!-- Hibernate/JPA entities -->
+    	<property name="entities">
+    		<list>
+			    <value>org.devproof.portal.core.module.right.entity.RightEntity</value>
+			</list>
+    	</property>
+    	<property name="pages">
+    		<list>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/admin/rights"/>
+    				<property name="pageClass" value="org.devproof.portal.core.module.right.page.RightPage"/>
+    				<property name="registerGlobalAdminLink" value="true"/>
+    			</bean>
+    		</list>
+    	</property>
+    </bean>
+    
+	<!--  Dao  -->
+	<bean id="rightDao" parent="baseGenericDao">
+		<property name="daoInterface"
+			value="org.devproof.portal.core.module.right.dao.RightDao" />
+		<property name="entityClass"
+			value="org.devproof.portal.core.module.right.entity.RightEntity" />
+	</bean>
+	
+	<!--  Service  -->
+	<bean id="rightService" class="org.devproof.portal.core.module.right.service.RightServiceImpl" init-method="init">
+		<property name="rightDao" ref="rightDao"/>
+	</bean>
+	
+	<!--  DataProvider  -->
+	<bean id="rightDataProvider" parent="persistenceDataProvider" scope="prototype">
+		<property name="entityClass" value="org.devproof.portal.core.module.right.entity.RightEntity" />
+		<property name="sort">
+			<bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
+				<constructor-arg value="description"/>
+				<constructor-arg value="true"/>
+			</bean>		
+		</property>
+	</bean>
+	
+</beans>
