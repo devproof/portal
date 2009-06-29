@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.mail.Session;
@@ -31,6 +32,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.app.PortalApplication;
@@ -128,12 +131,19 @@ public class PortalTestUtil {
 			public ServletContext getServletContext() {
 				return sandbox;
 			}
+
+			@Override
+			public org.apache.wicket.Session newSession(final Request request, final Response response) {
+				org.apache.wicket.Session session = super.newSession(request, response);
+				session.setLocale(Locale.ENGLISH);
+				return session;
+			}
+
 		};
 
 		// Workaround for bug in WicketTester, mounted url does not work
 		// with stateless form
 		app.unmount("/login");
-
 		return new WicketTester(app);
 	}
 
