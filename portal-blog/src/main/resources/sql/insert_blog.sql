@@ -30,8 +30,8 @@ INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headl
 <p>and [string2img size=14]string to image feature [/string2img].</p>
 <p>The default users are:</p>
 <ul>
-<li>admin (password: 12345)&nbsp; (admin rights)</li>
-<li>testuser (password: 12345)&nbsp; (registered user rights)</li>
+<li>admin (password: admin)&nbsp; (admin rights)</li>
+<li>testuser (password: testuser)&nbsp; (registered user rights)</li>
 </ul>','Welcome to Devproof Portal');
 
 
