@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+    
+    <!-- Module configuration -->
+    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
+    	<property name="name" value="Core: Common"/>
+    	<property name="moduleVersion" value="core"/>
+    	<property name="portalVersion" value="core"/>
+    	<property name="author" value="devproof - Carsten Hufe"/>
+    	<property name="url" value="http://devproof.org"/>	 	
+    		
+		<!--  Register boxes -->
+    	<property name="boxes">
+    	   	<list>
+    			<bean class="org.devproof.portal.core.config.BoxConfiguration">
+    				<property name="boxClass" value="org.devproof.portal.core.module.common.panel.GlobalAdminBoxPanel"/>
+    				<property name="name" value="Global Admin Box"/>
+    			</bean>
+    			<bean class="org.devproof.portal.core.config.BoxConfiguration">
+    				<property name="boxClass" value="org.devproof.portal.core.module.common.panel.OtherBoxPanel"/>
+    				<property name="name" value="Other Box"/>
+    			</bean>
+    			<bean class="org.devproof.portal.core.config.BoxConfiguration">
+    				<property name="boxClass" value="org.devproof.portal.core.module.common.panel.PageAdminBoxPanel"/>
+    				<property name="name" value="Page Admin Box"/>
+    			</bean>
+    			<bean class="org.devproof.portal.core.config.BoxConfiguration">
+    				<property name="boxClass" value="org.devproof.portal.core.module.common.panel.SearchBoxPanel"/>
+    				<property name="name" value="Search Box"/>
+    			</bean>
+    		</list>
+    	</property>
+    </bean>
+    
+    <!-- Registries -->
+	<bean id="globalAdminPageRegistry" class="org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistryImpl">
+		<property name="pageLocator" ref="pageLocator"/>
+		<property name="moduleService" ref="moduleService"/>
+	</bean>
+	
+	<bean id="pageAdminPageRegistry" class="org.devproof.portal.core.module.common.registry.PageAdminPageRegistryImpl">
+		<property name="pageLocator" ref="pageLocator"/>
+		<property name="moduleService" ref="moduleService"/>
+	</bean>
+	
+	<bean id="mainNavigationRegistry" class="org.devproof.portal.core.module.common.registry.MainNavigationRegistryImpl">
+		<property name="pageLocator" ref="pageLocator"/>
+		<property name="moduleService" ref="moduleService"/>
+	</bean>
+
+	<bean id="sharedRegistry" class="org.devproof.portal.core.module.common.registry.SharedRegistryImpl"/>
+    
+    <!-- Locators -->
+	<bean id="entityLocator" class="org.devproof.portal.core.module.common.locator.EntityLocatorImpl" />
+	<bean id="pageLocator" class="org.devproof.portal.core.module.common.locator.PageLocatorImpl" />
+    
+    <!--  Base generic DAO  -->
+	<bean id="baseGenericDao"
+		class="org.devproof.portal.core.module.common.dao.FinderDispatcherGenericDaoImpl"
+		parent="hibernateDaoSupport" abstract="true">
+		<property name="usernameResolver" ref="usernameResolver"/>
+	</bean>	
+		
+	<!-- Common data provider DAO -->	
+	<bean id="dataProviderDao" class="org.devproof.portal.core.module.common.dao.DataProviderDaoImpl" parent="hibernateDaoSupport"/>
+	
+	<!-- Persistence data provider -->
+	<bean id="persistenceDataProvider"
+		class="org.devproof.portal.core.module.common.dataprovider.SortablePersistenceDataProviderImpl" abstract="true" scope="prototype">
+		<property name="dataProviderDao" ref="dataProviderDao"/>
+	</bean>
+	
+	<!-- Services -->
+	<bean id="fontService" class="org.devproof.portal.core.module.common.service.FontServiceImpl"/>
+	
+	<bean id="registryService" class="org.devproof.portal.core.module.common.service.RegistryServiceImpl">
+		<property name="mainNavigationRegistry" ref="mainNavigationRegistry"/>
+		<property name="globalAdminPageRegistry" ref="globalAdminPageRegistry"/>
+		<property name="pageAdminPageRegistry" ref="pageAdminPageRegistry"/>
+	</bean>
+</beans>

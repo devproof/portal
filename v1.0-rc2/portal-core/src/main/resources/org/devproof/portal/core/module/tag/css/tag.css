@@ -1,0 +1,38 @@
+/* autocomplete for tags */
+div.wicket-aa {
+	font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	background-color: white;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	padding: 0;
+	margin: 0 0 0 0;
+	text-align:left;
+}
+.tagView {
+	font: normal 8pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	background-color: white;
+	border-width: 1px;
+	color: #777;
+	/*
+	border-color: #cccccc;
+	border-style: solid;
+	padding: 3px; */
+	text-align:left;
+}
+
+.tagView a {
+	color: #777;
+	text-decoration: none;
+}
+
+.tagView a:hover {
+	color: #111;
+	text-decoration: none;
+}
+
+.tagViewSelected a {
+	color: #111;
+	background-color: #D4D0C8;
+	text-decoration: none;
+}

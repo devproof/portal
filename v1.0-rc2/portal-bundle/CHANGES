@@ -1,0 +1,17 @@
+Devproof Portal 1.0-rc2
+-----------------------
+- create an own bundling project
+- update to wicket-1.4-rc5
+- contact form "from email" is the requester email
+- full bundled tomcat + hsql version
+- show last update, when the same author edited
+- google analytics does not work
+- error on calling url: http://www.devproof.org/download/id/3
+- portal tested with findbugs
+- FIXME marked lines are fixed
+- support more database dialects
+- some small bugfixes
+
+Devproof Portal 1.0-rc1
+-----------------------
+- initial release
