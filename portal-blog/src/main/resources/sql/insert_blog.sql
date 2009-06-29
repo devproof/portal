@@ -20,7 +20,7 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.BlogPage');
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('blog_entries_per_page','Blog entries per page','Blog','java.lang.Integer','5');
 
-INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2009-01-06 19:27:20.000'},'admin',{ts '2009-01-06 19:27:20.000'},'admin','<p>Hello Welcome to the Devproof Portal,</p>
+INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2009-01-06 19:27:20.000'},'admin',{ts '2009-01-06 19:27:20.000'},'admin','<p>Welcome to the Devproof Portal,</p>
 <p>this is a sample blog entry. You can use highlighted code:</p>
 <p><textarea cols="50" rows="15" name="code" class="java">add(HeaderContributor.forJavaScript(TooltipLabel.class, "TooltipLabel.js"));
 		add(HeaderContributor.forCss(TooltipLabel.class, "TooltipLabel.css"));
