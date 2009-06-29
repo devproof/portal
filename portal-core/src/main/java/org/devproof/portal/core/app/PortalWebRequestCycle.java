@@ -48,7 +48,9 @@ public class PortalWebRequestCycle extends WebRequestCycle {
 		final Session session = SessionFactoryUtils.getSession(this.sessionFactory, true);
 		SessionHolder holder = new SessionHolder(session);
 		session.setFlushMode(FlushMode.AUTO);
-		TransactionSynchronizationManager.bindResource(this.sessionFactory, holder);
+		if (!TransactionSynchronizationManager.hasResource(this.sessionFactory)) {
+			TransactionSynchronizationManager.bindResource(this.sessionFactory, holder);
+		}
 		super.onBeginRequest();
 	}
 
