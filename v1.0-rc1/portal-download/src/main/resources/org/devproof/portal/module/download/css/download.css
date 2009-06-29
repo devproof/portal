@@ -1,0 +1,23 @@
+.tagInputDownload {
+	width: 629px;	
+}
+
+
+.downloadDescription {
+	border-bottom: 1px solid #E0E0E0;
+	vertical-align: top; 
+}
+
+.downloadInfoTable {
+	border-bottom: 1px solid #E0E0E0;
+	color: #555; 
+	font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	margin-bottom: 12px;
+	padding: 8px 10px; 
+	vertical-align:middle;
+}
+.downloadLink {
+	color: #555;
+	font: bold 1.3em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	text-decoration: none;
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<wicket:panel>	
+	<div class="form" style="background:none;border:none">
+	<h1><wicket:message key="contentTitle"/></h1>
+	<div wicket:id="feedbackPanel"></div>
+	<form wicket:id="form">
+	<table cellspacing="10">
+		<tr>
+			<td><label for="right"><wicket:message key="right"/></label></td>
+			<td><input type="text" wicket:id="right" style="width: 250px"/></td>
+		</tr>
+		<tr>
+			<td><label for="description"><wicket:message key="description"/></label></td>
+			<td><textarea wicket:id="description"></textarea></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><label for="roles"><wicket:message key="roles"/></label></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2"><span wicket:id="roles">[Palette]</span></td>		
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/></td>
+		</tr>
+	</table>
+	</form>	
+	</div>
+</wicket:panel>
+</html>

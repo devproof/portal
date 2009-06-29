@@ -1,0 +1,426 @@
+body {
+	font: normal 9pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';	
+}
+
+legend { border: 1px solid #cccccc; background-color: #fff; color: #EE7733; padding: 4px; font-weight: bold;}
+fieldset { border: 1px solid #cccccc; padding: 10px; margin-top: 10px;}
+.mfuex { padding:5px;margin:5px;background:#eee; }
+.mfuex .wicket-mfu-container { padding: 5px; margin-top: 3px; background-color: white; border:1px solid black; font-size: xx-small; }
+.mfuex .wicket-mfu-caption { font-weight: bold; }
+.mfuex .wicket-mfu-container input { margin-left: 5px; font-size: xx-small; }
+
+a {
+	color: #F70;
+}
+
+a:hover {
+	color: #C60;
+}
+
+img {
+	border: none;
+}
+
+div.wicket-aa {
+    font-size: 12px;
+    background-color: white;
+    border-width: 1px;
+    border-color: #cccccc;
+    border-style: solid;
+    padding: 0px;
+    margin: 1px 0 0 0;
+    text-align:left;
+}
+div.wicket-aa ul { list-style:none; padding: 2px; margin:0; font-weight: normal;}
+div.wicket-aa ul li.selected { background-color: #C1DEF0; padding: 2px; margin:0; font-weight:bold; }
+
+
+.feedbackPanelERROR {
+	color: red;
+	list-style: none;
+	font-weight: bold;
+	font-size: 8pt;
+	padding: 2px 0px;
+}
+
+.feedbackPanelINFO {
+	color: #446666;
+	list-style: none;
+	font-weight: bold;
+	font-size: 8pt;
+	padding: 2px 0px;
+}
+
+table.palette {
+	border: 0;
+}
+
+table.palette td.header {
+	color: #E73;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 8px;
+	padding-right: 30px;
+	background-color: #FFF;
+	border: 1px solid #CCC;
+	text-align: left;
+	height: 20px;
+	font: bold 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+}
+
+table.palette td.pane {
+	width: 100px;
+	text-align: center;
+}
+
+table.palette td.pane select {
+	width: 250px;
+	border: 3px double #AAA;
+	color: #555;
+	font: normal 1.1em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+}
+
+table.palette td.buttons {
+	text-align: center;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+table.palette td.buttons button {
+	width: 30px;
+	height: 30px;
+}
+
+
+.boxinput  {
+	color: #555;
+	font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	border: 3px double #E5E5E5;
+	padding: 2px 3px;
+	width: 148px;
+} 
+
+
+textarea {
+	width: 90%;
+}
+
+.label,label {
+	font: bold 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	text-align: right;
+}
+
+p,cite,blockquote,code,ul {
+	font-size: 1.1em;
+	padding-bottom: 1.2em;
+}
+
+h1 {
+	font-size: 1.4em;
+	margin-bottom: 4px;
+}
+
+.form {
+	/* background: url(../img/bgcode.gif); */
+	border: 1px solid #F0F0F0;
+	/*	border-left: 2px solid #39F;*/
+	color: #555;
+	display: block;
+	margin-bottom: 12px;
+	padding: 5px 10px;
+}
+
+.form h1 {
+	border-bottom: 1px solid #AAA;
+	color: #E73;
+	font-size: 1.3em;
+	height: 20px;
+}
+
+input, textarea, select {
+	color: #555;
+	font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	border: 1px solid #CCCCCC;
+	padding: 2px 3px;
+}
+
+select {
+	width: 160px;	
+}
+
+.form .button {
+	border: 1px solid #AAA;
+	padding: 2px 3px;
+}
+
+code {
+	background: url(../img/bgcode.gif);
+	border: 1px solid #F0F0F0;
+	border-left: 6px solid #F0F0F0;
+	color: #555;
+	display: block;
+	font: normal 1.1em "Lucida Sans Unicode", serif;
+	margin-bottom: 12px;
+	padding: 8px 10px;
+	white-space: pre;
+}
+
+/* when you edit something the subject or title */
+.editTitle {
+	width: 400px;	
+}
+
+cite,blockquote {
+	background: url(../img/quote.gif) no-repeat;
+	color: #666;
+	display: block;
+	font: normal 1.3em "Lucida Sans Unicode", serif;
+	padding-left: 28px;
+}
+
+h1,h2,h3, h1 a {
+	color: #000;
+	padding-top: 6px;
+	text-decoration: none;
+	
+}
+
+/* misc */
+.clearer {
+	clear: both;
+}
+
+/* structure */
+.container {
+	background: url(../img/topleft2.jpg) no-repeat;
+}
+
+.header {
+	height: 92px;
+}
+
+/* title */
+.title {
+	float: left;
+	padding: 28px 0 0 76px;
+}
+
+.title h1 {
+	color: #FFF;
+	font: normal 2em Verdana, sans-serif;
+}
+
+/* navigation */
+.navigation {
+	float: left;
+	height: 92px;
+	margin-left: 24px;
+	padding: 0 16px;
+}
+
+.navigation a,.navigation em {
+	color: #000;
+	float: left;
+	font: bold 1.2em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	margin-top: 56px;
+	padding: 8px 18px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.navigation em {
+	font: bold italic 1.2em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+}
+
+.navigation a:hover {
+	background-color: #B96934;
+	color: #000;
+}
+
+/* main */
+.main {
+	background: #FFF url(../img/bgmain.gif) no-repeat;
+	clear: both;
+	padding: 12px 12px 0 52px;
+}
+
+/* main left */
+.sidenav {
+	float: left;
+	width: 20%;
+	background: #FFF;
+}
+
+.sidenav h1 {
+	border-bottom: 1px dashed #DDD;
+	color: #000;
+	font-size: 1.1em;
+	height: 20px;
+	margin-top: 1.1em;
+}
+
+.sidenav ul {
+	margin: 0;
+	padding: 0;
+}
+
+.sidenav li {
+	border-bottom: 1px dashed #EEE;
+	list-style: none;
+	margin: 0;
+}
+
+.sidenav li a,.sidenav li em {
+	color: #777;
+	display: block;
+	font-size: 9pt;
+	padding: 3px 6px 3px 18px;
+	text-decoration: none;
+}
+
+.sidenav li em {
+	font: bold italic 9pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+}
+
+.sidenav li a:hover {
+	color: #111;
+	background: url(../img/nav_li.gif) no-repeat;
+}
+
+.selsidenav a {
+	background: url(../img/nav_li_reverse.gif) no-repeat;
+	background-color: #D4D0C8;
+}
+
+/* content */
+.content {
+	float: left;
+	margin-right: 4%;
+	width: 69%;
+}
+
+.content .descr {
+	color: #C60;
+	margin-bottom: 6px;
+}
+
+.content ul li {
+	list-style: url(../img/li.gif);
+	margin-left: 18px;
+}
+.content ol li {
+	margin-left: 18px;
+}
+
+
+/* search form */
+.button {
+	border: 1px solid #AAA;
+	/*	margin-left: 5px; */
+	padding: 2px 3px;
+	background: #D4D0C8;
+}
+
+table.dataview {
+	margin-bottom: 10px;
+	border: 1px solid #999;
+	font-size: 10pt;
+	width: 100%;
+}
+
+table.dataview caption {
+	text-align: left;
+}
+
+table.dataview tr {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+table.dataview tr.even {
+	background-color: #fff;
+}
+
+table.dataview tr.odd { /*	background-color: #fff; */
+	background: url(../img/bgcode.gif);
+}
+
+table.dataview tr td {
+	padding-left: 8px;
+	padding-right: 30px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+table.dataview tr th {
+	color: #E73;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 8px;
+	padding-right: 30px;
+	background-color: #FFF;
+	border-bottom: 1px solid #CCC;
+	text-align: left;
+	white-space: nowrap;
+	vertical-align: middle;
+	background-position: right;
+	background-repeat: no-repeat;
+}
+
+table.dataview tr th.wicket_orderDown {
+	background-color: #D6EEFF;
+}
+
+table.dataview tr th.wicket_orderUp {
+	background-color: #D6EEFF;
+}
+
+table.dataview tr th.wicket_orderNone {
+}
+
+table.dataview tr th a {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+table.dataview #message {
+	padding-left: 3px;
+}
+
+table.dataview caption {
+	padding-bottom: 2px;
+}
+
+table.dataview input, select {
+	/*width: 100px;*/
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+a.dataview {
+	color: #555;
+	font: normal 1.1em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+	padding: 3px 6px 3px 6px;
+	text-decoration: none;
+	border: 1px solid #AAA;
+	background: #D4D0C8;
+}
+
+/* footer */
+.footer {
+	background: #FF6B29 url(../img/bgfooter.gif) repeat-x;
+	color: #000000;
+	font-size: 1.1em;
+	line-height: 40px;
+	text-align: center;
+}
+
+.footer a {
+	color: #000;
+	text-decoration: none;
+}
+
+.footer a:hover {
+	color: #000;
+	text-decoration: underline;
+}

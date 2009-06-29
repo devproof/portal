@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<wicket:panel>
+<div class="form" style="background:none;border:none">
+	<h1 wicket:id="title">title here</h1>
+	<div wicket:id="feedbackPanel"></div>
+	<form wicket:id="form">
+	<table cellspacing="10">		
+		<tr>
+			<td><span wicket:id="description"></span></td>
+		</tr>	
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td><div wicket:id="bar">[Progress bar here]</div></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>	
+		<tr>
+			<td><input type="submit" wicket:id="startButton" wicket:message="value:startButton" class="button"/></td>
+		</tr>
+	</table>
+	</form>	
+	</div>
+</wicket:panel>
+</html>
