@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<body>
+	<wicket:extend>
+		<div wicket:id="listBlog"><div wicket:id="blogView"/></div>
+		<div wicket:id="paging">paging</div>	
+		
+		<wicket:fragment wicket:id="blogView">
+			<h1><a href="#" wicket:id="headlineLink"><span wicket:id="headlineLabel"/></a></h1>
+			<div class="descr">
+				<span wicket:id="metaInfo">[author name]</span>
+				<span wicket:id="authorButtons"></span>
+			</div>
+			<div wicket:id="tags">tag1 tag2</div>
+			<br/>
+			<div wicket:id="content">[content]</div>
+		</wicket:fragment>
+	</wicket:extend>
+</body>
+</html>

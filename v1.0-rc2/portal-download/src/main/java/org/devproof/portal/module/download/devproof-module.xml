@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+    
+    <!-- Module configuration -->
+    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
+    	<property name="name" value="Download"/>
+    	<property name="moduleVersion" value="1.0-rc2"/>
+    	<property name="portalVersion" value="1.0-rc2"/>
+    	<property name="author" value="devproof - Carsten Hufe"/>
+    	<property name="url" value="http://devproof.org"/>	 		
+    	
+    	<!-- Hibernate/JPA entities -->
+    	<property name="entities">
+    		<list>
+			    <value>org.devproof.portal.module.download.entity.DownloadEntity</value>
+			    <value>org.devproof.portal.module.download.entity.DownloadTagEntity</value>
+			</list>
+    	</property>
+    	<property name="pages">
+    		<list>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/downloads"/>
+    				<property name="pageClass" value="org.devproof.portal.module.download.page.DownloadPage"/>
+    				<property name="registerMainNavigationLink" value="true"/>
+    			</bean>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/download"/>
+    				<property name="pageClass" value="org.devproof.portal.module.download.page.DownloadRedirectPage"/>
+    				<property name="indexMountedPath" value="true"/>
+    			</bean>
+    		</list>
+    	</property>
+    	<!--  Register boxes -->
+    	<property name="boxes">
+    	   	<list>
+    			<bean class="org.devproof.portal.core.config.BoxConfiguration">
+    				<property name="boxClass" value="org.devproof.portal.module.download.panel.DownloadBoxPanel"/>
+    				<property name="name" value="Latest Download Box"/>
+    			</bean>
+    		</list>
+    	</property>
+    </bean>
+
+	<!--  Dao  -->
+	<bean id="downloadDao" parent="baseGenericDao">
+		<property name="daoInterface"
+			value="org.devproof.portal.module.download.dao.DownloadDao" />
+		<property name="entityClass"
+			value="org.devproof.portal.module.download.entity.DownloadEntity" />
+	</bean>	
+	
+	<!--  Service  -->
+	<bean id="downloadService" class="org.devproof.portal.module.download.service.DownloadServiceImpl">
+		<property name="downloadDao" ref="downloadDao"/>
+		<property name="downloadTagService" ref="downloadTagService"/>
+	</bean>
+	
+			
+	<bean id="downloadTagService"  parent="baseTagService">
+		<property name="tagDao">
+			<bean parent="baseTagDao">
+				<property name="entityClass"
+					value="org.devproof.portal.module.download.entity.DownloadTagEntity" />
+			</bean>
+		</property>
+		<property name="relatedTagRight" value="download.view"/>
+	</bean>
+	
+	<!--  DataProvider  -->
+	<bean id="downloadDataProvider" parent="persistenceDataProvider" scope="prototype">
+		<property name="entityClass" value="org.devproof.portal.module.download.entity.DownloadEntity" />
+		<property name="sort">
+			<bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
+				<constructor-arg value="title"/>
+				<constructor-arg value="true"/>
+			</bean>		
+		</property>
+	</bean>
+	
+	<!-- Register shared resources for the upload center -->
+	<bean class="org.devproof.portal.module.download.factory.DownloadEditPageFactory">
+		<property name="sharedRegistry" ref="sharedRegistry"/>
+	</bean>
+</beans>
