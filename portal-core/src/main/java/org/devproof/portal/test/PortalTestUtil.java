@@ -205,7 +205,7 @@ public class PortalTestUtil {
 		tester.startPage(LoginPage.class);
 		final FormTester form = tester.newFormTester("loginForm");
 		form.setValue("username", "admin");
-		form.setValue("password", "12345");
+		form.setValue("password", "admin");
 		form.submit();
 	}
 }
