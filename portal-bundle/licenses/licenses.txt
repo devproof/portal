@@ -19,6 +19,7 @@ Frameworks for production:
 - EHCache  Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - Prototype MIT License (http://en.wikipedia.org/wiki/MIT_License)
 - Scriptaculous
+- ROME Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - HSQLDB Own licence (http://hsqldb.org/web/hsqlLicense.html)
 - Apache Tomcat 6 Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
