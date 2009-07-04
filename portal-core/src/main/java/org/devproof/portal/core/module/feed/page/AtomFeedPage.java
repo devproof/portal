@@ -64,6 +64,7 @@ public class AtomFeedPage extends WebPage {
 	protected SyndFeed getFeed() {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setFeedType("atom_1.0");
+		// rss_2.0
 		feed.setTitle("Sample Feed");
 		feed.setLink("http://mysite.com");
 		feed.setDescription("Sample Feed for how cool Wicket is");
