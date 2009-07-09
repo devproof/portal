@@ -46,6 +46,7 @@ public class AtomFeedPage extends WebPage {
 
 	@Override
 	protected final void onRender(final MarkupStream markupStream) {
+		// FeedTypes mit info in eine enum
 		// description.setType("application/atom+xml");
 		// description.setType("application/rss+xml");
 		getResponse().setContentType("application/atom+xml");
