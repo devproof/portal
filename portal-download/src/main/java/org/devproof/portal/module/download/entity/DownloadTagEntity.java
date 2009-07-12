@@ -29,7 +29,7 @@ import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
  */
 @Entity
 @Table(name = "download_tag")
-public class DownloadTagEntity extends BaseTagEntity<DownloadEntity> {
+final public class DownloadTagEntity extends BaseTagEntity<DownloadEntity> {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")

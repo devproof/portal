@@ -158,4 +158,9 @@ public class ModuleConfiguration {
 		this.url = url;
 	}
 
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
 }
