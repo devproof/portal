@@ -15,18 +15,28 @@
  */
 package org.devproof.portal.module.blog.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.springframework.beans.factory.annotation.Required;
 
+import com.sun.syndication.feed.synd.SyndContent;
+import com.sun.syndication.feed.synd.SyndContentImpl;
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.synd.SyndFeedImpl;
+
 /**
  * @author Carsten Hufe
  */
-public class BlogServiceImpl implements BlogService {
+public class BlogServiceImpl implements BlogService, FeedProvider {
 	private BlogDao blogDao;
 	private TagService<BlogTagEntity> blogTagService;
 
@@ -55,6 +65,30 @@ public class BlogServiceImpl implements BlogService {
 	@Override
 	public BlogEntity newBlogEntity() {
 		return new BlogEntity();
+	}
+
+	@Override
+	public SyndFeed getFeed() {
+		SyndFeed feed = new SyndFeedImpl();
+		feed.setTitle("Sample Feed"); // new conf parameter
+		feed.setLink("http://mysite.com"); // conf parameter?
+		feed.setDescription("Sample Feed for how cool Wicket is");
+
+		List<SyndEntry> entries = new ArrayList<SyndEntry>();
+		SyndEntry entry;
+		SyndContent description;
+
+		entry = new SyndEntryImpl();
+		entry.setTitle("Article One");
+		entry.setLink("http://mysite.com/article/one");
+		entry.setPublishedDate(new Date());
+		description = new SyndContentImpl();
+		description.setType("text/plain");
+		description.setValue("Article describing how cool wicket is.");
+		entry.setDescription(description);
+		entries.add(entry);
+		feed.setEntries(entries);
+		return feed;
 	}
 
 	@Required

@@ -5,12 +5,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
             http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
 	
-	<import resource="classpath:/org/devproof/portal/core/module/feed/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/box/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/common/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/configuration/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/contact/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/email/devproof-core-module.xml"/>
+	<import resource="classpath:/org/devproof/portal/core/module/feed/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/modulemgmt/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/right/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/role/devproof-core-module.xml"/>

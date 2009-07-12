@@ -18,12 +18,12 @@
 		<!-- Create mysql -->
 		<concat destfile="${targetsql}/install_devproof_mysql.sql">
 			<!-- create core issues at first -->
-			<fileset dir="${targetsql}/sql/">
+			<fileset dir="${targetsql}/sql/create/">
 				<include name="create_tables_mysql_core.sql"/>
 				<include name="insert_core.sql"/>
 			</fileset>
 			<!-- then create other modules -->
-			<fileset dir="${targetsql}/sql/">
+			<fileset dir="${targetsql}/sql/create/">
 				<include name="create_tables_mysql_*.sql"/>
 				<include name="insert_*.sql"/>
 				<exclude name="*core.sql"/>
@@ -32,12 +32,12 @@
 		<!-- Create hsql -->
 		<concat destfile="${targetsql}/install_devproof_hsql.sql">
 			<!-- create core issues at first -->
-			<fileset dir="${targetsql}/sql/">
+			<fileset dir="${targetsql}/sql/create/">
 				<include name="create_tables_hsql_core.sql"/>
 				<include name="insert_core.sql"/>
 			</fileset>
 			<!-- then create other modules -->
-			<fileset dir="${targetsql}/sql/">
+			<fileset dir="${targetsql}/sql/create/">
 				<include name="create_tables_hsql_*.sql"/>
 				<include name="insert_*.sql"/>
 				<exclude name="*core.sql"/>

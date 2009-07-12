@@ -18,10 +18,21 @@
     	<property name="pages">
     		<list>
     			<bean class="org.devproof.portal.core.config.PageConfiguration">
-    				<property name="mountPath" value="/feed"/>
-    				<property name="pageClass" value="org.devproof.portal.core.module.feed.page.AtomFeedPage"/>
+    				<property name="mountPath" value="/feed/atom1"/>
+    				<property name="pageClass" value="org.devproof.portal.core.module.feed.page.Atom1FeedPage"/>
+    				<property name="indexMountedPath" value="true"/>
+    			</bean>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/feed/rss2"/>
+    				<property name="pageClass" value="org.devproof.portal.core.module.feed.page.Rss2FeedPage"/>
+    				<property name="indexMountedPath" value="true"/>
     			</bean>
     		</list>
     	</property>
+    </bean>
+    
+    <!-- Registry -->
+    <bean id="feedProviderRegistry" class="org.devproof.portal.core.module.feed.registry.FeedProviderRegistryImpl">
+    	<property name="pageLocator" ref="pageLocator"/>
     </bean>
 </beans>
