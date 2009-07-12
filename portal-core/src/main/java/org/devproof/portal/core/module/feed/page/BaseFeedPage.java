@@ -17,19 +17,15 @@ package org.devproof.portal.core.module.feed.page;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.feed.provider.FeedProvider;
+import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndContentImpl;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
@@ -38,22 +34,33 @@ import com.sun.syndication.io.SyndFeedOutput;
 /**
  * @author Carsten Hufe
  */
-public class AtomFeedPage extends WebPage {
+public abstract class BaseFeedPage extends WebPage {
+	@SpringBean(name = "feedProviderRegistry")
+	private FeedProviderRegistry feedProviderRegistry;
+	private String path = "";
 
-	public AtomFeedPage(final PageParameters params) {
+	public BaseFeedPage(final PageParameters params) {
 		super(params);
+		if (params.size() > 0) {
+			this.path = params.getString("0");
+		}
 	}
 
 	@Override
 	protected final void onRender(final MarkupStream markupStream) {
-		// FeedTypes mit info in eine enum
-		// description.setType("application/atom+xml");
-		// description.setType("application/rss+xml");
-		getResponse().setContentType("application/atom+xml");
+		getResponse().setContentType(getContentType());
 		PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
 		SyndFeedOutput output = new SyndFeedOutput();
 		try {
-			output.output(getFeed(), writer);
+			FeedProvider feedProvider = this.feedProviderRegistry.getFeedProviderByPath(this.path);
+			SyndFeed feed = null;
+			if (feedProvider != null) {
+				feed = feedProvider.getFeed();
+			} else {
+				feed = new SyndFeedImpl();
+			}
+			feed.setFeedType(getFeedType());
+			output.output(feed, writer);
 			writer.close();
 		} catch (IOException e) {
 			throw new UnhandledException("Error streaming feed.", e);
@@ -62,32 +69,9 @@ public class AtomFeedPage extends WebPage {
 		}
 	}
 
-	protected SyndFeed getFeed() {
-		SyndFeed feed = new SyndFeedImpl();
-		feed.setFeedType("atom_1.0");
-		// rss_2.0
-		feed.setTitle("Sample Feed");
-		feed.setLink("http://mysite.com");
-		feed.setDescription("Sample Feed for how cool Wicket is");
+	protected abstract String getContentType();
 
-		List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		SyndEntry entry;
-		SyndContent description;
-
-		entry = new SyndEntryImpl();
-		entry.setTitle("Article One");
-		entry.setLink("http://mysite.com/article/one");
-		entry.setPublishedDate(new Date());
-		description = new SyndContentImpl();
-		description.setType("text/plain");
-		description.setValue("Article descriping how cool wicket is.");
-		entry.setDescription(description);
-		entries.add(entry);
-
-		feed.setEntries(entries);
-
-		return feed;
-	}
+	protected abstract String getFeedType();
 
 	@Override
 	public String getMarkupType() {

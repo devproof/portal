@@ -67,7 +67,7 @@ public class PortalTestUtil {
 		if (file.startsWith("file:/")) {
 			r = resourceLoader.getResource(file);
 		} else {
-			r = resourceLoader.getResource("classpath:/sql/" + file);
+			r = resourceLoader.getResource("classpath:/sql/create/" + file);
 		}
 		final InputStream is = r.getInputStream();
 		final byte buffer[] = new byte[is.available()];

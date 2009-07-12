@@ -29,6 +29,7 @@
     				<property name="pageClass" value="org.devproof.portal.module.blog.page.BlogPage"/>
     				<property name="registerMainNavigationLink" value="true"/>
     				<property name="defaultStartPage" value="true"/>
+    				<property name="feedProvider" ref="blogService"/>
     			</bean>
     		</list>
     	</property>

@@ -27,13 +27,13 @@ import org.devproof.portal.core.module.common.panel.GlobalAdminBoxPanel;
  */
 public interface GlobalAdminPageRegistry {
 	/**
-	 * Registers a admin link The language property file of the page must
+	 * Registers an admin link The language property file of the page must
 	 * contain a property named "adminLinkLabel" for menu name
 	 */
 	public void registerGlobalAdminPage(Class<? extends Page> adminPage);
 
 	/**
-	 * Removes a admin link
+	 * Removes an admin link
 	 */
 	public void removeGlobalAdminPage(Class<? extends Page> adminPage);
 
