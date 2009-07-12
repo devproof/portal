@@ -21,7 +21,7 @@
 			    <value>org.devproof.portal.module.blog.entity.BlogEntity</value>
 			    <value>org.devproof.portal.module.blog.entity.BlogTagEntity</value>
 			</list>
-    	</property>
+    	</property> 
     	<property name="pages">
     		<list>
     			<bean class="org.devproof.portal.core.config.PageConfiguration">
@@ -29,7 +29,6 @@
     				<property name="pageClass" value="org.devproof.portal.module.blog.page.BlogPage"/>
     				<property name="registerMainNavigationLink" value="true"/>
     				<property name="defaultStartPage" value="true"/>
-    				<property name="feedProvider" ref="blogService"/>
     			</bean>
     		</list>
     	</property>

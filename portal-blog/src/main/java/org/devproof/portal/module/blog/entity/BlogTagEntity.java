@@ -29,7 +29,7 @@ import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
  */
 @Entity
 @Table(name = "blog_tag")
-public class BlogTagEntity extends BaseTagEntity<BlogEntity> {
+final public class BlogTagEntity extends BaseTagEntity<BlogEntity> {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")

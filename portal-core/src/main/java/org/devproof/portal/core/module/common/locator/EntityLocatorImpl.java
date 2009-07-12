@@ -37,6 +37,7 @@ public class EntityLocatorImpl implements ApplicationContextAware, EntityLocator
 		final Map<String, ModuleConfiguration> beans = this.context.getBeansOfType(ModuleConfiguration.class);
 		final List<Object> back = new ArrayList<Object>();
 		for (final ModuleConfiguration module : beans.values()) {
+			System.out.println(module);
 			back.addAll(module.getEntities());
 		}
 		return back;
