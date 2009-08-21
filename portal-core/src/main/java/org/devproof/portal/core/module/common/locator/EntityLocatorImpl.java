@@ -34,10 +34,9 @@ public class EntityLocatorImpl implements ApplicationContextAware, EntityLocator
 	@Override
 	public Collection<?> getEntities() {
 		@SuppressWarnings("unchecked")
-		final Map<String, ModuleConfiguration> beans = this.context.getBeansOfType(ModuleConfiguration.class);
+		final Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
 		final List<Object> back = new ArrayList<Object>();
 		for (final ModuleConfiguration module : beans.values()) {
-			System.out.println(module);
 			back.addAll(module.getEntities());
 		}
 		return back;
@@ -45,7 +44,7 @@ public class EntityLocatorImpl implements ApplicationContextAware, EntityLocator
 
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-		this.context = applicationContext;
+		context = applicationContext;
 	}
 
 }
