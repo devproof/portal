@@ -35,15 +35,18 @@ public class CommonConstants {
 	final public static String JNDI_PROP_HIBERNATE_SHOW_SQL = "java:comp/env/config/devproof/hibernate_show_sql";
 	final public static String JNDI_PROP_HIBERNATE_FORMAT_SQL = "java:comp/env/config/devproof/hibernate_format_sql";
 	final public static String JNDI_PROP_HIBERNATE_HBM2DDL_AUTO = "java:comp/env/config/devproof/hibernate_hbm2ddl_auto";
+	final public static String JNDI_PROP_HIBERNATE_CONNECTION_ISOLATION = "java:comp/env/config/devproof/hibernate_connection_isolation";
 
 	final public static String HIBERNATE_DEFAULT_DIALECT = MySQL5Dialect.class.getName();
 	final public static String HIBERNATE_DEFAULT_SHOW_SQL = "false";
 	final public static String HIBERNATE_DEFAULT_FORMAT_SQL = "false";
 	final public static String HIBERNATE_DEFAULT_HBM2DDL_AUTO = "none";
+	final public static String HIBERNATE_DEFAULT_CONNECTION_ISOLATION = "2";
 
 	final public static String CONF_GOOGLE_ANALYTICS_ENABLED = "google_analytics_enabled";
 	final public static String CONF_GOOGLE_WEBPROPERTY_ID = "google_webproperty_id";
-	final public static ResourceReference REF_SYNTAXHIGHLIGHTER_SWF = new ResourceReference(CommonConstants.class, "js/SyntaxHighlighter/flash/clipboard.swf");
+	final public static ResourceReference REF_SYNTAXHIGHLIGHTER_SWF = new ResourceReference(CommonConstants.class,
+			"js/SyntaxHighlighter/flash/clipboard.swf");
 
 	final public static String GLOBAL_ADMIN_BOX_LINK_LABEL = "adminLinkLabel";
 	final public static String MAIN_NAVIGATION_LINK_LABEL = "mainNavigationLinkLabel";
@@ -57,13 +60,17 @@ public class CommonConstants {
 
 	final public static String CONF_STRING2IMG_FONT = "spring.fontService.findAllSystemFonts.name.name.string2image";
 	final public static String CONF_UNKNOWN_ERROR_EMAIL = "spring.emailTemplateDao.findAll.subject.id.unknownerror";
-	final public static ResourceReference REF_DEFAULT_CSS = new ResourceReference(CommonConstants.class, "css/default.css");
+	final public static ResourceReference REF_DEFAULT_CSS = new ResourceReference(CommonConstants.class,
+			"css/default.css");
 	final public static ResourceReference REF_EDIT_IMG = new ResourceReference(CommonConstants.class, "img/edit.gif");
-	final public static ResourceReference REF_DELETE_IMG = new ResourceReference(CommonConstants.class, "img/delete.gif");
+	final public static ResourceReference REF_DELETE_IMG = new ResourceReference(CommonConstants.class,
+			"img/delete.gif");
 	final public static ResourceReference REF_VIEW_IMG = new ResourceReference(CommonConstants.class, "img/view.gif");
 	final public static ResourceReference REF_DOWN_IMG = new ResourceReference(CommonConstants.class, "img/down.gif");
 	final public static ResourceReference REF_UP_IMG = new ResourceReference(CommonConstants.class, "img/up.gif");
-	final public static ResourceReference REF_ICONCODE_IMG = new ResourceReference(RichTextArea.class, "img/iconcode.gif");
-	final public static ResourceReference REF_STRING2IMG_IMG = new ResourceReference(RichTextArea.class, "img/string2img.gif");
+	final public static ResourceReference REF_ICONCODE_IMG = new ResourceReference(RichTextArea.class,
+			"img/iconcode.gif");
+	final public static ResourceReference REF_STRING2IMG_IMG = new ResourceReference(RichTextArea.class,
+			"img/string2img.gif");
 
 }

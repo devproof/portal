@@ -25,6 +25,7 @@ import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
@@ -50,7 +51,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @param <PK>
  *            primary key type
  */
-public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements FactoryBean, Serializable {
+public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements
+		FactoryBean, Serializable {
 
 	private static final long serialVersionUID = -3752572093862325307L;
 
@@ -74,12 +76,13 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 				 * If the session is opened at this place, the same method will
 				 * close the session and transaction
 				 */
-				boolean hasSession = TransactionSynchronizationManager.hasResource(FinderDispatcherGenericDaoImpl.this.getSessionFactory());
+				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				boolean hasSession = TransactionSynchronizationManager.hasResource(sessionFactory);
 				if (!hasSession) {
-					Session session = SessionFactoryUtils.getSession(FinderDispatcherGenericDaoImpl.this.getSessionFactory(), true);
+					Session session = SessionFactoryUtils.getSession(sessionFactory, true);
 					SessionHolder holder = new SessionHolder(session);
 					session.setFlushMode(FlushMode.AUTO);
-					TransactionSynchronizationManager.bindResource(FinderDispatcherGenericDaoImpl.this.getSessionFactory(), holder);
+					TransactionSynchronizationManager.bindResource(sessionFactory, holder);
 				}
 
 				Method method = invocation.getMethod();
@@ -94,12 +97,15 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 						for (int i = 0; i < len; i++) {
 							copy[i] = orginal[i];
 						}
-						result = target.executeFinder(query.value(), copy, method.getReturnType(), (Integer) orginal[len], (Integer) orginal[len + 1]);
+						result = target.executeFinder(query.value(), copy, method.getReturnType(),
+								(Integer) orginal[len], (Integer) orginal[len + 1]);
 					} else {
-						result = target.executeFinder(query.value(), invocation.getArguments(), method.getReturnType(), null, null);
+						result = target.executeFinder(query.value(), invocation.getArguments(), method.getReturnType(),
+								null, null);
 					}
 				} else if (method.isAnnotationPresent(BulkUpdate.class)) {
-					SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(FinderDispatcherGenericDaoImpl.this.getSessionFactory());
+					SessionHolder holder = (SessionHolder) TransactionSynchronizationManager
+							.getResource(sessionFactory);
 					if (holder.getTransaction() == null) {
 						holder.setTransaction(holder.getSession().beginTransaction());
 					}
@@ -108,10 +114,13 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 					target.executeUpdate(bulkUpdate.value(), invocation.getArguments());
 				} else {
 
-					Method serviceMethod = FinderDispatcherGenericDaoImpl.this.servicesImpl != null ? FinderDispatcherGenericDaoImpl.this.servicesImpl.getClass().getMethod(
-							invocation.getMethod().getName(), invocation.getMethod().getParameterTypes()) : null;
+					Method serviceMethod = FinderDispatcherGenericDaoImpl.this.servicesImpl != null ? FinderDispatcherGenericDaoImpl.this.servicesImpl
+							.getClass().getMethod(invocation.getMethod().getName(),
+									invocation.getMethod().getParameterTypes())
+							: null;
 					if (serviceMethod != null) {
-						result = serviceMethod.invoke(FinderDispatcherGenericDaoImpl.this.servicesImpl, invocation.getArguments());
+						result = serviceMethod.invoke(FinderDispatcherGenericDaoImpl.this.servicesImpl, invocation
+								.getArguments());
 					} else {
 						// should be only save, update, delete from the generic
 						// dao
@@ -119,7 +128,8 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 					}
 				}
 				if (!hasSession) {
-					SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(FinderDispatcherGenericDaoImpl.this.getSessionFactory());
+					SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
+							.unbindResource(sessionFactory);
 					if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()) {
 						sessionHolder.getTransaction().commit();
 					}
