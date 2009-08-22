@@ -16,7 +16,9 @@
 package org.devproof.portal.core.module.right.panel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
@@ -43,15 +45,21 @@ public class RightGridPanel extends Panel {
 	public RightGridPanel(final String id, final String rightPrefix, final List<RightEntity> selectedRights) {
 		super(id);
 		this.allRights = this.rightService.findRightsStartingWith(rightPrefix);
+		final Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new HashMap<RightEntity, CheckBox>();
 		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(this.allRights);
 		GridView<RightEntity> gridView = new GridView<RightEntity>("rights_rows", ldp) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void populateItem(final Item<RightEntity> item) {
-				final RightEntity right = item.getModelObject();
+				final RightEntity right = item.getModel().getObject();
 				right.setSelected(selectedRights != null && selectedRights.contains(right));
-				item.add(new CheckBox("right_checkbox", new PropertyModel<Boolean>(right, "selected")));
+				CheckBox checkBox = keepCheckBoxStateAfterValidation.get(right);
+				if (checkBox == null) {
+					checkBox = new CheckBox("right_checkbox", new PropertyModel<Boolean>(right, "selected"));
+					keepCheckBoxStateAfterValidation.put(right, checkBox);
+				}
+				item.add(checkBox);
 				item.add(new Label("right", right.getDescription()));
 			}
 
