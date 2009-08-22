@@ -37,7 +37,8 @@ public class PortalWebRequestCycle extends WebRequestCycle {
 
 	private final SessionFactory sessionFactory;
 
-	public PortalWebRequestCycle(final WebApplication application, final WebRequest request, final Response response, final ApplicationContext context) {
+	public PortalWebRequestCycle(final WebApplication application, final WebRequest request, final Response response,
+			final ApplicationContext context) {
 		super(application, request, response);
 		this.sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 	}
@@ -45,23 +46,34 @@ public class PortalWebRequestCycle extends WebRequestCycle {
 	@Override
 	protected void onBeginRequest() {
 		// getSession should bind the resource
+		openHibernateSessionInView();
+		super.onBeginRequest();
+	}
+
+	@Override
+	public void detach() {
+		closeHibernateSessionInView();
+		super.detach();
+	}
+
+	private void openHibernateSessionInView() {
 		final Session session = SessionFactoryUtils.getSession(this.sessionFactory, true);
 		SessionHolder holder = new SessionHolder(session);
 		session.setFlushMode(FlushMode.AUTO);
 		if (!TransactionSynchronizationManager.hasResource(this.sessionFactory)) {
 			TransactionSynchronizationManager.bindResource(this.sessionFactory, holder);
 		}
-		super.onBeginRequest();
 	}
 
-	@Override
-	protected void onEndRequest() {
+	private void closeHibernateSessionInView() {
 		if (TransactionSynchronizationManager.hasResource(this.sessionFactory)) {
-			SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(this.sessionFactory);
+			SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
+					.unbindResource(this.sessionFactory);
 			if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()) {
 				sessionHolder.getTransaction().commit();
 			}
 			SessionFactoryUtils.closeSession(sessionHolder.getSession());
 		}
 	}
+
 }

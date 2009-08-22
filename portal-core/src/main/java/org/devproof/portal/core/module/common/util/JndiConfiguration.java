@@ -28,6 +28,20 @@ import org.springframework.jndi.JndiTemplate;
 public class JndiConfiguration {
 
 	/**
+	 * Resolves the hibernate connection isolation via JNDI, hibernate property:
+	 * hibernate.connections.isolation
+	 */
+	public String resolveHibernateConnectionIsolation() {
+		JndiTemplate jndi = new JndiTemplate();
+		try {
+			String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_CONNECTION_ISOLATION);
+			return dialect;
+		} catch (NamingException e) {
+			return CommonConstants.HIBERNATE_DEFAULT_CONNECTION_ISOLATION;
+		}
+	}
+
+	/**
 	 * Resolves the hibernate dialect via JNDI, hibernate property:
 	 * hibernate.dialect
 	 */
@@ -89,6 +103,7 @@ public class JndiConfiguration {
 		props.put("hibernate.show_sql", resolveHibernateShowSql());
 		props.put("hibernate.format_sql", resolveHibernateFormatSql());
 		props.put("hibernate.hbm2ddl.auto", resolveHibernateHbm2ddlAuto());
+		props.put("hibernate.connection.isolation", resolveHibernateConnectionIsolation());
 		return props;
 	}
 
