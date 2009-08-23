@@ -32,8 +32,10 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
+import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.app.PortalApplication;
@@ -156,7 +158,8 @@ public class PortalTestUtil {
 					return System.getProperty("java.io.tmpdir");
 				}
 			};
-			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/devproof-portal-core.xml\nclasspath*:/**/devproof-module.xml");
+			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM,
+					"classpath:/devproof-portal-core.xml\nclasspath*:/**/devproof-module.xml");
 			final ContextLoader contextLoader = new ContextLoader();
 			contextLoader.initWebApplicationContext(sandbox);
 		}
@@ -166,7 +169,8 @@ public class PortalTestUtil {
 	/**
 	 * Create database and spring context
 	 */
-	public static WicketTester createWicketTesterWithSpringAndDatabase(final String... sqlFiles) throws SQLException, IOException {
+	public static WicketTester createWicketTesterWithSpringAndDatabase(final String... sqlFiles) throws SQLException,
+			IOException {
 		registerJndiBindings();
 		createDefaultDataStructure(sqlFiles);
 		return createWicketTesterWithSpring();
@@ -207,5 +211,9 @@ public class PortalTestUtil {
 		form.setValue("username", "admin");
 		form.setValue("password", "admin");
 		form.submit();
+	}
+
+	public static String[] getMessage(final String key, final Component component) {
+		return new String[] { new StringResourceModel(key, component, null).getString() };
 	}
 }
