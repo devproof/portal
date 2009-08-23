@@ -40,11 +40,11 @@ abstract public class CreateFolderPanel extends Panel {
 		super(id);
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
-		this.add(feedback);
+		add(feedback);
 
 		Form<ValueMap> form = new Form<ValueMap>("form", new CompoundPropertyModel<ValueMap>(new ValueMap()));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		final RequiredTextField<String> foldername = new RequiredTextField<String>("foldername");
 		foldername.add(new PatternValidator("[A-Za-z0-9\\.]*"));
@@ -56,7 +56,8 @@ abstract public class CreateFolderPanel extends Panel {
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				try {
-					FileUtils.forceMkdir(new File(actFolder.getAbsolutePath() + File.separator + foldername.getValue()));
+					FileUtils
+							.forceMkdir(new File(actFolder.getAbsolutePath() + File.separator + foldername.getValue()));
 				} catch (IOException e) {
 					throw new UnhandledException(e);
 				}

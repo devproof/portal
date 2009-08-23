@@ -45,11 +45,11 @@ public class OtherPageViewPage extends OtherPageBasePage {
 		if (contentId == null) {
 			contentId = getRequest().getParameter("optparam");
 		}
-		final OtherPageEntity page = this.otherPageService.findOtherPageByContentId(contentId);
+		final OtherPageEntity page = otherPageService.findOtherPageByContentId(contentId);
 
 		WebMarkupContainer authorPanel = new WebMarkupContainer("authorPanel");
 		authorPanel.setVisible(isAuthor());
-		this.add(authorPanel);
+		add(authorPanel);
 		if (isAuthor()) {
 			final String internalContentId = contentId;
 			authorPanel.add(new AuthorPanel<OtherPageEntity>("authorButtons", page) {
@@ -57,7 +57,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
-					OtherPageViewPage.this.otherPageService.delete(getEntity());
+					otherPageService.delete(getEntity());
 				}
 
 				@Override
@@ -65,29 +65,30 @@ public class OtherPageViewPage extends OtherPageBasePage {
 					OtherPageEntity editPage = page;
 					// create new empty page if not exists
 					if (editPage == null) {
-						editPage = OtherPageViewPage.this.otherPageService.newOtherPageEntity();
+						editPage = otherPageService.newOtherPageEntity();
 						editPage.setContentId(internalContentId);
 					}
-					this.setResponsePage(new OtherPageEditPage(editPage));
+					setResponsePage(new OtherPageEditPage(editPage));
 				}
-			}.setRedirectPage(OtherPagePage.class, new PageParameters("infoMsg=" + this.getString("msg.deleted"))));
+			}.setRedirectPage(OtherPagePage.class, new PageParameters("infoMsg=" + getString("msg.deleted"))));
 		} else {
 			authorPanel.add(new WebMarkupContainer("authorButtons").setVisible(false));
 		}
 
 		if (page == null) {
-			OtherPageEntity tmp = this.otherPageService.newOtherPageEntity();
+			OtherPageEntity tmp = otherPageService.newOtherPageEntity();
 			tmp.setCreatedAt(PortalUtil.now());
 			tmp.setModifiedAt(PortalUtil.now());
 			tmp.setCreatedBy("");
 			tmp.setModifiedBy("");
 			authorPanel.add(new MetaInfoPanel("metaInfo", tmp).setVisible(false));
-			this.add(new ExtendedLabel("content", this.getString("noContent")));
+			add(new ExtendedLabel("content", getString("noContent")));
 		} else {
 			authorPanel.add(new MetaInfoPanel("metaInfo", page));
-			this.add(new ExtendedLabel("content", page.getContent()));
+			add(new ExtendedLabel("content", page.getContent()));
 			if (!session.hasRight("otherPage.view") && !session.hasRight(page.getViewRights())) {
-				throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"), getRequestURL()));
+				throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(
+						getString("missing.right"), getRequestURL()));
 			}
 		}
 	}

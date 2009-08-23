@@ -28,18 +28,19 @@ public class DownloadPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql", "insert_download.sql");
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql",
+				"insert_download.sql");
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(DownloadPage.class);
+		tester.startPage(DownloadPage.class);
 		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(this.tester.getLastRenderedPage().isPageStateless());
-		this.tester.assertRenderedPage(DownloadPage.class);
+		assertTrue(tester.getLastRenderedPage().isPageStateless());
+		tester.assertRenderedPage(DownloadPage.class);
 	}
 }

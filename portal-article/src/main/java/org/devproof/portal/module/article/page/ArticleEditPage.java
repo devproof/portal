@@ -80,15 +80,15 @@ public class ArticleEditPage extends ArticleBasePage {
 				article.setArticlePages(ArticleEditPage.this.getArticlePagesFromString(content.getObject(), article));
 				articleService.save(article);
 				setRedirect(false);
-				this.setResponsePage(ArticleViewPage.class, new PageParameters("0=" + article.getContentId()));
-				info(this.getString("msg.saved"));
+				setResponsePage(ArticleViewPage.class, new PageParameters("0=" + article.getContentId()));
+				info(getString("msg.saved"));
 			}
 		};
 		form.setOutputMarkupId(true);
 		form.add(tagField);
 		form.add(viewRight);
 		form.add(readRight);
-		this.add(form);
+		add(form);
 
 		// Other form fields
 		FormComponent<String> fc;

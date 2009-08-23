@@ -94,12 +94,12 @@ abstract public class RightEditPanel extends Panel {
 
 			@Override
 			protected Component newAvailableHeader(final String componentId) {
-				return new Label(componentId, this.getString("palette.available"));
+				return new Label(componentId, getString("palette.available"));
 			}
 
 			@Override
 			protected Component newSelectedHeader(final String componentId) {
-				return new Label(componentId, this.getString("palette.selected"));
+				return new Label(componentId, getString("palette.selected"));
 			}
 		};
 

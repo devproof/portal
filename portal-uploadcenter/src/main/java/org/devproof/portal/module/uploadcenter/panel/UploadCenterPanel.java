@@ -47,7 +47,8 @@ public abstract class UploadCenterPanel extends Panel {
 	@SpringBean(name = "sharedRegistry")
 	private SharedRegistry sharedRegistry;
 
-	public UploadCenterPanel(final String id, final IModel<File> model, final ModalWindow modalWindow, final boolean createDownload) {
+	public UploadCenterPanel(final String id, final IModel<File> model, final ModalWindow modalWindow,
+			final boolean createDownload) {
 		super(id, model);
 		final File file = model.getObject();
 		final Link<File> createDownloadLink = new Link<File>("createDownloadLink", model) {
@@ -55,14 +56,15 @@ public abstract class UploadCenterPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				final CommonPageFactory createDownloadPage = UploadCenterPanel.this.sharedRegistry.getResource("createDownloadPage");
-				this.setResponsePage(createDownloadPage.newInstance(model.getObject().toURI().toString()));
+				final CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
+				setResponsePage(createDownloadPage.newInstance(model.getObject().toURI().toString()));
 			}
 
 		};
-		createDownloadLink.setVisible((file == null || file.isFile()) && createDownload && this.sharedRegistry.isResourceAvailable("createDownloadPage"));
+		createDownloadLink.setVisible((file == null || file.isFile()) && createDownload
+				&& sharedRegistry.isResourceAvailable("createDownloadPage"));
 		createDownloadLink.add(new Image("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
-		this.add(createDownloadLink);
+		add(createDownloadLink);
 
 		final InternalDownloadLink downloadLink = new InternalDownloadLink("downloadLink") {
 			private static final long serialVersionUID = 1L;
@@ -75,14 +77,15 @@ public abstract class UploadCenterPanel extends Panel {
 		};
 		downloadLink.add(new Image("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
 		downloadLink.setVisible(file == null || file.isFile());
-		this.add(downloadLink);
+		add(downloadLink);
 
-		this.add(new AjaxLink<File>("deleteLink") {
+		add(new AjaxLink<File>("deleteLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				final ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(modalWindow.getContentId(), file, modalWindow) {
+				final ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(modalWindow
+						.getContentId(), file, modalWindow) {
 
 					private static final long serialVersionUID = 1L;
 

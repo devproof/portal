@@ -120,7 +120,7 @@ public abstract class TemplatePage extends WebPage {
 		final boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
 		final WebMarkupContainer googleAnalytics1 = new WebMarkupContainer("googleAnalytics1");
 		googleAnalytics1.setVisible(googleEnabled);
-		this.add(googleAnalytics1);
+		add(googleAnalytics1);
 		final WebComponent googleAnalytics2 = new WebComponent("googleAnalytics2") {
 			private static final long serialVersionUID = 1L;
 

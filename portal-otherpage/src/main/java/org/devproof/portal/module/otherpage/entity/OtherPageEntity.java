@@ -54,7 +54,7 @@ final public class OtherPageEntity extends BaseEntity {
 	private List<RightEntity> viewRights;
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -62,7 +62,7 @@ final public class OtherPageEntity extends BaseEntity {
 	}
 
 	public String getContentId() {
-		return this.contentId;
+		return contentId;
 	}
 
 	public void setContentId(final String contentId) {
@@ -70,7 +70,7 @@ final public class OtherPageEntity extends BaseEntity {
 	}
 
 	public String getContent() {
-		return this.content;
+		return content;
 	}
 
 	public void setContent(final String content) {
@@ -78,7 +78,7 @@ final public class OtherPageEntity extends BaseEntity {
 	}
 
 	public List<RightEntity> getViewRights() {
-		return this.viewRights;
+		return viewRights;
 	}
 
 	public void setViewRights(final List<RightEntity> viewRights) {
@@ -89,7 +89,7 @@ final public class OtherPageEntity extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -105,11 +105,11 @@ final public class OtherPageEntity extends BaseEntity {
 			return false;
 		}
 		final OtherPageEntity other = (OtherPageEntity) obj;
-		if (this.id == null) {
+		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;

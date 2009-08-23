@@ -80,7 +80,7 @@ public class BoxPage extends TemplatePage {
 					public void onSave(final AjaxRequestTarget target) {
 						target.addComponent(container);
 						target.addComponent(BoxPage.this.getFeedback());
-						info(this.getString("msg.saved"));
+						info(getString("msg.saved"));
 						modalWindow.close(target);
 					}
 
@@ -92,7 +92,7 @@ public class BoxPage extends TemplatePage {
 			}
 		};
 
-		createLink.add(new Label("linkName", this.getString("createLink")));
+		createLink.add(new Label("linkName", getString("createLink")));
 		addPageAdminBoxLink(createLink);
 	}
 
@@ -119,7 +119,7 @@ public class BoxPage extends TemplatePage {
 					boxService.delete(box);
 					target.addComponent(container);
 					target.addComponent(getFeedback());
-					info(this.getString("msg.deleted"));
+					info(getString("msg.deleted"));
 				}
 
 				@Override
@@ -132,7 +132,7 @@ public class BoxPage extends TemplatePage {
 						public void onSave(final AjaxRequestTarget target) {
 							target.addComponent(container);
 							target.addComponent(getFeedback());
-							info(this.getString("msg.saved"));
+							info(getString("msg.saved"));
 							modalWindow.close(target);
 						}
 

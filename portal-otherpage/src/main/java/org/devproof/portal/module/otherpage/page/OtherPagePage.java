@@ -45,16 +45,16 @@ public class OtherPagePage extends OtherPageBasePage {
 
 	public OtherPagePage(final PageParameters params) {
 		super(params);
-		this.add(new OrderByBorder("table_content_id", "subject", this.otherPageDataProvider));
-		this.add(new OrderByBorder("table_modified_by", "modifiedBy", this.otherPageDataProvider));
-		this.add(new OtherPageDataView("tableRow"));
+		add(new OrderByBorder("table_content_id", "subject", otherPageDataProvider));
+		add(new OrderByBorder("table_modified_by", "modifiedBy", otherPageDataProvider));
+		add(new OtherPageDataView("tableRow"));
 	}
 
 	private class OtherPageDataView extends DataView<OtherPageEntity> {
 		private static final long serialVersionUID = 1L;
 
 		public OtherPageDataView(final String id) {
-			super(id, OtherPagePage.this.otherPageDataProvider);
+			super(id, otherPageDataProvider);
 		}
 
 		@Override
@@ -63,7 +63,8 @@ public class OtherPagePage extends OtherPageBasePage {
 
 			item.add(new Label("contentId", otherPage.getContentId()));
 			item.add(new Label("modifiedBy", otherPage.getModifiedBy()));
-			BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink", OtherPageViewPage.class);
+			BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink",
+					OtherPageViewPage.class);
 			viewLink.setParameter("0", otherPage.getContentId());
 			viewLink.add(new Image("viewImage", CommonConstants.REF_VIEW_IMG).setEscapeModelStrings(false));
 			item.add(viewLink);
@@ -73,7 +74,7 @@ public class OtherPagePage extends OtherPageBasePage {
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
-					OtherPagePage.this.otherPageService.delete(getEntity());
+					otherPageService.delete(getEntity());
 					item.setVisible(false);
 					target.addComponent(item);
 					target.addComponent(getFeedback());
@@ -83,8 +84,8 @@ public class OtherPagePage extends OtherPageBasePage {
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					OtherPageEntity tmp = OtherPagePage.this.otherPageService.findById(otherPage.getId());
-					this.setResponsePage(new OtherPageEditPage(tmp));
+					OtherPageEntity tmp = otherPageService.findById(otherPage.getId());
+					setResponsePage(new OtherPageEditPage(tmp));
 
 				}
 			});

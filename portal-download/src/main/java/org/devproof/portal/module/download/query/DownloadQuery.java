@@ -37,7 +37,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 
 	@BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%')")
 	public RoleEntity getRole() {
-		return this.role;
+		return role;
 	}
 
 	public void setRole(final RoleEntity role) {
@@ -46,16 +46,17 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 
 	@BeanQuery("t = ?")
 	public DownloadTagEntity getTag() {
-		return this.tag;
+		return tag;
 	}
 
 	public void setTag(final DownloadTagEntity tag) {
 		this.tag = tag;
 	}
 
-	@BeanQuery("(e.manufacturer like '%'||?||'%' or e.licence like '%'||?||'%' or e.title like '%'||?||'%'" + " or e.description like '%'||?||'%')")
+	@BeanQuery("(e.manufacturer like '%'||?||'%' or e.licence like '%'||?||'%' or e.title like '%'||?||'%'"
+			+ " or e.description like '%'||?||'%')")
 	public String getAllTextFields() {
-		return this.allTextFields;
+		return allTextFields;
 	}
 
 	public void setAllTextFields(final String allTextFields) {
@@ -64,7 +65,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 
 	@BeanQuery("e.broken = ?")
 	public Boolean getBroken() {
-		return this.broken;
+		return broken;
 	}
 
 	public void setBroken(final Boolean broken) {
@@ -73,7 +74,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 
 	@BeanQuery("e.id = ?")
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -81,6 +82,6 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 	}
 
 	public void clearSelection() {
-		this.tag = null;
+		tag = null;
 	}
 }

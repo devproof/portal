@@ -108,7 +108,7 @@ public class ProgressBar extends Panel {
 		if (getParent() != null) {
 			getParent().add(cssContributor);
 		} else {
-			this.add(cssContributor);
+			add(cssContributor);
 		}
 
 		add(new Label("label", getLabelModel(model)));
@@ -181,7 +181,7 @@ public class ProgressBar extends Panel {
 	 */
 	public void start(final AjaxRequestTarget target) {
 		setVisible(true);
-		this.add(new DynamicAjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
+		add(new DynamicAjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

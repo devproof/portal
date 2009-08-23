@@ -57,7 +57,7 @@ public class ModuleLinkPanel extends Panel {
 
 	public ModuleLinkPanel(final String id, final LinkType linkType) {
 		super(id);
-		add(new Label("naviTitle", this.getString(linkType.toString().toLowerCase())));
+		add(new Label("naviTitle", getString(linkType.toString().toLowerCase())));
 		container = new WebMarkupContainer("refreshTable");
 		container.setOutputMarkupId(true);
 		add(container);
@@ -96,9 +96,9 @@ public class ModuleLinkPanel extends Panel {
 					registryService.rebuildRegistries(link.getLinkType());
 					Boolean selection = (Boolean) newSelection;
 					if (selection) {
-						info(this.getString("msg.selected"));
+						info(getString("msg.selected"));
 					} else {
-						info(this.getString("msg.deselected"));
+						info(getString("msg.deselected"));
 					}
 
 				}

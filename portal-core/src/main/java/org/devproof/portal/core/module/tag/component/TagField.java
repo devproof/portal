@@ -39,7 +39,7 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 
 	public TagField(final String id, final String tags, final TagService<T> tagService) {
 		super(id, Model.of(tags));
-		this.add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
+		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
 		this.tagService = tagService;
 	}
 

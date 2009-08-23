@@ -63,13 +63,13 @@ public class UploadThemePage extends WebPage {
 						themeService.install(tmpFile);
 						info(getString("msg.installed"));
 					} else if (key == ValidationKey.INVALID_DESCRIPTOR_FILE) {
-						this.error(getString("msg.invalid_descriptor_file"));
+						error(getString("msg.invalid_descriptor_file"));
 					} else if (key == ValidationKey.MISSING_DESCRIPTOR_FILE) {
-						this.error(getString("msg.missing_descriptor_file"));
+						error(getString("msg.missing_descriptor_file"));
 					} else if (key == ValidationKey.NOT_A_JARFILE) {
-						this.error(getString("msg.not_a_jarfile"));
+						error(getString("msg.not_a_jarfile"));
 					} else if (key == ValidationKey.WRONG_VERSION) {
-						this.error(getString("wrong_version"));
+						error(getString("wrong_version"));
 					}
 					if (!tmpFile.delete()) {
 						LOG.error("Could not delete " + tmpFile);

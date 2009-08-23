@@ -74,7 +74,7 @@ public class DeliciousSyncPanel extends Panel {
 
 	public DeliciousSyncPanel(final String id) {
 		super(id);
-		this.add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
+		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
 		final List<RightEntity> rights = new ArrayList<RightEntity>();
 		final RightGridPanel viewRights = new RightGridPanel("viewRights", "bookmark.view", rights);
 		final RightGridPanel visitRights = new RightGridPanel("visitRights", "bookmark.visit", rights);
@@ -127,9 +127,9 @@ public class DeliciousSyncPanel extends Panel {
 			protected void onFinished(final AjaxRequestTarget target) {
 				if (deliciousBean != null && deliciousBean.hasError()) {
 					if (deliciousBean.getHttpCode() == HttpStatus.SC_UNAUTHORIZED) {
-						error(this.getString("loginFailed"));
+						error(getString("loginFailed"));
 					} else if (deliciousBean.getHttpCode() == HttpStatus.SC_SERVICE_UNAVAILABLE) {
-						error(this.getString("serviceNotAvailable"));
+						error(getString("serviceNotAvailable"));
 					} else {
 						error(deliciousBean.getErrorMessage());
 					}

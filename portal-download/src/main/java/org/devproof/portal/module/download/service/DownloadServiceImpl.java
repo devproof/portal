@@ -32,23 +32,24 @@ public class DownloadServiceImpl implements DownloadService {
 	private TagService<DownloadTagEntity> downloadTagService;
 
 	@Override
-	public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(final RoleEntity role, final Integer firstResult, final Integer maxResult) {
-		return this.downloadDao.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
+	public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(final RoleEntity role,
+			final Integer firstResult, final Integer maxResult) {
+		return downloadDao.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
 	}
 
 	@Override
 	public void incrementHits(final DownloadEntity download) {
-		this.downloadDao.incrementHits(download);
+		downloadDao.incrementHits(download);
 	}
 
 	@Override
 	public void markBrokenDownload(final DownloadEntity download) {
-		this.downloadDao.markBrokenDownload(download);
+		downloadDao.markBrokenDownload(download);
 	}
 
 	@Override
 	public void markValidDownload(final DownloadEntity download) {
-		this.downloadDao.markValidDownload(download);
+		downloadDao.markValidDownload(download);
 	}
 
 	@Override
@@ -58,30 +59,30 @@ public class DownloadServiceImpl implements DownloadService {
 
 	@Override
 	public void rateDownload(final Integer rating, final DownloadEntity download) {
-		this.downloadDao.rateDownload(rating, download);
-		this.downloadDao.refresh(download);
+		downloadDao.rateDownload(rating, download);
+		downloadDao.refresh(download);
 	}
 
 	@Override
 	public void delete(final DownloadEntity entity) {
-		this.downloadDao.delete(entity);
-		this.downloadTagService.deleteUnusedTags();
+		downloadDao.delete(entity);
+		downloadTagService.deleteUnusedTags();
 	}
 
 	@Override
 	public List<DownloadEntity> findAll() {
-		return this.downloadDao.findAll();
+		return downloadDao.findAll();
 	}
 
 	@Override
 	public DownloadEntity findById(final Integer id) {
-		return this.downloadDao.findById(id);
+		return downloadDao.findById(id);
 	}
 
 	@Override
 	public void save(final DownloadEntity entity) {
-		this.downloadDao.save(entity);
-		this.downloadTagService.deleteUnusedTags();
+		downloadDao.save(entity);
+		downloadTagService.deleteUnusedTags();
 	}
 
 	@Required

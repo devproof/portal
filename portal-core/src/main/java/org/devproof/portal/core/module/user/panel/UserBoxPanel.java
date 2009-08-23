@@ -43,7 +43,7 @@ public class UserBoxPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("loggedout")));
+				setResponsePage(MessagePage.getMessagePageWithLogout(getString("loggedout")));
 			}
 		};
 		add(new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class));

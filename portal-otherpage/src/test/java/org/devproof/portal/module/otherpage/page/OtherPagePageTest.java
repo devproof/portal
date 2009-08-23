@@ -28,17 +28,18 @@ public class OtherPagePageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_otherpage.sql", "insert_otherpage.sql");
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_otherpage.sql",
+				"insert_otherpage.sql");
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(OtherPagePage.class);
-		this.tester.assertRenderedPage(OtherPagePage.class);
+		tester.startPage(OtherPagePage.class);
+		tester.assertRenderedPage(OtherPagePage.class);
 	}
 }

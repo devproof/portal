@@ -58,7 +58,7 @@ public class LoginBoxPanel extends Panel {
 							.getString("password"));
 					if (message == null) {
 
-						info(this.getString("logged.in"));
+						info(getString("logged.in"));
 						// redirect to the same page so that the rights will be
 						// rechecked!
 						if (getPage() instanceof MessagePage) {
@@ -75,7 +75,7 @@ public class LoginBoxPanel extends Panel {
 							setResponsePage(getPage().getClass(), new PageParameters("0=" + hiddenParam.getValue()));
 						}
 					} else {
-						error(this.getString(message));
+						error(getString(message));
 					}
 				} catch (final UserNotConfirmedException e) {
 					setResponsePage(new ReenterEmailPage(properties.getString("username")));

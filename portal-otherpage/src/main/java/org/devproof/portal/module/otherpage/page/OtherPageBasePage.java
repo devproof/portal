@@ -37,22 +37,22 @@ public class OtherPageBasePage extends TemplatePage {
 	public OtherPageBasePage(final PageParameters params) {
 		super(params);
 		PortalSession session = (PortalSession) getSession();
-		this.isAuthor = session.hasRight("page.OtherPagePage");
+		isAuthor = session.hasRight("page.OtherPagePage");
 		addSyntaxHighlighter();
-		if (this.isAuthor) {
+		if (isAuthor) {
 			addPageAdminBoxLink(new Link<OtherPageEntity>("adminLink") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick() {
-					final OtherPageEntity newEntry = OtherPageBasePage.this.otherPageService.newOtherPageEntity();
-					this.setResponsePage(new OtherPageEditPage(newEntry));
+					final OtherPageEntity newEntry = otherPageService.newOtherPageEntity();
+					setResponsePage(new OtherPageEditPage(newEntry));
 				}
-			}.add(new Label("linkName", this.getString("createLink"))));
+			}.add(new Label("linkName", getString("createLink"))));
 		}
 	}
 
 	public boolean isAuthor() {
-		return this.isAuthor;
+		return isAuthor;
 	}
 }

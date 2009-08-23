@@ -43,21 +43,22 @@ public class OtherPageEditPage extends OtherPageBasePage {
 		super(new PageParameters());
 		final RightGridPanel rightGrid = new RightGridPanel("viewright", "otherPage.view", otherPage.getViewRights());
 
-		Form<OtherPageEntity> form = new Form<OtherPageEntity>("form", new CompoundPropertyModel<OtherPageEntity>(otherPage)) {
+		Form<OtherPageEntity> form = new Form<OtherPageEntity>("form", new CompoundPropertyModel<OtherPageEntity>(
+				otherPage)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
 				otherPage.setViewRights(rightGrid.getSelectedRights());
-				OtherPageEditPage.this.otherPageService.save(otherPage);
+				otherPageService.save(otherPage);
 				setRedirect(false);
 				info(OtherPageEditPage.this.getString("msg.saved"));
-				this.setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getContentId())));
+				setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getContentId())));
 
 			}
 		};
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 		form.add(rightGrid);
 
 		FormComponent<String> fc;
@@ -70,8 +71,8 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
-				if (OtherPageEditPage.this.otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
-					this.error(ivalidatable);
+				if (otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
+					error(ivalidatable);
 				}
 			}
 

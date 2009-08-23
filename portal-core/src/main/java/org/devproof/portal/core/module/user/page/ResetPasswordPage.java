@@ -47,23 +47,23 @@ public class ResetPasswordPage extends TemplatePage {
 	public ResetPasswordPage(final PageParameters params) {
 		super(params);
 		if (!params.containsKey(PARAM_USER) || !params.containsKey(PARAM_KEY)) {
-			setResponsePage(MessagePage.getMessagePage(this.getString("missing.params")));
+			setResponsePage(MessagePage.getMessagePage(getString("missing.params")));
 			return;
 		}
 
 		final UserEntity user = userService.findUserByUsername(params.getString(PARAM_USER));
 		if (user == null) {
-			setResponsePage(MessagePage.getMessagePage(this.getString("user.notregistered")));
+			setResponsePage(MessagePage.getMessagePage(getString("user.notregistered")));
 			return;
 		} else if (StringUtils.isNotEmpty(user.getForgotPasswordCode())
 				&& !params.getString(PARAM_KEY).equals(user.getForgotPasswordCode())) {
-			setResponsePage(MessagePage.getMessagePage(this.getString("wrong.key")));
+			setResponsePage(MessagePage.getMessagePage(getString("wrong.key")));
 			return;
 		}
 
 		Form<UserEntity> form = new Form<UserEntity>("form");
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		form.setModel(new CompoundPropertyModel<UserEntity>(user));
 		FormComponent<?> fc;
@@ -90,7 +90,7 @@ public class ResetPasswordPage extends TemplatePage {
 			public void onSubmit() {
 				if (params.getString(PARAM_KEY).equals(user.getForgotPasswordCode())) {
 					userService.setNewPassword(user.getUsername(), password1.getValue());
-					setResponsePage(MessagePage.getMessagePage(this.getString("changed")));
+					setResponsePage(MessagePage.getMessagePage(getString("changed")));
 				}
 			}
 		});

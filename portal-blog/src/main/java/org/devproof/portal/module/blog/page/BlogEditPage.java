@@ -45,7 +45,7 @@ public class BlogEditPage extends BlogBasePage {
 
 	public BlogEditPage(final BlogEntity blog) {
 		super(new PageParameters());
-		this.add(CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS));
+		add(CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS));
 		final RightGridPanel rightGrid = new RightGridPanel("viewright", "blog.view", blog.getAllRights());
 		final TagField<BlogTagEntity> tagField = new TagField<BlogTagEntity>("tags", blog.getTags(), blogTagService);
 
@@ -67,7 +67,7 @@ public class BlogEditPage extends BlogBasePage {
 		form.setOutputMarkupId(true);
 		form.add(tagField);
 		form.add(rightGrid);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 

@@ -36,14 +36,14 @@ public class DownloadEditPageFactory implements CommonPageFactory, InitializingB
 
 	@Override
 	public Page newInstance(final Object... obj) {
-		final DownloadEntity download = this.downloadService.newDownloadEntity();
+		final DownloadEntity download = downloadService.newDownloadEntity();
 		download.setUrl((String) obj[0]);
 		return new DownloadEditPage(download);
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		this.sharedRegistry.registerResource("createDownloadPage", this);
+		sharedRegistry.registerResource("createDownloadPage", this);
 	}
 
 	public void setDownloadService(final DownloadService downloadService) {

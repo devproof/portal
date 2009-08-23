@@ -32,28 +32,28 @@ public class FileBean implements Serializable {
 
 	public FileBean(final File file, final DateFormat dateFormat) {
 		this.file = file;
-		this.date = dateFormat.format(new Date(file.lastModified()));
+		date = dateFormat.format(new Date(file.lastModified()));
 		if (file.isFile()) {
-			this.size = Long.toString(file.length() / 1024) + " KB";
+			size = Long.toString(file.length() / 1024) + " KB";
 		} else {
-			this.size = "";
+			size = "";
 		}
-		this.name = file.getName();
+		name = file.getName();
 	}
 
 	public File getFile() {
-		return this.file;
+		return file;
 	}
 
 	public String getDate() {
-		return this.date;
+		return date;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public String getSize() {
-		return this.size;
+		return size;
 	}
 }

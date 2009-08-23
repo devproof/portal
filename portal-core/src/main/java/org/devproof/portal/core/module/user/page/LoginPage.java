@@ -57,7 +57,7 @@ public class LoginPage extends TemplatePage {
 							setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
 						}
 					} else {
-						error(this.getString(message));
+						error(getString(message));
 					}
 				} catch (final UserNotConfirmedException e) {
 					setResponsePage(new ReenterEmailPage(username.getValue()));

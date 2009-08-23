@@ -66,7 +66,7 @@ public class ContactPage extends TemplatePage {
 
 	public ContactPage(final PageParameters params) {
 		super(params);
-		this.add(CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS));
+		add(CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS));
 		String username = "§$$§";
 		if (params != null && params.containsKey("0")) {
 			username = params.getString("0");
@@ -99,7 +99,7 @@ public class ContactPage extends TemplatePage {
 		}
 		Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBean));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 
@@ -145,7 +145,7 @@ public class ContactPage extends TemplatePage {
 				protected void onValidate(final IValidatable<String> ivalidatable) {
 					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
 						captchaImageResource.invalidate();
-						this.error(ivalidatable);
+						error(ivalidatable);
 					}
 				}
 
@@ -173,7 +173,7 @@ public class ContactPage extends TemplatePage {
 				placeholder.setContent(contactBean.getContent());
 
 				emailService.sendEmail(templateId, placeholder);
-				this.setResponsePage(MessagePage.getMessagePage(this.getString("mail.sent")));
+				setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
 			}
 		});
 	}

@@ -72,8 +72,8 @@ public class BookmarkEditPage extends BookmarkBasePage {
 				bookmark.setSource(Source.MANUAL);
 				bookmarkService.save(bookmark);
 				setRedirect(false);
-				info(this.getString("msg.saved"));
-				this.setResponsePage(new BookmarkPage(new PageParameters("id=" + bookmark.getId())));
+				info(getString("msg.saved"));
+				setResponsePage(new BookmarkPage(new PageParameters("id=" + bookmark.getId())));
 			}
 		};
 		form.setOutputMarkupId(true);
@@ -81,7 +81,7 @@ public class BookmarkEditPage extends BookmarkBasePage {
 		form.add(viewRights);
 		form.add(visitRights);
 		form.add(voteRights);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 

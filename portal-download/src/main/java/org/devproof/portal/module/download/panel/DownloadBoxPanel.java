@@ -45,8 +45,9 @@ public class DownloadBoxPanel extends Panel {
 	public DownloadBoxPanel(final String id) {
 		super(id);
 		PortalSession session = (PortalSession) getSession();
-		Integer num = this.configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
-		List<DownloadEntity> downloads = this.downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0, num);
+		Integer num = configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
+		List<DownloadEntity> downloads = downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0,
+				num);
 
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (DownloadEntity download : downloads) {
@@ -57,7 +58,7 @@ public class DownloadBoxPanel extends Panel {
 			link.add(new Label("linkName", download.getTitle()));
 			item.add(link);
 		}
-		this.add(repeating);
+		add(repeating);
 		setVisible(downloads.size() > 0);
 	}
 }

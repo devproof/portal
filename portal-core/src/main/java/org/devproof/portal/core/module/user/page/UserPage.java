@@ -108,7 +108,7 @@ public class UserPage extends TemplatePage {
 						public void onSave(final AjaxRequestTarget target) {
 							target.addComponent(container);
 							target.addComponent(UserPage.this.getFeedback());
-							info(this.getString("msg.saved"));
+							info(getString("msg.saved"));
 							modalWindow.close(target);
 						}
 
@@ -119,7 +119,7 @@ public class UserPage extends TemplatePage {
 					modalWindow.show(target);
 				}
 			};
-			createLink.add(new Label("linkName", this.getString("createLink")));
+			createLink.add(new Label("linkName", getString("createLink")));
 			addPageAdminBoxLink(createLink);
 
 		}
@@ -156,8 +156,8 @@ public class UserPage extends TemplatePage {
 			}
 			item.add(new Label("role", user.getRole().getDescription()));
 			item.add(new Label("registration", dateFormat.format(user.getRegistrationDate())));
-			item.add(new Label("active", user.getActive() != null ? this.getString("active."
-					+ user.getActive().toString()) : ""));
+			item.add(new Label("active", user.getActive() != null ? getString("active." + user.getActive().toString())
+					: ""));
 			item.add(new AuthorPanel<UserEntity>("authorButtons", user) {
 
 				private static final long serialVersionUID = 1L;
@@ -167,7 +167,7 @@ public class UserPage extends TemplatePage {
 					userService.delete(user);
 					target.addComponent(container);
 					target.addComponent(getFeedback());
-					info(this.getString("msg.deleted"));
+					info(getString("msg.deleted"));
 				}
 
 				@Override
@@ -180,7 +180,7 @@ public class UserPage extends TemplatePage {
 						public void onSave(final AjaxRequestTarget target) {
 							target.addComponent(container);
 							target.addComponent(getFeedback());
-							info(this.getString("msg.saved"));
+							info(getString("msg.saved"));
 							modalWindow.close(target);
 						}
 
