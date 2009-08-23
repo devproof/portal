@@ -31,7 +31,8 @@ public class ArticleEditPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql", "insert_article.sql");
+		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql",
+				"insert_article.sql");
 		PortalTestUtil.loginDefaultAdminUser(this.tester);
 	}
 
@@ -41,40 +42,59 @@ public class ArticleEditPageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(new ArticleEditPage(new ArticleEntity()));
+		this.tester.startPage(getNewArticleEditPage());
 		this.tester.assertRenderedPage(ArticleEditPage.class);
 	}
 
 	public void testSaveArticle() {
-		this.tester.startPage(new ArticleEditPage(new ArticleEntity()));
-		this.tester.assertRenderedPage(ArticleEditPage.class);
-		String expectedMsgs[] = new String[] { this.tester.getLastRenderedPage().getString("msg.saved") };
-		FormTester form = this.tester.newFormTester("form");
-		form.setValue("tags", "these are tags");
-		form.setValue("title", "testing title");
-		form.setValue("teaser", "testing teaser");
-		form.setValue("contentId", "testing_content_id");
-		form.setValue("content", "testing content");
-		form.submit();
-		this.tester.assertRenderedPage(ArticleViewPage.class);
-		this.tester.assertInfoMessages(expectedMsgs);
-		this.tester.startPage(ArticleViewPage.class, new PageParameters("0=testing_content_id"));
-		this.tester.assertRenderedPage(ArticleViewPage.class);
-		this.tester.assertContains("testing title");
-		this.tester.assertContains("testing content");
-		this.tester.startPage(ArticlePage.class);
-		this.tester.assertRenderedPage(ArticlePage.class);
-		this.tester.assertContains("testing title");
-		this.tester.assertContains("testing teaser");
+		callArticleEditPage();
+		submitArticleForm();
+		assertArticleViewPage("0=testing_content_id");
+		assertArticlePage();
 	}
 
 	public void testEditArticle() {
+		navigateToArticleEditPage();
+		submitArticleForm();
+		assertArticleViewPage("0=Sample_article");
+		assertArticlePage();
+	}
+
+	private void navigateToArticleEditPage() {
 		this.tester.startPage(ArticlePage.class);
 		this.tester.assertRenderedPage(ArticlePage.class);
 		this.tester.assertContains("This is a sample article and this is the teaser");
 		this.tester.clickLink("listArticle:1:articleView:authorButtons:editLink");
 		this.tester.assertRenderedPage(ArticleEditPage.class);
-		String expectedMsgs[] = new String[] { this.tester.getLastRenderedPage().getString("msg.saved") };
+	}
+
+	private void callArticleEditPage() {
+		this.tester.startPage(getNewArticleEditPage());
+		this.tester.assertRenderedPage(ArticleEditPage.class);
+	}
+
+	private void assertArticlePage() {
+		this.tester.startPage(ArticlePage.class);
+		this.tester.assertRenderedPage(ArticlePage.class);
+		this.tester.assertContains("testing title");
+		this.tester.assertContains("testing teaser");
+	}
+
+	private void assertArticleViewPage(final String contentId) {
+		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewArticleEditPage());
+		this.tester.assertRenderedPage(ArticleViewPage.class);
+		this.tester.assertInfoMessages(expectedMsgs);
+		this.tester.startPage(ArticleViewPage.class, new PageParameters(contentId));
+		this.tester.assertRenderedPage(ArticleViewPage.class);
+		this.tester.assertContains("testing title");
+		this.tester.assertContains("testing content");
+	}
+
+	private ArticleEditPage getNewArticleEditPage() {
+		return new ArticleEditPage(new ArticleEntity());
+	}
+
+	private void submitArticleForm() {
 		FormTester form = this.tester.newFormTester("form");
 		form.setValue("tags", "these are tags");
 		form.setValue("title", "testing title");
@@ -82,15 +102,6 @@ public class ArticleEditPageTest extends TestCase {
 		form.setValue("contentId", "testing_content_id");
 		form.setValue("content", "testing content");
 		form.submit();
-		this.tester.assertRenderedPage(ArticleViewPage.class);
-		this.tester.assertInfoMessages(expectedMsgs);
-		this.tester.startPage(ArticleViewPage.class, new PageParameters("0=Sample_article"));
-		this.tester.assertRenderedPage(ArticleViewPage.class);
-		this.tester.assertContains("testing title");
-		this.tester.assertContains("testing content");
-		this.tester.startPage(ArticlePage.class);
-		this.tester.assertRenderedPage(ArticlePage.class);
-		this.tester.assertContains("testing title");
-		this.tester.assertContains("testing teaser");
 	}
+
 }
