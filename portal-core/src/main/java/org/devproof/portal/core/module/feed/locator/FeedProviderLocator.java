@@ -13,25 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.core.module.feed.provider;
+package org.devproof.portal.core.module.feed.locator;
 
-import java.util.List;
+import java.util.Collection;
 
-import org.devproof.portal.core.module.common.page.TemplatePage;
-
-import com.sun.syndication.feed.synd.SyndFeed;
+import org.devproof.portal.core.module.feed.provider.FeedProvider;
 
 /**
+ * Locates feed providers
+ * 
  * @author Carsten Hufe
+ * 
  */
-public interface FeedProvider {
+public interface FeedProviderLocator {
 	/**
-	 * Returns the feed with feed items. See https://rome.dev.java.net/
+	 * Returns the feed providers of all modules
 	 */
-	public SyndFeed getFeed();
-
-	/**
-	 * Returns the supported feed pages where the feed reference is embedded
-	 */
-	public List<Class<? extends TemplatePage>> getSupportedFeedPages();
+	public Collection<FeedProvider> getFeedProviders();
 }
