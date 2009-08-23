@@ -33,7 +33,8 @@ public class ArticleSearchBoxPanel extends BaseSearchBoxPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public ArticleSearchBoxPanel(final String id, final ArticleQuery query, final QueryDataProvider<?> dataProvider, final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public ArticleSearchBoxPanel(final String id, final ArticleQuery query, final QueryDataProvider<?> dataProvider,
+			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id, query, dataProvider, "page.ArticleEditPage", parent, dataview, params);
 		TextField<String> fc = new TextField<String>("allTextFields");
 		getForm().add(fc);

@@ -66,14 +66,14 @@ public class BlogPage extends BlogBasePage {
 		if (!session.hasRight("blog.view")) {
 			query.setRole(session.getRole());
 		}
-		this.blogDataProvider.setQueryObject(query);
+		blogDataProvider.setQueryObject(query);
 
-		this.dataView = new BlogDataView("listBlog", this.blogDataProvider, params);
-		addFilterBox(new BlogSearchBoxPanel("box", query, this.blogDataProvider, this, this.dataView, params));
+		dataView = new BlogDataView("listBlog", blogDataProvider, params);
+		addFilterBox(new BlogSearchBoxPanel("box", query, blogDataProvider, this, dataView, params));
 
-		this.add(this.dataView);
-		this.add(new BookmarkablePagingPanel("paging", this.dataView, BlogPage.class, params));
-		this.addTagCloudBox(this.blogTagService, new PropertyModel<BlogTagEntity>(query, "tag"), BlogPage.class, params);
+		add(dataView);
+		add(new BookmarkablePagingPanel("paging", dataView, BlogPage.class, params));
+		addTagCloudBox(blogTagService, new PropertyModel<BlogTagEntity>(query, "tag"), BlogPage.class, params);
 	}
 
 	private class BlogDataView extends DataView<BlogEntity> {
@@ -83,36 +83,36 @@ public class BlogPage extends BlogBasePage {
 
 		public BlogDataView(final String id, final IDataProvider<BlogEntity> dataProvider, final PageParameters params) {
 			super(id, dataProvider);
-			this.onlyOne = dataProvider.size() == 1;
+			onlyOne = dataProvider.size() == 1;
 			this.params = params;
-			setItemsPerPage(BlogPage.this.configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
+			setItemsPerPage(configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
 		}
 
 		@Override
 		protected void populateItem(final Item<BlogEntity> item) {
 			final BlogEntity blog = item.getModelObject();
 			item.setOutputMarkupId(true);
-			if (this.onlyOne) {
+			if (onlyOne) {
 				setPageTitle(blog.getHeadline());
 			}
 
-			final BlogView blogView = new BlogView("blogView", blog, this.params);
+			final BlogView blogView = new BlogView("blogView", blog, params);
 			if (isAuthor()) {
 				blogView.addOrReplace(new AuthorPanel<BlogEntity>("authorButtons", blog) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onDelete(final AjaxRequestTarget target) {
-						BlogPage.this.blogService.delete(getEntity());
+						blogService.delete(getEntity());
 						item.setVisible(false);
 						target.addComponent(item);
 						target.addComponent(getFeedback());
-						info(this.getString("msg.deleted"));
+						info(getString("msg.deleted"));
 					}
 
 					@Override
 					public void onEdit(final AjaxRequestTarget target) {
-						this.setResponsePage(new BlogEditPage(item.getModelObject()));
+						setResponsePage(new BlogEditPage(item.getModelObject()));
 					}
 				});
 			}
@@ -126,16 +126,18 @@ public class BlogPage extends BlogBasePage {
 
 		public BlogView(final String id, final BlogEntity blogEntity, final PageParameters params) {
 			super(id, "blogView", BlogPage.this);
-			this.add(new WebMarkupContainer("authorButtons"));
-			final BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink", BlogPage.class);
+			add(new WebMarkupContainer("authorButtons"));
+			final BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink",
+					BlogPage.class);
 			if (params == null || !params.containsKey("id")) {
 				headlineLink.setParameter("id", blogEntity.getId());
 			}
 			headlineLink.add(new Label("headlineLabel", blogEntity.getHeadline()));
-			this.add(headlineLink);
-			this.add(new MetaInfoPanel("metaInfo", blogEntity));
-			this.add(new ExtendedLabel("content", blogEntity.getContent()));
-			this.add(new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blogEntity.getTags()), BlogPage.class, params));
+			add(headlineLink);
+			add(new MetaInfoPanel("metaInfo", blogEntity));
+			add(new ExtendedLabel("content", blogEntity.getContent()));
+			add(new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blogEntity.getTags()),
+					BlogPage.class, params));
 		}
 	}
 }

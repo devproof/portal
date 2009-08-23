@@ -37,7 +37,7 @@ final public class BookmarkTagEntity extends BaseTagEntity<BookmarkEntity> {
 
 	@Override
 	public List<BookmarkEntity> getReferencedObjects() {
-		return this.referencedObjects;
+		return referencedObjects;
 	}
 
 	@Override

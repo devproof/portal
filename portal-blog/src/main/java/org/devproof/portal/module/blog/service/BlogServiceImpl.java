@@ -42,24 +42,24 @@ public class BlogServiceImpl implements BlogService, FeedProvider {
 
 	@Override
 	public void delete(final BlogEntity entity) {
-		this.blogDao.delete(entity);
-		this.blogTagService.deleteUnusedTags();
+		blogDao.delete(entity);
+		blogTagService.deleteUnusedTags();
 	}
 
 	@Override
 	public List<BlogEntity> findAll() {
-		return this.blogDao.findAll();
+		return blogDao.findAll();
 	}
 
 	@Override
 	public BlogEntity findById(final Integer id) {
-		return this.blogDao.findById(id);
+		return blogDao.findById(id);
 	}
 
 	@Override
 	public void save(final BlogEntity entity) {
-		this.blogDao.save(entity);
-		this.blogTagService.deleteUnusedTags();
+		blogDao.save(entity);
+		blogTagService.deleteUnusedTags();
 	}
 
 	@Override

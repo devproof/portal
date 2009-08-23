@@ -47,7 +47,7 @@ public class BlogEditPage extends BlogBasePage {
 		super(new PageParameters());
 		this.add(CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS));
 		final RightGridPanel rightGrid = new RightGridPanel("viewright", "blog.view", blog.getAllRights());
-		final TagField<BlogTagEntity> tagField = new TagField<BlogTagEntity>("tags", blog.getTags(), this.blogTagService);
+		final TagField<BlogTagEntity> tagField = new TagField<BlogTagEntity>("tags", blog.getTags(), blogTagService);
 
 		final Form<BlogEntity> form = new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blog)) {
 			private static final long serialVersionUID = 1L;
@@ -58,10 +58,10 @@ public class BlogEditPage extends BlogBasePage {
 				final BlogEntity blog = getModelObject();
 				blog.setAllRights(rightGrid.getSelectedRights());
 				blog.setTags(tagField.getTagsAndStore());
-				BlogEditPage.this.blogService.save(blog);
+				blogService.save(blog);
 				setRedirect(false);
-				this.setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));
-				info(this.getString("msg.saved"));
+				setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));
+				info(getString("msg.saved"));
 			}
 		};
 		form.setOutputMarkupId(true);

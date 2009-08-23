@@ -45,8 +45,9 @@ public class BookmarkBoxPanel extends Panel {
 	public BookmarkBoxPanel(final String id) {
 		super(id);
 		PortalSession session = (PortalSession) getSession();
-		Integer num = this.configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
-		List<BookmarkEntity> bookmarks = this.bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0, num);
+		Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
+		List<BookmarkEntity> bookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0,
+				num);
 
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (BookmarkEntity bookmark : bookmarks) {
@@ -57,7 +58,7 @@ public class BookmarkBoxPanel extends Panel {
 			link.add(new Label("linkName", bookmark.getTitle()));
 			item.add(link);
 		}
-		this.add(repeating);
+		add(repeating);
 		setVisible(bookmarks.size() > 0);
 	}
 }

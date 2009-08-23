@@ -31,19 +31,19 @@ public class ArticleEditPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql",
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql",
 				"insert_article.sql");
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(getNewArticleEditPage());
-		this.tester.assertRenderedPage(ArticleEditPage.class);
+		tester.startPage(getNewArticleEditPage());
+		tester.assertRenderedPage(ArticleEditPage.class);
 	}
 
 	public void testSaveArticle() {
@@ -61,33 +61,33 @@ public class ArticleEditPageTest extends TestCase {
 	}
 
 	private void navigateToArticleEditPage() {
-		this.tester.startPage(ArticlePage.class);
-		this.tester.assertRenderedPage(ArticlePage.class);
-		this.tester.assertContains("This is a sample article and this is the teaser");
-		this.tester.clickLink("listArticle:1:articleView:authorButtons:editLink");
-		this.tester.assertRenderedPage(ArticleEditPage.class);
+		tester.startPage(ArticlePage.class);
+		tester.assertRenderedPage(ArticlePage.class);
+		tester.assertContains("This is a sample article and this is the teaser");
+		tester.clickLink("listArticle:1:articleView:authorButtons:editLink");
+		tester.assertRenderedPage(ArticleEditPage.class);
 	}
 
 	private void callArticleEditPage() {
-		this.tester.startPage(getNewArticleEditPage());
-		this.tester.assertRenderedPage(ArticleEditPage.class);
+		tester.startPage(getNewArticleEditPage());
+		tester.assertRenderedPage(ArticleEditPage.class);
 	}
 
 	private void assertArticlePage() {
-		this.tester.startPage(ArticlePage.class);
-		this.tester.assertRenderedPage(ArticlePage.class);
-		this.tester.assertContains("testing title");
-		this.tester.assertContains("testing teaser");
+		tester.startPage(ArticlePage.class);
+		tester.assertRenderedPage(ArticlePage.class);
+		tester.assertContains("testing title");
+		tester.assertContains("testing teaser");
 	}
 
 	private void assertArticleViewPage(final String contentId) {
 		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewArticleEditPage());
-		this.tester.assertRenderedPage(ArticleViewPage.class);
-		this.tester.assertInfoMessages(expectedMsgs);
-		this.tester.startPage(ArticleViewPage.class, new PageParameters(contentId));
-		this.tester.assertRenderedPage(ArticleViewPage.class);
-		this.tester.assertContains("testing title");
-		this.tester.assertContains("testing content");
+		tester.assertRenderedPage(ArticleViewPage.class);
+		tester.assertInfoMessages(expectedMsgs);
+		tester.startPage(ArticleViewPage.class, new PageParameters(contentId));
+		tester.assertRenderedPage(ArticleViewPage.class);
+		tester.assertContains("testing title");
+		tester.assertContains("testing content");
 	}
 
 	private ArticleEditPage getNewArticleEditPage() {
@@ -95,7 +95,7 @@ public class ArticleEditPageTest extends TestCase {
 	}
 
 	private void submitArticleForm() {
-		FormTester form = this.tester.newFormTester("form");
+		FormTester form = tester.newFormTester("form");
 		form.setValue("tags", "these are tags");
 		form.setValue("title", "testing title");
 		form.setValue("teaser", "testing teaser");

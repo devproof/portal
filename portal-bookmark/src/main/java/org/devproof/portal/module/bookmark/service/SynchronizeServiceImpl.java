@@ -100,7 +100,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	@Override
 	public List<BookmarkEntity> getModifiedDeliciousBookmarks(final DeliciousBean bean) {
 		LOG.debug("Retrieve modified data from delicious");
-		final List<BookmarkEntity> bookmarks = this.bookmarkService.findBookmarksBySource(Source.DELICIOUS);
+		final List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
 		final List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
 		for (final DeliciousPostBean post : bean.getPosts()) {
 			for (final BookmarkEntity bookmark : bookmarks) {
@@ -128,7 +128,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	@Override
 	public List<BookmarkEntity> getNewDeliciousBookmarks(final DeliciousBean bean) {
 		LOG.debug("Retrieve new data from delicious");
-		final List<BookmarkEntity> bookmarks = this.bookmarkService.findAll();
+		final List<BookmarkEntity> bookmarks = bookmarkService.findAll();
 		final List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
 
 		for (final DeliciousPostBean post : bean.getPosts()) {
@@ -140,7 +140,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 				}
 			}
 			if (!found && post.getHref() != null) {
-				final BookmarkEntity newBookmark = this.bookmarkService.newBookmarkEntity();
+				final BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
 				newBookmark.setSource(Source.DELICIOUS);
 				newBookmark.setTitle(post.getDescription());
 				newBookmark.setSyncUsername(bean.getUser());
@@ -163,7 +163,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 		final List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(tokenizer.countTokens());
 		while (tokenizer.hasMoreTokens()) {
 			final String token = tokenizer.nextToken().trim();
-			final BookmarkTagEntity tag = this.tagService.newTagEntity(token);
+			final BookmarkTagEntity tag = tagService.newTagEntity(token);
 			newTags.add(tag);
 		}
 		return newTags;
@@ -173,7 +173,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	public List<BookmarkEntity> getRemovedDeliciousBookmarks(final DeliciousBean bean) {
 		LOG.debug("Retrieve removed data from delicious");
 		final List<BookmarkTagEntity> searchTags = getTagsFromString(bean.getTag());
-		final List<BookmarkEntity> bookmarks = this.bookmarkService.findBookmarksBySource(Source.DELICIOUS);
+		final List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
 		final List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
 		for (final BookmarkEntity bookmark : bookmarks) {
 			boolean found = false;

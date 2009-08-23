@@ -37,12 +37,13 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public boolean existsContentId(final String contentId) {
-		return this.articleDao.existsContentId(contentId) > 0;
+		return articleDao.existsContentId(contentId) > 0;
 	}
 
 	@Override
-	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(final RoleEntity role, final Integer firstResult, final Integer maxResult) {
-		return this.articleDao.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
+	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(final RoleEntity role,
+			final Integer firstResult, final Integer maxResult) {
+		return articleDao.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
 	}
 
 	@Override
@@ -61,34 +62,34 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public void delete(final ArticleEntity entity) {
-		this.articleDao.delete(entity);
-		this.articleTagService.deleteUnusedTags();
+		articleDao.delete(entity);
+		articleTagService.deleteUnusedTags();
 	}
 
 	@Override
 	public List<ArticleEntity> findAll() {
-		return this.articleDao.findAll();
+		return articleDao.findAll();
 	}
 
 	@Override
 	public ArticleEntity findById(final Integer id) {
-		return this.articleDao.findById(id);
+		return articleDao.findById(id);
 	}
 
 	@Override
 	public void save(final ArticleEntity entity) {
-		this.articleDao.save(entity);
-		this.articleTagService.deleteUnusedTags();
+		articleDao.save(entity);
+		articleTagService.deleteUnusedTags();
 	}
 
 	@Override
 	public long getPageCount(final String contentId) {
-		return this.articlePageDao.getPageCount(contentId);
+		return articlePageDao.getPageCount(contentId);
 	}
 
 	@Override
 	public ArticlePageEntity findArticlePageByContentIdAndPage(final String contentId, final Integer page) {
-		return this.articlePageDao.findById(new ArticlePageId(contentId, page));
+		return articlePageDao.findById(new ArticlePageId(contentId, page));
 	}
 
 	@Required

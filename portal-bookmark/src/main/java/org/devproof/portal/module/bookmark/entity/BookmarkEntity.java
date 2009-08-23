@@ -60,21 +60,21 @@ final public class BookmarkEntity extends BaseLinkEntity {
 
 	@Transient
 	public List<RightEntity> getVoteRights() {
-		return getRightsStartingWith(this.allRights, "bookmark.vote");
+		return getRightsStartingWith(allRights, "bookmark.vote");
 	}
 
 	@Transient
 	public List<RightEntity> getVisitRights() {
-		return getRightsStartingWith(this.allRights, "bookmark.visit");
+		return getRightsStartingWith(allRights, "bookmark.visit");
 	}
 
 	@Transient
 	public List<RightEntity> getViewRights() {
-		return getRightsStartingWith(this.allRights, "bookmark.view");
+		return getRightsStartingWith(allRights, "bookmark.view");
 	}
 
 	public List<RightEntity> getAllRights() {
-		return this.allRights;
+		return allRights;
 	}
 
 	public void setAllRights(final List<RightEntity> allRights) {
@@ -82,7 +82,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 	}
 
 	public List<BookmarkTagEntity> getTags() {
-		return this.tags;
+		return tags;
 	}
 
 	public void setTags(final List<BookmarkTagEntity> tags) {
@@ -90,7 +90,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 	}
 
 	public Source getSource() {
-		return this.source;
+		return source;
 	}
 
 	public void setSource(final Source source) {
@@ -98,7 +98,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 	}
 
 	public String getSyncUsername() {
-		return this.syncUsername;
+		return syncUsername;
 	}
 
 	public void setSyncUsername(final String syncUsername) {
@@ -106,7 +106,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 	}
 
 	public String getSyncHash() {
-		return this.syncHash;
+		return syncHash;
 	}
 
 	public void setSyncHash(final String syncHash) {

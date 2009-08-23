@@ -59,10 +59,12 @@ public class ArticleEditPage extends ArticleBasePage {
 		super(new PageParameters());
 		final RightGridPanel viewRight = new RightGridPanel("viewright", "article.view", article.getAllRights());
 		final RightGridPanel readRight = new RightGridPanel("readright", "article.read", article.getAllRights());
-		final TagField<ArticleTagEntity> tagField = new TagField<ArticleTagEntity>("tags", article.getTags(), this.articleTagService);
+		final TagField<ArticleTagEntity> tagField = new TagField<ArticleTagEntity>("tags", article.getTags(),
+				articleTagService);
 		final IModel<String> content = new Model<String>(getStringFromArticlePages(article.getArticlePages()));
 
-		final Form<ArticleEntity> form = new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(article)) {
+		final Form<ArticleEntity> form = new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(
+				article)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -76,7 +78,7 @@ public class ArticleEditPage extends ArticleBasePage {
 				article.setAllRights(allRights);
 				article.setTags(tagField.getTagsAndStore());
 				article.setArticlePages(ArticleEditPage.this.getArticlePagesFromString(content.getObject(), article));
-				ArticleEditPage.this.articleService.save(article);
+				articleService.save(article);
 				setRedirect(false);
 				this.setResponsePage(ArticleViewPage.class, new PageParameters("0=" + article.getContentId()));
 				info(this.getString("msg.saved"));
@@ -99,8 +101,8 @@ public class ArticleEditPage extends ArticleBasePage {
 
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
-				if (ArticleEditPage.this.articleService.existsContentId(ivalidatable.getValue()) && article.getId() == null) {
-					this.error(ivalidatable);
+				if (articleService.existsContentId(ivalidatable.getValue()) && article.getId() == null) {
+					error(ivalidatable);
 				}
 			}
 
@@ -176,7 +178,7 @@ public class ArticleEditPage extends ArticleBasePage {
 			if (parent.getArticlePages() != null && parent.getArticlePages().size() > i) {
 				page = parent.getArticlePages().get(i);
 			} else {
-				page = this.articleService.newArticlePageEntity(parent, i + 1);
+				page = articleService.newArticlePageEntity(parent, i + 1);
 				page.setArticle(parent);
 			}
 			page.setContent(strs[i]);

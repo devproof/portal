@@ -27,7 +27,7 @@ public class DeliciousFormBean implements Serializable {
 	public String tags;
 
 	public String getUsername() {
-		return this.username;
+		return username;
 	}
 
 	public void setUsername(final String username) {
@@ -35,7 +35,7 @@ public class DeliciousFormBean implements Serializable {
 	}
 
 	public String getPassword() {
-		return this.password;
+		return password;
 	}
 
 	public void setPassword(final String password) {
@@ -43,7 +43,7 @@ public class DeliciousFormBean implements Serializable {
 	}
 
 	public String getTags() {
-		return this.tags;
+		return tags;
 	}
 
 	public void setTags(final String tags) {

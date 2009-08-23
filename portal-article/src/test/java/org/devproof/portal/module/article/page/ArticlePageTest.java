@@ -28,18 +28,19 @@ public class ArticlePageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql", "insert_article.sql");
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql",
+				"insert_article.sql");
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(ArticlePage.class);
+		tester.startPage(ArticlePage.class);
 		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(this.tester.getLastRenderedPage().isPageStateless());
-		this.tester.assertRenderedPage(ArticlePage.class);
+		assertTrue(tester.getLastRenderedPage().isPageStateless());
+		tester.assertRenderedPage(ArticlePage.class);
 	}
 }

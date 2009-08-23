@@ -41,7 +41,7 @@ public class ArticlePageId implements Serializable {
 	}
 
 	public String getContentId() {
-		return this.contentId;
+		return contentId;
 	}
 
 	public void setContentId(final String contentId) {
@@ -49,7 +49,7 @@ public class ArticlePageId implements Serializable {
 	}
 
 	public Integer getPage() {
-		return this.page;
+		return page;
 	}
 
 	public void setPage(final Integer page) {
@@ -60,8 +60,8 @@ public class ArticlePageId implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.contentId == null) ? 0 : this.contentId.hashCode());
-		result = prime * result + ((this.page == null) ? 0 : this.page.hashCode());
+		result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
+		result = prime * result + ((page == null) ? 0 : page.hashCode());
 		return result;
 	}
 
@@ -77,18 +77,18 @@ public class ArticlePageId implements Serializable {
 			return false;
 		}
 		ArticlePageId other = (ArticlePageId) obj;
-		if (this.contentId == null) {
+		if (contentId == null) {
 			if (other.contentId != null) {
 				return false;
 			}
-		} else if (!this.contentId.equals(other.contentId)) {
+		} else if (!contentId.equals(other.contentId)) {
 			return false;
 		}
-		if (this.page == null) {
+		if (page == null) {
 			if (other.page != null) {
 				return false;
 			}
-		} else if (!this.page.equals(other.page)) {
+		} else if (!page.equals(other.page)) {
 			return false;
 		}
 		return true;

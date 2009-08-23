@@ -30,19 +30,19 @@ public class BookmarkEditPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql",
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql",
 				"insert_bookmark.sql");
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(getNewBookmarkEditPage());
-		this.tester.assertRenderedPage(BookmarkEditPage.class);
+		tester.startPage(getNewBookmarkEditPage());
+		tester.assertRenderedPage(BookmarkEditPage.class);
 
 	}
 
@@ -56,13 +56,13 @@ public class BookmarkEditPageTest extends TestCase {
 		navigateToBookmarkEditPage();
 		submitBookmarkForm();
 		assertBookmarkPage();
-		assertFalse(this.tester.getServletResponse().getDocument().contains(
+		assertFalse(tester.getServletResponse().getDocument().contains(
 				"This a sample bookmark and refers to devproof.org"));
 	}
 
 	private void callBookmarkEditPage() {
-		this.tester.startPage(getNewBookmarkEditPage());
-		this.tester.assertRenderedPage(BookmarkEditPage.class);
+		tester.startPage(getNewBookmarkEditPage());
+		tester.assertRenderedPage(BookmarkEditPage.class);
 	}
 
 	private BookmarkEditPage getNewBookmarkEditPage() {
@@ -70,7 +70,7 @@ public class BookmarkEditPageTest extends TestCase {
 	}
 
 	private void submitBookmarkForm() {
-		FormTester form = this.tester.newFormTester("form");
+		FormTester form = tester.newFormTester("form");
 		form.setValue("title", "testing title");
 		form.setValue("description", "testing description");
 		form.setValue("url", "http://www.devproof.org");
@@ -78,20 +78,20 @@ public class BookmarkEditPageTest extends TestCase {
 	}
 
 	private void navigateToBookmarkEditPage() {
-		this.tester.startPage(BookmarkPage.class);
-		this.tester.assertRenderedPage(BookmarkPage.class);
-		this.tester.assertContains("This a sample bookmark and refers to devproof.org");
-		this.tester.clickLink("listBookmark:1:bookmarkView:authorButtons:editLink");
-		this.tester.assertRenderedPage(BookmarkEditPage.class);
+		tester.startPage(BookmarkPage.class);
+		tester.assertRenderedPage(BookmarkPage.class);
+		tester.assertContains("This a sample bookmark and refers to devproof.org");
+		tester.clickLink("listBookmark:1:bookmarkView:authorButtons:editLink");
+		tester.assertRenderedPage(BookmarkEditPage.class);
 	}
 
 	private void assertBookmarkPage() {
 		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewBookmarkEditPage());
-		this.tester.assertRenderedPage(BookmarkPage.class);
-		this.tester.assertInfoMessages(expectedMsgs);
-		this.tester.startPage(BookmarkPage.class);
-		this.tester.assertRenderedPage(BookmarkPage.class);
-		this.tester.assertContains("testing title");
-		this.tester.assertContains("testing description");
+		tester.assertRenderedPage(BookmarkPage.class);
+		tester.assertInfoMessages(expectedMsgs);
+		tester.startPage(BookmarkPage.class);
+		tester.assertRenderedPage(BookmarkPage.class);
+		tester.assertContains("testing title");
+		tester.assertContains("testing description");
 	}
 }

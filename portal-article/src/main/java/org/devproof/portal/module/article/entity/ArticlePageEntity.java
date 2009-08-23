@@ -54,7 +54,7 @@ final public class ArticlePageEntity implements Serializable {
 	// private Integer version = 1;
 
 	public String getContent() {
-		return this.content;
+		return content;
 	}
 
 	public void setContent(final String content) {
@@ -62,7 +62,7 @@ final public class ArticlePageEntity implements Serializable {
 	}
 
 	public ArticleEntity getArticle() {
-		return this.article;
+		return article;
 	}
 
 	public void setArticle(final ArticleEntity article) {
@@ -78,7 +78,7 @@ final public class ArticlePageEntity implements Serializable {
 	// }
 
 	public String getContentId() {
-		return this.contentId;
+		return contentId;
 	}
 
 	public void setContentId(final String contentId) {
@@ -86,7 +86,7 @@ final public class ArticlePageEntity implements Serializable {
 	}
 
 	public Integer getPage() {
-		return this.page;
+		return page;
 	}
 
 	public void setPage(final Integer page) {
@@ -97,8 +97,8 @@ final public class ArticlePageEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.contentId == null) ? 0 : this.contentId.hashCode());
-		result = prime * result + ((this.page == null) ? 0 : this.page.hashCode());
+		result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
+		result = prime * result + ((page == null) ? 0 : page.hashCode());
 		return result;
 	}
 
@@ -114,18 +114,18 @@ final public class ArticlePageEntity implements Serializable {
 			return false;
 		}
 		ArticlePageEntity other = (ArticlePageEntity) obj;
-		if (this.contentId == null) {
+		if (contentId == null) {
 			if (other.contentId != null) {
 				return false;
 			}
-		} else if (!this.contentId.equals(other.contentId)) {
+		} else if (!contentId.equals(other.contentId)) {
 			return false;
 		}
-		if (this.page == null) {
+		if (page == null) {
 			if (other.page != null) {
 				return false;
 			}
-		} else if (!this.page.equals(other.page)) {
+		} else if (!page.equals(other.page)) {
 			return false;
 		}
 		return true;

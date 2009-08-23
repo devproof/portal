@@ -40,7 +40,7 @@ final public class ArticleTagEntity extends BaseTagEntity<ArticleEntity> {
 	 */
 	@Override
 	public List<ArticleEntity> getReferencedObjects() {
-		return this.referencedObjects;
+		return referencedObjects;
 	}
 
 	/**

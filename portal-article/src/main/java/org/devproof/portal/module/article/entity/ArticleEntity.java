@@ -68,16 +68,16 @@ final public class ArticleEntity extends BaseEntity {
 
 	@Transient
 	public List<RightEntity> getViewRights() {
-		return getRightsStartingWith(this.allRights, "article.view");
+		return getRightsStartingWith(allRights, "article.view");
 	}
 
 	@Transient
 	public List<RightEntity> getReadRights() {
-		return getRightsStartingWith(this.allRights, "article.read");
+		return getRightsStartingWith(allRights, "article.read");
 	}
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -85,7 +85,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public String getContentId() {
-		return this.contentId;
+		return contentId;
 	}
 
 	public void setContentId(final String contentId) {
@@ -93,7 +93,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	public void setTitle(final String title) {
@@ -101,7 +101,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public String getTeaser() {
-		return this.teaser;
+		return teaser;
 	}
 
 	public void setTeaser(final String teaser) {
@@ -109,7 +109,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public List<ArticlePageEntity> getArticlePages() {
-		return this.articlePages;
+		return articlePages;
 	}
 
 	public void setArticlePages(final List<ArticlePageEntity> articlePages) {
@@ -117,7 +117,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public List<RightEntity> getAllRights() {
-		return this.allRights;
+		return allRights;
 	}
 
 	public void setAllRights(final List<RightEntity> allRights) {
@@ -125,7 +125,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public List<ArticleTagEntity> getTags() {
-		return this.tags;
+		return tags;
 	}
 
 	public void setTags(final List<ArticleTagEntity> tags) {
@@ -136,7 +136,7 @@ final public class ArticleEntity extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -152,11 +152,11 @@ final public class ArticleEntity extends BaseEntity {
 			return false;
 		}
 		final ArticleEntity other = (ArticleEntity) obj;
-		if (this.id == null) {
+		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;

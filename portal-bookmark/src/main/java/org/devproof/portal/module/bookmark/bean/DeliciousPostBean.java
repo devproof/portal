@@ -34,30 +34,30 @@ public class DeliciousPostBean implements Serializable {
 	private String meta;
 
 	public String getHref() {
-		return this.href;
+		return href;
 	}
 
 	public String getHash() {
-		return this.hash;
+		return hash;
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public String getTag() {
-		return this.tag;
+		return tag;
 	}
 
 	public String getTime() {
-		return this.time;
+		return time;
 	}
 
 	public String getExtended() {
-		return this.extended;
+		return extended;
 	}
 
 	public String getMeta() {
-		return this.meta;
+		return meta;
 	}
 }

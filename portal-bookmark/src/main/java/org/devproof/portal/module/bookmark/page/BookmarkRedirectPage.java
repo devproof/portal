@@ -36,9 +36,9 @@ public class BookmarkRedirectPage extends WebPage {
 		super(params);
 		PortalSession session = (PortalSession) getSession();
 		if (params.containsKey("0")) {
-			BookmarkEntity bookmarkEntity = this.bookmarkService.findById(params.getAsInteger("0", 0));
+			BookmarkEntity bookmarkEntity = bookmarkService.findById(params.getAsInteger("0", 0));
 			if (bookmarkEntity != null && session.hasRight("bookmark.visit", bookmarkEntity.getVisitRights())) {
-				this.bookmarkService.incrementHits(bookmarkEntity);
+				bookmarkService.incrementHits(bookmarkEntity);
 				getRequestCycle().setRequestTarget(new RedirectRequestTarget(bookmarkEntity.getUrl()));
 			}
 		}
