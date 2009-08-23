@@ -49,11 +49,14 @@ public class DownloadEditPage extends DownloadBasePage {
 	public DownloadEditPage(final DownloadEntity download) {
 		super(new PageParameters());
 		final RightGridPanel viewRights = new RightGridPanel("viewRights", "download.view", download.getAllRights());
-		final RightGridPanel downloadRights = new RightGridPanel("downloadRights", "download.download", download.getAllRights());
+		final RightGridPanel downloadRights = new RightGridPanel("downloadRights", "download.download", download
+				.getAllRights());
 		final RightGridPanel voteRights = new RightGridPanel("voteRights", "download.vote", download.getAllRights());
-		final TagField<DownloadTagEntity> tagField = new TagField<DownloadTagEntity>("tags", download.getTags(), this.downloadTagService);
+		final TagField<DownloadTagEntity> tagField = new TagField<DownloadTagEntity>("tags", download.getTags(),
+				downloadTagService);
 
-		final Form<DownloadEntity> form = new Form<DownloadEntity>("form", new CompoundPropertyModel<DownloadEntity>(download)) {
+		final Form<DownloadEntity> form = new Form<DownloadEntity>("form", new CompoundPropertyModel<DownloadEntity>(
+				download)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -67,10 +70,10 @@ public class DownloadEditPage extends DownloadBasePage {
 				download.setAllRights(selectedRights);
 				download.setTags(tagField.getTagsAndStore());
 				download.setBroken(Boolean.FALSE);
-				DownloadEditPage.this.downloadService.save(download);
+				downloadService.save(download);
 				setRedirect(false);
-				info(this.getString("msg.saved"));
-				this.setResponsePage(new DownloadPage(new PageParameters("id=" + download.getId())));
+				info(getString("msg.saved"));
+				setResponsePage(new DownloadPage(new PageParameters("id=" + download.getId())));
 			}
 		};
 		form.setOutputMarkupId(true);
@@ -78,7 +81,7 @@ public class DownloadEditPage extends DownloadBasePage {
 		form.add(viewRights);
 		form.add(downloadRights);
 		form.add(voteRights);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 

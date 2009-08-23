@@ -54,7 +54,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	private Boolean broken = Boolean.FALSE;
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -62,7 +62,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	}
 
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	public void setTitle(final String title) {
@@ -70,7 +70,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public void setDescription(final String description) {
@@ -78,7 +78,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	}
 
 	public String getUrl() {
-		return this.url;
+		return url;
 	}
 
 	public void setUrl(final String url) {
@@ -86,7 +86,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	}
 
 	public Integer getHits() {
-		return this.hits;
+		return hits;
 	}
 
 	public void setHits(final Integer hits) {
@@ -94,7 +94,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	}
 
 	public Integer getNumberOfVotes() {
-		return this.numberOfVotes;
+		return numberOfVotes;
 	}
 
 	public void setNumberOfVotes(final Integer numberOfVotes) {
@@ -102,7 +102,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	}
 
 	public Integer getSumOfRating() {
-		return this.sumOfRating;
+		return sumOfRating;
 	}
 
 	public void setSumOfRating(final Integer sumOfRating) {
@@ -110,7 +110,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	}
 
 	public Boolean getBroken() {
-		return this.broken;
+		return broken;
 	}
 
 	public void setBroken(final Boolean broken) {
@@ -119,7 +119,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 
 	@Transient
 	public Double getCalculatedRating() {
-		double back = ((double) this.sumOfRating) / ((double) this.numberOfVotes);
+		double back = ((double) sumOfRating) / ((double) numberOfVotes);
 		if (Double.isInfinite(back) || Double.isNaN(back)) {
 			back = 0d;
 		}
@@ -130,7 +130,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -146,11 +146,11 @@ public abstract class BaseLinkEntity extends BaseEntity {
 			return false;
 		}
 		BaseLinkEntity other = (BaseLinkEntity) obj;
-		if (this.id == null) {
+		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;

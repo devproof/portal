@@ -111,7 +111,7 @@ public class SettingsPage extends TemplatePage {
 			protected void onValidate(final IValidatable<String> ivalidatable) {
 				if (StringUtils.isNotEmpty(ivalidatable.getValue())
 						&& !user.getPasswordMD5().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
-					this.error(ivalidatable, "wrong.oldPassword");
+					error(ivalidatable, "wrong.oldPassword");
 				}
 			}
 		});
@@ -172,7 +172,7 @@ public class SettingsPage extends TemplatePage {
 
 					emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
 							placeholder);
-					setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("reconfirm.email")));
+					setResponsePage(MessagePage.getMessagePageWithLogout(getString("reconfirm.email")));
 				}
 				userService.save(user);
 			}

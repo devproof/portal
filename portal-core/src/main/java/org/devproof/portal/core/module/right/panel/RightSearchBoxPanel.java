@@ -36,7 +36,7 @@ public abstract class RightSearchBoxPanel extends Panel {
 		super(id);
 		Form<RightQuery> form = new Form<RightQuery>("searchForm", new CompoundPropertyModel<RightQuery>(query));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<?> fc = null;
 		fc = new TextField<String>("rightAndDescription");

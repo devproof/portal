@@ -77,22 +77,23 @@ public class DownloadPage extends DownloadBasePage {
 		if (!session.hasRight("download.view")) {
 			query.setRole(session.getRole());
 		}
-		if (!isAuthor() && this.configurationService.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_HIDE_BROKEN)) {
+		if (!isAuthor() && configurationService.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_HIDE_BROKEN)) {
 			query.setBroken(false);
 		}
 
-		this.downloadDataProvider.setQueryObject(query);
+		downloadDataProvider.setQueryObject(query);
 		final DownloadDataView dataView = new DownloadDataView("listDownload", params);
-		this.add(dataView);
-		addFilterBox(new DownloadSearchBoxPanel("box", query, this.downloadDataProvider, this, dataView, params));
+		add(dataView);
+		addFilterBox(new DownloadSearchBoxPanel("box", query, downloadDataProvider, this, dataView, params));
 
-		this.add(new BookmarkablePagingPanel("paging", dataView, DownloadPage.class, params));
-		this.addTagCloudBox(this.downloadTagService, new PropertyModel<DownloadTagEntity>(query, "tag"), DownloadPage.class, params);
+		add(new BookmarkablePagingPanel("paging", dataView, DownloadPage.class, params));
+		addTagCloudBox(downloadTagService, new PropertyModel<DownloadTagEntity>(query, "tag"), DownloadPage.class,
+				params);
 		// link from upload center
 		if (params != null && params.containsKey("create")) {
-			final DownloadEntity newDownload = this.downloadService.newDownloadEntity();
+			final DownloadEntity newDownload = downloadService.newDownloadEntity();
 			newDownload.setUrl(params.getString("create"));
-			this.setResponsePage(new DownloadEditPage(newDownload));
+			setResponsePage(new DownloadEditPage(newDownload));
 		}
 	}
 
@@ -102,37 +103,37 @@ public class DownloadPage extends DownloadBasePage {
 		private final boolean onlyOne;
 
 		public DownloadDataView(final String id, final PageParameters params) {
-			super(id, DownloadPage.this.downloadDataProvider);
+			super(id, downloadDataProvider);
 			this.params = params;
-			this.onlyOne = DownloadPage.this.downloadDataProvider.size() == 1;
-			setItemsPerPage(DownloadPage.this.configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOADS_PER_PAGE));
+			onlyOne = downloadDataProvider.size() == 1;
+			setItemsPerPage(configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOADS_PER_PAGE));
 		}
 
 		@Override
 		protected void populateItem(final Item<DownloadEntity> item) {
 			final DownloadEntity download = item.getModelObject();
 			item.setOutputMarkupId(true);
-			if (this.onlyOne) {
+			if (onlyOne) {
 				setPageTitle(download.getTitle());
 			}
 
-			final DownloadView downloadViewPanel = new DownloadView("downloadView", download, this.params);
+			final DownloadView downloadViewPanel = new DownloadView("downloadView", download, params);
 			if (isAuthor()) {
 				downloadViewPanel.addOrReplace(new AuthorPanel<DownloadEntity>("authorButtons", download) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onDelete(final AjaxRequestTarget target) {
-						DownloadPage.this.downloadService.delete(getEntity());
+						downloadService.delete(getEntity());
 						item.setVisible(false);
 						target.addComponent(item);
 						target.addComponent(getFeedback());
-						info(this.getString("msg.deleted"));
+						info(getString("msg.deleted"));
 					}
 
 					@Override
 					public void onEdit(final AjaxRequestTarget target) {
-						this.setResponsePage(new DownloadEditPage(download));
+						setResponsePage(new DownloadEditPage(download));
 					}
 				});
 			}
@@ -149,24 +150,29 @@ public class DownloadPage extends DownloadBasePage {
 		public DownloadView(final String id, final DownloadEntity downloadEntity, final PageParameters params) {
 			super(id, "downloadView", DownloadPage.this);
 			final PortalSession session = (PortalSession) getSession();
-			final boolean voteEnabled = DownloadPage.this.configurationService.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_VOTE_ENABLED);
+			final boolean voteEnabled = configurationService
+					.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_VOTE_ENABLED);
 			final boolean allowedToDownload = session.hasRight("download.download", downloadEntity.getDownloadRights());
 			final boolean allowedToVote = session.hasRight("download.vote", downloadEntity.getVoteRights());
-			this.hasVoted.setObject(!allowedToVote);
-			this.add(new WebMarkupContainer("authorButtons"));
-			this.add(new Label("broken", DownloadPage.this.getString("broken")).setVisible(downloadEntity.getBroken() != null && downloadEntity.getBroken()));
-			final BookmarkablePageLink<DownloadRedirectPage> titleLink = new BookmarkablePageLink<DownloadRedirectPage>("titleLink", DownloadRedirectPage.class);
+			hasVoted.setObject(!allowedToVote);
+			add(new WebMarkupContainer("authorButtons"));
+			add(new Label("broken", DownloadPage.this.getString("broken"))
+					.setVisible(downloadEntity.getBroken() != null && downloadEntity.getBroken()));
+			final BookmarkablePageLink<DownloadRedirectPage> titleLink = new BookmarkablePageLink<DownloadRedirectPage>(
+					"titleLink", DownloadRedirectPage.class);
 			titleLink.setParameter("0", downloadEntity.getId());
 			titleLink.setEnabled(allowedToDownload);
 			titleLink.setEnabled(allowedToDownload);
 			titleLink.add(new Label("titleLabel", downloadEntity.getTitle()));
-			this.add(titleLink);
-			this.add(new MetaInfoPanel("metaInfo", downloadEntity));
-			this.add(new ExtendedLabel("description", downloadEntity.getDescription()));
-			this.add(new Label("hits", String.valueOf(downloadEntity.getHits())));
-			this.add(new ContentTagPanel<DownloadTagEntity>("tags", new ListModel<DownloadTagEntity>(downloadEntity.getTags()), DownloadPage.class, params));
-			this.add(new StatelessRatingPanel("vote", new PropertyModel<Integer>(downloadEntity, "calculatedRating"), Model.of(5), new PropertyModel<Integer>(downloadEntity, "numberOfVotes"),
-					this.hasVoted, true, params, downloadEntity.getId()) {
+			add(titleLink);
+			add(new MetaInfoPanel("metaInfo", downloadEntity));
+			add(new ExtendedLabel("description", downloadEntity.getDescription()));
+			add(new Label("hits", String.valueOf(downloadEntity.getHits())));
+			add(new ContentTagPanel<DownloadTagEntity>("tags", new ListModel<DownloadTagEntity>(downloadEntity
+					.getTags()), DownloadPage.class, params));
+			add(new StatelessRatingPanel("vote", new PropertyModel<Integer>(downloadEntity, "calculatedRating"), Model
+					.of(5), new PropertyModel<Integer>(downloadEntity, "numberOfVotes"), hasVoted, true, params,
+					downloadEntity.getId()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -177,20 +183,22 @@ public class DownloadPage extends DownloadBasePage {
 				@Override
 				protected void onRated(final int rating) {
 					if (allowedToVote) {
-						DownloadView.this.hasVoted.setObject(Boolean.TRUE);
-						DownloadPage.this.downloadService.rateDownload(rating, downloadEntity);
+						hasVoted.setObject(Boolean.TRUE);
+						downloadService.rateDownload(rating, downloadEntity);
 						info(DownloadPage.this.getString("voteCounted"));
 					}
 				}
 			}.setVisible(voteEnabled));
 
-			final BookmarkablePageLink<?> downloadLink = new BookmarkablePageLink<Void>("downloadLink", DownloadRedirectPage.class);
+			final BookmarkablePageLink<?> downloadLink = new BookmarkablePageLink<Void>("downloadLink",
+					DownloadRedirectPage.class);
 			downloadLink.add(new Image("downloadImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG));
 			downloadLink.setParameter("0", downloadEntity.getId());
 			final String labelKey = allowedToDownload ? "downloadNow" : "loginToDownload";
 			final Label downloadLinkLabel = new Label("downloadLinkLabel", DownloadPage.this.getString(labelKey));
-			this.add(downloadLink.add(downloadLinkLabel).setEnabled(allowedToDownload));
-			final String[] infoFields = new String[] { "softwareVersion", "downloadSize", "manufacturer", "licence", "price" };
+			add(downloadLink.add(downloadLinkLabel).setEnabled(allowedToDownload));
+			final String[] infoFields = new String[] { "softwareVersion", "downloadSize", "manufacturer", "licence",
+					"price" };
 			final RepeatingView repeating = new RepeatingView("infoFieldsRepeating");
 			for (final String fieldName : infoFields) {
 				try {
@@ -201,11 +209,14 @@ public class DownloadPage extends DownloadBasePage {
 						final WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 						repeating.add(item);
 						item.add(new Label("label", DownloadPage.this.getString(fieldName)));
-						if ("manufacturer".equals(fieldName) && StringUtils.isNotEmpty(downloadEntity.getManufacturerHomepage())) {
-							final ExternalLink link = new ExternalLink("link", downloadEntity.getManufacturerHomepage(), value);
+						if ("manufacturer".equals(fieldName)
+								&& StringUtils.isNotEmpty(downloadEntity.getManufacturerHomepage())) {
+							final ExternalLink link = new ExternalLink("link",
+									downloadEntity.getManufacturerHomepage(), value);
 							item.add(new Fragment("info", "linkFragment", DownloadPage.this).add(link));
 						} else {
-							item.add(new Fragment("info", "labelFragment", DownloadPage.this).add(new Label("label", value)));
+							item.add(new Fragment("info", "labelFragment", DownloadPage.this).add(new Label("label",
+									value)));
 						}
 					}
 				} catch (final IllegalArgumentException e) {
@@ -216,7 +227,7 @@ public class DownloadPage extends DownloadBasePage {
 					throw new UnhandledException(e);
 				}
 			}
-			this.add(repeating);
+			add(repeating);
 		}
 	}
 }

@@ -111,14 +111,14 @@ public class ArticlePage extends ArticleBasePage {
 						item.setVisible(false);
 						target.addComponent(item);
 						target.addComponent(getFeedback());
-						info(this.getString("msg.deleted"));
+						info(getString("msg.deleted"));
 					}
 
 					@Override
 					public void onEdit(final AjaxRequestTarget target) {
 						// Reload because LazyIntialization occur
 						final ArticleEntity tmp = articleService.findById(article.getId());
-						this.setResponsePage(new ArticleEditPage(tmp));
+						setResponsePage(new ArticleEditPage(tmp));
 					}
 				});
 			}

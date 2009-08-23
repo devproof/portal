@@ -118,7 +118,7 @@ public class ForgotPasswordPage extends TemplatePage {
 				}
 
 				if (users.size() == 0) {
-					error(this.getString("not.found"));
+					error(getString("not.found"));
 				} else {
 					for (UserEntity user : users) {
 						user.setChangedAt(PortalUtil.now());
@@ -136,7 +136,7 @@ public class ForgotPasswordPage extends TemplatePage {
 						emailService.sendEmail(configurationService
 								.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL), placeholder);
 					}
-					setResponsePage(MessagePage.getMessagePage(this.getString("email.sent")));
+					setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
 				}
 			}
 		});

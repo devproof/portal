@@ -188,7 +188,7 @@ public class BookmarkPage extends BookmarkBasePage {
 			bookmarkLink.setParameter("0", bookmarkEntity.getId());
 			final String labelKey = allowedToVisit ? "visitNow" : "loginToVisit";
 			final Label bookmarkLinkLabel = new Label("bookmarkLinkLabel", BookmarkPage.this.getString(labelKey));
-			this.add(bookmarkLink.add(bookmarkLinkLabel).setEnabled(allowedToVisit));
+			add(bookmarkLink.add(bookmarkLinkLabel).setEnabled(allowedToVisit));
 		}
 	}
 }

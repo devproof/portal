@@ -43,20 +43,21 @@ public class DownloadRedirectPage extends WebPage {
 		super(params);
 		PortalSession session = (PortalSession) getSession();
 		if (params.containsKey("0")) {
-			DownloadEntity downloadEntity = this.downloadService.findById(params.getAsInteger("0", 0));
+			DownloadEntity downloadEntity = downloadService.findById(params.getAsInteger("0", 0));
 			if (downloadEntity != null && session.hasRight("download.download", downloadEntity.getDownloadRights())) {
-				this.downloadService.incrementHits(downloadEntity);
+				downloadService.incrementHits(downloadEntity);
 				if (downloadEntity.getUrl().startsWith("file:/")) {
 					try {
 						URI uri = new URI(downloadEntity.getUrl());
 						final File downloadFile = new File(uri);
 						if (downloadFile.canRead()) {
-							getRequestCycle().setRequestTarget(new ResourceStreamRequestTarget(new FileResourceStream(downloadFile)) {
-								@Override
-								public String getFileName() {
-									return downloadFile.getName();
-								}
-							});
+							getRequestCycle().setRequestTarget(
+									new ResourceStreamRequestTarget(new FileResourceStream(downloadFile)) {
+										@Override
+										public String getFileName() {
+											return downloadFile.getName();
+										}
+									});
 						}
 					} catch (URISyntaxException e) {
 						// do nothing

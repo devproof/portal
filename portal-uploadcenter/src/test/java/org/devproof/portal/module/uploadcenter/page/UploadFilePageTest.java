@@ -30,17 +30,17 @@ public class UploadFilePageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(new UploadFilePage(new File("./")));
-		this.tester.assertRenderedPage(UploadFilePage.class);
+		tester.startPage(new UploadFilePage(new File("./")));
+		tester.assertRenderedPage(UploadFilePage.class);
 	}
 }

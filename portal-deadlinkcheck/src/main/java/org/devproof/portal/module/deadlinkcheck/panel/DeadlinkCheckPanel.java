@@ -61,11 +61,11 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
-		this.add(feedback);
+		add(feedback);
 
 		final Form<?> form = new Form<Object>("form");
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		final ProgressionModel model = new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
@@ -73,7 +73,8 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 			// Get current progress from page field
 			@Override
 			protected Progression getProgression() {
-				String descr = new StringResourceModel(section + "Progress", DeadlinkCheckPanel.this, null, new Object[] { DeadlinkCheckPanel.this.actualItem, DeadlinkCheckPanel.this.maxItem })
+				String descr = new StringResourceModel(section + "Progress", DeadlinkCheckPanel.this, null,
+						new Object[] { DeadlinkCheckPanel.this.actualItem, DeadlinkCheckPanel.this.maxItem })
 						.getString();
 				return new Progression(DeadlinkCheckPanel.this.progressInPercent, descr);
 			}
@@ -83,14 +84,15 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 
 			@Override
 			protected void onFinished(final AjaxRequestTarget target) {
-				info(new StringResourceModel(section + "Finished", this, null, new Object[] { DeadlinkCheckPanel.this.brokenFound }).getString());
+				info(new StringResourceModel(section + "Finished", this, null,
+						new Object[] { DeadlinkCheckPanel.this.brokenFound }).getString());
 				target.addComponent(feedback);
 			}
 		};
 		form.add(bar);
 
-		this.add(new Label("title", this.getString(section + "Title")));
-		form.add(new Label("description", this.getString(section + "Description")));
+		add(new Label("title", getString(section + "Title")));
+		form.add(new Label("description", getString(section + "Description")));
 
 		final String baseUrl = RequestUtils.toAbsolutePath("");
 
@@ -103,7 +105,8 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 				new Thread() {
 					@Override
 					public void run() {
-						Protocol.registerProtocol("https", new Protocol("https", new EasySSLProtocolSocketFactory(), 443));
+						Protocol.registerProtocol("https", new Protocol("https", new EasySSLProtocolSocketFactory(),
+								443));
 
 						HttpClient client = new HttpClient();
 						for (T link : listToCheck) {
@@ -120,7 +123,8 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 									isBroken = true;
 								}
 							} else {
-								if (!url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://")) {
+								if (!url.startsWith("http://") && !url.startsWith("https://")
+										&& !url.startsWith("ftp://")) {
 									if (url.startsWith("/")) {
 										url = url.substring(1);
 									}

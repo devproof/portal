@@ -78,7 +78,7 @@ public abstract class UserEditPanel extends Panel {
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
 				if (userService.existsUsername(ivalidatable.getValue()) && isCreate) {
-					this.error(ivalidatable);
+					error(ivalidatable);
 				}
 			}
 

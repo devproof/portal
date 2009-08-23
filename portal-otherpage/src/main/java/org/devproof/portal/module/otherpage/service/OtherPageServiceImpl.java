@@ -29,12 +29,12 @@ public class OtherPageServiceImpl implements OtherPageService {
 
 	@Override
 	public boolean existsContentId(final String contentId) {
-		return this.otherPageDao.existsContentId(contentId) > 0;
+		return otherPageDao.existsContentId(contentId) > 0;
 	}
 
 	@Override
 	public OtherPageEntity findOtherPageByContentId(final String contentId) {
-		return this.otherPageDao.findOtherPageByContentId(contentId);
+		return otherPageDao.findOtherPageByContentId(contentId);
 	}
 
 	@Override
@@ -44,22 +44,22 @@ public class OtherPageServiceImpl implements OtherPageService {
 
 	@Override
 	public void delete(final OtherPageEntity entity) {
-		this.otherPageDao.delete(entity);
+		otherPageDao.delete(entity);
 	}
 
 	@Override
 	public List<OtherPageEntity> findAll() {
-		return this.otherPageDao.findAll();
+		return otherPageDao.findAll();
 	}
 
 	@Override
 	public OtherPageEntity findById(final Integer id) {
-		return this.otherPageDao.findById(id);
+		return otherPageDao.findById(id);
 	}
 
 	@Override
 	public void save(final OtherPageEntity entity) {
-		this.otherPageDao.save(entity);
+		otherPageDao.save(entity);
 	}
 
 	@Required

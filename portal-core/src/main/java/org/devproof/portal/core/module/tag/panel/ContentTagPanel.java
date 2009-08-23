@@ -42,7 +42,7 @@ public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 	public ContentTagPanel(final String id, final IModel<List<T>> tagModel, final Class<? extends Page> page,
 			final PageParameters params) {
 		super(id);
-		this.add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
+		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
 		String selectedTag = null;
 		if (params != null && params.containsKey("tag")) {
 			selectedTag = params.getString("tag");

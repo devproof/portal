@@ -37,10 +37,10 @@ public class ModuleInfoPanel extends Panel {
 		super(id);
 		// List pages
 		RepeatingView tableRow = new RepeatingView("pageRow");
-		this.add(tableRow);
+		add(tableRow);
 		if (module.getPages().isEmpty()) {
 			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
-			row.add(new Label("page", this.getString("nopages")));
+			row.add(new Label("page", getString("nopages")));
 			row.add(new Label("mountPath", ""));
 			tableRow.add(row);
 		} else {
@@ -53,10 +53,10 @@ public class ModuleInfoPanel extends Panel {
 		}
 		// List boxes
 		tableRow = new RepeatingView("boxRow");
-		this.add(tableRow);
+		add(tableRow);
 		if (module.getBoxes().isEmpty()) {
 			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
-			row.add(new Label("box", this.getString("noboxes")));
+			row.add(new Label("box", getString("noboxes")));
 			row.add(new Label("name", ""));
 			tableRow.add(row);
 		} else {
@@ -70,10 +70,10 @@ public class ModuleInfoPanel extends Panel {
 
 		// List entities
 		tableRow = new RepeatingView("entityRow");
-		this.add(tableRow);
+		add(tableRow);
 		if (module.getEntities().isEmpty()) {
 			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
-			row.add(new Label("entity", this.getString("noentities")));
+			row.add(new Label("entity", getString("noentities")));
 			row.add(new Label("table", ""));
 			tableRow.add(row);
 		} else {

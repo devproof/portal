@@ -29,18 +29,19 @@ public class OtherPageViewPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_otherpage.sql", "insert_otherpage.sql");
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_otherpage.sql",
+				"insert_otherpage.sql");
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(OtherPageViewPage.class, new PageParameters("0=about"));
+		tester.startPage(OtherPageViewPage.class, new PageParameters("0=about"));
 		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(this.tester.getLastRenderedPage().isPageStateless());
-		this.tester.assertRenderedPage(OtherPageViewPage.class);
+		assertTrue(tester.getLastRenderedPage().isPageStateless());
+		tester.assertRenderedPage(OtherPageViewPage.class);
 	}
 }

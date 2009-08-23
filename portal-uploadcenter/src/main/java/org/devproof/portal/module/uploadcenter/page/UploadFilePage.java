@@ -48,10 +48,10 @@ public class UploadFilePage extends WebPage {
 	private final File uploadFolder;
 
 	public UploadFilePage(final File uploadFolder) {
-		this.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
+		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		this.uploadFolder = uploadFolder;
 		final FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
-		this.add(uploadFeedback);
+		add(uploadFeedback);
 		final Collection<FileUpload> uploads = new ArrayList<FileUpload>();
 		final IModel<Collection<FileUpload>> uploadModel = new CollectionModel<FileUpload>(uploads);
 
@@ -69,7 +69,8 @@ public class UploadFilePage extends WebPage {
 					try {
 						if (newFile.createNewFile()) {
 							upload.writeTo(newFile);
-							UploadFilePage.this.info(new StringResourceModel("msg.uploaded", UploadFilePage.this, null, new Object[] { upload.getClientFileName() }).getString());
+							UploadFilePage.this.info(new StringResourceModel("msg.uploaded", UploadFilePage.this, null,
+									new Object[] { upload.getClientFileName() }).getString());
 						} else {
 							throw new IllegalStateException("Unable to write file" + newFile);
 						}
@@ -82,9 +83,11 @@ public class UploadFilePage extends WebPage {
 		};
 		// set this form to multipart mode (allways needed for uploads!)
 		uploadForm.setMultiPart(true);
-		uploadForm.add(new MultiFileUploadField("fileInput", uploadModel, this.configurationService.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXFILES)));
-		uploadForm.setMaxSize(Bytes.kilobytes(this.configurationService.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE)));
-		this.add(uploadForm);
+		uploadForm.add(new MultiFileUploadField("fileInput", uploadModel, configurationService
+				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXFILES)));
+		uploadForm.setMaxSize(Bytes.kilobytes(configurationService
+				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE)));
+		add(uploadForm);
 		uploadForm.add(new UploadProgressBar("progress", uploadForm));
 
 	}
@@ -98,6 +101,6 @@ public class UploadFilePage extends WebPage {
 	}
 
 	private Folder getUploadFolder() {
-		return new Folder(this.uploadFolder.getAbsolutePath());
+		return new Folder(uploadFolder.getAbsolutePath());
 	}
 }

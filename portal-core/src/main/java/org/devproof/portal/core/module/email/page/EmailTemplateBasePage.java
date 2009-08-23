@@ -41,6 +41,6 @@ public class EmailTemplateBasePage extends TemplatePage {
 				final EmailTemplateEntity newEntry = emailService.newEmailTemplateEntity();
 				setResponsePage(new EmailTemplateEditPage(newEntry));
 			}
-		}.add(new Label("linkName", this.getString("createLink"))));
+		}.add(new Label("linkName", getString("createLink"))));
 	}
 }

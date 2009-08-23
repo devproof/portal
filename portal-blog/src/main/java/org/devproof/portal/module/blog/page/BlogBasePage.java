@@ -50,7 +50,7 @@ public abstract class BlogBasePage extends TemplatePage {
 					setResponsePage(new BlogEditPage(newEntry));
 				}
 			};
-			addLink.add(new Label("linkName", this.getString("createLink")));
+			addLink.add(new Label("linkName", getString("createLink")));
 			addPageAdminBoxLink(addLink);
 		}
 	}

@@ -58,7 +58,7 @@ public class ArticleBoxPanel extends Panel {
 			link.add(new Label("linkName", article.getTitle()));
 			item.add(link);
 		}
-		this.add(repeating);
+		add(repeating);
 		setVisible(articles.size() > 0);
 	}
 }

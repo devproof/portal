@@ -54,7 +54,7 @@ public class RegisterPage extends TemplatePage {
 		final UserEntity user = userService.newUserEntity();
 		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 
@@ -66,7 +66,7 @@ public class RegisterPage extends TemplatePage {
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
 				if (userService.existsUsername(ivalidatable.getValue())) {
-					this.error(ivalidatable);
+					error(ivalidatable);
 				}
 			}
 
@@ -174,9 +174,9 @@ public class RegisterPage extends TemplatePage {
 		String username = params.getString(PARAM_USER);
 		String key = params.getString(PARAM_KEY);
 		if (userService.activateUser(username, key)) {
-			setResponsePage(MessagePage.getMessagePage(this.getString("confirmed")));
+			setResponsePage(MessagePage.getMessagePage(getString("confirmed")));
 		} else {
-			setResponsePage(MessagePage.getMessagePage(this.getString("notconfirmed")));
+			setResponsePage(MessagePage.getMessagePage(getString("notconfirmed")));
 		}
 	}
 }

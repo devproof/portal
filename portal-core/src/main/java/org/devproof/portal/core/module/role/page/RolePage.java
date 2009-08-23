@@ -84,7 +84,7 @@ public class RolePage extends TemplatePage {
 						target.addComponent(container);
 						target.addComponent(RolePage.this.getFeedback());
 						rightService.refreshGlobalApplicationRights();
-						info(this.getString("msg.saved"));
+						info(getString("msg.saved"));
 						modalWindow.close(target);
 					}
 
@@ -94,7 +94,7 @@ public class RolePage extends TemplatePage {
 				modalWindow.setContent(editRolePanel);
 				modalWindow.show(target);
 			}
-		}.add(new Label("linkName", this.getString("createLink"))));
+		}.add(new Label("linkName", getString("createLink"))));
 
 		RoleQuery query = new RoleQuery();
 		roleDataProvider.setQueryObject(query);
@@ -135,7 +135,7 @@ public class RolePage extends TemplatePage {
 			final RoleEntity role = item.getModelObject();
 
 			item.add(new Label("description", role.getDescription()));
-			item.add(new Label("active", role.getActive() ? this.getString("status.active") : this
+			item.add(new Label("active", role.getActive() ? getString("status.active") : this
 					.getString("status.inactive")));
 
 			item.add(new AjaxLink<RoleEntity>("editLink", Model.of(role)) {

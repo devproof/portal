@@ -56,7 +56,7 @@ public abstract class AuthorPanel<T> extends Panel {
 			}
 		}.add(new Image("editImage", CommonConstants.REF_EDIT_IMG)));
 
-		this.add(new AjaxLink<T>("deleteLink") {
+		add(new AjaxLink<T>("deleteLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override

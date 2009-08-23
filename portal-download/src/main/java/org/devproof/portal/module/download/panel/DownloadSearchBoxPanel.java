@@ -36,7 +36,8 @@ public class DownloadSearchBoxPanel extends BaseSearchBoxPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public DownloadSearchBoxPanel(final String id, final DownloadQuery query, final QueryDataProvider<?> dataProvider, final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public DownloadSearchBoxPanel(final String id, final DownloadQuery query, final QueryDataProvider<?> dataProvider,
+			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id, query, dataProvider, "page.DownloadEditPage", parent, dataview, params);
 		TextField<String> fc = new TextField<String>("allTextFields");
 		getForm().add(fc);

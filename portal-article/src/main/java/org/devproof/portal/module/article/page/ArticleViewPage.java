@@ -65,11 +65,11 @@ public class ArticleViewPage extends ArticleBasePage {
 		final ArticlePageEntity page = articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
 
 		if (page == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("error.page")));
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
 		}
 		if (page != null && !session.hasRight("article.read") && !session.hasRight(page.getArticle().getReadRights())) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
-					.getString("missing.right"), getRequestURL()));
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"),
+					getRequestURL()));
 		}
 		add(new Label("title", page.getArticle().getTitle()));
 		setPageTitle(page.getArticle().getTitle());
@@ -88,9 +88,9 @@ public class ArticleViewPage extends ArticleBasePage {
 					ArticleEntity article = page.getArticle();
 					article = articleService.findById(article.getId());
 					final ArticleEditPage articlePage = new ArticleEditPage(article);
-					this.setResponsePage(articlePage);
+					setResponsePage(articlePage);
 				}
-			}.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + this.getString("msg.deleted"))));
+			}.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted"))));
 		} else {
 			add(new WebMarkupContainer("authorButtons").setVisible(false));
 		}

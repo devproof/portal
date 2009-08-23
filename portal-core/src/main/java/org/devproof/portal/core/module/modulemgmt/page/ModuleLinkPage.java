@@ -32,7 +32,7 @@ public class ModuleLinkPage extends TemplatePage {
 	public ModuleLinkPage(final PageParameters params) {
 		super(params);
 		RepeatingView tableRow = new RepeatingView("repeater");
-		this.add(tableRow);
+		add(tableRow);
 		for (LinkType linkType : LinkType.values()) {
 			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
 			row.add(new ModuleLinkPanel("content", linkType));

@@ -29,17 +29,18 @@ public class DownloadEditPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql", "insert_download.sql");
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql",
+				"insert_download.sql");
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(new DownloadEditPage(new DownloadEntity()));
-		this.tester.assertRenderedPage(DownloadEditPage.class);
+		tester.startPage(new DownloadEditPage(new DownloadEntity()));
+		tester.assertRenderedPage(DownloadEditPage.class);
 	}
 }

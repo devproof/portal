@@ -44,7 +44,7 @@ public class RichTextArea extends TextArea<String> {
 	}
 
 	private void init() {
-		this.add(JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "tinymce/tiny_mce.js"));
+		add(JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "tinymce/tiny_mce.js"));
 		Map<String, Object> variables = new MiniMap<String, Object>(3);
 		variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
 		variables.put("iconcodeImg", PortalUtil.toUrl(CommonConstants.REF_ICONCODE_IMG, getRequest()));

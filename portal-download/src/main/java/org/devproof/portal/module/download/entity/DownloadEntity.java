@@ -59,21 +59,21 @@ final public class DownloadEntity extends BaseLinkEntity {
 
 	@Transient
 	public List<RightEntity> getVoteRights() {
-		return getRightsStartingWith(this.allRights, "download.vote");
+		return getRightsStartingWith(allRights, "download.vote");
 	}
 
 	@Transient
 	public List<RightEntity> getDownloadRights() {
-		return getRightsStartingWith(this.allRights, "download.download");
+		return getRightsStartingWith(allRights, "download.download");
 	}
 
 	@Transient
 	public List<RightEntity> getViewRights() {
-		return getRightsStartingWith(this.allRights, "download.view");
+		return getRightsStartingWith(allRights, "download.view");
 	}
 
 	public String getSoftwareVersion() {
-		return this.softwareVersion;
+		return softwareVersion;
 	}
 
 	public void setSoftwareVersion(final String softwareVersion) {
@@ -81,7 +81,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public String getDownloadSize() {
-		return this.downloadSize;
+		return downloadSize;
 	}
 
 	public void setDownloadSize(final String downloadSize) {
@@ -89,7 +89,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public String getManufacturerHomepage() {
-		return this.manufacturerHomepage;
+		return manufacturerHomepage;
 	}
 
 	public void setManufacturerHomepage(final String manufacturerHomepage) {
@@ -97,7 +97,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public String getLicence() {
-		return this.licence;
+		return licence;
 	}
 
 	public void setLicence(final String licence) {
@@ -105,7 +105,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public String getPrice() {
-		return this.price;
+		return price;
 	}
 
 	public void setPrice(final String price) {
@@ -113,7 +113,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public String getManufacturer() {
-		return this.manufacturer;
+		return manufacturer;
 	}
 
 	public void setManufacturer(final String manufacturer) {
@@ -121,7 +121,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public List<RightEntity> getAllRights() {
-		return this.allRights;
+		return allRights;
 	}
 
 	public void setAllRights(final List<RightEntity> allRights) {
@@ -129,7 +129,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public List<DownloadTagEntity> getTags() {
-		return this.tags;
+		return tags;
 	}
 
 	public void setTags(final List<DownloadTagEntity> tags) {

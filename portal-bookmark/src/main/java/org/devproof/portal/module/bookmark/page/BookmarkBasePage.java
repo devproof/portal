@@ -47,7 +47,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	public BookmarkBasePage(final PageParameters params) {
 		super(params);
-		this.add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
+		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
 		PortalSession session = (PortalSession) getSession();
 		isAuthor = session.hasRight("page.BookmarkEditPage");
 		if (isAuthor) {
@@ -62,7 +62,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 					setResponsePage(new BookmarkEditPage(newBookmark));
 				}
 			};
-			addLink.add(new Label("linkName", this.getString("createLink")));
+			addLink.add(new Label("linkName", getString("createLink")));
 			addPageAdminBoxLink(addLink);
 
 			AjaxLink<BookmarkEntity> deadlinkCheckLink = new AjaxLink<BookmarkEntity>("adminLink") {
@@ -92,7 +92,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 					modalWindow.show(target);
 				}
 			};
-			deadlinkCheckLink.add(new Label("linkName", this.getString("deadlinkCheckLink")));
+			deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
 			addPageAdminBoxLink(deadlinkCheckLink);
 
 			// Synchronize from del.icio.us
@@ -109,7 +109,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 					modalWindow.show(target);
 				}
 			};
-			syncLink.add(new Label("linkName", this.getString("syncLink")));
+			syncLink.add(new Label("linkName", getString("syncLink")));
 			addPageAdminBoxLink(syncLink);
 		} else {
 			modalWindow = new WebMarkupContainer("modalWindow");

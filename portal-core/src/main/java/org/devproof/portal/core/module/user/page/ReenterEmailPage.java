@@ -81,7 +81,7 @@ public class ReenterEmailPage extends TemplatePage {
 
 				emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
 						placeholder);
-				setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("rerequest.email")));
+				setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
 				userService.save(user);
 			}
 		});
