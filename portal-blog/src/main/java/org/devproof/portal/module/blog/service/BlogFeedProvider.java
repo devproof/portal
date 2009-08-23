@@ -22,6 +22,7 @@ import java.util.List;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.module.blog.page.BlogPage;
+import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
@@ -34,6 +35,7 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  * @author Carsten Hufe
  */
 public class BlogFeedProvider implements FeedProvider {
+	private BlogService blogService;
 
 	@Override
 	public SyndFeed getFeed() {
@@ -64,5 +66,10 @@ public class BlogFeedProvider implements FeedProvider {
 		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
 		pages.add(BlogPage.class);
 		return pages;
+	}
+
+	@Required
+	public void setBlogService(final BlogService blogService) {
+		this.blogService = blogService;
 	}
 }
