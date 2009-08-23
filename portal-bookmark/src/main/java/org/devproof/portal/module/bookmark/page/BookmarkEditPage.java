@@ -51,9 +51,11 @@ public class BookmarkEditPage extends BookmarkBasePage {
 		final RightGridPanel viewRights = new RightGridPanel("viewRights", "bookmark.view", bookmark.getAllRights());
 		final RightGridPanel visitRights = new RightGridPanel("visitRights", "bookmark.visit", bookmark.getAllRights());
 		final RightGridPanel voteRights = new RightGridPanel("voteRights", "bookmark.vote", bookmark.getAllRights());
-		final TagField<BookmarkTagEntity> tagField = new TagField<BookmarkTagEntity>("tags", bookmark.getTags(), this.bookmarkTagService);
+		final TagField<BookmarkTagEntity> tagField = new TagField<BookmarkTagEntity>("tags", bookmark.getTags(),
+				bookmarkTagService);
 
-		final Form<BookmarkEntity> form = new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(bookmark)) {
+		final Form<BookmarkEntity> form = new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(
+				bookmark)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -68,7 +70,7 @@ public class BookmarkEditPage extends BookmarkBasePage {
 				bookmark.setTags(tagField.getTagsAndStore());
 				bookmark.setBroken(Boolean.FALSE);
 				bookmark.setSource(Source.MANUAL);
-				BookmarkEditPage.this.bookmarkService.save(bookmark);
+				bookmarkService.save(bookmark);
 				setRedirect(false);
 				info(this.getString("msg.saved"));
 				this.setResponsePage(new BookmarkPage(new PageParameters("id=" + bookmark.getId())));

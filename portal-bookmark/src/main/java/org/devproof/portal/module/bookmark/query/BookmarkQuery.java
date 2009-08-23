@@ -37,7 +37,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 
 	@BeanQuery("e.id = ?")
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -46,7 +46,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 
 	@BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%')")
 	public RoleEntity getRole() {
-		return this.role;
+		return role;
 	}
 
 	public void setRole(final RoleEntity role) {
@@ -55,7 +55,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 
 	@BeanQuery("t = ?")
 	public BookmarkTagEntity getTag() {
-		return this.tag;
+		return tag;
 	}
 
 	public void setTag(final BookmarkTagEntity tag) {
@@ -64,7 +64,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 
 	@BeanQuery("(e.title like '%'||?||'%' or e.description like '%'||?||'%')")
 	public String getAllTextFields() {
-		return this.allTextFields;
+		return allTextFields;
 	}
 
 	public void setAllTextFields(final String allTextFields) {
@@ -73,7 +73,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 
 	@BeanQuery("e.broken = ?")
 	public Boolean getBroken() {
-		return this.broken;
+		return broken;
 	}
 
 	public void setBroken(final Boolean broken) {
@@ -81,6 +81,6 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 	}
 
 	public void clearSelection() {
-		this.tag = null;
+		tag = null;
 	}
 }

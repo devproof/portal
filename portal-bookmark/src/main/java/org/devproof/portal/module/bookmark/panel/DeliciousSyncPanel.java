@@ -82,11 +82,12 @@ public class DeliciousSyncPanel extends Panel {
 
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
-		this.add(feedback);
+		add(feedback);
 		final DeliciousFormBean formBean = new DeliciousFormBean();
-		final Form<DeliciousFormBean> form = new Form<DeliciousFormBean>("form", new CompoundPropertyModel<DeliciousFormBean>(formBean));
+		final Form<DeliciousFormBean> form = new Form<DeliciousFormBean>("form",
+				new CompoundPropertyModel<DeliciousFormBean>(formBean));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		form.add(new RequiredTextField<String>("username"));
 		form.add(new PasswordTextField("password"));
@@ -101,17 +102,19 @@ public class DeliciousSyncPanel extends Panel {
 			@Override
 			protected Progression getProgression() {
 				String descr = "";
-				if (DeliciousSyncPanel.this.deliciousBean != null && DeliciousSyncPanel.this.deliciousBean.hasError()) {
+				if (deliciousBean != null && deliciousBean.hasError()) {
 					descr = DeliciousSyncPanel.this.getString("processError");
-				} else if (DeliciousSyncPanel.this.fetching) {
-					descr = new StringResourceModel("processFetching", DeliciousSyncPanel.this, null, new Object[] { DeliciousSyncPanel.this.actualItem, DeliciousSyncPanel.this.maxItem }).getString();
-				} else if (DeliciousSyncPanel.this.actualItem > 0) {
-					descr = new StringResourceModel("processing", DeliciousSyncPanel.this, null, new Object[] { DeliciousSyncPanel.this.actualItem, DeliciousSyncPanel.this.maxItem }).getString();
+				} else if (fetching) {
+					descr = new StringResourceModel("processFetching", DeliciousSyncPanel.this, null, new Object[] {
+							actualItem, maxItem }).getString();
+				} else if (actualItem > 0) {
+					descr = new StringResourceModel("processing", DeliciousSyncPanel.this, null, new Object[] {
+							actualItem, maxItem }).getString();
 				}
-				int progressInPercent = DeliciousSyncPanel.this.actualItem == 0 && !DeliciousSyncPanel.this.fetching ? 0 : 20;
-				if (DeliciousSyncPanel.this.actualItem > 0) {
-					progressInPercent += (int) (((double) DeliciousSyncPanel.this.actualItem / (double) DeliciousSyncPanel.this.maxItem) * 80d);
-				} else if (DeliciousSyncPanel.this.deliciousBean != null && DeliciousSyncPanel.this.deliciousBean.hasError()) {
+				int progressInPercent = actualItem == 0 && !fetching ? 0 : 20;
+				if (actualItem > 0) {
+					progressInPercent += (int) (((double) actualItem / (double) maxItem) * 80d);
+				} else if (deliciousBean != null && deliciousBean.hasError()) {
 					progressInPercent = 100;
 				}
 				return new Progression(progressInPercent, descr);
@@ -122,17 +125,17 @@ public class DeliciousSyncPanel extends Panel {
 
 			@Override
 			protected void onFinished(final AjaxRequestTarget target) {
-				if (DeliciousSyncPanel.this.deliciousBean != null && DeliciousSyncPanel.this.deliciousBean.hasError()) {
-					if (DeliciousSyncPanel.this.deliciousBean.getHttpCode() == HttpStatus.SC_UNAUTHORIZED) {
+				if (deliciousBean != null && deliciousBean.hasError()) {
+					if (deliciousBean.getHttpCode() == HttpStatus.SC_UNAUTHORIZED) {
 						error(this.getString("loginFailed"));
-					} else if (DeliciousSyncPanel.this.deliciousBean.getHttpCode() == HttpStatus.SC_SERVICE_UNAVAILABLE) {
+					} else if (deliciousBean.getHttpCode() == HttpStatus.SC_SERVICE_UNAVAILABLE) {
 						error(this.getString("serviceNotAvailable"));
 					} else {
-						error(DeliciousSyncPanel.this.deliciousBean.getErrorMessage());
+						error(deliciousBean.getErrorMessage());
 					}
 				} else {
-					info(new StringResourceModel("syncFinished", this, null, new Object[] { DeliciousSyncPanel.this.newBookmarksCount, DeliciousSyncPanel.this.modifiedBookmarksCount,
-							DeliciousSyncPanel.this.deletedBookmarksCount }).getString());
+					info(new StringResourceModel("syncFinished", this, null, new Object[] { newBookmarksCount,
+							modifiedBookmarksCount, deletedBookmarksCount }).getString());
 				}
 				target.addComponent(feedback);
 			}
@@ -154,24 +157,27 @@ public class DeliciousSyncPanel extends Panel {
 				new Thread() {
 					@Override
 					public void run() {
-						DeliciousSyncPanel.this.fetching = true;
-						final DeliciousBean bean = DeliciousSyncPanel.this.synchronizeService.getDataFromDelicious(formBean.username, formBean.password, formBean.tags);
-						DeliciousSyncPanel.this.deliciousBean = bean;
+						fetching = true;
+						final DeliciousBean bean = synchronizeService.getDataFromDelicious(formBean.username,
+								formBean.password, formBean.tags);
+						deliciousBean = bean;
 						if (bean.hasError()) {
 							return;
 						}
-						final List<BookmarkEntity> newBookmarks = DeliciousSyncPanel.this.synchronizeService.getNewDeliciousBookmarks(bean);
-						DeliciousSyncPanel.this.newBookmarksCount = newBookmarks.size();
-						final List<BookmarkEntity> modifiedBookmarks = DeliciousSyncPanel.this.synchronizeService.getModifiedDeliciousBookmarks(bean);
-						DeliciousSyncPanel.this.modifiedBookmarksCount = modifiedBookmarks.size();
-						DeliciousSyncPanel.this.maxItem = bean.getPosts().size();
-						DeliciousSyncPanel.this.fetching = false;
-						final Collection<BookmarkEntity> bookmarksToSave = new ArrayList<BookmarkEntity>(DeliciousSyncPanel.this.newBookmarksCount + DeliciousSyncPanel.this.modifiedBookmarksCount);
+						final List<BookmarkEntity> newBookmarks = synchronizeService.getNewDeliciousBookmarks(bean);
+						newBookmarksCount = newBookmarks.size();
+						final List<BookmarkEntity> modifiedBookmarks = synchronizeService
+								.getModifiedDeliciousBookmarks(bean);
+						modifiedBookmarksCount = modifiedBookmarks.size();
+						maxItem = bean.getPosts().size();
+						fetching = false;
+						final Collection<BookmarkEntity> bookmarksToSave = new ArrayList<BookmarkEntity>(
+								newBookmarksCount + modifiedBookmarksCount);
 						bookmarksToSave.addAll(newBookmarks);
 						bookmarksToSave.addAll(modifiedBookmarks);
 
 						for (final BookmarkEntity bookmark : bookmarksToSave) {
-							DeliciousSyncPanel.this.actualItem++;
+							actualItem++;
 							bookmark.setAllRights(allRights);
 							if (bookmark.getCreatedAt() == null) {
 								bookmark.setCreatedAt(PortalUtil.now());
@@ -182,29 +188,31 @@ public class DeliciousSyncPanel extends Panel {
 
 							bookmark.setModifiedAt(PortalUtil.now());
 							bookmark.setModifiedBy(user.getUsername());
-							final List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags().size());
+							final List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags()
+									.size());
 							for (final BookmarkTagEntity tag : bookmark.getTags()) {
-								final BookmarkTagEntity refreshedTag = DeliciousSyncPanel.this.tagService.findById(tag.getTagname());
+								final BookmarkTagEntity refreshedTag = tagService.findById(tag.getTagname());
 								if (refreshedTag == null) {
 									newTags.add(tag);
-									DeliciousSyncPanel.this.tagService.save(tag);
+									tagService.save(tag);
 								} else {
 									newTags.add(refreshedTag);
 								}
 							}
 							bookmark.setTags(newTags);
-							DeliciousSyncPanel.this.bookmarkService.save(bookmark);
+							bookmarkService.save(bookmark);
 						}
-						final List<BookmarkEntity> deletedBookmarks = DeliciousSyncPanel.this.synchronizeService.getRemovedDeliciousBookmarks(bean);
+						final List<BookmarkEntity> deletedBookmarks = synchronizeService
+								.getRemovedDeliciousBookmarks(bean);
 						// set to 100% the counter does not work perfect, when a
 						// user has manual edited delious bookmarks
-						DeliciousSyncPanel.this.maxItem = deletedBookmarks.size() + bookmarksToSave.size();
-						DeliciousSyncPanel.this.deletedBookmarksCount = deletedBookmarks.size();
+						maxItem = deletedBookmarks.size() + bookmarksToSave.size();
+						deletedBookmarksCount = deletedBookmarks.size();
 						for (final BookmarkEntity bookmark : deletedBookmarks) {
-							DeliciousSyncPanel.this.actualItem++;
-							DeliciousSyncPanel.this.bookmarkService.delete(bookmark);
+							actualItem++;
+							bookmarkService.delete(bookmark);
 						}
-						DeliciousSyncPanel.this.tagService.deleteUnusedTags();
+						tagService.deleteUnusedTags();
 					}
 				}.start();
 

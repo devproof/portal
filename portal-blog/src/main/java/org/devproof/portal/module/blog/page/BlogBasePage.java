@@ -37,17 +37,17 @@ public abstract class BlogBasePage extends TemplatePage {
 	public BlogBasePage(final PageParameters params) {
 		super(params);
 		PortalSession session = (PortalSession) getSession();
-		this.isAuthor = session.hasRight("page.BlogEditPage");
+		isAuthor = session.hasRight("page.BlogEditPage");
 		addSyntaxHighlighter();
 		// New Blog Link
-		if (this.isAuthor) {
+		if (isAuthor) {
 			Link<?> addLink = new Link<Object>("adminLink") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick() {
-					final BlogEntity newEntry = BlogBasePage.this.blogService.newBlogEntity();
-					this.setResponsePage(new BlogEditPage(newEntry));
+					final BlogEntity newEntry = blogService.newBlogEntity();
+					setResponsePage(new BlogEditPage(newEntry));
 				}
 			};
 			addLink.add(new Label("linkName", this.getString("createLink")));
@@ -56,6 +56,6 @@ public abstract class BlogBasePage extends TemplatePage {
 	}
 
 	public boolean isAuthor() {
-		return this.isAuthor;
+		return isAuthor;
 	}
 }

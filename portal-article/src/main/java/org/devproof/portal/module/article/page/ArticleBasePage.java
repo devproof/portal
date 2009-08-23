@@ -42,16 +42,16 @@ public class ArticleBasePage extends TemplatePage {
 		addSyntaxHighlighter();
 		// New Article Link
 		PortalSession session = (PortalSession) getSession();
-		this.isAuthor = session.hasRight("page.ArticleEditPage");
-		if (this.isAuthor) {
+		isAuthor = session.hasRight("page.ArticleEditPage");
+		if (isAuthor) {
 			Link<?> addLink = new Link<Object>("adminLink") {
 
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick() {
-					final ArticleEntity newEntry = ArticleBasePage.this.articleService.newArticleEntity();
-					this.setResponsePage(new ArticleEditPage(newEntry));
+					final ArticleEntity newEntry = articleService.newArticleEntity();
+					setResponsePage(new ArticleEditPage(newEntry));
 				}
 			};
 			addLink.add(new Label("linkName", this.getString("createLink")));
@@ -60,6 +60,6 @@ public class ArticleBasePage extends TemplatePage {
 	}
 
 	public boolean isAuthor() {
-		return this.isAuthor;
+		return isAuthor;
 	}
 }

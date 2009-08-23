@@ -49,17 +49,17 @@ public abstract class BookmarkBasePage extends TemplatePage {
 		super(params);
 		this.add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
 		PortalSession session = (PortalSession) getSession();
-		this.isAuthor = session.hasRight("page.BookmarkEditPage");
-		if (this.isAuthor) {
-			this.modalWindow = new ModalWindow("modalWindow");
+		isAuthor = session.hasRight("page.BookmarkEditPage");
+		if (isAuthor) {
+			modalWindow = new ModalWindow("modalWindow");
 			Link<?> addLink = new Link<Object>("adminLink") {
 
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick() {
-					final BookmarkEntity newBookmark = BookmarkBasePage.this.bookmarkService.newBookmarkEntity();
-					this.setResponsePage(new BookmarkEditPage(newBookmark));
+					final BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
+					setResponsePage(new BookmarkEditPage(newBookmark));
 				}
 			};
 			addLink.add(new Label("linkName", this.getString("createLink")));
@@ -70,19 +70,20 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					List<BookmarkEntity> allBookmarks = BookmarkBasePage.this.bookmarkService.findAll();
+					List<BookmarkEntity> allBookmarks = bookmarkService.findAll();
 					ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
-					final DeadlinkCheckPanel<BookmarkEntity> deadLinkPanel = new DeadlinkCheckPanel<BookmarkEntity>(modalWindow.getContentId(), "bookmark", allBookmarks) {
+					final DeadlinkCheckPanel<BookmarkEntity> deadLinkPanel = new DeadlinkCheckPanel<BookmarkEntity>(
+							modalWindow.getContentId(), "bookmark", allBookmarks) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onBroken(final BookmarkEntity brokenEntity) {
-							BookmarkBasePage.this.bookmarkService.markBrokenBookmark(brokenEntity);
+							bookmarkService.markBrokenBookmark(brokenEntity);
 						}
 
 						@Override
 						public void onValid(final BookmarkEntity validEntity) {
-							BookmarkBasePage.this.bookmarkService.markValidBookmark(validEntity);
+							bookmarkService.markValidBookmark(validEntity);
 						}
 					};
 					modalWindow.setInitialHeight(300);
@@ -111,17 +112,17 @@ public abstract class BookmarkBasePage extends TemplatePage {
 			syncLink.add(new Label("linkName", this.getString("syncLink")));
 			addPageAdminBoxLink(syncLink);
 		} else {
-			this.modalWindow = new WebMarkupContainer("modalWindow");
-			this.modalWindow.setVisible(false);
+			modalWindow = new WebMarkupContainer("modalWindow");
+			modalWindow.setVisible(false);
 		}
-		this.add(this.modalWindow);
+		add(modalWindow);
 	}
 
 	public WebMarkupContainer getModalWindow() {
-		return this.modalWindow;
+		return modalWindow;
 	}
 
 	public boolean isAuthor() {
-		return this.isAuthor;
+		return isAuthor;
 	}
 }

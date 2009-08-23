@@ -30,7 +30,8 @@ public class BlogSearchBoxPanel extends BaseSearchBoxPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	public BlogSearchBoxPanel(final String id, final BlogQuery query, final QueryDataProvider<?> dataProvider, final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public BlogSearchBoxPanel(final String id, final BlogQuery query, final QueryDataProvider<?> dataProvider,
+			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id, query, dataProvider, "page.BlogEditPage", parent, dataview, params);
 		TextField<String> fc = new TextField<String>("allTextFields");
 		getForm().add(fc);

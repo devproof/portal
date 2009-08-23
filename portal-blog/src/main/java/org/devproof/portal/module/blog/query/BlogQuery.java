@@ -35,7 +35,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 
 	@BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
 	public RoleEntity getRole() {
-		return this.role;
+		return role;
 	}
 
 	public void setRole(final RoleEntity role) {
@@ -44,7 +44,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 
 	@BeanQuery("t = ?")
 	public BlogTagEntity getTag() {
-		return this.tag;
+		return tag;
 	}
 
 	public void setTag(final BlogTagEntity tag) {
@@ -53,7 +53,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 
 	@BeanQuery("e.headline like '%'||?||'%'" + " or e.content like '%'||?||'%'")
 	public String getAllTextFields() {
-		return this.allTextFields;
+		return allTextFields;
 	}
 
 	public void setAllTextFields(final String allTextFields) {
@@ -62,7 +62,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 
 	@BeanQuery("e.id = ?")
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -70,6 +70,6 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 	}
 
 	public void clearSelection() {
-		this.tag = null;
+		tag = null;
 	}
 }

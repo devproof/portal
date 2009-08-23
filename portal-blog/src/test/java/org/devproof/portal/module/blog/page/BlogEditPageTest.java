@@ -30,19 +30,19 @@ public class BlogEditPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
 				"insert_blog.sql");
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(getNewBlogEditPage());
-		this.tester.assertRenderedPage(BlogEditPage.class);
+		tester.startPage(getNewBlogEditPage());
+		tester.assertRenderedPage(BlogEditPage.class);
 	}
 
 	private BlogEditPage getNewBlogEditPage() {
@@ -56,37 +56,37 @@ public class BlogEditPageTest extends TestCase {
 	}
 
 	private void callBlogEditPage() {
-		this.tester.startPage(getNewBlogEditPage());
-		this.tester.assertRenderedPage(BlogEditPage.class);
+		tester.startPage(getNewBlogEditPage());
+		tester.assertRenderedPage(BlogEditPage.class);
 	}
 
 	public void testEditBlogEntry() {
 		navigateToBlogEditPage();
 		submitBlogForm();
 		assertBlogPage();
-		assertFalse(this.tester.getServletResponse().getDocument().contains("this is a sample blog entry"));
+		assertFalse(tester.getServletResponse().getDocument().contains("this is a sample blog entry"));
 	}
 
 	private void navigateToBlogEditPage() {
-		this.tester.startPage(BlogPage.class);
-		this.tester.assertRenderedPage(BlogPage.class);
-		this.tester.assertContains("this is a sample blog entry");
-		this.tester.clickLink("listBlog:1:blogView:authorButtons:editLink");
-		this.tester.assertRenderedPage(BlogEditPage.class);
+		tester.startPage(BlogPage.class);
+		tester.assertRenderedPage(BlogPage.class);
+		tester.assertContains("this is a sample blog entry");
+		tester.clickLink("listBlog:1:blogView:authorButtons:editLink");
+		tester.assertRenderedPage(BlogEditPage.class);
 	}
 
 	private void assertBlogPage() {
 		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewBlogEditPage());
-		this.tester.assertRenderedPage(BlogPage.class);
-		this.tester.assertInfoMessages(expectedMsgs);
-		this.tester.startPage(BlogPage.class);
-		this.tester.assertRenderedPage(BlogPage.class);
-		this.tester.assertContains("testing headline");
-		this.tester.assertContains("testing content");
+		tester.assertRenderedPage(BlogPage.class);
+		tester.assertInfoMessages(expectedMsgs);
+		tester.startPage(BlogPage.class);
+		tester.assertRenderedPage(BlogPage.class);
+		tester.assertContains("testing headline");
+		tester.assertContains("testing content");
 	}
 
 	private void submitBlogForm() {
-		FormTester form = this.tester.newFormTester("form");
+		FormTester form = tester.newFormTester("form");
 		form.setValue("tags", "these are tags");
 		form.setValue("headline", "testing headline");
 		form.setValue("content", "testing content");

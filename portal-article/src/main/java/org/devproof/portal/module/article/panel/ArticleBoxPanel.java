@@ -46,8 +46,9 @@ public class ArticleBoxPanel extends Panel {
 	public ArticleBoxPanel(final String id) {
 		super(id);
 		PortalSession session = (PortalSession) getSession();
-		Integer num = this.configurationService.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
-		List<ArticleEntity> articles = this.articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(), 0, num);
+		Integer num = configurationService.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
+		List<ArticleEntity> articles = articleService
+				.findAllArticlesForRoleOrderedByDateDesc(session.getRole(), 0, num);
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (ArticleEntity article : articles) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());

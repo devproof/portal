@@ -54,48 +54,52 @@ public class ArticleViewPage extends ArticleBasePage {
 	public ArticleViewPage(final PageParameters params) {
 		super(params);
 		final PortalSession session = (PortalSession) getSession();
-		this.addTagCloudBox(this.articleTagService, new PropertyModel<ArticleTagEntity>(new ArticleQuery(), "tag"), ArticlePage.class, params);
+		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(new ArticleQuery(), "tag"),
+				ArticlePage.class, params);
 		String contentId = params.getString("0");
 		if (contentId == null) {
 			contentId = getRequest().getParameter("optparam");
 		}
 		final int currentPage = params.getAsInteger("1", 1);
-		final int pageCount = (int) this.articleService.getPageCount(contentId);
-		final ArticlePageEntity page = this.articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
+		final int pageCount = (int) articleService.getPageCount(contentId);
+		final ArticlePageEntity page = articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
 
 		if (page == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("error.page")));
 		}
 		if (page != null && !session.hasRight("article.read") && !session.hasRight(page.getArticle().getReadRights())) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("missing.right"), getRequestURL()));
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
+					.getString("missing.right"), getRequestURL()));
 		}
-		this.add(new Label("title", page.getArticle().getTitle()));
+		add(new Label("title", page.getArticle().getTitle()));
 		setPageTitle(page.getArticle().getTitle());
-		this.add(new MetaInfoPanel("metaInfo", page.getArticle()));
+		add(new MetaInfoPanel("metaInfo", page.getArticle()));
 		if (isAuthor()) {
-			this.add(new AuthorPanel<ArticleEntity>("authorButtons", page.getArticle()) {
+			add(new AuthorPanel<ArticleEntity>("authorButtons", page.getArticle()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
-					ArticleViewPage.this.articleService.delete(page.getArticle());
+					articleService.delete(page.getArticle());
 				}
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
 					ArticleEntity article = page.getArticle();
-					article = ArticleViewPage.this.articleService.findById(article.getId());
+					article = articleService.findById(article.getId());
 					final ArticleEditPage articlePage = new ArticleEditPage(article);
 					this.setResponsePage(articlePage);
 				}
 			}.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + this.getString("msg.deleted"))));
 		} else {
-			this.add(new WebMarkupContainer("authorButtons").setVisible(false));
+			add(new WebMarkupContainer("authorButtons").setVisible(false));
 		}
-		this.add(new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle().getTags()), ArticlePage.class, params));
-		this.add(new ExtendedLabel("content", page.getContent()));
+		add(new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle().getTags()),
+				ArticlePage.class, params));
+		add(new ExtendedLabel("content", page.getContent()));
 
-		final BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink", ArticleViewPage.class) {
+		final BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink",
+				ArticleViewPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -105,9 +109,10 @@ public class ArticleViewPage extends ArticleBasePage {
 		};
 		backLink.setParameter("0", contentId);
 		backLink.setParameter("1", currentPage - 1);
-		this.add(backLink);
+		add(backLink);
 
-		final BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink", ArticleViewPage.class) {
+		final BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
+				ArticleViewPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -118,6 +123,6 @@ public class ArticleViewPage extends ArticleBasePage {
 		};
 		forwardLink.setParameter("0", contentId);
 		forwardLink.setParameter("1", currentPage + 1);
-		this.add(forwardLink);
+		add(forwardLink);
 	}
 }

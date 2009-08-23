@@ -71,14 +71,14 @@ public class ArticlePage extends ArticleBasePage {
 			query.setRole(session.getRole());
 		}
 
-		this.articleDataProvider.setQueryObject(query);
+		articleDataProvider.setQueryObject(query);
 
-		this.dataView = new ArticleDataView("listArticle", params);
-		addFilterBox(new ArticleSearchBoxPanel("box", query, this.articleDataProvider, this, this.dataView, params));
+		dataView = new ArticleDataView("listArticle", params);
+		addFilterBox(new ArticleSearchBoxPanel("box", query, articleDataProvider, this, dataView, params));
 
-		this.add(this.dataView);
-		this.add(new BookmarkablePagingPanel("paging", this.dataView, ArticlePage.class, params));
-		this.addTagCloudBox(this.articleTagService, new PropertyModel<ArticleTagEntity>(query, "tag"), ArticlePage.class, params);
+		add(dataView);
+		add(new BookmarkablePagingPanel("paging", dataView, ArticlePage.class, params));
+		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(query, "tag"), ArticlePage.class, params);
 	}
 
 	private class ArticleDataView extends DataView<ArticleEntity> {
@@ -87,27 +87,27 @@ public class ArticlePage extends ArticleBasePage {
 		private final PageParameters params;
 
 		public ArticleDataView(final String id, final PageParameters params) {
-			super(id, ArticlePage.this.articleDataProvider);
+			super(id, articleDataProvider);
 			this.params = params;
-			this.onlyOne = ArticlePage.this.articleDataProvider.size() == 1;
-			setItemsPerPage(ArticlePage.this.configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
+			onlyOne = articleDataProvider.size() == 1;
+			setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
 		}
 
 		@Override
 		protected void populateItem(final Item<ArticleEntity> item) {
 			final ArticleEntity article = item.getModelObject();
 			item.setOutputMarkupId(true);
-			if (this.onlyOne) {
+			if (onlyOne) {
 				setPageTitle(article.getTitle());
 			}
-			final ArticleView articleViewPanel = new ArticleView("articleView", article, this.params);
+			final ArticleView articleViewPanel = new ArticleView("articleView", article, params);
 			if (isAuthor()) {
 				articleViewPanel.addOrReplace(new AuthorPanel<ArticleEntity>("authorButtons", article) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onDelete(final AjaxRequestTarget target) {
-						ArticlePage.this.articleService.delete(getEntity());
+						articleService.delete(getEntity());
 						item.setVisible(false);
 						target.addComponent(item);
 						target.addComponent(getFeedback());
@@ -117,7 +117,7 @@ public class ArticlePage extends ArticleBasePage {
 					@Override
 					public void onEdit(final AjaxRequestTarget target) {
 						// Reload because LazyIntialization occur
-						final ArticleEntity tmp = ArticlePage.this.articleService.findById(article.getId());
+						final ArticleEntity tmp = articleService.findById(article.getId());
 						this.setResponsePage(new ArticleEditPage(tmp));
 					}
 				});
@@ -136,25 +136,29 @@ public class ArticlePage extends ArticleBasePage {
 		public ArticleView(final String id, final ArticleEntity articleEntity, final PageParameters params) {
 			super(id, "articleView", ArticlePage.this);
 			final PortalSession session = (PortalSession) getSession();
-			final boolean allowedToRead = session.hasRight("article.read") || session.hasRight(articleEntity.getReadRights());
-			this.add(new WebMarkupContainer("authorButtons"));
-			final BookmarkablePageLink<ArticleViewPage> titleLink = new BookmarkablePageLink<ArticleViewPage>("titleLink", ArticleViewPage.class);
+			final boolean allowedToRead = session.hasRight("article.read")
+					|| session.hasRight(articleEntity.getReadRights());
+			add(new WebMarkupContainer("authorButtons"));
+			final BookmarkablePageLink<ArticleViewPage> titleLink = new BookmarkablePageLink<ArticleViewPage>(
+					"titleLink", ArticleViewPage.class);
 			titleLink.setParameter("0", articleEntity.getContentId());
 			titleLink.setEnabled(allowedToRead);
 			titleLink.add(new Label("titleLabel", articleEntity.getTitle()));
-			this.add(titleLink);
-			this.add(new MetaInfoPanel("metaInfo", articleEntity));
-			this.add(new ExtendedLabel("teaser", articleEntity.getTeaser()));
-			this.add(new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(articleEntity.getTags()), ArticlePage.class, params));
+			add(titleLink);
+			add(new MetaInfoPanel("metaInfo", articleEntity));
+			add(new ExtendedLabel("teaser", articleEntity.getTeaser()));
+			add(new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(articleEntity.getTags()),
+					ArticlePage.class, params));
 
-			final BookmarkablePageLink<ArticleViewPage> readMoreLink = new BookmarkablePageLink<ArticleViewPage>("readMoreLink", ArticleViewPage.class);
+			final BookmarkablePageLink<ArticleViewPage> readMoreLink = new BookmarkablePageLink<ArticleViewPage>(
+					"readMoreLink", ArticleViewPage.class);
 			readMoreLink.setParameter("0", articleEntity.getContentId());
 			readMoreLink.setEnabled(allowedToRead);
 			readMoreLink.add(new Image("readMoreImage", CommonConstants.REF_VIEW_IMG));
 			final String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
 			final String label = new StringResourceModel(labelKey, ArticlePage.this, null).getString();
 			readMoreLink.add(new Label("readMoreLabel", label));
-			this.add(readMoreLink);
+			add(readMoreLink);
 		}
 	}
 

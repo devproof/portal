@@ -70,16 +70,17 @@ public class BookmarkPage extends BookmarkBasePage {
 		if (!session.hasRight("bookmark.view")) {
 			query.setRole(session.getRole());
 		}
-		if (!isAuthor() && this.configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
+		if (!isAuthor() && configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
 			query.setBroken(false);
 		}
 
-		this.bookmarkDataProvider.setQueryObject(query);
+		bookmarkDataProvider.setQueryObject(query);
 		final BookmarkDataView dataView = new BookmarkDataView("listBookmark", params);
-		this.add(dataView);
-		addFilterBox(new BookmarkSearchBoxPanel("box", query, this.bookmarkDataProvider, this, dataView, params));
-		this.add(new BookmarkablePagingPanel("paging", dataView, BookmarkPage.class, params));
-		this.addTagCloudBox(this.bookmarkTagService, new PropertyModel<BookmarkTagEntity>(query, "tag"), BookmarkPage.class, params);
+		add(dataView);
+		addFilterBox(new BookmarkSearchBoxPanel("box", query, bookmarkDataProvider, this, dataView, params));
+		add(new BookmarkablePagingPanel("paging", dataView, BookmarkPage.class, params));
+		addTagCloudBox(bookmarkTagService, new PropertyModel<BookmarkTagEntity>(query, "tag"), BookmarkPage.class,
+				params);
 	}
 
 	private class BookmarkDataView extends DataView<BookmarkEntity> {
@@ -88,37 +89,37 @@ public class BookmarkPage extends BookmarkBasePage {
 		private final boolean onlyOne;
 
 		public BookmarkDataView(final String id, final PageParameters params) {
-			super(id, BookmarkPage.this.bookmarkDataProvider);
+			super(id, bookmarkDataProvider);
 			this.params = params;
-			this.onlyOne = BookmarkPage.this.bookmarkDataProvider.size() == 1;
-			setItemsPerPage(BookmarkPage.this.configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARKS_PER_PAGE));
+			onlyOne = bookmarkDataProvider.size() == 1;
+			setItemsPerPage(configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARKS_PER_PAGE));
 		}
 
 		@Override
 		protected void populateItem(final Item<BookmarkEntity> item) {
 			final BookmarkEntity bookmark = item.getModelObject();
 			item.setOutputMarkupId(true);
-			if (this.onlyOne) {
+			if (onlyOne) {
 				setPageTitle(bookmark.getTitle());
 			}
 
-			final BookmarkView bookmarkViewPanel = new BookmarkView("bookmarkView", bookmark, this.params, isAuthor());
+			final BookmarkView bookmarkViewPanel = new BookmarkView("bookmarkView", bookmark, params, isAuthor());
 			if (isAuthor()) {
 				bookmarkViewPanel.addOrReplace(new AuthorPanel<BookmarkEntity>("authorButtons", bookmark) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onDelete(final AjaxRequestTarget target) {
-						BookmarkPage.this.bookmarkService.delete(getEntity());
+						bookmarkService.delete(getEntity());
 						item.setVisible(false);
 						target.addComponent(item);
 						target.addComponent(getFeedback());
-						info(this.getString("msg.deleted"));
+						info(getString("msg.deleted"));
 					}
 
 					@Override
 					public void onEdit(final AjaxRequestTarget target) {
-						this.setResponsePage(new BookmarkEditPage(bookmark));
+						setResponsePage(new BookmarkEditPage(bookmark));
 					}
 				});
 			}
@@ -131,33 +132,39 @@ public class BookmarkPage extends BookmarkBasePage {
 		private static final long serialVersionUID = 1L;
 		private final Model<Boolean> hasVoted = Model.of(Boolean.FALSE);
 
-		public BookmarkView(final String id, final BookmarkEntity bookmarkEntity, final PageParameters params, final boolean isAuthor) {
+		public BookmarkView(final String id, final BookmarkEntity bookmarkEntity, final PageParameters params,
+				final boolean isAuthor) {
 			super(id, "bookmarkView", BookmarkPage.this);
 			final PortalSession session = (PortalSession) getSession();
-			final boolean voteEnabled = BookmarkPage.this.configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_VOTE_ENABLED);
+			final boolean voteEnabled = configurationService
+					.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_VOTE_ENABLED);
 			final boolean allowedToVisit = session.hasRight("bookmark.visit", bookmarkEntity.getVisitRights());
 			final boolean allowedToVote = session.hasRight("bookmark.vote", bookmarkEntity.getVoteRights());
-			this.hasVoted.setObject(!allowedToVote);
-			this.add(new WebMarkupContainer("authorButtons"));
-			this.add(new Label("broken", BookmarkPage.this.getString("broken")).setVisible(bookmarkEntity.getBroken() != null && bookmarkEntity.getBroken()));
-			final BookmarkablePageLink<BookmarkRedirectPage> titleLink = new BookmarkablePageLink<BookmarkRedirectPage>("titleLink", BookmarkRedirectPage.class);
+			hasVoted.setObject(!allowedToVote);
+			add(new WebMarkupContainer("authorButtons"));
+			add(new Label("broken", BookmarkPage.this.getString("broken"))
+					.setVisible(bookmarkEntity.getBroken() != null && bookmarkEntity.getBroken()));
+			final BookmarkablePageLink<BookmarkRedirectPage> titleLink = new BookmarkablePageLink<BookmarkRedirectPage>(
+					"titleLink", BookmarkRedirectPage.class);
 			titleLink.setParameter("0", bookmarkEntity.getId());
 			titleLink.setEnabled(allowedToVisit);
 
 			titleLink.add(new Label("titleLabel", bookmarkEntity.getTitle()));
-			this.add(titleLink);
-			this.add(new MetaInfoPanel("metaInfo", bookmarkEntity));
+			add(titleLink);
+			add(new MetaInfoPanel("metaInfo", bookmarkEntity));
 			if (isAuthor && bookmarkEntity.getSource() == Source.DELICIOUS) {
 				// be aware... images are stateful
-				this.add(new Image("delicious", BookmarkConstants.REF_DELICIOUS));
+				add(new Image("delicious", BookmarkConstants.REF_DELICIOUS));
 			} else {
-				this.add(new WebMarkupContainer("delicious").setVisible(false));
+				add(new WebMarkupContainer("delicious").setVisible(false));
 			}
-			this.add(new ExtendedLabel("description", bookmarkEntity.getDescription()));
-			this.add(new Label("hits", String.valueOf(bookmarkEntity.getHits())));
-			this.add(new ContentTagPanel<BookmarkTagEntity>("tags", new ListModel<BookmarkTagEntity>(bookmarkEntity.getTags()), BookmarkPage.class, params));
-			this.add(new StatelessRatingPanel("vote", new PropertyModel<Integer>(bookmarkEntity, "calculatedRating"), Model.of(5), new PropertyModel<Integer>(bookmarkEntity, "numberOfVotes"),
-					this.hasVoted, true, params, bookmarkEntity.getId()) {
+			add(new ExtendedLabel("description", bookmarkEntity.getDescription()));
+			add(new Label("hits", String.valueOf(bookmarkEntity.getHits())));
+			add(new ContentTagPanel<BookmarkTagEntity>("tags", new ListModel<BookmarkTagEntity>(bookmarkEntity
+					.getTags()), BookmarkPage.class, params));
+			add(new StatelessRatingPanel("vote", new PropertyModel<Integer>(bookmarkEntity, "calculatedRating"), Model
+					.of(5), new PropertyModel<Integer>(bookmarkEntity, "numberOfVotes"), hasVoted, true, params,
+					bookmarkEntity.getId()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -168,14 +175,15 @@ public class BookmarkPage extends BookmarkBasePage {
 				@Override
 				protected void onRated(final int rating) {
 					if (allowedToVote) {
-						BookmarkView.this.hasVoted.setObject(Boolean.TRUE);
-						BookmarkPage.this.bookmarkService.rateBookmark(rating, bookmarkEntity);
+						hasVoted.setObject(Boolean.TRUE);
+						bookmarkService.rateBookmark(rating, bookmarkEntity);
 						info(BookmarkPage.this.getString("voteCounted"));
 					}
 				}
 			}.setVisible(voteEnabled));
 
-			final BookmarkablePageLink<?> bookmarkLink = new BookmarkablePageLink<Void>("bookmarkLink", BookmarkRedirectPage.class);
+			final BookmarkablePageLink<?> bookmarkLink = new BookmarkablePageLink<Void>("bookmarkLink",
+					BookmarkRedirectPage.class);
 			bookmarkLink.add(new Image("bookmarkImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG));
 			bookmarkLink.setParameter("0", bookmarkEntity.getId());
 			final String labelKey = allowedToVisit ? "visitNow" : "loginToVisit";

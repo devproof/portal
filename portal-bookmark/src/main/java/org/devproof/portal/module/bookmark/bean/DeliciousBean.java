@@ -35,19 +35,19 @@ public class DeliciousBean implements Serializable {
 	private String errorMessage = "";
 
 	public String getUpdate() {
-		return this.update;
+		return update;
 	}
 
 	public String getTag() {
-		return this.tag;
+		return tag;
 	}
 
 	public Integer getTotal() {
-		return this.total;
+		return total;
 	}
 
 	public List<DeliciousPostBean> getPosts() {
-		return this.posts;
+		return posts;
 	}
 
 	public void setPosts(final List<DeliciousPostBean> posts) {
@@ -55,11 +55,11 @@ public class DeliciousBean implements Serializable {
 	}
 
 	public boolean add(final DeliciousPostBean e) {
-		return this.posts.add(e);
+		return posts.add(e);
 	}
 
 	public Integer getHttpCode() {
-		return this.httpCode;
+		return httpCode;
 	}
 
 	public void setHttpCode(final Integer httpCode) {
@@ -67,7 +67,7 @@ public class DeliciousBean implements Serializable {
 	}
 
 	public String getErrorMessage() {
-		return this.errorMessage;
+		return errorMessage;
 	}
 
 	public void setErrorMessage(final String errorMessage) {
@@ -75,10 +75,10 @@ public class DeliciousBean implements Serializable {
 	}
 
 	public String getUser() {
-		return this.user;
+		return user;
 	}
 
 	public boolean hasError() {
-		return this.httpCode == null || this.httpCode / 100 != 2;
+		return httpCode == null || httpCode / 100 != 2;
 	}
 }

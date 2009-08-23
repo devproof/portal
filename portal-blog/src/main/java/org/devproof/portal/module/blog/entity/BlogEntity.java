@@ -64,7 +64,7 @@ final public class BlogEntity extends BaseEntity {
 
 	// Generated stuff
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -72,7 +72,7 @@ final public class BlogEntity extends BaseEntity {
 	}
 
 	public String getHeadline() {
-		return this.headline;
+		return headline;
 	}
 
 	public void setHeadline(final String headline) {
@@ -80,7 +80,7 @@ final public class BlogEntity extends BaseEntity {
 	}
 
 	public String getContent() {
-		return this.content;
+		return content;
 	}
 
 	public void setContent(final String content) {
@@ -88,7 +88,7 @@ final public class BlogEntity extends BaseEntity {
 	}
 
 	public List<RightEntity> getAllRights() {
-		return this.allRights;
+		return allRights;
 	}
 
 	public void setAllRights(final List<RightEntity> allRights) {
@@ -97,14 +97,14 @@ final public class BlogEntity extends BaseEntity {
 
 	@Transient
 	public List<RightEntity> getViewRights() {
-		return getRightsStartingWith(this.allRights, "blog.view");
+		return getRightsStartingWith(allRights, "blog.view");
 	}
 
 	public List<BlogTagEntity> getTags() {
-		if (this.tags == null) {
-			this.tags = new ArrayList<BlogTagEntity>();
+		if (tags == null) {
+			tags = new ArrayList<BlogTagEntity>();
 		}
-		return this.tags;
+		return tags;
 	}
 
 	public void setTags(final List<BlogTagEntity> tags) {
@@ -115,7 +115,7 @@ final public class BlogEntity extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -131,11 +131,11 @@ final public class BlogEntity extends BaseEntity {
 			return false;
 		}
 		final BlogEntity other = (BlogEntity) obj;
-		if (this.id == null) {
+		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;
