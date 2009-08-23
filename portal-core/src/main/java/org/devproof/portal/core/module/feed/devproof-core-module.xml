@@ -27,6 +27,10 @@
     				<property name="pageClass" value="org.devproof.portal.core.module.feed.page.Rss2FeedPage"/>
     				<property name="indexMountedPath" value="true"/>
     			</bean>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/feeds"/>
+    				<property name="pageClass" value="org.devproof.portal.core.module.feed.page.FeedOverviewPage"/>
+    			</bean>
     		</list>
     	</property>
     </bean>
