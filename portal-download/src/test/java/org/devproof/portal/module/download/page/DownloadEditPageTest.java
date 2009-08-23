@@ -17,6 +17,7 @@ package org.devproof.portal.module.download.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -42,5 +43,53 @@ public class DownloadEditPageTest extends TestCase {
 	public void testRenderDefaultPage() {
 		tester.startPage(new DownloadEditPage(new DownloadEntity()));
 		tester.assertRenderedPage(DownloadEditPage.class);
+	}
+
+	public void testSaveDownload() {
+		callDownloadEditPage();
+		submitDownloadForm();
+		assertDownloadPage();
+	}
+
+	public void testEditDownload() {
+		navigateToDownloadEditPage();
+		submitDownloadForm();
+		assertDownloadPage();
+		assertFalse(tester.getServletResponse().getDocument().contains("This is a sample."));
+	}
+
+	private void callDownloadEditPage() {
+		tester.startPage(getNewDownloadEditPage());
+		tester.assertRenderedPage(DownloadEditPage.class);
+	}
+
+	private DownloadEditPage getNewDownloadEditPage() {
+		return new DownloadEditPage(new DownloadEntity());
+	}
+
+	private void submitDownloadForm() {
+		FormTester form = tester.newFormTester("form");
+		form.setValue("title", "testing title");
+		form.setValue("description", "testing description");
+		form.setValue("url", "http://www.devproof.org/download");
+		form.submit();
+	}
+
+	private void navigateToDownloadEditPage() {
+		tester.startPage(DownloadPage.class);
+		tester.assertRenderedPage(DownloadPage.class);
+		tester.assertContains("This is a sample.");
+		tester.clickLink("listDownload:1:downloadView:authorButtons:editLink");
+		tester.assertRenderedPage(DownloadEditPage.class);
+	}
+
+	private void assertDownloadPage() {
+		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewDownloadEditPage());
+		tester.assertRenderedPage(DownloadPage.class);
+		tester.assertInfoMessages(expectedMsgs);
+		tester.startPage(DownloadPage.class);
+		tester.assertRenderedPage(DownloadPage.class);
+		tester.assertContains("testing title");
+		tester.assertContains("testing description");
 	}
 }
