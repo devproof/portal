@@ -43,7 +43,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Object findAsObject(final String key) {
-		final ConfigurationEntity c = this.configurationRegistry.getConfiguration(key);
+		final ConfigurationEntity c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
@@ -69,13 +69,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Date findAsDate(final String key) {
-		final ConfigurationEntity c = this.configurationRegistry.getConfiguration(key);
+		final ConfigurationEntity c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
 		if (Date.class.getName().equals(c.getType())) {
 			try {
-				return this.dateFormat.parse(c.getValue());
+				return dateFormat.parse(c.getValue());
 			} catch (final ParseException e) {
 				throw new NoSuchElementException("Configuration element \"" + key + "\" has not a valid date!");
 			}
@@ -117,41 +117,41 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	public void refreshGlobalConfiguration() {
 		final List<ConfigurationEntity> list = findAll();
 		for (final ConfigurationEntity configuration : list) {
-			this.configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
+			configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
 		}
 		// Refresh global date formater
-		this.dateFormat.applyPattern(findAsString("date_format"));
-		this.dateTimeFormat.applyPattern(findAsString("date_time_format"));
+		dateFormat.applyPattern(findAsString("date_format"));
+		dateTimeFormat.applyPattern(findAsString("date_time_format"));
 	}
 
 	@Override
 	public List<ConfigurationEntity> findAll() {
-		return this.configurationDao.findAll();
+		return configurationDao.findAll();
 	}
 
 	@Override
 	public List<String> findConfigurationGroups() {
-		return this.configurationDao.findConfigurationGroups();
+		return configurationDao.findConfigurationGroups();
 	}
 
 	@Override
 	public List<ConfigurationEntity> findConfigurationsByGroup(final String group) {
-		return this.configurationDao.findConfigurationsByGroup(group);
+		return configurationDao.findConfigurationsByGroup(group);
 	}
 
 	@Override
 	public void delete(final ConfigurationEntity entity) {
-		this.configurationDao.delete(entity);
+		configurationDao.delete(entity);
 	}
 
 	@Override
 	public ConfigurationEntity findById(final String id) {
-		return this.configurationDao.findById(id);
+		return configurationDao.findById(id);
 	}
 
 	@Override
 	public void save(final ConfigurationEntity entity) {
-		this.configurationDao.save(entity);
+		configurationDao.save(entity);
 	}
 
 	@Required

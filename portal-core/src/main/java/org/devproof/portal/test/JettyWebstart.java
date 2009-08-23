@@ -45,19 +45,19 @@ import org.springframework.web.context.ContextLoaderListener;
  * @author Carsten Hufe
  */
 public class JettyWebstart {
-	private SocketConnector connector;
-	private Server server;
+	private final SocketConnector connector;
+	private final Server server;
 
 	public JettyWebstart() {
-		this.server = new Server();
-		this.connector = new SocketConnector();
+		server = new Server();
+		connector = new SocketConnector();
 		// Set some timeout options to make debugging easier.
-		this.connector.setMaxIdleTime(1000 * 60 * 60);
-		this.connector.setSoLingerTime(-1);
+		connector.setMaxIdleTime(1000 * 60 * 60);
+		connector.setSoLingerTime(-1);
 
-		this.server.setConnectors(new Connector[] { this.connector });
+		server.setConnectors(new Connector[] { connector });
 		WebAppContext bb = new WebAppContext();
-		bb.setServer(this.server);
+		bb.setServer(server);
 		bb.setContextPath("/");
 		bb.setWar(System.getProperty("java.io.tmpdir"));
 		bb.addEventListener(new ContextLoaderListener());
@@ -70,7 +70,7 @@ public class JettyWebstart {
 		servlet.setClassName(WicketFilter.class.getName());
 		servlet.setName(WicketFilter.class.getName());
 		bb.addFilter(servlet, "/*", 0);
-		this.server.addHandler(bb);
+		server.addHandler(bb);
 
 		SimpleDriverDataSource datasource = new SimpleDriverDataSource();
 		datasource.setUrl("jdbc:hsqldb:mem:testdb");
@@ -95,9 +95,9 @@ public class JettyWebstart {
 	}
 
 	public void startServer(final int port) {
-		this.connector.setPort(port);
+		connector.setPort(port);
 		try {
-			this.server.start();
+			server.start();
 		} catch (Exception e) {
 			throw new UnhandledException(e);
 		}
@@ -105,8 +105,8 @@ public class JettyWebstart {
 
 	public void stopServer() {
 		try {
-			this.server.stop();
-			this.server.join();
+			server.stop();
+			server.join();
 		} catch (Exception e) {
 			throw new UnhandledException(e);
 		}

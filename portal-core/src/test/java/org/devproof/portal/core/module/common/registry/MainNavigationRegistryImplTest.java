@@ -39,16 +39,16 @@ public class MainNavigationRegistryImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
-		this.moduleServiceMock = EasyMock.createStrictMock(ModuleService.class);
-		this.impl = new MainNavigationRegistryImpl();
-		this.impl.setModuleService(this.moduleServiceMock);
-		this.impl.setPageLocator(this.pageLocatorMock);
+		pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
+		moduleServiceMock = EasyMock.createStrictMock(ModuleService.class);
+		impl = new MainNavigationRegistryImpl();
+		impl.setModuleService(moduleServiceMock);
+		impl.setPageLocator(pageLocatorMock);
 	}
 
 	public void testGetRegisteredPages() {
-		this.impl.registerPage(LoginPage.class);
-		assertEquals(LoginPage.class, this.impl.getRegisteredPages().get(0));
+		impl.registerPage(LoginPage.class);
+		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
 	}
 
 	public void testBuildNavigation() {
@@ -56,16 +56,16 @@ public class MainNavigationRegistryImplTest extends TestCase {
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(LoginPage.class);
 		confs.add(conf);
-		EasyMock.expect(this.pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(LoginPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(this.moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-		EasyMock.replay(this.pageLocatorMock, this.moduleServiceMock);
-		this.impl.buildNavigation();
-		EasyMock.verify(this.pageLocatorMock, this.moduleServiceMock);
-		assertEquals(LoginPage.class, this.impl.getRegisteredPages().get(0));
+		EasyMock.expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
+		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		impl.buildNavigation();
+		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
 	}
 
 	public void testAfterPropertiesSet() throws Exception {
@@ -73,40 +73,40 @@ public class MainNavigationRegistryImplTest extends TestCase {
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(LoginPage.class);
 		confs.add(conf);
-		EasyMock.expect(this.pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(LoginPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(this.moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-		EasyMock.replay(this.pageLocatorMock, this.moduleServiceMock);
-		this.impl.afterPropertiesSet();
-		EasyMock.verify(this.pageLocatorMock, this.moduleServiceMock);
-		assertEquals(LoginPage.class, this.impl.getRegisteredPages().get(0));
+		EasyMock.expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
+		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		impl.afterPropertiesSet();
+		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
 	}
 
 	public void testRegisterPage() {
-		this.impl.registerPage(LoginPage.class);
-		assertEquals(this.impl.getRegisteredPages().get(0), LoginPage.class);
+		impl.registerPage(LoginPage.class);
+		assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
 	}
 
 	public void testRegisterPages() {
 		List<Class<? extends Page>> pages = new ArrayList<Class<? extends Page>>();
 		pages.add(LoginPage.class);
-		this.impl.registerPages(pages);
-		assertEquals(this.impl.getRegisteredPages().get(0), LoginPage.class);
+		impl.registerPages(pages);
+		assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
 	}
 
 	public void testRemovePage() {
-		this.impl.registerPage(LoginPage.class);
-		assertEquals(1, this.impl.getRegisteredPages().size());
-		this.impl.removePage(LoginPage.class);
-		assertEquals(0, this.impl.getRegisteredPages().size());
+		impl.registerPage(LoginPage.class);
+		assertEquals(1, impl.getRegisteredPages().size());
+		impl.removePage(LoginPage.class);
+		assertEquals(0, impl.getRegisteredPages().size());
 	}
 
 	public void testClearRegistry() {
-		this.impl.registerPage(LoginPage.class);
-		this.impl.clearRegistry();
-		assertEquals(this.impl.getRegisteredPages().size(), 0);
+		impl.registerPage(LoginPage.class);
+		impl.clearRegistry();
+		assertEquals(impl.getRegisteredPages().size(), 0);
 	}
 }

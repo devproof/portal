@@ -35,7 +35,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
  */
 public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> {
 	private static final long serialVersionUID = 1L;
-	private TagService<T> tagService;
+	private final TagService<T> tagService;
 
 	public TagField(final String id, final String tags, final TagService<T> tagService) {
 		super(id, Model.of(tags));
@@ -73,7 +73,7 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 		final List<String> choices = new ArrayList<String>(10);
 		if (lastToken.length() > 1 && input.endsWith(lastToken)) {
 			final String prefix = input.substring(0, input.length() - lastToken.length());
-			final List<T> tags = this.tagService.findTagsStartingWith(lastToken);
+			final List<T> tags = tagService.findTagsStartingWith(lastToken);
 			for (final T tag : tags) {
 				choices.add(prefix + tag.getTagname());
 			}
@@ -93,10 +93,10 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 			final String token = tokenizer.nextToken().trim();
 			// save only token with 3 letters or more!
 			if (!Strings.isEmpty(token) && token.length() > 2) {
-				T tag = this.tagService.findById(token);
+				T tag = tagService.findById(token);
 				if (tag == null) {
-					tag = this.tagService.newTagEntity(token);
-					this.tagService.save(tag);
+					tag = tagService.newTagEntity(token);
+					tagService.save(tag);
 				}
 				back.add(tag);
 

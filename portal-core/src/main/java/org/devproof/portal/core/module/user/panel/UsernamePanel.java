@@ -40,6 +40,6 @@ public class UsernamePanel extends Panel {
 			link = new WebMarkupContainer("userLink");
 		}
 		link.add(new Label("username", displayName));
-		this.add(link);
+		add(link);
 	}
 }

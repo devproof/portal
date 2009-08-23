@@ -44,9 +44,9 @@ public class RightGridPanel extends Panel {
 
 	public RightGridPanel(final String id, final String rightPrefix, final List<RightEntity> selectedRights) {
 		super(id);
-		this.allRights = this.rightService.findRightsStartingWith(rightPrefix);
+		allRights = rightService.findRightsStartingWith(rightPrefix);
 		final Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new HashMap<RightEntity, CheckBox>();
-		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(this.allRights);
+		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(allRights);
 		GridView<RightEntity> gridView = new GridView<RightEntity>("rights_rows", ldp) {
 			private static final long serialVersionUID = 1L;
 
@@ -70,12 +70,12 @@ public class RightGridPanel extends Panel {
 			}
 		};
 		gridView.setColumns(3);
-		this.add(gridView);
+		add(gridView);
 	}
 
 	public List<RightEntity> getSelectedRights() {
 		List<RightEntity> newRights = new ArrayList<RightEntity>();
-		for (RightEntity right : this.allRights) {
+		for (RightEntity right : allRights) {
 			if (right.isSelected()) {
 				newRights.add(right);
 			}

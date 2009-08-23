@@ -33,59 +33,59 @@ public class RoleServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.mock = EasyMock.createStrictMock(RoleDao.class);
-		this.impl = new RoleServiceImpl();
-		this.impl.setRoleDao(this.mock);
+		mock = EasyMock.createStrictMock(RoleDao.class);
+		impl = new RoleServiceImpl();
+		impl.setRoleDao(mock);
 	}
 
 	public void testSave() {
-		RoleEntity e = this.impl.newRoleEntity();
+		RoleEntity e = impl.newRoleEntity();
 		e.setId(1);
-		this.mock.save(e);
-		EasyMock.replay(this.mock);
-		this.impl.save(e);
-		EasyMock.verify(this.mock);
+		mock.save(e);
+		EasyMock.replay(mock);
+		impl.save(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testDelete() {
-		RoleEntity e = this.impl.newRoleEntity();
+		RoleEntity e = impl.newRoleEntity();
 		e.setId(1);
-		this.mock.delete(e);
-		EasyMock.replay(this.mock);
-		this.impl.delete(e);
-		EasyMock.verify(this.mock);
+		mock.delete(e);
+		EasyMock.replay(mock);
+		impl.delete(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAll() {
 		List<RoleEntity> list = new ArrayList<RoleEntity>();
-		list.add(this.impl.newRoleEntity());
-		list.add(this.impl.newRoleEntity());
-		EasyMock.expect(this.mock.findAll()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAll());
-		EasyMock.verify(this.mock);
+		list.add(impl.newRoleEntity());
+		list.add(impl.newRoleEntity());
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAll());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindById() {
-		RoleEntity e = this.impl.newRoleEntity();
+		RoleEntity e = impl.newRoleEntity();
 		e.setId(1);
-		EasyMock.expect(this.mock.findById(1)).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findById(1), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findById(1)).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findById(1), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testNewRoleEntity() {
-		assertNotNull(this.impl.newRoleEntity());
+		assertNotNull(impl.newRoleEntity());
 	}
 
 	public void testFindAllOrderByDescription() {
 		List<RoleEntity> list = new ArrayList<RoleEntity>();
-		list.add(this.impl.newRoleEntity());
-		list.add(this.impl.newRoleEntity());
-		EasyMock.expect(this.mock.findAllOrderByDescription()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAllOrderByDescription());
-		EasyMock.verify(this.mock);
+		list.add(impl.newRoleEntity());
+		list.add(impl.newRoleEntity());
+		EasyMock.expect(mock.findAllOrderByDescription()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAllOrderByDescription());
+		EasyMock.verify(mock);
 	}
 }

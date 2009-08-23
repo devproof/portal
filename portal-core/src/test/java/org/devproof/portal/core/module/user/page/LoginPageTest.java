@@ -28,18 +28,18 @@ public class LoginPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(LoginPage.class);
+		tester.startPage(LoginPage.class);
 		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(this.tester.getLastRenderedPage().isPageStateless());
-		this.tester.assertRenderedPage(LoginPage.class);
+		assertTrue(tester.getLastRenderedPage().isPageStateless());
+		tester.assertRenderedPage(LoginPage.class);
 	}
 }

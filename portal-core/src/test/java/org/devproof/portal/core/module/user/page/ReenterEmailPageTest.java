@@ -28,16 +28,16 @@ public class ReenterEmailPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(new ReenterEmailPage("testuser"));
-		this.tester.assertRenderedPage(ReenterEmailPage.class);
+		tester.startPage(new ReenterEmailPage("testuser"));
+		tester.assertRenderedPage(ReenterEmailPage.class);
 	}
 }

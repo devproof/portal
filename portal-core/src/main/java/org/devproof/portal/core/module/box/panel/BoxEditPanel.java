@@ -51,20 +51,22 @@ abstract public class BoxEditPanel extends Panel {
 		super(id);
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
-		this.add(feedback);
+		add(feedback);
 
 		final Form<BoxEntity> form = new Form<BoxEntity>("form");
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 		form.setModel(new CompoundPropertyModel<BoxEntity>(box));
 
 		final TextArea<String> content = new TextArea<String>("content");
 		form.add(content);
 
-		List<BoxConfiguration> confs = this.boxRegistry.getRegisteredBoxes();
+		List<BoxConfiguration> confs = boxRegistry.getRegisteredBoxes();
 		ChoiceRenderer<BoxConfiguration> choiceRenderer = new ChoiceRenderer<BoxConfiguration>("name", "boxClass");
-		final IModel<BoxConfiguration> selectBoxModel = Model.of(this.boxRegistry.getBoxConfigurationBySimpleClassName(box.getBoxType()));
-		DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", selectBoxModel, confs, choiceRenderer);
+		final IModel<BoxConfiguration> selectBoxModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box
+				.getBoxType()));
+		DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", selectBoxModel,
+				confs, choiceRenderer);
 		boxType.setRequired(true);
 		form.add(boxType);
 
@@ -78,11 +80,11 @@ abstract public class BoxEditPanel extends Panel {
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				if (box.getSort() == null) {
-					Integer sort = BoxEditPanel.this.boxService.getMaxSortNum();
+					Integer sort = boxService.getMaxSortNum();
 					box.setSort(sort);
 				}
 				box.setBoxType(selectBoxModel.getObject().getKey());
-				BoxEditPanel.this.boxService.save(box);
+				boxService.save(box);
 				BoxEditPanel.this.onSave(target);
 			}
 

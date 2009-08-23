@@ -46,7 +46,7 @@ final public class EmailTemplateEntity extends BaseEntity {
 	private String content;
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -54,7 +54,7 @@ final public class EmailTemplateEntity extends BaseEntity {
 	}
 
 	public String getSubject() {
-		return this.subject;
+		return subject;
 	}
 
 	public void setSubject(final String subject) {
@@ -62,7 +62,7 @@ final public class EmailTemplateEntity extends BaseEntity {
 	}
 
 	public String getContent() {
-		return this.content;
+		return content;
 	}
 
 	public void setContent(final String content) {
@@ -73,7 +73,7 @@ final public class EmailTemplateEntity extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -89,11 +89,11 @@ final public class EmailTemplateEntity extends BaseEntity {
 			return false;
 		}
 		final EmailTemplateEntity other = (EmailTemplateEntity) obj;
-		if (this.id == null) {
+		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;

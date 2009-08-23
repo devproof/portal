@@ -39,11 +39,11 @@ public class FileResourceStream implements IResourceStream {
 
 	public FileResourceStream(final File file) throws FileNotFoundException {
 		this.file = file;
-		this.fis = new FileInputStream(file);
+		fis = new FileInputStream(file);
 	}
 
 	public void close() throws IOException {
-		this.fis.close();
+		fis.close();
 	}
 
 	public String getContentType() {
@@ -51,7 +51,7 @@ public class FileResourceStream implements IResourceStream {
 	}
 
 	public InputStream getInputStream() throws ResourceStreamNotFoundException {
-		return this.fis;
+		return fis;
 	}
 
 	public Locale getLocale() {
@@ -59,14 +59,14 @@ public class FileResourceStream implements IResourceStream {
 	}
 
 	public long length() {
-		return this.file.length();
+		return file.length();
 	}
 
 	public void setLocale(final Locale locale) {
 	}
 
 	public Time lastModifiedTime() {
-		return Time.milliseconds(this.file.lastModified());
+		return Time.milliseconds(file.lastModified());
 	}
 
 }

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public long countUserForRole(final RoleEntity role) {
-		return this.userDao.countUserForRole(role);
+		return userDao.countUserForRole(role);
 	}
 
 	@Override
@@ -48,47 +48,47 @@ public class UserServiceImpl implements UserService {
 		if (UserConstants.UNKNOWN_USERNAME.equalsIgnoreCase(username)) {
 			return true;
 		}
-		return this.userDao.existsUsername(username) > 0;
+		return userDao.existsUsername(username) > 0;
 	}
 
 	@Override
 	public List<UserEntity> findUserByEmail(final String email) {
-		return this.userDao.findUserByEmail(email);
+		return userDao.findUserByEmail(email);
 	}
 
 	@Override
 	public UserEntity findUserBySessionId(final String sessionId) {
-		return this.userDao.findUserBySessionId(sessionId);
+		return userDao.findUserBySessionId(sessionId);
 	}
 
 	@Override
 	public UserEntity findUserByUsername(final String username) {
-		return this.userDao.findUserByUsername(username);
+		return userDao.findUserByUsername(username);
 	}
 
 	@Override
 	public List<UserEntity> findUserWithRight(final String right) {
-		return this.userDao.findUserWithRight(right);
+		return userDao.findUserWithRight(right);
 	}
 
 	@Override
 	public void delete(final UserEntity entity) {
-		this.userDao.delete(entity);
+		userDao.delete(entity);
 	}
 
 	@Override
 	public List<UserEntity> findAll() {
-		return this.userDao.findAll();
+		return userDao.findAll();
 	}
 
 	@Override
 	public UserEntity findById(final Integer id) {
-		return this.userDao.findById(id);
+		return userDao.findById(id);
 	}
 
 	@Override
 	public void save(final UserEntity entity) {
-		this.userDao.save(entity);
+		userDao.save(entity);
 	}
 
 	@Override
@@ -110,29 +110,31 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void registerUser(final UserEntity user, final String password, final String url, final String confirmationCode) {
+	public void registerUser(final UserEntity user, final String password, final String url,
+			final String confirmationCode) {
 		user.setActive(Boolean.TRUE);
 		user.setPasswordMD5(PortalUtil.generateMd5(password));
 		user.setRegistrationDate(PortalUtil.now());
 		user.setChangedAt(PortalUtil.now());
-		user.setRole(this.roleService.findById(this.configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE)));
-		if (this.configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
+		user.setRole(roleService.findById(configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE)));
+		if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 			EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
 			user.setConfirmationCode(confirmationCode);
 			user.setConfirmationRequestedAt(PortalUtil.now());
 			user.setConfirmed(false);
 			placeholder.setConfirmationLink(url);
-			this.emailService.sendEmail(this.configurationService.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL), placeholder);
+			emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL),
+					placeholder);
 
 			// send notification
-			Integer templateId = this.configurationService.findAsInteger(UserConstants.CONF_NOTIFY_USER_REGISTRATION);
+			Integer templateId = configurationService.findAsInteger(UserConstants.CONF_NOTIFY_USER_REGISTRATION);
 			List<UserEntity> notifyUsers = findUserWithRight("emailnotification.registered.user");
 			for (UserEntity notifyUser : notifyUsers) {
 				placeholder.setToUsername(notifyUser.getUsername());
 				placeholder.setToFirstname(notifyUser.getFirstname());
 				placeholder.setToLastname(notifyUser.getLastname());
 				placeholder.setToEmail(notifyUser.getEmail());
-				this.emailService.sendEmail(templateId, placeholder);
+				emailService.sendEmail(templateId, placeholder);
 			}
 		} else {
 			// no confirmation required
@@ -143,11 +145,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void setNewPassword(final String username, final String newPassword) {
-		UserEntity user = this.userDao.findUserByUsername(username);
+		UserEntity user = userDao.findUserByUsername(username);
 		user.setPasswordMD5(PortalUtil.generateMd5(newPassword));
 		user.setChangedAt(PortalUtil.now());
 		user.setForgotPasswordCode(null);
-		this.userDao.save(user);
+		userDao.save(user);
 	}
 
 	@Required

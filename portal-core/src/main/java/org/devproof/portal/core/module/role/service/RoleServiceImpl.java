@@ -34,27 +34,27 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public List<RoleEntity> findAllOrderByDescription() {
-		return this.roleDao.findAllOrderByDescription();
+		return roleDao.findAllOrderByDescription();
 	}
 
 	@Override
 	public void delete(final RoleEntity entity) {
-		this.roleDao.delete(entity);
+		roleDao.delete(entity);
 	}
 
 	@Override
 	public List<RoleEntity> findAll() {
-		return this.roleDao.findAll();
+		return roleDao.findAll();
 	}
 
 	@Override
 	public RoleEntity findById(final Integer id) {
-		return this.roleDao.findById(id);
+		return roleDao.findById(id);
 	}
 
 	@Override
 	public void save(final RoleEntity entity) {
-		this.roleDao.save(entity);
+		roleDao.save(entity);
 	}
 
 	@Required

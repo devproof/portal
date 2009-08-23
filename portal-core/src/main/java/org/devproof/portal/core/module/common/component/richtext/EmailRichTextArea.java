@@ -31,14 +31,17 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
  */
 public class EmailRichTextArea extends TextArea<String> {
 	private static final long serialVersionUID = 1L;
-	private static final ResourceReference REF_EMAIL_CSS = new ResourceReference(EmailRichTextArea.class, "css/email.css");
+	private static final ResourceReference REF_EMAIL_CSS = new ResourceReference(EmailRichTextArea.class,
+			"css/email.css");
 
 	public EmailRichTextArea(final String id) {
 		super(id);
-		this.add(JavascriptPackageResource.getHeaderContribution(EmailRichTextArea.class, "tinymce/tiny_mce.js"));
+		add(JavascriptPackageResource.getHeaderContribution(EmailRichTextArea.class, "tinymce/tiny_mce.js"));
 		Map<String, Object> variables = new MiniMap<String, Object>(1);
-		variables.put("emailCss", UrlUtils.rewriteToContextRelative("resources/" + REF_EMAIL_CSS.getSharedResourceKey(), getRequest()));
-		this.add(TextTemplateHeaderContributor.forJavaScript(EmailRichTextArea.class, "EmailRichTextArea.js", new MapModel<String, Object>(variables)));
-		this.add(new SimpleAttributeModifier("class", "mceRichTextArea"));
+		variables.put("emailCss", UrlUtils.rewriteToContextRelative(
+				"resources/" + REF_EMAIL_CSS.getSharedResourceKey(), getRequest()));
+		add(TextTemplateHeaderContributor.forJavaScript(EmailRichTextArea.class, "EmailRichTextArea.js",
+				new MapModel<String, Object>(variables)));
+		add(new SimpleAttributeModifier("class", "mceRichTextArea"));
 	}
 }

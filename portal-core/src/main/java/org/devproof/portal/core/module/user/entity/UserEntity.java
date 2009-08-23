@@ -95,12 +95,12 @@ final public class UserEntity implements Serializable {
 
 	@Override
 	public String toString() {
-		return this.id + ": " + this.username + "(" + this.email + ")";
+		return id + ": " + username + "(" + email + ")";
 	}
 
 	// generated stuff
 	public String getUsername() {
-		return this.username;
+		return username;
 	}
 
 	public void setUsername(final String username) {
@@ -108,7 +108,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getPasswordMD5() {
-		return this.passwordMD5;
+		return passwordMD5;
 	}
 
 	public void setPasswordMD5(final String passwordMD5) {
@@ -116,7 +116,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getForgotPasswordCode() {
-		return this.forgotPasswordCode;
+		return forgotPasswordCode;
 	}
 
 	public void setForgotPasswordCode(final String forgotPasswordCode) {
@@ -124,7 +124,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
 
 	public void setEmail(final String email) {
@@ -132,7 +132,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Date getRegistrationDate() {
-		return this.registrationDate;
+		return registrationDate;
 	}
 
 	public void setRegistrationDate(final Date registrationDate) {
@@ -140,7 +140,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Date getChangedAt() {
-		return this.changedAt;
+		return changedAt;
 	}
 
 	public void setChangedAt(final Date changedAt) {
@@ -148,7 +148,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getLastIp() {
-		return this.lastIp;
+		return lastIp;
 	}
 
 	public void setLastIp(final String lastIp) {
@@ -156,7 +156,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Date getLastLoginAt() {
-		return this.lastLoginAt;
+		return lastLoginAt;
 	}
 
 	public void setLastLoginAt(final Date lastLoginAt) {
@@ -164,7 +164,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Boolean getActive() {
-		return this.active;
+		return active;
 	}
 
 	public void setActive(final Boolean active) {
@@ -172,7 +172,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Boolean getConfirmed() {
-		return this.confirmed;
+		return confirmed;
 	}
 
 	public void setConfirmed(final Boolean confirmed) {
@@ -180,7 +180,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getConfirmationCode() {
-		return this.confirmationCode;
+		return confirmationCode;
 	}
 
 	public void setConfirmationCode(final String confirmationCode) {
@@ -188,7 +188,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Date getConfirmationRequestedAt() {
-		return this.confirmationRequestedAt;
+		return confirmationRequestedAt;
 	}
 
 	public void setConfirmationRequestedAt(final Date confirmationRequestedAt) {
@@ -196,7 +196,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Date getConfirmationApprovedAt() {
-		return this.confirmationApprovedAt;
+		return confirmationApprovedAt;
 	}
 
 	public void setConfirmationApprovedAt(final Date confirmationApprovedAt) {
@@ -204,7 +204,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -212,7 +212,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getFirstname() {
-		return this.firstname;
+		return firstname;
 	}
 
 	public void setFirstname(final String firstname) {
@@ -220,7 +220,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getLastname() {
-		return this.lastname;
+		return lastname;
 	}
 
 	public void setLastname(final String lastname) {
@@ -228,7 +228,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Date getBirthday() {
-		return this.birthday;
+		return birthday;
 	}
 
 	public void setBirthday(final Date birthday) {
@@ -236,7 +236,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public String getSessionId() {
-		return this.sessionId;
+		return sessionId;
 	}
 
 	public void setSessionId(final String sessionId) {
@@ -244,7 +244,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public RoleEntity getRole() {
-		return this.role;
+		return role;
 	}
 
 	public void setRole(final RoleEntity role) {
@@ -252,7 +252,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public boolean isGuestRole() {
-		return this.guestRole;
+		return guestRole;
 	}
 
 	public void setGuestRole(final boolean guestRole) {
@@ -260,7 +260,7 @@ final public class UserEntity implements Serializable {
 	}
 
 	public Boolean getEnableContactForm() {
-		return this.enableContactForm;
+		return enableContactForm;
 	}
 
 	public void setEnableContactForm(final Boolean enableContactForm) {
@@ -271,7 +271,7 @@ final public class UserEntity implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -287,11 +287,11 @@ final public class UserEntity implements Serializable {
 			return false;
 		}
 		final UserEntity other = (UserEntity) obj;
-		if (this.id == null) {
+		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;

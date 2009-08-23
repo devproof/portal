@@ -46,8 +46,8 @@ public abstract class AuthorPanel<T> extends Panel {
 		this.entity = entity;
 		final ModalWindow modalWindow = new ModalWindow("modalWindow");
 		modalWindow.setOutputMarkupId(true);
-		this.add(modalWindow);
-		this.add(new AjaxLink<T>("editLink") {
+		add(modalWindow);
+		add(new AjaxLink<T>("editLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -61,7 +61,8 @@ public abstract class AuthorPanel<T> extends Panel {
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				final ConfirmDeletePanel<T> confirmDeletePanel = new ConfirmDeletePanel<T>(modalWindow.getContentId(), entity, modalWindow) {
+				final ConfirmDeletePanel<T> confirmDeletePanel = new ConfirmDeletePanel<T>(modalWindow.getContentId(),
+						entity, modalWindow) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -92,7 +93,8 @@ public abstract class AuthorPanel<T> extends Panel {
 		return this.entity;
 	}
 
-	public AuthorPanel<T> setRedirectPage(final Class<? extends Page> redirectPageClazz, final PageParameters redirectParams) {
+	public AuthorPanel<T> setRedirectPage(final Class<? extends Page> redirectPageClazz,
+			final PageParameters redirectParams) {
 		this.redirectPageClazz = redirectPageClazz;
 		this.redirectParams = redirectParams;
 		return this;

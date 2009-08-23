@@ -51,7 +51,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 		final List<ModuleBean> coreModules = new ArrayList<ModuleBean>();
 		final List<ModuleBean> otherModules = new ArrayList<ModuleBean>();
 		@SuppressWarnings("unchecked")
-		final Map<String, ModuleConfiguration> beans = this.applicationContext.getBeansOfType(ModuleConfiguration.class);
+		final Map<String, ModuleConfiguration> beans = applicationContext.getBeansOfType(ModuleConfiguration.class);
 		for (final ModuleConfiguration module : beans.values()) {
 			final ModuleBean bean = new ModuleBean();
 			bean.setConfiguration(module);
@@ -71,14 +71,14 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 
 	@Override
 	public void moveDown(final ModuleLinkEntity link) {
-		int maxSort = this.moduleLinkDao.getMaxSortNum(link.getLinkType());
+		int maxSort = moduleLinkDao.getMaxSortNum(link.getLinkType());
 		if (link.getSort() < maxSort) {
 			ModuleLinkEntity moveDown = link;
-			ModuleLinkEntity moveUp = this.moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() + 1);
+			ModuleLinkEntity moveUp = moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() + 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			this.moduleLinkDao.save(moveUp);
-			this.moduleLinkDao.save(moveDown);
+			moduleLinkDao.save(moveUp);
+			moduleLinkDao.save(moveDown);
 		}
 	}
 
@@ -86,32 +86,32 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 	public void moveUp(final ModuleLinkEntity link) {
 		if (link.getSort() > 1) {
 			ModuleLinkEntity moveUp = link;
-			ModuleLinkEntity moveDown = this.moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() - 1);
+			ModuleLinkEntity moveDown = moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() - 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			this.moduleLinkDao.save(moveUp);
-			this.moduleLinkDao.save(moveDown);
+			moduleLinkDao.save(moveUp);
+			moduleLinkDao.save(moveDown);
 		}
 	}
 
 	@Override
 	public void save(final ModuleLinkEntity link) {
-		this.moduleLinkDao.save(link);
+		moduleLinkDao.save(link);
 	}
 
 	@Override
 	public List<ModuleLinkEntity> findAllVisibleGlobalAdministrationLinks() {
-		return this.moduleLinkDao.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION);
+		return moduleLinkDao.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION);
 	}
 
 	@Override
 	public List<ModuleLinkEntity> findAllVisibleMainNavigationLinks() {
-		return this.moduleLinkDao.findVisibleModuleLinks(LinkType.TOP_NAVIGATION);
+		return moduleLinkDao.findVisibleModuleLinks(LinkType.TOP_NAVIGATION);
 	}
 
 	@Override
 	public List<ModuleLinkEntity> findAllVisiblePageAdministrationLinks() {
-		return this.moduleLinkDao.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION);
+		return moduleLinkDao.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION);
 	}
 
 	@Override
@@ -128,9 +128,9 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 			List<ModuleLinkEntity> toAddSelected = new ArrayList<ModuleLinkEntity>();
 			List<ModuleLinkEntity> toAddNotSelected = new ArrayList<ModuleLinkEntity>();
 			Set<ModuleLinkEntity> toRemove = new HashSet<ModuleLinkEntity>();
-			List<ModuleLinkEntity> allLinks = this.moduleLinkDao.findModuleLinks(type);
+			List<ModuleLinkEntity> allLinks = moduleLinkDao.findModuleLinks(type);
 			toRemove.addAll(allLinks);
-			for (PageConfiguration page : this.pageLocator.getPageConfigurations()) {
+			for (PageConfiguration page : pageLocator.getPageConfigurations()) {
 				ModuleLinkEntity link = mapTo(page, type);
 				// new link
 				if (!allLinks.contains(link)) {
@@ -147,9 +147,9 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 			}
 			// remove links which was not found
 			for (ModuleLinkEntity link : toRemove) {
-				this.moduleLinkDao.delete(link);
+				moduleLinkDao.delete(link);
 			}
-			Integer maxSort = this.moduleLinkDao.getMaxSortNum(type);
+			Integer maxSort = moduleLinkDao.getMaxSortNum(type);
 			if (maxSort == null) {
 				maxSort = 1;
 			} else {
@@ -165,14 +165,14 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 
 			for (ModuleLinkEntity link : toAdd) {
 				link.setSort(maxSort++);
-				this.moduleLinkDao.save(link);
+				moduleLinkDao.save(link);
 			}
 			// make the sort order consistent (remove sort gaps)
-			Set<ModuleLinkEntity> sortedLinks = new TreeSet<ModuleLinkEntity>(this.moduleLinkDao.findModuleLinks(type));
+			Set<ModuleLinkEntity> sortedLinks = new TreeSet<ModuleLinkEntity>(moduleLinkDao.findModuleLinks(type));
 			int i = 1;
 			for (ModuleLinkEntity link : sortedLinks) {
 				link.setSort(i++);
-				this.moduleLinkDao.save(link);
+				moduleLinkDao.save(link);
 			}
 		}
 	}

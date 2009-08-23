@@ -38,8 +38,8 @@ public class EmailTemplateBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				final EmailTemplateEntity newEntry = EmailTemplateBasePage.this.emailService.newEmailTemplateEntity();
-				this.setResponsePage(new EmailTemplateEditPage(newEntry));
+				final EmailTemplateEntity newEntry = emailService.newEmailTemplateEntity();
+				setResponsePage(new EmailTemplateEditPage(newEntry));
 			}
 		}.add(new Label("linkName", this.getString("createLink"))));
 	}

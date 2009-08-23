@@ -35,19 +35,18 @@ public class UserBoxPanel extends Panel {
 	public UserBoxPanel(final String id) {
 		super(id);
 		final PortalSession session = (PortalSession) getSession();
-		this.add(new Label("username", session.getUser().getUsername() + " - " + session.getUser().getRole().getDescription()));
+		add(new Label("username", session.getUser().getUsername() + " - "
+				+ session.getUser().getRole().getDescription()));
 
 		final StatelessLink logoutLink = new StatelessLink("logoutLink") {
-
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				this.setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("loggedout")));
+				setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("loggedout")));
 			}
-
 		};
-		this.add(new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class));
-		this.add(logoutLink);
+		add(new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class));
+		add(logoutLink);
 	}
 }

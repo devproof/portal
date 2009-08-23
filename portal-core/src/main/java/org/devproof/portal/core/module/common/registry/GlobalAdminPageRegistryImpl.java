@@ -39,25 +39,25 @@ public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry, Ini
 	@Override
 	public List<Class<? extends Page>> getRegisteredGlobalAdminPages() {
 		// immutable
-		return Collections.unmodifiableList(this.adminPages);
+		return Collections.unmodifiableList(adminPages);
 	}
 
 	@Override
 	public void registerGlobalAdminPage(final Class<? extends Page> adminPage) {
-		this.adminPages.add(adminPage);
+		adminPages.add(adminPage);
 	}
 
 	@Override
 	public void removeGlobalAdminPage(final Class<? extends Page> adminPage) {
-		this.adminPages.remove(adminPage);
+		adminPages.remove(adminPage);
 
 	}
 
 	@Override
 	public void buildNavigation() {
-		this.adminPages.clear();
-		Collection<PageConfiguration> confs = this.pageLocator.getPageConfigurations();
-		List<ModuleLinkEntity> links = this.moduleService.findAllVisibleGlobalAdministrationLinks();
+		adminPages.clear();
+		Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
+		List<ModuleLinkEntity> links = moduleService.findAllVisibleGlobalAdministrationLinks();
 		for (ModuleLinkEntity link : links) {
 			PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
 			if (conf != null) {

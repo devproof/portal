@@ -40,7 +40,7 @@ public class PageConfiguration {
 	 * @return the mount path of the page
 	 */
 	public String getMountPath() {
-		return this.mountPath;
+		return mountPath;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class PageConfiguration {
 	 * @return page class (must extend the wicket page class)
 	 */
 	public Class<? extends Page> getPageClass() {
-		return this.pageClass;
+		return pageClass;
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class PageConfiguration {
 	 *         /hello/arg0/arg1
 	 */
 	public boolean isIndexMountedPath() {
-		return this.indexMountedPath;
+		return indexMountedPath;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class PageConfiguration {
 	 * @return true if this page should be the default start page of the portal
 	 */
 	public boolean isDefaultStartPage() {
-		return this.defaultStartPage;
+		return defaultStartPage;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class PageConfiguration {
 	 *         file must contain a value adminLinkLabel for the title
 	 */
 	public boolean isRegisterGlobalAdminLink() {
-		return this.registerGlobalAdminLink;
+		return registerGlobalAdminLink;
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class PageConfiguration {
 	 *         adminLinkLabel for the title
 	 */
 	public boolean isRegisterPageAdminLink() {
-		return this.registerPageAdminLink;
+		return registerPageAdminLink;
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class PageConfiguration {
 	 *         mainNavigationLinkLabel for the title
 	 */
 	public boolean isRegisterMainNavigationLink() {
-		return this.registerMainNavigationLink;
+		return registerMainNavigationLink;
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class PageConfiguration {
 	 *         is only set from the PageLocator
 	 */
 	public ModuleConfiguration getModule() {
-		return this.module;
+		return module;
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class PageConfiguration {
 	 * @return feed provider for atom or RSS
 	 */
 	public FeedProvider getFeedProvider() {
-		return this.feedProvider;
+		return feedProvider;
 	}
 
 	/**

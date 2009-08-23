@@ -57,20 +57,20 @@ public class ModuleLinkPanel extends Panel {
 
 	public ModuleLinkPanel(final String id, final LinkType linkType) {
 		super(id);
-		this.add(new Label("naviTitle", this.getString(linkType.toString().toLowerCase())));
-		this.container = new WebMarkupContainer("refreshTable");
-		this.container.setOutputMarkupId(true);
-		this.add(this.container);
+		add(new Label("naviTitle", this.getString(linkType.toString().toLowerCase())));
+		container = new WebMarkupContainer("refreshTable");
+		container.setOutputMarkupId(true);
+		add(container);
 
-		this.form = new Form<ModuleLinkEntity>("form");
-		this.container.add(this.form);
+		form = new Form<ModuleLinkEntity>("form");
+		container.add(form);
 
 		ModuleLinkQuery query = new ModuleLinkQuery();
 		query.setLinkType(linkType);
-		this.moduleLinkDataProvider.setQueryObject(query);
+		moduleLinkDataProvider.setQueryObject(query);
 
-		ModuleLinkView dataView = new ModuleLinkView("tableRow", this.moduleLinkDataProvider);
-		this.form.add(dataView);
+		ModuleLinkView dataView = new ModuleLinkView("tableRow", moduleLinkDataProvider);
+		form.add(dataView);
 	}
 
 	private class ModuleLinkView extends DataView<ModuleLinkEntity> {
@@ -92,8 +92,8 @@ public class ModuleLinkPanel extends Panel {
 
 				@Override
 				protected void onSelectionChanged(final Object newSelection) {
-					ModuleLinkPanel.this.moduleService.save(link);
-					ModuleLinkPanel.this.registryService.rebuildRegistries(link.getLinkType());
+					moduleService.save(link);
+					registryService.rebuildRegistries(link.getLinkType());
 					Boolean selection = (Boolean) newSelection;
 					if (selection) {
 						info(this.getString("msg.selected"));
@@ -114,9 +114,9 @@ public class ModuleLinkPanel extends Panel {
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					ModuleLinkPanel.this.moduleService.moveUp(link);
-					ModuleLinkPanel.this.registryService.rebuildRegistries(link.getLinkType());
-					target.addComponent(ModuleLinkPanel.this.container);
+					moduleService.moveUp(link);
+					registryService.rebuildRegistries(link.getLinkType());
+					target.addComponent(container);
 				}
 			}.add(new Image("upImage", CommonConstants.REF_UP_IMG)));
 
@@ -125,9 +125,9 @@ public class ModuleLinkPanel extends Panel {
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					ModuleLinkPanel.this.moduleService.moveDown(link);
-					ModuleLinkPanel.this.registryService.rebuildRegistries(link.getLinkType());
-					target.addComponent(ModuleLinkPanel.this.container);
+					moduleService.moveDown(link);
+					registryService.rebuildRegistries(link.getLinkType());
+					target.addComponent(container);
 				}
 			}.add(new Image("downImage", CommonConstants.REF_DOWN_IMG)));
 

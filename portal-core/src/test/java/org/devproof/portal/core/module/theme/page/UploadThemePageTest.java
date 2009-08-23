@@ -28,17 +28,17 @@ public class UploadThemePageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(UploadThemePage.class);
-		this.tester.assertRenderedPage(UploadThemePage.class);
+		tester.startPage(UploadThemePage.class);
+		tester.assertRenderedPage(UploadThemePage.class);
 	}
 }

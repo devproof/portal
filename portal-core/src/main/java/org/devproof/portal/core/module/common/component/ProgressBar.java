@@ -111,9 +111,9 @@ public class ProgressBar extends Panel {
 			this.add(cssContributor);
 		}
 
-		this.add(new Label("label", getLabelModel(model)));
-		this.add(new Label("message", getMessageModel(model)));
-		this.add(new WebMarkupContainer("bar").add(new AttributeModifier("style", true, new AbstractReadOnlyModel<String>() {
+		add(new Label("label", getLabelModel(model)));
+		add(new Label("message", getMessageModel(model)));
+		add(new WebMarkupContainer("bar").add(new AttributeModifier("style", true, new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -187,7 +187,7 @@ public class ProgressBar extends Panel {
 			@Override
 			protected void onPostProcessTarget(final AjaxRequestTarget target) {
 				// ProgressionModel model = (ProgressionModel) getModel();
-				Progression progression = ProgressBar.this.model.getProgression();
+				Progression progression = model.getProgression();
 				if (progression.isDone()) {
 					// stop the self update
 					stop();
@@ -219,7 +219,7 @@ public class ProgressBar extends Panel {
 	 * @return the width of the ProgressBar
 	 */
 	public int getWidth() {
-		return this.width;
+		return width;
 	}
 
 	/**

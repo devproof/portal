@@ -34,31 +34,31 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 
 	@Override
 	public Map<String, FeedProvider> getAllFeedProvider() {
-		return Collections.unmodifiableMap(this.feedProviders);
+		return Collections.unmodifiableMap(feedProviders);
 	}
 
 	@Override
-	public FeedProvider getFeedProviderByPath(String path) {
+	public FeedProvider getFeedProviderByPath(final String path) {
 		String newPath = getPathWithoutLeadingSlash(path);
-		return this.feedProviders.get(newPath);
+		return feedProviders.get(newPath);
 	}
 
 	@Override
-	public void registerFeedProvider(String path, FeedProvider feedProvider) {
+	public void registerFeedProvider(final String path, final FeedProvider feedProvider) {
 		String newPath = getPathWithoutLeadingSlash(path);
-		if (this.feedProviders.containsKey(newPath)) {
+		if (feedProviders.containsKey(newPath)) {
 			throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
 		}
-		this.feedProviders.put(newPath, feedProvider);
+		feedProviders.put(newPath, feedProvider);
 	}
 
 	@Override
-	public void removeFeedProvider(String path) {
+	public void removeFeedProvider(final String path) {
 		String newPath = getPathWithoutLeadingSlash(path);
-		this.feedProviders.remove(newPath);
+		feedProviders.remove(newPath);
 	}
 
-	private String getPathWithoutLeadingSlash(String path) {
+	private String getPathWithoutLeadingSlash(final String path) {
 		String newPath = path;
 		if (newPath.startsWith("/")) {
 			newPath = path.substring(1);
@@ -68,7 +68,7 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Collection<PageConfiguration> confs = this.pageLocator.getPageConfigurations();
+		Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
 		for (PageConfiguration conf : confs) {
 			if (conf.getFeedProvider() != null) {
 				registerFeedProvider(conf.getMountPath(), conf.getFeedProvider());
@@ -76,7 +76,7 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 		}
 	}
 
-	public void setPageLocator(PageLocator pageLocator) {
+	public void setPageLocator(final PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}
 }

@@ -54,7 +54,7 @@ abstract public class BaseEntity implements Serializable {
 	}
 
 	public Date getModifiedAt() {
-		return this.modifiedAt;
+		return modifiedAt;
 	}
 
 	public void setModifiedAt(final Date modifiedAt) {
@@ -62,7 +62,7 @@ abstract public class BaseEntity implements Serializable {
 	}
 
 	public String getCreatedBy() {
-		return this.createdBy;
+		return createdBy;
 	}
 
 	public void setCreatedBy(final String createdBy) {
@@ -70,7 +70,7 @@ abstract public class BaseEntity implements Serializable {
 	}
 
 	public Date getCreatedAt() {
-		return this.createdAt;
+		return createdAt;
 	}
 
 	public void setCreatedAt(final Date createdAt) {
@@ -78,7 +78,7 @@ abstract public class BaseEntity implements Serializable {
 	}
 
 	public String getModifiedBy() {
-		return this.modifiedBy;
+		return modifiedBy;
 	}
 
 	@Transient

@@ -32,29 +32,29 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 
 	@Override
 	public void deleteUnusedTags() {
-		this.tagDao.deleteUnusedTags();
+		tagDao.deleteUnusedTags();
 	}
 
 	@Override
 	public List<T> findMostPopularTags(final Integer firstResult, final Integer maxResult) {
-		return this.tagDao.findMostPopularTags(firstResult, maxResult);
+		return tagDao.findMostPopularTags(firstResult, maxResult);
 	}
 
 	@Override
 	public List<T> findMostPopularTags(final RoleEntity role, final Integer firstResult, final Integer maxResult) {
-		return this.tagDao.findMostPopularTags(role, this.relatedTagRight, firstResult, maxResult);
+		return tagDao.findMostPopularTags(role, relatedTagRight, firstResult, maxResult);
 	}
 
 	@Override
 	public List<T> findTagsStartingWith(final String prefix) {
-		return this.tagDao.findTagsStartingWith(prefix);
+		return tagDao.findTagsStartingWith(prefix);
 	}
 
 	@Override
 	public T newTagEntity(final String tag) {
 		T obj;
 		try {
-			obj = this.tagDao.getType().newInstance();
+			obj = tagDao.getType().newInstance();
 		} catch (final InstantiationException e) {
 			throw new UnhandledException(e);
 		} catch (final IllegalAccessException e) {
@@ -66,27 +66,27 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 
 	@Override
 	public String getRelatedTagRight() {
-		return this.relatedTagRight;
+		return relatedTagRight;
 	}
 
 	@Override
 	public void delete(final T entity) {
-		this.tagDao.delete(entity);
+		tagDao.delete(entity);
 	}
 
 	@Override
 	public List<T> findAll() {
-		return this.tagDao.findAll();
+		return tagDao.findAll();
 	}
 
 	@Override
 	public T findById(final String id) {
-		return this.tagDao.findById(id);
+		return tagDao.findById(id);
 	}
 
 	@Override
 	public void save(final T entity) {
-		this.tagDao.save(entity);
+		tagDao.save(entity);
 	}
 
 	@Required

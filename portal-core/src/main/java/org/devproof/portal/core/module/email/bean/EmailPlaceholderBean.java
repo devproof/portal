@@ -40,7 +40,7 @@ public class EmailPlaceholderBean {
 	private String contactIp;
 
 	public String getUsername() {
-		return this.username;
+		return username;
 	}
 
 	public void setUsername(final String username) {
@@ -48,7 +48,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getFirstname() {
-		return this.firstname;
+		return firstname;
 	}
 
 	public void setFirstname(final String firstname) {
@@ -56,7 +56,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getLastname() {
-		return this.lastname;
+		return lastname;
 	}
 
 	public void setLastname(final String lastname) {
@@ -64,7 +64,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
 
 	public void setEmail(final String email) {
@@ -72,7 +72,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public Date getBirthday() {
-		return this.birthday;
+		return birthday;
 	}
 
 	public void setBirthday(final Date birthday) {
@@ -80,7 +80,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getConfirmationLink() {
-		return this.confirmationLink;
+		return confirmationLink;
 	}
 
 	public void setConfirmationLink(final String confirmationLink) {
@@ -88,7 +88,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getResetPasswordLink() {
-		return this.resetPasswordLink;
+		return resetPasswordLink;
 	}
 
 	public void setResetPasswordLink(final String resetPasswordLink) {
@@ -96,7 +96,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getContent() {
-		return this.content;
+		return content;
 	}
 
 	public void setContent(final String content) {
@@ -104,7 +104,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getToUsername() {
-		return this.toUsername;
+		return toUsername;
 	}
 
 	public void setToUsername(final String toUsername) {
@@ -112,7 +112,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getToFirstname() {
-		return this.toFirstname;
+		return toFirstname;
 	}
 
 	public void setToFirstname(final String toFirstname) {
@@ -120,7 +120,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getToLastname() {
-		return this.toLastname;
+		return toLastname;
 	}
 
 	public void setToLastname(final String toLastname) {
@@ -128,7 +128,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getToEmail() {
-		return this.toEmail;
+		return toEmail;
 	}
 
 	public void setToEmail(final String toEmail) {
@@ -136,7 +136,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getContactFullname() {
-		return this.contactFullname;
+		return contactFullname;
 	}
 
 	public void setContactFullname(final String contactFullname) {
@@ -144,7 +144,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getContactEmail() {
-		return this.contactEmail;
+		return contactEmail;
 	}
 
 	public void setContactEmail(final String contactEmail) {
@@ -152,7 +152,7 @@ public class EmailPlaceholderBean {
 	}
 
 	public String getContactIp() {
-		return this.contactIp;
+		return contactIp;
 	}
 
 	public void setContactIp(final String contactIp) {

@@ -28,7 +28,7 @@ import javax.swing.JTextArea;
 public class DevproofWebstartLauncher extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private JettyWebstart jettyWebstart;
+	private final JettyWebstart jettyWebstart;
 	private JButton startButton;
 	private JButton stopButton;
 
@@ -38,7 +38,7 @@ public class DevproofWebstartLauncher extends JFrame {
 
 	public DevproofWebstartLauncher() {
 		super("Devproof Portal");
-		this.jettyWebstart = new JettyWebstart();
+		jettyWebstart = new JettyWebstart();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		add(new JLabel(" Devproof Portal"), BorderLayout.NORTH);
@@ -56,19 +56,19 @@ public class DevproofWebstartLauncher extends JFrame {
 		add(hint, BorderLayout.CENTER);
 
 		JPanel bottomButtons = new JPanel();
-		bottomButtons.add(this.startButton = new JButton("Start Server"), BorderLayout.WEST);
-		bottomButtons.add(this.stopButton = new JButton("Stop Server"), BorderLayout.EAST);
+		bottomButtons.add(startButton = new JButton("Start Server"), BorderLayout.WEST);
+		bottomButtons.add(stopButton = new JButton("Stop Server"), BorderLayout.EAST);
 		add(bottomButtons, BorderLayout.SOUTH);
 		setLocation(400, 300);
 		setSize(400, 200);
-		this.startButton.addActionListener(new ActionListener() {
+		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				startServer();
 			}
 		});
 
-		this.stopButton.addActionListener(new ActionListener() {
+		stopButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				stopServer();
@@ -79,14 +79,14 @@ public class DevproofWebstartLauncher extends JFrame {
 	}
 
 	private void startServer() {
-		DevproofWebstartLauncher.this.startButton.setEnabled(false);
-		DevproofWebstartLauncher.this.stopButton.setEnabled(true);
-		DevproofWebstartLauncher.this.jettyWebstart.startServer(8888);
+		startButton.setEnabled(false);
+		stopButton.setEnabled(true);
+		jettyWebstart.startServer(8888);
 	}
 
 	private void stopServer() {
-		DevproofWebstartLauncher.this.startButton.setEnabled(true);
-		DevproofWebstartLauncher.this.stopButton.setEnabled(false);
-		DevproofWebstartLauncher.this.jettyWebstart.stopServer();
+		startButton.setEnabled(true);
+		stopButton.setEnabled(false);
+		jettyWebstart.stopServer();
 	}
 }

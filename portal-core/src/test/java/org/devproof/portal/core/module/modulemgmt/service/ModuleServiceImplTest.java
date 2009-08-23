@@ -41,23 +41,23 @@ public class ModuleServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.moduleLinkDaoMock = EasyMock.createStrictMock(ModuleLinkDao.class);
-		this.pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
-		this.applicationContextMock = EasyMock.createStrictMock(ApplicationContext.class);
-		this.impl = new ModuleServiceImpl();
-		this.impl.setModuleLinkDao(this.moduleLinkDaoMock);
-		this.impl.setPageLocator(this.pageLocatorMock);
-		this.impl.setApplicationContext(this.applicationContextMock);
+		moduleLinkDaoMock = EasyMock.createStrictMock(ModuleLinkDao.class);
+		pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
+		applicationContextMock = EasyMock.createStrictMock(ApplicationContext.class);
+		impl = new ModuleServiceImpl();
+		impl.setModuleLinkDao(moduleLinkDaoMock);
+		impl.setPageLocator(pageLocatorMock);
+		impl.setApplicationContext(applicationContextMock);
 	}
 
 	public void testSave() {
 		ModuleLinkEntity e = new ModuleLinkEntity();
 		e.setPageName("hello");
 		e.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
-		this.moduleLinkDaoMock.save(e);
-		EasyMock.replay(this.moduleLinkDaoMock);
-		this.impl.save(e);
-		EasyMock.verify(this.moduleLinkDaoMock);
+		moduleLinkDaoMock.save(e);
+		EasyMock.replay(moduleLinkDaoMock);
+		impl.save(e);
+		EasyMock.verify(moduleLinkDaoMock);
 	}
 
 	public void testMoveDown() {
@@ -69,15 +69,15 @@ public class ModuleServiceImplTest extends TestCase {
 		e2.setPageName("hello2");
 		e2.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
 		e2.setSort(2);
-		EasyMock.expect(this.moduleLinkDaoMock.getMaxSortNum(LinkType.GLOBAL_ADMINISTRATION)).andReturn(2);
-		EasyMock.expect(this.moduleLinkDaoMock.findModuleLinkBySort(LinkType.GLOBAL_ADMINISTRATION, 2)).andReturn(e2);
-		this.moduleLinkDaoMock.save(e2);
-		this.moduleLinkDaoMock.save(e1);
-		EasyMock.replay(this.moduleLinkDaoMock);
-		this.impl.moveDown(e1);
+		EasyMock.expect(moduleLinkDaoMock.getMaxSortNum(LinkType.GLOBAL_ADMINISTRATION)).andReturn(2);
+		EasyMock.expect(moduleLinkDaoMock.findModuleLinkBySort(LinkType.GLOBAL_ADMINISTRATION, 2)).andReturn(e2);
+		moduleLinkDaoMock.save(e2);
+		moduleLinkDaoMock.save(e1);
+		EasyMock.replay(moduleLinkDaoMock);
+		impl.moveDown(e1);
 		assertEquals(Integer.valueOf(2), e1.getSort());
 		assertEquals(Integer.valueOf(1), e2.getSort());
-		EasyMock.verify(this.moduleLinkDaoMock);
+		EasyMock.verify(moduleLinkDaoMock);
 	}
 
 	public void testMoveUp() {
@@ -89,14 +89,14 @@ public class ModuleServiceImplTest extends TestCase {
 		e2.setPageName("hello2");
 		e2.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
 		e2.setSort(2);
-		EasyMock.expect(this.moduleLinkDaoMock.findModuleLinkBySort(LinkType.GLOBAL_ADMINISTRATION, 1)).andReturn(e1);
-		this.moduleLinkDaoMock.save(e2);
-		this.moduleLinkDaoMock.save(e1);
-		EasyMock.replay(this.moduleLinkDaoMock);
-		this.impl.moveUp(e2);
+		EasyMock.expect(moduleLinkDaoMock.findModuleLinkBySort(LinkType.GLOBAL_ADMINISTRATION, 1)).andReturn(e1);
+		moduleLinkDaoMock.save(e2);
+		moduleLinkDaoMock.save(e1);
+		EasyMock.replay(moduleLinkDaoMock);
+		impl.moveUp(e2);
 		assertEquals(Integer.valueOf(2), e1.getSort());
 		assertEquals(Integer.valueOf(1), e2.getSort());
-		EasyMock.verify(this.moduleLinkDaoMock);
+		EasyMock.verify(moduleLinkDaoMock);
 	}
 
 	public void testRebuildModuleLinks() {
@@ -106,36 +106,36 @@ public class ModuleServiceImplTest extends TestCase {
 	public void testFindAllVisibleGlobalAdministrationLinks() {
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		links.add(new ModuleLinkEntity());
-		EasyMock.expect(this.moduleLinkDaoMock.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION)).andReturn(links);
-		EasyMock.replay(this.moduleLinkDaoMock);
-		this.impl.findAllVisibleGlobalAdministrationLinks();
-		EasyMock.verify(this.moduleLinkDaoMock);
+		EasyMock.expect(moduleLinkDaoMock.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION)).andReturn(links);
+		EasyMock.replay(moduleLinkDaoMock);
+		impl.findAllVisibleGlobalAdministrationLinks();
+		EasyMock.verify(moduleLinkDaoMock);
 	}
 
 	public void testFindAllVisibleMainNavigationLinks() {
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		links.add(new ModuleLinkEntity());
-		EasyMock.expect(this.moduleLinkDaoMock.findVisibleModuleLinks(LinkType.TOP_NAVIGATION)).andReturn(links);
-		EasyMock.replay(this.moduleLinkDaoMock);
-		this.impl.findAllVisibleMainNavigationLinks();
-		EasyMock.verify(this.moduleLinkDaoMock);
+		EasyMock.expect(moduleLinkDaoMock.findVisibleModuleLinks(LinkType.TOP_NAVIGATION)).andReturn(links);
+		EasyMock.replay(moduleLinkDaoMock);
+		impl.findAllVisibleMainNavigationLinks();
+		EasyMock.verify(moduleLinkDaoMock);
 	}
 
 	public void testFindAllVisiblePageAdministrationLinks() {
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		links.add(new ModuleLinkEntity());
-		EasyMock.expect(this.moduleLinkDaoMock.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION)).andReturn(links);
-		EasyMock.replay(this.moduleLinkDaoMock);
-		this.impl.findAllVisiblePageAdministrationLinks();
-		EasyMock.verify(this.moduleLinkDaoMock);
+		EasyMock.expect(moduleLinkDaoMock.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION)).andReturn(links);
+		EasyMock.replay(moduleLinkDaoMock);
+		impl.findAllVisiblePageAdministrationLinks();
+		EasyMock.verify(moduleLinkDaoMock);
 	}
 
 	public void testFindModules() {
 		Map<String, ModuleConfiguration> beans = new HashMap<String, ModuleConfiguration>();
 		beans.put("bean", new ModuleConfiguration());
-		EasyMock.expect(this.applicationContextMock.getBeansOfType(ModuleConfiguration.class)).andReturn(beans);
-		EasyMock.replay(this.applicationContextMock);
-		assertEquals(this.impl.findModules().size(), beans.size());
-		EasyMock.verify(this.applicationContextMock);
+		EasyMock.expect(applicationContextMock.getBeansOfType(ModuleConfiguration.class)).andReturn(beans);
+		EasyMock.replay(applicationContextMock);
+		assertEquals(impl.findModules().size(), beans.size());
+		EasyMock.verify(applicationContextMock);
 	}
 }

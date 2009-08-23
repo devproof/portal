@@ -25,11 +25,11 @@ public class FontServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.impl = new FontServiceImpl();
+		impl = new FontServiceImpl();
 	}
 
 	public void testFindAllSystemFonts() {
-		assertNotNull(this.impl.findAllSystemFonts());
-		assertTrue(this.impl.findAllSystemFonts().size() > 0);
+		assertNotNull(impl.findAllSystemFonts());
+		assertTrue(impl.findAllSystemFonts().size() > 0);
 	}
 }

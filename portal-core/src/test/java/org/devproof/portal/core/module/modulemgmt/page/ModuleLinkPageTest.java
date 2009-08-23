@@ -28,17 +28,17 @@ public class ModuleLinkPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(this.tester);
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(ModuleLinkPage.class);
-		this.tester.assertRenderedPage(ModuleLinkPage.class);
+		tester.startPage(ModuleLinkPage.class);
+		tester.assertRenderedPage(ModuleLinkPage.class);
 	}
 }

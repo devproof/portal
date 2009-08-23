@@ -63,15 +63,15 @@ public class ConfigurationPage extends TemplatePage {
 			@Override
 			protected void onSubmit() {
 				for (ConfigurationEntity configuration : allConfigurations) {
-					ConfigurationPage.this.configurationService.save(configuration);
+					configurationService.save(configuration);
 				}
-				ConfigurationPage.this.configurationService.refreshGlobalConfiguration();
-				info(this.getString("msg.saved"));
+				configurationService.refreshGlobalConfiguration();
+				info(getString("msg.saved"));
 			}
 		};
-		this.add(form);
+		add(form);
 
-		List<String> groups = this.configurationService.findConfigurationGroups();
+		List<String> groups = configurationService.findConfigurationGroups();
 		RepeatingView tableRow = new RepeatingView("tableRow");
 		form.add(tableRow);
 		for (String group : groups) {
@@ -80,7 +80,7 @@ public class ConfigurationPage extends TemplatePage {
 			row.add(new Label("editor", ""));
 			tableRow.add(row);
 
-			List<ConfigurationEntity> configurations = this.configurationService.findConfigurationsByGroup(group);
+			List<ConfigurationEntity> configurations = configurationService.findConfigurationsByGroup(group);
 			for (ConfigurationEntity configuration : configurations) {
 				row = new WebMarkupContainer(tableRow.newChildId());
 				row.add(new Label("description", configuration.getDescription()));
@@ -137,11 +137,14 @@ public class ConfigurationPage extends TemplatePage {
 			}
 			IModel<String> label = Model.of(configurationEntity.getKey());
 			if (Double.class.isAssignableFrom(clazz)) {
-				this.add(new RequiredTextField<Double>("edit", new PropertyModel<Double>(configurationEntity, "doubleValue")).setLabel(label));
+				add(new RequiredTextField<Double>("edit", new PropertyModel<Double>(configurationEntity, "doubleValue"))
+						.setLabel(label));
 			} else if (Integer.class.isAssignableFrom(clazz)) {
-				this.add(new RequiredTextField<Integer>("edit", new PropertyModel<Integer>(configurationEntity, "integerValue")).setLabel(label));
+				add(new RequiredTextField<Integer>("edit", new PropertyModel<Integer>(configurationEntity,
+						"integerValue")).setLabel(label));
 			} else if (String.class.isAssignableFrom(clazz)) {
-				this.add(new RequiredTextField<String>("edit", new PropertyModel<String>(configurationEntity, "value")).setLabel(label));
+				add(new RequiredTextField<String>("edit", new PropertyModel<String>(configurationEntity, "value"))
+						.setLabel(label));
 			} else {
 				throw new IllegalArgumentException("Configuration type is not allowed!");
 			}
@@ -153,7 +156,8 @@ public class ConfigurationPage extends TemplatePage {
 
 		public BooleanEditor(final String id, final ConfigurationEntity configurationEntity) {
 			super(id, "booleanEditor", ConfigurationPage.this);
-			this.add(new CheckBox("edit", new PropertyModel<Boolean>(configurationEntity, "booleanValue")).setLabel(Model.of(configurationEntity.getKey())));
+			add(new CheckBox("edit", new PropertyModel<Boolean>(configurationEntity, "booleanValue")).setLabel(Model
+					.of(configurationEntity.getKey())));
 		}
 	}
 
@@ -174,11 +178,12 @@ public class ConfigurationPage extends TemplatePage {
 			for (int i = 0; i < tmp.length; i++) {
 				values.add(((Enum<?>) tmp[i]).name());
 			}
-			DropDownChoice<String> ddc = new DropDownChoice<String>("edit", new PropertyModel<String>(configurationEntity, "value"), values);
+			DropDownChoice<String> ddc = new DropDownChoice<String>("edit", new PropertyModel<String>(
+					configurationEntity, "value"), values);
 			ddc.setLabel(Model.of(configurationEntity.getDescription()));
 			ddc.setRequired(true);
 
-			this.add(ddc);
+			add(ddc);
 		}
 	}
 
@@ -188,7 +193,8 @@ public class ConfigurationPage extends TemplatePage {
 		public SpringBeanEditor(final String id, final ConfigurationEntity configurationEntity) {
 			super(id, "springBeanEditor", ConfigurationPage.this);
 
-			String typeWithoutPrefix = configurationEntity.getKey().substring(ConfigurationConstants.SPRING_CONFIGURATION_PREFIX.length());
+			String typeWithoutPrefix = configurationEntity.getKey().substring(
+					ConfigurationConstants.SPRING_CONFIGURATION_PREFIX.length());
 			int index = typeWithoutPrefix.indexOf('.');
 			String springBeanName = typeWithoutPrefix.substring(0, index);
 			typeWithoutPrefix = typeWithoutPrefix.substring(index + 1);
@@ -226,7 +232,8 @@ public class ConfigurationPage extends TemplatePage {
 				throw new RuntimeException("Invalid spring configuration key!", e);
 			}
 
-			DropDownChoice<ConfigurationEntity> ddc = new DropDownChoice<ConfigurationEntity>("edit", result, new ChoiceRenderer<ConfigurationEntity>("description", "value"));
+			DropDownChoice<ConfigurationEntity> ddc = new DropDownChoice<ConfigurationEntity>("edit", result,
+					new ChoiceRenderer<ConfigurationEntity>("description", "value"));
 			ddc.setModel(new IModel<ConfigurationEntity>() {
 
 				private static final long serialVersionUID = 1L;
@@ -246,7 +253,7 @@ public class ConfigurationPage extends TemplatePage {
 			ddc.setLabel(Model.of(configurationEntity.getDescription()));
 			ddc.setRequired(true);
 
-			this.add(ddc);
+			add(ddc);
 		}
 	}
 
@@ -255,9 +262,10 @@ public class ConfigurationPage extends TemplatePage {
 
 		public DateEditor(final String id, final ConfigurationEntity configurationEntity) {
 			super(id, "dateEditor", ConfigurationPage.this);
-			DateTextField dateTextField = new DateTextField("edit", new PropertyModel<Date>(configurationEntity, "dateValue"));
+			DateTextField dateTextField = new DateTextField("edit", new PropertyModel<Date>(configurationEntity,
+					"dateValue"));
 			dateTextField.add(new DatePicker());
-			this.add(dateTextField.setLabel(Model.of(configurationEntity.getKey())).setRequired(true));
+			add(dateTextField.setLabel(Model.of(configurationEntity.getKey())).setRequired(true));
 		}
 	}
 
@@ -266,7 +274,7 @@ public class ConfigurationPage extends TemplatePage {
 
 		public GroupHeader(final String id, final String headline) {
 			super(id, "groupHeader", ConfigurationPage.this);
-			this.add(new Label("headline", headline));
+			add(new Label("headline", headline));
 		}
 	}
 }

@@ -61,11 +61,11 @@ public abstract class UserEditPanel extends Panel {
 		super(id);
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
-		this.add(feedback);
+		add(feedback);
 
 		Form<UserEntity> form = new Form<UserEntity>("form");
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 		form.setModel(new CompoundPropertyModel<UserEntity>(user));
 		FormComponent<String> fc;
 
@@ -77,7 +77,7 @@ public abstract class UserEditPanel extends Panel {
 
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
-				if (UserEditPanel.this.userService.existsUsername(ivalidatable.getValue()) && isCreate) {
+				if (userService.existsUsername(ivalidatable.getValue()) && isCreate) {
 					this.error(ivalidatable);
 				}
 			}
@@ -108,7 +108,8 @@ public abstract class UserEditPanel extends Panel {
 		form.add(fc);
 
 		IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
-		final DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", new PropertyModel<RoleEntity>(user, "role"), this.roleService.findAll(), renderer);
+		final DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", new PropertyModel<RoleEntity>(user,
+				"role"), roleService.findAll(), renderer);
 		role.setRequired(true);
 		form.add(role);
 
@@ -136,7 +137,7 @@ public abstract class UserEditPanel extends Panel {
 					user.setRegistrationDate(PortalUtil.now());
 				}
 				user.setChangedAt(PortalUtil.now());
-				UserEditPanel.this.userService.save(user);
+				userService.save(user);
 				UserEditPanel.this.onSave(target);
 			}
 

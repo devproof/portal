@@ -64,66 +64,67 @@ public class UserPage extends TemplatePage {
 	public UserPage(final PageParameters params) {
 		super(params);
 		UserQuery query = new UserQuery();
-		this.userDataProvider.setQueryObject(query);
+		userDataProvider.setQueryObject(query);
 
-		this.container = new WebMarkupContainer("refreshTable");
-		this.container.setOutputMarkupId(true);
-		this.container.add(new OrderByBorder("table_username", "username", this.userDataProvider));
-		this.container.add(new OrderByBorder("table_firstname", "firstname", this.userDataProvider));
-		this.container.add(new OrderByBorder("table_lastname", "lastname", this.userDataProvider));
-		this.container.add(new OrderByBorder("table_role", "role.description", this.userDataProvider));
-		this.container.add(new OrderByBorder("table_regdate", "registrationDate", this.userDataProvider));
-		this.container.add(new OrderByBorder("table_active", "active", this.userDataProvider));
-		this.add(this.container);
+		container = new WebMarkupContainer("refreshTable");
+		container.setOutputMarkupId(true);
+		container.add(new OrderByBorder("table_username", "username", userDataProvider));
+		container.add(new OrderByBorder("table_firstname", "firstname", userDataProvider));
+		container.add(new OrderByBorder("table_lastname", "lastname", userDataProvider));
+		container.add(new OrderByBorder("table_role", "role.description", userDataProvider));
+		container.add(new OrderByBorder("table_regdate", "registrationDate", userDataProvider));
+		container.add(new OrderByBorder("table_active", "active", userDataProvider));
+		add(container);
 
-		this.modalWindow = new ModalWindow("modalWindow");
-		this.modalWindow.setTitle("Portal");
-		this.add(this.modalWindow);
+		modalWindow = new ModalWindow("modalWindow");
+		modalWindow.setTitle("Portal");
+		add(modalWindow);
 
-		UserDataView dataView = new UserDataView("tableRow", this.userDataProvider, params);
-		this.container.add(dataView);
+		UserDataView dataView = new UserDataView("tableRow", userDataProvider, params);
+		container.add(dataView);
 
 		addFilterBox(new UserSearchBoxPanel("box", query) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target) {
-				target.addComponent(UserPage.this.container);
+				target.addComponent(container);
 			}
 
 		});
-		if (!this.authorLinksAdded) {
-			this.authorLinksAdded = true;
+		if (!authorLinksAdded) {
+			authorLinksAdded = true;
 			AjaxLink<UserEntity> createLink = new AjaxLink<UserEntity>("adminLink") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					final UserEditPanel editUserPanel = new UserEditPanel(UserPage.this.modalWindow.getContentId(), new UserEntity(), true) {
+					final UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), new UserEntity(),
+							true) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(final AjaxRequestTarget target) {
-							target.addComponent(UserPage.this.container);
+							target.addComponent(container);
 							target.addComponent(UserPage.this.getFeedback());
 							info(this.getString("msg.saved"));
-							UserPage.this.modalWindow.close(target);
+							modalWindow.close(target);
 						}
 
 					};
-					UserPage.this.modalWindow.setInitialHeight(440);
-					UserPage.this.modalWindow.setInitialWidth(550);
-					UserPage.this.modalWindow.setContent(editUserPanel);
-					UserPage.this.modalWindow.show(target);
+					modalWindow.setInitialHeight(440);
+					modalWindow.setInitialWidth(550);
+					modalWindow.setContent(editUserPanel);
+					modalWindow.show(target);
 				}
 			};
 			createLink.add(new Label("linkName", this.getString("createLink")));
 			addPageAdminBoxLink(createLink);
 
 		}
-		this.container.add(new PagingNavigator("navigatorTop", dataView));
-		this.container.add(new PagingNavigator("navigatorBottom", dataView));
+		container.add(new PagingNavigator("navigatorTop", dataView));
+		container.add(new PagingNavigator("navigatorBottom", dataView));
 
 	}
 
@@ -154,38 +155,39 @@ public class UserPage extends TemplatePage {
 				tmp.add(new SimpleAttributeModifier("style", "text-decoration:line-through;"));
 			}
 			item.add(new Label("role", user.getRole().getDescription()));
-			item.add(new Label("registration", UserPage.this.dateFormat.format(user.getRegistrationDate())));
-			item.add(new Label("active", user.getActive() != null ? this.getString("active." + user.getActive().toString()) : ""));
+			item.add(new Label("registration", dateFormat.format(user.getRegistrationDate())));
+			item.add(new Label("active", user.getActive() != null ? this.getString("active."
+					+ user.getActive().toString()) : ""));
 			item.add(new AuthorPanel<UserEntity>("authorButtons", user) {
 
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
-					UserPage.this.userService.delete(user);
-					target.addComponent(UserPage.this.container);
+					userService.delete(user);
+					target.addComponent(container);
 					target.addComponent(getFeedback());
 					info(this.getString("msg.deleted"));
 				}
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
-					final UserEditPanel editUserPanel = new UserEditPanel(UserPage.this.modalWindow.getContentId(), user, false) {
+					final UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), user, false) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(final AjaxRequestTarget target) {
-							target.addComponent(UserPage.this.container);
+							target.addComponent(container);
 							target.addComponent(getFeedback());
 							info(this.getString("msg.saved"));
-							UserPage.this.modalWindow.close(target);
+							modalWindow.close(target);
 						}
 
 					};
 
-					UserPage.this.modalWindow.setContent(editUserPanel);
-					UserPage.this.modalWindow.show(target);
+					modalWindow.setContent(editUserPanel);
+					modalWindow.show(target);
 				}
 
 			});

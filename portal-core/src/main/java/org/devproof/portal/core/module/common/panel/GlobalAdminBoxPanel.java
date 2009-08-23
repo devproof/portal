@@ -42,15 +42,17 @@ public class GlobalAdminBoxPanel extends Panel {
 	public GlobalAdminBoxPanel(final String id) {
 		super(id);
 
-		List<Class<? extends Page>> registeredAdminPages = this.adminPageRegistry.getRegisteredGlobalAdminPages();
+		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredGlobalAdminPages();
 		RepeatingView repeating = new RepeatingView("repeatingNav");
-		this.add(repeating);
+		add(repeating);
 		for (Class<? extends Page> pageClass : registeredAdminPages) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
-			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+					CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
 			if (StringUtils.isEmpty(label)) {
-				label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
+				label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+						CommonConstants.CONTENT_TITLE_LABEL);
 			}
 			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
 			link.add(new Label("adminLinkLabel", label));

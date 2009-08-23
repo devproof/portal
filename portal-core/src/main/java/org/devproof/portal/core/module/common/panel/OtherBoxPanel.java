@@ -32,7 +32,7 @@ public class OtherBoxPanel extends Panel {
 	public OtherBoxPanel(final String id, final IModel<BoxEntity> model) {
 		super(id, model);
 		BoxEntity box = model.getObject();
-		this.add(new Label("title", box.getTitle()));
-		this.add(new Label("content", box.getContent()).setEscapeModelStrings(false));
+		add(new Label("title", box.getTitle()));
+		add(new Label("content", box.getContent()).setEscapeModelStrings(false));
 	}
 }

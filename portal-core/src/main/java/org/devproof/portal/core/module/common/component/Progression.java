@@ -16,18 +16,21 @@
  */
 package org.devproof.portal.core.module.common.component;
 
-
 /**
- * <p>The progress of a task is encapsulated as a <code>Progression</code> value
- * object. Currently the progress is only stored as an int percentage value (0 to 100) and
- * optionally a message describing the current task.</p>
- *
- * <p>This class has no dependency to Wicket and could be used in the service
- * layer.</p>
- *
+ * <p>
+ * The progress of a task is encapsulated as a <code>Progression</code> value
+ * object. Currently the progress is only stored as an int percentage value (0
+ * to 100) and optionally a message describing the current task.
+ * </p>
+ * 
+ * <p>
+ * This class has no dependency to Wicket and could be used in the service
+ * layer.
+ * </p>
+ * 
  * @author Christopher Hlubek (hlubek)
  * 
- * comment Carsten Hufe: nothing modified
+ *         comment Carsten Hufe: nothing modified
  */
 public class Progression {
 	private final int progress;
@@ -35,25 +38,24 @@ public class Progression {
 	private final String message;
 
 	/**
-	 * Create a new Progression value object
-	 * from a percentage progress value.
-	 *
+	 * Create a new Progression value object from a percentage progress value.
+	 * 
 	 * @param progress
 	 *            The progress in percent from 0 to 100, where 100 means done
 	 */
 	public Progression(final int progress) {
 		this.progress = progress;
-		this.message = null;
+		message = null;
 	}
 
 	/**
-	 * Create a new Progression value object
-	 * from a percentage progress value and a message
-	 * describing the current task
-	 *
+	 * Create a new Progression value object from a percentage progress value
+	 * and a message describing the current task
+	 * 
 	 * @param progress
 	 *            The progress in percent from 0 to 100, where 100 means done
-	 * @param message message
+	 * @param message
+	 *            message
 	 */
 	public Progression(final int progress, final String message) {
 		this.progress = progress;
@@ -64,14 +66,14 @@ public class Progression {
 	 * @return true if the progress is done
 	 */
 	public boolean isDone() {
-		return this.progress >= 100;
+		return progress >= 100;
 	}
 
 	public int getProgress() {
-		return this.progress;
+		return progress;
 	}
 
 	public String getProgressMessage() {
-		return this.message;
+		return message;
 	}
 }

@@ -37,19 +37,20 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 
 	public EmailTemplateEditPage(final EmailTemplateEntity emailTemplate) {
 		super(new PageParameters());
-		Form<EmailTemplateEntity> form = new Form<EmailTemplateEntity>("form", new CompoundPropertyModel<EmailTemplateEntity>(emailTemplate)) {
+		Form<EmailTemplateEntity> form = new Form<EmailTemplateEntity>("form",
+				new CompoundPropertyModel<EmailTemplateEntity>(emailTemplate)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
-				EmailTemplateEditPage.this.emailService.save(emailTemplate);
+				emailService.save(emailTemplate);
 				setRedirect(false);
 				info(EmailTemplateEditPage.this.getString("msg.saved"));
-				this.setResponsePage(EmailTemplatePage.class);
+				setResponsePage(EmailTemplatePage.class);
 			}
 		};
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 
@@ -61,6 +62,5 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 		fc.setRequired(true);
 		fc.add(StringValidator.minimumLength(10));
 		form.add(fc);
-
 	}
 }

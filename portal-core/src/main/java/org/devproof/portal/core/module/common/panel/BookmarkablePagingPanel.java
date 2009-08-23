@@ -31,7 +31,8 @@ public class BookmarkablePagingPanel extends Panel {
 	private final BookmarkablePageLink<String> backLink;
 	private final BookmarkablePageLink<String> forwardLink;
 
-	public BookmarkablePagingPanel(final String id, final IPageable pageable, final Class<? extends Page> parentClazz, final PageParameters params) {
+	public BookmarkablePagingPanel(final String id, final IPageable pageable, final Class<? extends Page> parentClazz,
+			final PageParameters params) {
 		super(id);
 		if (params != null && params.containsKey("page")) {
 			int page = params.getAsInteger("page", 1);
@@ -40,7 +41,7 @@ public class BookmarkablePagingPanel extends Panel {
 			}
 		}
 
-		this.backLink = new BookmarkablePageLink<String>("backLink", parentClazz) {
+		backLink = new BookmarkablePageLink<String>("backLink", parentClazz) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -48,10 +49,10 @@ public class BookmarkablePagingPanel extends Panel {
 				return pageable.getCurrentPage() != 0;
 			}
 		};
-		this.backLink.setParameter("page", pageable.getCurrentPage());
-		this.add(this.backLink);
+		backLink.setParameter("page", pageable.getCurrentPage());
+		add(backLink);
 
-		this.forwardLink = new BookmarkablePageLink<String>("forwardLink", parentClazz) {
+		forwardLink = new BookmarkablePageLink<String>("forwardLink", parentClazz) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -60,16 +61,16 @@ public class BookmarkablePagingPanel extends Panel {
 			}
 
 		};
-		this.forwardLink.setParameter("page", pageable.getCurrentPage() + 2);
-		this.add(this.forwardLink);
+		forwardLink.setParameter("page", pageable.getCurrentPage() + 2);
+		add(forwardLink);
 		if (params != null) {
 			for (String key : params.keySet()) {
 				// if(!"page".equals(key) && !"rateid".equals(key) &&
 				// !"vote".equals(key)) {
 				if ("broken".equals(key) || "search".equals(key) || "tag".equals(key)) {
 					String value = params.getString(key);
-					this.backLink.setParameter(key, value);
-					this.forwardLink.setParameter(key, value);
+					backLink.setParameter(key, value);
+					forwardLink.setParameter(key, value);
 				}
 			}
 		}

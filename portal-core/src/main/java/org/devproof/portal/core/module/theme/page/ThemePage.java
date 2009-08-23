@@ -54,7 +54,7 @@ public class ThemePage extends TemplatePage {
 		build();
 		final ModalWindow modalWindow = new ModalWindow("modalWindow");
 		modalWindow.setTitle("Portal");
-		this.add(modalWindow);
+		add(modalWindow);
 		// upload files link
 		AjaxLink<ModalWindow> uploadLink = new AjaxLink<ModalWindow>("adminLink") {
 			private static final long serialVersionUID = 1L;
@@ -82,7 +82,7 @@ public class ThemePage extends TemplatePage {
 				modalWindow.show(target);
 			}
 		};
-		uploadLink.add(new Label("linkName", this.getString("uploadLink")));
+		uploadLink.add(new Label("linkName", getString("uploadLink")));
 		addPageAdminBoxLink(uploadLink);
 
 		// Download link for complete default theme
@@ -91,10 +91,10 @@ public class ThemePage extends TemplatePage {
 
 			@Override
 			protected File getFile() {
-				return ThemePage.this.themeService.createCompleteDefaultTheme();
+				return themeService.createCompleteDefaultTheme();
 			}
 		};
-		completeTheme.add(new Label("linkName", this.getString("completeThemeLink")));
+		completeTheme.add(new Label("linkName", getString("completeThemeLink")));
 		addPageAdminBoxLink(completeTheme);
 		// Download link for small default theme
 		InternalDownloadLink smallTheme = new InternalDownloadLink("adminLink") {
@@ -102,18 +102,18 @@ public class ThemePage extends TemplatePage {
 
 			@Override
 			protected File getFile() {
-				return ThemePage.this.themeService.createSmallDefaultTheme();
+				return themeService.createSmallDefaultTheme();
 			}
 		};
-		smallTheme.add(new Label("linkName", this.getString("smallThemeLink")));
+		smallTheme.add(new Label("linkName", getString("smallThemeLink")));
 		addPageAdminBoxLink(smallTheme);
 	}
 
 	public void build() {
 		RepeatingView tableRow = new RepeatingView("tableRow");
 		addOrReplace(tableRow);
-		List<ThemeBean> themes = this.themeService.findAllThemes();
-		String selectedThemeUuid = this.configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
+		List<ThemeBean> themes = themeService.findAllThemes();
+		String selectedThemeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
 		for (final ThemeBean theme : themes) {
 			boolean selected = selectedThemeUuid.equals(theme.getUuid());
 			String key = selected ? "selectedLink" : "selectLink";
@@ -125,14 +125,15 @@ public class ThemePage extends TemplatePage {
 
 				@Override
 				public void onClick() {
-					ThemePage.this.themeService.selectTheme(theme);
-					info(new StringResourceModel("msg.selected", this, null, new Object[] { theme.getTheme() }).getString());
+					themeService.selectTheme(theme);
+					info(new StringResourceModel("msg.selected", this, null, new Object[] { theme.getTheme() })
+							.getString());
 					((PortalApplication) getApplication()).setThemeUuid(theme.getUuid());
 					ThemePage.this.build();
 				}
 			};
 			selectLink.setEnabled(!selected);
-			selectLink.add(new Label("selectLabel", this.getString(key)));
+			selectLink.add(new Label("selectLabel", getString(key)));
 			row.add(selectLink);
 
 			row.add(new Link<Void>("uninstallLink") {
@@ -140,8 +141,9 @@ public class ThemePage extends TemplatePage {
 
 				@Override
 				public void onClick() {
-					ThemePage.this.themeService.uninstall(theme);
-					info(new StringResourceModel("msg.uninstalled", this, null, new Object[] { theme.getTheme() }).getString());
+					themeService.uninstall(theme);
+					info(new StringResourceModel("msg.uninstalled", this, null, new Object[] { theme.getTheme() })
+							.getString());
 					((PortalApplication) getApplication()).setThemeUuid(ThemeConstants.CONF_SELECTED_THEME_DEFAULT);
 					ThemePage.this.build();
 				}

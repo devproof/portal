@@ -45,9 +45,9 @@ public class UploadThemePage extends WebPage {
 	private ThemeService themeService;
 
 	public UploadThemePage() {
-		this.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
+		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		final FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
-		this.add(uploadFeedback);
+		add(uploadFeedback);
 		final FileUploadField uploadField = new FileUploadField("fileInput");
 		uploadField.setRequired(true);
 		final Form<FileUpload> uploadForm = new Form<FileUpload>("uploadForm") {
@@ -58,18 +58,18 @@ public class UploadThemePage extends WebPage {
 				FileUpload fileUpload = uploadField.getFileUpload();
 				try {
 					File tmpFile = fileUpload.writeToTempFile();
-					ValidationKey key = UploadThemePage.this.themeService.validateTheme(tmpFile);
+					ValidationKey key = themeService.validateTheme(tmpFile);
 					if (key == ValidationKey.VALID) {
-						UploadThemePage.this.themeService.install(tmpFile);
-						info(this.getString("msg.installed"));
+						themeService.install(tmpFile);
+						info(getString("msg.installed"));
 					} else if (key == ValidationKey.INVALID_DESCRIPTOR_FILE) {
-						this.error(this.getString("msg.invalid_descriptor_file"));
+						this.error(getString("msg.invalid_descriptor_file"));
 					} else if (key == ValidationKey.MISSING_DESCRIPTOR_FILE) {
-						this.error(this.getString("msg.missing_descriptor_file"));
+						this.error(getString("msg.missing_descriptor_file"));
 					} else if (key == ValidationKey.NOT_A_JARFILE) {
-						this.error(this.getString("msg.not_a_jarfile"));
+						this.error(getString("msg.not_a_jarfile"));
 					} else if (key == ValidationKey.WRONG_VERSION) {
-						this.error(this.getString("wrong_version"));
+						this.error(getString("wrong_version"));
 					}
 					if (!tmpFile.delete()) {
 						LOG.error("Could not delete " + tmpFile);
@@ -83,7 +83,7 @@ public class UploadThemePage extends WebPage {
 		// set this form to multipart mode (allways needed for uploads!)
 		uploadForm.setMultiPart(true);
 		uploadForm.add(uploadField);
-		this.add(uploadForm);
+		add(uploadForm);
 		uploadForm.add(new UploadProgressBar("progress", uploadForm));
 	}
 }

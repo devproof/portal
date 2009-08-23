@@ -40,16 +40,17 @@ public class ModuleOverviewPage extends TemplatePage {
 
 	public ModuleOverviewPage(final PageParameters params) {
 		super(params);
-		List<ModuleBean> modules = this.moduleService.findModules();
+		List<ModuleBean> modules = moduleService.findModules();
 		RepeatingView tableRow = new RepeatingView("tableRow");
-		this.add(tableRow);
+		add(tableRow);
 		for (ModuleBean module : modules) {
 			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
 
 			ModuleInfoPanel moduleInfo = new ModuleInfoPanel("tooltip", module.getConfiguration());
 			row.add(new TooltipLabel("name", new Label("label", module.getConfiguration().getName()), moduleInfo));
 			row.add(new Label("moduleVersion", module.getConfiguration().getModuleVersion()));
-			row.add(new ExternalLink("authorHomepageLink", module.getConfiguration().getUrl(), module.getConfiguration().getAuthor()));
+			row.add(new ExternalLink("authorHomepageLink", module.getConfiguration().getUrl(), module
+					.getConfiguration().getAuthor()));
 			row.add(new Label("portalVersion", module.getConfiguration().getPortalVersion()));
 			row.add(new Label("location", module.getLocation()));
 			tableRow.add(row);

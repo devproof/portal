@@ -35,7 +35,7 @@ public class BoxLocatorImpl implements ApplicationContextAware, BoxLocator {
 	@Override
 	public Collection<BoxConfiguration> getBoxes() {
 		@SuppressWarnings("unchecked")
-		Map<String, ModuleConfiguration> beans = this.context.getBeansOfType(ModuleConfiguration.class);
+		Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
 		List<BoxConfiguration> back = new ArrayList<BoxConfiguration>();
 		for (ModuleConfiguration module : beans.values()) {
 			back.addAll(module.getBoxes());
@@ -45,7 +45,7 @@ public class BoxLocatorImpl implements ApplicationContextAware, BoxLocator {
 
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-		this.context = applicationContext;
+		context = applicationContext;
 	}
 
 }

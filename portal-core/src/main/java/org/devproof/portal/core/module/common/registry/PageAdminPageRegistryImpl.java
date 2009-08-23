@@ -38,17 +38,17 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry, Initial
 
 	@Override
 	public List<Class<? extends Page>> getRegisteredPageAdminPages() {
-		return Collections.unmodifiableList(this.adminPages);
+		return Collections.unmodifiableList(adminPages);
 	}
 
 	@Override
 	public void registerPageAdminPage(final Class<? extends Page> adminPage) {
-		this.adminPages.add(adminPage);
+		adminPages.add(adminPage);
 	}
 
 	@Override
 	public void removePageAdminPage(final Class<? extends Page> adminPage) {
-		this.adminPages.remove(adminPage);
+		adminPages.remove(adminPage);
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry, Initial
 
 	@Override
 	public void buildNavigation() {
-		this.adminPages.clear();
-		Collection<PageConfiguration> confs = this.pageLocator.getPageConfigurations();
-		List<ModuleLinkEntity> links = this.moduleService.findAllVisiblePageAdministrationLinks();
+		adminPages.clear();
+		Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
+		List<ModuleLinkEntity> links = moduleService.findAllVisiblePageAdministrationLinks();
 		for (ModuleLinkEntity link : links) {
 			PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
 			if (conf != null) {

@@ -43,11 +43,11 @@ public class PortalResourceStreamLocator extends ResourceStreamLocator {
 	@Override
 	public IResourceStream locate(final Class<?> clazz, final String path) {
 		// try to load the resource from the web context
-		if (this.themeUuid != null) {
+		if (themeUuid != null) {
 			try {
 				StringBuilder b = new StringBuilder();
-				b.append("/WEB-INF/themes/").append(this.themeUuid).append("/").append(path);
-				URL url = this.servletContext.getResource(b.toString());
+				b.append("/WEB-INF/themes/").append(themeUuid).append("/").append(path);
+				URL url = servletContext.getResource(b.toString());
 				if (url != null) {
 					return new UrlResourceStream(url);
 				}

@@ -38,7 +38,7 @@ abstract public class ConfirmDeletePanel<T> extends Panel {
 		modalWindow.setInitialWidth(300);
 		Form<T> form = new Form<T>("form", new CompoundPropertyModel<T>(entity));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		form.add(new AjaxButton("yesButton", form) {
 			private static final long serialVersionUID = 1L;

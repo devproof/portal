@@ -38,15 +38,15 @@ public abstract class BaseSearchBoxPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 	private final StatelessForm<IQuery<?>> form;
-	private List<BaseSearchBoxListener> listener = new ArrayList<BaseSearchBoxListener>();
+	private final List<BaseSearchBoxListener> listener = new ArrayList<BaseSearchBoxListener>();
 	private final boolean isAuthor;
 
-	public BaseSearchBoxPanel(final String id, final IQuery<?> query, final QueryDataProvider<?> dataProvider, final String authorRight, final TemplatePage parent, final IPageable dataview,
-			final PageParameters params) {
+	public BaseSearchBoxPanel(final String id, final IQuery<?> query, final QueryDataProvider<?> dataProvider,
+			final String authorRight, final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id);
 		final PortalSession session = (PortalSession) getSession();
-		this.isAuthor = session.hasRight(authorRight);
-		this.form = new StatelessForm<IQuery<?>>("searchForm", new CompoundPropertyModel<IQuery<?>>(query)) {
+		isAuthor = session.hasRight(authorRight);
+		form = new StatelessForm<IQuery<?>>("searchForm", new CompoundPropertyModel<IQuery<?>>(query)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -55,7 +55,7 @@ public abstract class BaseSearchBoxPanel extends Panel {
 				if (query.getAllTextFields() != null) {
 					params.put("search", query.getAllTextFields());
 				}
-				for (BaseSearchBoxListener l : BaseSearchBoxPanel.this.listener) {
+				for (BaseSearchBoxListener l : listener) {
 					l.onSearch();
 				}
 				query.clearSelection();
@@ -66,8 +66,8 @@ public abstract class BaseSearchBoxPanel extends Panel {
 			}
 
 		};
-		this.form.setOutputMarkupId(true);
-		this.add(this.form);
+		form.setOutputMarkupId(true);
+		add(form);
 
 		if (params != null && params.containsKey("search")) {
 			query.setAllTextFields(params.getString("search"));
@@ -78,11 +78,11 @@ public abstract class BaseSearchBoxPanel extends Panel {
 	}
 
 	public StatelessForm<IQuery<?>> getForm() {
-		return this.form;
+		return form;
 	}
 
 	public boolean isAuthor() {
-		return this.isAuthor;
+		return isAuthor;
 	}
 
 	public void addListener(final BaseSearchBoxListener listener) {

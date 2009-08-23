@@ -49,9 +49,9 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 
 		// Prod modules
 		@SuppressWarnings("unchecked")
-		Set<String> libs = this.servletContext.getResourcePaths("/WEB-INF/lib");
+		Set<String> libs = servletContext.getResourcePaths("/WEB-INF/lib");
 		for (String lib : libs) {
-			URL url = this.servletContext.getResource(lib);
+			URL url = servletContext.getResource(lib);
 			JarFile file = new JarFile(url.getFile());
 			Enumeration<JarEntry> entries = file.entries();
 			while (entries.hasMoreElements()) {
@@ -66,8 +66,8 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 			modules.add("classpath*:**/devproof-module.xml");
 		}
 		String[] configs = convertListToArray(modules);
-		this.applicationContext.setConfigLocations(configs);
-		this.applicationContext.refresh();
+		applicationContext.setConfigLocations(configs);
+		applicationContext.refresh();
 	}
 
 	private String[] convertListToArray(final List<String> modules) {

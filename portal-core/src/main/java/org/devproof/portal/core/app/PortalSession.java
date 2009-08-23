@@ -116,7 +116,7 @@ public class PortalSession extends WebSession {
 	 * Stores a cookie for the relogin
 	 */
 	public void storeCookie() {
-		Cookie cookie = new Cookie(CommonConstants.SESSION_ID_COOKIE, this.user.getSessionId());
+		Cookie cookie = new Cookie(CommonConstants.SESSION_ID_COOKIE, user.getSessionId());
 		cookie.setMaxAge(COOKIE_MAX_AGE);
 		cookie.setPath("/");
 		((WebResponse) RequestCycle.get().getResponse()).addCookie(cookie);
@@ -129,42 +129,43 @@ public class PortalSession extends WebSession {
 	 * @return logged in user
 	 */
 	public UserEntity getUser() {
-		if (this.user == null) {
+		if (user == null) {
 			WebRequest request = (WebRequest) RequestCycle.get().getRequest();
 			Cookie cookie = request.getCookie(CommonConstants.SESSION_ID_COOKIE);
 			if (cookie != null) {
 				String value = cookie.getValue();
 				if (value != null) {
-					this.user = getUserService().findUserBySessionId(value);
-					if (this.user != null && this.user.getActive() && this.user.getRole().getActive() && this.user.getConfirmed()) {
-						this.user.setLastIp(getIpAddress());
-						this.user.setLastLoginAt(PortalUtil.now());
-						this.user.setSessionId(PortalUtil.generateMd5(this.user.getSessionId() + Math.random()));
-						getUserService().save(this.user);
+					user = getUserService().findUserBySessionId(value);
+					if (user != null && user.getActive() && user.getRole().getActive() && user.getConfirmed()) {
+						user.setLastIp(getIpAddress());
+						user.setLastLoginAt(PortalUtil.now());
+						user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
+						getUserService().save(user);
 						getSessionStore().getSessionId(RequestCycle.get().getRequest(), true);
 						storeCookie();
 					} else {
-						this.user = null;
+						user = null;
 					}
 				}
 			}
 			// no session found
-			if (this.user == null) {
-				Integer roleId = getConfigurationService().findAsInteger("spring.roleDao.findAll.description.id.guestrole");
+			if (user == null) {
+				Integer roleId = getConfigurationService().findAsInteger(
+						"spring.roleDao.findAll.description.id.guestrole");
 				RoleEntity role = getRoleService().findById(roleId);
-				this.user = getUserService().newUserEntity();
-				this.user.setUsername(role.getDescription());
-				this.user.setRole(role);
-				this.user.setGuestRole(true);
+				user = getUserService().newUserEntity();
+				user.setUsername(role.getDescription());
+				user.setRole(role);
+				user.setGuestRole(true);
 			}
 		}
 		long appDirtyTime = getRightService().getDirtyTime();
-		if (appDirtyTime != this.dirtyTime) {
-			this.dirtyTime = appDirtyTime;
-			RoleEntity role = getRoleService().findById(this.user.getRole().getId());
-			this.user.setRole(role);
+		if (appDirtyTime != dirtyTime) {
+			dirtyTime = appDirtyTime;
+			RoleEntity role = getRoleService().findById(user.getRole().getId());
+			user.setRole(role);
 		}
-		return this.user;
+		return user;
 	}
 
 	private String getIpAddress() {
@@ -176,13 +177,13 @@ public class PortalSession extends WebSession {
 	 * logs the user out
 	 */
 	public void logoutUser() {
-		LOG.debug("Logout user " + this.user.getUsername());
+		LOG.debug("Logout user " + user.getUsername());
 		Cookie cookie = ((WebRequest) RequestCycle.get().getRequest()).getCookie(CommonConstants.SESSION_ID_COOKIE);
 		if (cookie != null) {
 			cookie.setPath("/");
 			((WebResponse) RequestCycle.get().getResponse()).clearCookie(cookie);
 		}
-		this.user = null;
+		user = null;
 	}
 
 	/**
@@ -265,40 +266,44 @@ public class PortalSession extends WebSession {
 	 * Lazy user dao, because deserialization causes null
 	 */
 	public UserService getUserService() {
-		if (this.userService == null) {
-			this.userService = (UserService) ((PortalApplication) getApplication()).getSpringContext().getBean("userService");
+		if (userService == null) {
+			userService = (UserService) ((PortalApplication) getApplication()).getSpringContext()
+					.getBean("userService");
 		}
-		return this.userService;
+		return userService;
 	}
 
 	/**
 	 * Lazy role dao, because deserialization causes null
 	 */
 	public RoleService getRoleService() {
-		if (this.roleService == null) {
-			this.roleService = (RoleService) ((PortalApplication) getApplication()).getSpringContext().getBean("roleService");
+		if (roleService == null) {
+			roleService = (RoleService) ((PortalApplication) getApplication()).getSpringContext()
+					.getBean("roleService");
 		}
-		return this.roleService;
+		return roleService;
 	}
 
 	/**
 	 * Lazy configuration service, because deserialization causes null
 	 */
 	public ConfigurationService getConfigurationService() {
-		if (this.configurationService == null) {
-			this.configurationService = (ConfigurationService) ((PortalApplication) getApplication()).getSpringContext().getBean("configurationService");
+		if (configurationService == null) {
+			configurationService = (ConfigurationService) ((PortalApplication) getApplication()).getSpringContext()
+					.getBean("configurationService");
 		}
-		return this.configurationService;
+		return configurationService;
 	}
 
 	/**
 	 * Lazy right service, because deserialization causes null
 	 */
 	public RightService getRightService() {
-		if (this.rightService == null) {
-			this.rightService = (RightService) ((PortalApplication) getApplication()).getSpringContext().getBean("rightService");
+		if (rightService == null) {
+			rightService = (RightService) ((PortalApplication) getApplication()).getSpringContext().getBean(
+					"rightService");
 		}
-		return this.rightService;
+		return rightService;
 	}
 
 }

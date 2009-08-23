@@ -38,16 +38,16 @@ public class PageAdminPageRegistryImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
-		this.moduleServiceMock = EasyMock.createStrictMock(ModuleService.class);
-		this.impl = new PageAdminPageRegistryImpl();
-		this.impl.setModuleService(this.moduleServiceMock);
-		this.impl.setPageLocator(this.pageLocatorMock);
+		pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
+		moduleServiceMock = EasyMock.createStrictMock(ModuleService.class);
+		impl = new PageAdminPageRegistryImpl();
+		impl.setModuleService(moduleServiceMock);
+		impl.setPageLocator(pageLocatorMock);
 	}
 
 	public void testGetRegisteredPages() {
-		this.impl.registerPageAdminPage(RightPage.class);
-		assertEquals(RightPage.class, this.impl.getRegisteredPageAdminPages().get(0));
+		impl.registerPageAdminPage(RightPage.class);
+		assertEquals(RightPage.class, impl.getRegisteredPageAdminPages().get(0));
 	}
 
 	public void testBuildNavigation() {
@@ -55,16 +55,16 @@ public class PageAdminPageRegistryImplTest extends TestCase {
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(RightPage.class);
 		confs.add(conf);
-		EasyMock.expect(this.pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(RightPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(this.moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);
-		EasyMock.replay(this.pageLocatorMock, this.moduleServiceMock);
-		this.impl.buildNavigation();
-		EasyMock.verify(this.pageLocatorMock, this.moduleServiceMock);
-		assertEquals(RightPage.class, this.impl.getRegisteredPageAdminPages().get(0));
+		EasyMock.expect(moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);
+		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		impl.buildNavigation();
+		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		assertEquals(RightPage.class, impl.getRegisteredPageAdminPages().get(0));
 	}
 
 	public void testAfterPropertiesSet() throws Exception {
@@ -72,27 +72,27 @@ public class PageAdminPageRegistryImplTest extends TestCase {
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(RightPage.class);
 		confs.add(conf);
-		EasyMock.expect(this.pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(RightPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(this.moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);
-		EasyMock.replay(this.pageLocatorMock, this.moduleServiceMock);
-		this.impl.afterPropertiesSet();
-		EasyMock.verify(this.pageLocatorMock, this.moduleServiceMock);
-		assertEquals(RightPage.class, this.impl.getRegisteredPageAdminPages().get(0));
+		EasyMock.expect(moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);
+		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		impl.afterPropertiesSet();
+		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		assertEquals(RightPage.class, impl.getRegisteredPageAdminPages().get(0));
 	}
 
 	public void testRegisterPage() {
-		this.impl.registerPageAdminPage(RightPage.class);
-		assertEquals(this.impl.getRegisteredPageAdminPages().get(0), RightPage.class);
+		impl.registerPageAdminPage(RightPage.class);
+		assertEquals(impl.getRegisteredPageAdminPages().get(0), RightPage.class);
 	}
 
 	public void testRemovePage() {
-		this.impl.registerPageAdminPage(RightPage.class);
-		assertEquals(1, this.impl.getRegisteredPageAdminPages().size());
-		this.impl.removePageAdminPage(RightPage.class);
-		assertEquals(0, this.impl.getRegisteredPageAdminPages().size());
+		impl.registerPageAdminPage(RightPage.class);
+		assertEquals(1, impl.getRegisteredPageAdminPages().size());
+		impl.removePageAdminPage(RightPage.class);
+		assertEquals(0, impl.getRegisteredPageAdminPages().size());
 	}
 }

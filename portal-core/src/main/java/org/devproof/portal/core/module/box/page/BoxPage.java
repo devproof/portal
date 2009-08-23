@@ -56,38 +56,39 @@ public class BoxPage extends TemplatePage {
 
 	public BoxPage(final PageParameters params) {
 		super(params);
-		this.container = new WebMarkupContainer("refreshTable");
-		this.container.setOutputMarkupId(true);
-		this.add(this.container);
+		container = new WebMarkupContainer("refreshTable");
+		container.setOutputMarkupId(true);
+		add(container);
 
-		this.modalWindow = new ModalWindow("modalWindow");
-		this.modalWindow.setTitle("Portal");
-		this.add(this.modalWindow);
+		modalWindow = new ModalWindow("modalWindow");
+		modalWindow.setTitle("Portal");
+		add(modalWindow);
 
-		BoxDataView dataView = new BoxDataView("tableRow", this.boxDataProvider, params);
-		this.container.add(dataView);
+		BoxDataView dataView = new BoxDataView("tableRow", boxDataProvider, params);
+		container.add(dataView);
 		AjaxLink<BoxEntity> createLink = new AjaxLink<BoxEntity>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				final BoxEditPanel boxEditPanel = new BoxEditPanel(BoxPage.this.modalWindow.getContentId(), BoxPage.this.boxService.newBoxEntity()) {
+				final BoxEditPanel boxEditPanel = new BoxEditPanel(modalWindow.getContentId(), boxService
+						.newBoxEntity()) {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSave(final AjaxRequestTarget target) {
-						target.addComponent(BoxPage.this.container);
+						target.addComponent(container);
 						target.addComponent(BoxPage.this.getFeedback());
 						info(this.getString("msg.saved"));
-						BoxPage.this.modalWindow.close(target);
+						modalWindow.close(target);
 					}
 
 				};
-				BoxPage.this.modalWindow.setInitialHeight(280);
-				BoxPage.this.modalWindow.setInitialWidth(550);
-				BoxPage.this.modalWindow.setContent(boxEditPanel);
-				BoxPage.this.modalWindow.show(target);
+				modalWindow.setInitialHeight(280);
+				modalWindow.setInitialWidth(550);
+				modalWindow.setContent(boxEditPanel);
+				modalWindow.show(target);
 			}
 		};
 
@@ -106,7 +107,7 @@ public class BoxPage extends TemplatePage {
 		protected void populateItem(final Item<BoxEntity> item) {
 			final BoxEntity box = item.getModelObject();
 			item.add(new Label("sort", Integer.toString(box.getSort())));
-			String name = BoxPage.this.boxRegistry.getNameBySimpleClassName(box.getBoxType());
+			String name = boxRegistry.getNameBySimpleClassName(box.getBoxType());
 			item.add(new Label("type", name));
 			item.add(new Label("title", box.getTitle()));
 
@@ -115,30 +116,30 @@ public class BoxPage extends TemplatePage {
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
-					BoxPage.this.boxService.delete(box);
-					target.addComponent(BoxPage.this.container);
+					boxService.delete(box);
+					target.addComponent(container);
 					target.addComponent(getFeedback());
 					info(this.getString("msg.deleted"));
 				}
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
-					final BoxEditPanel editUserPanel = new BoxEditPanel(BoxPage.this.modalWindow.getContentId(), box) {
+					final BoxEditPanel editUserPanel = new BoxEditPanel(modalWindow.getContentId(), box) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(final AjaxRequestTarget target) {
-							target.addComponent(BoxPage.this.container);
+							target.addComponent(container);
 							target.addComponent(getFeedback());
 							info(this.getString("msg.saved"));
-							BoxPage.this.modalWindow.close(target);
+							modalWindow.close(target);
 						}
 
 					};
 
-					BoxPage.this.modalWindow.setContent(editUserPanel);
-					BoxPage.this.modalWindow.show(target);
+					modalWindow.setContent(editUserPanel);
+					modalWindow.show(target);
 				}
 
 			});
@@ -148,8 +149,8 @@ public class BoxPage extends TemplatePage {
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					BoxPage.this.boxService.moveUp(box);
-					target.addComponent(BoxPage.this.container);
+					boxService.moveUp(box);
+					target.addComponent(container);
 				}
 			}.add(new Image("upImage", CommonConstants.REF_UP_IMG)));
 
@@ -158,8 +159,8 @@ public class BoxPage extends TemplatePage {
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					BoxPage.this.boxService.moveDown(box);
-					target.addComponent(BoxPage.this.container);
+					boxService.moveDown(box);
+					target.addComponent(container);
 				}
 			}.add(new Image("downImage", CommonConstants.REF_DOWN_IMG)));
 

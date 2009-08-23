@@ -33,7 +33,7 @@ public class ThemeBean implements Serializable {
 	private String uuid;
 
 	public String getTheme() {
-		return this.theme;
+		return theme;
 	}
 
 	public void setTheme(final String theme) {
@@ -41,7 +41,7 @@ public class ThemeBean implements Serializable {
 	}
 
 	public String getAuthor() {
-		return this.author;
+		return author;
 	}
 
 	public void setAuthor(final String author) {
@@ -49,7 +49,7 @@ public class ThemeBean implements Serializable {
 	}
 
 	public String getUrl() {
-		return this.url;
+		return url;
 	}
 
 	public void setUrl(final String url) {
@@ -57,7 +57,7 @@ public class ThemeBean implements Serializable {
 	}
 
 	public String getPortalThemeVersion() {
-		return this.portalThemeVersion;
+		return portalThemeVersion;
 	}
 
 	public void setPortalThemeVersion(final String portalThemeVersion) {
@@ -65,7 +65,7 @@ public class ThemeBean implements Serializable {
 	}
 
 	public String getPortalVersion() {
-		return this.portalVersion;
+		return portalVersion;
 	}
 
 	public void setPortalVersion(final String portalVersion) {
@@ -73,7 +73,7 @@ public class ThemeBean implements Serializable {
 	}
 
 	public String getUuid() {
-		return this.uuid;
+		return uuid;
 	}
 
 	public void setUuid(final String uuid) {
