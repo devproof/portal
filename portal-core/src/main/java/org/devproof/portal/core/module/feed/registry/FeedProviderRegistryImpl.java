@@ -22,14 +22,17 @@ import java.util.Map;
 
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
+import org.devproof.portal.core.module.feed.locator.FeedProviderLocator;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
  */
 public class FeedProviderRegistryImpl implements FeedProviderRegistry, InitializingBean {
 	private PageLocator pageLocator;
+	private FeedProviderLocator feedProviderLocator;
 	private final Map<String, FeedProvider> feedProviders = new HashMap<String, FeedProvider>();
 
 	@Override
@@ -68,15 +71,24 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
-		for (PageConfiguration conf : confs) {
-			if (conf.getFeedProvider() != null) {
-				registerFeedProvider(conf.getMountPath(), conf.getFeedProvider());
+		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
+		Collection<FeedProvider> feeds = feedProviderLocator.getFeedProviders();
+		for (final FeedProvider feed : feeds) {
+			for (PageConfiguration page : pages) {
+				if (feed.getSupportedFeedPages().contains(page.getPageClass())) {
+					registerFeedProvider(page.getMountPath(), feed);
+				}
 			}
 		}
 	}
 
+	@Required
 	public void setPageLocator(final PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
+	}
+
+	@Required
+	public void setFeedProviderLocator(final FeedProviderLocator feedProviderLocator) {
+		this.feedProviderLocator = feedProviderLocator;
 	}
 }

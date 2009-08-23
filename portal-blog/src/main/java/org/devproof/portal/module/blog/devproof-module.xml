@@ -58,6 +58,8 @@
 		<property name="relatedTagRight" value="blog.view"/>
 	</bean>
 	
+	<bean class="org.devproof.portal.module.blog.service.BlogFeedProvider"/>
+	
 	<!--  DataProvider  -->
 	<bean id="blogDataProvider" parent="persistenceDataProvider" scope="prototype">
 		<property name="entityClass" value="org.devproof.portal.module.blog.entity.BlogEntity" />

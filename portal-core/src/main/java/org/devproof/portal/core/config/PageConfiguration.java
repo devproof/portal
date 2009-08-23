@@ -16,7 +16,6 @@
 package org.devproof.portal.core.config;
 
 import org.apache.wicket.Page;
-import org.devproof.portal.core.module.feed.provider.FeedProvider;
 
 /**
  * Contains configuration for one page
@@ -33,7 +32,6 @@ public class PageConfiguration {
 	private boolean indexMountedPath = false;
 	private boolean defaultStartPage = false;
 	private boolean registerPageAdminLink = false;
-	private FeedProvider feedProvider;
 	private ModuleConfiguration module;
 
 	/**
@@ -173,20 +171,5 @@ public class PageConfiguration {
 	 */
 	public void setModule(final ModuleConfiguration module) {
 		this.module = module;
-	}
-
-	/**
-	 * @return feed provider for atom or RSS
-	 */
-	public FeedProvider getFeedProvider() {
-		return feedProvider;
-	}
-
-	/**
-	 * @param feedProvider
-	 *            feed provider for atom or RSS
-	 */
-	public void setFeedProvider(final FeedProvider feedProvider) {
-		this.feedProvider = feedProvider;
 	}
 }

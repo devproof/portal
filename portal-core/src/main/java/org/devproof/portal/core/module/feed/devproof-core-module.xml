@@ -31,8 +31,12 @@
     	</property>
     </bean>
     
+    <!-- Locator -->
+    <bean id="feedProviderLocator" class="org.devproof.portal.core.module.feed.locator.FeedProviderLocatorImpl"/>
+    
     <!-- Registry -->
     <bean id="feedProviderRegistry" class="org.devproof.portal.core.module.feed.registry.FeedProviderRegistryImpl">
     	<property name="pageLocator" ref="pageLocator"/>
+    	<property name="feedProviderLocator" ref="feedProviderLocator"/>
     </bean>
 </beans>
