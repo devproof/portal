@@ -29,9 +29,10 @@ public class UserQuery implements Serializable {
 	private Boolean active;
 	private Boolean confirmed;
 
-	@BeanQuery("e.username like '%'||?||'%'" + " or e.firstname like '%'||?||'%'" + " or e.lastname like '%'||?||'%'" + " or e.role.description like '%'||?||'%'")
+	@BeanQuery("e.username like '%'||?||'%'" + " or e.firstname like '%'||?||'%'" + " or e.lastname like '%'||?||'%'"
+			+ " or e.role.description like '%'||?||'%'")
 	public String getAllnames() {
-		return this.allnames;
+		return allnames;
 	}
 
 	public void setAllnames(final String allnames) {
@@ -40,7 +41,7 @@ public class UserQuery implements Serializable {
 
 	@BeanQuery("e.active = ?")
 	public Boolean getActive() {
-		return this.active;
+		return active;
 	}
 
 	public void setActive(final Boolean active) {
@@ -49,7 +50,7 @@ public class UserQuery implements Serializable {
 
 	@BeanQuery("e.confirmed = ?")
 	public Boolean getConfirmed() {
-		return this.confirmed;
+		return confirmed;
 	}
 
 	public void setConfirmed(final Boolean confirmed) {

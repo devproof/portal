@@ -39,7 +39,7 @@ public abstract class RoleSearchBoxPanel extends Panel {
 		super(id);
 		Form<RoleQuery> form = new Form<RoleQuery>("searchForm", new CompoundPropertyModel<RoleQuery>(query));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<?> fc = null;
 		fc = new TextField<String>("description");

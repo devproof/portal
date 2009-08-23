@@ -34,103 +34,103 @@ public class UserServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.mock = EasyMock.createStrictMock(UserDao.class);
-		this.impl = new UserServiceImpl();
-		this.impl.setUserDao(this.mock);
+		mock = EasyMock.createStrictMock(UserDao.class);
+		impl = new UserServiceImpl();
+		impl.setUserDao(mock);
 	}
 
 	public void testSave() {
-		UserEntity e = this.impl.newUserEntity();
+		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		this.mock.save(e);
-		EasyMock.replay(this.mock);
-		this.impl.save(e);
-		EasyMock.verify(this.mock);
+		mock.save(e);
+		EasyMock.replay(mock);
+		impl.save(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testDelete() {
-		UserEntity e = this.impl.newUserEntity();
+		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		this.mock.delete(e);
-		EasyMock.replay(this.mock);
-		this.impl.delete(e);
-		EasyMock.verify(this.mock);
+		mock.delete(e);
+		EasyMock.replay(mock);
+		impl.delete(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAll() {
 		List<UserEntity> list = new ArrayList<UserEntity>();
-		list.add(this.impl.newUserEntity());
-		list.add(this.impl.newUserEntity());
-		EasyMock.expect(this.mock.findAll()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAll());
-		EasyMock.verify(this.mock);
+		list.add(impl.newUserEntity());
+		list.add(impl.newUserEntity());
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAll());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindById() {
-		UserEntity e = this.impl.newUserEntity();
+		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		EasyMock.expect(this.mock.findById(1)).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findById(1), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findById(1)).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findById(1), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testNewUserEntity() {
-		assertNotNull(this.impl.newUserEntity());
+		assertNotNull(impl.newUserEntity());
 	}
 
 	public void testCountUserForRole() {
 		RoleEntity role = new RoleEntity();
-		EasyMock.expect(this.mock.countUserForRole(role)).andReturn(4l);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.countUserForRole(role), 4l);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.countUserForRole(role)).andReturn(4l);
+		EasyMock.replay(mock);
+		assertEquals(impl.countUserForRole(role), 4l);
+		EasyMock.verify(mock);
 	}
 
 	public void testExistsUsername() {
-		EasyMock.expect(this.mock.existsUsername("username")).andReturn(1l);
-		EasyMock.replay(this.mock);
-		assertTrue(this.impl.existsUsername("username"));
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.existsUsername("username")).andReturn(1l);
+		EasyMock.replay(mock);
+		assertTrue(impl.existsUsername("username"));
+		EasyMock.verify(mock);
 	}
 
 	public void testFindUserByEmail() {
 		List<UserEntity> list = new ArrayList<UserEntity>();
-		list.add(this.impl.newUserEntity());
-		list.add(this.impl.newUserEntity());
-		EasyMock.expect(this.mock.findUserByEmail("email@email.org")).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findUserByEmail("email@email.org"), list);
-		EasyMock.verify(this.mock);
+		list.add(impl.newUserEntity());
+		list.add(impl.newUserEntity());
+		EasyMock.expect(mock.findUserByEmail("email@email.org")).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(impl.findUserByEmail("email@email.org"), list);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindUserBySessionId() {
-		UserEntity e = this.impl.newUserEntity();
+		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		EasyMock.expect(this.mock.findUserBySessionId("12345")).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findUserBySessionId("12345"), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findUserBySessionId("12345")).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findUserBySessionId("12345"), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindUserByUsername() {
-		UserEntity e = this.impl.newUserEntity();
+		UserEntity e = impl.newUserEntity();
 		e.setId(1);
 		e.setUsername("username");
-		EasyMock.expect(this.mock.findUserByUsername(e.getUsername())).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findUserByUsername(e.getUsername()), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findUserByUsername(e.getUsername())).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findUserByUsername(e.getUsername()), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindUserWithRight() {
 		List<UserEntity> list = new ArrayList<UserEntity>();
-		list.add(this.impl.newUserEntity());
-		list.add(this.impl.newUserEntity());
-		EasyMock.expect(this.mock.findUserWithRight("right")).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findUserWithRight("right"), list);
-		EasyMock.verify(this.mock);
+		list.add(impl.newUserEntity());
+		list.add(impl.newUserEntity());
+		EasyMock.expect(mock.findUserWithRight("right")).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(impl.findUserWithRight("right"), list);
+		EasyMock.verify(mock);
 	}
 }

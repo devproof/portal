@@ -60,48 +60,49 @@ public class RightPage extends TemplatePage {
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				final RightEditPanel editRightPanel = new RightEditPanel(RightPage.this.modalWindow.getContentId(), RightPage.this.rightService.newRightEntity(), true) {
+				final RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(), rightService
+						.newRightEntity(), true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSave(final AjaxRequestTarget target) {
-						target.addComponent(RightPage.this.container);
+						target.addComponent(container);
 						target.addComponent(RightPage.this.getFeedback());
-						RightPage.this.rightService.refreshGlobalApplicationRights();
-						info(this.getString("msg.saved"));
-						RightPage.this.modalWindow.close(target);
+						rightService.refreshGlobalApplicationRights();
+						info(getString("msg.saved"));
+						modalWindow.close(target);
 					}
 
 				};
-				RightPage.this.modalWindow.setInitialHeight(440);
-				RightPage.this.modalWindow.setInitialWidth(620);
-				RightPage.this.modalWindow.setContent(editRightPanel);
-				RightPage.this.modalWindow.show(target);
+				modalWindow.setInitialHeight(440);
+				modalWindow.setInitialWidth(620);
+				modalWindow.setContent(editRightPanel);
+				modalWindow.show(target);
 			}
-		}.add(new Label("linkName", this.getString("createLink"))));
+		}.add(new Label("linkName", getString("createLink"))));
 		RightQuery query = new RightQuery();
-		this.rightDataProvider.setQueryObject(query);
+		rightDataProvider.setQueryObject(query);
 
-		this.container = new WebMarkupContainer("refreshTable");
-		this.container.setOutputMarkupId(true);
-		this.add(this.container);
+		container = new WebMarkupContainer("refreshTable");
+		container.setOutputMarkupId(true);
+		add(container);
 
-		this.container.add(new OrderByBorder("table_right", "right", this.rightDataProvider));
-		this.container.add(new OrderByBorder("table_description", "description", this.rightDataProvider));
+		container.add(new OrderByBorder("table_right", "right", rightDataProvider));
+		container.add(new OrderByBorder("table_description", "description", rightDataProvider));
 
-		this.modalWindow = new ModalWindow("modalWindow");
-		this.modalWindow.setTitle("Portal");
-		this.add(this.modalWindow);
+		modalWindow = new ModalWindow("modalWindow");
+		modalWindow.setTitle("Portal");
+		add(modalWindow);
 
-		final RightDataView dataView = new RightDataView("tableRow", this.rightDataProvider, params);
-		this.container.add(dataView);
+		final RightDataView dataView = new RightDataView("tableRow", rightDataProvider, params);
+		container.add(dataView);
 
 		addFilterBox(new RightSearchBoxPanel("box", query) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target) {
-				target.addComponent(RightPage.this.container);
+				target.addComponent(container);
 			}
 
 		});
@@ -125,34 +126,35 @@ public class RightPage extends TemplatePage {
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
-					RightPage.this.rightService.delete(right);
-					target.addComponent(RightPage.this.container);
+					rightService.delete(right);
+					target.addComponent(container);
 					target.addComponent(getFeedback());
-					RightPage.this.rightService.refreshGlobalApplicationRights();
-					info(this.getString("msg.deleted"));
+					rightService.refreshGlobalApplicationRights();
+					info(getString("msg.deleted"));
 				}
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
-					RightEntity refreshedRight = RightPage.this.rightService.findById(right.getRight());
-					final RightEditPanel editRightPanel = new RightEditPanel(RightPage.this.modalWindow.getContentId(), refreshedRight, false) {
+					RightEntity refreshedRight = rightService.findById(right.getRight());
+					final RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(),
+							refreshedRight, false) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(final AjaxRequestTarget target) {
-							target.addComponent(RightPage.this.container);
+							target.addComponent(container);
 							target.addComponent(getFeedback());
-							RightPage.this.rightService.refreshGlobalApplicationRights();
-							info(this.getString("msg.saved"));
-							RightPage.this.modalWindow.close(target);
+							rightService.refreshGlobalApplicationRights();
+							info(getString("msg.saved"));
+							modalWindow.close(target);
 						}
 
 					};
-					RightPage.this.modalWindow.setInitialHeight(440);
-					RightPage.this.modalWindow.setInitialWidth(620);
-					RightPage.this.modalWindow.setContent(editRightPanel);
-					RightPage.this.modalWindow.show(target);
+					modalWindow.setInitialHeight(440);
+					modalWindow.setInitialWidth(620);
+					modalWindow.setContent(editRightPanel);
+					modalWindow.show(target);
 
 				}
 

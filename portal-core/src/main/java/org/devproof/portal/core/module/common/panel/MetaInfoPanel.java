@@ -45,36 +45,38 @@ public class MetaInfoPanel extends Panel {
 
 	public MetaInfoPanel(final String id, final BaseEntity entity) {
 		super(id);
-		boolean showRealAuthor = this.configurationService.findAsBoolean(CommonConstants.CONF_SHOW_REAL_AUTHOR);
-		boolean showModifiedBy = this.configurationService.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_BY);
+		boolean showRealAuthor = configurationService.findAsBoolean(CommonConstants.CONF_SHOW_REAL_AUTHOR);
+		boolean showModifiedBy = configurationService.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_BY);
 		String createdBy = entity.getCreatedBy();
-		UserEntity user = this.userService.findUserByUsername(createdBy);
+		UserEntity user = userService.findUserByUsername(createdBy);
 		if (showRealAuthor) {
-			if (user != null && StringUtils.isNotBlank(user.getFirstname()) && StringUtils.isNotBlank(user.getLastname())) {
+			if (user != null && StringUtils.isNotBlank(user.getFirstname())
+					&& StringUtils.isNotBlank(user.getLastname())) {
 				createdBy = user.getFirstname() + " " + user.getLastname();
 			}
 		}
 
 		WebMarkupContainer created = new WebMarkupContainer("created");
-		created.add(new Label("createdAt", this.dateFormat.format(entity.getCreatedAt())));
+		created.add(new Label("createdAt", dateFormat.format(entity.getCreatedAt())));
 		created.add(new UsernamePanel("createdBy", entity.getCreatedBy(), createdBy, user != null));
-		this.add(created);
+		add(created);
 
 		String modifiedBy = entity.getModifiedBy();
-		user = this.userService.findUserByUsername(modifiedBy);
+		user = userService.findUserByUsername(modifiedBy);
 		if (showModifiedBy && showRealAuthor) {
-			if (user != null && StringUtils.isNotBlank(user.getFirstname()) && StringUtils.isNotBlank(user.getLastname())) {
+			if (user != null && StringUtils.isNotBlank(user.getFirstname())
+					&& StringUtils.isNotBlank(user.getLastname())) {
 				modifiedBy = user.getFirstname() + " " + user.getLastname();
 			}
 		}
 		WebMarkupContainer modified = new WebMarkupContainer("modified");
-		modified.add(new Label("modifiedAt", this.dateFormat.format(entity.getModifiedAt())));
+		modified.add(new Label("modifiedAt", dateFormat.format(entity.getModifiedAt())));
 		modified.add(new UsernamePanel("modifiedBy", entity.getModifiedBy(), modifiedBy, user != null));
-		this.add(modified);
+		add(modified);
 
 		WebMarkupContainer sameModified = new WebMarkupContainer("sameModified");
-		sameModified.add(new Label("modifiedAt", this.dateFormat.format(entity.getModifiedAt())));
-		this.add(sameModified);
+		sameModified.add(new Label("modifiedAt", dateFormat.format(entity.getModifiedAt())));
+		add(sameModified);
 
 		if (showModifiedBy && !entity.getCreatedAt().equals(entity.getModifiedAt())) {
 			boolean sameAuthor = entity.getCreatedBy().equals(entity.getModifiedBy());

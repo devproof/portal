@@ -35,28 +35,28 @@ public class RightServiceImpl implements RightService {
 
 	@Override
 	public List<RightEntity> getAllRights() {
-		return this.allRights;
+		return allRights;
 	}
 
 	@Override
 	public long getDirtyTime() {
-		return this.dirtyTime;
+		return dirtyTime;
 	}
 
 	@Override
 	public void refreshGlobalApplicationRights() {
-		this.allRights = this.rightDao.findAll();
-		this.dirtyTime = System.currentTimeMillis();
+		allRights = rightDao.findAll();
+		dirtyTime = System.currentTimeMillis();
 	}
 
 	@Override
 	public List<RightEntity> findAllOrderByDescription() {
-		return this.rightDao.findAllOrderByDescription();
+		return rightDao.findAllOrderByDescription();
 	}
 
 	@Override
 	public List<RightEntity> findRightsStartingWith(final String prefix) {
-		return this.rightDao.findRightsStartingWith(prefix);
+		return rightDao.findRightsStartingWith(prefix);
 	}
 
 	@Override
@@ -71,22 +71,22 @@ public class RightServiceImpl implements RightService {
 
 	@Override
 	public void delete(final RightEntity entity) {
-		this.rightDao.delete(entity);
+		rightDao.delete(entity);
 	}
 
 	@Override
 	public List<RightEntity> findAll() {
-		return this.rightDao.findAll();
+		return rightDao.findAll();
 	}
 
 	@Override
 	public RightEntity findById(final String id) {
-		return this.rightDao.findById(id);
+		return rightDao.findById(id);
 	}
 
 	@Override
 	public void save(final RightEntity entity) {
-		this.rightDao.save(entity);
+		rightDao.save(entity);
 	}
 
 	@Required

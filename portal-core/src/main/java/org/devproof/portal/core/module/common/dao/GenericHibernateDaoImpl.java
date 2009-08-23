@@ -40,7 +40,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @param <PK>
  *            primary key type
  */
-public class GenericHibernateDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericDao<T, PK> {
+public class GenericHibernateDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements
+		GenericDao<T, PK> {
 	private static final Log LOG = LogFactory.getLog(GenericHibernateDaoImpl.class);
 	private UsernameResolver usernameResolver;
 	private Class<T> type;
@@ -52,12 +53,12 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 
 	@SuppressWarnings(value = "unchecked")
 	public T findById(final PK id) {
-		return (T) this.getSession().get(this.type, id);
+		return (T) getSession().get(this.type, id);
 	}
 
 	@SuppressWarnings(value = "unchecked")
 	public List<T> findAll() {
-		return this.getSession().createQuery("Select distinct(e) from " + this.type.getSimpleName() + " e").list();
+		return getSession().createQuery("Select distinct(e) from " + type.getSimpleName() + " e").list();
 	}
 
 	public void save(final T entity) {
@@ -65,12 +66,12 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		if (holder.getTransaction() == null) {
 			holder.setTransaction(holder.getSession().beginTransaction());
 		}
-		LOG.debug("save " + this.type);
+		LOG.debug("save " + type);
 
 		if (entity instanceof BaseEntity) {
 			final BaseEntity base = (BaseEntity) entity;
 			// only works in the request
-			String username = this.usernameResolver.getUsername();
+			String username = usernameResolver.getUsername();
 			LOG.debug("BaseEntity " + entity + "set creation date and user");
 			if (base.getCreatedAt() == null) {
 				base.setCreatedAt(PortalUtil.now());
@@ -98,10 +99,11 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		this.getSession().delete(entity);
 	}
 
-	public Object executeFinder(final String query, final Object[] queryArgs, final Class<?> returnType, final Integer firstResults, final Integer maxResults) {
+	public Object executeFinder(final String query, final Object[] queryArgs, final Class<?> returnType,
+			final Integer firstResults, final Integer maxResults) {
 		String tmpQuery = query;
 		if (query.contains("$TYPE")) {
-			tmpQuery = tmpQuery.replace("$TYPE", this.type.getSimpleName());
+			tmpQuery = tmpQuery.replace("$TYPE", type.getSimpleName());
 		}
 		final Query q = this.getSession().createQuery(tmpQuery);
 		if (queryArgs != null) {
@@ -125,9 +127,9 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 	public void executeUpdate(final String query, final Object[] queryArgs) {
 		String tmpQuery = query;
 		if (query.contains("$TYPE")) {
-			tmpQuery = tmpQuery.replace("$TYPE", this.type.getSimpleName());
+			tmpQuery = tmpQuery.replace("$TYPE", type.getSimpleName());
 		}
-		final Query q = this.getSession().createQuery(tmpQuery);
+		final Query q = getSession().createQuery(tmpQuery);
 		if (queryArgs != null) {
 			for (int i = 0; i < queryArgs.length; i++) {
 				q.setParameter(i, queryArgs[i]);
@@ -137,7 +139,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 	}
 
 	public Class<T> getType() {
-		return this.type;
+		return type;
 	}
 
 	@Required

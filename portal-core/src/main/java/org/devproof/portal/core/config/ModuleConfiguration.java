@@ -40,7 +40,7 @@ public class ModuleConfiguration {
 	 * @return name of the module
 	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class ModuleConfiguration {
 	 * @return module version
 	 */
 	public String getModuleVersion() {
-		return this.moduleVersion;
+		return moduleVersion;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ModuleConfiguration {
 	 * @return author of the module
 	 */
 	public String getAuthor() {
-		return this.author;
+		return author;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class ModuleConfiguration {
 	 * @return portal version (written for devproof portal version ...)
 	 */
 	public String getPortalVersion() {
-		return this.portalVersion;
+		return portalVersion;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class ModuleConfiguration {
 	 *         are possible)
 	 */
 	public List<Class<?>> getEntities() {
-		return this.entities;
+		return entities;
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class ModuleConfiguration {
 	 * @return list with page configurations {@link PageConfiguration}
 	 */
 	public Collection<PageConfiguration> getPages() {
-		return this.pages;
+		return pages;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class ModuleConfiguration {
 	 * @return List with boxes (right navigation) {@link BoxConfiguration}
 	 */
 	public Collection<BoxConfiguration> getBoxes() {
-		return this.boxes;
+		return boxes;
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class ModuleConfiguration {
 	 * @return url of the authors homepage
 	 */
 	public String getUrl() {
-		return this.url;
+		return url;
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class ModuleConfiguration {
 
 	@Override
 	public String toString() {
-		return this.name;
+		return name;
 	}
 
 }

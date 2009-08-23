@@ -63,7 +63,6 @@ public abstract class RightSearchBoxPanel extends Panel {
 		@Override
 		protected void onSubmit(final AjaxRequestTarget target) {
 			RightSearchBoxPanel.this.onSubmit(target);
-
 		}
 	}
 }

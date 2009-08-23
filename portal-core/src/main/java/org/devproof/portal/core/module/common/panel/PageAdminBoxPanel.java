@@ -45,17 +45,19 @@ public class PageAdminBoxPanel extends Panel {
 
 	public PageAdminBoxPanel(final String id) {
 		super(id);
-		this.repeating = new RepeatingView("repeatingNav1");
-		this.add(this.repeating);
-		List<Class<? extends Page>> registeredAdminPages = this.adminPageRegistry.getRegisteredPageAdminPages();
+		repeating = new RepeatingView("repeatingNav1");
+		add(repeating);
+		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredPageAdminPages();
 		RepeatingView repeating2 = new RepeatingView("repeatingNav2");
-		this.add(repeating2);
+		add(repeating2);
 		for (Class<? extends Page> pageClass : registeredAdminPages) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating2.newChildId());
 			repeating2.add(item);
-			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+					CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
 			if (StringUtils.isEmpty(label)) {
-				label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
+				label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+						CommonConstants.CONTENT_TITLE_LABEL);
 			}
 			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
 			link.add(new Label("adminLinkLabel", label));
@@ -64,8 +66,8 @@ public class PageAdminBoxPanel extends Panel {
 	}
 
 	public void addLink(final Component link) {
-		WebMarkupContainer container = new WebMarkupContainer(this.repeating.newChildId());
-		this.repeating.add(container);
+		WebMarkupContainer container = new WebMarkupContainer(repeating.newChildId());
+		repeating.add(container);
 		container.add(link);
 	}
 }

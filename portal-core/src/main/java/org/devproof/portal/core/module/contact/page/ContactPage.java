@@ -71,15 +71,18 @@ public class ContactPage extends TemplatePage {
 		if (params != null && params.containsKey("0")) {
 			username = params.getString("0");
 		}
-		UserEntity touser = this.userService.findUserByUsername(username);
+		UserEntity touser = userService.findUserByUsername(username);
 		if (touser == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.doesnotexist")));
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
+					.getString("user.doesnotexist")));
 		}
 		if (!touser.getRole().getRights().contains(new RightEntity("contact.form.enable"))) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.missing.right")));
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
+					.getString("user.missing.right")));
 		}
 		if (!Boolean.TRUE.equals(touser.getEnableContactForm())) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.contactform.disabled")));
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
+					.getString("user.contactform.disabled")));
 		}
 
 		PortalSession session = (PortalSession) getSession();
@@ -118,7 +121,7 @@ public class ContactPage extends TemplatePage {
 		fc.add(StringValidator.minimumLength(30));
 		form.add(fc);
 
-		Boolean enableCaptcha = this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
+		Boolean enableCaptcha = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
 		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
 		trCaptcha1.setVisible(enableCaptcha);
@@ -159,16 +162,17 @@ public class ContactPage extends TemplatePage {
 			@Override
 			public void onSubmit() {
 				// send notification
-				UserEntity touser = ContactPage.this.userService.findUserByUsername(contactBean.getTouser());
-				Integer templateId = ContactPage.this.configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
+				UserEntity touser = userService.findUserByUsername(contactBean.getTouser());
+				Integer templateId = configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
 				EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(touser);
 				placeholder.setContactEmail(contactBean.getEmail());
 				placeholder.setContactFullname(contactBean.getFullname());
-				ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo()).getProperties();
+				ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo())
+						.getProperties();
 				placeholder.setContactIp(prop.getRemoteAddress());
 				placeholder.setContent(contactBean.getContent());
 
-				ContactPage.this.emailService.sendEmail(templateId, placeholder);
+				emailService.sendEmail(templateId, placeholder);
 				this.setResponsePage(MessagePage.getMessagePage(this.getString("mail.sent")));
 			}
 		});

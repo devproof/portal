@@ -29,11 +29,10 @@ public class RightQuery implements Serializable {
 
 	@BeanQuery("e.right like '%'||?||'%'" + " or e.description like '%'||?||'%'")
 	public String getRightAndDescription() {
-		return this.rightAndDescription;
+		return rightAndDescription;
 	}
 
 	public void setRightAndDescription(final String rightAndDescription) {
 		this.rightAndDescription = rightAndDescription;
 	}
-
 }

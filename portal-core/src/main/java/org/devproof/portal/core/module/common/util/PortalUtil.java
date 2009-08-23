@@ -138,7 +138,8 @@ public class PortalUtil {
 	 *            Simple class name of page
 	 * @return matching {@link PageConfiguration}
 	 */
-	public static PageConfiguration getConfigurationByPageName(final Collection<PageConfiguration> confs, final String pageName) {
+	public static PageConfiguration getConfigurationByPageName(final Collection<PageConfiguration> confs,
+			final String pageName) {
 		for (PageConfiguration conf : confs) {
 			if (pageName.equals(conf.getPageClass().getSimpleName())) {
 				return conf;

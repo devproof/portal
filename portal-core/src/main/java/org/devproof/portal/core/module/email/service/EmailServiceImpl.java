@@ -52,29 +52,29 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void delete(final EmailTemplateEntity entity) {
-		this.emailTemplateDao.delete(entity);
+		emailTemplateDao.delete(entity);
 	}
 
 	@Override
 	public List<EmailTemplateEntity> findAll() {
-		return this.emailTemplateDao.findAll();
+		return emailTemplateDao.findAll();
 	}
 
 	@Override
 	public EmailTemplateEntity findById(final Integer id) {
-		return this.emailTemplateDao.findById(id);
+		return emailTemplateDao.findById(id);
 	}
 
 	@Override
 	public void save(final EmailTemplateEntity entity) {
-		this.emailTemplateDao.save(entity);
+		emailTemplateDao.save(entity);
 	}
 
 	@Override
 	public void sendEmail(final EmailTemplateEntity template, final EmailPlaceholderBean placeholder) {
 		// Create email
 		try {
-			MimeMessage msg = this.javaMailSender.createMimeMessage();
+			MimeMessage msg = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(msg);
 			if (placeholder.getContactEmail() != null) {
 				String from = "";
@@ -86,8 +86,8 @@ public class EmailServiceImpl implements EmailService {
 				from += " <" + placeholder.getContactEmail() + ">";
 				helper.setFrom(from);
 			} else {
-				String from = this.configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME);
-				from += " <" + this.configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS) + ">";
+				String from = configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME);
+				from += " <" + configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS) + ">";
 				helper.setFrom(from);
 			}
 			if (placeholder.getToEmail() != null) {
@@ -107,7 +107,7 @@ public class EmailServiceImpl implements EmailService {
 			}
 			helper.setSubject(replace(template.getSubject(), placeholder));
 			helper.setText("<html><body>" + replace(template.getContent(), placeholder) + "</body></html>", true);
-			this.javaMailSender.send(msg);
+			javaMailSender.send(msg);
 			LOG.info("Send email to " + placeholder.getToEmail() + " " + template.getSubject());
 		} catch (MailException e) {
 			throw new UnhandledException(e);
@@ -118,23 +118,33 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendEmail(final Integer templateId, final EmailPlaceholderBean placeholder) {
-		EmailTemplateEntity template = this.emailTemplateDao.findById(templateId);
+		EmailTemplateEntity template = emailTemplateDao.findById(templateId);
 		this.sendEmail(template, placeholder);
 	}
 
 	private String replace(final String in, final EmailPlaceholderBean placeholder) {
 		String content = in;
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_USERNAME, placeholder.getUsername() != null ? placeholder.getUsername() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_FIRSTNAME, placeholder.getFirstname() != null ? placeholder.getFirstname() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_LASTNAME, placeholder.getLastname() != null ? placeholder.getLastname() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PAGENAME, this.configurationService.findAsString(EmailConstants.CONF_PAGE_NAME));
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_EMAIL, placeholder.getEmail() != null ? placeholder.getEmail() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONFIRMATIONLINK, placeholder.getConfirmationLink() != null ? placeholder.getConfirmationLink() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PASSWORDRESETLINK, placeholder.getResetPasswordLink() != null ? placeholder.getResetPasswordLink() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_USERNAME,
+				placeholder.getUsername() != null ? placeholder.getUsername() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_FIRSTNAME,
+				placeholder.getFirstname() != null ? placeholder.getFirstname() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_LASTNAME,
+				placeholder.getLastname() != null ? placeholder.getLastname() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PAGENAME, configurationService
+				.findAsString(EmailConstants.CONF_PAGE_NAME));
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_EMAIL, placeholder.getEmail() != null ? placeholder
+				.getEmail() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONFIRMATIONLINK,
+				placeholder.getConfirmationLink() != null ? placeholder.getConfirmationLink() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PASSWORDRESETLINK, placeholder
+				.getResetPasswordLink() != null ? placeholder.getResetPasswordLink() : "");
 
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_FULLNAME, placeholder.getContactFullname() != null ? placeholder.getContactFullname() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_EMAIL, placeholder.getContactEmail() != null ? placeholder.getContactEmail() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_IP, placeholder.getContactIp() != null ? placeholder.getContactIp() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_FULLNAME,
+				placeholder.getContactFullname() != null ? placeholder.getContactFullname() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_EMAIL,
+				placeholder.getContactEmail() != null ? placeholder.getContactEmail() : "");
+		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_IP,
+				placeholder.getContactIp() != null ? placeholder.getContactIp() : "");
 
 		String inlineContent = "";
 		if (placeholder.getContent() != null) {
@@ -143,7 +153,7 @@ public class EmailServiceImpl implements EmailService {
 		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTENT, inlineContent);
 		String birthday = "";
 		if (placeholder.getBirthday() != null) {
-			birthday = this.dateFormat.format(placeholder.getBirthday());
+			birthday = dateFormat.format(placeholder.getBirthday());
 		}
 		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_BIRTHDAY, birthday);
 		return content;

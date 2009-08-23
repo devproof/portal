@@ -59,11 +59,11 @@ abstract public class RightEditPanel extends Panel {
 		super(id, Model.of(right));
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
-		this.add(feedback);
+		add(feedback);
 
 		Form<RightEntity> form = new Form<RightEntity>("form", new CompoundPropertyModel<RightEntity>(right));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 
@@ -80,7 +80,8 @@ abstract public class RightEditPanel extends Panel {
 
 		// roles
 		IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
-		IModel<Collection<RoleEntity>> allRoles = new CollectionModel<RoleEntity>(this.roleService.findAllOrderByDescription());
+		IModel<Collection<RoleEntity>> allRoles = new CollectionModel<RoleEntity>(roleService
+				.findAllOrderByDescription());
 		IModel<List<RoleEntity>> rightsRoles = new ListModel<RoleEntity>(right.getRoles());
 
 		final Palette<RoleEntity> palette = new Palette<RoleEntity>("roles", rightsRoles, allRoles, renderer, 10, false) {
@@ -109,7 +110,7 @@ abstract public class RightEditPanel extends Panel {
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-				RightEditPanel.this.rightService.save((RightEntity) form.getModelObject());
+				rightService.save((RightEntity) form.getModelObject());
 				RightEditPanel.this.onSave(target);
 			}
 

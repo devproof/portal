@@ -44,33 +44,33 @@ public class String2ImageResource extends RenderedDynamicImageResource {
 		this.lines = lines;
 		this.font = font;
 		final BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-		this.width = 0;
-		this.size = font.getSize();
+		width = 0;
+		size = font.getSize();
 		Graphics2D g = (Graphics2D) image.getGraphics();
 		for (String str : lines) {
 			Rectangle2D l = font.getStringBounds(str, g.getFontRenderContext());
 			int tmpWidth = (int) l.getWidth();
-			if (tmpWidth > this.width) {
-				this.width = tmpWidth;
+			if (tmpWidth > width) {
+				width = tmpWidth;
 			}
-			this.height += this.size + (this.size / 2);
+			height += size + (size / 2);
 
 		}
-		setHeight(this.height);
-		setWidth(this.width);
+		setHeight(height);
+		setWidth(width);
 	}
 
 	@Override
 	protected boolean render(final Graphics2D g) {
 		g.setBackground(Color.WHITE);
-		g.clearRect(0, 0, this.width, this.height);
+		g.clearRect(0, 0, width, height);
 		g.setColor(Color.BLACK);
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setFont(this.font);
+		g.setFont(font);
 		int actHeight = -5;
-		for (String str : this.lines) {
-			actHeight += ((this.size / 2) + this.size);
+		for (String str : lines) {
+			actHeight += ((size / 2) + size);
 			g.drawString(str, 0, actHeight);
 		}
 		return true;

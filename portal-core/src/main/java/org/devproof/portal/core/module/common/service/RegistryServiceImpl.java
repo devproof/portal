@@ -32,11 +32,11 @@ public class RegistryServiceImpl implements RegistryService {
 	@Override
 	public void rebuildRegistries(final LinkType type) {
 		if (type == LinkType.TOP_NAVIGATION) {
-			this.mainNavigationRegistry.buildNavigation();
+			mainNavigationRegistry.buildNavigation();
 		} else if (type == LinkType.PAGE_ADMINISTRATION) {
-			this.pageAdminPageRegistry.buildNavigation();
+			pageAdminPageRegistry.buildNavigation();
 		} else if (type == LinkType.GLOBAL_ADMINISTRATION) {
-			this.globalAdminPageRegistry.buildNavigation();
+			globalAdminPageRegistry.buildNavigation();
 		} else {
 			throw new IllegalArgumentException("LinkType " + type + " is currently not supported!");
 		}

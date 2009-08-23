@@ -74,49 +74,50 @@ public class RolePage extends TemplatePage {
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				final RoleEditPanel editRolePanel = new RoleEditPanel(RolePage.this.modalWindow.getContentId(), RolePage.this.roleService.newRoleEntity(), true) {
+				final RoleEditPanel editRolePanel = new RoleEditPanel(modalWindow.getContentId(), roleService
+						.newRoleEntity(), true) {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSave(final AjaxRequestTarget target) {
-						target.addComponent(RolePage.this.container);
+						target.addComponent(container);
 						target.addComponent(RolePage.this.getFeedback());
-						RolePage.this.rightService.refreshGlobalApplicationRights();
+						rightService.refreshGlobalApplicationRights();
 						info(this.getString("msg.saved"));
-						RolePage.this.modalWindow.close(target);
+						modalWindow.close(target);
 					}
 
 				};
-				RolePage.this.modalWindow.setInitialHeight(440);
-				RolePage.this.modalWindow.setInitialWidth(620);
-				RolePage.this.modalWindow.setContent(editRolePanel);
-				RolePage.this.modalWindow.show(target);
+				modalWindow.setInitialHeight(440);
+				modalWindow.setInitialWidth(620);
+				modalWindow.setContent(editRolePanel);
+				modalWindow.show(target);
 			}
 		}.add(new Label("linkName", this.getString("createLink"))));
 
 		RoleQuery query = new RoleQuery();
-		this.roleDataProvider.setQueryObject(query);
+		roleDataProvider.setQueryObject(query);
 
-		this.container = new WebMarkupContainer("refreshTable");
-		this.container.setOutputMarkupId(true);
-		this.container.add(new OrderByBorder("tableDescription", "description", this.roleDataProvider));
-		this.container.add(new OrderByBorder("tableActive", "active", this.roleDataProvider));
-		this.add(this.container);
+		container = new WebMarkupContainer("refreshTable");
+		container.setOutputMarkupId(true);
+		container.add(new OrderByBorder("tableDescription", "description", roleDataProvider));
+		container.add(new OrderByBorder("tableActive", "active", roleDataProvider));
+		add(container);
 
-		this.modalWindow = new ModalWindow("modalWindow");
-		this.modalWindow.setTitle("Portal");
-		this.add(this.modalWindow);
+		modalWindow = new ModalWindow("modalWindow");
+		modalWindow.setTitle("Portal");
+		add(modalWindow);
 
-		final RoleDataView dataView = new RoleDataView("tableRow", this.roleDataProvider, params);
-		this.container.add(dataView);
+		final RoleDataView dataView = new RoleDataView("tableRow", roleDataProvider, params);
+		container.add(dataView);
 
 		addFilterBox(new RoleSearchBoxPanel("box", query) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target) {
-				target.addComponent(RolePage.this.container);
+				target.addComponent(container);
 			}
 
 		});
@@ -134,32 +135,34 @@ public class RolePage extends TemplatePage {
 			final RoleEntity role = item.getModelObject();
 
 			item.add(new Label("description", role.getDescription()));
-			item.add(new Label("active", role.getActive() ? this.getString("status.active") : this.getString("status.inactive")));
+			item.add(new Label("active", role.getActive() ? this.getString("status.active") : this
+					.getString("status.inactive")));
 
 			item.add(new AjaxLink<RoleEntity>("editLink", Model.of(role)) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					RoleEntity refreshedRole = RolePage.this.roleService.findById(role.getId());
-					final RoleEditPanel editRolePanel = new RoleEditPanel(RolePage.this.modalWindow.getContentId(), refreshedRole, false) {
+					RoleEntity refreshedRole = roleService.findById(role.getId());
+					final RoleEditPanel editRolePanel = new RoleEditPanel(modalWindow.getContentId(), refreshedRole,
+							false) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(final AjaxRequestTarget target) {
-							target.addComponent(RolePage.this.container);
+							target.addComponent(container);
 							target.addComponent(getFeedback());
-							RolePage.this.rightService.refreshGlobalApplicationRights();
-							info(this.getString("msg.saved"));
-							RolePage.this.modalWindow.close(target);
+							rightService.refreshGlobalApplicationRights();
+							info(getString("msg.saved"));
+							modalWindow.close(target);
 						}
 
 					};
-					RolePage.this.modalWindow.setInitialHeight(440);
-					RolePage.this.modalWindow.setInitialWidth(620);
-					RolePage.this.modalWindow.setContent(editRolePanel);
-					RolePage.this.modalWindow.show(target);
+					modalWindow.setInitialHeight(440);
+					modalWindow.setInitialWidth(620);
+					modalWindow.setContent(editRolePanel);
+					modalWindow.show(target);
 				}
 			}.add(new Image("editImage", CommonConstants.REF_EDIT_IMG)));
 
@@ -168,40 +171,47 @@ public class RolePage extends TemplatePage {
 
 				@Override
 				public void onClick(final AjaxRequestTarget target) {
-					long numUser = RolePage.this.userService.countUserForRole(role);
-					Integer guestRoleId = RolePage.this.configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
-					Integer reguserRoleId = RolePage.this.configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE);
+					long numUser = userService.countUserForRole(role);
+					Integer guestRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
+					Integer reguserRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE);
 					if (guestRoleId.equals(role.getId())) {
-						String msg = new StringResourceModel("msg.cannot.delete.guestrole", this, null, new Object[] { numUser }).getString();
-						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(RolePage.this.modalWindow.getContentId(), msg, RolePage.this.modalWindow);
-						RolePage.this.modalWindow.setContent(infoMessagePanel);
+						String msg = new StringResourceModel("msg.cannot.delete.guestrole", this, null,
+								new Object[] { numUser }).getString();
+						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
+								modalWindow);
+						modalWindow.setContent(infoMessagePanel);
 					} else if (reguserRoleId.equals(role.getId())) {
-						String msg = new StringResourceModel("msg.cannot.delete.reguserrole", this, null, new Object[] { numUser }).getString();
-						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(RolePage.this.modalWindow.getContentId(), msg, RolePage.this.modalWindow);
-						RolePage.this.modalWindow.setContent(infoMessagePanel);
+						String msg = new StringResourceModel("msg.cannot.delete.reguserrole", this, null,
+								new Object[] { numUser }).getString();
+						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
+								modalWindow);
+						modalWindow.setContent(infoMessagePanel);
 					} else if (numUser != 0) {
-						String msg = new StringResourceModel("msg.cannot.delete.assigneduser", this, null, new Object[] { numUser }).getString();
-						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(RolePage.this.modalWindow.getContentId(), msg, RolePage.this.modalWindow);
-						RolePage.this.modalWindow.setContent(infoMessagePanel);
+						String msg = new StringResourceModel("msg.cannot.delete.assigneduser", this, null,
+								new Object[] { numUser }).getString();
+						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
+								modalWindow);
+						modalWindow.setContent(infoMessagePanel);
 					} else {
-						final ConfirmDeletePanel<RoleEntity> confirmDeletePanel = new ConfirmDeletePanel<RoleEntity>(RolePage.this.modalWindow.getContentId(), role, RolePage.this.modalWindow) {
+						final ConfirmDeletePanel<RoleEntity> confirmDeletePanel = new ConfirmDeletePanel<RoleEntity>(
+								modalWindow.getContentId(), role, modalWindow) {
 
 							private static final long serialVersionUID = 1L;
 
 							@Override
 							public void onDelete(final AjaxRequestTarget target, final Form<?> form) {
-								RolePage.this.roleService.delete(role);
-								target.addComponent(RolePage.this.container);
+								roleService.delete(role);
+								target.addComponent(container);
 								target.addComponent(getFeedback());
-								RolePage.this.rightService.refreshGlobalApplicationRights();
-								info(this.getString("msg.deleted"));
-								RolePage.this.modalWindow.close(target);
+								rightService.refreshGlobalApplicationRights();
+								info(getString("msg.deleted"));
+								modalWindow.close(target);
 							}
 
 						};
-						RolePage.this.modalWindow.setContent(confirmDeletePanel);
+						modalWindow.setContent(confirmDeletePanel);
 					}
-					RolePage.this.modalWindow.show(target);
+					modalWindow.show(target);
 				}
 			}.add(new Image("deleteImage", CommonConstants.REF_DELETE_IMG)));
 			//            

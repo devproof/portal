@@ -51,7 +51,7 @@ public class RegisterPage extends TemplatePage {
 		if (params.containsKey(PARAM_USER) && params.containsKey(PARAM_KEY)) {
 			activateUser(params);
 		}
-		final UserEntity user = this.userService.newUserEntity();
+		final UserEntity user = userService.newUserEntity();
 		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
 		form.setOutputMarkupId(true);
 		this.add(form);
@@ -65,7 +65,7 @@ public class RegisterPage extends TemplatePage {
 
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
-				if (RegisterPage.this.userService.existsUsername(ivalidatable.getValue())) {
+				if (userService.existsUsername(ivalidatable.getValue())) {
 					this.error(ivalidatable);
 				}
 			}
@@ -80,18 +80,19 @@ public class RegisterPage extends TemplatePage {
 
 		fc = new TextField<String>("firstname");
 		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
 		form.add(fc);
 
 		fc = new TextField<String>("lastname");
 		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
 		form.add(fc);
 
-		String dateFormat = this.configurationService.findAsString("date_format");
+		String dateFormat = configurationService.findAsString("date_format");
 		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
 		dateTextField.add(new DatePicker());
-		dateTextField.setRequired(this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
+		dateTextField
+				.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
 		form.add(dateTextField);
 
 		fc = new RequiredTextField<String>("email");
@@ -110,7 +111,7 @@ public class RegisterPage extends TemplatePage {
 
 		form.add(new EqualPasswordInputValidator(password1, password2));
 
-		Boolean enableCaptcha = this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
+		Boolean enableCaptcha = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
 		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
 		trCaptcha1.setVisible(enableCaptcha);
@@ -134,7 +135,7 @@ public class RegisterPage extends TemplatePage {
 				protected void onValidate(final IValidatable<String> ivalidatable) {
 					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
 						captchaImageResource.invalidate();
-						this.error(ivalidatable);
+						error(ivalidatable);
 					}
 				}
 
@@ -156,15 +157,15 @@ public class RegisterPage extends TemplatePage {
 				param.add(PARAM_USER, user.getUsername());
 				param.add(PARAM_KEY, confirmationCode);
 				StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-				url.append(RegisterPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
+				url.append(getWebRequestCycle().urlFor(RegisterPage.class, param));
 
 				UserEntity user = (UserEntity) getForm().getModelObject();
 				String msg = "success";
-				if (RegisterPage.this.configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
+				if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 					msg = "confirm.email";
 				}
-				RegisterPage.this.userService.registerUser(user, password1.getValue(), url.toString(), confirmationCode);
-				this.setResponsePage(MessagePage.getMessagePage(this.getString(msg)));
+				userService.registerUser(user, password1.getValue(), url.toString(), confirmationCode);
+				setResponsePage(MessagePage.getMessagePage(getString(msg)));
 			}
 		});
 	}
@@ -172,10 +173,10 @@ public class RegisterPage extends TemplatePage {
 	private void activateUser(final PageParameters params) {
 		String username = params.getString(PARAM_USER);
 		String key = params.getString(PARAM_KEY);
-		if (this.userService.activateUser(username, key)) {
-			this.setResponsePage(MessagePage.getMessagePage(this.getString("confirmed")));
+		if (userService.activateUser(username, key)) {
+			setResponsePage(MessagePage.getMessagePage(this.getString("confirmed")));
 		} else {
-			this.setResponsePage(MessagePage.getMessagePage(this.getString("notconfirmed")));
+			setResponsePage(MessagePage.getMessagePage(this.getString("notconfirmed")));
 		}
 	}
 }

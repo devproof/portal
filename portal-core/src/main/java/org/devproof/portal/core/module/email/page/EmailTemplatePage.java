@@ -42,16 +42,16 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 	public EmailTemplatePage(final PageParameters params) {
 		super(params);
-		this.add(new OrderByBorder("table_subject", "subject", this.emailTemplateDataProvider));
-		this.add(new OrderByBorder("table_modified_by", "modifiedBy", this.emailTemplateDataProvider));
-		this.add(new EmailTemplateDataView("tableRow"));
+		add(new OrderByBorder("table_subject", "subject", emailTemplateDataProvider));
+		add(new OrderByBorder("table_modified_by", "modifiedBy", emailTemplateDataProvider));
+		add(new EmailTemplateDataView("tableRow"));
 	}
 
 	private class EmailTemplateDataView extends DataView<EmailTemplateEntity> {
 		private static final long serialVersionUID = 1L;
 
 		public EmailTemplateDataView(final String id) {
-			super(id, EmailTemplatePage.this.emailTemplateDataProvider);
+			super(id, emailTemplateDataProvider);
 		}
 
 		@Override
@@ -66,7 +66,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
-					EmailTemplatePage.this.emailService.delete(getEntity());
+					emailService.delete(getEntity());
 					info(EmailTemplatePage.this.getString("msg.deleted"));
 					item.setVisible(false);
 					target.addComponent(item);
@@ -76,8 +76,8 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					EmailTemplateEntity tmp = EmailTemplatePage.this.emailService.findById(template.getId());
-					this.setResponsePage(new EmailTemplateEditPage(tmp));
+					EmailTemplateEntity tmp = emailService.findById(template.getId());
+					setResponsePage(new EmailTemplateEditPage(tmp));
 				}
 			});
 

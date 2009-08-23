@@ -47,16 +47,17 @@ public class ResetPasswordPage extends TemplatePage {
 	public ResetPasswordPage(final PageParameters params) {
 		super(params);
 		if (!params.containsKey(PARAM_USER) || !params.containsKey(PARAM_KEY)) {
-			this.setResponsePage(MessagePage.getMessagePage(this.getString("missing.params")));
+			setResponsePage(MessagePage.getMessagePage(this.getString("missing.params")));
 			return;
 		}
 
-		final UserEntity user = this.userService.findUserByUsername(params.getString(PARAM_USER));
+		final UserEntity user = userService.findUserByUsername(params.getString(PARAM_USER));
 		if (user == null) {
-			this.setResponsePage(MessagePage.getMessagePage(this.getString("user.notregistered")));
+			setResponsePage(MessagePage.getMessagePage(this.getString("user.notregistered")));
 			return;
-		} else if (StringUtils.isNotEmpty(user.getForgotPasswordCode()) && !params.getString(PARAM_KEY).equals(user.getForgotPasswordCode())) {
-			this.setResponsePage(MessagePage.getMessagePage(this.getString("wrong.key")));
+		} else if (StringUtils.isNotEmpty(user.getForgotPasswordCode())
+				&& !params.getString(PARAM_KEY).equals(user.getForgotPasswordCode())) {
+			setResponsePage(MessagePage.getMessagePage(this.getString("wrong.key")));
 			return;
 		}
 
@@ -88,8 +89,8 @@ public class ResetPasswordPage extends TemplatePage {
 			@Override
 			public void onSubmit() {
 				if (params.getString(PARAM_KEY).equals(user.getForgotPasswordCode())) {
-					ResetPasswordPage.this.userService.setNewPassword(user.getUsername(), password1.getValue());
-					this.setResponsePage(MessagePage.getMessagePage(this.getString("changed")));
+					userService.setNewPassword(user.getUsername(), password1.getValue());
+					setResponsePage(MessagePage.getMessagePage(this.getString("changed")));
 				}
 			}
 		});

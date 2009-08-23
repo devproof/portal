@@ -32,14 +32,14 @@ public class TooltipLabel extends Panel {
 
 	public TooltipLabel(final String id, final Component label, final Component tooltip) {
 		super(id);
-		this.add(JavascriptPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.js"));
-		this.add(CSSPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.css"));
+		add(JavascriptPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.js"));
+		add(CSSPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.css"));
 		tooltip.setMarkupId("tooltip");
 		label.setMarkupId("label");
 		WebMarkupContainer link = new WebMarkupContainer("link");
-		this.add(link);
+		add(link);
 		link.add(label);
-		this.add(tooltip);
+		add(tooltip);
 
 		// modifying tags
 		double d = Math.random();
@@ -47,7 +47,9 @@ public class TooltipLabel extends Panel {
 		String strTT = "TT" + str;
 		String strL = "L" + str;
 
-		link.add(new SimpleAttributeModifier("onmouseover", "xstooltip_show('" + strTT + "', '" + strL + "', 289, 49);"));
+		link
+				.add(new SimpleAttributeModifier("onmouseover", "xstooltip_show('" + strTT + "', '" + strL
+						+ "', 289, 49);"));
 		link.add(new SimpleAttributeModifier("onmouseout", "xstooltip_hide('" + strTT + "');"));
 		tooltip.add(new SimpleAttributeModifier("id", strTT));
 		link.add(new SimpleAttributeModifier("id", strL));

@@ -29,16 +29,16 @@ public class ResetPasswordPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(ResetPasswordPage.class);
-		this.tester.assertRenderedPage(MessagePage.class);
+		tester.startPage(ResetPasswordPage.class);
+		tester.assertRenderedPage(MessagePage.class);
 	}
 }

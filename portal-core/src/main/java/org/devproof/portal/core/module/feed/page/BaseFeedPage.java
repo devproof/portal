@@ -42,7 +42,7 @@ public abstract class BaseFeedPage extends WebPage {
 	public BaseFeedPage(final PageParameters params) {
 		super(params);
 		if (params.size() > 0) {
-			this.path = params.getString("0");
+			path = params.getString("0");
 		}
 	}
 
@@ -52,7 +52,7 @@ public abstract class BaseFeedPage extends WebPage {
 		PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
 		SyndFeedOutput output = new SyndFeedOutput();
 		try {
-			FeedProvider feedProvider = this.feedProviderRegistry.getFeedProviderByPath(this.path);
+			FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
 			SyndFeed feed = null;
 			if (feedProvider != null) {
 				feed = feedProvider.getFeed();

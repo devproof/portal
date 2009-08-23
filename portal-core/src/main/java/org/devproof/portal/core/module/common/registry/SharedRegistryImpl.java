@@ -27,28 +27,28 @@ public class SharedRegistryImpl implements SharedRegistry {
 
 	@Override
 	public Map<String, ?> getRegisteredResources() {
-		return Collections.unmodifiableMap(this.resources);
+		return Collections.unmodifiableMap(resources);
 	}
 
 	@Override
 	public <T> T getResource(final String resourceKey) {
 		@SuppressWarnings("unchecked")
-		T back = (T) this.resources.get(resourceKey);
+		T back = (T) resources.get(resourceKey);
 		return back;
 	}
 
 	@Override
 	public void registerResource(final String resourceKey, final Object resource) {
-		this.resources.put(resourceKey, resource);
+		resources.put(resourceKey, resource);
 	}
 
 	@Override
 	public void removeResource(final String resourceKey) {
-		this.resources.remove(resourceKey);
+		resources.remove(resourceKey);
 	}
 
 	@Override
 	public boolean isResourceAvailable(final String resourceKey) {
-		return this.resources.containsKey(resourceKey);
+		return resources.containsKey(resourceKey);
 	}
 }

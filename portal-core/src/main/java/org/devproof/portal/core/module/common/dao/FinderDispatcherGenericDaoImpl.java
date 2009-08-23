@@ -63,12 +63,12 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 
 	public Object getObject() throws Exception {
 		ProxyFactory result = new ProxyFactory();
-		GenericHibernateDaoImpl<T, PK> genericDao = new GenericHibernateDaoImpl<T, PK>(this.entityClass);
+		GenericHibernateDaoImpl<T, PK> genericDao = new GenericHibernateDaoImpl<T, PK>(entityClass);
 		genericDao.setSessionFactory(getSessionFactory());
 		genericDao.setHibernateTemplate(getHibernateTemplate());
-		genericDao.setUsernameResolver(this.usernameResolver);
+		genericDao.setUsernameResolver(usernameResolver);
 		result.setTarget(genericDao);
-		result.setInterfaces(new Class[] { this.daoInterface });
+		result.setInterfaces(new Class[] { daoInterface });
 		result.addAdvice(new MethodInterceptor() {
 			public Object invoke(final MethodInvocation invocation) throws Throwable {
 				Object result = null;
@@ -144,7 +144,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 
 	@SuppressWarnings(value = "unchecked")
 	public Class getObjectType() {
-		return this.daoInterface;
+		return daoInterface;
 	}
 
 	public boolean isSingleton() {
@@ -152,7 +152,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	}
 
 	public Object getServicesImpl() {
-		return this.servicesImpl;
+		return servicesImpl;
 	}
 
 	public void setServicesImpl(final Object servicesImpl) {
@@ -160,7 +160,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	}
 
 	public Class<T> getEntityClass() {
-		return this.entityClass;
+		return entityClass;
 	}
 
 	@Required
@@ -169,7 +169,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	}
 
 	public Class<GenericDao<T, PK>> getDaoInterface() {
-		return this.daoInterface;
+		return daoInterface;
 	}
 
 	@Required

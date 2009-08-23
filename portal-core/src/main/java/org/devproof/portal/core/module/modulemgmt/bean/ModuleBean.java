@@ -25,7 +25,7 @@ public class ModuleBean {
 	private String location;
 
 	public ModuleConfiguration getConfiguration() {
-		return this.configuration;
+		return configuration;
 	}
 
 	public void setConfiguration(final ModuleConfiguration configuration) {
@@ -33,7 +33,7 @@ public class ModuleBean {
 	}
 
 	public String getLocation() {
-		return this.location;
+		return location;
 	}
 
 	public void setLocation(final String location) {

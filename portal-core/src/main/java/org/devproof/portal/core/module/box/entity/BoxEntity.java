@@ -48,7 +48,7 @@ final public class BoxEntity extends BaseEntity {
 	private String content;
 
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(final Integer id) {
@@ -56,7 +56,7 @@ final public class BoxEntity extends BaseEntity {
 	}
 
 	public Integer getSort() {
-		return this.sort;
+		return sort;
 	}
 
 	public void setSort(final Integer sort) {
@@ -64,7 +64,7 @@ final public class BoxEntity extends BaseEntity {
 	}
 
 	public String getBoxType() {
-		return this.boxType;
+		return boxType;
 	}
 
 	public void setBoxType(final String boxType) {
@@ -72,7 +72,7 @@ final public class BoxEntity extends BaseEntity {
 	}
 
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	public void setTitle(final String title) {
@@ -80,7 +80,7 @@ final public class BoxEntity extends BaseEntity {
 	}
 
 	public String getContent() {
-		return this.content;
+		return content;
 	}
 
 	public void setContent(final String content) {
@@ -91,7 +91,7 @@ final public class BoxEntity extends BaseEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -107,11 +107,11 @@ final public class BoxEntity extends BaseEntity {
 			return false;
 		}
 		final BoxEntity other = (BoxEntity) obj;
-		if (this.id == null) {
+		if (id == null) {
 			if (other.id != null) {
 				return false;
 			}
-		} else if (!this.id.equals(other.id)) {
+		} else if (!id.equals(other.id)) {
 			return false;
 		}
 		return true;

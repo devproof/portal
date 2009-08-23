@@ -37,24 +37,24 @@ public class ConfigurationServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.mock = EasyMock.createStrictMock(ConfigurationDao.class);
-		this.impl = new ConfigurationServiceImpl();
-		this.impl.setConfigurationDao(this.mock);
-		this.impl.setConfigurationRegistry(new ConfigurationRegistryImpl());
-		this.list = new ArrayList<ConfigurationEntity>();
+		mock = EasyMock.createStrictMock(ConfigurationDao.class);
+		impl = new ConfigurationServiceImpl();
+		impl.setConfigurationDao(mock);
+		impl.setConfigurationRegistry(new ConfigurationRegistryImpl());
+		list = new ArrayList<ConfigurationEntity>();
 		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("date_format");
 		c.setValue("dd-mm-yyyy");
-		this.impl.setDateFormat(new SimpleDateFormat(c.getValue()));
+		impl.setDateFormat(new SimpleDateFormat(c.getValue()));
 		c.setType(String.class.getName());
-		this.list.add(c);
+		list.add(c);
 		c = new ConfigurationEntity();
 		c.setKey("date_time_format");
 		c.setValue("dd-mm-yyyy hh:mm");
-		this.impl.setDateTimeFormat(new SimpleDateFormat(c.getValue()));
+		impl.setDateTimeFormat(new SimpleDateFormat(c.getValue()));
 		c.setType(String.class.getName());
 
-		this.list.add(c);
+		list.add(c);
 
 	}
 
@@ -62,60 +62,60 @@ public class ConfigurationServiceImplTest extends TestCase {
 		final ConfigurationEntity e = new ConfigurationEntity();
 		e.setKey("foo");
 		e.setValue("bar");
-		this.mock.save(e);
-		EasyMock.replay(this.mock);
-		this.impl.save(e);
-		EasyMock.verify(this.mock);
+		mock.save(e);
+		EasyMock.replay(mock);
+		impl.save(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testDelete() {
 		final ConfigurationEntity e = new ConfigurationEntity();
 		e.setKey("foo");
 		e.setValue("bar");
-		this.mock.delete(e);
-		EasyMock.replay(this.mock);
-		this.impl.delete(e);
-		EasyMock.verify(this.mock);
+		mock.delete(e);
+		EasyMock.replay(mock);
+		impl.delete(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindById() {
 		final ConfigurationEntity e = new ConfigurationEntity();
 		e.setKey("foo");
 		e.setValue("bar");
-		EasyMock.expect(this.mock.findById("foo")).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findById("foo"), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findById("foo")).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findById("foo"), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAll() {
 		final List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
 		list.add(new ConfigurationEntity());
 		list.add(new ConfigurationEntity());
-		EasyMock.expect(this.mock.findAll()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAll());
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAll());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindConfigurationGroups() {
 		final List<String> list = new ArrayList<String>();
 		list.add("group1");
 		list.add("group2");
-		EasyMock.expect(this.mock.findConfigurationGroups()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findConfigurationGroups());
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findConfigurationGroups()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findConfigurationGroups());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindConfigurationsByGroup() {
 		final List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
 		list.add(new ConfigurationEntity());
 		list.add(new ConfigurationEntity());
-		EasyMock.expect(this.mock.findConfigurationsByGroup("group")).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findConfigurationsByGroup("group"));
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findConfigurationsByGroup("group")).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findConfigurationsByGroup("group"));
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAsObject() {
@@ -123,12 +123,12 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("value");
 		c.setType(String.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertNotNull(this.impl.findAsObject("key"));
-		EasyMock.verify(this.mock);
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertNotNull(impl.findAsObject("key"));
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAsBoolean() {
@@ -136,12 +136,12 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("true");
 		c.setType(Boolean.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertTrue(this.impl.findAsBoolean("key"));
-		EasyMock.verify(this.mock);
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertTrue(impl.findAsBoolean("key"));
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAsDate() {
@@ -149,12 +149,12 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("15-01-2008");
 		c.setType(Date.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertNotNull(this.impl.findAsDate("key"));
-		EasyMock.verify(this.mock);
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertNotNull(impl.findAsDate("key"));
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAsDouble() {
@@ -162,13 +162,13 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("12.34");
 		c.setType(Double.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		final double d = this.impl.findAsDouble("key");
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		final double d = impl.findAsDouble("key");
 		assertEquals(d, 12.34, 0.05);
-		EasyMock.verify(this.mock);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAsInteger() {
@@ -176,12 +176,12 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("12");
 		c.setType(Integer.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertEquals(this.impl.findAsInteger("key"), Integer.valueOf(12));
-		EasyMock.verify(this.mock);
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertEquals(impl.findAsInteger("key"), Integer.valueOf(12));
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAsString() {
@@ -189,12 +189,12 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("string");
 		c.setType(String.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertEquals(this.impl.findAsString("key"), "string");
-		EasyMock.verify(this.mock);
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertEquals(impl.findAsString("key"), "string");
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAsFile() {
@@ -202,12 +202,12 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("java.io.tmpdir");
 		c.setType(String.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertNotNull(this.impl.findAsFile("key"));
-		EasyMock.verify(this.mock);
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertNotNull(impl.findAsFile("key"));
+		EasyMock.verify(mock);
 	}
 
 	public enum TestEnum {
@@ -219,11 +219,11 @@ public class ConfigurationServiceImplTest extends TestCase {
 		c.setKey("key");
 		c.setValue("TEST2");
 		c.setType(TestEnum.class.getName());
-		this.list.add(c);
-		EasyMock.expect(this.mock.findAll()).andReturn(this.list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertEquals(this.impl.findAsEnum("key"), TestEnum.TEST2);
-		EasyMock.verify(this.mock);
+		list.add(c);
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertEquals(impl.findAsEnum("key"), TestEnum.TEST2);
+		EasyMock.verify(mock);
 	}
 }

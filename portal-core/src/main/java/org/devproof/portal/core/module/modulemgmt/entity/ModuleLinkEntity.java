@@ -59,7 +59,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	private Integer sort;
 
 	public String getModuleName() {
-		return this.moduleName;
+		return moduleName;
 	}
 
 	public void setModuleName(final String moduleName) {
@@ -67,7 +67,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	}
 
 	public String getPageName() {
-		return this.pageName;
+		return pageName;
 	}
 
 	public void setPageName(final String pageName) {
@@ -75,7 +75,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	}
 
 	public Integer getSort() {
-		return this.sort;
+		return sort;
 	}
 
 	public void setSort(final Integer sort) {
@@ -83,7 +83,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	}
 
 	public LinkType getLinkType() {
-		return this.linkType;
+		return linkType;
 	}
 
 	public void setLinkType(final LinkType linkType) {
@@ -91,7 +91,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	}
 
 	public Boolean getVisible() {
-		return this.visible;
+		return visible;
 	}
 
 	public void setVisible(final Boolean visible) {
@@ -102,8 +102,8 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.linkType == null) ? 0 : this.linkType.hashCode());
-		result = prime * result + ((this.pageName == null) ? 0 : this.pageName.hashCode());
+		result = prime * result + ((linkType == null) ? 0 : linkType.hashCode());
+		result = prime * result + ((pageName == null) ? 0 : pageName.hashCode());
 		return result;
 	}
 
@@ -119,18 +119,18 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 			return false;
 		}
 		ModuleLinkEntity other = (ModuleLinkEntity) obj;
-		if (this.linkType == null) {
+		if (linkType == null) {
 			if (other.linkType != null) {
 				return false;
 			}
-		} else if (!this.linkType.equals(other.linkType)) {
+		} else if (!linkType.equals(other.linkType)) {
 			return false;
 		}
-		if (this.pageName == null) {
+		if (pageName == null) {
 			if (other.pageName != null) {
 				return false;
 			}
-		} else if (!this.pageName.equals(other.pageName)) {
+		} else if (!pageName.equals(other.pageName)) {
 			return false;
 		}
 		return true;
@@ -138,6 +138,6 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 
 	@Override
 	public int compareTo(final ModuleLinkEntity arg0) {
-		return this.sort.compareTo(arg0.getSort());
+		return sort.compareTo(arg0.getSort());
 	}
 }

@@ -46,7 +46,8 @@ public class SortablePersistenceDataProviderImpl<T> extends SortableDataProvider
 	@Override
 	public Iterator<? extends T> iterator(final int first, final int count) {
 		SortParam sp = getSort();
-		List<T> list = this.dataProviderDao.findAllWithQuery(this.entityClass, sp.getProperty(), sp.isAscending(), first, count, this.queryObject, this.prefetch);
+		List<T> list = dataProviderDao.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count,
+				queryObject, prefetch);
 		return list.iterator();
 	}
 
@@ -57,16 +58,16 @@ public class SortablePersistenceDataProviderImpl<T> extends SortableDataProvider
 
 	@Override
 	public int size() {
-		if (this.countQuery != null) {
-			return this.dataProviderDao.getSize(this.entityClass, this.countQuery, this.queryObject);
+		if (countQuery != null) {
+			return dataProviderDao.getSize(entityClass, countQuery, queryObject);
 		} else {
-			return this.dataProviderDao.getSize(this.entityClass, this.queryObject);
+			return dataProviderDao.getSize(entityClass, queryObject);
 		}
 	}
 
 	@Override
 	public Serializable getQueryObject() {
-		return this.queryObject;
+		return queryObject;
 	}
 
 	@Override

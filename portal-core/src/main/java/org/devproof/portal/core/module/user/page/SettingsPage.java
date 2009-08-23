@@ -65,11 +65,11 @@ public class SettingsPage extends TemplatePage {
 	public SettingsPage(final PageParameters params) {
 		super(params);
 		PortalSession session = (PortalSession) getSession();
-		final UserEntity user = this.userService.findById(session.getUser().getId());
+		final UserEntity user = userService.findById(session.getUser().getId());
 		final String oldEmail = user.getEmail();
 		final Form<UserEntity> form = new Form<UserEntity>("form");
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 		form.setModel(new CompoundPropertyModel<UserEntity>(user));
 		FormComponent<String> fc;
 
@@ -79,18 +79,19 @@ public class SettingsPage extends TemplatePage {
 
 		fc = new TextField<String>("firstname");
 		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
 		form.add(fc);
 
 		fc = new TextField<String>("lastname");
 		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
 		form.add(fc);
 
-		String dateFormat = this.configurationService.findAsString("date_format");
+		String dateFormat = configurationService.findAsString("date_format");
 		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
 		dateTextField.add(new DatePicker());
-		dateTextField.setRequired(this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
+		dateTextField
+				.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
 		form.add(dateTextField);
 
 		fc = new RequiredTextField<String>("email");
@@ -108,7 +109,8 @@ public class SettingsPage extends TemplatePage {
 
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
-				if (StringUtils.isNotEmpty(ivalidatable.getValue()) && !user.getPasswordMD5().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
+				if (StringUtils.isNotEmpty(ivalidatable.getValue())
+						&& !user.getPasswordMD5().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
 					this.error(ivalidatable, "wrong.oldPassword");
 				}
 			}
@@ -131,7 +133,7 @@ public class SettingsPage extends TemplatePage {
 			@Override
 			public void validate(final Form<?> form) {
 				if (StringUtils.isNotEmpty(password1.getValue()) && StringUtils.isEmpty(oldPassword.getValue())) {
-					this.error(oldPassword, "oldPassword.required");
+					error(oldPassword, "oldPassword.required");
 				}
 			}
 
@@ -151,14 +153,15 @@ public class SettingsPage extends TemplatePage {
 
 				user.setChangedAt(PortalUtil.now());
 				info(SettingsPage.this.getString("saved"));
-				if (!oldEmail.equals(user.getEmail()) && SettingsPage.this.configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
+				if (!oldEmail.equals(user.getEmail())
+						&& configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 					user.setConfirmed(false);
 					user.setConfirmationCode(UUID.randomUUID().toString());
 					user.setConfirmationRequestedAt(PortalUtil.now());
 
 					EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
 
-					String requestUrl = SettingsPage.this.getRequestURL();
+					String requestUrl = getRequestURL();
 					// url.append("/").append(PARAM_KEY).append("/").append(user.getConfirmationCode());
 					PageParameters param = new PageParameters();
 					param.add(RegisterPage.PARAM_USER, user.getUsername());
@@ -167,10 +170,11 @@ public class SettingsPage extends TemplatePage {
 					url.append(SettingsPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
 					placeholder.setConfirmationLink(url.toString());
 
-					SettingsPage.this.emailService.sendEmail(SettingsPage.this.configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL), placeholder);
-					this.setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("reconfirm.email")));
+					emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
+							placeholder);
+					setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("reconfirm.email")));
 				}
-				SettingsPage.this.userService.save(user);
+				userService.save(user);
 			}
 		});
 	}

@@ -72,7 +72,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 			defaultTheme.setUrl("http://www.devproof.org");
 			defaultTheme.setUuid(ThemeConstants.CONF_SELECTED_THEME_DEFAULT);
 			themes.add(defaultTheme);
-			File folder = new File(this.servletContext.getRealPath("/WEB-INF/themes/"));
+			File folder = new File(servletContext.getRealPath("/WEB-INF/themes/"));
 			if (!folder.exists()) {
 				FileUtils.forceMkdir(folder);
 			}
@@ -100,7 +100,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 	public void install(final File themeArchive) {
 		String uuid = UUID.randomUUID().toString();
 		try {
-			File folder = new File(this.servletContext.getRealPath("/WEB-INF/themes"));
+			File folder = new File(servletContext.getRealPath("/WEB-INF/themes"));
 			folder = new File(folder.toString() + File.separator + uuid);
 			FileUtils.forceMkdir(folder);
 			ZipFile zipFile = new ZipFile(themeArchive);
@@ -129,24 +129,24 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 
 	@Override
 	public void selectTheme(final ThemeBean theme) {
-		ConfigurationEntity conf = this.configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
+		ConfigurationEntity conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
 		conf.setValue(theme.getUuid());
-		this.configurationService.save(conf);
-		this.configurationService.refreshGlobalConfiguration();
+		configurationService.save(conf);
+		configurationService.refreshGlobalConfiguration();
 		LOG.info("Another theme selected: " + theme.getUuid());
 	}
 
 	@Override
 	public void uninstall(final ThemeBean theme) {
 		try {
-			File folder = new File(this.servletContext.getRealPath("/WEB-INF/themes/" + theme.getUuid()));
+			File folder = new File(servletContext.getRealPath("/WEB-INF/themes/" + theme.getUuid()));
 			FileUtils.deleteDirectory(folder);
-			String uuid = this.configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
+			String uuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
 			if (uuid.equals(theme.getUuid())) {
-				ConfigurationEntity conf = this.configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
+				ConfigurationEntity conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
 				conf.setValue(ThemeConstants.CONF_SELECTED_THEME_DEFAULT);
-				this.configurationService.save(conf);
-				this.configurationService.refreshGlobalConfiguration();
+				configurationService.save(conf);
+				configurationService.refreshGlobalConfiguration();
 			}
 			LOG.info("Theme uninstalled: " + theme.getUuid());
 		} catch (MalformedURLException e) {
@@ -164,8 +164,9 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 			if (entry != null) {
 				InputStream is = zip.getInputStream(entry);
 				ThemeBean bean = getBeanFromInputStream("", is);
-				if (StringUtils.isBlank(bean.getAuthor()) || StringUtils.isBlank(bean.getUrl()) || StringUtils.isBlank(bean.getPortalThemeVersion()) || StringUtils.isBlank(bean.getPortalVersion())
-						|| StringUtils.isBlank(bean.getTheme())) {
+				if (StringUtils.isBlank(bean.getAuthor()) || StringUtils.isBlank(bean.getUrl())
+						|| StringUtils.isBlank(bean.getPortalThemeVersion())
+						|| StringUtils.isBlank(bean.getPortalVersion()) || StringUtils.isBlank(bean.getTheme())) {
 					return ValidationKey.INVALID_DESCRIPTOR_FILE;
 				} else {
 					if (ThemeConstants.PORTAL_THEME_VERSION.equals(bean.getPortalThemeVersion())) {
@@ -198,21 +199,21 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 	private File createDefaultTheme(final String[] themePaths, final String[] filterPaths) {
 		try {
 			@SuppressWarnings("unchecked")
-			Set<String> libs = this.servletContext.getResourcePaths("/WEB-INF/lib");
+			Set<String> libs = servletContext.getResourcePaths("/WEB-INF/lib");
 			Set<String> zipResources = new HashSet<String>();
 			File back = File.createTempFile("devproof-defaulttheme-", ".zip");
 			FileOutputStream fos = new FileOutputStream(back);
 			ZipOutputStream zos = new ZipOutputStream(fos);
 			if (libs.isEmpty()) {
 				// development variant
-				Resource root[] = this.applicationContext.getResources("classpath:/");
+				Resource root[] = applicationContext.getResources("classpath:/");
 				for (String ext : ThemeConstants.ALLOWED_THEME_EXT) {
 					for (String themePath : themePaths) {
 						Resource resources[] = null;
 						if (themePath.endsWith("/")) {
-							resources = this.applicationContext.getResources("classpath*:" + themePath + "**/*" + ext);
+							resources = applicationContext.getResources("classpath*:" + themePath + "**/*" + ext);
 						} else {
-							resources = this.applicationContext.getResources("classpath*:" + themePath + ext);
+							resources = applicationContext.getResources("classpath*:" + themePath + ext);
 						}
 						for (Resource r : resources) {
 							String zipPath = getZipPath(root, r);
@@ -233,12 +234,13 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 			} else {
 				// prod variant
 				for (String lib : libs) {
-					URL url = this.servletContext.getResource(lib);
+					URL url = servletContext.getResource(lib);
 					JarFile file = new JarFile(url.getFile());
 					Enumeration<JarEntry> entries = file.entries();
 					while (entries.hasMoreElements()) {
 						JarEntry jarEntry = entries.nextElement();
-						if (!isFiltered(themePaths, filterPaths, jarEntry.getName()) && !zipResources.contains(jarEntry.getName())) {
+						if (!isFiltered(themePaths, filterPaths, jarEntry.getName())
+								&& !zipResources.contains(jarEntry.getName())) {
 							zipResources.add(jarEntry.getName());
 							ZipEntry ze = new ZipEntry(jarEntry.getName());
 							InputStream is = file.getInputStream(jarEntry);
@@ -302,7 +304,8 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		return null;
 	}
 
-	private ThemeBean getBeanFromInputStream(final String uuid, final InputStream fis) throws FileNotFoundException, IOException {
+	private ThemeBean getBeanFromInputStream(final String uuid, final InputStream fis) throws FileNotFoundException,
+			IOException {
 		Properties prop = new Properties();
 		prop.load(fis);
 		ThemeBean bean = new ThemeBean();

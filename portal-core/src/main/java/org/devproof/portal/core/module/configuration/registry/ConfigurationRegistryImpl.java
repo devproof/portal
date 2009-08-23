@@ -28,17 +28,17 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 
 	@Override
 	public ConfigurationEntity getConfiguration(final String key) {
-		return this.configurations.get(key);
+		return configurations.get(key);
 	}
 
 	@Override
 	public void registerConfiguration(final String key, final ConfigurationEntity configurationEntity) {
-		this.configurations.put(key, configurationEntity);
+		configurations.put(key, configurationEntity);
 	}
 
 	@Override
 	public void removeConfiguration(final String key) {
-		this.configurations.remove(key);
+		configurations.remove(key);
 	}
 
 }

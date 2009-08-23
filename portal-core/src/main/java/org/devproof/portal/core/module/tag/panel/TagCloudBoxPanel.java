@@ -47,22 +47,25 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel {
 	private T selectedTag;
 	private final DataView<T> dataView;
 
-	public TagCloudBoxPanel(final String id, final TagService<T> tagService, final IModel<T> tagTarget, final Class<? extends Page> page, final PageParameters params) {
+	public TagCloudBoxPanel(final String id, final TagService<T> tagService, final IModel<T> tagTarget,
+			final Class<? extends Page> page, final PageParameters params) {
 		super(id);
-		this.add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
+		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
 		final PortalSession session = (PortalSession) getSession();
 		List<T> tags = null;
 		if (session.hasRight(tagService.getRelatedTagRight())) {
-			tags = tagService.findMostPopularTags(0, this.configurationService.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
+			tags = tagService
+					.findMostPopularTags(0, configurationService.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
 		} else {
-			tags = tagService.findMostPopularTags(session.getRole(), 0, this.configurationService.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
+			tags = tagService.findMostPopularTags(session.getRole(), 0, configurationService
+					.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
 		}
 		if (params != null && params.containsKey("tag")) {
-			this.selectedTag = tagService.findById(params.getString("tag"));
+			selectedTag = tagService.findById(params.getString("tag"));
 			tagTarget.setObject(this.selectedTag);
 			// add the tag which is not in the top x
-			if (this.selectedTag != null && !tags.contains(this.selectedTag)) {
-				tags.add(this.selectedTag);
+			if (selectedTag != null && !tags.contains(selectedTag)) {
+				tags.add(selectedTag);
 			}
 		}
 
@@ -85,12 +88,12 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel {
 			}
 
 		};
-		this.add(this.dataView);
+		add(this.dataView);
 		setVisible(tags.size() > 0);
 	}
 
 	public void cleanSelection() {
-		this.selectedTag = null;
-		this.dataView.renderComponent();
+		selectedTag = null;
+		dataView.renderComponent();
 	}
 }

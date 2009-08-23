@@ -54,7 +54,8 @@ public class LoginBoxPanel extends Panel {
 				final PortalSession session = (PortalSession) getSession();
 				try {
 
-					final String message = session.authenticate(LoginBoxPanel.this.properties.getString("username"), LoginBoxPanel.this.properties.getString("password"));
+					final String message = session.authenticate(properties.getString("username"), properties
+							.getString("password"));
 					if (message == null) {
 
 						info(this.getString("logged.in"));
@@ -68,16 +69,16 @@ public class LoginBoxPanel extends Panel {
 							} else {
 								@SuppressWarnings("unchecked")
 								Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-								this.setResponsePage(homePage);
+								setResponsePage(homePage);
 							}
 						} else {
-							this.setResponsePage(getPage().getClass(), new PageParameters("0=" + hiddenParam.getValue()));
+							setResponsePage(getPage().getClass(), new PageParameters("0=" + hiddenParam.getValue()));
 						}
 					} else {
-						this.error(this.getString(message));
+						error(this.getString(message));
 					}
 				} catch (final UserNotConfirmedException e) {
-					this.setResponsePage(new ReenterEmailPage(LoginBoxPanel.this.properties.getString("username")));
+					setResponsePage(new ReenterEmailPage(properties.getString("username")));
 				}
 			}
 
@@ -87,19 +88,19 @@ public class LoginBoxPanel extends Panel {
 					setRedirect(false);
 					@SuppressWarnings("unchecked")
 					Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-					this.setResponsePage(homePage);
+					setResponsePage(homePage);
 				}
 				super.onValidate();
 			}
 
 		};
-		form.setModel(new CompoundPropertyModel<ValueMap>(this.properties));
+		form.setModel(new CompoundPropertyModel<ValueMap>(properties));
 		form.add(new RequiredTextField<String>("username"));
 		form.add(new PasswordTextField("password"));
 		// View for ArticleViewPage and OtherPageViewPage
 		form.add(hiddenParam);
-		this.add(form);
-		this.add(new BookmarkablePageLink<Void>("registerLink", RegisterPage.class));
-		this.add(new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class));
+		add(form);
+		add(new BookmarkablePageLink<Void>("registerLink", RegisterPage.class));
+		add(new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class));
 	}
 }

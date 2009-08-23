@@ -36,7 +36,7 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 
 	@Override
 	public String getNameBySimpleClassName(final String clazz) {
-		final BoxConfiguration box = this.boxes.get(clazz);
+		final BoxConfiguration box = boxes.get(clazz);
 		if (box != null) {
 			return box.getName();
 		}
@@ -45,27 +45,27 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 
 	@Override
 	public List<BoxConfiguration> getRegisteredBoxes() {
-		return new ArrayList<BoxConfiguration>(this.boxes.values());
+		return new ArrayList<BoxConfiguration>(boxes.values());
 	}
 
 	@Override
 	public boolean isBoxClassRegistered(final String clazz) {
-		return this.boxes.containsKey(clazz);
+		return boxes.containsKey(clazz);
 	}
 
 	@Override
 	public void registerBox(final BoxConfiguration box) {
-		this.boxes.put(box.getBoxClass().getSimpleName(), box);
+		boxes.put(box.getBoxClass().getSimpleName(), box);
 	};
 
 	@Override
 	public void removeBox(final BoxConfiguration box) {
-		this.boxes.remove(box.getBoxClass().getSimpleName());
+		boxes.remove(box.getBoxClass().getSimpleName());
 	}
 
 	@Override
 	public BoxConfiguration getBoxConfigurationBySimpleClassName(final String simpleClazz) {
-		final BoxConfiguration box = this.boxes.get(simpleClazz);
+		final BoxConfiguration box = boxes.get(simpleClazz);
 		if (box != null) {
 			final BoxConfiguration back = new BoxConfiguration();
 			back.setBoxClass(box.getBoxClass());
@@ -77,7 +77,7 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 
 	@Override
 	public Class<? extends Component> getClassBySimpleClassName(final String simpleClazz) {
-		final BoxConfiguration box = this.boxes.get(simpleClazz);
+		final BoxConfiguration box = boxes.get(simpleClazz);
 		if (box != null) {
 			return box.getBoxClass();
 		}
@@ -86,7 +86,7 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		final Collection<BoxConfiguration> boxes = this.boxLocator.getBoxes();
+		final Collection<BoxConfiguration> boxes = boxLocator.getBoxes();
 		for (final BoxConfiguration box : boxes) {
 			registerBox(box);
 		}

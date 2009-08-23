@@ -68,7 +68,7 @@ public class ForgotPasswordPage extends TemplatePage {
 		final RequiredTextField<?> emailoruser = new RequiredTextField<String>("emailoruser", Model.of(""));
 		form.add(emailoruser);
 
-		Boolean enableCaptcha = this.configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
+		Boolean enableCaptcha = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
 		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
 		trCaptcha1.setVisible(enableCaptcha);
@@ -92,7 +92,7 @@ public class ForgotPasswordPage extends TemplatePage {
 				protected void onValidate(final IValidatable<String> ivalidatable) {
 					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
 						captchaImageResource.invalidate();
-						this.error(ivalidatable);
+						error(ivalidatable);
 					}
 				}
 
@@ -109,33 +109,34 @@ public class ForgotPasswordPage extends TemplatePage {
 			@Override
 			public void onSubmit() {
 				String value = emailoruser.getValue();
-				UserEntity userByName = ForgotPasswordPage.this.userService.findUserByUsername(value);
+				UserEntity userByName = userService.findUserByUsername(value);
 				List<UserEntity> users = new ArrayList<UserEntity>();
 				if (userByName == null) {
-					users = ForgotPasswordPage.this.userService.findUserByEmail(value);
+					users = userService.findUserByEmail(value);
 				} else {
 					users.add(userByName);
 				}
 
 				if (users.size() == 0) {
-					this.error(this.getString("not.found"));
+					error(this.getString("not.found"));
 				} else {
 					for (UserEntity user : users) {
 						user.setChangedAt(PortalUtil.now());
 						user.setForgotPasswordCode(PortalUtil.generateMd5(getSession().getId() + Math.random()));
-						ForgotPasswordPage.this.userService.save(user);
+						userService.save(user);
 
 						EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
-						StringBuffer url = ForgotPasswordPage.this.getWebRequestCycle().getWebRequest().getHttpServletRequest().getRequestURL();
+						StringBuffer url = getWebRequestCycle().getWebRequest().getHttpServletRequest().getRequestURL();
 						PageParameters param = new PageParameters();
 						param.add(ResetPasswordPage.PARAM_USER, user.getUsername());
 						param.add(ResetPasswordPage.PARAM_KEY, user.getForgotPasswordCode());
 						url = new StringBuffer(StringUtils.substringBeforeLast(url.toString(), "/")).append("/");
 						url.append(ForgotPasswordPage.this.getWebRequestCycle().urlFor(ResetPasswordPage.class, param));
 						placeholder.setResetPasswordLink(url.toString());
-						ForgotPasswordPage.this.emailService.sendEmail(ForgotPasswordPage.this.configurationService.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL), placeholder);
+						emailService.sendEmail(configurationService
+								.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL), placeholder);
 					}
-					this.setResponsePage(MessagePage.getMessagePage(this.getString("email.sent")));
+					setResponsePage(MessagePage.getMessagePage(this.getString("email.sent")));
 				}
 			}
 		});

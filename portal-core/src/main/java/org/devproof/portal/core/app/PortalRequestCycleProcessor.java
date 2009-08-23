@@ -49,17 +49,17 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 	private final EmailService emailService;
 
 	public PortalRequestCycleProcessor(final ApplicationContext context, final boolean production) {
-		this.sessionFactory = (SessionFactory) context.getBean("sessionFactory");
-		this.configurationService = (ConfigurationService) context.getBean("configurationService");
-		this.userService = (UserService) context.getBean("userService");
-		this.emailService = (EmailService) context.getBean("emailService");
+		sessionFactory = (SessionFactory) context.getBean("sessionFactory");
+		configurationService = (ConfigurationService) context.getBean("configurationService");
+		userService = (UserService) context.getBean("userService");
+		emailService = (EmailService) context.getBean("emailService");
 	}
 
 	@Override
 	protected Page onRuntimeException(final Page page, final RuntimeException e) {
 		// send mail to the admin!
 		if (!(e instanceof PageExpiredException) && !(e instanceof UnauthorizedInstantiationException)) {
-			Integer templateId = this.configurationService.findAsInteger(CommonConstants.CONF_UNKNOWN_ERROR_EMAIL);
+			Integer templateId = configurationService.findAsInteger(CommonConstants.CONF_UNKNOWN_ERROR_EMAIL);
 
 			final Writer content = new StringWriter();
 			final PrintWriter printWriter = new PrintWriter(content);
@@ -68,7 +68,7 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 
 		}
 		// does the rollback if there is a runtime exception
-		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(this.sessionFactory);
+		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
 		if (holder.getTransaction() != null) {
 			holder.getTransaction().rollback();
 		}
@@ -78,13 +78,13 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 	private void sendEmailToUsers(final Integer templateId, final String content) {
 		EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
 		placeholder.setContent(content);
-		List<UserEntity> users = this.userService.findUserWithRight("emailnotification.unknown.application.error");
+		List<UserEntity> users = userService.findUserWithRight("emailnotification.unknown.application.error");
 		for (UserEntity user : users) {
 			placeholder.setUsername(user.getUsername());
 			placeholder.setFirstname(user.getFirstname());
 			placeholder.setLastname(user.getLastname());
 			placeholder.setEmail(user.getEmail());
-			this.emailService.sendEmail(templateId, placeholder);
+			emailService.sendEmail(templateId, placeholder);
 		}
 	}
 }

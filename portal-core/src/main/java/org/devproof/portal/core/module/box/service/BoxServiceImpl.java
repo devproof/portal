@@ -29,17 +29,17 @@ public class BoxServiceImpl implements BoxService {
 
 	@Override
 	public List<BoxEntity> findAllOrderedBySort() {
-		return this.boxDao.findAllOrderedBySort();
+		return boxDao.findAllOrderedBySort();
 	}
 
 	@Override
 	public BoxEntity findBoxBySort(final Integer sort) {
-		return this.boxDao.findBoxBySort(sort);
+		return boxDao.findBoxBySort(sort);
 	}
 
 	@Override
 	public Integer getMaxSortNum() {
-		Integer sort = this.boxDao.getMaxSortNum();
+		Integer sort = boxDao.getMaxSortNum();
 		if (sort == null) {
 			return 1;
 		}
@@ -53,14 +53,14 @@ public class BoxServiceImpl implements BoxService {
 
 	@Override
 	public void delete(final BoxEntity entity) {
-		int maxSort = this.boxDao.getMaxSortNum();
+		int maxSort = boxDao.getMaxSortNum();
 		int deleteSort = entity.getSort();
-		this.boxDao.delete(entity);
+		boxDao.delete(entity);
 		if (maxSort > deleteSort) {
 			for (int i = deleteSort + 1; i <= maxSort; i++) {
-				BoxEntity box = this.boxDao.findBoxBySort(i);
+				BoxEntity box = boxDao.findBoxBySort(i);
 				box.setSort(box.getSort() - 1);
-				this.boxDao.save(box);
+				boxDao.save(box);
 			}
 		}
 
@@ -68,29 +68,29 @@ public class BoxServiceImpl implements BoxService {
 
 	@Override
 	public List<BoxEntity> findAll() {
-		return this.boxDao.findAll();
+		return boxDao.findAll();
 	}
 
 	@Override
 	public BoxEntity findById(final Integer id) {
-		return this.boxDao.findById(id);
+		return boxDao.findById(id);
 	}
 
 	@Override
 	public void save(final BoxEntity entity) {
-		this.boxDao.save(entity);
+		boxDao.save(entity);
 	}
 
 	@Override
 	public void moveDown(final BoxEntity box) {
-		int maxSort = this.boxDao.getMaxSortNum();
+		int maxSort = boxDao.getMaxSortNum();
 		if (box.getSort() < maxSort) {
 			BoxEntity moveDown = box;
-			BoxEntity moveUp = this.boxDao.findBoxBySort(box.getSort() + 1);
+			BoxEntity moveUp = boxDao.findBoxBySort(box.getSort() + 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			this.boxDao.save(moveUp);
-			this.boxDao.save(moveDown);
+			boxDao.save(moveUp);
+			boxDao.save(moveDown);
 		}
 	}
 
@@ -98,11 +98,11 @@ public class BoxServiceImpl implements BoxService {
 	public void moveUp(final BoxEntity box) {
 		if (box.getSort() > 1) {
 			BoxEntity moveUp = box;
-			BoxEntity moveDown = this.boxDao.findBoxBySort(box.getSort() - 1);
+			BoxEntity moveDown = boxDao.findBoxBySort(box.getSort() - 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			this.boxDao.save(moveUp);
-			this.boxDao.save(moveDown);
+			boxDao.save(moveUp);
+			boxDao.save(moveDown);
 		}
 	}
 

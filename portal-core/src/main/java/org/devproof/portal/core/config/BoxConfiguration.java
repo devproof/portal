@@ -48,7 +48,7 @@ public class BoxConfiguration implements Serializable {
 	 * @return name of the box
 	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class BoxConfiguration implements Serializable {
 	 * @return box class (must be a wicket component)
 	 */
 	public Class<? extends Component> getBoxClass() {
-		return this.boxClass;
+		return boxClass;
 	}
 
 	/**
@@ -78,6 +78,6 @@ public class BoxConfiguration implements Serializable {
 	 * @return generated key of the box, currently the simple class name
 	 */
 	public String getKey() {
-		return this.boxClass.getSimpleName();
+		return boxClass.getSimpleName();
 	}
 }

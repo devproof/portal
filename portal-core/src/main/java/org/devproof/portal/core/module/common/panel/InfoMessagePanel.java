@@ -38,7 +38,7 @@ public class InfoMessagePanel extends Panel {
 		modalWindow.setInitialWidth(300);
 		Form<?> form = new Form<Object>("form");
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 		form.add(new Label("infoMessage", msg));
 		form.add(new AjaxButton("okButton", form) {
 			private static final long serialVersionUID = 1L;

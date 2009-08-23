@@ -54,13 +54,13 @@ public class LoginPage extends TemplatePage {
 						if (productionMode) {
 							@SuppressWarnings("unchecked")
 							Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-							this.setResponsePage(homePage, new PageParameters("infoMsg=" + this.getString("logged.in")));
+							setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
 						}
 					} else {
-						this.error(this.getString(message));
+						error(this.getString(message));
 					}
 				} catch (final UserNotConfirmedException e) {
-					this.setResponsePage(new ReenterEmailPage(username.getValue()));
+					setResponsePage(new ReenterEmailPage(username.getValue()));
 				}
 			}
 
@@ -69,8 +69,8 @@ public class LoginPage extends TemplatePage {
 		form.setOutputMarkupId(true);
 		form.add(username);
 		form.add(password);
-		this.add(form);
-		this.add(new BookmarkablePageLink<Void>("registerLink", RegisterPage.class));
-		this.add(new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class));
+		add(form);
+		add(new BookmarkablePageLink<Void>("registerLink", RegisterPage.class));
+		add(new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class));
 	}
 }

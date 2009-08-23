@@ -40,12 +40,12 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry, Initi
 	@Override
 	public List<Class<? extends Page>> getRegisteredPages() {
 		// immutable
-		return Collections.unmodifiableList(this.pages);
+		return Collections.unmodifiableList(pages);
 	}
 
 	@Override
 	public void registerPage(final Class<? extends Page> page) {
-		this.pages.add(page);
+		pages.add(page);
 	}
 
 	@Override
@@ -57,19 +57,19 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry, Initi
 
 	@Override
 	public void clearRegistry() {
-		this.pages.clear();
+		pages.clear();
 	}
 
 	@Override
 	public void removePage(final Class<? extends Page> page) {
-		this.pages.remove(page);
+		pages.remove(page);
 	}
 
 	@Override
 	public void buildNavigation() {
 		clearRegistry();
-		Collection<PageConfiguration> confs = this.pageLocator.getPageConfigurations();
-		List<ModuleLinkEntity> links = this.moduleService.findAllVisibleMainNavigationLinks();
+		Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
+		List<ModuleLinkEntity> links = moduleService.findAllVisibleMainNavigationLinks();
 		for (ModuleLinkEntity link : links) {
 			PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
 			if (conf != null) {

@@ -89,8 +89,8 @@ public abstract class TemplatePage extends WebPage {
 	private SharedRegistry sharedRegistry;
 
 	public TemplatePage(final PageParameters params) {
-		this.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
-		this.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css"));
+		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
+		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css"));
 		if (params != null) {
 			if (params.containsKey("infoMsg")) {
 				info(params.getString("infoMsg"));
@@ -102,8 +102,8 @@ public abstract class TemplatePage extends WebPage {
 
 		setOutputMarkupId(true);
 		addMainNavigation();
-		final String footerContent = this.configurationService.findAsString("footer_content");
-		CommonMarkupContainerFactory factory = this.sharedRegistry.getResource("footerLink");
+		final String footerContent = configurationService.findAsString("footer_content");
+		CommonMarkupContainerFactory factory = sharedRegistry.getResource("footerLink");
 		MarkupContainer footerLink;
 		if (factory != null) {
 			footerLink = factory.newInstance("footerLink");
@@ -111,13 +111,13 @@ public abstract class TemplatePage extends WebPage {
 			footerLink = new WebMarkupContainer("footerLink");
 		}
 		footerLink.add(new Label("footerLabel", footerContent).setEscapeModelStrings(false));
-		this.add(footerLink);
-		this.add(this.feedback = new FeedbackPanel("feedbackPanel"));
+		add(footerLink);
+		add(feedback = new FeedbackPanel("feedbackPanel"));
 
-		this.feedback.setOutputMarkupId(true);
+		feedback.setOutputMarkupId(true);
 		addBoxes(params);
 
-		final boolean googleEnabled = this.configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
+		final boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
 		final WebMarkupContainer googleAnalytics1 = new WebMarkupContainer("googleAnalytics1");
 		googleAnalytics1.setVisible(googleEnabled);
 		this.add(googleAnalytics1);
@@ -129,7 +129,7 @@ public abstract class TemplatePage extends WebPage {
 				final StringBuilder buf = new StringBuilder();
 				buf.append("try {\n");
 				buf.append("var pageTracker = _gat._getTracker(\"");
-				buf.append(TemplatePage.this.configurationService.findAsString(CommonConstants.CONF_GOOGLE_WEBPROPERTY_ID));
+				buf.append(configurationService.findAsString(CommonConstants.CONF_GOOGLE_WEBPROPERTY_ID));
 				buf.append("\");\n");
 				buf.append("pageTracker._trackPageview();");
 				buf.append("} catch(err) {}");
@@ -137,39 +137,54 @@ public abstract class TemplatePage extends WebPage {
 			}
 		};
 		googleAnalytics2.setVisible(googleEnabled);
-		this.add(googleAnalytics2);
+		add(googleAnalytics2);
 		String localPageTitle = this.getString("contentTitle", null, "");
 		if (StringUtils.isNotEmpty(localPageTitle)) {
 			localPageTitle += " - ";
 		}
-		this.pageTitle = Model.of(localPageTitle + this.configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
-		this.add(new Label("pageTitle", this.pageTitle));
+		pageTitle = Model.of(localPageTitle + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
+		add(new Label("pageTitle", pageTitle));
 		final WebMarkupContainer copyright = new WebMarkupContainer("copyright");
-		copyright.add(new SimpleAttributeModifier("content", this.configurationService.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
-		this.add(copyright);
+		copyright.add(new SimpleAttributeModifier("content", configurationService
+				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
+		add(copyright);
 	}
 
 	/**
 	 * Adds the Css and JavaScript of the SyntaxHighligher to the page
 	 */
 	protected void addSyntaxHighlighter() {
-		this.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/SyntaxHighlighter.css"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shCore.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushJava.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushSql.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushXml.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushJScript.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCpp.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCSharp.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCss.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushDelphi.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushPhp.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushPython.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushRuby.js"));
-		this.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushVb.js"));
+		add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/SyntaxHighlighter.css"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shCore.js"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushJava.js"));
+		add(JavascriptPackageResource
+				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushSql.js"));
+		add(JavascriptPackageResource
+				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushXml.js"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushJScript.js"));
+		add(JavascriptPackageResource
+				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCpp.js"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushCSharp.js"));
+		add(JavascriptPackageResource
+				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCss.js"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushDelphi.js"));
+		add(JavascriptPackageResource
+				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushPhp.js"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushPython.js"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushRuby.js"));
+		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushVb.js"));
 		final Map<String, Object> values = new MiniMap<String, Object>(1);
-		values.put("swfPath", UrlUtils.rewriteToContextRelative("resources/" + CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF, getRequest()));
-		this.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class, "js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
+		values.put("swfPath", UrlUtils.rewriteToContextRelative("resources/"
+				+ CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF, getRequest()));
+		add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class,
+				"js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
 	}
 
 	/**
@@ -177,15 +192,17 @@ public abstract class TemplatePage extends WebPage {
 	 */
 	private void addMainNavigation() {
 		final RepeatingView repeating = new RepeatingView("repeatingMainNav");
-		this.add(repeating);
-		final List<Class<? extends Page>> registeredPages = this.mainNavigationRegistry.getRegisteredPages();
+		add(repeating);
+		final List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
 		for (final Class<? extends Page> pageClass : registeredPages) {
 			final WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
 			final BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("mainNavigationLink", pageClass);
-			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.MAIN_NAVIGATION_LINK_LABEL);
+			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+					CommonConstants.MAIN_NAVIGATION_LINK_LABEL);
 			if (StringUtils.isEmpty(label)) {
-				label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
+				label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+						CommonConstants.CONTENT_TITLE_LABEL);
 			}
 			link.add(new Label("mainNavigationLinkLabel", label));
 			item.add(link);
@@ -196,26 +213,26 @@ public abstract class TemplatePage extends WebPage {
 	 * Add the boxes on the right hand side
 	 */
 	private void addBoxes(final PageParameters params) {
-		final List<BoxEntity> boxes = this.boxService.findAllOrderedBySort();
+		final List<BoxEntity> boxes = boxService.findAllOrderedBySort();
 		final RepeatingView repeating = new RepeatingView("repeatingSideNav");
-		this.add(repeating);
+		add(repeating);
 		for (final BoxEntity box : boxes) {
 			final WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
-			final Class<? extends Component> boxClazz = this.boxRegistry.getClassBySimpleClassName(box.getBoxType());
+			final Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
 			if (boxClazz == null) {
 				final BoxEntity error = new BoxEntity();
 				error.setTitle("!Error!");
 				error.setContent("Box type is not available!");
 				item.add(new OtherBoxPanel("box", Model.of(error)));
 			} else if (boxClazz.isAssignableFrom(SearchBoxPanel.class)) {
-				if (this.filterBox == null) {
-					item.add(this.filterBox = new WebMarkupContainer("box").setVisible(false));
+				if (filterBox == null) {
+					item.add(filterBox = new WebMarkupContainer("box").setVisible(false));
 				}
 			} else if (boxClazz.isAssignableFrom(OtherBoxPanel.class)) {
 				item.add(new OtherBoxPanel("box", Model.of(box)));
 			} else if (boxClazz.isAssignableFrom(PageAdminBoxPanel.class)) {
-				item.add(this.pageAdminBoxPanel = new PageAdminBoxPanel("box"));
+				item.add(pageAdminBoxPanel = new PageAdminBoxPanel("box"));
 			} else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
 				if (!(this instanceof LoginPage)) {
 					item.add(new LoginBoxPanel("box", params));
@@ -223,8 +240,8 @@ public abstract class TemplatePage extends WebPage {
 					item.remove();
 				}
 			} else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
-				if (this.tagCloudBox == null) {
-					item.add(this.tagCloudBox = new WebMarkupContainer("box").setVisible(false));
+				if (tagCloudBox == null) {
+					item.add(tagCloudBox = new WebMarkupContainer("box").setVisible(false));
 				}
 			} else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
 				item.add(new GlobalAdminBoxPanel("box"));
@@ -252,7 +269,10 @@ public abstract class TemplatePage extends WebPage {
 					}
 				}
 				if (!found) {
-					throw new IllegalArgumentException("The box class " + boxClazz + " does not have a default constructor with a String id parameter or String and PageParameters");
+					throw new IllegalArgumentException(
+							"The box class "
+									+ boxClazz
+									+ " does not have a default constructor with a String id parameter or String and PageParameters");
 				} else {
 					item.add(instance);
 				}
@@ -273,10 +293,11 @@ public abstract class TemplatePage extends WebPage {
 	/**
 	 * Set the TagCloud Box e.g. search or tags
 	 */
-	public <T extends BaseTagEntity<?>> void addTagCloudBox(final TagService<T> tagService, final IModel<T> model, final Class<? extends Page> page, final PageParameters params) {
+	public <T extends BaseTagEntity<?>> void addTagCloudBox(final TagService<T> tagService, final IModel<T> model,
+			final Class<? extends Page> page, final PageParameters params) {
 		final TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, model, page, params);
-		this.tagCloudBox.replaceWith(newTagCloudBox);
-		this.tagCloudBox = newTagCloudBox;
+		tagCloudBox.replaceWith(newTagCloudBox);
+		tagCloudBox = newTagCloudBox;
 
 	}
 
@@ -284,8 +305,8 @@ public abstract class TemplatePage extends WebPage {
 	 * Clean the tag selection
 	 */
 	public void cleanTagSelection() {
-		if (this.tagCloudBox instanceof TagCloudBoxPanel<?>) {
-			final TagCloudBoxPanel<?> box = (TagCloudBoxPanel<?>) this.tagCloudBox;
+		if (tagCloudBox instanceof TagCloudBoxPanel<?>) {
+			final TagCloudBoxPanel<?> box = (TagCloudBoxPanel<?>) tagCloudBox;
 			box.cleanSelection();
 		}
 	}
@@ -294,8 +315,8 @@ public abstract class TemplatePage extends WebPage {
 	 * Add a link to the page admin panel
 	 */
 	public void addPageAdminBoxLink(final Component link) {
-		if (this.pageAdminBoxPanel != null) {
-			this.pageAdminBoxPanel.addLink(link);
+		if (pageAdminBoxPanel != null) {
+			pageAdminBoxPanel.addLink(link);
 		}
 	}
 
@@ -303,11 +324,11 @@ public abstract class TemplatePage extends WebPage {
 	 * Change the page title
 	 */
 	public void setPageTitle(final String title) {
-		this.pageTitle.setObject(title + " - " + this.configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
+		pageTitle.setObject(title + " - " + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
 	}
 
 	public FeedbackPanel getFeedback() {
-		return this.feedback;
+		return feedback;
 	}
 
 	public String getRequestURL() {

@@ -39,7 +39,7 @@ public abstract class UserSearchBoxPanel extends Panel {
 		super(id);
 		Form<UserQuery> form = new Form<UserQuery>("searchForm", new CompoundPropertyModel<UserQuery>(query));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<?> fc = null;
 		fc = new TextField<String>("allnames");

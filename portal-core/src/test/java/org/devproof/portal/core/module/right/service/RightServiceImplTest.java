@@ -33,91 +33,91 @@ public class RightServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.mock = EasyMock.createStrictMock(RightDao.class);
-		this.impl = new RightServiceImpl();
-		this.impl.setRightDao(this.mock);
+		mock = EasyMock.createStrictMock(RightDao.class);
+		impl = new RightServiceImpl();
+		impl.setRightDao(mock);
 	}
 
 	public void testSave() {
-		RightEntity e = this.impl.newRightEntity();
+		RightEntity e = impl.newRightEntity();
 		e.setRight("right");
-		this.mock.save(e);
-		EasyMock.replay(this.mock);
-		this.impl.save(e);
-		EasyMock.verify(this.mock);
+		mock.save(e);
+		EasyMock.replay(mock);
+		impl.save(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testDelete() {
-		RightEntity e = this.impl.newRightEntity();
+		RightEntity e = impl.newRightEntity();
 		e.setRight("right");
-		this.mock.delete(e);
-		EasyMock.replay(this.mock);
-		this.impl.delete(e);
-		EasyMock.verify(this.mock);
+		mock.delete(e);
+		EasyMock.replay(mock);
+		impl.delete(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testFindAll() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(this.impl.newRightEntity());
-		list.add(this.impl.newRightEntity());
-		EasyMock.expect(this.mock.findAll()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAll());
-		EasyMock.verify(this.mock);
+		list.add(impl.newRightEntity());
+		list.add(impl.newRightEntity());
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAll());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindById() {
-		RightEntity e = this.impl.newRightEntity();
+		RightEntity e = impl.newRightEntity();
 		e.setRight("right");
-		EasyMock.expect(this.mock.findById("right")).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findById("right"), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findById("right")).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findById("right"), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testNewRightEntity() {
-		assertNotNull(this.impl.newRightEntity());
+		assertNotNull(impl.newRightEntity());
 	}
 
 	public void testNewRightEntityParam() {
-		RightEntity r = this.impl.newRightEntity("hello");
+		RightEntity r = impl.newRightEntity("hello");
 		assertNotNull(r);
 		assertNotNull(r.getRight());
 	}
 
 	public void testGetDirtyTime() {
-		this.impl.refreshGlobalApplicationRights();
-		assertTrue(this.impl.getDirtyTime() > 0);
+		impl.refreshGlobalApplicationRights();
+		assertTrue(impl.getDirtyTime() > 0);
 	}
 
 	public void testFindAllOrderByDescription() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(this.impl.newRightEntity());
-		list.add(this.impl.newRightEntity());
-		EasyMock.expect(this.mock.findAllOrderByDescription()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAllOrderByDescription());
-		EasyMock.verify(this.mock);
+		list.add(impl.newRightEntity());
+		list.add(impl.newRightEntity());
+		EasyMock.expect(mock.findAllOrderByDescription()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAllOrderByDescription());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindRightsStartingWith() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(this.impl.newRightEntity());
-		list.add(this.impl.newRightEntity());
-		EasyMock.expect(this.mock.findRightsStartingWith("prefix")).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findRightsStartingWith("prefix"));
-		EasyMock.verify(this.mock);
+		list.add(impl.newRightEntity());
+		list.add(impl.newRightEntity());
+		EasyMock.expect(mock.findRightsStartingWith("prefix")).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findRightsStartingWith("prefix"));
+		EasyMock.verify(mock);
 	}
 
 	public void testGetAllRights() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(this.impl.newRightEntity());
-		list.add(this.impl.newRightEntity());
-		EasyMock.expect(this.mock.findAll()).andReturn(list);
-		EasyMock.replay(this.mock);
-		this.impl.init();
-		assertEquals(this.impl.getAllRights(), list);
-		EasyMock.verify(this.mock);
+		list.add(impl.newRightEntity());
+		list.add(impl.newRightEntity());
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		impl.init();
+		assertEquals(impl.getAllRights(), list);
+		EasyMock.verify(mock);
 	}
 }

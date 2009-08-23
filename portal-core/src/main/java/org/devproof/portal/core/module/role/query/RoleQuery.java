@@ -30,7 +30,7 @@ public class RoleQuery implements Serializable {
 
 	@BeanQuery("e.description like '%'||?||'%'")
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 
 	public void setDescription(final String description) {
@@ -39,7 +39,7 @@ public class RoleQuery implements Serializable {
 
 	@BeanQuery("e.active = ?")
 	public Boolean getActive() {
-		return this.active;
+		return active;
 	}
 
 	public void setActive(final Boolean active) {

@@ -126,16 +126,17 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
 	}
 
 	private SSLContext getSSLContext() {
-		if (this.sslcontext == null) {
-			this.sslcontext = createEasySSLContext();
+		if (sslcontext == null) {
+			sslcontext = createEasySSLContext();
 		}
-		return this.sslcontext;
+		return sslcontext;
 	}
 
 	/**
 	 * @see SecureProtocolSocketFactory#createSocket(java.lang.String,int,java.net.InetAddress,int)
 	 */
-	public Socket createSocket(final String host, final int port, final InetAddress clientHost, final int clientPort) throws IOException, UnknownHostException {
+	public Socket createSocket(final String host, final int port, final InetAddress clientHost, final int clientPort)
+			throws IOException, UnknownHostException {
 
 		return getSSLContext().getSocketFactory().createSocket(host, port, clientHost, clientPort);
 	}
@@ -169,8 +170,8 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
 	 * @throws UnknownHostException
 	 *             if the IP address of the host cannot be determined
 	 */
-	public Socket createSocket(final String host, final int port, final InetAddress localAddress, final int localPort, final HttpConnectionParams params) throws IOException, UnknownHostException,
-			ConnectTimeoutException {
+	public Socket createSocket(final String host, final int port, final InetAddress localAddress, final int localPort,
+			final HttpConnectionParams params) throws IOException, UnknownHostException, ConnectTimeoutException {
 		if (params == null) {
 			throw new IllegalArgumentException("Parameters may not be null");
 		}
@@ -198,7 +199,8 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
 	/**
 	 * @see SecureProtocolSocketFactory#createSocket(java.net.Socket,java.lang.String,int,boolean)
 	 */
-	public Socket createSocket(final Socket socket, final String host, final int port, final boolean autoClose) throws IOException, UnknownHostException {
+	public Socket createSocket(final Socket socket, final String host, final int port, final boolean autoClose)
+			throws IOException, UnknownHostException {
 		return getSSLContext().getSocketFactory().createSocket(socket, host, port, autoClose);
 	}
 	//

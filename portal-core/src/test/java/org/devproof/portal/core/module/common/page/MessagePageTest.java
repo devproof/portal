@@ -28,16 +28,16 @@ public class MessagePageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(MessagePage.class);
-		this.tester.assertRenderedPage(MessagePage.class);
+		tester.startPage(MessagePage.class);
+		tester.assertRenderedPage(MessagePage.class);
 	}
 }

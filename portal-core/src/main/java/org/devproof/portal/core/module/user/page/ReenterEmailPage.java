@@ -50,10 +50,10 @@ public class ReenterEmailPage extends TemplatePage {
 
 	public ReenterEmailPage(final String username) {
 		super(new PageParameters("username=" + username));
-		UserEntity user = this.userService.findUserByUsername(username);
+		UserEntity user = userService.findUserByUsername(username);
 		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		final RequiredTextField<?> email = new RequiredTextField<String>("email");
 		form.add(email);
@@ -71,7 +71,7 @@ public class ReenterEmailPage extends TemplatePage {
 
 				EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
 
-				String requestUrl = ReenterEmailPage.this.getRequestURL();
+				String requestUrl = getRequestURL();
 				PageParameters param = new PageParameters();
 				param.add(RegisterPage.PARAM_USER, user.getUsername());
 				param.add(RegisterPage.PARAM_KEY, user.getConfirmationCode());
@@ -79,9 +79,10 @@ public class ReenterEmailPage extends TemplatePage {
 				url.append(ReenterEmailPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
 				placeholder.setConfirmationLink(url.toString());
 
-				ReenterEmailPage.this.emailService.sendEmail(ReenterEmailPage.this.configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL), placeholder);
-				this.setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("rerequest.email")));
-				ReenterEmailPage.this.userService.save(user);
+				emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
+						placeholder);
+				setResponsePage(MessagePage.getMessagePageWithLogout(this.getString("rerequest.email")));
+				userService.save(user);
 			}
 		});
 	}

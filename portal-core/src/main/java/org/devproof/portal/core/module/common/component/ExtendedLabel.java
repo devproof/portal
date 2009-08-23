@@ -59,7 +59,7 @@ public class ExtendedLabel extends Panel {
 		super(id);
 
 		RepeatingView repeating = new RepeatingView("repeating");
-		this.add(repeating);
+		add(repeating);
 
 		String s = content;
 		String tags[] = StringUtils.substringsBetween(s, PRETAG, POSTTAG);
@@ -105,7 +105,7 @@ public class ExtendedLabel extends Panel {
 					hash.append(t.hashCode());
 				}
 				String uuid = String.valueOf(hash.toString());
-				String fontName = this.configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
+				String fontName = configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
 				Font font = new Font(fontName, Font.PLAIN, size);
 				String2ImageResource resource = new String2ImageResource(lines, font);
 				ImgResourceReference imgResource = images.get(uuid);
@@ -155,11 +155,11 @@ public class ExtendedLabel extends Panel {
 
 		@Override
 		public Resource newResource() {
-			return this.resource;
+			return resource;
 		}
 
 		public boolean isExpired() {
-			return (this.time.getTime() + MAX_AGE) < PortalUtil.now().getTime();
+			return (time.getTime() + MAX_AGE) < PortalUtil.now().getTime();
 		}
 	};
 }

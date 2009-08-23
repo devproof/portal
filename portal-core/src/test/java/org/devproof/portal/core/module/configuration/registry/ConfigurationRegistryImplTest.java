@@ -27,7 +27,7 @@ public class ConfigurationRegistryImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.impl = new ConfigurationRegistryImpl();
+		impl = new ConfigurationRegistryImpl();
 	}
 
 	public void testGetConfiguration() {
@@ -35,8 +35,8 @@ public class ConfigurationRegistryImplTest extends TestCase {
 		conf.setKey("foo");
 		conf.setValue("bar");
 		conf.setType(String.class.getName());
-		this.impl.registerConfiguration("foo", conf);
-		assertEquals(conf, this.impl.getConfiguration("foo"));
+		impl.registerConfiguration("foo", conf);
+		assertEquals(conf, impl.getConfiguration("foo"));
 	}
 
 	public void testRegisterConfiguration() {
@@ -44,8 +44,8 @@ public class ConfigurationRegistryImplTest extends TestCase {
 		conf.setKey("foo");
 		conf.setValue("bar");
 		conf.setType(String.class.getName());
-		this.impl.registerConfiguration("foo", conf);
-		assertEquals(conf, this.impl.getConfiguration("foo"));
+		impl.registerConfiguration("foo", conf);
+		assertEquals(conf, impl.getConfiguration("foo"));
 	}
 
 	public void testRemoveConfiguration() {
@@ -53,9 +53,9 @@ public class ConfigurationRegistryImplTest extends TestCase {
 		conf.setKey("foo");
 		conf.setValue("bar");
 		conf.setType(String.class.getName());
-		this.impl.registerConfiguration("foo", conf);
-		assertEquals(conf, this.impl.getConfiguration("foo"));
-		this.impl.removeConfiguration("foo");
-		assertNull(this.impl.getConfiguration("foo"));
+		impl.registerConfiguration("foo", conf);
+		assertEquals(conf, impl.getConfiguration("foo"));
+		impl.removeConfiguration("foo");
+		assertNull(impl.getConfiguration("foo"));
 	}
 }

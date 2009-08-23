@@ -59,11 +59,11 @@ public abstract class RoleEditPanel extends Panel {
 		super(id, Model.of(role));
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
-		this.add(feedback);
+		add(feedback);
 
 		Form<RoleEntity> form = new Form<RoleEntity>("form", new CompoundPropertyModel<RoleEntity>(role));
 		form.setOutputMarkupId(true);
-		this.add(form);
+		add(form);
 
 		FormComponent<String> fc;
 
@@ -75,10 +75,12 @@ public abstract class RoleEditPanel extends Panel {
 		form.add(new CheckBox("active"));
 
 		IChoiceRenderer<RightEntity> renderer = new ChoiceRenderer<RightEntity>("description", "right");
-		IModel<Collection<RightEntity>> allRights = new CollectionModel<RightEntity>(this.rightService.findAllOrderByDescription());
+		IModel<Collection<RightEntity>> allRights = new CollectionModel<RightEntity>(rightService
+				.findAllOrderByDescription());
 		IModel<List<RightEntity>> roleRights = new ListModel<RightEntity>(role.getRights());
 
-		final Palette<RightEntity> palette = new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10, false) {
+		final Palette<RightEntity> palette = new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10,
+				false) {
 			// final Palette palette = new Palette("rights", new
 			// Model<Serializable>((Serializable)role.getRights()), new
 			// Model<Serializable>((Serializable)rights), renderer, 10, false) {
@@ -107,7 +109,7 @@ public abstract class RoleEditPanel extends Panel {
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-				RoleEditPanel.this.roleService.save((RoleEntity) form.getModelObject());
+				roleService.save((RoleEntity) form.getModelObject());
 				RoleEditPanel.this.onSave(target);
 			}
 

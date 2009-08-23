@@ -28,16 +28,16 @@ public class ForgotPasswordPageTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(this.tester);
+		PortalTestUtil.destroy(tester);
 	}
 
 	public void testRenderDefaultPage() {
-		this.tester.startPage(ForgotPasswordPage.class);
-		this.tester.assertRenderedPage(ForgotPasswordPage.class);
+		tester.startPage(ForgotPasswordPage.class);
+		tester.assertRenderedPage(ForgotPasswordPage.class);
 	}
 }

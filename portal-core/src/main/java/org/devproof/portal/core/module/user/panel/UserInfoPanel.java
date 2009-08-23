@@ -37,15 +37,17 @@ public class UserInfoPanel extends Panel {
 	public UserInfoPanel(final String id, final UserEntity user) {
 		super(id);
 
-		this.add(new Label("username", user.getUsername()));
-		this.add(new Label("firstname", user.getFirstname()));
-		this.add(new Label("lastname", user.getLastname()));
-		this.add(new Label("birthday", user.getBirthday() != null ? this.dateFormat.format(user.getBirthday()) : ""));
-		this.add(new Label("email", user.getEmail()));
-		this.add(new Label("active", user.getActive() != null ? this.getString("active." + user.getActive().toString()) : ""));
-		this.add(new Label("confirmed", user.getConfirmed() != null ? this.getString("confirmed." + user.getConfirmed().toString()) : ""));
-		this.add(new Label("registeredAt", user.getRegistrationDate() != null ? this.dateTimeFormat.format(user.getRegistrationDate()) : ""));
-		this.add(new Label("lastLoginAt", user.getLastLoginAt() != null ? this.dateTimeFormat.format(user.getLastLoginAt()) : ""));
-		this.add(new Label("lastIp", user.getLastIp()));
+		add(new Label("username", user.getUsername()));
+		add(new Label("firstname", user.getFirstname()));
+		add(new Label("lastname", user.getLastname()));
+		add(new Label("birthday", user.getBirthday() != null ? dateFormat.format(user.getBirthday()) : ""));
+		add(new Label("email", user.getEmail()));
+		add(new Label("active", user.getActive() != null ? getString("active." + user.getActive().toString()) : ""));
+		add(new Label("confirmed", user.getConfirmed() != null ? getString("confirmed."
+				+ user.getConfirmed().toString()) : ""));
+		add(new Label("registeredAt", user.getRegistrationDate() != null ? dateTimeFormat.format(user
+				.getRegistrationDate()) : ""));
+		add(new Label("lastLoginAt", user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt()) : ""));
+		add(new Label("lastIp", user.getLastIp()));
 	}
 }

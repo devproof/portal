@@ -38,7 +38,7 @@ public class PageLocatorImpl implements ApplicationContextAware, PageLocator {
 	@Override
 	public Collection<PageConfiguration> getPageConfigurations() {
 		@SuppressWarnings("unchecked")
-		Map<String, ModuleConfiguration> beans = this.context.getBeansOfType(ModuleConfiguration.class);
+		Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
 		List<PageConfiguration> back = new ArrayList<PageConfiguration>();
 		for (ModuleConfiguration module : beans.values()) {
 			back.addAll(module.getPages());
@@ -51,6 +51,6 @@ public class PageLocatorImpl implements ApplicationContextAware, PageLocator {
 
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
-		this.context = applicationContext;
+		context = applicationContext;
 	}
 }

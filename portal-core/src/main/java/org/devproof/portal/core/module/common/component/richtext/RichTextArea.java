@@ -49,7 +49,8 @@ public class RichTextArea extends TextArea<String> {
 		variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
 		variables.put("iconcodeImg", PortalUtil.toUrl(CommonConstants.REF_ICONCODE_IMG, getRequest()));
 		variables.put("string2imgImg", PortalUtil.toUrl(CommonConstants.REF_STRING2IMG_IMG, getRequest()));
-		this.add(TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "RichTextArea.js", new MapModel<String, Object>(variables)));
-		this.add(new SimpleAttributeModifier("class", "mceRichTextArea"));
+		add(TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "RichTextArea.js",
+				new MapModel<String, Object>(variables)));
+		add(new SimpleAttributeModifier("class", "mceRichTextArea"));
 	}
 }

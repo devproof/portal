@@ -66,16 +66,16 @@ public class PortalApplication extends WebApplication {
 	}
 
 	private void mountPagesAndSetStartPage() {
-		this.startPage = NoStartPage.class;
+		startPage = NoStartPage.class;
 		final PageLocator pageLocator = this.getSpringBean("pageLocator");
 		final MainNavigationRegistry mainNavigationRegistry = this.getSpringBean("mainNavigationRegistry");
 		final Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
 		for (final PageConfiguration page : pages) {
 			if (page.getMountPath() != null) {
 				if (page.isIndexMountedPath()) {
-					this.mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
+					mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
 				} else {
-					this.mountBookmarkablePage(page.getMountPath(), page.getPageClass());
+					mountBookmarkablePage(page.getMountPath(), page.getPageClass());
 				}
 			}
 		}
@@ -83,12 +83,12 @@ public class PortalApplication extends WebApplication {
 		List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
 		if (!registeredPages.isEmpty()) {
 			// First visible page in the main navigation is the startpage!
-			this.startPage = registeredPages.get(0);
+			startPage = registeredPages.get(0);
 		}
 	}
 
 	private void configureWicket() {
-		this.productionMode = !"WicketMockServlet".equals(getApplicationKey());
+		productionMode = !"WicketMockServlet".equals(getApplicationKey());
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
 		addComponentInstantiationListener(new SpringComponentInjector(this, getSpringContext()));
 		getMarkupSettings().setStripWicketTags(true);
@@ -101,11 +101,12 @@ public class PortalApplication extends WebApplication {
 	}
 
 	public boolean isProductionMode() {
-		return this.productionMode;
+		return productionMode;
 	}
 
 	public void setThemeUuid(final String themeUuid) {
-		final PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings().getResourceStreamLocator();
+		final PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings()
+				.getResourceStreamLocator();
 		locator.setThemeUuid(themeUuid);
 		getMarkupSettings().getMarkupCache().clear();
 		LOG.debug("Theme " + themeUuid + " selected.");
@@ -123,7 +124,7 @@ public class PortalApplication extends WebApplication {
 	@Override
 	@SuppressWarnings(value = "unchecked")
 	public Class getHomePage() {
-		return this.startPage;
+		return startPage;
 	}
 
 	public ApplicationContext getSpringContext() {
