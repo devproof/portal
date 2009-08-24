@@ -55,7 +55,7 @@ public class FeedOverviewPage extends TemplatePage {
 	private String getSupportedPagesString(final FeedProvider provider) {
 		StringBuilder buf = new StringBuilder();
 		for (Class<? extends TemplatePage> page : provider.getSupportedFeedPages()) {
-			buf.append(page.getName()).append("<br/>");
+			buf.append(page.getSimpleName()).append("<br/>");
 		}
 		return buf.toString();
 	}

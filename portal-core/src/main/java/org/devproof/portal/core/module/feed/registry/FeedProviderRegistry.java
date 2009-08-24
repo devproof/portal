@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.feed.registry;
 
 import java.util.Map;
 
+import org.apache.wicket.Page;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 
 /**
@@ -45,6 +46,16 @@ public interface FeedProviderRegistry {
 	 * Returns the {@link FeedProvider} by the path
 	 */
 	public FeedProvider getFeedProviderByPath(String path);
+
+	/**
+	 * Returns the path by page class
+	 */
+	public String getPathByPageClass(Class<? extends Page> pageClazz);
+
+	/**
+	 * Returns true if a class has a feed provider
+	 */
+	public boolean hasFeedSupport(Class<? extends Page> pageClazz);
 
 	/**
 	 * Returns all {@link FeedProvider} in a {@link Map}
