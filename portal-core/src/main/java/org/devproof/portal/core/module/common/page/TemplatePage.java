@@ -58,6 +58,8 @@ import org.devproof.portal.core.module.common.panel.SearchBoxPanel;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.feed.component.Atom1Link;
+import org.devproof.portal.core.module.feed.component.Rss2Link;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -102,6 +104,9 @@ public abstract class TemplatePage extends WebPage {
 
 		setOutputMarkupId(true);
 		addMainNavigation();
+
+		addFeedReferences();
+
 		final String footerContent = configurationService.findAsString("footer_content");
 		CommonMarkupContainerFactory factory = sharedRegistry.getResource("footerLink");
 		MarkupContainer footerLink;
@@ -148,6 +153,11 @@ public abstract class TemplatePage extends WebPage {
 		copyright.add(new SimpleAttributeModifier("content", configurationService
 				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
 		add(copyright);
+	}
+
+	private void addFeedReferences() {
+		add(new Rss2Link("rss2reference", getClass()));
+		add(new Atom1Link("atom1reference", getClass()));
 	}
 
 	/**
