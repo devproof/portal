@@ -31,7 +31,14 @@ public interface FeedProvider {
 	public SyndFeed getFeed();
 
 	/**
-	 * Returns the supported feed pages where the feed reference is embedded
+	 * Returns the supported feed pages where the feed reference will be
+	 * embedded
 	 */
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages();
+
+	/**
+	 * Returns the feed name which is shown in the overview and in the page
+	 * reference
+	 */
+	public String getFeedName();
 }

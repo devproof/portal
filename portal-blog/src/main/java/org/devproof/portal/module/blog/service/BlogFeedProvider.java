@@ -40,9 +40,9 @@ public class BlogFeedProvider implements FeedProvider {
 	@Override
 	public SyndFeed getFeed() {
 		SyndFeed feed = new SyndFeedImpl();
-		feed.setTitle("Sample Feed"); // new conf parameter
+		feed.setTitle(getFeedName()); // new conf parameter
 		feed.setLink("http://mysite.com"); // conf parameter?
-		feed.setDescription("Sample Feed for how cool Wicket is");
+		// feed.setDescription("Sample Feed for how cool Wicket is");
 
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		SyndEntry entry;
@@ -66,6 +66,11 @@ public class BlogFeedProvider implements FeedProvider {
 		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
 		pages.add(BlogPage.class);
 		return pages;
+	}
+
+	@Override
+	public String getFeedName() {
+		return "Blog - change - ";
 	}
 
 	@Required
