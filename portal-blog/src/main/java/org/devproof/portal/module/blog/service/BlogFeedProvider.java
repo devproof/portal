@@ -42,7 +42,8 @@ public class BlogFeedProvider implements FeedProvider {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName()); // new conf parameter
 		feed.setLink("http://mysite.com"); // conf parameter?
-		// feed.setDescription("Sample Feed for how cool Wicket is");
+		// must be set for RSS2 feed
+		feed.setDescription("Sample Feed for how cool Wicket is");
 
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		SyndEntry entry;
