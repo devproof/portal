@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.feed.component;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.page.Rss2FeedPage;
@@ -34,12 +35,14 @@ public class Rss2Link extends BookmarkablePageLink<Rss2Link> {
 		super(id, Rss2FeedPage.class);
 		String title = "";
 		if (feedProviderRegistry.hasFeedSupport(page)) {
-			setParameter("0", feedProviderRegistry.getPathByPageClass(page));
-			title = "Feed test change (old)";
+			String path = feedProviderRegistry.getPathByPageClass(page);
+			setParameter("0", path);
+			title = feedProviderRegistry.getFeedProviderByPath(path).getFeedName();
 		} else {
 			setVisible(false);
 		}
-		add(new SimpleAttributeModifier("title", title));
+		add(new SimpleAttributeModifier("title",
+				new StringResourceModel("feedName", this, null, new String[] { title }).getString()));
 		add(new SimpleAttributeModifier("type", "application/rss+xml"));
 		add(new SimpleAttributeModifier("rel", "alternate"));
 	}

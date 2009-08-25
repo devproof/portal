@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.feed.component;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.page.Atom1FeedPage;
@@ -34,12 +35,14 @@ public class Atom1Link extends BookmarkablePageLink<Atom1Link> {
 		super(id, Atom1FeedPage.class);
 		String title = "";
 		if (feedProviderRegistry.hasFeedSupport(page)) {
-			setParameter("0", feedProviderRegistry.getPathByPageClass(page));
-			title = "Feed test change";
+			String path = feedProviderRegistry.getPathByPageClass(page);
+			setParameter("0", path);
+			title = feedProviderRegistry.getFeedProviderByPath(path).getFeedName();
 		} else {
 			setVisible(false);
 		}
-		add(new SimpleAttributeModifier("title", title));
+		add(new SimpleAttributeModifier("title",
+				new StringResourceModel("feedName", this, null, new String[] { title }).getString()));
 		add(new SimpleAttributeModifier("type", "application/atom+xml"));
 		add(new SimpleAttributeModifier("rel", "alternate"));
 	}

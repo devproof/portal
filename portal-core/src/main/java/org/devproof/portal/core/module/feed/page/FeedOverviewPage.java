@@ -42,6 +42,7 @@ public class FeedOverviewPage extends TemplatePage {
 		for (String path : allFeedProvider.keySet()) {
 			FeedProvider provider = allFeedProvider.get(path);
 			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
+			row.add(new Label("feedName", provider.getFeedName()));
 			row.add(new Label("path", path));
 			row.add(new Label("pages", getSupportedPagesString(provider)).setEscapeModelStrings(false));
 			row.add(new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class, new PageParameters("0="
@@ -55,7 +56,7 @@ public class FeedOverviewPage extends TemplatePage {
 	private String getSupportedPagesString(final FeedProvider provider) {
 		StringBuilder buf = new StringBuilder();
 		for (Class<? extends TemplatePage> page : provider.getSupportedFeedPages()) {
-			buf.append(page.getSimpleName()).append("<br/>");
+			buf.append(page.getSimpleName()).append(", ");
 		}
 		return buf.toString();
 	}
