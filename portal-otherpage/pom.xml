@@ -2,7 +2,7 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.devproof.portal</groupId>
-	<artifactId>devproof-portal-otherpage</artifactId>
+	<artifactId>portal-otherpage</artifactId>
 	<packaging>jar</packaging>
 	<name>devproof portal-otherpage</name>
 	<version>${parent.version}</version>

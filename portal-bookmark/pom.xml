@@ -2,7 +2,7 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.devproof.portal</groupId>
-	<artifactId>devproof-portal-bookmark</artifactId>
+	<artifactId>portal-bookmark</artifactId>
 	<packaging>jar</packaging>
 	<name>devproof portal-bookmark</name>
 	<version>${parent.version}</version>
