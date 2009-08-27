@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.devproof.portal</groupId>
-	<artifactId>devproof-portal-build</artifactId>
+	<artifactId>portal-build</artifactId>
 	<packaging>pom</packaging>
 	<name>devproof portal build project</name>
 	<version>1.0-rc2</version>
