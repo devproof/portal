@@ -2,9 +2,9 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.devproof.portal</groupId>
-	<artifactId>portal-download</artifactId>
+	<artifactId>module-download</artifactId>
 	<packaging>jar</packaging>
-	<name>devproof portal-download</name>
+	<name>devproof module-download</name>
 	<version>${parent.version}</version>
 	<description>Portal download check module</description>
 	<url>http://www.devproof.org</url>

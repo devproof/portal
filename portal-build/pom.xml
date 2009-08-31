@@ -12,18 +12,18 @@
 	<version>1.0-rc2</version>
 	
 	<properties>
-		<wicket.version>1.4.0</wicket.version>
+		<wicket.version>1.4.1</wicket.version>
 		<jetty.version>6.1.18</jetty.version>
 	</properties>
 	<modules>
+		<module>../module-blog</module>
+		<module>../module-article</module>
+		<module>../module-deadlinkcheck</module>
+		<module>../module-bookmark</module>
+		<module>../module-download</module>
+		<module>../module-otherpage</module>
+		<module>../module-uploadcenter</module>
 		<module>../portal-core</module>
-		<module>../portal-blog</module>
-		<module>../portal-article</module>
-		<module>../portal-deadlinkcheck</module>
-		<module>../portal-bookmark</module>
-		<module>../portal-download</module>
-		<module>../portal-otherpage</module>
-		<module>../portal-uploadcenter</module>
 		<module>../portal-webapp</module>
 		<module>../portal-bundle</module>
 	</modules>

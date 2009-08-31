@@ -2,9 +2,9 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.devproof.portal</groupId>
-	<artifactId>deadlinkcheck</artifactId>
+	<artifactId>module-deadlinkcheck</artifactId>
 	<packaging>jar</packaging>
-	<name>devproof portal-deadlinkcheck</name>
+	<name>devproof module-deadlinkcheck</name>
 	<version>${parent.version}</version>
 	<description>Portal deadlink check module</description>
 	<url>http://www.devproof.org</url>
