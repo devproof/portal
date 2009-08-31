@@ -2,7 +2,7 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.devproof.portal</groupId>
-	<artifactId>portal</artifactId>
+	<artifactId>devproof-portal</artifactId>
 	<packaging>war</packaging>
 	<name>devproof portal-webapp</name>
 	<version>1.0-rc2</version>
@@ -25,32 +25,32 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-blog</artifactId>
+					<artifactId>module-blog</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-article</artifactId>
+					<artifactId>module-article</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-bookmark</artifactId>
+					<artifactId>module-bookmark</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-download</artifactId>
+					<artifactId>module-download</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-otherpage</artifactId>
+					<artifactId>module-otherpage</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-uploadcenter</artifactId>
+					<artifactId>module-uploadcenter</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -60,7 +60,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-blog</artifactId>
+					<artifactId>module-blog</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -70,7 +70,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-article</artifactId>
+					<artifactId>module-article</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -80,7 +80,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-bookmark</artifactId>
+					<artifactId>module-bookmark</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -90,7 +90,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-download</artifactId>
+					<artifactId>module-download</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -100,7 +100,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-otherpage</artifactId>
+					<artifactId>module-otherpage</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
@@ -110,7 +110,7 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.devproof.portal</groupId>
-					<artifactId>devproof-portal-uploadcenter</artifactId>
+					<artifactId>module-uploadcenter</artifactId>
 					<version>${project.version}</version>
 				</dependency>
 			</dependencies>

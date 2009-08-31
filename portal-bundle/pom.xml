@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 	<name>devproof portal-bundle</name>
 	<version>1.0-rc2</version>
-	<description>Portal budle</description>
+	<description>Portal bundle</description>
 	<url>http://www.devproof.org</url>
 	<developers>
 		<developer>

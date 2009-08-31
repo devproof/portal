@@ -4,13 +4,13 @@
 	<groupId>org.devproof.portal</groupId>
 	<artifactId>module-article</artifactId>
 	<packaging>jar</packaging>
-	<name>devproof modile-article</name>
+	<name>devproof module-article</name>
 	<version>${parent.version}</version>
 	<description>Portal article module</description>
 	<url>http://www.devproof.org</url>
 	<parent>
     	<groupId>org.devproof.portal</groupId>
-    	<artifactId>devproof-portal-build</artifactId>
+    	<artifactId>portal-build</artifactId>
     	<version>1.0-rc2</version>
     	<relativePath>../portal-build</relativePath>
   	</parent>
@@ -82,7 +82,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.devproof.portal</groupId>
-			<artifactId>devproof-portal-core</artifactId>
+			<artifactId>portal-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<!-- Dependencies comes from portal-build -->

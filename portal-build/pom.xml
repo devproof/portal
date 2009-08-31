@@ -12,10 +12,12 @@
 	<version>1.0-rc2</version>
 	
 	<properties>
+		<devproof.version>1.0-rc3</devproof.version>
 		<wicket.version>1.4.1</wicket.version>
 		<jetty.version>6.1.18</jetty.version>
 	</properties>
 	<modules>
+		<module>../portal-core</module>
 		<module>../module-blog</module>
 		<module>../module-article</module>
 		<module>../module-deadlinkcheck</module>
@@ -23,7 +25,6 @@
 		<module>../module-download</module>
 		<module>../module-otherpage</module>
 		<module>../module-uploadcenter</module>
-		<module>../portal-core</module>
 		<module>../portal-webapp</module>
 		<module>../portal-bundle</module>
 	</modules>
