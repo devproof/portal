@@ -3,7 +3,7 @@
         Generates a bundle
     </description>
 	<property name="targetsql" location="target/sql/"/>
-	<property name="webinflib" location="../portal-webapp/target/devproof-portal-${project_version}/WEB-INF/lib/"/>
+	<property name="webinflib" location="../portal-webapp/target/devproof-portal-${devproof.version}/WEB-INF/lib/"/>
 	<property name="tomcat6_version" value="6.0.20"/>
 	<target name="generate_sql">
 		<unzip dest="${targetsql}">
@@ -61,72 +61,73 @@
 		</sql>
 	</target>
 	<target name="bundle_war">
-		<mkdir dir="target/devproof-portal-${project_version}-war/"/>
+		<mkdir dir="target/devproof-portal-${devproof.version}-war/"/>
 		<mkdir dir="target/tmp/"/>
-		<copy file="../portal-webapp/target/devproof-portal-${project_version}.war" 
-			tofile="target/devproof-portal-${project_version}-war/war/devproof-portal-${project_version}.war"/>
+		<copy file="../portal-webapp/target/devproof-portal-${devproof.version}.war" 
+			tofile="target/devproof-portal-${devproof.version}-war/war/devproof-portal-${devproof.version}.war"/>
 		<copy file="CHANGES" 
-					tofile="target/devproof-portal-${project_version}-war/CHANGES"/>
+					tofile="target/devproof-portal-${devproof.version}-war/CHANGES"/>
 		<copy file="README_WAR" 
-					tofile="target/devproof-portal-${project_version}-war/README"/>
-		<copy todir="target/devproof-portal-${project_version}-war/sql/">
+					tofile="target/devproof-portal-${devproof.version}-war/README"/>
+		<copy todir="target/devproof-portal-${devproof.version}-war/sql/">
 		    <fileset dir="target/sql/"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-war/licenses/">
+		<copy todir="target/devproof-portal-${devproof.version}-war/licenses/">
 			<fileset dir="licenses/"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-war/config/">
+		<copy todir="target/devproof-portal-${devproof.version}-war/config/">
 			<fileset dir="config/"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-war/sources/"
+		<copy todir="target/devproof-portal-${devproof.version}-war/sources/"
 			 flatten="true">
 			<fileset dir="../" includes="**/devproof*sources.jar"/>
 		</copy>
-		<tar destfile="target/tmp/devproof-portal-${project_version}-war.tar">
+		<tar destfile="target/tmp/devproof-portal-${devproof.version}-war.tar">
 			<tarfileset dir="target/">
-				<include name="devproof-portal-${project_version}-war/**"/>
+				<include name="devproof-portal-${devproof.version}-war/**"/>
 			</tarfileset>
 		</tar>
-		<gzip destfile="target/devproof-portal-${project_version}-war.tar.gz" src="target/tmp/devproof-portal-${project_version}-war.tar"/>
+		<gzip destfile="target/devproof-portal-${devproof.version}-war.tar.gz" src="target/tmp/devproof-portal-${devproof.version}-war.tar"/>
 	</target>
 	
 	<target name="bundle_tomcat6">
-		<mkdir dir="target/devproof-portal-${project_version}-with-tomcat6/"/>
+		<mkdir dir="target/devproof-portal-${devproof.version}-with-tomcat6/"/>
 		<mkdir dir="target/tmp/"/>
 		<gunzip src="server/tomcat6/apache-tomcat-${tomcat6_version}.tar.gz" dest="target/tmp/apache-tomcat-${tomcat6_version}.tar"/>
-		<untar src="target/tmp/apache-tomcat-${tomcat6_version}.tar" dest="target/devproof-portal-${project_version}-with-tomcat6/"/>
-		<copy file="CHANGES" tofile="target/devproof-portal-${project_version}-with-tomcat6/CHANGES"/>
-		<copy file="README_TOMCAT6" tofile="target/devproof-portal-${project_version}-with-tomcat6/README"/>
-		<copy file="config/tomcat6/hsql/ROOT.xml" tofile="target/devproof-portal-${project_version}-with-tomcat6/apache-tomcat-${tomcat6_version}/conf/Catalina/localhost/ROOT.xml"/>
-		<delete dir="target/devproof-portal-${project_version}-with-tomcat6/apache-tomcat-${tomcat6_version}/webapps/"/>
-		<mkdir dir="target/devproof-portal-${project_version}-with-tomcat6/apache-tomcat-${tomcat6_version}/webapps/"/>
-		<copy file="../portal-webapp/target/devproof-portal-${project_version}.war" 
-					tofile="target/devproof-portal-${project_version}-with-tomcat6/war/devproof-portal-${project_version}.war"/>
-		<copy todir="target/devproof-portal-${project_version}-with-tomcat6/sql/">
+		<untar src="target/tmp/apache-tomcat-${tomcat6_version}.tar" dest="target/devproof-portal-${devproof.version}-with-tomcat6/"/>
+		<copy file="CHANGES" tofile="target/devproof-portal-${devproof.version}-with-tomcat6/CHANGES"/>
+		<copy file="README_TOMCAT6" tofile="target/devproof-portal-${devproof.version}-with-tomcat6/README"/>
+		<filter token="devproof.version" value="${devproof.version}"/>
+		<copy file="config/tomcat6/hsql/ROOT.xml" tofile="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/conf/Catalina/localhost/ROOT.xml" filtering="true"/>
+		<delete dir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/webapps/"/>
+		<mkdir dir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/webapps/"/>
+		<copy file="../portal-webapp/target/devproof-portal-${devproof.version}.war" 
+					tofile="target/devproof-portal-${devproof.version}-with-tomcat6/war/devproof-portal-${devproof.version}.war"/>
+		<copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/sql/">
 		    <fileset dir="target/sql/"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-with-tomcat6/licenses/">
+		<copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/licenses/">
 			<fileset dir="licenses/"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-with-tomcat6/config/">
+		<copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/config/">
 			<fileset dir="config/"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-with-tomcat6/sources/"
+		<copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/sources/"
 			 flatten="true">
 			<fileset dir="../" includes="**/devproof*sources.jar"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-with-tomcat6/data/">
+		<copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/data/">
 			<fileset dir="target/hsql/" excludes="**/*.lck"/>
 		</copy>
-		<copy todir="target/devproof-portal-${project_version}-with-tomcat6/apache-tomcat-${tomcat6_version}/lib/">
+		<copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/lib/">
 			<fileset dir="server/tomcat6/lib/"/>
 		</copy>
-		<tar destfile="target/tmp/devproof-portal-${project_version}-with-tomcat6.tar">
+		<tar destfile="target/tmp/devproof-portal-${devproof.version}-with-tomcat6.tar">
 			<tarfileset dir="target/">
-				<include name="devproof-portal-${project_version}-with-tomcat6/**"/>
+				<include name="devproof-portal-${devproof.version}-with-tomcat6/**"/>
 			</tarfileset>
 		</tar>
-		<gzip destfile="target/devproof-portal-${project_version}-with-tomcat6.tar.gz" src="target/tmp/devproof-portal-${project_version}-with-tomcat6.tar"/>
+		<gzip destfile="target/devproof-portal-${devproof.version}-with-tomcat6.tar.gz" src="target/tmp/devproof-portal-${devproof.version}-with-tomcat6.tar"/>
 	</target>
 	
 	<target name="cleanup">

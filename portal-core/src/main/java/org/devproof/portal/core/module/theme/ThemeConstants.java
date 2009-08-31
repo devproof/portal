@@ -22,13 +22,15 @@ public class ThemeConstants {
 	private ThemeConstants() {
 	}
 
-	final public static String SMALL_THEME_PATHS[] = { "theme", "org/devproof/portal/core/module/common/page/", "org/devproof/portal/core/module/common/css/",
-			"org/devproof/portal/core/module/common/img/", "org/devproof/portal/core/module/common/page/" };
+	final public static String SMALL_THEME_PATHS[] = { "theme", "org/devproof/portal/core/module/common/page/",
+			"org/devproof/portal/core/module/common/css/", "org/devproof/portal/core/module/common/img/",
+			"org/devproof/portal/core/module/common/page/" };
 	final public static String COMPLETE_THEME_PATHS[] = { "/" }; // everything
 	final public static String ALLOWED_THEME_EXT[] = { ".html", ".css", ".gif", ".jpg", ".png", ".properties" };
-	final public static String FILTER_PATHS[] = { "META-INF", "log4j.properties", "org/devproof/portal/core/module/common/component/richtext" };
+	final public static String FILTER_PATHS[] = { "META-INF", "log4j.properties",
+			"org/devproof/portal/core/module/common/component/richtext" };
 
 	final public static String CONF_SELECTED_THEME_UUID = "hidden.selected_theme_uuid";
 	final public static String CONF_SELECTED_THEME_DEFAULT = "_default_";
-	final public static String PORTAL_THEME_VERSION = "1.0-rc2";
+	// final public static String PORTAL_THEME_VERSION = "${devproof.version}";
 }

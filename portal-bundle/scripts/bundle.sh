@@ -1,6 +1,7 @@
 #!/bin/sh
 
-PORTAL_VERSION=1.0-rc2
+echo "Devproof Version: "   
+read PORTAL_VERSION
 cd ~
 svn co https://devproof.svn.sourceforge.net/svnroot/devproof/trunk portal
 cd portal/portal-build/
