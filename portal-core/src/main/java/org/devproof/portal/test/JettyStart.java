@@ -103,7 +103,6 @@ public class JettyStart {
 		// MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
 		// server.getContainer().addEventListener(mBeanContainer);
 		// mBeanContainer.start();
-
 		try {
 			System.out.println(">>> STARTING DEVPROOF PORTAL, PRESS ANY KEY TO STOP");
 			server.start();

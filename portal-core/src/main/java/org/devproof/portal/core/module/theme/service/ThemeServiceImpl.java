@@ -60,6 +60,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 	private ServletContext servletContext;
 	private ApplicationContext applicationContext;
 	private ConfigurationService configurationService;
+	private String themeVersion;
 	private static final Log LOG = LogFactory.getLog(ThemeServiceImpl.class);
 
 	@Override
@@ -169,7 +170,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 						|| StringUtils.isBlank(bean.getPortalVersion()) || StringUtils.isBlank(bean.getTheme())) {
 					return ValidationKey.INVALID_DESCRIPTOR_FILE;
 				} else {
-					if (ThemeConstants.PORTAL_THEME_VERSION.equals(bean.getPortalThemeVersion())) {
+					if (themeVersion.equals(bean.getPortalThemeVersion())) {
 						return ValidationKey.VALID;
 					} else {
 						return ValidationKey.WRONG_VERSION;
@@ -206,7 +207,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 			ZipOutputStream zos = new ZipOutputStream(fos);
 			if (libs.isEmpty()) {
 				// development variant
-				Resource root[] = applicationContext.getResources("classpath:/");
+				Resource root[] = applicationContext.getResources("classpath*:/");
 				for (String ext : ThemeConstants.ALLOWED_THEME_EXT) {
 					for (String themePath : themePaths) {
 						Resource resources[] = null;
@@ -217,7 +218,8 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 						}
 						for (Resource r : resources) {
 							String zipPath = getZipPath(root, r);
-							if (!isFiltered(null, filterPaths, zipPath) && !zipResources.contains(zipPath)) {
+							if (zipPath != null && !isFiltered(null, filterPaths, zipPath)
+									&& !zipResources.contains(zipPath)) {
 								zipResources.add(zipPath);
 								ZipEntry ze = new ZipEntry(zipPath);
 								zos.putNextEntry(ze);
@@ -327,9 +329,13 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		this.configurationService = configurationService;
 	}
 
+	@Required
+	public void setThemeVersion(final String themeVersion) {
+		this.themeVersion = themeVersion;
+	}
+
 	@Override
 	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
-
 }

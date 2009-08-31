@@ -43,7 +43,7 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<property name="project_version" value="${devproof.version}" />
+								<property name="devproof.version" value="${devproof.version}" />
 								<ant target="generate_sql" inheritRefs="true" />
 								<ant target="generate_hsql" inheritRefs="true" />
 								<ant target="bundle_war" inheritRefs="true" />

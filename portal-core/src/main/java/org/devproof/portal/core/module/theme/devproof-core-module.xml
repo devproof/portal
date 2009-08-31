@@ -30,7 +30,6 @@
 	<!--  Service  -->
 	<bean id="themeService" class="org.devproof.portal.core.module.theme.service.ThemeServiceImpl">
 		<property name="configurationService" ref="configurationService"/>
+		<property name="themeVersion" value="${devproof.version}"/>
 	</bean>
-
-	
 </beans>

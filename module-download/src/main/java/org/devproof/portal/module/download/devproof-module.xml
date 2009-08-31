@@ -10,8 +10,8 @@
     <!-- Module configuration -->
     <bean class="org.devproof.portal.core.config.ModuleConfiguration">
     	<property name="name" value="Download"/>
-    	<property name="moduleVersion" value="1.0-rc2"/>
-    	<property name="portalVersion" value="1.0-rc2"/>
+    	<property name="moduleVersion" value="${devproof.version}"/>
+    	<property name="portalVersion" value="${devproof.version}"/>
     	<property name="author" value="devproof - Carsten Hufe"/>
     	<property name="url" value="http://devproof.org"/>	 		
     	
