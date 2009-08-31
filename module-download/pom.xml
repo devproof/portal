@@ -5,13 +5,13 @@
 	<artifactId>module-download</artifactId>
 	<packaging>jar</packaging>
 	<name>devproof module-download</name>
-	<version>${parent.version}</version>
+	<version>${devproof.version}</version>
 	<description>Portal download check module</description>
 	<url>http://www.devproof.org</url>
 	<parent>
     	<groupId>org.devproof.portal</groupId>
     	<artifactId>portal-build</artifactId>
-    	<version>1.0-rc2</version>
+    	<version>FIXED</version>
     	<relativePath>../portal-build</relativePath>
   	</parent>
 	
@@ -83,12 +83,12 @@
 		<dependency>
 			<groupId>org.devproof.portal</groupId>
 			<artifactId>portal-core</artifactId>
-			<version>${project.version}</version>
+			<version>${devproof.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.devproof.portal</groupId>
 			<artifactId>module-deadlinkcheck</artifactId>
-			<version>${project.version}</version>
+			<version>${devproof.version}</version>
 		</dependency>
 		<!-- Dependencies comes from portal-build -->
 		<!-- Sorry guys, I'm too lazy to manage to many dependencies -->

@@ -5,7 +5,7 @@
 	<artifactId>portal-core</artifactId>
 	<packaging>jar</packaging>
 	<name>devproof portal-core</name>
-	<version>${parent.version}</version>
+	<version>${devproof.version}</version>
 	<description>Portal core module</description>
 	<url>http://www.devproof.org</url>
 	<developers>
@@ -19,7 +19,7 @@
 	<parent>
     	<groupId>org.devproof.portal</groupId>
     	<artifactId>portal-build</artifactId>
-    	<version>1.0-rc2</version>
+    	<version>FIXED</version>
     	<relativePath>../portal-build</relativePath>
   	</parent>
 	<build>
