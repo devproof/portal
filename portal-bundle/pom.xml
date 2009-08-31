@@ -5,9 +5,16 @@
 	<artifactId>portal-bundle</artifactId>
 	<packaging>pom</packaging>
 	<name>devproof portal-bundle</name>
-	<version>1.0-rc2</version>
+	<version>${devproof.version}</version>
 	<description>Portal bundle</description>
 	<url>http://www.devproof.org</url>
+	<parent>
+    	<groupId>org.devproof.portal</groupId>
+    	<artifactId>portal-build</artifactId>
+    	<version>FIXED</version>
+    	<relativePath>../portal-build</relativePath>
+  	</parent>
+	
 	<developers>
 		<developer>
 			<id>tocsulus</id>
@@ -36,7 +43,7 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<property name="project_version" value="${project.version}" />
+								<property name="project_version" value="${devproof.version}" />
 								<ant target="generate_sql" inheritRefs="true" />
 								<ant target="generate_hsql" inheritRefs="true" />
 								<ant target="bundle_war" inheritRefs="true" />

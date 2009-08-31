@@ -5,13 +5,13 @@
 	<artifactId>module-deadlinkcheck</artifactId>
 	<packaging>jar</packaging>
 	<name>devproof module-deadlinkcheck</name>
-	<version>${parent.version}</version>
+	<version>${devproof.version}</version>
 	<description>Portal deadlink check module</description>
 	<url>http://www.devproof.org</url>
 	<parent>
     	<groupId>org.devproof.portal</groupId>
     	<artifactId>portal-build</artifactId>
-    	<version>1.0-rc2</version>
+    	<version>FIXED</version>
     	<relativePath>../portal-build</relativePath>
   	</parent>
 	
@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>org.devproof.portal</groupId>
 			<artifactId>portal-core</artifactId>
-			<version>${project.version}</version>
+			<version>${devproof.version}</version>
 		</dependency>
 		<!-- Dependencies comes from portal-build -->
 		<!-- Sorry guys, I'm too lazy to manage to many dependencies -->

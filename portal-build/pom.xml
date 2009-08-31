@@ -9,7 +9,8 @@
 	<artifactId>portal-build</artifactId>
 	<packaging>pom</packaging>
 	<name>devproof portal build project</name>
-	<version>1.0-rc2</version>
+	<!-- this is not the real version. see devproof.version -->
+	<version>FIXED</version>
 	
 	<properties>
 		<devproof.version>1.0-rc3</devproof.version>
