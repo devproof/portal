@@ -56,7 +56,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 	private int brokenFound = 0;
 
 	public DeadlinkCheckPanel(final String id, final String section, final List<T> listToCheck) {
-		super(id, Model.of(listToCheck));
+		super(id, Model.ofList(listToCheck));
 		this.maxItem = listToCheck.size();
 
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
