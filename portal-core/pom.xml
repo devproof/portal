@@ -18,7 +18,7 @@
 	</developers>
 	<parent>
     	<groupId>org.devproof.portal</groupId>
-    	<artifactId>devproof-portal-build</artifactId>
+    	<artifactId>portal-build</artifactId>
     	<version>1.0-rc2</version>
     	<relativePath>../portal-build</relativePath>
   	</parent>
