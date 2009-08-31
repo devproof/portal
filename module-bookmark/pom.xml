@@ -2,9 +2,9 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.devproof.portal</groupId>
-	<artifactId>portal-bookmark</artifactId>
+	<artifactId>module-bookmark</artifactId>
 	<packaging>jar</packaging>
-	<name>devproof portal-bookmark</name>
+	<name>devproof module-bookmark</name>
 	<version>${parent.version}</version>
 	<description>Portal bookmark check module</description>
 	<url>http://www.devproof.org</url>
