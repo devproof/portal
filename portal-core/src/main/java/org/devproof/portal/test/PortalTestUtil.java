@@ -160,7 +160,7 @@ public class PortalTestUtil {
 			};
 			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM,
 					"classpath:/devproof-portal-core.xml\nclasspath*:/**/devproof-module.xml");
-			final ContextLoader contextLoader = new ContextLoader();
+			ContextLoader contextLoader = new ContextLoader();
 			contextLoader.initWebApplicationContext(sandbox);
 		}
 		return sandbox;
@@ -215,5 +215,11 @@ public class PortalTestUtil {
 
 	public static String[] getMessage(final String key, final Component component) {
 		return new String[] { new StringResourceModel(key, component, null).getString() };
+	}
+
+	public static <T> T getBean(final String beanName) {
+		@SuppressWarnings("unchecked")
+		T back = (T) ContextLoader.getCurrentWebApplicationContext().getBean(beanName);
+		return back;
 	}
 }

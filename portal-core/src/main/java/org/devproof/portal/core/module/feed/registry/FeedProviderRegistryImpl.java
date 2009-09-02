@@ -55,6 +55,7 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 			throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
 		}
 		feedProviders.put(newPath, feedProvider);
+		registerFeedPath(path);
 	}
 
 	@Override
@@ -89,18 +90,23 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 			for (PageConfiguration page : pages) {
 				if (feed.getSupportedFeedPages().contains(page.getPageClass())) {
 					registerFeedProvider(page.getMountPath(), feed);
-					registerFeedPath(page.getMountPath(), page.getPageClass());
 				}
 			}
 		}
 	}
 
-	private void registerFeedPath(final String mountPath, final Class<? extends Page> pageClass) {
-		String newPath = getPathWithoutLeadingSlash(mountPath);
-		if (feedPaths.containsKey(pageClass)) {
-			throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
+	private void registerFeedPath(final String mountPath) {
+		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
+		for (PageConfiguration page : pages) {
+			if (page.getMountPath().equals(mountPath)) {
+				String newPath = getPathWithoutLeadingSlash(mountPath);
+				if (feedPaths.containsKey(page.getPageClass())) {
+					throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
+				}
+				feedPaths.put(page.getPageClass(), newPath);
+				break;
+			}
 		}
-		feedPaths.put(pageClass, newPath);
 	}
 
 	@Required
