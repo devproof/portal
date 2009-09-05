@@ -41,6 +41,11 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	public UserEntity findUserBySessionId(String sessionId);
 
 	/**
+	 * Returns the guest user
+	 */
+	public UserEntity findGuestUser();
+
+	/**
 	 * Returns a list with users by the given email
 	 */
 	public List<UserEntity> findUserByEmail(String email);

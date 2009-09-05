@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
-import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
@@ -34,7 +33,7 @@ import org.devproof.portal.core.module.common.dao.DataProviderDao;
  * @param <T>
  *            Entity type
  */
-public class SortablePersistenceDataProviderImpl<T> extends SortableDataProvider<T> implements QueryDataProvider<T> {
+public class SortablePersistenceDataProviderImpl<T> extends SortableQueryDataProvider<T> {
 	private static final long serialVersionUID = 1L;
 
 	private Class<T> entityClass;

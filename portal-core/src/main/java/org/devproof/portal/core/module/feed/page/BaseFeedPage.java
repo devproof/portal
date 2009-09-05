@@ -25,6 +25,8 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
+import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.service.RoleService;
 
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
@@ -37,6 +39,9 @@ import com.sun.syndication.io.SyndFeedOutput;
 public abstract class BaseFeedPage extends WebPage {
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
+	@SpringBean(name = "roleService")
+	private RoleService roleService;
+
 	private String path = "";
 
 	public BaseFeedPage(final PageParameters params) {
@@ -55,7 +60,8 @@ public abstract class BaseFeedPage extends WebPage {
 			FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
 			SyndFeed feed = null;
 			if (feedProvider != null) {
-				feed = feedProvider.getFeed();
+				RoleEntity guestRole = roleService.findGuestRole();
+				feed = feedProvider.getFeed(getRequestCycle(), guestRole);
 			} else {
 				feed = new SyndFeedImpl();
 			}

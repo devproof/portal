@@ -19,8 +19,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.RequestCycle;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
+import org.devproof.portal.core.module.role.entity.RoleEntity;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
@@ -35,7 +37,7 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 public class DummyFeedProviderImpl implements FeedProvider {
 
 	@Override
-	public SyndFeed getFeed() {
+	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName());
 		feed.setLink("http://dummy.feed.link");

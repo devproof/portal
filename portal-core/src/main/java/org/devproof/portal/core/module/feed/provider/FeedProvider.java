@@ -17,7 +17,9 @@ package org.devproof.portal.core.module.feed.provider;
 
 import java.util.List;
 
+import org.apache.wicket.RequestCycle;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.role.entity.RoleEntity;
 
 import com.sun.syndication.feed.synd.SyndFeed;
 
@@ -28,7 +30,7 @@ public interface FeedProvider {
 	/**
 	 * Returns the feed with feed items. See https://rome.dev.java.net/
 	 */
-	public SyndFeed getFeed();
+	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role);
 
 	/**
 	 * Returns the supported feed pages where the feed reference will be

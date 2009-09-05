@@ -59,7 +59,8 @@
 	</bean>
 	
 	<bean class="org.devproof.portal.module.blog.service.BlogFeedProvider">
-		<property name="blogService" ref="blogService"/>
+		<property name="blogDataProvider" ref="blogDataProvider"/>
+		<property name="configurationService" ref="configurationService"/>
 	</bean>
 	
 	<!--  DataProvider  -->

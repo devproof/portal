@@ -16,12 +16,22 @@
 package org.devproof.portal.module.blog.service;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
+import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.module.blog.BlogConstants;
+import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.page.BlogPage;
+import org.devproof.portal.module.blog.query.BlogQuery;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.syndication.feed.synd.SyndContent;
@@ -35,31 +45,43 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  * @author Carsten Hufe
  */
 public class BlogFeedProvider implements FeedProvider {
-	private BlogService blogService;
+	private SortableQueryDataProvider<BlogEntity> blogDataProvider;
+	private ConfigurationService configurationService;
 
 	@Override
-	public SyndFeed getFeed() {
+	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
 		SyndFeed feed = new SyndFeedImpl();
-		feed.setTitle(getFeedName()); // new conf parameter
-		feed.setLink("http://mysite.com"); // conf parameter?
+		feed.setTitle(getFeedName());
+		feed.setLink(rc.urlFor(BlogPage.class, new PageParameters()).toString());
 		// must be set for RSS2 feed
-		feed.setDescription("Sample Feed for how cool Wicket is");
-
+		feed.setDescription(getFeedName());
+		Integer maxNumber = configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED);
+		setRoleForDataProviderQuery(role);
+		Iterator<? extends BlogEntity> iterator = blogDataProvider.iterator(0, maxNumber);
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		SyndEntry entry;
 		SyndContent description;
-
-		entry = new SyndEntryImpl();
-		entry.setTitle("Article One");
-		entry.setLink("http://mysite.com/article/one");
-		entry.setPublishedDate(new Date());
-		description = new SyndContentImpl();
-		description.setType("text/plain");
-		description.setValue("Article describing how cool wicket is.");
-		entry.setDescription(description);
-		entries.add(entry);
+		while (iterator.hasNext()) {
+			BlogEntity blogEntity = iterator.next();
+			entry = new SyndEntryImpl();
+			entry.setTitle(blogEntity.getHeadline());
+			entry.setLink(rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString());
+			entry.setPublishedDate(blogEntity.getModifiedAt());
+			description = new SyndContentImpl();
+			description.setType("text/plain");
+			String content = blogEntity.getContent().replaceAll("<(.|\n)*?>", "");
+			description.setValue(StringUtils.abbreviate(content, 200));
+			entry.setDescription(description);
+			entries.add(entry);
+		}
 		feed.setEntries(entries);
 		return feed;
+	}
+
+	private void setRoleForDataProviderQuery(final RoleEntity role) {
+		BlogQuery query = new BlogQuery();
+		query.setRole(role);
+		blogDataProvider.setQueryObject(query);
 	}
 
 	@Override
@@ -71,11 +93,18 @@ public class BlogFeedProvider implements FeedProvider {
 
 	@Override
 	public String getFeedName() {
-		return "Blog - change - ";
+		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+		String feedName = configurationService.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE);
+		return pageTitle + " - " + feedName;
 	}
 
 	@Required
-	public void setBlogService(final BlogService blogService) {
-		this.blogService = blogService;
+	public void setBlogDataProvider(final SortableQueryDataProvider<BlogEntity> blogDataProvider) {
+		this.blogDataProvider = blogDataProvider;
+	}
+
+	@Required
+	public void setConfigurationService(final ConfigurationService configurationService) {
+		this.configurationService = configurationService;
 	}
 }

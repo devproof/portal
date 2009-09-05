@@ -13,20 +13,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.blog;
+package org.devproof.portal.core.module.common.dataprovider;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 
 /**
  * @author Carsten Hufe
  */
-public class BlogConstants {
-	private BlogConstants() {
-	}
-
-	final public static String CONF_BLOG_ENTRIES_PER_PAGE = "blog_entries_per_page";
-	final public static String CONF_BLOG_ENTRIES_IN_FEED = "blog_entries_in_feed";
-	final public static String CONF_BLOG_FEED_TITLE = "blog_feed_title";
-
-	final public static ResourceReference REF_BLOG_CSS = new ResourceReference(BlogConstants.class, "css/blog.css");
+public abstract class SortableQueryDataProvider<T> extends SortableDataProvider<T> implements QueryDataProvider<T> {
+	private static final long serialVersionUID = 1L;
 }
