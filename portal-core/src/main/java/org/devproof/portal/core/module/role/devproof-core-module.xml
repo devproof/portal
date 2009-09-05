@@ -43,6 +43,7 @@
 	<!--  Service  -->
 	<bean id="roleService" class="org.devproof.portal.core.module.role.service.RoleServiceImpl">
 		<property name="roleDao" ref="roleDao"/>
+		<property name="configurationService" ref="configurationService"/>
 	</bean>
 	
 	<!--  DataProvider  -->

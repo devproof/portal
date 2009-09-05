@@ -150,13 +150,7 @@ public class PortalSession extends WebSession {
 			}
 			// no session found
 			if (user == null) {
-				Integer roleId = getConfigurationService().findAsInteger(
-						"spring.roleDao.findAll.description.id.guestrole");
-				RoleEntity role = getRoleService().findById(roleId);
-				user = getUserService().newUserEntity();
-				user.setUsername(role.getDescription());
-				user.setRole(role);
-				user.setGuestRole(true);
+				user = getUserService().findGuestUser();
 			}
 		}
 		long appDirtyTime = getRightService().getDirtyTime();

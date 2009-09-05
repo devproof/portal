@@ -39,3 +39,7 @@ INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headl
 INSERT INTO blog_right_xref (blog_id,right_id) VALUES (1,'blog.view.guest');
 INSERT INTO blog_right_xref (blog_id,right_id) VALUES (1,'blog.view.registered');
 INSERT INTO blog_right_xref (blog_id,right_id) VALUES (1,'blog.view.preview');
+
+-- 1.0-rc3
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('blog_entries_in_feed','Blog entries in feed','Blog','java.lang.Integer','10');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('blog_feed_title','Blog feed title','Blog','java.lang.String','Blog');

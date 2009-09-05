@@ -97,6 +97,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public UserEntity findGuestUser() {
+		RoleEntity guestRole = roleService.findGuestRole();
+		UserEntity user = newUserEntity();
+		user.setUsername(guestRole.getDescription());
+		user.setRole(guestRole);
+		user.setGuestRole(true);
+		return user;
+	}
+
+	@Override
 	public boolean activateUser(final String username, final String activationCode) {
 		UserEntity user = findUserByUsername(username);
 		if (user != null && activationCode.equals(user.getConfirmationCode())) {

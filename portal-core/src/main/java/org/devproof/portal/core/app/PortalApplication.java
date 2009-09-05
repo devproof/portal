@@ -142,7 +142,7 @@ public class PortalApplication extends WebApplication {
 		LOG.debug("New session created.");
 		return new PortalSession(request);
 	}
-
+	
 	@Override
 	public RequestCycle newRequestCycle(final Request request, final Response response) {
 		return new PortalWebRequestCycle(this, (WebRequest) request, (WebResponse) response, getSpringContext());
