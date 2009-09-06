@@ -24,7 +24,7 @@ public class ConfigurationConstants {
 	private ConfigurationConstants() {
 	}
 
-	final public static String SPRING_CONFIGURATION_PREFIX = "spring.";
-	final public static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-	final public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+	public static final String SPRING_CONFIGURATION_PREFIX = "spring.";
+	public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 }

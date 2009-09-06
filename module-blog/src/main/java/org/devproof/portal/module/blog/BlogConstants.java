@@ -24,9 +24,9 @@ public class BlogConstants {
 	private BlogConstants() {
 	}
 
-	final public static String CONF_BLOG_ENTRIES_PER_PAGE = "blog_entries_per_page";
-	final public static String CONF_BLOG_ENTRIES_IN_FEED = "blog_entries_in_feed";
-	final public static String CONF_BLOG_FEED_TITLE = "blog_feed_title";
+	public static final String CONF_BLOG_ENTRIES_PER_PAGE = "blog_entries_per_page";
+	public static final String CONF_BLOG_ENTRIES_IN_FEED = "blog_entries_in_feed";
+	public static final String CONF_BLOG_FEED_TITLE = "blog_feed_title";
 
-	final public static ResourceReference REF_BLOG_CSS = new ResourceReference(BlogConstants.class, "css/blog.css");
+	public static final ResourceReference REF_BLOG_CSS = new ResourceReference(BlogConstants.class, "css/blog.css");
 }

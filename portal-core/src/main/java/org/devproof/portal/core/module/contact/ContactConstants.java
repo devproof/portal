@@ -24,6 +24,7 @@ public class ContactConstants {
 	private ContactConstants() {
 	}
 
-	final public static String CONF_CONTACTFORM_EMAIL = "spring.emailTemplateDao.findAll.subject.id.contactformemail";
-	final public static ResourceReference REF_CONTACT_CSS = new ResourceReference(ContactConstants.class, "css/contact.css");
+	public static final String CONF_CONTACTFORM_EMAIL = "spring.emailTemplateDao.findAll.subject.id.contactformemail";
+	public static final ResourceReference REF_CONTACT_CSS = new ResourceReference(ContactConstants.class,
+			"css/contact.css");
 }

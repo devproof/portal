@@ -22,20 +22,20 @@ public class EmailConstants {
 	private EmailConstants() {
 	}
 
-	final public static String EMAIL_PLACEHOLDER_USERNAME = "#USERNAME#";
-	final public static String EMAIL_PLACEHOLDER_FIRSTNAME = "#FIRSTNAME#";
-	final public static String EMAIL_PLACEHOLDER_LASTNAME = "#LASTNAME#";
-	final public static String EMAIL_PLACEHOLDER_PAGENAME = "#PAGENAME#";
-	final public static String EMAIL_PLACEHOLDER_EMAIL = "#EMAIL#";
-	final public static String EMAIL_PLACEHOLDER_BIRTHDAY = "#BIRTHDAY#";
-	final public static String EMAIL_PLACEHOLDER_CONFIRMATIONLINK = "#CONFIRMATIONLINK#";
-	final public static String EMAIL_PLACEHOLDER_PASSWORDRESETLINK = "#PASSWORDRESETLINK#";
-	final public static String EMAIL_PLACEHOLDER_CONTENT = "#CONTENT#";
-	final public static String EMAIL_PLACEHOLDER_CONTACT_FULLNAME = "#CONTACT_FULLNAME#";
-	final public static String EMAIL_PLACEHOLDER_CONTACT_EMAIL = "#CONTACT_EMAIL#";
-	final public static String EMAIL_PLACEHOLDER_CONTACT_IP = "#CONTACT_IP#";
+	public static final String EMAIL_PLACEHOLDER_USERNAME = "#USERNAME#";
+	public static final String EMAIL_PLACEHOLDER_FIRSTNAME = "#FIRSTNAME#";
+	public static final String EMAIL_PLACEHOLDER_LASTNAME = "#LASTNAME#";
+	public static final String EMAIL_PLACEHOLDER_PAGENAME = "#PAGENAME#";
+	public static final String EMAIL_PLACEHOLDER_EMAIL = "#EMAIL#";
+	public static final String EMAIL_PLACEHOLDER_BIRTHDAY = "#BIRTHDAY#";
+	public static final String EMAIL_PLACEHOLDER_CONFIRMATIONLINK = "#CONFIRMATIONLINK#";
+	public static final String EMAIL_PLACEHOLDER_PASSWORDRESETLINK = "#PASSWORDRESETLINK#";
+	public static final String EMAIL_PLACEHOLDER_CONTENT = "#CONTENT#";
+	public static final String EMAIL_PLACEHOLDER_CONTACT_FULLNAME = "#CONTACT_FULLNAME#";
+	public static final String EMAIL_PLACEHOLDER_CONTACT_EMAIL = "#CONTACT_EMAIL#";
+	public static final String EMAIL_PLACEHOLDER_CONTACT_IP = "#CONTACT_IP#";
 
-	final public static String CONF_PAGE_NAME = "page_name";
-	final public static String CONF_FROM_EMAIL_ADDRESS = "from_email_address";
-	final public static String CONF_FROM_EMAIL_NAME = "from_email_name";
+	public static final String CONF_PAGE_NAME = "page_name";
+	public static final String CONF_FROM_EMAIL_ADDRESS = "from_email_address";
+	public static final String CONF_FROM_EMAIL_NAME = "from_email_name";
 }

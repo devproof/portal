@@ -24,9 +24,10 @@ public class DownloadConstants {
 	private DownloadConstants() {
 	}
 
-	final public static String CONF_DOWNLOADS_PER_PAGE = "downloads_per_page";
-	final public static String CONF_DOWNLOAD_VOTE_ENABLED = "download_vote_enabled";
-	final public static String CONF_DOWNLOAD_HIDE_BROKEN = "download_hide_broken";
-	final public static String CONF_BOX_NUM_LATEST_DOWNLOADS = "box_num_latest_downloads";
-	final public static ResourceReference REF_DOWNLOAD_CSS = new ResourceReference(DownloadConstants.class, "css/download.css");
+	public static final String CONF_DOWNLOADS_PER_PAGE = "downloads_per_page";
+	public static final String CONF_DOWNLOAD_VOTE_ENABLED = "download_vote_enabled";
+	public static final String CONF_DOWNLOAD_HIDE_BROKEN = "download_hide_broken";
+	public static final String CONF_BOX_NUM_LATEST_DOWNLOADS = "box_num_latest_downloads";
+	public static final ResourceReference REF_DOWNLOAD_CSS = new ResourceReference(DownloadConstants.class,
+			"css/download.css");
 }

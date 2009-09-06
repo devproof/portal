@@ -24,8 +24,9 @@ public class ArticleConstants {
 	private ArticleConstants() {
 	}
 
-	final public static String PAGEBREAK = "<!-- pagebreak -->";
-	final public static String CONF_ARTICLES_PER_PAGE = "articles_per_page";
-	final public static String CONF_BOX_NUM_LATEST_ARTICLES = "box_num_latest_articles";
-	final public static ResourceReference REF_ARTICLE_CSS = new ResourceReference(ArticleConstants.class, "css/article.css");
+	public static final String PAGEBREAK = "<!-- pagebreak -->";
+	public static final String CONF_ARTICLES_PER_PAGE = "articles_per_page";
+	public static final String CONF_BOX_NUM_LATEST_ARTICLES = "box_num_latest_articles";
+	public static final ResourceReference REF_ARTICLE_CSS = new ResourceReference(ArticleConstants.class,
+			"css/article.css");
 }

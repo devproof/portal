@@ -24,5 +24,6 @@ public class DeadLinkCheckConstants {
 	private DeadLinkCheckConstants() {
 	}
 
-	final public static ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(DeadLinkCheckConstants.class, "img/download.gif");
+	public static final ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(DeadLinkCheckConstants.class,
+			"img/download.gif");
 }

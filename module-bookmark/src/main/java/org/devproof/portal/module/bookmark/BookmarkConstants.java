@@ -24,12 +24,16 @@ public class BookmarkConstants {
 	private BookmarkConstants() {
 	}
 
-	final public static String CONF_BOOKMARKS_PER_PAGE = "bookmarks_per_page";
-	final public static String CONF_BOOKMARK_VOTE_ENABLED = "bookmark_vote_enabled";
-	final public static String CONF_BOOKMARK_HIDE_BROKEN = "bookmark_hide_broken";
-	final public static String USER_AGENT = "devproofPortal";
-	final public static String DELICIOUS_API = "https://api.del.icio.us/v1/posts/all?";
-	final public static String CONF_BOX_NUM_LATEST_BOOKMARKS = "box_num_latest_bookmarks";
-	final public static ResourceReference REF_DELICIOUS = new ResourceReference(BookmarkConstants.class, "img/delicious.gif");
-	final public static ResourceReference REF_BOOKMARK_CSS = new ResourceReference(BookmarkConstants.class, "css/bookmark.css");
+	public static final String CONF_BOOKMARKS_PER_PAGE = "bookmarks_per_page";
+	public static final String CONF_BOOKMARK_VOTE_ENABLED = "bookmark_vote_enabled";
+	public static final String CONF_BOOKMARK_HIDE_BROKEN = "bookmark_hide_broken";
+	public static final String USER_AGENT = "devproofPortal";
+	public static final String DELICIOUS_API = "https://api.del.icio.us/v1/posts/all?";
+	public static final String CONF_BOX_NUM_LATEST_BOOKMARKS = "box_num_latest_bookmarks";
+	public static final ResourceReference REF_DELICIOUS = new ResourceReference(BookmarkConstants.class,
+			"img/delicious.gif");
+	public static final ResourceReference REF_BOOKMARK_CSS = new ResourceReference(BookmarkConstants.class,
+			"css/bookmark.css");
+	public static final String CONF_BOOKMARK_ENTRIES_IN_FEED = "bookmark_entries_in_feed";
+	public static final String CONF_BOOKMARK_FEED_TITLE = "bookmark_feed_title";
 }

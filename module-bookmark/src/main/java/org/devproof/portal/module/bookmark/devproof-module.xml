@@ -75,7 +75,11 @@
 		</property>
 		<property name="relatedTagRight" value="bookmark.view"/>
 	</bean>
-	
+
+	<bean class="org.devproof.portal.module.bookmark.service.BookmarkFeedProviderImpl">
+		<property name="bookmarkDataProvider" ref="bookmarkDataProvider"/>
+		<property name="configurationService" ref="configurationService"/>
+	</bean>	
 	
 	<!--  DataProvider  -->
 	<bean id="bookmarkDataProvider" parent="persistenceDataProvider" scope="prototype">

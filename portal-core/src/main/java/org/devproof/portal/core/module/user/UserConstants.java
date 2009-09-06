@@ -22,14 +22,14 @@ public class UserConstants {
 	private UserConstants() {
 	}
 
-	final public static String UNKNOWN_USERNAME = "unknown";
-	final public static String CONF_REGISTRATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.regemail";
-	final public static String CONF_RECONFIRMATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.reconfirmemail";
-	final public static String CONF_PASSWORDFORGOT_EMAIL = "spring.emailTemplateDao.findAll.subject.id.forgotemail";
-	final public static String CONF_NOTIFY_USER_REGISTRATION = "spring.emailTemplateDao.findAll.subject.id.registereduser";
-	final public static String CONF_REGISTRATION_CAPTCHA = "registration_captcha";
-	final public static String CONF_EMAIL_VALIDATION = "email_validation";
-	final public static String CONF_REGISTRATION_REQUIRED_NAME = "registration_required_name";
-	final public static String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";
+	public static final String UNKNOWN_USERNAME = "unknown";
+	public static final String CONF_REGISTRATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.regemail";
+	public static final String CONF_RECONFIRMATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.reconfirmemail";
+	public static final String CONF_PASSWORDFORGOT_EMAIL = "spring.emailTemplateDao.findAll.subject.id.forgotemail";
+	public static final String CONF_NOTIFY_USER_REGISTRATION = "spring.emailTemplateDao.findAll.subject.id.registereduser";
+	public static final String CONF_REGISTRATION_CAPTCHA = "registration_captcha";
+	public static final String CONF_EMAIL_VALIDATION = "email_validation";
+	public static final String CONF_REGISTRATION_REQUIRED_NAME = "registration_required_name";
+	public static final String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";
 
 }

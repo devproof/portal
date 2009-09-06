@@ -22,6 +22,6 @@ public class RoleConstants {
 	private RoleConstants() {
 	}
 
-	final public static String CONF_DEFAULT_GUEST_ROLE = "spring.roleDao.findAll.description.id.guestrole";
-	final public static String CONF_DEFAULT_REGUSER_ROLE = "spring.roleDao.findAll.description.id.registerrole";
+	public static final String CONF_DEFAULT_GUEST_ROLE = "spring.roleDao.findAll.description.id.guestrole";
+	public static final String CONF_DEFAULT_REGUSER_ROLE = "spring.roleDao.findAll.description.id.registerrole";
 }

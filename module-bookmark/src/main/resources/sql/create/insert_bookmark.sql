@@ -41,7 +41,7 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('box_num_latest_bookmarks','Number of latest bookmarks','Bookmarks','java.lang.Integer','3');
 INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (11,{ts '2009-01-05 12:18:22.000'},'admin',{ts '2009-01-05 12:47:42.000'},'Guest','BookmarkBoxPanel',null,9,'Latest Bookmarks Box');
 
-INSERT INTO bookmark (id,created_at,created_by,modified_at,modified_by,description,hits,number_of_votes,sum_of_rating,title,url,source,broken,sync_hash,sync_username) VALUES (1,{ts '2009-01-06 19:35:49.000'},'admin',{ts '2009-01-06 19:35:49.000'},'admin','<p>This a sample bookmark and refers to devproof.org. A very cool site.</p>',0,0,0,'Sample Bookmark','http://devproof.org','MANUAL',0,null,null);
+INSERT INTO bookmark (id,created_at,created_by,modified_at,modified_by,description,hits,number_of_votes,sum_of_rating,title,url,source,broken,sync_hash,sync_username) VALUES (1,{ts '2009-01-06 19:35:49.000'},'admin',{ts '2009-01-06 19:35:49.000'},'admin','<p>This a sample bookmark and refers to devproof.org. </p>',0,0,0,'Sample Bookmark','http://devproof.org','MANUAL',0,null,null);
 
 INSERT INTO bookmark_right_xref (bookmark_id,right_id) VALUES (1,'bookmark.view.guest');
 INSERT INTO bookmark_right_xref (bookmark_id,right_id) VALUES (1,'bookmark.view.registered');
@@ -53,3 +53,7 @@ INSERT INTO bookmark_tag (tagname,created_at,created_by,modified_at,modified_by)
 INSERT INTO bookmark_tag (tagname,created_at,created_by,modified_at,modified_by) VALUES ('sample',{ts '2009-01-06 19:28:56.000'},'admin',{ts '2009-01-06 19:28:56.000'},'admin');
 INSERT INTO bookmark_tag_xref (bookmark_id,tagname) VALUES (1,'devproof');
 INSERT INTO bookmark_tag_xref (bookmark_id,tagname) VALUES (1,'sample');
+
+-- since 1.0-rc3
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('bookmark_entries_in_feed','Bookmark entries in feed','Bookmarks','java.lang.Integer','10');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('bookmark_feed_title','Bookmark feed title','Bookmarks','java.lang.String','Bookmarks');

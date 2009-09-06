@@ -24,10 +24,12 @@ public class UploadCenterConstants {
 	private UploadCenterConstants() {
 	}
 
-	final public static String CONF_UPLOADCENTER_FOLDER = "uploadcenter_folder";
-	final public static String CONF_UPLOADCENTER_MAXFILES = "uploadcenter_maxfiles";
-	final public static String CONF_UPLOADCENTER_MAXSIZE = "uploadcenter_maxsize";
+	public static final String CONF_UPLOADCENTER_FOLDER = "uploadcenter_folder";
+	public static final String CONF_UPLOADCENTER_MAXFILES = "uploadcenter_maxfiles";
+	public static final String CONF_UPLOADCENTER_MAXSIZE = "uploadcenter_maxsize";
 
-	final public static ResourceReference REF_GALLERY_IMG = new ResourceReference(UploadCenterConstants.class, "img/gallerylink.gif");
-	final public static ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(UploadCenterConstants.class, "img/download.gif");
+	public static final ResourceReference REF_GALLERY_IMG = new ResourceReference(UploadCenterConstants.class,
+			"img/gallerylink.gif");
+	public static final ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(UploadCenterConstants.class,
+			"img/download.gif");
 }
