@@ -21,7 +21,6 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
-import org.devproof.portal.core.module.role.RoleConstants;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
@@ -122,30 +121,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void registerUser(final UserEntity user, final String password, final String url,
 			final String confirmationCode) {
-		user.setActive(Boolean.TRUE);
-		user.setPasswordMD5(PortalUtil.generateMd5(password));
-		user.setRegistrationDate(PortalUtil.now());
-		user.setChangedAt(PortalUtil.now());
-		user.setRole(roleService.findById(configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE)));
-		if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
-			EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
-			user.setConfirmationCode(confirmationCode);
-			user.setConfirmationRequestedAt(PortalUtil.now());
-			user.setConfirmed(false);
-			placeholder.setConfirmationLink(url);
-			emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL),
-					placeholder);
-
-			// send notification
-			Integer templateId = configurationService.findAsInteger(UserConstants.CONF_NOTIFY_USER_REGISTRATION);
-			List<UserEntity> notifyUsers = findUserWithRight("emailnotification.registered.user");
-			for (UserEntity notifyUser : notifyUsers) {
-				placeholder.setToUsername(notifyUser.getUsername());
-				placeholder.setToFirstname(notifyUser.getFirstname());
-				placeholder.setToLastname(notifyUser.getLastname());
-				placeholder.setToEmail(notifyUser.getEmail());
-				emailService.sendEmail(templateId, placeholder);
-			}
+		setUserRegistrationValues(user, password);
+		if (isConfirmationRequired()) {
+			EmailPlaceholderBean placeholder = generateEmailPlaceHolder(user);
+			setConfirmationCode(user, confirmationCode);
+			sendConfirmationEmail(url, placeholder);
+			sendEmailNotificationToAdmins(placeholder);
 		} else {
 			// no confirmation required
 			user.setConfirmed(true);
@@ -153,13 +134,52 @@ public class UserServiceImpl implements UserService {
 		save(user);
 	}
 
+	protected EmailPlaceholderBean generateEmailPlaceHolder(final UserEntity user) {
+		return PortalUtil.getEmailPlaceHolderByUser(user);
+	}
+
+	protected void setUserRegistrationValues(final UserEntity user, final String password) {
+		user.setActive(Boolean.TRUE);
+		user.setPasswordMD5(PortalUtil.generateMd5(password));
+		user.setRegistrationDate(PortalUtil.now());
+		user.setChangedAt(PortalUtil.now());
+		user.setRole(roleService.findDefaultRegistrationRole());
+	}
+
+	protected Boolean isConfirmationRequired() {
+		return configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION);
+	}
+
+	protected void sendConfirmationEmail(final String url, final EmailPlaceholderBean placeholder) {
+		placeholder.setConfirmationLink(url);
+		emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL), placeholder);
+	}
+
+	protected void setConfirmationCode(final UserEntity user, final String confirmationCode) {
+		user.setConfirmationCode(confirmationCode);
+		user.setConfirmationRequestedAt(PortalUtil.now());
+		user.setConfirmed(false);
+	}
+
+	protected void sendEmailNotificationToAdmins(final EmailPlaceholderBean placeholder) {
+		Integer templateId = configurationService.findAsInteger(UserConstants.CONF_NOTIFY_USER_REGISTRATION);
+		List<UserEntity> notifyUsers = findUserWithRight("emailnotification.registered.user");
+		for (UserEntity notifyUser : notifyUsers) {
+			placeholder.setToUsername(notifyUser.getUsername());
+			placeholder.setToFirstname(notifyUser.getFirstname());
+			placeholder.setToLastname(notifyUser.getLastname());
+			placeholder.setToEmail(notifyUser.getEmail());
+			emailService.sendEmail(templateId, placeholder);
+		}
+	}
+
 	@Override
 	public void setNewPassword(final String username, final String newPassword) {
-		UserEntity user = userDao.findUserByUsername(username);
+		UserEntity user = findUserByUsername(username);
 		user.setPasswordMD5(PortalUtil.generateMd5(newPassword));
 		user.setChangedAt(PortalUtil.now());
 		user.setForgotPasswordCode(null);
-		userDao.save(user);
+		save(user);
 	}
 
 	@Required
