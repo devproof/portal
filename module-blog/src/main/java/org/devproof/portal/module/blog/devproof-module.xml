@@ -58,7 +58,7 @@
 		<property name="relatedTagRight" value="blog.view"/>
 	</bean>
 	
-	<bean class="org.devproof.portal.module.blog.service.BlogFeedProvider">
+	<bean class="org.devproof.portal.module.blog.service.BlogFeedProviderImpl">
 		<property name="blogDataProvider" ref="blogDataProvider"/>
 		<property name="configurationService" ref="configurationService"/>
 	</bean>

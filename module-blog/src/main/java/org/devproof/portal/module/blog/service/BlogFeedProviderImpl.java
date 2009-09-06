@@ -44,41 +44,66 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 /**
  * @author Carsten Hufe
  */
-public class BlogFeedProvider implements FeedProvider {
+public class BlogFeedProviderImpl implements FeedProvider {
 	private SortableQueryDataProvider<BlogEntity> blogDataProvider;
 	private ConfigurationService configurationService;
 
 	@Override
 	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
-		SyndFeed feed = new SyndFeedImpl();
-		feed.setTitle(getFeedName());
-		feed.setLink(rc.urlFor(BlogPage.class, new PageParameters()).toString());
-		// must be set for RSS2 feed
-		feed.setDescription(getFeedName());
-		Integer maxNumber = configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED);
+		SyndFeed feed = generateFeed(rc);
 		setRoleForDataProviderQuery(role);
-		Iterator<? extends BlogEntity> iterator = blogDataProvider.iterator(0, maxNumber);
-		List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		SyndEntry entry;
-		SyndContent description;
-		while (iterator.hasNext()) {
-			BlogEntity blogEntity = iterator.next();
-			entry = new SyndEntryImpl();
-			entry.setTitle(blogEntity.getHeadline());
-			entry.setLink(rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString());
-			entry.setPublishedDate(blogEntity.getModifiedAt());
-			description = new SyndContentImpl();
-			description.setType("text/plain");
-			String content = blogEntity.getContent().replaceAll("<(.|\n)*?>", "");
-			description.setValue(StringUtils.abbreviate(content, 200));
-			entry.setDescription(description);
-			entries.add(entry);
-		}
+		Iterator<? extends BlogEntity> iterator = getBlogEntries();
+		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
 		feed.setEntries(entries);
 		return feed;
 	}
 
-	private void setRoleForDataProviderQuery(final RoleEntity role) {
+	protected Iterator<? extends BlogEntity> getBlogEntries() {
+		Integer maxNumber = configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED);
+		Iterator<? extends BlogEntity> iterator = blogDataProvider.iterator(0, maxNumber);
+		return iterator;
+	}
+
+	protected SyndFeed generateFeed(final RequestCycle rc) {
+		SyndFeed feed = new SyndFeedImpl();
+		feed.setTitle(getFeedName());
+		feed.setLink(getUrl(rc));
+		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+		feed.setAuthor(pageTitle);
+		feed.setCopyright(pageTitle);
+		// must be set for RSS2 feed
+		feed.setDescription(getFeedName());
+		return feed;
+	}
+
+	protected String getUrl(final RequestCycle rc) {
+		return rc.urlFor(BlogPage.class, new PageParameters()).toString();
+	}
+
+	protected List<SyndEntry> generateFeedEntries(final RequestCycle rc, final Iterator<? extends BlogEntity> iterator) {
+		List<SyndEntry> entries = new ArrayList<SyndEntry>();
+		while (iterator.hasNext()) {
+			BlogEntity blogEntity = iterator.next();
+			SyndEntry entry = new SyndEntryImpl();
+			entry.setTitle(blogEntity.getHeadline());
+			entry.setLink(getUrl(rc, blogEntity));
+			entry.setPublishedDate(blogEntity.getModifiedAt());
+			entry.setAuthor(blogEntity.getModifiedBy());
+			String content = blogEntity.getContent().replaceAll("<(.|\n)*?>", "");
+			SyndContent description = new SyndContentImpl();
+			description.setType("text/plain");
+			description.setValue(StringUtils.abbreviate(content, 200));
+			entry.setDescription(description);
+			entries.add(entry);
+		}
+		return entries;
+	}
+
+	protected String getUrl(final RequestCycle rc, final BlogEntity blogEntity) {
+		return rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString();
+	}
+
+	protected void setRoleForDataProviderQuery(final RoleEntity role) {
 		BlogQuery query = new BlogQuery();
 		query.setRole(role);
 		blogDataProvider.setQueryObject(query);
