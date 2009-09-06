@@ -24,9 +24,9 @@ public class TagConstants {
 	private TagConstants() {
 	}
 
-	final public static String TAG_DEFAULT_SEPERATOR = " ";
-	final public static String TAG_SEPERATORS = " ,;";
-	final public static String CONF_BOX_NUM_TAGS = "box_num_tags";
+	public static final String TAG_DEFAULT_SEPERATOR = " ";
+	public static final String TAG_SEPERATORS = " ,;";
+	public static final String CONF_BOX_NUM_TAGS = "box_num_tags";
 
-	final public static ResourceReference REF_TAG_CSS = new ResourceReference(TagConstants.class, "css/tag.css");
+	public static final ResourceReference REF_TAG_CSS = new ResourceReference(TagConstants.class, "css/tag.css");
 }

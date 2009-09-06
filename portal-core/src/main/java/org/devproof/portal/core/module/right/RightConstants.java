@@ -22,7 +22,7 @@ public class RightConstants {
 	private RightConstants() {
 	}
 
-	final public static String PAGE_RIGHT_PREFIX = "page.";
-	final public static String COMPONENT_RIGHT_PREFIX = "component.";
-	final public static String GENERAL_RIGHT_PREFIX = "general.";
+	public static final String PAGE_RIGHT_PREFIX = "page.";
+	public static final String COMPONENT_RIGHT_PREFIX = "component.";
+	public static final String GENERAL_RIGHT_PREFIX = "general.";
 }
