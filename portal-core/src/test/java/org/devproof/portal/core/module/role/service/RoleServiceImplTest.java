@@ -20,6 +20,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.role.RoleConstants;
 import org.devproof.portal.core.module.role.dao.RoleDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.easymock.EasyMock;
@@ -29,63 +31,91 @@ import org.easymock.EasyMock;
  */
 public class RoleServiceImplTest extends TestCase {
 	private RoleServiceImpl impl;
-	private RoleDao mock;
+	private RoleDao roleDaoMock;
+	private ConfigurationService configurationServiceMock;
 
 	@Override
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(RoleDao.class);
+		roleDaoMock = EasyMock.createStrictMock(RoleDao.class);
+		configurationServiceMock = EasyMock.createStrictMock(ConfigurationService.class);
 		impl = new RoleServiceImpl();
-		impl.setRoleDao(mock);
+		impl.setRoleDao(roleDaoMock);
+		impl.setConfigurationService(configurationServiceMock);
 	}
 
 	public void testSave() {
 		RoleEntity e = impl.newRoleEntity();
 		e.setId(1);
-		mock.save(e);
-		EasyMock.replay(mock);
+		roleDaoMock.save(e);
+		EasyMock.replay(roleDaoMock);
 		impl.save(e);
-		EasyMock.verify(mock);
+		EasyMock.verify(roleDaoMock);
 	}
 
 	public void testDelete() {
 		RoleEntity e = impl.newRoleEntity();
 		e.setId(1);
-		mock.delete(e);
-		EasyMock.replay(mock);
+		roleDaoMock.delete(e);
+		EasyMock.replay(roleDaoMock);
 		impl.delete(e);
-		EasyMock.verify(mock);
+		EasyMock.verify(roleDaoMock);
 	}
 
 	public void testFindAll() {
 		List<RoleEntity> list = new ArrayList<RoleEntity>();
 		list.add(impl.newRoleEntity());
 		list.add(impl.newRoleEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
+		EasyMock.expect(roleDaoMock.findAll()).andReturn(list);
+		EasyMock.replay(roleDaoMock);
 		assertEquals(list, impl.findAll());
-		EasyMock.verify(mock);
+		EasyMock.verify(roleDaoMock);
 	}
 
 	public void testFindById() {
 		RoleEntity e = impl.newRoleEntity();
 		e.setId(1);
-		EasyMock.expect(mock.findById(1)).andReturn(e);
-		EasyMock.replay(mock);
+		EasyMock.expect(roleDaoMock.findById(1)).andReturn(e);
+		EasyMock.replay(roleDaoMock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(mock);
+		EasyMock.verify(roleDaoMock);
 	}
 
 	public void testNewRoleEntity() {
 		assertNotNull(impl.newRoleEntity());
 	}
 
+	public void testGetDefaultRegistrationRole() {
+		RoleEntity e = impl.newRoleEntity();
+		e.setId(1);
+		EasyMock.expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE)).andReturn(1);
+		EasyMock.expect(roleDaoMock.findById(1)).andReturn(e);
+		EasyMock.replay(configurationServiceMock);
+		EasyMock.replay(roleDaoMock);
+		RoleEntity defaultRegistrationRole = impl.findDefaultRegistrationRole();
+		assertNotNull(defaultRegistrationRole);
+		assertEquals(e.getId(), defaultRegistrationRole.getId());
+		EasyMock.verify(configurationServiceMock);
+		EasyMock.verify(roleDaoMock);
+	}
+
 	public void testFindAllOrderByDescription() {
 		List<RoleEntity> list = new ArrayList<RoleEntity>();
 		list.add(impl.newRoleEntity());
 		list.add(impl.newRoleEntity());
-		EasyMock.expect(mock.findAllOrderByDescription()).andReturn(list);
-		EasyMock.replay(mock);
+		EasyMock.expect(roleDaoMock.findAllOrderByDescription()).andReturn(list);
+		EasyMock.replay(roleDaoMock);
 		assertEquals(list, impl.findAllOrderByDescription());
-		EasyMock.verify(mock);
+		EasyMock.verify(roleDaoMock);
+	}
+
+	public void testFindGuestRole() {
+		RoleEntity role = impl.newRoleEntity();
+		EasyMock.expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE)).andReturn(1);
+		EasyMock.expect(roleDaoMock.findById(1)).andReturn(role);
+		EasyMock.replay(configurationServiceMock);
+		EasyMock.replay(roleDaoMock);
+		assertEquals(role, impl.findGuestRole());
+		EasyMock.verify(configurationServiceMock);
+		EasyMock.verify(roleDaoMock);
 	}
 }

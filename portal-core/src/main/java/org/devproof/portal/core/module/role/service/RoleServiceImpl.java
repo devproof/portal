@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.role.service;
 import java.util.List;
 
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.role.RoleConstants;
 import org.devproof.portal.core.module.role.dao.RoleDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.springframework.beans.factory.annotation.Required;
@@ -61,9 +62,14 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public RoleEntity findGuestRole() {
-		Integer roleId = configurationService.findAsInteger("spring.roleDao.findAll.description.id.guestrole");
+		Integer roleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
 		RoleEntity role = findById(roleId);
 		return role;
+	}
+
+	@Override
+	public RoleEntity findDefaultRegistrationRole() {
+		return findById(configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE));
 	}
 
 	@Required

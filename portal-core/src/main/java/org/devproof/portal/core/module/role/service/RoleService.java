@@ -38,4 +38,9 @@ public interface RoleService extends CrudService<RoleEntity, Integer> {
 	 * returns the guest role
 	 */
 	public RoleEntity findGuestRole();
+
+	/**
+	 * returns the default registration role
+	 */
+	public RoleEntity findDefaultRegistrationRole();
 }
