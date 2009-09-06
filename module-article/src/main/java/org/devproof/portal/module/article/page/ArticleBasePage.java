@@ -16,11 +16,13 @@
 package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.service.ArticleService;
 
@@ -36,6 +38,7 @@ public class ArticleBasePage extends TemplatePage {
 
 	public ArticleBasePage(final PageParameters params) {
 		super(params);
+		add(CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS));
 		addSyntaxHighlighter();
 		// New Article Link
 		PortalSession session = (PortalSession) getSession();

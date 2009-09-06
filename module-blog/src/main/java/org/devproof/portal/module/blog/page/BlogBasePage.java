@@ -16,11 +16,13 @@
 package org.devproof.portal.module.blog.page;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.service.BlogService;
 
@@ -36,6 +38,7 @@ public abstract class BlogBasePage extends TemplatePage {
 
 	public BlogBasePage(final PageParameters params) {
 		super(params);
+		add(CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS));
 		PortalSession session = (PortalSession) getSession();
 		isAuthor = session.hasRight("page.BlogEditPage");
 		addSyntaxHighlighter();

@@ -16,7 +16,6 @@
 package org.devproof.portal.module.blog.page;
 
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -27,7 +26,6 @@ import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
 import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.devproof.portal.module.blog.service.BlogService;
@@ -45,7 +43,6 @@ public class BlogEditPage extends BlogBasePage {
 
 	public BlogEditPage(final BlogEntity blog) {
 		super(new PageParameters());
-		add(CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS));
 		final RightGridPanel rightGrid = new RightGridPanel("viewright", "blog.view", blog.getAllRights());
 		final TagField<BlogTagEntity> tagField = new TagField<BlogTagEntity>("tags", blog.getTags(), blogTagService);
 
