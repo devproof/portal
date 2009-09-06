@@ -30,4 +30,6 @@ public class DownloadConstants {
 	public static final String CONF_BOX_NUM_LATEST_DOWNLOADS = "box_num_latest_downloads";
 	public static final ResourceReference REF_DOWNLOAD_CSS = new ResourceReference(DownloadConstants.class,
 			"css/download.css");
+	public static final String CONF_DOWNLOAD_FEED_TITLE = "download_feed_title";
+	public static final String CONF_DOWNLOAD_ENTRIES_IN_FEED = "download_entries_in_feed";
 }

@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.bookmark.service;
+package org.devproof.portal.module.download.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,10 +28,10 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.module.bookmark.BookmarkConstants;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.page.BookmarkPage;
-import org.devproof.portal.module.bookmark.query.BookmarkQuery;
+import org.devproof.portal.module.download.DownloadConstants;
+import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.page.DownloadPage;
+import org.devproof.portal.module.download.query.DownloadQuery;
 import org.springframework.beans.factory.annotation.Required;
 
 import com.sun.syndication.feed.synd.SyndContent;
@@ -44,23 +44,23 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 /**
  * @author Carsten Hufe
  */
-public class BookmarkFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<BookmarkEntity> bookmarkDataProvider;
+public class DownloadFeedProviderImpl implements FeedProvider {
+	private SortableQueryDataProvider<DownloadEntity> downloadDataProvider;
 	private ConfigurationService configurationService;
 
 	@Override
 	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
 		setRoleForDataProviderQuery(role);
-		Iterator<? extends BookmarkEntity> iterator = getBookmarkEntries();
+		Iterator<? extends DownloadEntity> iterator = getDownloadEntries();
 		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
 		feed.setEntries(entries);
 		return feed;
 	}
 
-	protected Iterator<? extends BookmarkEntity> getBookmarkEntries() {
-		Integer maxNumber = configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARK_ENTRIES_IN_FEED);
-		Iterator<? extends BookmarkEntity> iterator = bookmarkDataProvider.iterator(0, maxNumber);
+	protected Iterator<? extends DownloadEntity> getDownloadEntries() {
+		Integer maxNumber = configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED);
+		Iterator<? extends DownloadEntity> iterator = downloadDataProvider.iterator(0, maxNumber);
 		return iterator;
 	}
 
@@ -77,20 +77,20 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 	}
 
 	protected String getUrl(final RequestCycle rc) {
-		return rc.urlFor(BookmarkPage.class, new PageParameters()).toString();
+		return rc.urlFor(DownloadPage.class, new PageParameters()).toString();
 	}
 
 	protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
-			final Iterator<? extends BookmarkEntity> iterator) {
+			final Iterator<? extends DownloadEntity> iterator) {
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		while (iterator.hasNext()) {
-			BookmarkEntity bookmarkEntity = iterator.next();
+			DownloadEntity downloadEntity = iterator.next();
 			SyndEntry entry = new SyndEntryImpl();
-			entry.setTitle(bookmarkEntity.getTitle());
-			entry.setLink(getUrl(rc, bookmarkEntity));
-			entry.setPublishedDate(bookmarkEntity.getModifiedAt());
-			entry.setAuthor(bookmarkEntity.getModifiedBy());
-			String content = bookmarkEntity.getDescription();
+			entry.setTitle(downloadEntity.getTitle());
+			entry.setLink(getUrl(rc, downloadEntity));
+			entry.setPublishedDate(downloadEntity.getModifiedAt());
+			entry.setAuthor(downloadEntity.getModifiedBy());
+			String content = downloadEntity.getDescription();
 			content = content != null ? content : "";
 			content = content.replaceAll("<(.|\n)*?>", "");
 			SyndContent description = new SyndContentImpl();
@@ -102,33 +102,33 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 		return entries;
 	}
 
-	protected String getUrl(final RequestCycle rc, final BookmarkEntity BookmarkEntity) {
-		return rc.urlFor(BookmarkPage.class, new PageParameters("id=" + BookmarkEntity.getId())).toString();
+	protected String getUrl(final RequestCycle rc, final DownloadEntity DownloadEntity) {
+		return rc.urlFor(DownloadPage.class, new PageParameters("id=" + DownloadEntity.getId())).toString();
 	}
 
 	protected void setRoleForDataProviderQuery(final RoleEntity role) {
-		BookmarkQuery query = new BookmarkQuery();
+		DownloadQuery query = new DownloadQuery();
 		query.setRole(role);
-		bookmarkDataProvider.setQueryObject(query);
+		downloadDataProvider.setQueryObject(query);
 	}
 
 	@Override
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
 		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
-		pages.add(BookmarkPage.class);
+		pages.add(DownloadPage.class);
 		return pages;
 	}
 
 	@Override
 	public String getFeedName() {
 		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
-		String feedName = configurationService.findAsString(BookmarkConstants.CONF_BOOKMARK_FEED_TITLE);
+		String feedName = configurationService.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE);
 		return pageTitle + " - " + feedName;
 	}
 
 	@Required
-	public void setBookmarkDataProvider(final SortableQueryDataProvider<BookmarkEntity> bookmarkDataProvider) {
-		this.bookmarkDataProvider = bookmarkDataProvider;
+	public void setDownloadDataProvider(final SortableQueryDataProvider<DownloadEntity> downloadDataProvider) {
+		this.downloadDataProvider = downloadDataProvider;
 	}
 
 	@Required
