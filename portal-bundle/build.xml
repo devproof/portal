@@ -43,9 +43,20 @@
 				<exclude name="*core.sql"/>
 			</fileset>
 		</concat>
+		<!-- update scripts -->
+		<concat destfile="${targetsql}/update/mysql/update_from_1.0-rc2_to_1.0-rc3.sql">
+			<fileset dir="${targetsql}/sql/update/">
+				<include name="update_from_1.0-rc2_to_1.0-rc3_*.sql"/>
+			</fileset>
+		</concat>
+		<concat destfile="${targetsql}/update/hsql/update_from_1.0-rc2_to_1.0-rc3.sql">
+			<fileset dir="${targetsql}/sql/update/">
+				<include name="update_from_1.0-rc2_to_1.0-rc3_*.sql"/>
+			</fileset>
+		</concat>
 		<delete dir="${targetsql}/sql/"/>
 	</target>
-
+	<!-- Create HSQL DB for quickstartup -->
 	<target name="generate_hsql">
 		<mkdir dir="target/hsql/"/>
 		<sql
