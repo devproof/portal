@@ -72,6 +72,11 @@
 		<property name="relatedTagRight" value="download.view"/>
 	</bean>
 	
+	<bean class="org.devproof.portal.module.download.service.DownloadFeedProviderImpl">
+		<property name="downloadDataProvider" ref="downloadDataProvider"/>
+		<property name="configurationService" ref="configurationService"/>
+	</bean>	
+	
 	<!--  DataProvider  -->
 	<bean id="downloadDataProvider" parent="persistenceDataProvider" scope="prototype">
 		<property name="entityClass" value="org.devproof.portal.module.download.entity.DownloadEntity" />
