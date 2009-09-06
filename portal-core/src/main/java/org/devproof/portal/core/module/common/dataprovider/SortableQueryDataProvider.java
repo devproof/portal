@@ -15,11 +15,10 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
-import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 
 /**
  * @author Carsten Hufe
  */
-public abstract class SortableQueryDataProvider<T> extends SortableDataProvider<T> implements QueryDataProvider<T> {
-	private static final long serialVersionUID = 1L;
+public interface SortableQueryDataProvider<T> extends ISortableDataProvider<T>, QueryDataProvider<T> {
 }
