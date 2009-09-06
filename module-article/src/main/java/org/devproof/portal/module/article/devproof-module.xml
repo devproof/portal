@@ -80,6 +80,11 @@
 		</property>
 		<property name="relatedTagRight" value="article.view"/>
 	</bean>
+		
+	<bean class="org.devproof.portal.module.article.service.ArticleFeedProviderImpl">
+		<property name="articleDataProvider" ref="articleDataProvider"/>
+		<property name="configurationService" ref="configurationService"/>
+	</bean>	
 	
 	<!--  DataProvider  -->
 	<bean id="articleDataProvider" parent="persistenceDataProvider" scope="prototype">

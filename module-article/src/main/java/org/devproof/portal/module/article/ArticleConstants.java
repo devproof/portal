@@ -29,4 +29,6 @@ public class ArticleConstants {
 	public static final String CONF_BOX_NUM_LATEST_ARTICLES = "box_num_latest_articles";
 	public static final ResourceReference REF_ARTICLE_CSS = new ResourceReference(ArticleConstants.class,
 			"css/article.css");
+	public static final String CONF_ARTICLE_ENTRIES_IN_FEED = "article_entries_in_feed";
+	public static final String CONF_ARTICLE_FEED_TITLE = "article_feed_title";
 }

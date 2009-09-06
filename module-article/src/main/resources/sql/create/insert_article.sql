@@ -49,3 +49,8 @@ INSERT INTO article_right_xref (article_id,right_id) VALUES (1,'article.read.gue
 INSERT INTO article_right_xref (article_id,right_id) VALUES (1,'article.read.registered');
 INSERT INTO article_tag (tagname,created_at,created_by,modified_at,modified_by) VALUES ('sample',{ts '2009-01-06 19:28:56.000'},'admin',{ts '2009-01-06 19:28:56.000'},'admin');
 INSERT INTO article_tag_xref (article_id,tagname) VALUES (1,'sample');
+
+-- since 1.0-rc3
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('article_entries_in_feed','Article entries in feed','Articles','java.lang.Integer','10');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('article_feed_title','Article feed title','Articles','java.lang.String','Articles');
+
