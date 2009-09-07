@@ -57,51 +57,101 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	public ArticleEditPage(final ArticleEntity article) {
 		super(new PageParameters());
-		final RightGridPanel viewRight = new RightGridPanel("viewright", "article.view", article.getAllRights());
-		final RightGridPanel readRight = new RightGridPanel("readright", "article.read", article.getAllRights());
-		final TagField<ArticleTagEntity> tagField = new TagField<ArticleTagEntity>("tags", article.getTags(),
-				articleTagService);
-		final IModel<String> content = new Model<String>(getStringFromArticlePages(article.getArticlePages()));
+		RightGridPanel viewRightPanel = createViewRightPanel(article);
+		RightGridPanel readRightPanel = createReadRightPanel(article);
+		TagField<ArticleTagEntity> tagField = createTagField(article);
+		
+		IModel<String> contentToEdit = getFullArticleHtmlFromArticlePages(article.getArticlePages());
+		RequiredTextField<String> contentIdField = createContentIdField(article);
+		
+		Form<ArticleEntity> form = createArticleEditForm(article, viewRightPanel, readRightPanel, tagField, contentToEdit);
+		form.add(tagField);
+		form.add(viewRightPanel);
+		form.add(readRightPanel);
+		form.add(contentIdField);
+		form.add(createTitleField(article, contentIdField));
+		form.add(createTeaserField());
+		form.add(createContentField(contentToEdit));
+		add(form);
+	}
 
-		final Form<ArticleEntity> form = new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(
-				article)) {
+	private RightGridPanel createReadRightPanel(final ArticleEntity article) {
+		return new RightGridPanel("readright", "article.read", article.getAllRights());
+	}
+
+	private RightGridPanel createViewRightPanel(final ArticleEntity article) {
+		return new RightGridPanel("viewright", "article.view", article.getAllRights());
+	}
+
+	private TagField<ArticleTagEntity> createTagField(
+			final ArticleEntity article) {
+		return new TagField<ArticleTagEntity>("tags", article.getTags(), articleTagService);
+	}
+
+	private RequiredTextField<String> createContentIdField(
+			final ArticleEntity article) {
+		final RequiredTextField<String> contentId = new RequiredTextField<String>("contentId");
+		contentId.setEnabled(isNewArticle(article));
+		contentId.add(createContentIdValidator(article));
+		contentId.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
+		return contentId;
+	}
+
+	private RequiredTextField<String> createTitleField(
+			final ArticleEntity article,
+			final RequiredTextField<String> contentId) {
+		RequiredTextField<String> title = new RequiredTextField<String>("title");
+		title.add(StringValidator.minimumLength(3));
+		if (isNewArticle(article)) {
+			title.add(createContentIdGeneratorBehavior(contentId, title));
+		}
+		return title;
+	}
+
+	private FormComponent<String> createTeaserField() {
+		FormComponent<String> fc = new RichTextArea("teaser");
+		fc.add(StringValidator.minimumLength(3));
+		fc.setRequired(true);
+		return fc;
+	}
+
+	private FormComponent<String> createContentField(
+			IModel<String> contentToEdit) {
+		FormComponent<String> fc;
+		fc = new RichTextArea("content", contentToEdit);
+		fc.add(StringValidator.minimumLength(3));
+		fc.setRequired(true);
+		return fc;
+	}
+
+	private boolean isNewArticle(final ArticleEntity article) {
+		return article.getId() == null;
+	}
+
+	private OnChangeAjaxBehavior createContentIdGeneratorBehavior(
+			final RequiredTextField<String> contentId,
+			final RequiredTextField<String> title) {
+		return new OnChangeAjaxBehavior() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit() {
-				ArticleEditPage.this.setVisible(false);
-				// ArticleEntity article = this.getModelObject();
-
-				final List<RightEntity> allRights = new ArrayList<RightEntity>();
-				allRights.addAll(viewRight.getSelectedRights());
-				allRights.addAll(readRight.getSelectedRights());
-				article.setAllRights(allRights);
-				article.setTags(tagField.getTagsAndStore());
-				article.setArticlePages(ArticleEditPage.this.getArticlePagesFromString(content.getObject(), article));
-				articleService.save(article);
-				setRedirect(false);
-				setResponsePage(ArticleViewPage.class, new PageParameters("0=" + article.getContentId()));
-				info(getString("msg.saved"));
+			protected void onUpdate(final AjaxRequestTarget target) {
+				String id = title.getModelObject();
+				id = id.replace(' ', '_');
+				id = id.replaceAll("[^A-Z^a-z^0-9^\\_^\\.^_\\-]*", "");
+				contentId.setModelObject(id);
+				target.addComponent(contentId);
 			}
 		};
-		form.setOutputMarkupId(true);
-		form.add(tagField);
-		form.add(viewRight);
-		form.add(readRight);
-		add(form);
+	}
 
-		// Other form fields
-		FormComponent<String> fc;
-
-		final RequiredTextField<String> contentId = new RequiredTextField<String>("contentId");
-		contentId.setOutputMarkupId(true);
-		contentId.setEnabled(article.getId() == null);
-		contentId.add(new AbstractValidator<String>() {
+	private AbstractValidator<String> createContentIdValidator(
+			final ArticleEntity article) {
+		return new AbstractValidator<String>() {
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
-				if (articleService.existsContentId(ivalidatable.getValue()) && article.getId() == null) {
+				if (articleService.existsContentId(ivalidatable.getValue()) && isNewArticle(article)) {
 					error(ivalidatable);
 				}
 			}
@@ -110,50 +160,46 @@ public class ArticleEditPage extends ArticleBasePage {
 			protected String resourceKey() {
 				return "existing.contentId";
 			}
-		});
-		contentId.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
-		form.add(contentId);
-
-		// title
-		final RequiredTextField<String> title = new RequiredTextField<String>("title");
-		title.add(StringValidator.minimumLength(3));
-		if (article.getId() == null) {
-			title.add(new OnChangeAjaxBehavior() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void onUpdate(final AjaxRequestTarget target) {
-					String id = title.getModelObject();
-					id = id.replace(' ', '_');
-					id = id.replaceAll("[^A-Z^a-z^0-9^\\_^\\.^_\\-]*", "");
-					contentId.setModelObject(id);
-					target.addComponent(contentId);
-				}
-			});
-		}
-		form.add(title);
-
-		// teaser
-		fc = new RichTextArea("teaser");
-		fc.add(StringValidator.minimumLength(3));
-		fc.setRequired(true);
-		form.add(fc);
-
-		// teaser
-		fc = new RichTextArea("content", content);
-		fc.add(StringValidator.minimumLength(3));
-		fc.setRequired(true);
-		form.add(fc);
+		};
 	}
 
-	private String getStringFromArticlePages(final List<ArticlePageEntity> pages) {
+	private Form<ArticleEntity> createArticleEditForm(
+			final ArticleEntity article, final RightGridPanel viewRight,
+			final RightGridPanel readRight,
+			final TagField<ArticleTagEntity> tagField,
+			final IModel<String> content) {
+		Form<ArticleEntity> form = new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(
+				article)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit() {
+				ArticleEditPage.this.setVisible(false);
+				// ArticleEntity article = this.getModelObject();
+				final List<RightEntity> allRights = new ArrayList<RightEntity>();
+				allRights.addAll(viewRight.getSelectedRights());
+				allRights.addAll(readRight.getSelectedRights());
+				article.setAllRights(allRights);
+				article.setTags(tagField.getTagsAndStore());
+				article.setArticlePages(ArticleEditPage.this.getArticlePagesFromFullArticleHtml(content.getObject(), article));
+				articleService.save(article);
+				setRedirect(false);
+				setResponsePage(ArticleViewPage.class, new PageParameters("0=" + article.getContentId()));
+				info(getString("msg.saved"));
+			}
+		};
+		form.setOutputMarkupId(true);
+		return form;
+	}
+
+	private IModel<String> getFullArticleHtmlFromArticlePages(final List<ArticlePageEntity> pages) {
 		String back = "";
 		if (pages != null) {
 			final StringBuilder buf = new StringBuilder();
-			boolean first = true;
+			boolean firstArticlePage = true;
 			for (final ArticlePageEntity page : pages) {
-				if (first) {
-					first = false;
+				if (firstArticlePage) {
+					firstArticlePage = false;
 				} else {
 					buf.append(ArticleConstants.PAGEBREAK);
 				}
@@ -161,30 +207,36 @@ public class ArticleEditPage extends ArticleBasePage {
 			}
 			back = buf.toString();
 		}
-		return back;
+		return new Model<String>(back);
 	}
 
-	private List<ArticlePageEntity> getArticlePagesFromString(final String pages, final ArticleEntity parent) {
-		final List<ArticlePageEntity> back = new ArrayList<ArticlePageEntity>();
-		String strs[] = null;
-		if (pages != null) {
-			strs = StringUtils.splitByWholeSeparator(pages, ArticleConstants.PAGEBREAK);
-		} else {
-			strs = new String[1];
-			strs[0] = "";
-		}
-		for (int i = 0; i < strs.length; i++) {
+	private List<ArticlePageEntity> getArticlePagesFromFullArticleHtml(final String pages, final ArticleEntity parent) {
+		List<ArticlePageEntity> back = new ArrayList<ArticlePageEntity>();
+		String[] splittedPages = getSplittedPages(pages);
+		for (int i = 0; i < splittedPages.length; i++) {
 			ArticlePageEntity page = null;
-			if (parent.getArticlePages() != null && parent.getArticlePages().size() > i) {
+			boolean isUpdatablePageAvailable = parent.getArticlePages() != null 
+												&& parent.getArticlePages().size() > i;
+			if (isUpdatablePageAvailable) {
 				page = parent.getArticlePages().get(i);
 			} else {
 				page = articleService.newArticlePageEntity(parent, i + 1);
 				page.setArticle(parent);
 			}
-			page.setContent(strs[i]);
+			page.setContent(splittedPages[i]);
 			back.add(page);
 		}
-
 		return back;
+	}
+
+	private String[] getSplittedPages(final String pages) {
+		String splittedPages[] = null;
+		if (pages != null) {
+			splittedPages = StringUtils.splitByWholeSeparator(pages, ArticleConstants.PAGEBREAK);
+		} else {
+			splittedPages = new String[1];
+			splittedPages[0] = "";
+		}
+		return splittedPages;
 	}
 }

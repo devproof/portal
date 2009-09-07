@@ -63,7 +63,8 @@ public class ContactPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-
+	private String captchaChallengeCode;
+	
 	public ContactPage(final PageParameters params) {
 		super(params);
 		add(CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS));
@@ -129,8 +130,8 @@ public class ContactPage extends TemplatePage {
 
 		form.add(trCaptcha1);
 		form.add(trCaptcha2);
-
-		final CaptchaImageResource captchaImageResource = new CaptchaImageResource(PortalUtil.randomString(6, 8));
+		captchaChallengeCode = PortalUtil.randomString(6, 8);
+		final CaptchaImageResource captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
 		trCaptcha1.add(new Image("captchacodeimage", captchaImageResource));
 
 		fc = new TextField<String>("captchacode", Model.of(""));
@@ -176,5 +177,9 @@ public class ContactPage extends TemplatePage {
 				setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
 			}
 		});
+	}
+
+	public String getCaptchaChallengeCode() {
+		return captchaChallengeCode;
 	}
 }

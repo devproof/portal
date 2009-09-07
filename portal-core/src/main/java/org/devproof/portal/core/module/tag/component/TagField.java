@@ -65,21 +65,35 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 			return new ArrayList<String>().iterator();
 		}
 
+		String lastWord = getLastWord(input);
+		final List<String> choices = new ArrayList<String>(10);
+		if (isSearchable(input, lastWord)) {
+			final String leadingTags = getLeadingTags(input, lastWord);
+			final List<T> matchingCompletionTags = tagService.findTagsStartingWith(lastWord);
+			for (final T matchingCompletionTag : matchingCompletionTags) {
+				choices.add(leadingTags + matchingCompletionTag.getTagname());
+			}
+		}
+		return choices.iterator();
+
+	}
+
+	private String getLeadingTags(final String input, String lastWord) {
+		final String prefix = input.substring(0, input.length() - lastWord.length());
+		return prefix;
+	}
+
+	private boolean isSearchable(final String input, String lastWord) {
+		return lastWord.length() > 1 && input.endsWith(lastWord);
+	}
+
+	private String getLastWord(final String input) {
 		final StringTokenizer tokenizer = new StringTokenizer(input, TagConstants.TAG_SEPERATORS, false);
 		String lastToken = "";
 		while (tokenizer.hasMoreTokens()) {
 			lastToken = tokenizer.nextToken();
 		}
-		final List<String> choices = new ArrayList<String>(10);
-		if (lastToken.length() > 1 && input.endsWith(lastToken)) {
-			final String prefix = input.substring(0, input.length() - lastToken.length());
-			final List<T> tags = tagService.findTagsStartingWith(lastToken);
-			for (final T tag : tags) {
-				choices.add(prefix + tag.getTagname());
-			}
-		}
-		return choices.iterator();
-
+		return lastToken;
 	}
 
 	/**
@@ -90,16 +104,11 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 		final List<T> back = new ArrayList<T>();
 		final StringTokenizer tokenizer = new StringTokenizer(getValue(), TagConstants.TAG_SEPERATORS, false);
 		while (tokenizer.hasMoreTokens()) {
-			final String token = tokenizer.nextToken().trim();
+			final String tagName = tokenizer.nextToken().trim();
 			// save only token with 3 letters or more!
-			if (!Strings.isEmpty(token) && token.length() > 2) {
-				T tag = tagService.findById(token);
-				if (tag == null) {
-					tag = tagService.newTagEntity(token);
-					tagService.save(tag);
-				}
+			if (!Strings.isEmpty(tagName) && tagName.length() > 2) {
+				T tag = tagService.findByIdAndCreateIfNotExists(tagName);
 				back.add(tag);
-
 			}
 		}
 		return back;

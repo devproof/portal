@@ -69,8 +69,8 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel {
 			}
 		}
 
-		final ListDataProvider<T> provider = new ListDataProvider<T>(tags);
-		this.dataView = new DataView<T>("liRow", provider) {
+		ListDataProvider<T> provider = new ListDataProvider<T>(tags);
+		dataView = new DataView<T>("liRow", provider) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -88,12 +88,11 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel {
 			}
 
 		};
-		add(this.dataView);
+		add(dataView);
 		setVisible(tags.size() > 0);
 	}
 
 	public void cleanSelection() {
 		selectedTag = null;
-		dataView.renderComponent();
 	}
 }

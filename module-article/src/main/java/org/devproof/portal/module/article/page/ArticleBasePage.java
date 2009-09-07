@@ -32,31 +32,41 @@ import org.devproof.portal.module.article.service.ArticleService;
 public class ArticleBasePage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
-	private final boolean isAuthor;
 	@SpringBean(name = "articleService")
 	private ArticleService articleService;
-
+	private boolean isAuthor = false;
+	
 	public ArticleBasePage(final PageParameters params) {
 		super(params);
+		setAuthorRight();
 		add(CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS));
 		addSyntaxHighlighter();
-		// New Article Link
+		addArticleAddLink();
+	}
+
+	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
 		isAuthor = session.hasRight("page.ArticleEditPage");
-		if (isAuthor) {
-			Link<?> addLink = new Link<Object>("adminLink") {
+	}
 
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick() {
-					final ArticleEntity newEntry = articleService.newArticleEntity();
-					setResponsePage(new ArticleEditPage(newEntry));
-				}
-			};
+	private void addArticleAddLink() {
+		if (isAuthor()) {
+			Link<?> addLink = createArticleAddLink();
 			addLink.add(new Label("linkName", getString("createLink")));
 			addPageAdminBoxLink(addLink);
 		}
+	}
+
+	private Link<?> createArticleAddLink() {
+		Link<?> addLink = new Link<Object>("adminLink") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick() {
+				final ArticleEntity newEntry = articleService.newArticleEntity();
+				setResponsePage(new ArticleEditPage(newEntry));
+			}
+		};
+		return addLink;
 	}
 
 	public boolean isAuthor() {

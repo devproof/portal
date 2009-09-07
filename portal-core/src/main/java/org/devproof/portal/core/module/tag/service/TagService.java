@@ -53,4 +53,9 @@ public interface TagService<T> extends CrudService<T, String> {
 	 * Returns the belonging tag right for the related object type
 	 */
 	public String getRelatedTagRight();
+
+	/**
+	 * Returns a tag by id and creates it, if it does exist
+	 */
+	public T findByIdAndCreateIfNotExists(String tagName);
 }

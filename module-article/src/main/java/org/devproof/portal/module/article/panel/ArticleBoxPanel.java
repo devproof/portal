@@ -45,10 +45,21 @@ public class ArticleBoxPanel extends Panel {
 
 	public ArticleBoxPanel(final String id) {
 		super(id);
+		List<ArticleEntity> latestArticles = getLatestArticles();
+		add(createRepeatingViewWithArticles(latestArticles));
+		setVisible(latestArticles.size() > 0);
+	}
+
+	private List<ArticleEntity> getLatestArticles() {
+		Integer numberOfLatestArticles = configurationService.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
 		PortalSession session = (PortalSession) getSession();
-		Integer num = configurationService.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
-		List<ArticleEntity> articles = articleService
-				.findAllArticlesForRoleOrderedByDateDesc(session.getRole(), 0, num);
+		List<ArticleEntity> latestArticles = articleService
+				.findAllArticlesForRoleOrderedByDateDesc(session.getRole(), 0, numberOfLatestArticles);
+		return latestArticles;
+	}
+
+	private RepeatingView createRepeatingViewWithArticles(
+			List<ArticleEntity> articles) {
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (ArticleEntity article : articles) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
@@ -58,7 +69,6 @@ public class ArticleBoxPanel extends Panel {
 			link.add(new Label("linkName", article.getTitle()));
 			item.add(link);
 		}
-		add(repeating);
-		setVisible(articles.size() > 0);
+		return repeating;
 	}
 }
