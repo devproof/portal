@@ -89,6 +89,16 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 		tagDao.save(entity);
 	}
 
+	@Override
+	public T findByIdAndCreateIfNotExists(String tagName) {
+		T tag = findById(tagName);
+		if (tag == null) {
+			tag = newTagEntity(tagName);
+			save(tag);
+		}
+		return tag;
+	}
+
 	@Required
 	public void setTagDao(final TagDao<T> tagDao) {
 		this.tagDao = tagDao;

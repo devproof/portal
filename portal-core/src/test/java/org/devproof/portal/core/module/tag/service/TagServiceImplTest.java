@@ -122,6 +122,17 @@ public class TagServiceImplTest extends TestCase {
 		EasyMock.verify(mock);
 	}
 
+	public void testFindByIdAndCreateIfNotExists() {
+		EasyMock.expect(mock.findById("sampletag")).andReturn(null);
+		EasyMock.expect(mock.getType()).andReturn(DummyTagEntity.class);
+		mock.save((DummyTagEntity)EasyMock.anyObject());
+		EasyMock.replay(mock);		
+		DummyTagEntity newTag = impl.findByIdAndCreateIfNotExists("sampletag");
+		assertEquals("sampletag", newTag.getTagname());
+		EasyMock.verify(mock);
+	}
+	
+	
 	private static class DummyTagEntity extends BaseTagEntity<Object> {
 
 		private static final long serialVersionUID = 1L;

@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -53,17 +54,34 @@ public class ArticleViewPage extends ArticleBasePage {
 
 	public ArticleViewPage(final PageParameters params) {
 		super(params);
-		final PortalSession session = (PortalSession) getSession();
+		String contentId = getContentId(params);
+		int currentPage = params.getAsInteger("1", 1);
+		int numberOfPages = (int) articleService.getPageCount(contentId);
+		ArticlePageEntity page = articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
+
+		validateAccessRights(page);
+		add(createTitleLabel(page));
+		add(createMetaInfoPanel(page));
+		add(createAppropriateAuthorPanel(page));
+		add(createTagPanel(params, page));
+		add(createContentLabel(page));
+		add(createBackLink(contentId, currentPage));
+		add(createForwardLink(contentId, currentPage, numberOfPages));
 		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(new ArticleQuery(), "tag"),
 				ArticlePage.class, params);
+		setPageTitle(page.getArticle().getTitle());
+	}
+
+	private String getContentId(final PageParameters params) {
 		String contentId = params.getString("0");
 		if (contentId == null) {
 			contentId = getRequest().getParameter("optparam");
 		}
-		final int currentPage = params.getAsInteger("1", 1);
-		final int pageCount = (int) articleService.getPageCount(contentId);
-		final ArticlePageEntity page = articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
+		return contentId;
+	}
 
+	private void validateAccessRights(ArticlePageEntity page) {
+		final PortalSession session = (PortalSession) getSession();
 		if (page == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
 		}
@@ -71,46 +89,59 @@ public class ArticleViewPage extends ArticleBasePage {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"),
 					getRequestURL()));
 		}
-		add(new Label("title", page.getArticle().getTitle()));
-		setPageTitle(page.getArticle().getTitle());
-		add(new MetaInfoPanel("metaInfo", page.getArticle()));
+	}
+
+	private Label createTitleLabel(final ArticlePageEntity page) {
+		return new Label("title", page.getArticle().getTitle());
+	}
+
+	private MetaInfoPanel createMetaInfoPanel(final ArticlePageEntity page) {
+		return new MetaInfoPanel("metaInfo", page.getArticle());
+	}
+
+	private Component createAppropriateAuthorPanel(final ArticlePageEntity page) {
 		if (isAuthor()) {
-			add(new AuthorPanel<ArticleEntity>("authorButtons", page.getArticle()) {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onDelete(final AjaxRequestTarget target) {
-					articleService.delete(page.getArticle());
-				}
-
-				@Override
-				public void onEdit(final AjaxRequestTarget target) {
-					ArticleEntity article = page.getArticle();
-					article = articleService.findById(article.getId());
-					final ArticleEditPage articlePage = new ArticleEditPage(article);
-					setResponsePage(articlePage);
-				}
-			}.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted"))));
+			return createAuthorPanel(page);
 		} else {
-			add(new WebMarkupContainer("authorButtons").setVisible(false));
+			return createEmptyAuthorPanel();
 		}
-		add(new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle().getTags()),
-				ArticlePage.class, params));
-		add(new ExtendedLabel("content", page.getContent()));
+	}
 
-		final BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink",
-				ArticleViewPage.class) {
+	private Component createAuthorPanel(final ArticlePageEntity page) {
+		return new AuthorPanel<ArticleEntity>("authorButtons", page.getArticle()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isVisible() {
-				return currentPage > 1;
+			public void onDelete(final AjaxRequestTarget target) {
+				articleService.delete(page.getArticle());
 			}
-		};
-		backLink.setParameter("0", contentId);
-		backLink.setParameter("1", currentPage - 1);
-		add(backLink);
 
+			@Override
+			public void onEdit(final AjaxRequestTarget target) {
+				ArticleEntity article = page.getArticle();
+				article = articleService.findById(article.getId());
+				final ArticleEditPage articlePage = new ArticleEditPage(article);
+				setResponsePage(articlePage);
+			}
+		}.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
+	}
+
+	private Component createEmptyAuthorPanel() {
+		return new WebMarkupContainer("authorButtons").setVisible(false);
+	}
+
+	private ExtendedLabel createContentLabel(final ArticlePageEntity page) {
+		return new ExtendedLabel("content", page.getContent());
+	}
+
+	private ContentTagPanel<ArticleTagEntity> createTagPanel(
+			final PageParameters params, final ArticlePageEntity page) {
+		return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle().getTags()),
+				ArticlePage.class, params);
+	}
+
+	private BookmarkablePageLink<String> createForwardLink(String contentId,
+			final int currentPage, final int pageCount) {
 		final BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
 				ArticleViewPage.class) {
 			private static final long serialVersionUID = 1L;
@@ -123,6 +154,22 @@ public class ArticleViewPage extends ArticleBasePage {
 		};
 		forwardLink.setParameter("0", contentId);
 		forwardLink.setParameter("1", currentPage + 1);
-		add(forwardLink);
+		return forwardLink;
+	}
+
+	private BookmarkablePageLink<String> createBackLink(String contentId,
+			final int currentPage) {
+		BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink",
+				ArticleViewPage.class) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return currentPage > 1;
+			}
+		};
+		backLink.setParameter("0", contentId);
+		backLink.setParameter("1", currentPage - 1);
+		return backLink;
 	}
 }
