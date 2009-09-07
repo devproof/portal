@@ -33,6 +33,16 @@
     			</bean>
     		</list>
     	</property>
+    	
+    	<!--  Register boxes -->
+    	<property name="boxes">
+    	   	<list>
+    			<bean class="org.devproof.portal.core.config.BoxConfiguration">
+    				<property name="boxClass" value="org.devproof.portal.core.module.feed.panel.FeedBoxPanel"/>
+    				<property name="name" value="Feed Box"/>
+    			</bean>
+    		</list>
+    	</property>
     </bean>
     
     <!-- Locator -->
