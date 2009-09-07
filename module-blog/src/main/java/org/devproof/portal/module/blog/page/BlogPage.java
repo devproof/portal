@@ -120,7 +120,7 @@ public class BlogPage extends BlogBasePage {
 		}
 	}
 
-	public class BlogView extends Fragment {
+	private class BlogView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
 
