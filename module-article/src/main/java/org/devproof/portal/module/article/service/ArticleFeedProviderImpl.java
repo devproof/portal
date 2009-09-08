@@ -31,6 +31,7 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.page.ArticlePage;
+import org.devproof.portal.module.article.page.ArticleReadPage;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -116,6 +117,7 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
 		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
 		pages.add(ArticlePage.class);
+		pages.add(ArticleReadPage.class);
 		return pages;
 	}
 

@@ -43,7 +43,7 @@ import org.devproof.portal.module.article.service.ArticleService;
  * 
  * @author Carsten Hufe
  */
-public class ArticleViewPage extends ArticleBasePage {
+public class ArticleReadPage extends ArticleBasePage {
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +52,7 @@ public class ArticleViewPage extends ArticleBasePage {
 	@SpringBean(name = "articleTagService")
 	private TagService<ArticleTagEntity> articleTagService;
 
-	public ArticleViewPage(final PageParameters params) {
+	public ArticleReadPage(final PageParameters params) {
 		super(params);
 		String contentId = getContentId(params);
 		int currentPage = params.getAsInteger("1", 1);
@@ -143,7 +143,7 @@ public class ArticleViewPage extends ArticleBasePage {
 	private BookmarkablePageLink<String> createForwardLink(String contentId,
 			final int currentPage, final int pageCount) {
 		final BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
-				ArticleViewPage.class) {
+				ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -160,7 +160,7 @@ public class ArticleViewPage extends ArticleBasePage {
 	private BookmarkablePageLink<String> createBackLink(String contentId,
 			final int currentPage) {
 		BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink",
-				ArticleViewPage.class) {
+				ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
