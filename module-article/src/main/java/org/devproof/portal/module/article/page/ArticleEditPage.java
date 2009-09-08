@@ -57,14 +57,19 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	public ArticleEditPage(final ArticleEntity article) {
 		super(new PageParameters());
+		add(createPageForm(article));
+	}
+
+	private Form<ArticleEntity> createPageForm(final ArticleEntity article) {
 		RightGridPanel viewRightPanel = createViewRightPanel(article);
 		RightGridPanel readRightPanel = createReadRightPanel(article);
 		TagField<ArticleTagEntity> tagField = createTagField(article);
-		
-		IModel<String> contentToEdit = getFullArticleHtmlFromArticlePages(article.getArticlePages());
 		RequiredTextField<String> contentIdField = createContentIdField(article);
 		
+		IModel<String> contentToEdit = getFullArticleHtmlFromArticlePages(article.getArticlePages());
+		
 		Form<ArticleEntity> form = createArticleEditForm(article, viewRightPanel, readRightPanel, tagField, contentToEdit);
+		form.setOutputMarkupId(true);
 		form.add(tagField);
 		form.add(viewRightPanel);
 		form.add(readRightPanel);
@@ -72,7 +77,7 @@ public class ArticleEditPage extends ArticleBasePage {
 		form.add(createTitleField(article, contentIdField));
 		form.add(createTeaserField());
 		form.add(createContentField(contentToEdit));
-		add(form);
+		return form;
 	}
 
 	private RightGridPanel createReadRightPanel(final ArticleEntity article) {
@@ -168,8 +173,7 @@ public class ArticleEditPage extends ArticleBasePage {
 			final RightGridPanel readRight,
 			final TagField<ArticleTagEntity> tagField,
 			final IModel<String> content) {
-		Form<ArticleEntity> form = new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(
-				article)) {
+		return new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(article)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -188,8 +192,6 @@ public class ArticleEditPage extends ArticleBasePage {
 				info(getString("msg.saved"));
 			}
 		};
-		form.setOutputMarkupId(true);
-		return form;
 	}
 
 	private IModel<String> getFullArticleHtmlFromArticlePages(final List<ArticlePageEntity> pages) {

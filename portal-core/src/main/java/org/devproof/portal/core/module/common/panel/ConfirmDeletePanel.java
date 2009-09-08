@@ -28,7 +28,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
  * @author Carsten Hufe
  * 
  */
-abstract public class ConfirmDeletePanel<T> extends Panel {
+public abstract class ConfirmDeletePanel<T> extends Panel {
 
 	private static final long serialVersionUID = 1L;
 

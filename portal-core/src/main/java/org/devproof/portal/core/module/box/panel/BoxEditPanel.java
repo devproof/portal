@@ -39,7 +39,7 @@ import org.devproof.portal.core.module.box.service.BoxService;
 /**
  * @author Carsten Hufe
  */
-abstract public class BoxEditPanel extends Panel {
+public abstract class BoxEditPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "boxService")
@@ -49,32 +49,50 @@ abstract public class BoxEditPanel extends Panel {
 
 	public BoxEditPanel(final String id, final BoxEntity box) {
 		super(id);
-		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		add(feedback);
+		FeedbackPanel feedbackPanel = createFeedbackPanel();
+		IModel<BoxConfiguration> selectBoxModel = getBoxConfigurationModel(box);
+		add(feedbackPanel);
+		add(createPageForm(box, feedbackPanel, selectBoxModel));
+	}
 
-		final Form<BoxEntity> form = new Form<BoxEntity>("form");
+	private Form<BoxEntity> createPageForm(final BoxEntity box,
+			FeedbackPanel feedbackPanel, IModel<BoxConfiguration> selectBoxModel) {
+		Form<BoxEntity> form = createBoxEditForm(box);
+		form.add(createContentField());
+		form.add(createBoxTypeChoice(selectBoxModel));
+		form.add(createTitleField());
+		form.add(createAjaxButton(box, feedbackPanel, form, selectBoxModel));
 		form.setOutputMarkupId(true);
-		add(form);
-		form.setModel(new CompoundPropertyModel<BoxEntity>(box));
+		return form;
+	}
 
-		final TextArea<String> content = new TextArea<String>("content");
-		form.add(content);
+	private IModel<BoxConfiguration> getBoxConfigurationModel(
+			final BoxEntity box) {
+		IModel<BoxConfiguration> selectBoxModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box
+				.getBoxType()));
+		return selectBoxModel;
+	}
 
+	private DropDownChoice<BoxConfiguration> createBoxTypeChoice(
+			final IModel<BoxConfiguration> selectBoxModel) {
 		List<BoxConfiguration> confs = boxRegistry.getRegisteredBoxes();
 		ChoiceRenderer<BoxConfiguration> choiceRenderer = new ChoiceRenderer<BoxConfiguration>("name", "boxClass");
-		final IModel<BoxConfiguration> selectBoxModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box
-				.getBoxType()));
 		DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", selectBoxModel,
 				confs, choiceRenderer);
 		boxType.setRequired(true);
-		form.add(boxType);
+		return boxType;
+	}
 
+	private TextField<String> createTitleField() {
 		TextField<String> title = new TextField<String>("title");
 		title.add(StringValidator.maximumLength(100));
-		form.add(title);
+		return title;
+	}
 
-		form.add(new AjaxButton("saveButton", form) {
+	private AjaxButton createAjaxButton(final BoxEntity box,
+			final FeedbackPanel feedbackPanel, Form<BoxEntity> form,
+			final IModel<BoxConfiguration> selectBoxModel) {
+		return new AjaxButton("saveButton", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -90,9 +108,26 @@ abstract public class BoxEditPanel extends Panel {
 
 			@Override
 			protected void onError(final AjaxRequestTarget target, final Form<?> form) {
-				target.addComponent(feedback);
+				target.addComponent(feedbackPanel);
 			}
-		});
+		};
+	}
+
+	private TextArea<String> createContentField() {
+		TextArea<String> content = new TextArea<String>("content");
+		return content;
+	}
+
+
+	private Form<BoxEntity> createBoxEditForm(BoxEntity box) {
+		Form<BoxEntity> form = new Form<BoxEntity>("form", new CompoundPropertyModel<BoxEntity>(box));
+		return form;
+	}
+
+	private FeedbackPanel createFeedbackPanel() {
+		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
+		feedback.setOutputMarkupId(true);
+		return feedback;
 	}
 
 	public abstract void onSave(AjaxRequestTarget target);
