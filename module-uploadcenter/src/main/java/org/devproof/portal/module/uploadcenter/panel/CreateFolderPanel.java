@@ -33,7 +33,7 @@ import org.apache.wicket.validation.validator.PatternValidator;
 /**
  * @author Carsten Hufe
  */
-abstract public class CreateFolderPanel extends Panel {
+public abstract class CreateFolderPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	public CreateFolderPanel(final String id, final File actFolder) {
