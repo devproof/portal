@@ -21,6 +21,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -30,6 +31,7 @@ import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
@@ -38,7 +40,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
 /**
  * @author Carsten Hufe
  */
-public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel {
+public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "configurationService")
@@ -46,6 +48,7 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel {
 
 	private T selectedTag;
 	private final DataView<T> dataView;
+	private final WebMarkupContainer titleContainer;
 
 	public TagCloudBoxPanel(final String id, final TagService<T> tagService, final IModel<T> tagTarget,
 			final Class<? extends Page> page, final PageParameters params) {
@@ -89,10 +92,16 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel {
 
 		};
 		add(dataView);
+		add(titleContainer = new WebMarkupContainer("title"));
 		setVisible(tags.size() > 0);
 	}
 
 	public void cleanSelection() {
 		selectedTag = null;
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }

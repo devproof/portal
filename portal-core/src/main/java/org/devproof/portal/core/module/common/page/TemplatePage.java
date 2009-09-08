@@ -47,6 +47,7 @@ import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.string.UrlUtils;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -76,7 +77,9 @@ public abstract class TemplatePage extends WebPage {
 	private FeedbackPanel feedback;
 	private Component filterBox;
 	private Component tagCloudBox;
-	private PageAdminBoxPanel pageAdminBoxPanel;
+	private PageAdminBoxPanel pageAdminBox;
+	private boolean filterBoxHideTitle;
+	private boolean tagCloudBoxHideTitle;
 	private final IModel<String> pageTitle;
 
 	@SpringBean(name = "configurationService")
@@ -93,21 +96,20 @@ public abstract class TemplatePage extends WebPage {
 	public TemplatePage(final PageParameters params) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css"));
-		if (params != null) {
-			if (params.containsKey("infoMsg")) {
-				info(params.getString("infoMsg"));
-			}
-			if (params.containsKey("errorMsg")) {
-				info(params.getString("errorMsg"));
-			}
+		if (params.containsKey("infoMsg")) {
+			info(params.getString("infoMsg"));
+		}
+		if (params.containsKey("errorMsg")) {
+			info(params.getString("errorMsg"));
 		}
 
 		setOutputMarkupId(true);
 		addMainNavigation();
 
-		addFeedReferences();
+		add(new Rss2Link("rss2reference", getClass()));
+		add(new Atom1Link("atom1reference", getClass()));
 
-		final String footerContent = configurationService.findAsString("footer_content");
+		String footerContent = configurationService.findAsString("footer_content");
 		CommonMarkupContainerFactory factory = sharedRegistry.getResource("footerLink");
 		MarkupContainer footerLink;
 		if (factory != null) {
@@ -153,11 +155,6 @@ public abstract class TemplatePage extends WebPage {
 		copyright.add(new SimpleAttributeModifier("content", configurationService
 				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
 		add(copyright);
-	}
-
-	private void addFeedReferences() {
-		add(new Rss2Link("rss2reference", getClass()));
-		add(new Atom1Link("atom1reference", getClass()));
 	}
 
 	/**
@@ -229,40 +226,44 @@ public abstract class TemplatePage extends WebPage {
 		for (final BoxEntity box : boxes) {
 			final WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
-			final Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
+			Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
+			Component boxInstance = null;
 			if (boxClazz == null) {
 				final BoxEntity error = new BoxEntity();
 				error.setTitle("!Error!");
 				error.setContent("Box type is not available!");
-				item.add(new OtherBoxPanel("box", Model.of(error)));
+				item.add(boxInstance = new OtherBoxPanel("box", Model.of(error)));
 			} else if (boxClazz.isAssignableFrom(SearchBoxPanel.class)) {
 				if (filterBox == null) {
 					item.add(filterBox = new WebMarkupContainer("box").setVisible(false));
+					filterBoxHideTitle = box.getHideTitle();
 				}
 			} else if (boxClazz.isAssignableFrom(OtherBoxPanel.class)) {
-				item.add(new OtherBoxPanel("box", Model.of(box)));
+				item.add(boxInstance = new OtherBoxPanel("box", Model.of(box)));
 			} else if (boxClazz.isAssignableFrom(PageAdminBoxPanel.class)) {
-				item.add(pageAdminBoxPanel = new PageAdminBoxPanel("box"));
+				item.add(pageAdminBox = new PageAdminBoxPanel("box"));
+				boxInstance = pageAdminBox;
 			} else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
 				if (!(this instanceof LoginPage)) {
-					item.add(new LoginBoxPanel("box", params));
+					item.add(boxInstance = new LoginBoxPanel("box", params));
 				} else {
 					item.remove();
 				}
 			} else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
 				if (tagCloudBox == null) {
 					item.add(tagCloudBox = new WebMarkupContainer("box").setVisible(false));
+					tagCloudBoxHideTitle = box.getHideTitle();
+					boxInstance = tagCloudBox;
 				}
 			} else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
-				item.add(new GlobalAdminBoxPanel("box"));
+				item.add(boxInstance = new GlobalAdminBoxPanel("box"));
 			} else {
-				Component instance = null;
 				boolean found = false;
 				for (final Constructor<?> constr : boxClazz.getConstructors()) {
 					final Class<?> param[] = constr.getParameterTypes();
 					if (param.length == 2 && param[0] == String.class && param[1] == PageParameters.class) {
 						try {
-							instance = (Component) constr.newInstance("box", params);
+							boxInstance = (Component) constr.newInstance("box", params);
 							found = true;
 							break;
 						} catch (final Exception e) {
@@ -270,7 +271,7 @@ public abstract class TemplatePage extends WebPage {
 						}
 					} else if (param.length == 1 && param[0] == String.class) {
 						try {
-							instance = (Component) constr.newInstance("box");
+							boxInstance = (Component) constr.newInstance("box");
 							found = true;
 							break;
 						} catch (final Exception e) {
@@ -284,8 +285,12 @@ public abstract class TemplatePage extends WebPage {
 									+ boxClazz
 									+ " does not have a default constructor with a String id parameter or String and PageParameters");
 				} else {
-					item.add(instance);
+					item.add(boxInstance);
 				}
+			}
+
+			if (boxInstance instanceof BoxTitleVisibility) {
+				((BoxTitleVisibility) boxInstance).setTitleVisible(!box.getHideTitle());
 			}
 		}
 	}
@@ -295,6 +300,9 @@ public abstract class TemplatePage extends WebPage {
 	 */
 	public void addFilterBox(final Panel filterBox) {
 		if (this.filterBox != null) {
+			if (filterBox instanceof BoxTitleVisibility) {
+				((BoxTitleVisibility) filterBox).setTitleVisible(!filterBoxHideTitle);
+			}
 			this.filterBox.replaceWith(filterBox);
 			this.filterBox = filterBox;
 		}
@@ -305,10 +313,10 @@ public abstract class TemplatePage extends WebPage {
 	 */
 	public <T extends BaseTagEntity<?>> void addTagCloudBox(final TagService<T> tagService, final IModel<T> model,
 			final Class<? extends Page> page, final PageParameters params) {
-		final TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, model, page, params);
+		TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, model, page, params);
+		newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
 		tagCloudBox.replaceWith(newTagCloudBox);
 		tagCloudBox = newTagCloudBox;
-
 	}
 
 	/**
@@ -325,8 +333,8 @@ public abstract class TemplatePage extends WebPage {
 	 * Add a link to the page admin panel
 	 */
 	public void addPageAdminBoxLink(final Component link) {
-		if (pageAdminBoxPanel != null) {
-			pageAdminBoxPanel.addLink(link);
+		if (pageAdminBox != null) {
+			pageAdminBox.addLink(link);
 		}
 	}
 

@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.email.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -22,7 +23,8 @@ import java.util.Date;
  * 
  * @author Carsten Hufe
  */
-public class EmailPlaceholderBean {
+public class EmailPlaceholderBean implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String toUsername;
 	private String toFirstname;
 	private String toLastname;

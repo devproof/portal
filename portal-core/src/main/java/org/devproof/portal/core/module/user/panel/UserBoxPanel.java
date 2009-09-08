@@ -15,11 +15,13 @@
  */
 package org.devproof.portal.core.module.user.panel;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.user.page.SettingsPage;
 
@@ -28,14 +30,16 @@ import org.devproof.portal.core.module.user.page.SettingsPage;
  * 
  * @author Carsten Hufe
  */
-public class UserBoxPanel extends Panel {
+public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
+	private WebMarkupContainer titleContainer;
 
 	public UserBoxPanel(final String id) {
 		super(id);
-		final PortalSession session = (PortalSession) getSession();
-		add(new Label("username", session.getUser().getUsername() + " - "
+		add(titleContainer = new WebMarkupContainer("title"));
+		PortalSession session = (PortalSession) getSession();
+		titleContainer.add(new Label("username", session.getUser().getUsername() + " - "
 				+ session.getUser().getRole().getDescription()));
 
 		final StatelessLink logoutLink = new StatelessLink("logoutLink") {
@@ -48,5 +52,10 @@ public class UserBoxPanel extends Panel {
 		};
 		add(new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class));
 		add(logoutLink);
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }

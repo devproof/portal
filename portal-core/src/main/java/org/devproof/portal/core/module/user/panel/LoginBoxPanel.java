@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.user.panel;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -29,6 +30,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.page.ForgotPasswordPage;
@@ -38,13 +40,15 @@ import org.devproof.portal.core.module.user.page.RegisterPage;
 /**
  * @author Carsten Hufe
  */
-public class LoginBoxPanel extends Panel {
+public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	private final ValueMap properties = new ValueMap();
+	private WebMarkupContainer titleContainer;
 
 	public LoginBoxPanel(final String id, final PageParameters params) {
 		super(id);
+		add(titleContainer = new WebMarkupContainer("title"));
 		final HiddenField<String> hiddenParam = new HiddenField<String>("optparam", Model.of(params.getString("0")));
 		final StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm") {
 			private static final long serialVersionUID = 1L;
@@ -102,5 +106,10 @@ public class LoginBoxPanel extends Panel {
 		add(form);
 		add(new BookmarkablePageLink<Void>("registerLink", RegisterPage.class));
 		add(new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class));
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }

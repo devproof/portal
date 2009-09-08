@@ -33,8 +33,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang.StringUtils;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.module.article.ArticleConstants;
 import org.hibernate.annotations.Cascade;
 
 /**
@@ -130,6 +132,62 @@ final public class ArticleEntity extends BaseEntity {
 
 	public void setTags(final List<ArticleTagEntity> tags) {
 		this.tags = tags;
+	}
+
+	@Transient
+	public String getFullArticle() {
+		String back = "";
+		if (articlePages != null) {
+			final StringBuilder buf = new StringBuilder();
+			boolean firstArticlePage = true;
+			for (final ArticlePageEntity page : articlePages) {
+				if (firstArticlePage) {
+					firstArticlePage = false;
+				} else {
+					buf.append(ArticleConstants.PAGEBREAK);
+				}
+				buf.append(page.getContent());
+			}
+			back = buf.toString();
+		}
+		return back;
+	}
+
+	@Transient
+	public void setFullArticle(final String fullArticle) {
+		String[] splittedPages = getSplittedPages(fullArticle);
+		for (int i = 0; i < splittedPages.length; i++) {
+			ArticlePageEntity page = null;
+			boolean isUpdatablePageAvailable = articlePages != null && articlePages.size() > i;
+			if (isUpdatablePageAvailable) {
+				page = articlePages.get(i);
+			} else {
+				page = newArticlePageEntity(i + 1);
+				page.setArticle(this);
+			}
+			page.setContent(splittedPages[i]);
+			articlePages.add(page);
+		}
+	}
+
+	@Transient
+	public ArticlePageEntity newArticlePageEntity(final Integer page) {
+		final ArticlePageEntity e = new ArticlePageEntity();
+		e.setArticle(this);
+		e.setContentId(getContentId());
+		e.setPage(page);
+		return e;
+	}
+
+	private String[] getSplittedPages(final String pages) {
+		String splittedPages[] = null;
+		if (pages != null) {
+			splittedPages = StringUtils.splitByWholeSeparator(pages, ArticleConstants.PAGEBREAK);
+		} else {
+			splittedPages = new String[1];
+			splittedPages[0] = "";
+		}
+		return splittedPages;
 	}
 
 	@Override

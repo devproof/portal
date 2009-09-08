@@ -43,6 +43,8 @@ final public class BoxEntity extends BaseEntity {
 	private String boxType;
 	@Column(name = "title")
 	private String title;
+	@Column(name = "hide_title", nullable = false)
+	private Boolean hideTitle;
 	@Lob
 	@Column(name = "content")
 	private String content;
@@ -77,6 +79,14 @@ final public class BoxEntity extends BaseEntity {
 
 	public void setTitle(final String title) {
 		this.title = title;
+	}
+
+	public Boolean getHideTitle() {
+		return hideTitle;
+	}
+
+	public void setHideTitle(final Boolean hideTitle) {
+		this.hideTitle = hideTitle;
 	}
 
 	public String getContent() {

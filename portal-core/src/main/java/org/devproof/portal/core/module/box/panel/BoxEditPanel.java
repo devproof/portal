@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -55,26 +56,29 @@ public abstract class BoxEditPanel extends Panel {
 		add(createBoxEditForm(box, feedbackPanel, selectBoxModel));
 	}
 
-	private Form<BoxEntity> createBoxEditForm(final BoxEntity box,
-			FeedbackPanel feedbackPanel, IModel<BoxConfiguration> selectBoxModel) {
+	private Form<BoxEntity> createBoxEditForm(final BoxEntity box, final FeedbackPanel feedbackPanel,
+			final IModel<BoxConfiguration> selectBoxModel) {
 		Form<BoxEntity> form = createBoxEditForm(box);
 		form.add(createContentField());
 		form.add(createBoxTypeChoice(selectBoxModel));
 		form.add(createTitleField());
+		form.add(createHideTitleCheckBox());
 		form.add(createAjaxButton(box, feedbackPanel, form, selectBoxModel));
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
-	private IModel<BoxConfiguration> getBoxConfigurationModel(
-			final BoxEntity box) {
+	private CheckBox createHideTitleCheckBox() {
+		return new CheckBox("hideTitle");
+	}
+
+	private IModel<BoxConfiguration> getBoxConfigurationModel(final BoxEntity box) {
 		IModel<BoxConfiguration> selectBoxModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box
 				.getBoxType()));
 		return selectBoxModel;
 	}
 
-	private DropDownChoice<BoxConfiguration> createBoxTypeChoice(
-			final IModel<BoxConfiguration> selectBoxModel) {
+	private DropDownChoice<BoxConfiguration> createBoxTypeChoice(final IModel<BoxConfiguration> selectBoxModel) {
 		List<BoxConfiguration> confs = boxRegistry.getRegisteredBoxes();
 		ChoiceRenderer<BoxConfiguration> choiceRenderer = new ChoiceRenderer<BoxConfiguration>("name", "boxClass");
 		DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", selectBoxModel,
@@ -89,9 +93,8 @@ public abstract class BoxEditPanel extends Panel {
 		return title;
 	}
 
-	private AjaxButton createAjaxButton(final BoxEntity box,
-			final FeedbackPanel feedbackPanel, Form<BoxEntity> form,
-			final IModel<BoxConfiguration> selectBoxModel) {
+	private AjaxButton createAjaxButton(final BoxEntity box, final FeedbackPanel feedbackPanel,
+			final Form<BoxEntity> form, final IModel<BoxConfiguration> selectBoxModel) {
 		return new AjaxButton("saveButton", form) {
 			private static final long serialVersionUID = 1L;
 
@@ -118,8 +121,7 @@ public abstract class BoxEditPanel extends Panel {
 		return content;
 	}
 
-
-	private Form<BoxEntity> createBoxEditForm(BoxEntity box) {
+	private Form<BoxEntity> createBoxEditForm(final BoxEntity box) {
 		Form<BoxEntity> form = new Form<BoxEntity>("form", new CompoundPropertyModel<BoxEntity>(box));
 		return form;
 	}

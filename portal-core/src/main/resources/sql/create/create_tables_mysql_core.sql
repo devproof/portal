@@ -7,6 +7,7 @@ CREATE TABLE `core_box` (
   `box_type` varchar(255) default NULL,
   `content` text,
   `sort` int(11) default NULL,
+  `hide_title` bit(1) NOT NULL,
   `title` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

@@ -139,11 +139,11 @@ INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,con
 \n<p>Kind regards</p>
 \n<p>Your #PAGENAME# Team</p>','Contact request from #PAGENAME#');
 
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (2,{ts '2009-01-05 11:41:22.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','TagCloudBoxPanel',null,2,'Related Tags Box');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (4,{ts '2009-01-05 11:43:49.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','SearchBoxPanel',null,1,'Search Box');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (5,{ts '2009-01-05 12:16:28.000'},'admin',{ts '2009-01-05 13:22:03.000'},'admin','LoginBoxPanel',null,5,'Login Box');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (6,{ts '2009-01-05 12:16:38.000'},'admin',{ts '2009-01-05 13:22:03.000'},'admin','UserBoxPanel',null,6,'User Box');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (7,{ts '2009-01-05 12:17:03.000'},'admin',{ts '2009-01-05 15:36:40.000'},'admin','PageAdminBoxPanel',null,3,'Page Administration Box');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (8,{ts '2009-01-05 12:17:35.000'},'admin',{ts '2009-01-05 13:11:05.000'},'admin','GlobalAdminBoxPanel',null,4,'Global Administration Box');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (12,{ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','A little <i>bit</i> content',10,'Other Test Box');
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (2,{ts '2009-01-05 11:41:22.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','TagCloudBoxPanel',null,2,'Related Tags Box',0);
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (4,{ts '2009-01-05 11:43:49.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','SearchBoxPanel',null,1,'Search Box',0);
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (5,{ts '2009-01-05 12:16:28.000'},'admin',{ts '2009-01-05 13:22:03.000'},'admin','LoginBoxPanel',null,5,'Login Box',0);
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (6,{ts '2009-01-05 12:16:38.000'},'admin',{ts '2009-01-05 13:22:03.000'},'admin','UserBoxPanel',null,6,'User Box',0);
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (7,{ts '2009-01-05 12:17:03.000'},'admin',{ts '2009-01-05 15:36:40.000'},'admin','PageAdminBoxPanel',null,3,'Page Administration Box',0);
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (8,{ts '2009-01-05 12:17:35.000'},'admin',{ts '2009-01-05 13:11:05.000'},'admin','GlobalAdminBoxPanel',null,4,'Global Administration Box',0);
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (12,{ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','A little <i>bit</i> content',10,'Other Test Box',0);
 

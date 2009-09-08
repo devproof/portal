@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.IFormModelUpdateListener;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
@@ -36,11 +37,12 @@ import org.devproof.portal.core.module.right.service.RightService;
  * 
  * @author Carsten Hufe
  */
-public class RightGridPanel extends Panel {
+public class RightGridPanel extends Panel implements IFormModelUpdateListener {
+	private static final long serialVersionUID = 1L;
+
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	private final List<RightEntity> allRights;
-	private static final long serialVersionUID = 1L;
 
 	public RightGridPanel(final String id, final String rightPrefix, final List<RightEntity> selectedRights) {
 		super(id);
@@ -81,5 +83,10 @@ public class RightGridPanel extends Panel {
 			}
 		}
 		return newRights;
+	}
+
+	@Override
+	public void updateModel() {
+		// System.out.println("updateModel");
 	}
 }

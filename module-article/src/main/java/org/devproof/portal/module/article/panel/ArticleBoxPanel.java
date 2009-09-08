@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
@@ -35,31 +36,37 @@ import org.devproof.portal.module.article.service.ArticleService;
  * 
  * @author Carsten Hufe
  */
-public class ArticleBoxPanel extends Panel {
+public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "articleService")
 	private ArticleService articleService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private WebMarkupContainer titleContainer;
 
 	public ArticleBoxPanel(final String id) {
 		super(id);
 		List<ArticleEntity> latestArticles = getLatestArticles();
+		add(titleContainer = createTitleContainer());
 		add(createRepeatingViewWithArticles(latestArticles));
 		setVisible(latestArticles.size() > 0);
 	}
 
+	private WebMarkupContainer createTitleContainer() {
+		return new WebMarkupContainer("title");
+	}
+
 	private List<ArticleEntity> getLatestArticles() {
-		Integer numberOfLatestArticles = configurationService.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
+		Integer numberOfLatestArticles = configurationService
+				.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
 		PortalSession session = (PortalSession) getSession();
-		List<ArticleEntity> latestArticles = articleService
-				.findAllArticlesForRoleOrderedByDateDesc(session.getRole(), 0, numberOfLatestArticles);
+		List<ArticleEntity> latestArticles = articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(),
+				0, numberOfLatestArticles);
 		return latestArticles;
 	}
 
-	private RepeatingView createRepeatingViewWithArticles(
-			List<ArticleEntity> articles) {
+	private RepeatingView createRepeatingViewWithArticles(final List<ArticleEntity> articles) {
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (ArticleEntity article : articles) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
@@ -70,5 +77,10 @@ public class ArticleBoxPanel extends Panel {
 			item.add(link);
 		}
 		return repeating;
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }
