@@ -57,10 +57,10 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	public ArticleEditPage(final ArticleEntity article) {
 		super(new PageParameters());
-		add(createPageForm(article));
+		add(createArticleEditForm(article));
 	}
 
-	private Form<ArticleEntity> createPageForm(final ArticleEntity article) {
+	private Form<ArticleEntity> createArticleEditForm(final ArticleEntity article) {
 		RightGridPanel viewRightPanel = createViewRightPanel(article);
 		RightGridPanel readRightPanel = createReadRightPanel(article);
 		TagField<ArticleTagEntity> tagField = createTagField(article);
@@ -68,7 +68,7 @@ public class ArticleEditPage extends ArticleBasePage {
 		
 		IModel<String> contentToEdit = getFullArticleHtmlFromArticlePages(article.getArticlePages());
 		
-		Form<ArticleEntity> form = createArticleEditForm(article, viewRightPanel, readRightPanel, tagField, contentToEdit);
+		Form<ArticleEntity> form = newArticleEditForm(article, viewRightPanel, readRightPanel, tagField, contentToEdit);
 		form.setOutputMarkupId(true);
 		form.add(tagField);
 		form.add(viewRightPanel);
@@ -168,7 +168,7 @@ public class ArticleEditPage extends ArticleBasePage {
 		};
 	}
 
-	private Form<ArticleEntity> createArticleEditForm(
+	private Form<ArticleEntity> newArticleEditForm(
 			final ArticleEntity article, final RightGridPanel viewRight,
 			final RightGridPanel readRight,
 			final TagField<ArticleTagEntity> tagField,
@@ -188,7 +188,7 @@ public class ArticleEditPage extends ArticleBasePage {
 				article.setArticlePages(ArticleEditPage.this.getArticlePagesFromFullArticleHtml(content.getObject(), article));
 				articleService.save(article);
 				setRedirect(false);
-				setResponsePage(ArticleViewPage.class, new PageParameters("0=" + article.getContentId()));
+				setResponsePage(ArticleReadPage.class, new PageParameters("0=" + article.getContentId()));
 				info(getString("msg.saved"));
 			}
 		};

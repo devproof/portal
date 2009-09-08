@@ -52,10 +52,10 @@ public abstract class BoxEditPanel extends Panel {
 		FeedbackPanel feedbackPanel = createFeedbackPanel();
 		IModel<BoxConfiguration> selectBoxModel = getBoxConfigurationModel(box);
 		add(feedbackPanel);
-		add(createPageForm(box, feedbackPanel, selectBoxModel));
+		add(createBoxEditForm(box, feedbackPanel, selectBoxModel));
 	}
 
-	private Form<BoxEntity> createPageForm(final BoxEntity box,
+	private Form<BoxEntity> createBoxEditForm(final BoxEntity box,
 			FeedbackPanel feedbackPanel, IModel<BoxConfiguration> selectBoxModel) {
 		Form<BoxEntity> form = createBoxEditForm(box);
 		form.add(createContentField());

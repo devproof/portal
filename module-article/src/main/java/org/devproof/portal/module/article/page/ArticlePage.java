@@ -153,10 +153,10 @@ public class ArticlePage extends ArticleBasePage {
 			}
 		}
 
-		private BookmarkablePageLink<ArticleViewPage> createReadMoreLink(
+		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink(
 				final ArticleEntity articleEntity, boolean allowedToRead) {
-			BookmarkablePageLink<ArticleViewPage> readMoreLink = new BookmarkablePageLink<ArticleViewPage>(
-					"readMoreLink", ArticleViewPage.class);
+			BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
+					"readMoreLink", ArticleReadPage.class);
 			readMoreLink.setParameter("0", articleEntity.getContentId());
 			readMoreLink.setEnabled(allowedToRead);
 			readMoreLink.add(new Image("readMoreImage", CommonConstants.REF_VIEW_IMG));
@@ -193,10 +193,10 @@ public class ArticlePage extends ArticleBasePage {
 			return allowedToRead;
 		}
 
-		private BookmarkablePageLink<ArticleViewPage> createTitleLink(
+		private BookmarkablePageLink<ArticleReadPage> createTitleLink(
 				final ArticleEntity articleEntity, final boolean allowedToRead) {
-			final BookmarkablePageLink<ArticleViewPage> titleLink = new BookmarkablePageLink<ArticleViewPage>(
-					"titleLink", ArticleViewPage.class);
+			final BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>(
+					"titleLink", ArticleReadPage.class);
 			titleLink.setParameter("0", articleEntity.getContentId());
 			titleLink.setEnabled(allowedToRead);
 			titleLink.add(new Label("titleLabel", articleEntity.getTitle()));

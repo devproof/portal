@@ -32,7 +32,7 @@
     			</bean>
     			<bean class="org.devproof.portal.core.config.PageConfiguration">
     				<property name="mountPath" value="/article"/>
-    				<property name="pageClass" value="org.devproof.portal.module.article.page.ArticleViewPage"/>
+    				<property name="pageClass" value="org.devproof.portal.module.article.page.ArticleReadPage"/>
     				<property name="indexMountedPath" value="true"/>
     			</bean>
     		</list>

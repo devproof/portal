@@ -24,7 +24,7 @@ import org.devproof.portal.test.PortalTestUtil;
 /**
  * Simple test using the WicketTester
  */
-public class ArticleViewPageTest extends TestCase {
+public class ArticleReadPageTest extends TestCase {
 	private WicketTester tester;
 
 	@Override
@@ -39,9 +39,9 @@ public class ArticleViewPageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPage(ArticleViewPage.class, new PageParameters("0=Sample_article"));
+		tester.startPage(ArticleReadPage.class, new PageParameters("0=Sample_article"));
 		// must be stateless to save memory (non-stateless creates HttpSession)
 		assertTrue(tester.getLastRenderedPage().isPageStateless());
-		tester.assertRenderedPage(ArticleViewPage.class);
+		tester.assertRenderedPage(ArticleReadPage.class);
 	}
 }
