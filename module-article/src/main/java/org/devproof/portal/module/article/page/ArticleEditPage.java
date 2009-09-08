@@ -163,7 +163,6 @@ public class ArticleEditPage extends ArticleBasePage {
 
 			@Override
 			protected void onSubmit() {
-				ArticleEditPage.this.setVisible(false);
 				List<RightEntity> allRights = new ArrayList<RightEntity>();
 				allRights.addAll(viewRightPanel.getSelectedRights());
 				allRights.addAll(readRightPanel.getSelectedRights());
