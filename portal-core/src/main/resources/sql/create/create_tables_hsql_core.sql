@@ -8,6 +8,7 @@ CREATE TABLE core_box
    box_type varchar(255),
    content longvarchar,
    sort int,
+   hide_title bit NOT NULL,
    title varchar(255),
    PRIMARY KEY(id)
 )

@@ -16,6 +16,7 @@
 package org.devproof.portal.module.blog.panel;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
@@ -29,11 +30,18 @@ import org.devproof.portal.module.blog.query.BlogQuery;
 public class BlogSearchBoxPanel extends BaseSearchBoxPanel {
 
 	private static final long serialVersionUID = 1L;
+	private WebMarkupContainer titleContainer;
 
 	public BlogSearchBoxPanel(final String id, final BlogQuery query, final QueryDataProvider<?> dataProvider,
 			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id, query, dataProvider, "page.BlogEditPage", parent, dataview, params);
 		TextField<String> fc = new TextField<String>("allTextFields");
 		getForm().add(fc);
+		add(titleContainer = new WebMarkupContainer("title"));
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }

@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
@@ -33,7 +34,7 @@ import org.devproof.portal.module.bookmark.service.BookmarkService;
 /**
  * @author Carsten Hufe
  */
-public class BookmarkBoxPanel extends Panel {
+public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,9 +42,11 @@ public class BookmarkBoxPanel extends Panel {
 	private BookmarkService bookmarkService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private WebMarkupContainer titleContainer;
 
 	public BookmarkBoxPanel(final String id) {
 		super(id);
+		add(titleContainer = new WebMarkupContainer("title"));
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
 		List<BookmarkEntity> bookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0,
@@ -60,5 +63,10 @@ public class BookmarkBoxPanel extends Panel {
 		}
 		add(repeating);
 		setVisible(bookmarks.size() > 0);
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }

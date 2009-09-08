@@ -16,16 +16,22 @@
 package org.devproof.portal.core.module.feed.panel;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 
 /**
  * @author Carsten Hufe
  */
-public class FeedBoxPanel extends Panel {
+public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 	private static final long serialVersionUID = 1L;
 
 	public FeedBoxPanel(final String id) {
 		super(id);
 		// add(new Image("imageAtom", FeedConstants.REF_ATOM));
 		// add(new Image("imageRss", FeedConstants.REF_RSS));
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+
 	}
 }

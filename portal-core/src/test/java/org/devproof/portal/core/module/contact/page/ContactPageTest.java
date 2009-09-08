@@ -15,17 +15,15 @@
  */
 package org.devproof.portal.core.module.contact.page;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.mock.EmailServiceMock;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.test.PortalTestUtil;
 
@@ -49,7 +47,7 @@ public class ContactPageTest extends TestCase {
 	public void testRenderDefaultPage() {
 		callContactPage();
 	}
-	
+
 	public void testSendContactForm() throws Exception {
 		EmailServiceMock emailServiceMock = createEmailServiceMock();
 		callContactPage();
@@ -58,7 +56,7 @@ public class ContactPageTest extends TestCase {
 		assertEmail(emailServiceMock);
 	}
 
-	private void assertEmail(EmailServiceMock emailServiceMock) {
+	private void assertEmail(final EmailServiceMock emailServiceMock) {
 		EmailPlaceholderBean emailPlaceholderBean = emailServiceMock.getEmailPlaceholderBean();
 		assertEquals("Max Power", emailPlaceholderBean.getContactFullname());
 		assertEquals("max.power@no.domain", emailPlaceholderBean.getContactEmail());
@@ -74,9 +72,9 @@ public class ContactPageTest extends TestCase {
 		form.setValue("trCaptcha2:captchacode", captchaChallengeCode);
 		form.submit("sendButton");
 	}
-	
+
 	private String getCaptchaChallengeCode() {
-		ContactPage lastRenderedPage = (ContactPage)tester.getLastRenderedPage();
+		ContactPage lastRenderedPage = (ContactPage) tester.getLastRenderedPage();
 		return lastRenderedPage.getCaptchaChallengeCode();
 	}
 
@@ -84,62 +82,15 @@ public class ContactPageTest extends TestCase {
 		tester.startPage(ContactPage.class, new PageParameters("0=admin"));
 		tester.assertRenderedPage(ContactPage.class);
 	}
-	
 
-	private void setEmailServiceMock(EmailService emailServiceMock) throws Exception {
-		ContactPage lastRenderedPage = (ContactPage)tester.getLastRenderedPage();
+	private void setEmailServiceMock(final EmailService emailServiceMock) throws Exception {
+		ContactPage lastRenderedPage = (ContactPage) tester.getLastRenderedPage();
 		Field emailServiceField = ContactPage.class.getDeclaredField("emailService");
 		emailServiceField.setAccessible(true);
 		emailServiceField.set(lastRenderedPage, emailServiceMock);
 	}
-	
+
 	private EmailServiceMock createEmailServiceMock() {
 		return new EmailServiceMock();
-	}
-	
-	private static class EmailServiceMock implements EmailService, Serializable {
-		private static final long serialVersionUID = 1L;
-		private EmailPlaceholderBean emailPlaceholderBean;
-		
-		public EmailPlaceholderBean getEmailPlaceholderBean() {
-			return emailPlaceholderBean;
-		}
-
-		@Override
-		public EmailTemplateEntity newEmailTemplateEntity() {
-			return null;
-		}
-
-		@Override
-		public void sendEmail(EmailTemplateEntity template,
-				EmailPlaceholderBean placeholder) {
-			this.emailPlaceholderBean = placeholder;
-		}
-
-		@Override
-		public void sendEmail(Integer templateId,
-				EmailPlaceholderBean placeholder) {
-			this.emailPlaceholderBean = placeholder;
-		}
-
-		@Override
-		public void delete(EmailTemplateEntity entity) {
-			
-		}
-
-		@Override
-		public List<EmailTemplateEntity> findAll() {
-			return null;
-		}
-
-		@Override
-		public EmailTemplateEntity findById(Integer id) {
-			return null;
-		}
-
-		@Override
-		public void save(EmailTemplateEntity entity) {
-			
-		}
 	}
 }

@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
@@ -33,7 +34,7 @@ import org.devproof.portal.module.download.service.DownloadService;
 /**
  * @author Carsten Hufe
  */
-public class DownloadBoxPanel extends Panel {
+public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,6 +42,7 @@ public class DownloadBoxPanel extends Panel {
 	private DownloadService downloadService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private WebMarkupContainer titleContainer;
 
 	public DownloadBoxPanel(final String id) {
 		super(id);
@@ -58,7 +60,13 @@ public class DownloadBoxPanel extends Panel {
 			link.add(new Label("linkName", download.getTitle()));
 			item.add(link);
 		}
+		add(titleContainer = new WebMarkupContainer("title"));
 		add(repeating);
 		setVisible(downloads.size() > 0);
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }

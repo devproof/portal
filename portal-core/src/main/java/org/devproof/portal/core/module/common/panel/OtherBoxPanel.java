@@ -19,20 +19,28 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 
 /**
  * Box with your own content
  * 
  * @author Carsten Hufe
  */
-public class OtherBoxPanel extends Panel {
+public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
+
+	private Label titleLabel;
 
 	public OtherBoxPanel(final String id, final IModel<BoxEntity> model) {
 		super(id, model);
 		BoxEntity box = model.getObject();
-		add(new Label("title", box.getTitle()));
+		add(titleLabel = new Label("title", box.getTitle()));
 		add(new Label("content", box.getContent()).setEscapeModelStrings(false));
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleLabel.setVisible(visible);
 	}
 }

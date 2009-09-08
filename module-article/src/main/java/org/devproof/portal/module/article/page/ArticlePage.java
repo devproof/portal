@@ -72,9 +72,8 @@ public class ArticlePage extends ArticleBasePage {
 		addSyntaxHighlighter();
 	}
 
-	private ArticleSearchBoxPanel createArticleSearchBoxPanel(
-			PageParameters params, ArticleQuery query,
-			ArticleDataView dataView) {
+	private ArticleSearchBoxPanel createArticleSearchBoxPanel(final PageParameters params, final ArticleQuery query,
+			final ArticleDataView dataView) {
 		return new ArticleSearchBoxPanel("box", query, articleDataProvider, this, dataView, params);
 	}
 
@@ -82,8 +81,7 @@ public class ArticlePage extends ArticleBasePage {
 		return new ArticleDataView("listArticle", params);
 	}
 
-	private BookmarkablePagingPanel createPagingPanel(
-			final PageParameters params, ArticleDataView dataView) {
+	private BookmarkablePagingPanel createPagingPanel(final PageParameters params, final ArticleDataView dataView) {
 		return new BookmarkablePagingPanel("paging", dataView, ArticlePage.class, params);
 	}
 
@@ -96,7 +94,7 @@ public class ArticlePage extends ArticleBasePage {
 		articleDataProvider.setQueryObject(query);
 		return query;
 	}
-	
+
 	private class ArticleDataView extends DataView<ArticleEntity> {
 		private static final long serialVersionUID = 1L;
 		private final boolean onlyOneArticleInResult;
@@ -119,7 +117,7 @@ public class ArticlePage extends ArticleBasePage {
 			item.add(createArticleView(item));
 		}
 
-		private ArticleView createArticleView(Item<ArticleEntity> item) {
+		private ArticleView createArticleView(final Item<ArticleEntity> item) {
 			ArticleEntity article = item.getModelObject();
 			ArticleView articleViewPanel = new ArticleView("articleView", article, params, item);
 			return articleViewPanel;
@@ -133,7 +131,8 @@ public class ArticlePage extends ArticleBasePage {
 
 		private static final long serialVersionUID = 1L;
 
-		public ArticleView(final String id, final ArticleEntity articleEntity, final PageParameters params, Item<ArticleEntity> item) {
+		public ArticleView(final String id, final ArticleEntity articleEntity, final PageParameters params,
+				final Item<ArticleEntity> item) {
 			super(id, "articleView", ArticlePage.this);
 			boolean allowedToRead = isAllowedToRead(articleEntity);
 			add(createAppropriateAuthorPanel(item));
@@ -144,17 +143,16 @@ public class ArticlePage extends ArticleBasePage {
 			add(createReadMoreLink(articleEntity, allowedToRead));
 		}
 
-		private Component createAppropriateAuthorPanel(Item<ArticleEntity> item) {
+		private Component createAppropriateAuthorPanel(final Item<ArticleEntity> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
-			}
-			else {
+			} else {
 				return createEmptyAuthorPanel();
 			}
 		}
 
-		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink(
-				final ArticleEntity articleEntity, boolean allowedToRead) {
+		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink(final ArticleEntity articleEntity,
+				final boolean allowedToRead) {
 			BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
 					"readMoreLink", ArticleReadPage.class);
 			readMoreLink.setParameter("0", articleEntity.getContentId());
@@ -166,19 +164,17 @@ public class ArticlePage extends ArticleBasePage {
 			return readMoreLink;
 		}
 
-		private ContentTagPanel<ArticleTagEntity> createTagPanel(
-				final ArticleEntity articleEntity, final PageParameters params) {
-			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(articleEntity.getTags()),
-					ArticlePage.class, params);
+		private ContentTagPanel<ArticleTagEntity> createTagPanel(final ArticleEntity articleEntity,
+				final PageParameters params) {
+			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(articleEntity
+					.getTags()), ArticlePage.class, params);
 		}
 
-		private ExtendedLabel createTeaserLabel(
-				final ArticleEntity articleEntity) {
+		private ExtendedLabel createTeaserLabel(final ArticleEntity articleEntity) {
 			return new ExtendedLabel("teaser", articleEntity.getTeaser());
 		}
 
-		private MetaInfoPanel createMetaInfoPanel(
-				final ArticleEntity articleEntity) {
+		private MetaInfoPanel createMetaInfoPanel(final ArticleEntity articleEntity) {
 			return new MetaInfoPanel("metaInfo", articleEntity);
 		}
 
@@ -188,13 +184,12 @@ public class ArticlePage extends ArticleBasePage {
 
 		private boolean isAllowedToRead(final ArticleEntity articleEntity) {
 			PortalSession session = (PortalSession) getSession();
-			boolean allowedToRead = session.hasRight("article.read")
-					|| session.hasRight(articleEntity.getReadRights());
+			boolean allowedToRead = session.hasRight("article.read") || session.hasRight(articleEntity.getReadRights());
 			return allowedToRead;
 		}
 
-		private BookmarkablePageLink<ArticleReadPage> createTitleLink(
-				final ArticleEntity articleEntity, final boolean allowedToRead) {
+		private BookmarkablePageLink<ArticleReadPage> createTitleLink(final ArticleEntity articleEntity,
+				final boolean allowedToRead) {
 			final BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>(
 					"titleLink", ArticleReadPage.class);
 			titleLink.setParameter("0", articleEntity.getContentId());
@@ -202,9 +197,8 @@ public class ArticlePage extends ArticleBasePage {
 			titleLink.add(new Label("titleLabel", articleEntity.getTitle()));
 			return titleLink;
 		}
-		
-		private AuthorPanel<ArticleEntity> createAuthorPanel(
-				final Item<ArticleEntity> item) {
+
+		private AuthorPanel<ArticleEntity> createAuthorPanel(final Item<ArticleEntity> item) {
 			final ArticleEntity article = item.getModelObject();
 			return new AuthorPanel<ArticleEntity>("authorButtons", article) {
 				private static final long serialVersionUID = 1L;
@@ -221,7 +215,7 @@ public class ArticlePage extends ArticleBasePage {
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					final ArticleEntity tmp = articleService.findById(article.getId());
+					final ArticleEntity tmp = articleService.findByIdAndPrefetch(article.getId());
 					setResponsePage(new ArticleEditPage(tmp));
 				}
 			};

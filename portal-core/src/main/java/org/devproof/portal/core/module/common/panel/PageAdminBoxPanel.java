@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
 
@@ -35,16 +36,18 @@ import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
  * 
  * @author Carsten Hufe
  */
-public class PageAdminBoxPanel extends Panel {
+public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "pageAdminPageRegistry")
 	private PageAdminPageRegistry adminPageRegistry;
 	private final RepeatingView repeating;
+	private WebMarkupContainer titleContainer;
 
 	public PageAdminBoxPanel(final String id) {
 		super(id);
+		add(titleContainer = new WebMarkupContainer("title"));
 		repeating = new RepeatingView("repeatingNav1");
 		add(repeating);
 		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredPageAdminPages();
@@ -69,5 +72,10 @@ public class PageAdminBoxPanel extends Panel {
 		WebMarkupContainer container = new WebMarkupContainer(repeating.newChildId());
 		repeating.add(container);
 		container.add(link);
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }

@@ -55,7 +55,8 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            maximum result number
 	 * @return list with article entities
 	 */
-	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult);
 
 	/**
 	 * Returns true if a content id exists
@@ -85,4 +86,13 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 * @return {@link ArticlePageEntity}
 	 */
 	public ArticlePageEntity findArticlePageByContentIdAndPage(final String contentId, final Integer page);
+
+	/**
+	 * Returns the Article by id
+	 * 
+	 * @param id
+	 *            primary key
+	 * @return a prefetched/initialized ArticleEntity
+	 */
+	public ArticleEntity findByIdAndPrefetch(Integer id);
 }

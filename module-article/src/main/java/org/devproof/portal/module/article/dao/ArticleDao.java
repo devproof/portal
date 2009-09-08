@@ -26,9 +26,14 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
  * @author Carsten Hufe
  */
 public interface ArticleDao extends GenericDao<ArticleEntity, Integer> {
+
+	@Query("select a from ArticleEntity a left join fetch a.articlePages where a.id = ?")
+	public ArticleEntity findByIdAndPrefetch(Integer id);
+
 	@Query(value = "select distinct(a) from ArticleEntity a join a.allRights vr"
 			+ " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'article.view%') order by a.modifiedAt desc", limitClause = true)
-	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult);
 
 	@Query("select count(a) from ArticleEntity a where a.contentId like ?")
 	public long existsContentId(String contentId);

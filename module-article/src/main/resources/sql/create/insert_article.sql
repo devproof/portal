@@ -33,7 +33,7 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'general.ArticleBo
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.ArticlePage');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('articles_per_page','Articles per page','Articles','java.lang.Integer','5');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('box_num_latest_articles','Number of latest articles','Articles','java.lang.Integer','3');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title) VALUES (9,{ts '2009-01-05 12:17:49.000'},'admin',{ts '2009-01-05 12:18:07.000'},'admin','ArticleBoxPanel',null,7,'Latest Articles Box');
+INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (9,{ts '2009-01-05 12:17:49.000'},'admin',{ts '2009-01-05 12:18:07.000'},'admin','ArticleBoxPanel',null,7,'Latest Articles Box', 0);
 
 INSERT INTO article (id,created_at,created_by,modified_at,modified_by,content_id,teaser,title) VALUES (1,{ts '2009-01-06 19:28:56.000'},'admin',{ts '2009-01-06 19:28:56.000'},'admin','Sample_article','<p>This is a sample article and this is the teaser</p>','Sample article');
 INSERT INTO article_page (content_id,page,content,article_id) VALUES ('Sample_article',1,'<p>Some sample content on page 1.</p>',1);

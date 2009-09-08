@@ -53,11 +53,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public ArticlePageEntity newArticlePageEntity(final ArticleEntity article, final Integer page) {
-		final ArticlePageEntity e = new ArticlePageEntity();
-		e.setArticle(article);
-		e.setContentId(article.getContentId());
-		e.setPage(page);
-		return e;
+		return article.newArticlePageEntity(page);
 	}
 
 	@Override
@@ -90,6 +86,11 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public ArticlePageEntity findArticlePageByContentIdAndPage(final String contentId, final Integer page) {
 		return articlePageDao.findById(new ArticlePageId(contentId, page));
+	}
+
+	@Override
+	public ArticleEntity findByIdAndPrefetch(final Integer id) {
+		return articleDao.findByIdAndPrefetch(id);
 	}
 
 	@Required

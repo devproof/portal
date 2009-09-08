@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.query.IQuery;
@@ -34,7 +35,7 @@ import org.devproof.portal.core.module.common.query.IQuery;
  * @author Carsten Hufe
  * 
  */
-public abstract class BaseSearchBoxPanel extends Panel {
+public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	private final StatelessForm<IQuery<?>> form;

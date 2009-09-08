@@ -80,7 +80,7 @@ public class ArticleReadPage extends ArticleBasePage {
 		return contentId;
 	}
 
-	private void validateAccessRights(ArticlePageEntity page) {
+	private void validateAccessRights(final ArticlePageEntity page) {
 		final PortalSession session = (PortalSession) getSession();
 		if (page == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
@@ -119,7 +119,7 @@ public class ArticleReadPage extends ArticleBasePage {
 			@Override
 			public void onEdit(final AjaxRequestTarget target) {
 				ArticleEntity article = page.getArticle();
-				article = articleService.findById(article.getId());
+				article = articleService.findByIdAndPrefetch(article.getId());
 				final ArticleEditPage articlePage = new ArticleEditPage(article);
 				setResponsePage(articlePage);
 			}
@@ -134,14 +134,13 @@ public class ArticleReadPage extends ArticleBasePage {
 		return new ExtendedLabel("content", page.getContent());
 	}
 
-	private ContentTagPanel<ArticleTagEntity> createTagPanel(
-			final PageParameters params, final ArticlePageEntity page) {
-		return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle().getTags()),
-				ArticlePage.class, params);
+	private ContentTagPanel<ArticleTagEntity> createTagPanel(final PageParameters params, final ArticlePageEntity page) {
+		return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle()
+				.getTags()), ArticlePage.class, params);
 	}
 
-	private BookmarkablePageLink<String> createForwardLink(String contentId,
-			final int currentPage, final int pageCount) {
+	private BookmarkablePageLink<String> createForwardLink(final String contentId, final int currentPage,
+			final int pageCount) {
 		final BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
 				ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
@@ -157,10 +156,8 @@ public class ArticleReadPage extends ArticleBasePage {
 		return forwardLink;
 	}
 
-	private BookmarkablePageLink<String> createBackLink(String contentId,
-			final int currentPage) {
-		BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink",
-				ArticleReadPage.class) {
+	private BookmarkablePageLink<String> createBackLink(final String contentId, final int currentPage) {
+		BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink", ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

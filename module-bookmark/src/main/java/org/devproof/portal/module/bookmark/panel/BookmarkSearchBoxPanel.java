@@ -19,6 +19,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOption;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.model.Model;
@@ -35,13 +36,14 @@ import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
 public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 
 	private static final long serialVersionUID = 1L;
+	private WebMarkupContainer titleContainer;
 
 	public BookmarkSearchBoxPanel(final String id, final BookmarkQuery query, final QueryDataProvider<?> dataProvider,
 			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id, query, dataProvider, "page.BookmarkEditPage", parent, dataview, params);
 		TextField<String> fc = new TextField<String>("allTextFields");
 		getForm().add(fc);
-
+		add(titleContainer = new WebMarkupContainer("title"));
 		Select selectBroken = new Select("broken");
 		selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
 		selectBroken.add(new SelectOption<Boolean>("brokenTrue", Model.of(Boolean.TRUE)));
@@ -65,5 +67,10 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 				query.setBroken(params.getAsBoolean("broken"));
 			}
 		}
+	}
+
+	@Override
+	public void setTitleVisible(final boolean visible) {
+		titleContainer.setVisible(visible);
 	}
 }
