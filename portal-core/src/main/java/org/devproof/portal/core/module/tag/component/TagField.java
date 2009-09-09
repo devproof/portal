@@ -22,6 +22,8 @@ import java.util.StringTokenizer;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.form.IFormModelUpdateListener;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.string.Strings;
 import org.devproof.portal.core.module.tag.TagConstants;
@@ -33,18 +35,20 @@ import org.devproof.portal.core.module.tag.service.TagService;
  * 
  * @author Carsten Hufe
  */
-public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> {
+public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> implements IFormModelUpdateListener {
 	private static final long serialVersionUID = 1L;
 	private final TagService<T> tagService;
-
-	public TagField(final String id, final String tags, final TagService<T> tagService) {
+	private IModel<List<T>> originalTagsModel = null;
+	
+	private TagField(final String id, final String tags, final TagService<T> tagService) {
 		super(id, Model.of(tags));
 		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
 		this.tagService = tagService;
 	}
-
-	public TagField(final String id, final List<T> tags, final TagService<T> tagService) {
-		super(id, Model.of(createModelString(tags)));
+	
+	public TagField(final String id, final IModel<List<T>> tags, final TagService<T> tagService) {
+		super(id, Model.of(createModelString(tags.getObject())));
+		originalTagsModel = tags;
 		this.tagService = tagService;
 	}
 
@@ -99,7 +103,7 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 	/**
 	 * Returns the tags and stores it
 	 */
-	public List<T> getTagsAndStore() {
+	private List<T> getTagsAndStore() {
 
 		final List<T> back = new ArrayList<T>();
 		final StringTokenizer tokenizer = new StringTokenizer(getValue(), TagConstants.TAG_SEPERATORS, false);
@@ -112,5 +116,12 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 			}
 		}
 		return back;
+	}
+
+	@Override
+	public void updateModel() {
+		super.updateModel();
+		List<T> tagsAndStore = getTagsAndStore();
+		originalTagsModel.setObject(tagsAndStore);
 	}
 }

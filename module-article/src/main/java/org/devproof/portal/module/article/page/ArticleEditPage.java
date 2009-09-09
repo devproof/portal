@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.article.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.PageParameters;
@@ -25,6 +24,9 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
@@ -51,9 +53,6 @@ public class ArticleEditPage extends ArticleBasePage {
 	private TagService<ArticleTagEntity> articleTagService;
 
 	private final ArticleEntity article;
-	private RightGridPanel viewRightPanel;
-	private RightGridPanel readRightPanel;
-	private TagField<ArticleTagEntity> tagField;
 	private RequiredTextField<String> contentIdField;
 
 	public ArticleEditPage(final ArticleEntity article) {
@@ -68,23 +67,24 @@ public class ArticleEditPage extends ArticleBasePage {
 		form.add(createTitleField());
 		form.add(createTeaserField());
 		form.add(createContentField());
-		form.add(tagField = createTagField());
-		form.add(viewRightPanel = createViewRightPanel());
-		form.add(readRightPanel = createReadRightPanel());
+		form.add(createTagField());
+		form.add(createViewRightPanel());
+		form.add(createReadRightPanel());
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
 	private RightGridPanel createReadRightPanel() {
-		return new RightGridPanel("readright", "article.read", article.getAllRights());
+		return new RightGridPanel("readright", "article.read", new ListModel<RightEntity>(article.getAllRights()));
 	}
 
 	private RightGridPanel createViewRightPanel() {
-		return new RightGridPanel("viewright", "article.view", article.getAllRights());
+		return new RightGridPanel("viewright", "article.view", new ListModel<RightEntity>(article.getAllRights()));
 	}
 
 	private TagField<ArticleTagEntity> createTagField() {
-		return new TagField<ArticleTagEntity>("tags", article.getTags(), articleTagService);
+		IModel<List<ArticleTagEntity>> listModel = new PropertyModel<List<ArticleTagEntity>>(article, "tags");
+		return new TagField<ArticleTagEntity>("tags", listModel, articleTagService);
 	}
 
 	private RequiredTextField<String> createContentIdField() {
@@ -163,11 +163,6 @@ public class ArticleEditPage extends ArticleBasePage {
 
 			@Override
 			protected void onSubmit() {
-				List<RightEntity> allRights = new ArrayList<RightEntity>();
-				allRights.addAll(viewRightPanel.getSelectedRights());
-				allRights.addAll(readRightPanel.getSelectedRights());
-				article.setAllRights(allRights);
-				article.setTags(tagField.getTagsAndStore());
 				articleService.save(article);
 				setRedirect(false);
 				setResponsePage(ArticleReadPage.class, new PageParameters("0=" + article.getContentId()));

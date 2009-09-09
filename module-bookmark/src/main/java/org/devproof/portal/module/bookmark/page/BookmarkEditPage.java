@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.bookmark.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.PageParameters;
@@ -23,6 +22,9 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
@@ -48,10 +50,12 @@ public class BookmarkEditPage extends BookmarkBasePage {
 
 	public BookmarkEditPage(final BookmarkEntity bookmark) {
 		super(new PageParameters());
-		final RightGridPanel viewRights = new RightGridPanel("viewRights", "bookmark.view", bookmark.getAllRights());
-		final RightGridPanel visitRights = new RightGridPanel("visitRights", "bookmark.visit", bookmark.getAllRights());
-		final RightGridPanel voteRights = new RightGridPanel("voteRights", "bookmark.vote", bookmark.getAllRights());
-		final TagField<BookmarkTagEntity> tagField = new TagField<BookmarkTagEntity>("tags", bookmark.getTags(),
+		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
+		final RightGridPanel viewRights = new RightGridPanel("viewRights", "bookmark.view", rightsListModel);
+		final RightGridPanel visitRights = new RightGridPanel("visitRights", "bookmark.visit", rightsListModel);
+		final RightGridPanel voteRights = new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
+		IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmark, "tags");
+		final TagField<BookmarkTagEntity> tagField = new TagField<BookmarkTagEntity>("tags", listModel,
 				bookmarkTagService);
 
 		final Form<BookmarkEntity> form = new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(
@@ -62,12 +66,6 @@ public class BookmarkEditPage extends BookmarkBasePage {
 			protected void onSubmit() {
 				BookmarkEditPage.this.setVisible(false);
 				final BookmarkEntity bookmark = getModelObject();
-				final List<RightEntity> selectedRights = new ArrayList<RightEntity>();
-				selectedRights.addAll(viewRights.getSelectedRights());
-				selectedRights.addAll(visitRights.getSelectedRights());
-				selectedRights.addAll(voteRights.getSelectedRights());
-				bookmark.setAllRights(selectedRights);
-				bookmark.setTags(tagField.getTagsAndStore());
 				bookmark.setBroken(Boolean.FALSE);
 				bookmark.setSource(Source.MANUAL);
 				bookmarkService.save(bookmark);

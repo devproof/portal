@@ -20,12 +20,14 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
@@ -41,7 +43,6 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
 	public OtherPageEditPage(final OtherPageEntity otherPage) {
 		super(new PageParameters());
-		final RightGridPanel rightGrid = new RightGridPanel("viewright", "otherPage.view", otherPage.getViewRights());
 
 		Form<OtherPageEntity> form = new Form<OtherPageEntity>("form", new CompoundPropertyModel<OtherPageEntity>(
 				otherPage)) {
@@ -49,7 +50,6 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
 			@Override
 			public void onSubmit() {
-				otherPage.setViewRights(rightGrid.getSelectedRights());
 				otherPageService.save(otherPage);
 				setRedirect(false);
 				info(OtherPageEditPage.this.getString("msg.saved"));
@@ -59,7 +59,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 		};
 		form.setOutputMarkupId(true);
 		add(form);
-		form.add(rightGrid);
+		form.add(new RightGridPanel("viewright", "otherPage.view", new ListModel<RightEntity>(otherPage.getViewRights())));
 
 		FormComponent<String> fc;
 
