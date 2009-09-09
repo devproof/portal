@@ -28,7 +28,7 @@ public interface CommonPageFactory {
 	 * Returns a new instance of a wicket page
 	 * 
 	 * @param obj
-	 *            a object if required in the implementation
+	 *            an object if required in the implementation
 	 * @return instance
 	 */
 	public Page newInstance(Object... obj);
