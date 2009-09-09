@@ -55,7 +55,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	public ArticleReadPage(final PageParameters params) {
 		super(params);
 		String contentId = getContentId(params);
-		int currentPage = params.getAsInteger("1", 1);
+		int currentPage = getCurrentPage(params);
 		int numberOfPages = (int) articleService.getPageCount(contentId);
 		ArticlePageEntity page = articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
 
@@ -70,6 +70,11 @@ public class ArticleReadPage extends ArticleBasePage {
 		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(new ArticleQuery(), "tag"),
 				ArticlePage.class, params);
 		setPageTitle(page.getArticle().getTitle());
+	}
+
+	private int getCurrentPage(final PageParameters params) {
+		int currentPage = params.getAsInteger("1", 1);
+		return currentPage;
 	}
 
 	private String getContentId(final PageParameters params) {
