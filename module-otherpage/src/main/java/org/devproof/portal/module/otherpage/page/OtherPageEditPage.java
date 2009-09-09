@@ -59,7 +59,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 		};
 		form.setOutputMarkupId(true);
 		add(form);
-		form.add(new RightGridPanel("viewright", "otherPage.view", new ListModel<RightEntity>(otherPage.getViewRights())));
+		form.add(new RightGridPanel("viewright", "otherPage.view", new ListModel<RightEntity>(otherPage.getAllRights())));
 
 		FormComponent<String> fc;
 

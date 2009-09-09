@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -28,6 +29,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.right.entity.RightEntity;
@@ -51,7 +53,7 @@ final public class OtherPageEntity extends BaseEntity {
 	private String content;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "other_page_right_xref", joinColumns = @JoinColumn(name = "other_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-	private List<RightEntity> viewRights;
+	private List<RightEntity> allRights;
 
 	public Integer getId() {
 		return id;
@@ -77,12 +79,20 @@ final public class OtherPageEntity extends BaseEntity {
 		this.content = content;
 	}
 
-	public List<RightEntity> getViewRights() {
-		return viewRights;
+	public List<RightEntity> getAllRights() {
+		if (allRights == null) {
+			allRights = new ArrayList<RightEntity>();
+		}
+		return allRights;
 	}
 
-	public void setViewRights(final List<RightEntity> viewRights) {
-		this.viewRights = viewRights;
+	public void setAllRights(final List<RightEntity> allRights) {
+		this.allRights = allRights;
+	}
+
+	@Transient
+	public List<RightEntity> getViewRights() {
+		return getRightsStartingWith(allRights, "otherPage.view");
 	}
 
 	@Override

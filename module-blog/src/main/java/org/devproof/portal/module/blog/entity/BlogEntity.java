@@ -88,6 +88,9 @@ final public class BlogEntity extends BaseEntity {
 	}
 
 	public List<RightEntity> getAllRights() {
+		if (allRights == null) {
+			allRights = new ArrayList<RightEntity>();
+		}
 		return allRights;
 	}
 

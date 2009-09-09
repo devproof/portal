@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.download.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -121,6 +122,9 @@ final public class DownloadEntity extends BaseLinkEntity {
 	}
 
 	public List<RightEntity> getAllRights() {
+		if (allRights == null) {
+			allRights = new ArrayList<RightEntity>();
+		}
 		return allRights;
 	}
 
