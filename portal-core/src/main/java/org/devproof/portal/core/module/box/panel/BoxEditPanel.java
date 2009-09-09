@@ -47,23 +47,26 @@ public abstract class BoxEditPanel extends Panel {
 	private BoxService boxService;
 	@SpringBean(name = "boxRegistry")
 	private BoxRegistry boxRegistry;
+	private FeedbackPanel feedbackPanel;
+	private final IModel<BoxConfiguration> boxSelectionModel;
+	private final BoxEntity box;
 
 	public BoxEditPanel(final String id, final BoxEntity box) {
 		super(id);
-		FeedbackPanel feedbackPanel = createFeedbackPanel();
-		IModel<BoxConfiguration> selectBoxModel = getBoxConfigurationModel(box);
-		add(feedbackPanel);
-		add(createBoxEditForm(box, feedbackPanel, selectBoxModel));
+		this.box = box;
+		boxSelectionModel = getBoxConfigurationModel(box);
+
+		add(feedbackPanel = createFeedbackPanel());
+		add(createBoxEditForm());
 	}
 
-	private Form<BoxEntity> createBoxEditForm(final BoxEntity box, final FeedbackPanel feedbackPanel,
-			final IModel<BoxConfiguration> selectBoxModel) {
-		Form<BoxEntity> form = createBoxEditForm(box);
+	private Form<BoxEntity> createBoxEditForm() {
+		Form<BoxEntity> form = new Form<BoxEntity>("form", new CompoundPropertyModel<BoxEntity>(box));
 		form.add(createContentField());
-		form.add(createBoxTypeChoice(selectBoxModel));
+		form.add(createBoxTypeChoice());
 		form.add(createTitleField());
 		form.add(createHideTitleCheckBox());
-		form.add(createAjaxButton(box, feedbackPanel, form, selectBoxModel));
+		form.add(createAjaxButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -78,10 +81,10 @@ public abstract class BoxEditPanel extends Panel {
 		return selectBoxModel;
 	}
 
-	private DropDownChoice<BoxConfiguration> createBoxTypeChoice(final IModel<BoxConfiguration> selectBoxModel) {
+	private DropDownChoice<BoxConfiguration> createBoxTypeChoice() {
 		List<BoxConfiguration> confs = boxRegistry.getRegisteredBoxes();
 		ChoiceRenderer<BoxConfiguration> choiceRenderer = new ChoiceRenderer<BoxConfiguration>("name", "boxClass");
-		DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", selectBoxModel,
+		DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", boxSelectionModel,
 				confs, choiceRenderer);
 		boxType.setRequired(true);
 		return boxType;
@@ -93,9 +96,8 @@ public abstract class BoxEditPanel extends Panel {
 		return title;
 	}
 
-	private AjaxButton createAjaxButton(final BoxEntity box, final FeedbackPanel feedbackPanel,
-			final Form<BoxEntity> form, final IModel<BoxConfiguration> selectBoxModel) {
-		return new AjaxButton("saveButton", form) {
+	private AjaxButton createAjaxButton() {
+		return new AjaxButton("saveButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -104,7 +106,7 @@ public abstract class BoxEditPanel extends Panel {
 					Integer sort = boxService.getMaxSortNum();
 					box.setSort(sort);
 				}
-				box.setBoxType(selectBoxModel.getObject().getKey());
+				box.setBoxType(boxSelectionModel.getObject().getKey());
 				boxService.save(box);
 				BoxEditPanel.this.onSave(target);
 			}
@@ -117,13 +119,7 @@ public abstract class BoxEditPanel extends Panel {
 	}
 
 	private TextArea<String> createContentField() {
-		TextArea<String> content = new TextArea<String>("content");
-		return content;
-	}
-
-	private Form<BoxEntity> createBoxEditForm(final BoxEntity box) {
-		Form<BoxEntity> form = new Form<BoxEntity>("form", new CompoundPropertyModel<BoxEntity>(box));
-		return form;
+		return new TextArea<String>("content");
 	}
 
 	private FeedbackPanel createFeedbackPanel() {
