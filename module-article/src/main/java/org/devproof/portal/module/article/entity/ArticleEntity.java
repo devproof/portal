@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -111,6 +112,9 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public List<ArticlePageEntity> getArticlePages() {
+		if (articlePages == null) {
+			articlePages = new ArrayList<ArticlePageEntity>();
+		}
 		return articlePages;
 	}
 
@@ -119,6 +123,9 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	public List<RightEntity> getAllRights() {
+		if (allRights == null) {
+			allRights = new ArrayList<RightEntity>();
+		}
 		return allRights;
 	}
 
@@ -166,13 +173,13 @@ final public class ArticleEntity extends BaseEntity {
 				page.setArticle(this);
 			}
 			page.setContent(splittedPages[i]);
-			articlePages.add(page);
+			getArticlePages().add(page);
 		}
 	}
 
 	@Transient
 	public ArticlePageEntity newArticlePageEntity(final Integer page) {
-		final ArticlePageEntity e = new ArticlePageEntity();
+		ArticlePageEntity e = new ArticlePageEntity();
 		e.setArticle(this);
 		e.setContentId(getContentId());
 		e.setPage(page);

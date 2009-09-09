@@ -100,7 +100,7 @@ public class ArticleEditPageTest extends TestCase {
 		form.setValue("title", "testing title");
 		form.setValue("teaser", "testing teaser");
 		form.setValue("contentId", "testing_content_id");
-		form.setValue("content", "testing content");
+		form.setValue("fullArticle", "testing content");
 		form.submit();
 	}
 
