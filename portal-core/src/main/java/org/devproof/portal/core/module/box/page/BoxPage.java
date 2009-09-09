@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.box.page;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -26,7 +27,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
@@ -50,22 +50,34 @@ public class BoxPage extends TemplatePage {
 	private BoxService boxService;
 	@SpringBean(name = "boxRegistry")
 	private BoxRegistry boxRegistry;
-
 	private final ModalWindow modalWindow;
-	private final WebMarkupContainer container;
+	private final WebMarkupContainer boxDataViewWithRefreshContainer;
 
 	public BoxPage(final PageParameters params) {
 		super(params);
-		container = new WebMarkupContainer("refreshTable");
-		container.setOutputMarkupId(true);
-		add(container);
+		add(boxDataViewWithRefreshContainer = createBoxDataViewWithRefreshContainer());
+		add(modalWindow = createModalWindow());
+		addPageAdminBoxLink(createAddLink());
+	}
 
-		modalWindow = new ModalWindow("modalWindow");
+	private BoxDataView createBoxDataView() {
+		BoxDataView dataView = new BoxDataView("tableRow");
+		return dataView;
+	}
+
+	private ModalWindow createModalWindow() {
+		ModalWindow modalWindow = new ModalWindow("modalWindow");
 		modalWindow.setTitle("Portal");
-		add(modalWindow);
+		return modalWindow;
+	}
 
-		BoxDataView dataView = new BoxDataView("tableRow", boxDataProvider, params);
-		container.add(dataView);
+	private AjaxLink<BoxEntity> createAddLink() {
+		AjaxLink<BoxEntity> createLink = newAddLink();
+		createLink.add(new Label("linkName", getString("createLink")));
+		return createLink;
+	}
+
+	private AjaxLink<BoxEntity> newAddLink() {
 		AjaxLink<BoxEntity> createLink = new AjaxLink<BoxEntity>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
@@ -78,7 +90,7 @@ public class BoxPage extends TemplatePage {
 
 					@Override
 					public void onSave(final AjaxRequestTarget target) {
-						target.addComponent(container);
+						target.addComponent(boxDataViewWithRefreshContainer);
 						target.addComponent(BoxPage.this.getFeedback());
 						info(getString("msg.saved"));
 						modalWindow.close(target);
@@ -91,33 +103,90 @@ public class BoxPage extends TemplatePage {
 				modalWindow.show(target);
 			}
 		};
+		return createLink;
+	}
 
-		createLink.add(new Label("linkName", getString("createLink")));
-		addPageAdminBoxLink(createLink);
+	private WebMarkupContainer createBoxDataViewWithRefreshContainer() {
+		WebMarkupContainer refreshContainer = new WebMarkupContainer("refreshTable");
+		refreshContainer.setOutputMarkupId(true);
+		refreshContainer.add(createBoxDataView());
+		return refreshContainer;
 	}
 
 	private class BoxDataView extends DataView<BoxEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public BoxDataView(final String id, final IDataProvider<BoxEntity> dataProvider, final PageParameters params) {
-			super(id, dataProvider);
+		public BoxDataView(final String id) {
+			super(id, boxDataProvider);
 		}
 
 		@Override
 		protected void populateItem(final Item<BoxEntity> item) {
 			final BoxEntity box = item.getModelObject();
-			item.add(new Label("sort", Integer.toString(box.getSort())));
-			String name = boxRegistry.getNameBySimpleClassName(box.getBoxType());
-			item.add(new Label("type", name));
-			item.add(new Label("title", box.getTitle()));
+			item.add(createSortLabel(box));
+			item.add(createTypeLabel(box));
+			item.add(createTitleLabel(box));
+			item.add(createAuthorPanel(box));
+			item.add(createMoveUpLink(box));
+			item.add(createMoveDownLink(box));
+			item.add(createClassEvenOddModifier(item));
+		}
 
-			item.add(new AuthorPanel<BoxEntity>("authorButtons", box) {
+		private AttributeModifier createClassEvenOddModifier(final Item<BoxEntity> item) {
+			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getObject() {
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
+				}
+			});
+		}
+
+		private MarkupContainer createMoveDownLink(final BoxEntity box) {
+			AjaxLink<BoxEntity> moveDownLink = newMoveDownLink(box);
+			moveDownLink.add(new Image("downImage", CommonConstants.REF_DOWN_IMG));
+			return moveDownLink;
+		}
+
+		private AjaxLink<BoxEntity> newMoveDownLink(final BoxEntity box) {
+			return new AjaxLink<BoxEntity>("downLink") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(final AjaxRequestTarget target) {
+					boxService.moveDown(box);
+					target.addComponent(boxDataViewWithRefreshContainer);
+				}
+			};
+		}
+
+		private MarkupContainer createMoveUpLink(final BoxEntity box) {
+			AjaxLink<BoxEntity> moveUpLink = newMoveUpLink(box);
+			moveUpLink.add(new Image("upImage", CommonConstants.REF_UP_IMG));
+			return moveUpLink;
+		}
+
+		private AjaxLink<BoxEntity> newMoveUpLink(final BoxEntity box) {
+			return new AjaxLink<BoxEntity>("upLink") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(final AjaxRequestTarget target) {
+					boxService.moveUp(box);
+					target.addComponent(boxDataViewWithRefreshContainer);
+				}
+			};
+		}
+
+		private AuthorPanel<BoxEntity> createAuthorPanel(final BoxEntity box) {
+			return new AuthorPanel<BoxEntity>("authorButtons", box) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
 					boxService.delete(box);
-					target.addComponent(container);
+					target.addComponent(boxDataViewWithRefreshContainer);
 					target.addComponent(getFeedback());
 					info(getString("msg.deleted"));
 				}
@@ -130,7 +199,7 @@ public class BoxPage extends TemplatePage {
 
 						@Override
 						public void onSave(final AjaxRequestTarget target) {
-							target.addComponent(container);
+							target.addComponent(boxDataViewWithRefreshContainer);
 							target.addComponent(getFeedback());
 							info(getString("msg.saved"));
 							modalWindow.close(target);
@@ -142,36 +211,20 @@ public class BoxPage extends TemplatePage {
 					modalWindow.show(target);
 				}
 
-			});
+			};
+		}
 
-			item.add(new AjaxLink<BoxEntity>("upLink") {
-				private static final long serialVersionUID = 1L;
+		private Label createTitleLabel(final BoxEntity box) {
+			return new Label("title", box.getTitle());
+		}
 
-				@Override
-				public void onClick(final AjaxRequestTarget target) {
-					boxService.moveUp(box);
-					target.addComponent(container);
-				}
-			}.add(new Image("upImage", CommonConstants.REF_UP_IMG)));
+		private Label createTypeLabel(final BoxEntity box) {
+			String name = boxRegistry.getNameBySimpleClassName(box.getBoxType());
+			return new Label("type", name);
+		}
 
-			item.add(new AjaxLink<BoxEntity>("downLink") {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick(final AjaxRequestTarget target) {
-					boxService.moveDown(box);
-					target.addComponent(container);
-				}
-			}.add(new Image("downImage", CommonConstants.REF_DOWN_IMG)));
-
-			item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public String getObject() {
-					return (item.getIndex() % 2 != 0) ? "even" : "odd";
-				}
-			}));
+		private Label createSortLabel(final BoxEntity box) {
+			return new Label("sort", Integer.toString(box.getSort()));
 		}
 	};
 }
