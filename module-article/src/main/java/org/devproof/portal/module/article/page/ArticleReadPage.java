@@ -52,24 +52,35 @@ public class ArticleReadPage extends ArticleBasePage {
 	@SpringBean(name = "articleTagService")
 	private TagService<ArticleTagEntity> articleTagService;
 
+	private final PageParameters params;
+	private final ArticlePageEntity page;
+	private final String contentId;
+	private final int currentPage;
+	private final int numberOfPages;
+
 	public ArticleReadPage(final PageParameters params) {
 		super(params);
-		String contentId = getContentId(params);
-		int currentPage = getCurrentPage(params);
-		int numberOfPages = (int) articleService.getPageCount(contentId);
-		ArticlePageEntity page = articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
+		this.params = params;
+		contentId = getContentId(params);
+		currentPage = getCurrentPage(params);
+		numberOfPages = (int) articleService.getPageCount(contentId);
+		page = articleService.findArticlePageByContentIdAndPage(contentId, currentPage);
 
-		validateAccessRights(page);
-		add(createTitleLabel(page));
-		add(createMetaInfoPanel(page));
-		add(createAppropriateAuthorPanel(page));
-		add(createTagPanel(params, page));
-		add(createContentLabel(page));
-		add(createBackLink(contentId, currentPage));
-		add(createForwardLink(contentId, currentPage, numberOfPages));
+		validateAccessRights();
+		add(createTitleLabel());
+		add(createMetaInfoPanel());
+		add(createAppropriateAuthorPanel());
+		add(createTagPanel(params));
+		add(createContentLabel());
+		add(createBackLink());
+		add(createForwardLink());
+		addTagCloudBox();
+		setPageTitle(page.getArticle().getTitle());
+	}
+
+	private void addTagCloudBox() {
 		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(new ArticleQuery(), "tag"),
 				ArticlePage.class, params);
-		setPageTitle(page.getArticle().getTitle());
 	}
 
 	private int getCurrentPage(final PageParameters params) {
@@ -85,7 +96,7 @@ public class ArticleReadPage extends ArticleBasePage {
 		return contentId;
 	}
 
-	private void validateAccessRights(final ArticlePageEntity page) {
+	private void validateAccessRights() {
 		final PortalSession session = (PortalSession) getSession();
 		if (page == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
@@ -96,15 +107,15 @@ public class ArticleReadPage extends ArticleBasePage {
 		}
 	}
 
-	private Label createTitleLabel(final ArticlePageEntity page) {
+	private Label createTitleLabel() {
 		return new Label("title", page.getArticle().getTitle());
 	}
 
-	private MetaInfoPanel createMetaInfoPanel(final ArticlePageEntity page) {
+	private MetaInfoPanel createMetaInfoPanel() {
 		return new MetaInfoPanel("metaInfo", page.getArticle());
 	}
 
-	private Component createAppropriateAuthorPanel(final ArticlePageEntity page) {
+	private Component createAppropriateAuthorPanel() {
 		if (isAuthor()) {
 			return createAuthorPanel(page);
 		} else {
@@ -135,24 +146,23 @@ public class ArticleReadPage extends ArticleBasePage {
 		return new WebMarkupContainer("authorButtons").setVisible(false);
 	}
 
-	private ExtendedLabel createContentLabel(final ArticlePageEntity page) {
+	private ExtendedLabel createContentLabel() {
 		return new ExtendedLabel("content", page.getContent());
 	}
 
-	private ContentTagPanel<ArticleTagEntity> createTagPanel(final PageParameters params, final ArticlePageEntity page) {
+	private ContentTagPanel<ArticleTagEntity> createTagPanel(final PageParameters params) {
 		return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle()
 				.getTags()), ArticlePage.class, params);
 	}
 
-	private BookmarkablePageLink<String> createForwardLink(final String contentId, final int currentPage,
-			final int pageCount) {
+	private BookmarkablePageLink<String> createForwardLink() {
 		final BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
 				ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isVisible() {
-				return pageCount > currentPage;
+				return numberOfPages > currentPage;
 			}
 
 		};
@@ -161,7 +171,7 @@ public class ArticleReadPage extends ArticleBasePage {
 		return forwardLink;
 	}
 
-	private BookmarkablePageLink<String> createBackLink(final String contentId, final int currentPage) {
+	private BookmarkablePageLink<String> createBackLink() {
 		BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink", ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 
