@@ -90,7 +90,7 @@ public class ArticleEditPage extends ArticleBasePage {
 	private RequiredTextField<String> createContentIdField() {
 		final RequiredTextField<String> contentId = new RequiredTextField<String>("contentId");
 		contentId.setEnabled(isNewArticle());
-		contentId.add(createContentIdValidator());
+		contentId.add(newContentIdValidator());
 		contentId.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
 		return contentId;
 	}
@@ -139,7 +139,7 @@ public class ArticleEditPage extends ArticleBasePage {
 		};
 	}
 
-	private AbstractValidator<String> createContentIdValidator() {
+	private AbstractValidator<String> newContentIdValidator() {
 		return new AbstractValidator<String>() {
 			private static final long serialVersionUID = 1L;
 
