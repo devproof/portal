@@ -30,7 +30,7 @@ public interface CommonMarkupContainerFactory {
 	 * @param id
 	 *            wicket id
 	 * @param obj
-	 *            a object if required
+	 *            an object if required
 	 * @return instance
 	 */
 	public MarkupContainer newInstance(String id, Object... obj);
