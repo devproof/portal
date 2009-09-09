@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.download.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.PageParameters;
@@ -24,6 +23,9 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
@@ -48,11 +50,9 @@ public class DownloadEditPage extends DownloadBasePage {
 
 	public DownloadEditPage(final DownloadEntity download) {
 		super(new PageParameters());
-		final RightGridPanel viewRights = new RightGridPanel("viewRights", "download.view", download.getAllRights());
-		final RightGridPanel downloadRights = new RightGridPanel("downloadRights", "download.download", download
-				.getAllRights());
-		final RightGridPanel voteRights = new RightGridPanel("voteRights", "download.vote", download.getAllRights());
-		final TagField<DownloadTagEntity> tagField = new TagField<DownloadTagEntity>("tags", download.getTags(),
+		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
+		IModel<List<DownloadTagEntity>> downloadListModel = new PropertyModel<List<DownloadTagEntity>>(download, "tags");
+		final TagField<DownloadTagEntity> tagField = new TagField<DownloadTagEntity>("tags", downloadListModel,
 				downloadTagService);
 
 		final Form<DownloadEntity> form = new Form<DownloadEntity>("form", new CompoundPropertyModel<DownloadEntity>(
@@ -63,12 +63,6 @@ public class DownloadEditPage extends DownloadBasePage {
 			protected void onSubmit() {
 				DownloadEditPage.this.setVisible(false);
 				final DownloadEntity download = getModelObject();
-				final List<RightEntity> selectedRights = new ArrayList<RightEntity>();
-				selectedRights.addAll(viewRights.getSelectedRights());
-				selectedRights.addAll(downloadRights.getSelectedRights());
-				selectedRights.addAll(voteRights.getSelectedRights());
-				download.setAllRights(selectedRights);
-				download.setTags(tagField.getTagsAndStore());
 				download.setBroken(Boolean.FALSE);
 				downloadService.save(download);
 				setRedirect(false);
@@ -78,9 +72,9 @@ public class DownloadEditPage extends DownloadBasePage {
 		};
 		form.setOutputMarkupId(true);
 		form.add(tagField);
-		form.add(viewRights);
-		form.add(downloadRights);
-		form.add(voteRights);
+		form.add(new RightGridPanel("viewRights", "download.view", rightListModel));
+		form.add(new RightGridPanel("downloadRights", "download.download", rightListModel));
+		form.add(new RightGridPanel("voteRights", "download.vote", rightListModel));
 		add(form);
 
 		FormComponent<String> fc;

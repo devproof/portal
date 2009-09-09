@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.right.panel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.right.entity.RightEntity;
@@ -43,9 +45,21 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	private final List<RightEntity> allRights;
-
-	public RightGridPanel(final String id, final String rightPrefix, final List<RightEntity> selectedRights) {
+	private List<RightEntity> originalRightsListReference;
+	private List<RightEntity> originalSelectedRights;
+	
+	public RightGridPanel(final String id, final String rightPrefix, 
+			IModel<List<RightEntity>> selectedRights) {
 		super(id);
+		originalRightsListReference = selectedRights.getObject();
+		originalSelectedRights = new ArrayList<RightEntity>();
+		for (Iterator<? extends RightEntity> it = originalRightsListReference.iterator(); it.hasNext();) {
+			RightEntity right = it.next();
+			if(right.getRight().startsWith(rightPrefix)) {
+				originalSelectedRights.add(right);
+				it.remove();
+			}			
+		}
 		allRights = rightService.findRightsStartingWith(rightPrefix);
 		final Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new HashMap<RightEntity, CheckBox>();
 		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(allRights);
@@ -55,7 +69,7 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 			@Override
 			protected void populateItem(final Item<RightEntity> item) {
 				final RightEntity right = item.getModel().getObject();
-				right.setSelected(selectedRights != null && selectedRights.contains(right));
+				right.setSelected(originalSelectedRights.contains(right));
 				CheckBox checkBox = keepCheckBoxStateAfterValidation.get(right);
 				if (checkBox == null) {
 					checkBox = new CheckBox("right_checkbox", new PropertyModel<Boolean>(right, "selected"));
@@ -75,7 +89,7 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 		add(gridView);
 	}
 
-	public List<RightEntity> getSelectedRights() {
+	private List<? extends RightEntity> getSelectedRights() {
 		List<RightEntity> newRights = new ArrayList<RightEntity>();
 		for (RightEntity right : allRights) {
 			if (right.isSelected()) {
@@ -87,6 +101,6 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 
 	@Override
 	public void updateModel() {
-		// System.out.println("updateModel");
+		originalRightsListReference.addAll(getSelectedRights());
 	}
 }

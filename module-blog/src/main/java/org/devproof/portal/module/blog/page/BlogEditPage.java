@@ -15,14 +15,20 @@
  */
 package org.devproof.portal.module.blog.page;
 
+import java.util.List;
+
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -43,8 +49,9 @@ public class BlogEditPage extends BlogBasePage {
 
 	public BlogEditPage(final BlogEntity blog) {
 		super(new PageParameters());
-		final RightGridPanel rightGrid = new RightGridPanel("viewright", "blog.view", blog.getAllRights());
-		final TagField<BlogTagEntity> tagField = new TagField<BlogTagEntity>("tags", blog.getTags(), blogTagService);
+		final RightGridPanel rightGrid = new RightGridPanel("viewright", "blog.view", new ListModel<RightEntity>(blog.getAllRights()));
+		IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blog, "tags");
+		final TagField<BlogTagEntity> tagField = new TagField<BlogTagEntity>("tags", blogListModel, blogTagService);
 
 		final Form<BlogEntity> form = new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blog)) {
 			private static final long serialVersionUID = 1L;
@@ -53,8 +60,6 @@ public class BlogEditPage extends BlogBasePage {
 			protected void onSubmit() {
 				BlogEditPage.this.setVisible(false);
 				final BlogEntity blog = getModelObject();
-				blog.setAllRights(rightGrid.getSelectedRights());
-				blog.setTags(tagField.getTagsAndStore());
 				blogService.save(blog);
 				setRedirect(false);
 				setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));

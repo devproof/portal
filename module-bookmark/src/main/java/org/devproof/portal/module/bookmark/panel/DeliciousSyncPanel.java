@@ -32,6 +32,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ProgressBar;
@@ -71,14 +72,13 @@ public class DeliciousSyncPanel extends Panel {
 	private int modifiedBookmarksCount = 0;
 	private int deletedBookmarksCount = 0;
 	private DeliciousBean deliciousBean;
-
+	private List<RightEntity> allSelectedRights;
+	
 	public DeliciousSyncPanel(final String id) {
 		super(id);
 		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
-		final List<RightEntity> rights = new ArrayList<RightEntity>();
-		final RightGridPanel viewRights = new RightGridPanel("viewRights", "bookmark.view", rights);
-		final RightGridPanel visitRights = new RightGridPanel("visitRights", "bookmark.visit", rights);
-		final RightGridPanel voteRights = new RightGridPanel("voteRights", "bookmark.vote", rights);
+		allSelectedRights = new ArrayList<RightEntity>();
+		ListModel<RightEntity> allSelectedRightsModel = new ListModel<RightEntity>(allSelectedRights);
 
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
@@ -92,9 +92,9 @@ public class DeliciousSyncPanel extends Panel {
 		form.add(new RequiredTextField<String>("username"));
 		form.add(new PasswordTextField("password"));
 		form.add(new TextField<String>("tags"));
-		form.add(viewRights);
-		form.add(visitRights);
-		form.add(voteRights);
+		form.add(new RightGridPanel("viewRights", "bookmark.view", allSelectedRightsModel));
+		form.add(new RightGridPanel("visitRights", "bookmark.visit", allSelectedRightsModel));
+		form.add(new RightGridPanel("voteRights", "bookmark.vote", allSelectedRightsModel));
 
 		final ProgressionModel model = new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
@@ -149,11 +149,7 @@ public class DeliciousSyncPanel extends Panel {
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				// Start the progress bar, will set visibility to true
 				bar.start(target);
-				final List<RightEntity> allRights = new ArrayList<RightEntity>();
 				final UserEntity user = ((PortalSession) Session.get()).getUser();
-				allRights.addAll(viewRights.getSelectedRights());
-				allRights.addAll(visitRights.getSelectedRights());
-				allRights.addAll(voteRights.getSelectedRights());
 				new Thread() {
 					@Override
 					public void run() {
@@ -178,7 +174,7 @@ public class DeliciousSyncPanel extends Panel {
 
 						for (final BookmarkEntity bookmark : bookmarksToSave) {
 							actualItem++;
-							bookmark.setAllRights(allRights);
+							bookmark.setAllRights(allSelectedRights);
 							if (bookmark.getCreatedAt() == null) {
 								bookmark.setCreatedAt(PortalUtil.now());
 							}
