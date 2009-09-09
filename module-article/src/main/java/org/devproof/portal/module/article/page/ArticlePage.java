@@ -60,28 +60,34 @@ public class ArticlePage extends ArticleBasePage {
 	private TagService<ArticleTagEntity> articleTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private ArticleDataView dataView;
+	private final ArticleQuery query;
+	private final PageParameters params;
 
 	public ArticlePage(final PageParameters params) {
 		super(params);
-		ArticleQuery query = createArticleQuery();
-		ArticleDataView dataView = createArticleDataView(params);
-		add(dataView);
-		add(createPagingPanel(params, dataView));
-		addFilterBox(createArticleSearchBoxPanel(params, query, dataView));
-		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(query, "tag"), ArticlePage.class, params);
+		this.params = params;
+		query = createArticleQuery();
+		add(dataView = createArticleDataView());
+		add(createPagingPanel());
+		addFilterBox(createArticleSearchBoxPanel());
+		addTagCloudBox();
 		addSyntaxHighlighter();
 	}
 
-	private ArticleSearchBoxPanel createArticleSearchBoxPanel(final PageParameters params, final ArticleQuery query,
-			final ArticleDataView dataView) {
+	private void addTagCloudBox() {
+		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(query, "tag"), ArticlePage.class, params);
+	}
+
+	private ArticleSearchBoxPanel createArticleSearchBoxPanel() {
 		return new ArticleSearchBoxPanel("box", query, articleDataProvider, this, dataView, params);
 	}
 
-	private ArticleDataView createArticleDataView(final PageParameters params) {
-		return new ArticleDataView("listArticle", params);
+	private ArticleDataView createArticleDataView() {
+		return new ArticleDataView("listArticle");
 	}
 
-	private BookmarkablePagingPanel createPagingPanel(final PageParameters params, final ArticleDataView dataView) {
+	private BookmarkablePagingPanel createPagingPanel() {
 		return new BookmarkablePagingPanel("paging", dataView, ArticlePage.class, params);
 	}
 
@@ -98,11 +104,9 @@ public class ArticlePage extends ArticleBasePage {
 	private class ArticleDataView extends DataView<ArticleEntity> {
 		private static final long serialVersionUID = 1L;
 		private final boolean onlyOneArticleInResult;
-		private final PageParameters params;
 
-		public ArticleDataView(final String id, final PageParameters params) {
+		public ArticleDataView(final String id) {
 			super(id, articleDataProvider);
-			this.params = params;
 			onlyOneArticleInResult = articleDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
 		}
@@ -119,7 +123,7 @@ public class ArticlePage extends ArticleBasePage {
 
 		private ArticleView createArticleView(final Item<ArticleEntity> item) {
 			ArticleEntity article = item.getModelObject();
-			ArticleView articleViewPanel = new ArticleView("articleView", article, params, item);
+			ArticleView articleViewPanel = new ArticleView("articleView", article, item);
 			return articleViewPanel;
 		}
 	}
@@ -131,8 +135,7 @@ public class ArticlePage extends ArticleBasePage {
 
 		private static final long serialVersionUID = 1L;
 
-		public ArticleView(final String id, final ArticleEntity articleEntity, final PageParameters params,
-				final Item<ArticleEntity> item) {
+		public ArticleView(final String id, final ArticleEntity articleEntity, final Item<ArticleEntity> item) {
 			super(id, "articleView", ArticlePage.this);
 			boolean allowedToRead = isAllowedToRead(articleEntity);
 			add(createAppropriateAuthorPanel(item));
