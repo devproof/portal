@@ -61,6 +61,7 @@ import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.component.Atom1Link;
 import org.devproof.portal.core.module.feed.component.Rss2Link;
+import org.devproof.portal.core.module.feed.panel.FeedBoxPanel;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -257,6 +258,8 @@ public abstract class TemplatePage extends WebPage {
 				}
 			} else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
 				item.add(boxInstance = new GlobalAdminBoxPanel("box"));
+			} else if (boxClazz.isAssignableFrom(FeedBoxPanel.class)) {
+				item.add(boxInstance = new FeedBoxPanel("box", getPageClass()));
 			} else {
 				boolean found = false;
 				for (final Constructor<?> constr : boxClazz.getConstructors()) {

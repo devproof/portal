@@ -44,14 +44,9 @@
 			</fileset>
 		</concat>
 		<!-- update scripts -->
-		<concat destfile="${targetsql}/update/mysql/update_from_1.0-rc2_to_1.0-rc3.sql">
+		<concat destfile="${targetsql}/update/update_from_1.0-rc2_to_1.0-rc3_mysql.sql">
 			<fileset dir="${targetsql}/sql/update/">
-				<include name="update_from_1.0-rc2_to_1.0-rc3_*.sql"/>
-			</fileset>
-		</concat>
-		<concat destfile="${targetsql}/update/hsql/update_from_1.0-rc2_to_1.0-rc3.sql">
-			<fileset dir="${targetsql}/sql/update/">
-				<include name="update_from_1.0-rc2_to_1.0-rc3_*.sql"/>
+				<include name="update_from_1.0-rc2_to_1.0-rc3_mysql*.sql"/>
 			</fileset>
 		</concat>
 		<delete dir="${targetsql}/sql/"/>

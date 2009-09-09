@@ -15,23 +15,47 @@
  */
 package org.devproof.portal.core.module.feed.panel;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
+import org.devproof.portal.core.module.feed.FeedConstants;
+import org.devproof.portal.core.module.feed.page.Atom1FeedPage;
+import org.devproof.portal.core.module.feed.page.Rss2FeedPage;
+import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 
 /**
  * @author Carsten Hufe
  */
 public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 	private static final long serialVersionUID = 1L;
+	private WebMarkupContainer titleContainer;
 
-	public FeedBoxPanel(final String id) {
+	@SpringBean(name = "feedProviderRegistry")
+	private FeedProviderRegistry feedProviderRegistry;
+
+	public FeedBoxPanel(final String id, final Class<? extends Page> page) {
 		super(id);
-		// add(new Image("imageAtom", FeedConstants.REF_ATOM));
-		// add(new Image("imageRss", FeedConstants.REF_RSS));
+		add(titleContainer = new WebMarkupContainer("title"));
+		String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
+		PageParameters pageParameters = new PageParameters("0=" + pathByPageClass);
+		BookmarkablePageLink<Atom1FeedPage> atom1FeedLink = new BookmarkablePageLink<Atom1FeedPage>("atomLink",
+				Atom1FeedPage.class, pageParameters);
+		BookmarkablePageLink<Rss2FeedPage> rss2FeedLink = new BookmarkablePageLink<Rss2FeedPage>("rssLink",
+				Rss2FeedPage.class, pageParameters);
+		atom1FeedLink.add(new Image("atomImage", FeedConstants.REF_ATOM1));
+		rss2FeedLink.add(new Image("rssImage", FeedConstants.REF_RSS2));
+		add(atom1FeedLink);
+		add(rss2FeedLink);
+		setVisible(feedProviderRegistry.hasFeedSupport(page));
 	}
 
 	@Override
 	public void setTitleVisible(final boolean visible) {
-
+		titleContainer.setVisible(visible);
 	}
 }
