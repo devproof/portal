@@ -26,6 +26,6 @@ public class FeedConstants {
 	private FeedConstants() {
 	}
 
-	public static final ResourceReference REF_ATOM = new ResourceReference(FeedConstants.class, "img/feed_atom.png");
-	public static final ResourceReference REF_RSS = new ResourceReference(FeedConstants.class, "img/feed_rss.png");
+	public static final ResourceReference REF_ATOM1 = new ResourceReference(FeedConstants.class, "img/feed_atom1-0.gif");
+	public static final ResourceReference REF_RSS2 = new ResourceReference(FeedConstants.class, "img/feed_rss2-0.gif");
 }

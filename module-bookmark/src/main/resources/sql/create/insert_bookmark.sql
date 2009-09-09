@@ -39,7 +39,7 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('bookmark_vote_enabled','Vote enabled','Bookmarks','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('bookmark_hide_broken','Hide broken bookmarks','Bookmarks','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('box_num_latest_bookmarks','Number of latest bookmarks','Bookmarks','java.lang.Integer','3');
-INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (11,{ts '2009-01-05 12:18:22.000'},'admin',{ts '2009-01-05 12:47:42.000'},'Guest','BookmarkBoxPanel',null,9,'Latest Bookmarks Box',0);
+INSERT INTO core_box (created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES ({ts '2009-01-05 12:18:22.000'},'admin',{ts '2009-01-05 12:47:42.000'},'Guest','BookmarkBoxPanel',null,9,'Latest Bookmarks Box',0);
 
 INSERT INTO bookmark (id,created_at,created_by,modified_at,modified_by,description,hits,number_of_votes,sum_of_rating,title,url,source,broken,sync_hash,sync_username) VALUES (1,{ts '2009-01-06 19:35:49.000'},'admin',{ts '2009-01-06 19:35:49.000'},'admin','<p>This a sample bookmark and refers to devproof.org. </p>',0,0,0,'Sample Bookmark','http://devproof.org','MANUAL',0,null,null);
 
