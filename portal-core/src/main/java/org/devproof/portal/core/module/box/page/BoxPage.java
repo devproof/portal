@@ -61,8 +61,7 @@ public class BoxPage extends TemplatePage {
 	}
 
 	private BoxDataView createBoxDataView() {
-		BoxDataView dataView = new BoxDataView("tableRow");
-		return dataView;
+		return new BoxDataView("tableRow");
 	}
 
 	private ModalWindow createModalWindow() {
@@ -78,7 +77,7 @@ public class BoxPage extends TemplatePage {
 	}
 
 	private AjaxLink<BoxEntity> newAddLink() {
-		AjaxLink<BoxEntity> createLink = new AjaxLink<BoxEntity>("adminLink") {
+		return new AjaxLink<BoxEntity>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -103,7 +102,6 @@ public class BoxPage extends TemplatePage {
 				modalWindow.show(target);
 			}
 		};
-		return createLink;
 	}
 
 	private WebMarkupContainer createBoxDataViewWithRefreshContainer() {
