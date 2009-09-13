@@ -75,14 +75,6 @@ import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
  */
 public abstract class TemplatePage extends WebPage {
 
-	private FeedbackPanel feedback;
-	private Component filterBox;
-	private Component tagCloudBox;
-	private PageAdminBoxPanel pageAdminBox;
-	private boolean filterBoxHideTitle;
-	private boolean tagCloudBoxHideTitle;
-	private final IModel<String> pageTitle;
-
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	@SpringBean(name = "boxService")
@@ -94,6 +86,15 @@ public abstract class TemplatePage extends WebPage {
 	@SpringBean(name = "sharedRegistry")
 	private SharedRegistry sharedRegistry;
 
+	private FeedbackPanel feedback;
+	private Component filterBox;
+	private Component tagCloudBox;
+	private PageAdminBoxPanel pageAdminBox;
+	private boolean filterBoxHideTitle;
+	private boolean tagCloudBoxHideTitle;
+	private final IModel<String> pageTitle;
+
+	
 	public TemplatePage(final PageParameters params) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css"));
