@@ -12,6 +12,7 @@
 	<import resource="classpath:/org/devproof/portal/core/module/email/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/feed/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/modulemgmt/devproof-core-module.xml"/>
+	<import resource="classpath:/org/devproof/portal/core/module/print/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/right/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/role/devproof-core-module.xml"/>
 	<import resource="classpath:/org/devproof/portal/core/module/tag/devproof-core-module.xml"/>
