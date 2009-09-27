@@ -67,7 +67,7 @@ public class JettyStart {
 		bb.setInitParams(initParams);
 		FilterHolder servlet = new FilterHolder();
 		servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
-		servlet.setInitParameter("configuration", "deployment");
+		// servlet.setInitParameter("configuration", "deployment");
 		servlet.setClassName(WicketFilter.class.getName());
 		servlet.setName(WicketFilter.class.getName());
 		bb.addFilter(servlet, "/*", 0);
