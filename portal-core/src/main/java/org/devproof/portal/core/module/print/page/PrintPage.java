@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.print.PrintConstants;
 
 /**
  * @author Carsten Hufe
@@ -35,8 +36,7 @@ public class PrintPage extends WebPage {
 
 	public PrintPage(final PageParameters params) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
-		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css"));
-
+		add(CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css"));
 		add(new Label("content", "Halo"));
 		add(new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE)));
 		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
