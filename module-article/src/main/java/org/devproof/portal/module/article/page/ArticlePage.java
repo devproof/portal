@@ -60,6 +60,7 @@ public class ArticlePage extends ArticleBasePage {
 	private TagService<ArticleTagEntity> articleTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	
 	private ArticleDataView dataView;
 	private final ArticleQuery query;
 	private final PageParameters params;
@@ -72,7 +73,6 @@ public class ArticlePage extends ArticleBasePage {
 		add(createPagingPanel());
 		addFilterBox(createArticleSearchBoxPanel());
 		addTagCloudBox();
-		addSyntaxHighlighter();
 	}
 
 	private void addTagCloudBox() {
@@ -122,9 +122,7 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private ArticleView createArticleView(final Item<ArticleEntity> item) {
-			ArticleEntity article = item.getModelObject();
-			ArticleView articleViewPanel = new ArticleView("articleView", article, item);
-			return articleViewPanel;
+			return new ArticleView("articleView",  item);
 		}
 	}
 
@@ -134,16 +132,19 @@ public class ArticlePage extends ArticleBasePage {
 	private class ArticleView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
-
-		public ArticleView(final String id, final ArticleEntity articleEntity, final Item<ArticleEntity> item) {
+		private ArticleEntity article;
+		private boolean allowedToRead = false;
+		
+		public ArticleView(final String id, final Item<ArticleEntity> item) {
 			super(id, "articleView", ArticlePage.this);
-			boolean allowedToRead = isAllowedToRead(articleEntity);
+			article = item.getModelObject();
+			allowedToRead = isAllowedToRead(article);
 			add(createAppropriateAuthorPanel(item));
-			add(createTitleLink(articleEntity, allowedToRead));
-			add(createMetaInfoPanel(articleEntity));
-			add(createTeaserLabel(articleEntity));
-			add(createTagPanel(articleEntity, params));
-			add(createReadMoreLink(articleEntity, allowedToRead));
+			add(createTitleLink());
+			add(createMetaInfoPanel());
+			add(createTeaserLabel());
+			add(createTagPanel());
+			add(createReadMoreLink());
 		}
 
 		private Component createAppropriateAuthorPanel(final Item<ArticleEntity> item) {
@@ -154,11 +155,10 @@ public class ArticlePage extends ArticleBasePage {
 			}
 		}
 
-		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink(final ArticleEntity articleEntity,
-				final boolean allowedToRead) {
+		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink() {
 			BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
 					"readMoreLink", ArticleReadPage.class);
-			readMoreLink.setParameter("0", articleEntity.getContentId());
+			readMoreLink.setParameter("0", article.getContentId());
 			readMoreLink.setEnabled(allowedToRead);
 			readMoreLink.add(new Image("readMoreImage", CommonConstants.REF_VIEW_IMG));
 			String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
@@ -167,18 +167,17 @@ public class ArticlePage extends ArticleBasePage {
 			return readMoreLink;
 		}
 
-		private ContentTagPanel<ArticleTagEntity> createTagPanel(final ArticleEntity articleEntity,
-				final PageParameters params) {
-			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(articleEntity
+		private ContentTagPanel<ArticleTagEntity> createTagPanel() {
+			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(article
 					.getTags()), ArticlePage.class, params);
 		}
 
-		private ExtendedLabel createTeaserLabel(final ArticleEntity articleEntity) {
-			return new ExtendedLabel("teaser", articleEntity.getTeaser());
+		private ExtendedLabel createTeaserLabel() {
+			return new ExtendedLabel("teaser", article.getTeaser());
 		}
 
-		private MetaInfoPanel createMetaInfoPanel(final ArticleEntity articleEntity) {
-			return new MetaInfoPanel("metaInfo", articleEntity);
+		private MetaInfoPanel createMetaInfoPanel() {
+			return new MetaInfoPanel("metaInfo", article);
 		}
 
 		private WebMarkupContainer createEmptyAuthorPanel() {
@@ -191,13 +190,12 @@ public class ArticlePage extends ArticleBasePage {
 			return allowedToRead;
 		}
 
-		private BookmarkablePageLink<ArticleReadPage> createTitleLink(final ArticleEntity articleEntity,
-				final boolean allowedToRead) {
+		private BookmarkablePageLink<ArticleReadPage> createTitleLink() {
 			final BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>(
 					"titleLink", ArticleReadPage.class);
-			titleLink.setParameter("0", articleEntity.getContentId());
+			titleLink.setParameter("0", article.getContentId());
 			titleLink.setEnabled(allowedToRead);
-			titleLink.add(new Label("titleLabel", articleEntity.getTitle()));
+			titleLink.add(new Label("titleLabel", article.getTitle()));
 			return titleLink;
 		}
 

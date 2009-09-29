@@ -47,38 +47,58 @@ public class BlogEditPage extends BlogBasePage {
 	@SpringBean(name = "blogTagService")
 	private TagService<BlogTagEntity> blogTagService;
 
+	private BlogEntity blog;
+	
 	public BlogEditPage(final BlogEntity blog) {
 		super(new PageParameters());
-		final RightGridPanel rightGrid = new RightGridPanel("viewright", "blog.view", new ListModel<RightEntity>(blog.getAllRights()));
-		IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blog, "tags");
-		final TagField<BlogTagEntity> tagField = new TagField<BlogTagEntity>("tags", blogListModel, blogTagService);
+		this.blog = blog;
+		add(createBlogEditForm());
+	}
 
-		final Form<BlogEntity> form = new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blog)) {
+	private Form<BlogEntity> createBlogEditForm() {
+		Form<BlogEntity> form = newBlogEditForm();
+		form.setOutputMarkupId(true);
+		form.add(createHeadlineField());
+		form.add(createContentField());
+		form.add(createTagField());
+		form.add(createViewRightPanel());
+		return form;
+	}
+
+	private Form<BlogEntity> newBlogEditForm() {
+		return new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blog)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
 				BlogEditPage.this.setVisible(false);
-				final BlogEntity blog = getModelObject();
+				BlogEntity blog = getModelObject();
 				blogService.save(blog);
 				setRedirect(false);
 				setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));
 				info(getString("msg.saved"));
 			}
 		};
-		form.setOutputMarkupId(true);
-		form.add(tagField);
-		form.add(rightGrid);
-		add(form);
+	}
 
-		FormComponent<String> fc;
+	private RightGridPanel createViewRightPanel() {
+		return new RightGridPanel("viewright", "blog.view", new ListModel<RightEntity>(blog.getAllRights()));
+	}
 
-		fc = new RequiredTextField<String>("headline");
+	private TagField<BlogTagEntity> createTagField() {
+		IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blog, "tags");
+		return new TagField<BlogTagEntity>("tags", blogListModel, blogTagService);
+	}
+
+	private FormComponent<String> createContentField() {
+		RichTextArea fc = new RichTextArea("content");
 		fc.add(StringValidator.minimumLength(3));
-		form.add(fc);
+		return fc;
+	}
 
-		fc = new RichTextArea("content");
+	private FormComponent<String> createHeadlineField() {
+		RequiredTextField<String> fc = new RequiredTextField<String>("headline");
 		fc.add(StringValidator.minimumLength(3));
-		form.add(fc);
+		return fc;
 	}
 }
