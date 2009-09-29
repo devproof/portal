@@ -32,30 +32,44 @@ import org.devproof.portal.module.blog.service.BlogService;
 public abstract class BlogBasePage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
-	private final boolean isAuthor;
 	@SpringBean(name = "blogService")
 	private BlogService blogService;
 
+	private boolean isAuthor = false;
+	
 	public BlogBasePage(final PageParameters params) {
 		super(params);
+		setAuthorRight();
 		add(CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS));
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page.BlogEditPage");
 		addSyntaxHighlighter();
+		addBlogAddLink();
+	}
+
+	private void addBlogAddLink() {
 		// New Blog Link
 		if (isAuthor) {
-			Link<?> addLink = new Link<Object>("adminLink") {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick() {
-					final BlogEntity newEntry = blogService.newBlogEntity();
-					setResponsePage(new BlogEditPage(newEntry));
-				}
-			};
+			Link<?> addLink = createBlogAddLink();
 			addLink.add(new Label("linkName", getString("createLink")));
 			addPageAdminBoxLink(addLink);
 		}
+	}
+
+	private Link<?> createBlogAddLink() {
+		Link<?> addLink = new Link<Object>("adminLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				final BlogEntity newEntry = blogService.newBlogEntity();
+				setResponsePage(new BlogEditPage(newEntry));
+			}
+		};
+		return addLink;
+	}
+
+	private void setAuthorRight() {
+		PortalSession session = (PortalSession) getSession();
+		isAuthor = session.hasRight("page.BlogEditPage");
 	}
 
 	public boolean isAuthor() {
