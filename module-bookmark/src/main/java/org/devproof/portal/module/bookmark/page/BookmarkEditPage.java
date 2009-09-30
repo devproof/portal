@@ -48,24 +48,88 @@ public class BookmarkEditPage extends BookmarkBasePage {
 	@SpringBean(name = "bookmarkTagService")
 	private TagService<BookmarkTagEntity> bookmarkTagService;
 
+	private BookmarkEntity bookmark;
+	
 	public BookmarkEditPage(final BookmarkEntity bookmark) {
 		super(new PageParameters());
-		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
-		final RightGridPanel viewRights = new RightGridPanel("viewRights", "bookmark.view", rightsListModel);
-		final RightGridPanel visitRights = new RightGridPanel("visitRights", "bookmark.visit", rightsListModel);
-		final RightGridPanel voteRights = new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
-		IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmark, "tags");
-		final TagField<BookmarkTagEntity> tagField = new TagField<BookmarkTagEntity>("tags", listModel,
-				bookmarkTagService);
+		this.bookmark = bookmark;
+		add(createBookmarkEditForm());
+	}
 
-		final Form<BookmarkEntity> form = new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(
+	private Form<BookmarkEntity> createBookmarkEditForm() {
+		Form<BookmarkEntity> form = newBookmarkEditForm();
+		form.setOutputMarkupId(true);
+		form.add(createTitleField());
+		form.add(createDescriptionField());
+		form.add(createUrlField());
+		form.add(createHitsField());
+		form.add(createNumberOfVotesField());
+		form.add(createSumOfRatingField());
+		form.add(createTagField());
+		form.add(createViewRightPanel());
+		form.add(createVisitRightPanel());
+		form.add(createVoteRightPanel());
+		return form;
+	}
+
+	private FormComponent<String> createUrlField() {
+		return new RequiredTextField<String>("url");
+	}
+
+	private FormComponent<String> createTitleField() {
+		FormComponent<String> fc = new RequiredTextField<String>("title");
+		fc.add(StringValidator.minimumLength(3));
+		return fc;
+	}
+
+	private FormComponent<String> createDescriptionField() {
+		FormComponent<String> fc = new RichTextArea("description");
+		fc.add(StringValidator.minimumLength(3));
+		return fc;
+	}
+
+	private FormComponent<String> createHitsField() {
+		return new RequiredTextField<String>("hits");
+	}
+
+	private FormComponent<String> createNumberOfVotesField() {
+		return new RequiredTextField<String>("numberOfVotes");
+	}
+
+	private FormComponent<String> createSumOfRatingField() {
+		return new RequiredTextField<String>("sumOfRating");
+	}
+
+	private RightGridPanel createViewRightPanel() {
+		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
+		return new RightGridPanel("viewRights", "bookmark.view", rightsListModel);
+	}
+
+	private RightGridPanel createVisitRightPanel() {
+		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
+		return new RightGridPanel("visitRights", "bookmark.visit", rightsListModel);
+	}
+
+	private RightGridPanel createVoteRightPanel() {
+		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
+		return new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
+	}
+
+	private TagField<BookmarkTagEntity> createTagField() {
+		IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmark, "tags");
+		return new TagField<BookmarkTagEntity>("tags", listModel,
+				bookmarkTagService);
+	}
+
+	private Form<BookmarkEntity> newBookmarkEditForm() {
+		return new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(
 				bookmark)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
 				BookmarkEditPage.this.setVisible(false);
-				final BookmarkEntity bookmark = getModelObject();
+				BookmarkEntity bookmark = getModelObject();
 				bookmark.setBroken(Boolean.FALSE);
 				bookmark.setSource(Source.MANUAL);
 				bookmarkService.save(bookmark);
@@ -74,28 +138,5 @@ public class BookmarkEditPage extends BookmarkBasePage {
 				setResponsePage(new BookmarkPage(new PageParameters("id=" + bookmark.getId())));
 			}
 		};
-		form.setOutputMarkupId(true);
-		form.add(tagField);
-		form.add(viewRights);
-		form.add(visitRights);
-		form.add(voteRights);
-		add(form);
-
-		FormComponent<String> fc;
-
-		fc = new RequiredTextField<String>("title");
-		fc.add(StringValidator.minimumLength(3));
-		form.add(fc);
-		fc = new RichTextArea("description");
-		fc.add(StringValidator.minimumLength(3));
-		form.add(fc);
-		fc = new RequiredTextField<String>("url");
-		form.add(fc);
-		fc = new RequiredTextField<String>("hits");
-		form.add(fc);
-		fc = new RequiredTextField<String>("numberOfVotes");
-		form.add(fc);
-		fc = new RequiredTextField<String>("sumOfRating");
-		form.add(fc);
 	}
 }

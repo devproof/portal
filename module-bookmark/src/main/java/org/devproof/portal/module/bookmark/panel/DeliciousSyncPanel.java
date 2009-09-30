@@ -72,30 +72,181 @@ public class DeliciousSyncPanel extends Panel {
 	private int modifiedBookmarksCount = 0;
 	private int deletedBookmarksCount = 0;
 	private DeliciousBean deliciousBean;
-	private List<RightEntity> allSelectedRights;
+	private ListModel<RightEntity> allSelectedRightsModel;
+	private ProgressionModel progressionModel;
+	private ProgressBar progressBar;
+	private DeliciousFormBean deliciousFormBean;
+	private FeedbackPanel feedbackPanel;
 	
 	public DeliciousSyncPanel(final String id) {
 		super(id);
+		allSelectedRightsModel = new ListModel<RightEntity>(new ArrayList<RightEntity>());
+		deliciousFormBean = new DeliciousFormBean();
+		progressionModel = createProgressionModel();
+		
 		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
-		allSelectedRights = new ArrayList<RightEntity>();
-		ListModel<RightEntity> allSelectedRightsModel = new ListModel<RightEntity>(allSelectedRights);
+		add(feedbackPanel = createFeedbackPanel());
+		add(createDeliciousSyncForm());
+	}
 
-		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		add(feedback);
-		final DeliciousFormBean formBean = new DeliciousFormBean();
-		final Form<DeliciousFormBean> form = new Form<DeliciousFormBean>("form",
-				new CompoundPropertyModel<DeliciousFormBean>(formBean));
+	private Form<DeliciousFormBean> createDeliciousSyncForm() {
+		Form<DeliciousFormBean> form = new Form<DeliciousFormBean>("form",
+				new CompoundPropertyModel<DeliciousFormBean>(deliciousFormBean));
 		form.setOutputMarkupId(true);
-		add(form);
+		form.add(createUsernameField());
+		form.add(createPasswordField());
+		form.add(createTagField());
+		form.add(createViewRightPanel());
+		form.add(createVisitRightPanel());
+		form.add(createVoteRightPanel());
+		form.add(progressBar = createProgressBar());
+		form.add(createStartButton(deliciousFormBean, form, progressBar));
+		return form;
+	}
 
-		form.add(new RequiredTextField<String>("username"));
-		form.add(new PasswordTextField("password"));
-		form.add(new TextField<String>("tags"));
-		form.add(new RightGridPanel("viewRights", "bookmark.view", allSelectedRightsModel));
-		form.add(new RightGridPanel("visitRights", "bookmark.visit", allSelectedRightsModel));
-		form.add(new RightGridPanel("voteRights", "bookmark.vote", allSelectedRightsModel));
+	private RightGridPanel createVoteRightPanel() {
+		return new RightGridPanel("voteRights", "bookmark.vote", allSelectedRightsModel);
+	}
 
+	private RightGridPanel createVisitRightPanel() {
+		return new RightGridPanel("visitRights", "bookmark.visit", allSelectedRightsModel);
+	}
+
+	private RightGridPanel createViewRightPanel() {
+		return new RightGridPanel("viewRights", "bookmark.view", allSelectedRightsModel);
+	}
+
+	private TextField<String> createTagField() {
+		return new TextField<String>("tags");
+	}
+
+	private PasswordTextField createPasswordField() {
+		return new PasswordTextField("password");
+	}
+
+	private RequiredTextField<String> createUsernameField() {
+		return new RequiredTextField<String>("username");
+	}
+
+	private IndicatingAjaxButton createStartButton(
+			final DeliciousFormBean formBean,
+			final Form<DeliciousFormBean> form, final ProgressBar bar) {
+		return new IndicatingAjaxButton("startButton", form) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+				// Start the progress bar, will set visibility to true
+				bar.start(target);
+				final UserEntity user = ((PortalSession) Session.get()).getUser();
+				new Thread() {
+					@Override
+					public void run() {
+						fetching = true;
+						final DeliciousBean bean = synchronizeService.getDataFromDelicious(formBean.username,
+								formBean.password, formBean.tags);
+						deliciousBean = bean;
+						if (bean.hasError()) {
+							return;
+						}
+						Collection<BookmarkEntity> bookmarksToSave = retrieveBookmarks(bean);
+						saveBookmarks(user, bookmarksToSave);
+						deleteBookmarks(bean, bookmarksToSave);
+					}
+
+					private Collection<BookmarkEntity> retrieveBookmarks(
+							final DeliciousBean bean) {
+						List<BookmarkEntity> newBookmarks = synchronizeService.getNewDeliciousBookmarks(bean);
+						newBookmarksCount = newBookmarks.size();
+						List<BookmarkEntity> modifiedBookmarks = synchronizeService
+								.getModifiedDeliciousBookmarks(bean);
+						modifiedBookmarksCount = modifiedBookmarks.size();
+						maxItem = bean.getPosts().size();
+						fetching = false;
+						Collection<BookmarkEntity> bookmarksToSave = new ArrayList<BookmarkEntity>(
+								newBookmarksCount + modifiedBookmarksCount);
+						bookmarksToSave.addAll(newBookmarks);
+						bookmarksToSave.addAll(modifiedBookmarks);
+						return bookmarksToSave;
+					}
+
+					private void saveBookmarks(final UserEntity user,
+							Collection<BookmarkEntity> bookmarksToSave) {
+						for (final BookmarkEntity bookmark : bookmarksToSave) {
+							actualItem++;
+							bookmark.setAllRights(allSelectedRightsModel.getObject());
+							if (bookmark.getCreatedAt() == null) {
+								bookmark.setCreatedAt(PortalUtil.now());
+							}
+							if (bookmark.getCreatedBy() == null) {
+								bookmark.setCreatedBy(user.getUsername());
+							}
+
+							bookmark.setModifiedAt(PortalUtil.now());
+							bookmark.setModifiedBy(user.getUsername());
+							final List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags()
+									.size());
+							for (final BookmarkTagEntity tag : bookmark.getTags()) {
+								final BookmarkTagEntity refreshedTag = tagService.findById(tag.getTagname());
+								if (refreshedTag == null) {
+									newTags.add(tag);
+									tagService.save(tag);
+								} else {
+									newTags.add(refreshedTag);
+								}
+							}
+							bookmark.setTags(newTags);
+							bookmarkService.save(bookmark);
+						}
+					}
+
+					private void deleteBookmarks(final DeliciousBean bean,
+							Collection<BookmarkEntity> bookmarksToSave) {
+						final List<BookmarkEntity> deletedBookmarks = synchronizeService
+								.getRemovedDeliciousBookmarks(bean);
+						// set to 100% the counter does not work perfect, when a
+						// user has manual edited delious bookmarks
+						maxItem = deletedBookmarks.size() + bookmarksToSave.size();
+						deletedBookmarksCount = deletedBookmarks.size();
+						for (final BookmarkEntity bookmark : deletedBookmarks) {
+							actualItem++;
+							bookmarkService.delete(bookmark);
+						}
+						tagService.deleteUnusedTags();
+					}
+				}.start();
+
+				// disable button
+				setVisible(false);
+			}
+		};
+	}
+
+	private ProgressBar createProgressBar() {
+		final ProgressBar bar = new ProgressBar("bar", progressionModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onFinished(final AjaxRequestTarget target) {
+				if (deliciousBean != null && deliciousBean.hasError()) {
+					if (deliciousBean.getHttpCode() == HttpStatus.SC_UNAUTHORIZED) {
+						error(getString("loginFailed"));
+					} else if (deliciousBean.getHttpCode() == HttpStatus.SC_SERVICE_UNAVAILABLE) {
+						error(getString("serviceNotAvailable"));
+					} else {
+						error(deliciousBean.getErrorMessage());
+					}
+				} else {
+					info(new StringResourceModel("syncFinished", this, null, new Object[] { newBookmarksCount,
+							modifiedBookmarksCount, deletedBookmarksCount }).getString());
+				}
+				target.addComponent(feedbackPanel);
+			}
+		};
+		return bar;
+	}
+
+	private ProgressionModel createProgressionModel() {
 		final ProgressionModel model = new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
 
@@ -120,101 +271,12 @@ public class DeliciousSyncPanel extends Panel {
 				return new Progression(progressInPercent, descr);
 			}
 		};
-		final ProgressBar bar = new ProgressBar("bar", model) {
-			private static final long serialVersionUID = 1L;
+		return model;
+	}
 
-			@Override
-			protected void onFinished(final AjaxRequestTarget target) {
-				if (deliciousBean != null && deliciousBean.hasError()) {
-					if (deliciousBean.getHttpCode() == HttpStatus.SC_UNAUTHORIZED) {
-						error(getString("loginFailed"));
-					} else if (deliciousBean.getHttpCode() == HttpStatus.SC_SERVICE_UNAVAILABLE) {
-						error(getString("serviceNotAvailable"));
-					} else {
-						error(deliciousBean.getErrorMessage());
-					}
-				} else {
-					info(new StringResourceModel("syncFinished", this, null, new Object[] { newBookmarksCount,
-							modifiedBookmarksCount, deletedBookmarksCount }).getString());
-				}
-				target.addComponent(feedback);
-			}
-		};
-		form.add(bar);
-
-		form.add(new IndicatingAjaxButton("startButton", form) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-				// Start the progress bar, will set visibility to true
-				bar.start(target);
-				final UserEntity user = ((PortalSession) Session.get()).getUser();
-				new Thread() {
-					@Override
-					public void run() {
-						fetching = true;
-						final DeliciousBean bean = synchronizeService.getDataFromDelicious(formBean.username,
-								formBean.password, formBean.tags);
-						deliciousBean = bean;
-						if (bean.hasError()) {
-							return;
-						}
-						final List<BookmarkEntity> newBookmarks = synchronizeService.getNewDeliciousBookmarks(bean);
-						newBookmarksCount = newBookmarks.size();
-						final List<BookmarkEntity> modifiedBookmarks = synchronizeService
-								.getModifiedDeliciousBookmarks(bean);
-						modifiedBookmarksCount = modifiedBookmarks.size();
-						maxItem = bean.getPosts().size();
-						fetching = false;
-						final Collection<BookmarkEntity> bookmarksToSave = new ArrayList<BookmarkEntity>(
-								newBookmarksCount + modifiedBookmarksCount);
-						bookmarksToSave.addAll(newBookmarks);
-						bookmarksToSave.addAll(modifiedBookmarks);
-
-						for (final BookmarkEntity bookmark : bookmarksToSave) {
-							actualItem++;
-							bookmark.setAllRights(allSelectedRights);
-							if (bookmark.getCreatedAt() == null) {
-								bookmark.setCreatedAt(PortalUtil.now());
-							}
-							if (bookmark.getCreatedBy() == null) {
-								bookmark.setCreatedBy(user.getUsername());
-							}
-
-							bookmark.setModifiedAt(PortalUtil.now());
-							bookmark.setModifiedBy(user.getUsername());
-							final List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags()
-									.size());
-							for (final BookmarkTagEntity tag : bookmark.getTags()) {
-								final BookmarkTagEntity refreshedTag = tagService.findById(tag.getTagname());
-								if (refreshedTag == null) {
-									newTags.add(tag);
-									tagService.save(tag);
-								} else {
-									newTags.add(refreshedTag);
-								}
-							}
-							bookmark.setTags(newTags);
-							bookmarkService.save(bookmark);
-						}
-						final List<BookmarkEntity> deletedBookmarks = synchronizeService
-								.getRemovedDeliciousBookmarks(bean);
-						// set to 100% the counter does not work perfect, when a
-						// user has manual edited delious bookmarks
-						maxItem = deletedBookmarks.size() + bookmarksToSave.size();
-						deletedBookmarksCount = deletedBookmarks.size();
-						for (final BookmarkEntity bookmark : deletedBookmarks) {
-							actualItem++;
-							bookmarkService.delete(bookmark);
-						}
-						tagService.deleteUnusedTags();
-					}
-				}.start();
-
-				// disable button
-				setVisible(false);
-			}
-		});
+	private FeedbackPanel createFeedbackPanel() {
+		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
+		feedback.setOutputMarkupId(true);
+		return feedback;
 	}
 }

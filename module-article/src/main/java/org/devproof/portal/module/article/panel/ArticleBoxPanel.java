@@ -48,9 +48,9 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 	public ArticleBoxPanel(final String id) {
 		super(id);
 		List<ArticleEntity> latestArticles = getLatestArticles();
+		setVisible(latestArticles.size() > 0);
 		add(titleContainer = createTitleContainer());
 		add(createRepeatingViewWithArticles(latestArticles));
-		setVisible(latestArticles.size() > 0);
 	}
 
 	private WebMarkupContainer createTitleContainer() {
@@ -71,12 +71,17 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 		for (ArticleEntity article : articles) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
-			BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
-			link.setParameter("id", article.getId());
-			link.add(new Label("linkName", article.getTitle()));
-			item.add(link);
+			item.add(createLinkToArticle(article));
 		}
 		return repeating;
+	}
+
+	private BookmarkablePageLink<ArticlePage> createLinkToArticle(
+			ArticleEntity article) {
+		BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
+		link.setParameter("id", article.getId());
+		link.add(new Label("linkName", article.getTitle()));
+		return link;
 	}
 
 	@Override
