@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -113,12 +112,16 @@ public class ArticlePage extends ArticleBasePage {
 
 		@Override
 		protected void populateItem(final Item<ArticleEntity> item) {
-			ArticleEntity article = item.getModelObject();
+			setArticleTitleAsPageTitle(item);
 			item.setOutputMarkupId(true);
+			item.add(createArticleView(item));
+		}
+
+		private void setArticleTitleAsPageTitle(final Item<ArticleEntity> item) {
 			if (onlyOneArticleInResult) {
+				ArticleEntity article = item.getModelObject();
 				setPageTitle(article.getTitle());
 			}
-			item.add(createArticleView(item));
 		}
 
 		private ArticleView createArticleView(final Item<ArticleEntity> item) {
@@ -158,13 +161,20 @@ public class ArticlePage extends ArticleBasePage {
 		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink() {
 			BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
 					"readMoreLink", ArticleReadPage.class);
+			readMoreLink.add(createReadMoreImage());
+			readMoreLink.add(createReadMoreLabel());
 			readMoreLink.setParameter("0", article.getContentId());
 			readMoreLink.setEnabled(allowedToRead);
-			readMoreLink.add(new Image("readMoreImage", CommonConstants.REF_VIEW_IMG));
-			String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
-			String label = new StringResourceModel(labelKey, ArticlePage.this, null).getString();
-			readMoreLink.add(new Label("readMoreLabel", label));
 			return readMoreLink;
+		}
+
+		private Image createReadMoreImage() {
+			return new Image("readMoreImage", CommonConstants.REF_VIEW_IMG);
+		}
+
+		private Label createReadMoreLabel() {
+			String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
+			return new Label("readMoreLabel", getString(labelKey));
 		}
 
 		private ContentTagPanel<ArticleTagEntity> createTagPanel() {
@@ -186,8 +196,7 @@ public class ArticlePage extends ArticleBasePage {
 
 		private boolean isAllowedToRead(final ArticleEntity articleEntity) {
 			PortalSession session = (PortalSession) getSession();
-			boolean allowedToRead = session.hasRight("article.read") || session.hasRight(articleEntity.getReadRights());
-			return allowedToRead;
+			return session.hasRight("article.read") || session.hasRight(articleEntity.getReadRights());
 		}
 
 		private BookmarkablePageLink<ArticleReadPage> createTitleLink() {

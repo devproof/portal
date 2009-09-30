@@ -37,21 +37,30 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
-
-	public BookmarkSearchBoxPanel(final String id, final BookmarkQuery query, final QueryDataProvider<?> dataProvider,
+	private PageParameters params;
+	private BookmarkQuery query;
+	public BookmarkSearchBoxPanel(String id, final BookmarkQuery query, final QueryDataProvider<?> dataProvider,
 			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id, query, dataProvider, "page.BookmarkEditPage", parent, dataview, params);
-		TextField<String> fc = new TextField<String>("allTextFields");
-		getForm().add(fc);
-		add(titleContainer = new WebMarkupContainer("title"));
-		Select selectBroken = new Select("broken");
-		selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
-		selectBroken.add(new SelectOption<Boolean>("brokenTrue", Model.of(Boolean.TRUE)));
-		selectBroken.add(new SelectOption<Boolean>("brokenFalse", Model.of(Boolean.FALSE)));
-		selectBroken.add(new SimpleAttributeModifier("onchange", "submit();"));
-		selectBroken.setVisible(isAuthor());
-		getForm().add(selectBroken);
-		addListener(new BaseSearchBoxListener() {
+		this.params = params;
+		this.query = query;
+		getForm().add(createSearchTextField());
+		getForm().add(createBrokenDropDown());
+		add(titleContainer = createTitleContainer());
+		addListener(createSearchBoxListener());
+		setBrokenParamInQuery();
+	}
+
+	private void setBrokenParamInQuery() {
+		if (params != null) {
+			if (params.containsKey("broken")) {
+				query.setBroken(params.getAsBoolean("broken"));
+			}
+		}
+	}
+
+	private BaseSearchBoxListener createSearchBoxListener() {
+		return new BaseSearchBoxListener() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -61,12 +70,25 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 					params.put("broken", brokenQuery.getBroken().toString());
 				}
 			}
-		});
-		if (params != null) {
-			if (params.containsKey("broken")) {
-				query.setBroken(params.getAsBoolean("broken"));
-			}
-		}
+		};
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		return new WebMarkupContainer("title");
+	}
+
+	private TextField<String> createSearchTextField() {
+		return new TextField<String>("allTextFields");
+	}
+
+	private Select createBrokenDropDown() {
+		Select selectBroken = new Select("broken");
+		selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
+		selectBroken.add(new SelectOption<Boolean>("brokenTrue", Model.of(Boolean.TRUE)));
+		selectBroken.add(new SelectOption<Boolean>("brokenFalse", Model.of(Boolean.FALSE)));
+		selectBroken.add(new SimpleAttributeModifier("onchange", "submit();"));
+		selectBroken.setVisible(isAuthor());
+		return selectBroken;
 	}
 
 	@Override

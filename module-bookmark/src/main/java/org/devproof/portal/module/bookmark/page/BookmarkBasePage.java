@@ -42,80 +42,139 @@ public abstract class BookmarkBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "bookmarkService")
 	private BookmarkService bookmarkService;
+	
 	private WebMarkupContainer modalWindow;
-	private final boolean isAuthor;
+	private boolean isAuthor = false;
 
 	public BookmarkBasePage(final PageParameters params) {
 		super(params);
 		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page.BookmarkEditPage");
-		if (isAuthor) {
-			modalWindow = new ModalWindow("modalWindow");
-			Link<?> addLink = new Link<Object>("adminLink") {
+		setAuthorRight();
+		addBookmarkAddLink();
+		addDeadlinkCheckLink();
+		addDeliciousSyncLink();
+		add(modalWindow = createHiddenModalWindow());
+	}
 
-				private static final long serialVersionUID = 1L;
+	private WebMarkupContainer createHiddenModalWindow() {
+		WebMarkupContainer window = null;
+		if (isAuthor()) {
+			window = new ModalWindow("modalWindow");
+		} else {
+			window = new WebMarkupContainer("modalWindow");
+			window.setVisible(false);
+		}
+		return window;
+	}
 
-				@Override
-				public void onClick() {
-					final BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
-					setResponsePage(new BookmarkEditPage(newBookmark));
-				}
-			};
+	private void addDeliciousSyncLink() {
+		if (isAuthor()) {
+			addPageAdminBoxLink(createDeliciousSyncLink());
+		}
+	}
+
+	private AjaxLink<BookmarkEntity> createDeliciousSyncLink() {
+		AjaxLink<BookmarkEntity> syncLink = newDeliciousSyncLink();
+		syncLink.add(new Label("linkName", getString("syncLink")));
+		return syncLink;
+	}
+
+	private AjaxLink<BookmarkEntity> newDeliciousSyncLink() {
+		return new AjaxLink<BookmarkEntity>("adminLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target) {
+				ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
+				DeliciousSyncPanel syncPanel = createDeliciousSyncPanel(modalWindow.getContentId());
+				modalWindow.setInitialHeight(600);
+				modalWindow.setInitialWidth(800);
+				modalWindow.setContent(syncPanel);
+				modalWindow.show(target);
+			}
+
+			private DeliciousSyncPanel createDeliciousSyncPanel(String id) {
+				return new DeliciousSyncPanel(id);
+			}
+		};
+	}
+
+	private void addDeadlinkCheckLink() {
+		if (isAuthor()) {
+			addPageAdminBoxLink(createDeadlinkCheckLink());
+		}
+	}
+
+	private void addBookmarkAddLink() {
+		if (isAuthor()) {
+			Link<?> addLink = createBookmarkAddLink();
 			addLink.add(new Label("linkName", getString("createLink")));
 			addPageAdminBoxLink(addLink);
-
-			AjaxLink<BookmarkEntity> deadlinkCheckLink = new AjaxLink<BookmarkEntity>("adminLink") {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick(final AjaxRequestTarget target) {
-					List<BookmarkEntity> allBookmarks = bookmarkService.findAll();
-					ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
-					final DeadlinkCheckPanel<BookmarkEntity> deadLinkPanel = new DeadlinkCheckPanel<BookmarkEntity>(
-							modalWindow.getContentId(), "bookmark", allBookmarks) {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void onBroken(final BookmarkEntity brokenEntity) {
-							bookmarkService.markBrokenBookmark(brokenEntity);
-						}
-
-						@Override
-						public void onValid(final BookmarkEntity validEntity) {
-							bookmarkService.markValidBookmark(validEntity);
-						}
-					};
-					modalWindow.setInitialHeight(300);
-					modalWindow.setInitialWidth(500);
-					modalWindow.setContent(deadLinkPanel);
-					modalWindow.show(target);
-				}
-			};
-			deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
-			addPageAdminBoxLink(deadlinkCheckLink);
-
-			// Synchronize from del.icio.us
-			AjaxLink<BookmarkEntity> syncLink = new AjaxLink<BookmarkEntity>("adminLink") {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick(final AjaxRequestTarget target) {
-					ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
-					DeliciousSyncPanel syncPanel = new DeliciousSyncPanel(modalWindow.getContentId());
-					modalWindow.setInitialHeight(600);
-					modalWindow.setInitialWidth(800);
-					modalWindow.setContent(syncPanel);
-					modalWindow.show(target);
-				}
-			};
-			syncLink.add(new Label("linkName", getString("syncLink")));
-			addPageAdminBoxLink(syncLink);
-		} else {
-			modalWindow = new WebMarkupContainer("modalWindow");
-			modalWindow.setVisible(false);
 		}
-		add(modalWindow);
+	}
+
+	private Link<?> createBookmarkAddLink() {
+		Link<?> addLink = new Link<Object>("adminLink") {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				final BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
+				setResponsePage(new BookmarkEditPage(newBookmark));
+			}
+		};
+		return addLink;
+	}
+
+	private AjaxLink<BookmarkEntity> createDeadlinkCheckLink() {
+		AjaxLink<BookmarkEntity> deadlinkCheckLink = newDeadlinkCheckLink();
+		deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
+		return deadlinkCheckLink;
+	}
+
+	private AjaxLink<BookmarkEntity> newDeadlinkCheckLink() {
+		return new AjaxLink<BookmarkEntity>("adminLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target) {
+				ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
+				DeadlinkCheckPanel<BookmarkEntity> deadLinkPanel = createDeadlinkCheckPanel(modalWindow.getContentId());
+				modalWindow.setInitialHeight(300);
+				modalWindow.setInitialWidth(500);
+				modalWindow.setContent(deadLinkPanel);
+				modalWindow.show(target);
+			}
+
+			private DeadlinkCheckPanel<BookmarkEntity> createDeadlinkCheckPanel(String id) {
+				List<BookmarkEntity> allBookmarks = bookmarkService.findAll();
+				return newDeadlinkCheckPanel(id, allBookmarks);
+			}
+
+			private DeadlinkCheckPanel<BookmarkEntity> newDeadlinkCheckPanel(
+					String id, List<BookmarkEntity> allBookmarks) {
+				return new DeadlinkCheckPanel<BookmarkEntity>(
+						id, "bookmark", allBookmarks) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onBroken(final BookmarkEntity brokenEntity) {
+						bookmarkService.markBrokenBookmark(brokenEntity);
+					}
+
+					@Override
+					public void onValid(final BookmarkEntity validEntity) {
+						bookmarkService.markValidBookmark(validEntity);
+					}
+				};
+			}
+		};
+	}
+
+	private void setAuthorRight() {
+		PortalSession session = (PortalSession) getSession();
+		isAuthor = session.hasRight("page.BookmarkEditPage");
 	}
 
 	public WebMarkupContainer getModalWindow() {

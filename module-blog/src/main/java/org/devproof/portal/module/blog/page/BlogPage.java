@@ -110,12 +110,16 @@ public class BlogPage extends BlogBasePage {
 
 		@Override
 		protected void populateItem(final Item<BlogEntity> item) {
-			final BlogEntity blog = item.getModelObject();
+			setBlogTitleAsPageTitle(item);
 			item.setOutputMarkupId(true);
+			item.add(createBlogView(item));
+		}
+
+		private void setBlogTitleAsPageTitle(final Item<BlogEntity> item) {
 			if (onlyOneBlogEntryInResult) {
+				BlogEntity blog = item.getModelObject();
 				setPageTitle(blog.getHeadline());
 			}
-			item.add(createBlogView(item));
 		}
 
 		private BlogView createBlogView(final Item<BlogEntity> item) {
@@ -134,9 +138,9 @@ public class BlogPage extends BlogBasePage {
 			this.blog = item.getModelObject();
 			add(createAppropriateAuthorPanel(item));
 			add(createHeadline());
+			add(createTagPanel());
 			add(createMetaInfoPanel());
 			add(createContentLabel());
-			add(createTagPanel());
 		}
 		
 		private Component createAppropriateAuthorPanel(final Item<BlogEntity> item) {
@@ -148,7 +152,6 @@ public class BlogPage extends BlogBasePage {
 		}
 		
 		private AuthorPanel<BlogEntity> createAuthorPanel(final Item<BlogEntity> item) {
-			final BlogEntity blog = item.getModelObject();
 			return new AuthorPanel<BlogEntity>("authorButtons", blog) {
 				private static final long serialVersionUID = 1L;
 

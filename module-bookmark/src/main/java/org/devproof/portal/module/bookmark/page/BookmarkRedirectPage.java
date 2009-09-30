@@ -31,16 +31,38 @@ public class BookmarkRedirectPage extends WebPage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "bookmarkService")
 	private BookmarkService bookmarkService;
-
+	
+	private PageParameters params;
+	
 	public BookmarkRedirectPage(final PageParameters params) {
 		super(params);
-		PortalSession session = (PortalSession) getSession();
-		if (params.containsKey("0")) {
-			BookmarkEntity bookmarkEntity = bookmarkService.findById(params.getAsInteger("0", 0));
-			if (bookmarkEntity != null && session.hasRight("bookmark.visit", bookmarkEntity.getVisitRights())) {
-				bookmarkService.incrementHits(bookmarkEntity);
-				getRequestCycle().setRequestTarget(new RedirectRequestTarget(bookmarkEntity.getUrl()));
+		this.params = params;
+		if (hasFirstParameter()) {
+			BookmarkEntity bookmark = bookmarkService.findById(getBookmarkIdParam());
+			if (hasVisitRight(bookmark)) {
+				bookmarkService.incrementHits(bookmark);
+				redirectTo(bookmark);
 			}
 		}
+	}
+
+	private int getBookmarkIdParam() {
+		return params.getAsInteger("0", 0);
+	}
+
+	private void redirectTo(BookmarkEntity bookmark) {
+		getRequestCycle().setRequestTarget(new RedirectRequestTarget(bookmark.getUrl()));
+	}
+
+	private boolean hasFirstParameter() {
+		return params.containsKey("0");
+	}
+
+	private boolean hasVisitRight(BookmarkEntity bookmark) {
+		if(bookmark == null) {
+			return false;
+		}
+		PortalSession session = (PortalSession) getSession();
+		return session.hasRight("bookmark.visit", bookmark.getVisitRights());
 	}
 }

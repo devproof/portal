@@ -46,23 +46,41 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 
 	public BookmarkBoxPanel(final String id) {
 		super(id);
-		add(titleContainer = new WebMarkupContainer("title"));
+		List<BookmarkEntity> latestBookmarks = getLatestBookmarks();
+		setVisible(latestBookmarks.size() > 0);
+		add(titleContainer = createTitleContainer());
+		add(createRepeatingViewWithBookmarks(latestBookmarks));
+	}
+
+	private RepeatingView createRepeatingViewWithBookmarks(
+			List<BookmarkEntity> latestBookmarks) {
+		RepeatingView repeating = new RepeatingView("repeating");
+		for (BookmarkEntity bookmark : latestBookmarks) {
+			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
+			repeating.add(item);
+			item.add(createLinkToBookmark(bookmark));
+		}
+		return repeating;
+	}
+
+	private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(
+			BookmarkEntity bookmark) {
+		BookmarkablePageLink<BookmarkPage> link = new BookmarkablePageLink<BookmarkPage>("link", BookmarkPage.class);
+		link.setParameter("id", bookmark.getId());
+		link.add(new Label("linkName", bookmark.getTitle()));
+		return link;
+	}
+
+	private List<BookmarkEntity> getLatestBookmarks() {
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
 		List<BookmarkEntity> bookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0,
 				num);
+		return bookmarks;
+	}
 
-		RepeatingView repeating = new RepeatingView("repeating");
-		for (BookmarkEntity bookmark : bookmarks) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(item);
-			BookmarkablePageLink<BookmarkPage> link = new BookmarkablePageLink<BookmarkPage>("link", BookmarkPage.class);
-			link.setParameter("id", bookmark.getId());
-			link.add(new Label("linkName", bookmark.getTitle()));
-			item.add(link);
-		}
-		add(repeating);
-		setVisible(bookmarks.size() > 0);
+	private WebMarkupContainer createTitleContainer() {
+		return new WebMarkupContainer("title");
 	}
 
 	@Override
