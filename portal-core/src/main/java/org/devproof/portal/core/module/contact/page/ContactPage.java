@@ -68,7 +68,7 @@ public class ContactPage extends TemplatePage {
 	public ContactPage(final PageParameters params) {
 		super(params);
 		add(CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS));
-		String username = "!____!";
+		String username = "§$$§";
 		if (params != null && params.containsKey("0")) {
 			username = params.getString("0");
 		}
