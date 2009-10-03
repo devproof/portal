@@ -63,12 +63,12 @@ public class ContactPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private String captchaChallengeCode;
-	
+	private final String captchaChallengeCode;
+
 	public ContactPage(final PageParameters params) {
 		super(params);
 		add(CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS));
-		String username = "§$$§";
+		String username = "!____!";
 		if (params != null && params.containsKey("0")) {
 			username = params.getString("0");
 		}
