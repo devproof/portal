@@ -30,7 +30,7 @@ public interface FeedProviderRegistry {
 	 * Registers a {@link FeedProvider}
 	 * 
 	 * @param path
-	 *            e.g. blog für a blog entry, throws an
+	 *            e.g. blog for a blog entry, throws an
 	 *            {@link IllegalArgumentException} if you register a path twice
 	 * @param feedProvider
 	 *            feed provider
