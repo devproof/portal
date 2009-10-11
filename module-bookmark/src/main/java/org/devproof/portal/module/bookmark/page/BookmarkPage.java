@@ -139,8 +139,8 @@ public class BookmarkPage extends BookmarkBasePage {
 	private class BookmarkView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
-		private final Model<Boolean> hasVoted;
 
+		private final Model<Boolean> hasVoted;
 		private BookmarkEntity bookmark;
 
 		public BookmarkView(String id, Item<BookmarkEntity> item) {
@@ -290,7 +290,8 @@ public class BookmarkPage extends BookmarkBasePage {
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
-					setResponsePage(new BookmarkEditPage(bookmark));
+					BookmarkEntity refreshedBookmark = bookmarkService.findById(bookmark.getId());
+					setResponsePage(new BookmarkEditPage(refreshedBookmark));
 				}
 			};
 		}

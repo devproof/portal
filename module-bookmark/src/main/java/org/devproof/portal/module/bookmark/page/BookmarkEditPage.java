@@ -49,8 +49,8 @@ public class BookmarkEditPage extends BookmarkBasePage {
 	private TagService<BookmarkTagEntity> bookmarkTagService;
 
 	private BookmarkEntity bookmark;
-	
-	public BookmarkEditPage(final BookmarkEntity bookmark) {
+
+	public BookmarkEditPage(BookmarkEntity bookmark) {
 		super(new PageParameters());
 		this.bookmark = bookmark;
 		add(createBookmarkEditForm());
@@ -117,13 +117,11 @@ public class BookmarkEditPage extends BookmarkBasePage {
 
 	private TagField<BookmarkTagEntity> createTagField() {
 		IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmark, "tags");
-		return new TagField<BookmarkTagEntity>("tags", listModel,
-				bookmarkTagService);
+		return new TagField<BookmarkTagEntity>("tags", listModel, bookmarkTagService);
 	}
 
 	private Form<BookmarkEntity> newBookmarkEditForm() {
-		return new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(
-				bookmark)) {
+		return new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(bookmark)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

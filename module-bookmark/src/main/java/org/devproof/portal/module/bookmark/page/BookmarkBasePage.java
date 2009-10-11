@@ -42,7 +42,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "bookmarkService")
 	private BookmarkService bookmarkService;
-	
+
 	private WebMarkupContainer modalWindow;
 	private boolean isAuthor = false;
 
@@ -107,15 +107,18 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	private void addBookmarkAddLink() {
 		if (isAuthor()) {
-			Link<?> addLink = createBookmarkAddLink();
-			addLink.add(new Label("linkName", getString("createLink")));
-			addPageAdminBoxLink(addLink);
+			addPageAdminBoxLink(createBookmarkAddLink());
 		}
 	}
 
 	private Link<?> createBookmarkAddLink() {
-		Link<?> addLink = new Link<Object>("adminLink") {
+		Link<?> addLink = newBookmarkAddLink();
+		addLink.add(new Label("linkName", getString("createLink")));
+		return addLink;
+	}
 
+	private Link<?> newBookmarkAddLink() {
+		return new Link<Object>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -124,7 +127,6 @@ public abstract class BookmarkBasePage extends TemplatePage {
 				setResponsePage(new BookmarkEditPage(newBookmark));
 			}
 		};
-		return addLink;
 	}
 
 	private AjaxLink<BookmarkEntity> createDeadlinkCheckLink() {
@@ -140,10 +142,10 @@ public abstract class BookmarkBasePage extends TemplatePage {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
-				DeadlinkCheckPanel<BookmarkEntity> deadLinkPanel = createDeadlinkCheckPanel(modalWindow.getContentId());
+				DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(modalWindow.getContentId());
 				modalWindow.setInitialHeight(300);
 				modalWindow.setInitialWidth(500);
-				modalWindow.setContent(deadLinkPanel);
+				modalWindow.setContent(deadlinkCheckPanel);
 				modalWindow.show(target);
 			}
 
@@ -152,10 +154,9 @@ public abstract class BookmarkBasePage extends TemplatePage {
 				return newDeadlinkCheckPanel(id, allBookmarks);
 			}
 
-			private DeadlinkCheckPanel<BookmarkEntity> newDeadlinkCheckPanel(
-					String id, List<BookmarkEntity> allBookmarks) {
-				return new DeadlinkCheckPanel<BookmarkEntity>(
-						id, "bookmark", allBookmarks) {
+			private DeadlinkCheckPanel<BookmarkEntity> newDeadlinkCheckPanel(String id,
+					List<BookmarkEntity> allBookmarks) {
+				return new DeadlinkCheckPanel<BookmarkEntity>(id, "bookmark", allBookmarks) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
