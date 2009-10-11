@@ -54,66 +54,55 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 	private int actualItem = 0;
 	private int maxItem = 0;
 	private int brokenFound = 0;
+	private String section;
+	private List<T> listToCheck;
+	private FeedbackPanel feedbackPanel;
+	private ProgressBar progressBar;
 
-	public DeadlinkCheckPanel(final String id, final String section, final List<T> listToCheck) {
+	public DeadlinkCheckPanel(String id, String section, List<T> listToCheck) {
 		super(id, Model.ofList(listToCheck));
-		this.maxItem = listToCheck.size();
+		this.section = section;
+		this.listToCheck = listToCheck;
+		maxItem = listToCheck.size();
 
-		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		add(feedback);
-
-		final Form<?> form = new Form<Object>("form");
-		form.setOutputMarkupId(true);
-		add(form);
-
-		final ProgressionModel model = new ProgressionModel() {
-			private static final long serialVersionUID = 1L;
-
-			// Get current progress from page field
-			@Override
-			protected Progression getProgression() {
-				String descr = new StringResourceModel(section + "Progress", DeadlinkCheckPanel.this, null,
-						new Object[] { DeadlinkCheckPanel.this.actualItem, DeadlinkCheckPanel.this.maxItem })
-						.getString();
-				return new Progression(DeadlinkCheckPanel.this.progressInPercent, descr);
-			}
-		};
-		final ProgressBar bar = new ProgressBar("bar", model) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onFinished(final AjaxRequestTarget target) {
-				info(new StringResourceModel(section + "Finished", this, null,
-						new Object[] { DeadlinkCheckPanel.this.brokenFound }).getString());
-				target.addComponent(feedback);
-			}
-		};
-		form.add(bar);
-
+		add(feedbackPanel = createFeedbackPanel());
 		add(new Label("title", getString(section + "Title")));
+		add(createDeadlinkCheckForm());
+
+	}
+
+	private Form<Void> createDeadlinkCheckForm() {
+		Form<Void> form = new Form<Void>("form");
 		form.add(new Label("description", getString(section + "Description")));
+		form.add(progressBar = createProgressBar());
+		form.setOutputMarkupId(true);
+		form.add(createAjaxButton());
+		return form;
+	}
 
-		final String baseUrl = RequestUtils.toAbsolutePath("");
-
-		form.add(new IndicatingAjaxButton("startButton", form) {
+	private IndicatingAjaxButton createAjaxButton() {
+		return new IndicatingAjaxButton("startButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-				bar.start(target);
-				new Thread() {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				String baseUrl = RequestUtils.toAbsolutePath("");
+				progressBar.start(target);
+				newDeadlinkCheckThread(baseUrl).start();
+				setVisible(false);
+			}
+
+			private Thread newDeadlinkCheckThread(final String baseUrl) {
+				return new Thread() {
 					@Override
 					public void run() {
 						Protocol.registerProtocol("https", new Protocol("https", new EasySSLProtocolSocketFactory(),
 								443));
 
-						HttpClient client = new HttpClient();
 						for (T link : listToCheck) {
 							String url = link.getUrl();
 							boolean isBroken = false;
-
-							if (url.startsWith("file:/")) {
+							if (isLocalFile(url)) {
 								try {
 									URI uri = new URI(url);
 									File downloadFile = new File(uri);
@@ -123,30 +112,10 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 									isBroken = true;
 								}
 							} else {
-								if (!url.startsWith("http://") && !url.startsWith("https://")
-										&& !url.startsWith("ftp://")) {
-									if (url.startsWith("/")) {
-										url = url.substring(1);
-									}
-									url = baseUrl + url;
-								}
-
-								try {
-									new URI(url);
-								} catch (URISyntaxException e1) {
-									isBroken = true;
-								}
+								url = buildAbsoluteUrl(baseUrl, url);
+								isBroken = isBrokenURIFormat(url);
 								if (!isBroken) {
-									HttpMethod method = new GetMethod(url);
-									try {
-										int httpCode = client.executeMethod(method);
-										isBroken = (httpCode / 100) != 2;
-									} catch (HttpException e) {
-										isBroken = true;
-									} catch (IOException e) {
-										isBroken = true;
-									}
-									method.releaseConnection();
+									isBroken = isHttpCallBroken(url);
 								}
 							}
 							//													
@@ -161,11 +130,91 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 						}
 						// The bar is stopped automatically, if progress is done
 					}
-				}.start();
 
-				setVisible(false);
+					private boolean isHttpCallBroken(String url) {
+						HttpClient client = new HttpClient();
+						HttpMethod method = new GetMethod(url);
+						boolean isBroken = false;
+						try {
+							int httpCode = client.executeMethod(method);
+							isBroken = (httpCode / 100) != 2;
+						} catch (HttpException e) {
+							isBroken = true;
+						} catch (IOException e) {
+							isBroken = true;
+						}
+						method.releaseConnection();
+						return isBroken;
+					}
+
+					private boolean isBrokenURIFormat(String url) {
+						try {
+							new URI(url);
+						} catch (URISyntaxException e1) {
+							return true;
+						}
+						return false;
+					}
+
+					private String buildAbsoluteUrl(final String baseUrl, String url) {
+						if (isNotExternalUrl(url)) {
+							if (isRelativeUrl(url)) {
+								url = url.substring(1);
+							}
+							url = baseUrl + url;
+						}
+						return url;
+					}
+
+					private boolean isRelativeUrl(String url) {
+						return url.startsWith("/");
+					}
+
+					private boolean isNotExternalUrl(String url) {
+						return !url.startsWith("http://") && !url.startsWith("https://") && !url.startsWith("ftp://");
+					}
+
+					private boolean isLocalFile(String url) {
+						return url.startsWith("file:/");
+					}
+				};
 			}
-		});
+		};
+	}
+
+	private ProgressionModel createProgressionModel() {
+		return new ProgressionModel() {
+			private static final long serialVersionUID = 1L;
+
+			// Get current progress from page field
+			@Override
+			protected Progression getProgression() {
+				String descr = new StringResourceModel(section + "Progress", DeadlinkCheckPanel.this, null,
+						new Object[] { DeadlinkCheckPanel.this.actualItem, DeadlinkCheckPanel.this.maxItem })
+						.getString();
+				return new Progression(DeadlinkCheckPanel.this.progressInPercent, descr);
+			}
+		};
+	}
+
+	private ProgressBar createProgressBar() {
+		ProgressionModel progressionModel = createProgressionModel();
+		return new ProgressBar("bar", progressionModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onFinished(final AjaxRequestTarget target) {
+				info(new StringResourceModel(section + "Finished", this, null,
+						new Object[] { DeadlinkCheckPanel.this.brokenFound }).getString());
+				target.addComponent(feedbackPanel);
+			}
+		};
+	}
+
+	private FeedbackPanel createFeedbackPanel() {
+		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
+		feedback.setOutputMarkupId(true);
+		return feedback;
 	}
 
 	/**
