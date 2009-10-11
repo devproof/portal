@@ -66,11 +66,11 @@ public class BookmarkPage extends BookmarkBasePage {
 	private final BookmarkDataView dataView;
 	private final BookmarkQuery query;
 	private final PageParameters params;
-	
+
 	public BookmarkPage(final PageParameters params) {
 		super(params);
 		this.params = params;
-		this.query = createBookmarkQuery();
+		query = createBookmarkQuery();
 		add(dataView = createBookmarkDataView());
 		add(createPagingPanel());
 		addFilterBox(createBookmarkSearchBoxPanel());
@@ -136,17 +136,17 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 	}
 
-	public class BookmarkView extends Fragment {
+	private class BookmarkView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
 		private final Model<Boolean> hasVoted;
 
 		private BookmarkEntity bookmark;
-		
+
 		public BookmarkView(String id, Item<BookmarkEntity> item) {
 			super(id, "bookmarkView", BookmarkPage.this);
-			this.bookmark = item.getModelObject();
-			this.hasVoted = Model.of(!isAllowedToVote());
+			bookmark = item.getModelObject();
+			hasVoted = Model.of(!isAllowedToVote());
 			add(createBrokenLabel());
 			add(createTitleLink());
 			add(createDeliciousSourceImage());
@@ -175,7 +175,7 @@ public class BookmarkPage extends BookmarkBasePage {
 
 		private Label createVisitLinkLabel() {
 			String labelKey = isAllowedToVisit() ? "visitNow" : "loginToVisit";
-			return new Label("bookmarkLinkLabel", getString(labelKey));
+			return new Label("bookmarkLinkLabel", BookmarkPage.this.getString(labelKey));
 		}
 
 		private Component createRatingPanel() {
@@ -186,8 +186,8 @@ public class BookmarkPage extends BookmarkBasePage {
 
 		private StatelessRatingPanel newRatingPanel() {
 			return new StatelessRatingPanel("vote", new PropertyModel<Integer>(bookmark, "calculatedRating"), Model
-					.of(5), new PropertyModel<Integer>(bookmark, "numberOfVotes"), hasVoted, true, params,
-					bookmark.getId()) {
+					.of(5), new PropertyModel<Integer>(bookmark, "numberOfVotes"), hasVoted, true, params, bookmark
+					.getId()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -216,8 +216,8 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private ContentTagPanel<BookmarkTagEntity> createTagPanel() {
-			return new ContentTagPanel<BookmarkTagEntity>("tags", new ListModel<BookmarkTagEntity>(bookmark
-					.getTags()), BookmarkPage.class, params);
+			return new ContentTagPanel<BookmarkTagEntity>("tags", new ListModel<BookmarkTagEntity>(bookmark.getTags()),
+					BookmarkPage.class, params);
 		}
 
 		private Label createHitsLabel() {
@@ -263,10 +263,10 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private Component createBrokenLabel() {
-			return new Label("broken", BookmarkPage.this.getString("broken"))
-					.setVisible(bookmark.getBroken() != null && bookmark.getBroken());
+			return new Label("broken", BookmarkPage.this.getString("broken")).setVisible(bookmark.getBroken() != null
+					&& bookmark.getBroken());
 		}
-		
+
 		private Component createAppropriateAuthorPanel(final Item<BookmarkEntity> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
@@ -274,10 +274,11 @@ public class BookmarkPage extends BookmarkBasePage {
 				return createEmptyAuthorPanel();
 			}
 		}
-		
+
 		private AuthorPanel<BookmarkEntity> createAuthorPanel(final Item<BookmarkEntity> item) {
 			return new AuthorPanel<BookmarkEntity>("authorButtons", bookmark) {
 				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void onDelete(final AjaxRequestTarget target) {
 					bookmarkService.delete(getEntity());
