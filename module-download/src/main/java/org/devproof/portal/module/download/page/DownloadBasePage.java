@@ -42,61 +42,109 @@ public abstract class DownloadBasePage extends TemplatePage {
 	@SpringBean(name = "downloadService")
 	private DownloadService downloadService;
 	private WebMarkupContainer modalWindow;
-	private final boolean isAuthor;
+	private boolean isAuthor;
 
 	public DownloadBasePage(final PageParameters params) {
 		super(params);
 		add(CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS));
+		setAuthorRight();
+		addDownloadAddLink();
+		addDeadlinkCheckLink();
+		add(modalWindow = createHiddenModalWindow());
+	}
+
+	private void addDeadlinkCheckLink() {
+		if (isAuthor()) {
+			addPageAdminBoxLink(createDeadlinkCheckLink());
+		}
+	}
+
+	private void addDownloadAddLink() {
+		if (isAuthor()) {
+			addPageAdminBoxLink(createDownloadAddLink());
+		}
+	}
+
+	private WebMarkupContainer createHiddenModalWindow() {
+		WebMarkupContainer window = null;
+		if (isAuthor()) {
+			window = new ModalWindow("modalWindow");
+
+		} else {
+			window = new WebMarkupContainer("modalWindow");
+			window.setVisible(false);
+		}
+		return window;
+	}
+
+	private AjaxLink<DownloadEntity> createDeadlinkCheckLink() {
+		AjaxLink<DownloadEntity> deadlinkCheckLink = newDeadlinkCheckLink();
+		deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
+		return deadlinkCheckLink;
+	}
+
+	private AjaxLink<DownloadEntity> newDeadlinkCheckLink() {
+		AjaxLink<DownloadEntity> deadlinkCheckLink = new AjaxLink<DownloadEntity>("adminLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				ModalWindow modalWindow = (ModalWindow) DownloadBasePage.this.modalWindow;
+				DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = createDeadlinkCheckPanel(modalWindow.getContentId());
+				modalWindow.setInitialHeight(300);
+				modalWindow.setInitialWidth(500);
+				modalWindow.setContent(deadlinkPanel);
+				modalWindow.show(target);
+			}
+
+			private DeadlinkCheckPanel<DownloadEntity> createDeadlinkCheckPanel(String id) {
+				List<DownloadEntity> allDownloads = downloadService.findAll();
+				return newDeadlinkCheckPanel(id, allDownloads);
+			}
+
+			private DeadlinkCheckPanel<DownloadEntity> newDeadlinkCheckPanel(String id,
+					List<DownloadEntity> allDownloads) {
+				DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = new DeadlinkCheckPanel<DownloadEntity>(id,
+						"download", allDownloads) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onBroken(DownloadEntity brokenEntity) {
+						downloadService.markBrokenDownload(brokenEntity);
+					}
+
+					@Override
+					public void onValid(DownloadEntity validEntity) {
+						downloadService.markValidDownload(validEntity);
+					}
+				};
+				return deadlinkPanel;
+			}
+		};
+		return deadlinkCheckLink;
+	}
+
+	private Link<?> createDownloadAddLink() {
+		Link<?> addLink = newDownloadAddLink();
+		addLink.add(new Label("linkName", getString("createLink")));
+		return addLink;
+	}
+
+	private Link<?> newDownloadAddLink() {
+		return new Link<Object>("adminLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				final DownloadEntity newDownload = downloadService.newDownloadEntity();
+				setResponsePage(new DownloadEditPage(newDownload));
+			}
+		};
+	}
+
+	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
 		isAuthor = session.hasRight("page.DownloadEditPage");
-		if (isAuthor) {
-			modalWindow = new ModalWindow("modalWindow");
-			Link<?> addLink = new Link<Object>("adminLink") {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick() {
-					final DownloadEntity newDownload = downloadService.newDownloadEntity();
-					setResponsePage(new DownloadEditPage(newDownload));
-				}
-			};
-			addLink.add(new Label("linkName", getString("createLink")));
-			addPageAdminBoxLink(addLink);
-			AjaxLink<DownloadEntity> deadlinkCheckLink = new AjaxLink<DownloadEntity>("adminLink") {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick(final AjaxRequestTarget target) {
-					final ModalWindow modalWindow = (ModalWindow) DownloadBasePage.this.modalWindow;
-					List<DownloadEntity> allDownloads = downloadService.findAll();
-					final DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = new DeadlinkCheckPanel<DownloadEntity>(
-							modalWindow.getContentId(), "download", allDownloads) {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void onBroken(final DownloadEntity brokenEntity) {
-							downloadService.markBrokenDownload(brokenEntity);
-						}
-
-						@Override
-						public void onValid(final DownloadEntity validEntity) {
-							downloadService.markValidDownload(validEntity);
-						}
-					};
-					modalWindow.setInitialHeight(300);
-					modalWindow.setInitialWidth(500);
-					modalWindow.setContent(deadlinkPanel);
-					modalWindow.show(target);
-				}
-			};
-			deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
-			addPageAdminBoxLink(deadlinkCheckLink);
-		} else {
-			modalWindow = new WebMarkupContainer("modalWindow");
-			modalWindow.setVisible(false);
-		}
-		add(modalWindow);
 	}
 
 	public boolean isAuthor() {

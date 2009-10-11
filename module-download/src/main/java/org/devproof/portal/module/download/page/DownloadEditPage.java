@@ -48,15 +48,97 @@ public class DownloadEditPage extends DownloadBasePage {
 	@SpringBean(name = "downloadTagService")
 	private TagService<DownloadTagEntity> downloadTagService;
 
-	public DownloadEditPage(final DownloadEntity download) {
-		super(new PageParameters());
-		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
-		IModel<List<DownloadTagEntity>> downloadListModel = new PropertyModel<List<DownloadTagEntity>>(download, "tags");
-		final TagField<DownloadTagEntity> tagField = new TagField<DownloadTagEntity>("tags", downloadListModel,
-				downloadTagService);
+	private DownloadEntity download;
 
-		final Form<DownloadEntity> form = new Form<DownloadEntity>("form", new CompoundPropertyModel<DownloadEntity>(
-				download)) {
+	public DownloadEditPage(DownloadEntity download) {
+		super(new PageParameters());
+		this.download = download;
+		add(createDownloadEditForm());
+	}
+
+	private Form<DownloadEntity> createDownloadEditForm() {
+		Form<DownloadEntity> form = newDownloadEditForm();
+		form.setOutputMarkupId(true);
+		form.add(createTitleField());
+		form.add(createDescriptionField());
+		form.add(createUrlField());
+		form.add(createSoftwareVersionField());
+		form.add(createDownloadSizeField());
+		form.add(createManufacturerField());
+		form.add(createLicenceField());
+		form.add(createTagField());
+		form.add(createPriceField());
+		form.add(createHitsField());
+		form.add(createNumberOfVotesField());
+		form.add(createSumOfRatingField());
+		form.add(createManufacturerHomepageField());
+		form.add(createViewRightPanel());
+		form.add(createDownloadRightPanel());
+		form.add(createVoteRightPanel());
+		return form;
+	}
+
+	private FormComponent<String> createSoftwareVersionField() {
+		return new TextField<String>("softwareVersion");
+	}
+
+	private FormComponent<String> createSumOfRatingField() {
+		return new RequiredTextField<String>("sumOfRating");
+	}
+
+	private FormComponent<String> createNumberOfVotesField() {
+		return new RequiredTextField<String>("numberOfVotes");
+	}
+
+	private FormComponent<String> createHitsField() {
+		return new RequiredTextField<String>("hits");
+	}
+
+	private FormComponent<String> createUrlField() {
+		return new RequiredTextField<String>("url");
+	}
+
+	private FormComponent<String> createDescriptionField() {
+		FormComponent<String> fc = new RichTextArea("description");
+		fc.add(StringValidator.minimumLength(3));
+		return fc;
+	}
+
+	private FormComponent<String> createTitleField() {
+		FormComponent<String> fc = new RequiredTextField<String>("title");
+		fc.add(StringValidator.minimumLength(3));
+		return fc;
+	}
+
+	private FormComponent<String> createDownloadSizeField() {
+		return new TextField<String>("downloadSize");
+	}
+
+	private FormComponent<String> createManufacturerField() {
+		FormComponent<String> fc;
+		fc = new TextField<String>("manufacturer");
+		return fc;
+	}
+
+	private FormComponent<String> createManufacturerHomepageField() {
+		return new TextField<String>("manufacturerHomepage");
+	}
+
+	private FormComponent<String> createLicenceField() {
+		return new TextField<String>("licence");
+	}
+
+	private FormComponent<String> createPriceField() {
+		return new TextField<String>("price");
+	}
+
+	private TagField<DownloadTagEntity> createTagField() {
+		IModel<List<DownloadTagEntity>> downloadListModel = new PropertyModel<List<DownloadTagEntity>>(download, "tags");
+		return new TagField<DownloadTagEntity>("tags", downloadListModel, downloadTagService);
+	}
+
+	private Form<DownloadEntity> newDownloadEditForm() {
+		return new Form<DownloadEntity>("form", new CompoundPropertyModel<DownloadEntity>(download)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -70,41 +152,20 @@ public class DownloadEditPage extends DownloadBasePage {
 				setResponsePage(new DownloadPage(new PageParameters("id=" + download.getId())));
 			}
 		};
-		form.setOutputMarkupId(true);
-		form.add(tagField);
-		form.add(new RightGridPanel("viewRights", "download.view", rightListModel));
-		form.add(new RightGridPanel("downloadRights", "download.download", rightListModel));
-		form.add(new RightGridPanel("voteRights", "download.vote", rightListModel));
-		add(form);
-
-		FormComponent<String> fc;
-
-		fc = new RequiredTextField<String>("title");
-		fc.add(StringValidator.minimumLength(3));
-		form.add(fc);
-		fc = new RichTextArea("description");
-		fc.add(StringValidator.minimumLength(3));
-		form.add(fc);
-		fc = new RequiredTextField<String>("url");
-		form.add(fc);
-		fc = new RequiredTextField<String>("hits");
-		form.add(fc);
-		fc = new RequiredTextField<String>("numberOfVotes");
-		form.add(fc);
-		fc = new RequiredTextField<String>("sumOfRating");
-		form.add(fc);
-		fc = new TextField<String>("softwareVersion");
-		form.add(fc);
-		fc = new TextField<String>("downloadSize");
-		form.add(fc);
-		fc = new TextField<String>("manufacturer");
-		form.add(fc);
-		fc = new TextField<String>("manufacturerHomepage");
-		form.add(fc);
-		fc = new TextField<String>("licence");
-		form.add(fc);
-		fc = new TextField<String>("price");
-		form.add(fc);
 	}
 
+	private RightGridPanel createVoteRightPanel() {
+		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
+		return new RightGridPanel("voteRights", "download.vote", rightListModel);
+	}
+
+	private RightGridPanel createDownloadRightPanel() {
+		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
+		return new RightGridPanel("downloadRights", "download.download", rightListModel);
+	}
+
+	private RightGridPanel createViewRightPanel() {
+		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
+		return new RightGridPanel("viewRights", "download.view", rightListModel);
+	}
 }
