@@ -79,7 +79,6 @@ public class UploadCenterPage extends TemplatePage {
 		add(folderTreeTable = createFolderTreeTable());
 		addPageAdminBoxLink(createUploadLink());
 		addPageAdminBoxLink(createFolderLink());
-
 	}
 
 	private AjaxLink<ModalWindow> createFolderLink() {
