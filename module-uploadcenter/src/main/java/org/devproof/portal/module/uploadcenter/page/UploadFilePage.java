@@ -46,25 +46,55 @@ public class UploadFilePage extends WebPage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private final File uploadFolder;
-
-	public UploadFilePage(final File uploadFolder) {
+	private IModel<Collection<FileUpload>> uploadModel;
+	private Form<Collection<FileUpload>> uploadForm;
+	public UploadFilePage(File uploadFolder) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		this.uploadFolder = uploadFolder;
-		final FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
-		add(uploadFeedback);
-		final Collection<FileUpload> uploads = new ArrayList<FileUpload>();
-		final IModel<Collection<FileUpload>> uploadModel = new CollectionModel<FileUpload>(uploads);
+		this.uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
+		add(createFeedbackPanel());
+		add(uploadForm = createUploadForm());
 
-		final Form<Collection<FileUpload>> uploadForm = new Form<Collection<FileUpload>>("uploadForm", uploadModel) {
+	}
+
+	private Form<Collection<FileUpload>> createUploadForm() {
+		Form<Collection<FileUpload>> uploadForm = newUploadForm();
+		// set this form to multipart mode (allways needed for uploads!)
+		uploadForm.setMultiPart(true);
+		uploadForm.add(createMultiFileUploadField());
+		uploadForm.setMaxSize(getMaxFileSize());
+		uploadForm.add(createUploadProgressBar());
+		return uploadForm;
+	}
+
+	private UploadProgressBar createUploadProgressBar() {
+		return new UploadProgressBar("progress", uploadForm);
+	}
+
+	private Bytes getMaxFileSize() {
+		return Bytes.kilobytes(configurationService
+				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE));
+	}
+
+	private MultiFileUploadField createMultiFileUploadField() {
+		return new MultiFileUploadField("fileInput", uploadModel, configurationService
+				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXFILES));
+	}
+
+	private FeedbackPanel createFeedbackPanel() {
+		FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
+		return uploadFeedback;
+	}
+
+	private Form<Collection<FileUpload>> newUploadForm() {
+		return new Form<Collection<FileUpload>>("uploadForm", uploadModel) {
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			protected void onSubmit() {
-				Iterator<FileUpload> it = uploads.iterator();
+				Iterator<FileUpload> it = uploadModel.getObject().iterator();
 				while (it.hasNext()) {
 					final FileUpload upload = it.next();
 					File newFile = new File(UploadFilePage.this.getUploadFolder(), upload.getClientFileName());
-
 					UploadFilePage.this.deleteFile(newFile);
 					try {
 						if (newFile.createNewFile()) {
@@ -81,15 +111,6 @@ public class UploadFilePage extends WebPage {
 				super.onSubmit();
 			}
 		};
-		// set this form to multipart mode (allways needed for uploads!)
-		uploadForm.setMultiPart(true);
-		uploadForm.add(new MultiFileUploadField("fileInput", uploadModel, configurationService
-				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXFILES)));
-		uploadForm.setMaxSize(Bytes.kilobytes(configurationService
-				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE)));
-		add(uploadForm);
-		uploadForm.add(new UploadProgressBar("progress", uploadForm));
-
 	}
 
 	private void deleteFile(final File newFile) {

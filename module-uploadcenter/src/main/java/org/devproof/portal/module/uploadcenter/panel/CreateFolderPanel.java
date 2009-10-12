@@ -36,28 +36,35 @@ import org.apache.wicket.validation.validator.PatternValidator;
 public abstract class CreateFolderPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public CreateFolderPanel(final String id, final File actFolder) {
+	private File actualFolder;
+	
+	private FeedbackPanel feedbackPanel;
+	private ValueMap values = new ValueMap();
+	
+	public CreateFolderPanel(String id, File actualFolder) {
 		super(id);
-		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		add(feedback);
+		this.actualFolder = actualFolder;
+		add(feedbackPanel = createFeedbackPanel());
+		add(createCreateFolderForm());
+	}
 
-		Form<ValueMap> form = new Form<ValueMap>("form", new CompoundPropertyModel<ValueMap>(new ValueMap()));
+	private Form<ValueMap> createCreateFolderForm() {
+		Form<ValueMap> form = new Form<ValueMap>("form", new CompoundPropertyModel<ValueMap>(values));
+		form.add(createFoldernameField());
+		form.add(createCreateFolderButton());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		final RequiredTextField<String> foldername = new RequiredTextField<String>("foldername");
-		foldername.add(new PatternValidator("[A-Za-z0-9\\.]*"));
-		form.add(foldername);
-
-		form.add(new AjaxButton("createButton", form) {
+	private AjaxButton createCreateFolderButton() {
+		return new AjaxButton("createButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
 				try {
 					FileUtils
-							.forceMkdir(new File(actFolder.getAbsolutePath() + File.separator + foldername.getValue()));
+							.forceMkdir(new File(actualFolder.getAbsolutePath() + File.separator + values.getString("foldername")));
 				} catch (IOException e) {
 					throw new UnhandledException(e);
 				}
@@ -66,9 +73,21 @@ public abstract class CreateFolderPanel extends Panel {
 
 			@Override
 			protected void onError(final AjaxRequestTarget target, final Form<?> form) {
-				target.addComponent(feedback);
+				target.addComponent(feedbackPanel);
 			}
-		});
+		};
+	}
+
+	private FeedbackPanel createFeedbackPanel() {
+		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
+		feedback.setOutputMarkupId(true);
+		return feedback;
+	}
+
+	private RequiredTextField<String> createFoldernameField() {
+		final RequiredTextField<String> foldername = new RequiredTextField<String>("foldername");
+		foldername.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+		return foldername;
 	}
 
 	public abstract void onCreate(AjaxRequestTarget target);

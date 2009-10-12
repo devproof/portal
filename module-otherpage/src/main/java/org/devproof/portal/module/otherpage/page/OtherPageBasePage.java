@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.page;
 
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -30,26 +31,49 @@ import org.devproof.portal.module.otherpage.service.OtherPageService;
 public class OtherPageBasePage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
-	private final boolean isAuthor;
+	private boolean isAuthor;
 	@SpringBean(name = "otherPageService")
 	private OtherPageService otherPageService;
 
 	public OtherPageBasePage(final PageParameters params) {
 		super(params);
+		setAuthorRight();
+		addSyntaxHighlighter();
+		addOtherPageAddLink();
+	}
+
+	private void addOtherPageAddLink() {
+		if (isAuthor()) {
+			addPageAdminBoxLink(createOtherPageAddLink());
+		}
+	}
+
+	private MarkupContainer createOtherPageAddLink() {
+		Link<OtherPageEntity> link = newOtherPageAddLink();
+		link.add(createOtherPageAddLinkLabel());
+		return link;
+	}
+
+	private Link<OtherPageEntity> newOtherPageAddLink() {
+		Link<OtherPageEntity> link = new Link<OtherPageEntity>("adminLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				final OtherPageEntity newEntry = otherPageService.newOtherPageEntity();
+				setResponsePage(new OtherPageEditPage(newEntry));
+			}
+		};
+		return link;
+	}
+
+	private Label createOtherPageAddLinkLabel() {
+		return new Label("linkName", getString("createLink"));
+	}
+
+	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
 		isAuthor = session.hasRight("page.OtherPagePage");
-		addSyntaxHighlighter();
-		if (isAuthor) {
-			addPageAdminBoxLink(new Link<OtherPageEntity>("adminLink") {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick() {
-					final OtherPageEntity newEntry = otherPageService.newOtherPageEntity();
-					setResponsePage(new OtherPageEditPage(newEntry));
-				}
-			}.add(new Label("linkName", getString("createLink"))));
-		}
 	}
 
 	public boolean isAuthor() {

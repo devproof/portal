@@ -45,9 +45,21 @@ public class OtherPagePage extends OtherPageBasePage {
 
 	public OtherPagePage(final PageParameters params) {
 		super(params);
-		add(new OrderByBorder("table_content_id", "subject", otherPageDataProvider));
-		add(new OrderByBorder("table_modified_by", "modifiedBy", otherPageDataProvider));
-		add(new OtherPageDataView("tableRow"));
+		add(createContentIdOrderHeader());
+		add(createModifiedByOrderHeader());
+		add(createOtherPageDataView());
+	}
+
+	private OrderByBorder createContentIdOrderHeader() {
+		return new OrderByBorder("table_content_id", "subject", otherPageDataProvider);
+	}
+
+	private OrderByBorder createModifiedByOrderHeader() {
+		return new OrderByBorder("table_modified_by", "modifiedBy", otherPageDataProvider);
+	}
+
+	private OtherPageDataView createOtherPageDataView() {
+		return new OtherPageDataView("tableRow");
 	}
 
 	private class OtherPageDataView extends DataView<OtherPageEntity> {
@@ -59,17 +71,45 @@ public class OtherPagePage extends OtherPageBasePage {
 
 		@Override
 		protected void populateItem(final Item<OtherPageEntity> item) {
-			final OtherPageEntity otherPage = item.getModelObject();
+			OtherPageEntity otherPage = item.getModelObject();
+			item.add(createContentIdLabel(otherPage));
+			item.add(createModifiedByLabel(otherPage));
+			item.add(createViewLink(otherPage));
+			item.add(createAuthorPanel(item));
+			item.add(createEvenOddModifier(item));
+			item.setOutputMarkupId(true);
+		}
 
-			item.add(new Label("contentId", otherPage.getContentId()));
-			item.add(new Label("modifiedBy", otherPage.getModifiedBy()));
+		private BookmarkablePageLink<OtherPageViewPage> createViewLink(
+				OtherPageEntity otherPage) {
 			BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink",
 					OtherPageViewPage.class);
 			viewLink.setParameter("0", otherPage.getContentId());
-			viewLink.add(new Image("viewImage", CommonConstants.REF_VIEW_IMG).setEscapeModelStrings(false));
-			item.add(viewLink);
-			item.setOutputMarkupId(true);
-			item.add(new AuthorPanel<OtherPageEntity>("authorButtons", otherPage) {
+			viewLink.add(createViewLinkImage());
+			return viewLink;
+		}
+
+		private Image createViewLinkImage() {
+			Image viewImage = new Image("viewImage", CommonConstants.REF_VIEW_IMG);
+			viewImage.setEscapeModelStrings(false);
+			return viewImage;
+		}
+
+		private AttributeModifier createEvenOddModifier(
+				final Item<OtherPageEntity> item) {
+			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getObject() {
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
+				}
+			});
+		}
+
+		private AuthorPanel<OtherPageEntity> createAuthorPanel(
+				final Item<OtherPageEntity> item) {
+			return new AuthorPanel<OtherPageEntity>("authorButtons", item.getModelObject()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -84,20 +124,18 @@ public class OtherPagePage extends OtherPageBasePage {
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					OtherPageEntity tmp = otherPageService.findById(otherPage.getId());
+					OtherPageEntity tmp = otherPageService.findById(getEntity().getId());
 					setResponsePage(new OtherPageEditPage(tmp));
-
 				}
-			});
+			};
+		}
 
-			item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 1L;
+		private Label createModifiedByLabel(final OtherPageEntity otherPage) {
+			return new Label("modifiedBy", otherPage.getModifiedBy());
+		}
 
-				@Override
-				public String getObject() {
-					return (item.getIndex() % 2 != 0) ? "even" : "odd";
-				}
-			}));
+		private Label createContentIdLabel(final OtherPageEntity otherPage) {
+			return new Label("contentId", otherPage.getContentId());
 		}
 	}
 }
