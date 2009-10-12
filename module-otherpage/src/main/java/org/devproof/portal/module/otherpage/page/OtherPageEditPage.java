@@ -41,34 +41,41 @@ public class OtherPageEditPage extends OtherPageBasePage {
 	@SpringBean(name = "otherPageService")
 	private OtherPageService otherPageService;
 
-	public OtherPageEditPage(final OtherPageEntity otherPage) {
+	private OtherPageEntity otherPage;
+	
+	public OtherPageEditPage(OtherPageEntity otherPage) {
 		super(new PageParameters());
+		this.otherPage = otherPage;
+		add(createOtherPageEditForm());
+	}
 
-		Form<OtherPageEntity> form = new Form<OtherPageEntity>("form", new CompoundPropertyModel<OtherPageEntity>(
-				otherPage)) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onSubmit() {
-				otherPageService.save(otherPage);
-				setRedirect(false);
-				info(OtherPageEditPage.this.getString("msg.saved"));
-				setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getContentId())));
-
-			}
-		};
+	private Form<OtherPageEntity> createOtherPageEditForm() {
+		Form<OtherPageEntity> form = newOtherPageEditForm();
 		form.setOutputMarkupId(true);
-		add(form);
-		form.add(new RightGridPanel("viewright", "otherPage.view", new ListModel<RightEntity>(otherPage.getAllRights())));
+		form.add(createContentIdField());
+		form.add(createContentField());
+		form.add(createViewRightPanel());
+		return form;
+	}
 
-		FormComponent<String> fc;
+	private FormComponent<String> createContentField() {
+		FormComponent<String>fc = new RichTextArea("content");
+		fc.setRequired(true);
+		fc.add(StringValidator.minimumLength(10));
+		return fc;
+	}
 
-		fc = new RequiredTextField<String>("contentId");
+	private FormComponent<String> createContentIdField() {
+		FormComponent<String> fc = new RequiredTextField<String>("contentId");
 		fc.add(StringValidator.minimumLength(5));
 		fc.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
-		fc.add(new AbstractValidator<String>() {
-			private static final long serialVersionUID = 1L;
+		fc.add(createContentIdValidator());
+		return fc;
+	}
 
+	private AbstractValidator<String> createContentIdValidator() {
+		return new AbstractValidator<String>() {
+			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onValidate(final IValidatable<String> ivalidatable) {
 				if (otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
@@ -80,12 +87,25 @@ public class OtherPageEditPage extends OtherPageBasePage {
 			protected String resourceKey() {
 				return "existing.contentId";
 			}
-		});
-		form.add(fc);
+		};
+	}
 
-		fc = new RichTextArea("content");
-		fc.setRequired(true);
-		fc.add(StringValidator.minimumLength(10));
-		form.add(fc);
+	private RightGridPanel createViewRightPanel() {
+		return new RightGridPanel("viewright", "otherPage.view", new ListModel<RightEntity>(otherPage.getAllRights()));
+	}
+
+	private Form<OtherPageEntity> newOtherPageEditForm() {
+		return new Form<OtherPageEntity>("form", new CompoundPropertyModel<OtherPageEntity>(
+				otherPage)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onSubmit() {
+				otherPageService.save(otherPage);
+				setRedirect(false);
+				info(OtherPageEditPage.this.getString("msg.saved"));
+				setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getContentId())));
+			}
+		};
 	}
 }

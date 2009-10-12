@@ -47,48 +47,38 @@ public abstract class UploadCenterPanel extends Panel {
 	@SpringBean(name = "sharedRegistry")
 	private SharedRegistry sharedRegistry;
 
-	public UploadCenterPanel(final String id, final IModel<File> model, final ModalWindow modalWindow,
-			final boolean createDownload) {
-		super(id, model);
-		final File file = model.getObject();
-		final Link<File> createDownloadLink = new Link<File>("createDownloadLink", model) {
-			private static final long serialVersionUID = 1L;
+	private IModel<File> fileModel;
+	private ModalWindow modalWindow;
+	
+	public UploadCenterPanel(String id, IModel<File> fileModel, ModalWindow modalWindow, boolean createDownload) {
+		super(id, fileModel);
+		this.fileModel = fileModel;
+		this.modalWindow = modalWindow;
+		add(createCreateDownloadLink(createDownload));
+		add(createDownloadLink());
+		add(createDeleteLink());
+	}
 
-			@Override
-			public void onClick() {
-				final CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
-				setResponsePage(createDownloadPage.newInstance(model.getObject().toURI().toString()));
-			}
+	private AjaxLink<File> createDeleteLink() {
+		AjaxLink<File> ajaxLink = newDeleteLink();
+		ajaxLink.add(createDeleteLinkImage());
+		return ajaxLink;
+	}
 
-		};
-		createDownloadLink.setVisible((file == null || file.isFile()) && createDownload
-				&& sharedRegistry.isResourceAvailable("createDownloadPage"));
-		createDownloadLink.add(new Image("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
-		add(createDownloadLink);
+	private Image createDeleteLinkImage() {
+		return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
+	}
 
-		final InternalDownloadLink downloadLink = new InternalDownloadLink("downloadLink") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected File getFile() {
-				return file;
-			}
-
-		};
-		downloadLink.add(new Image("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
-		downloadLink.setVisible(file == null || file.isFile());
-		add(downloadLink);
-
-		add(new AjaxLink<File>("deleteLink") {
+	private AjaxLink<File> newDeleteLink() {
+		final File file = fileModel.getObject();
+		return new AjaxLink<File>("deleteLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				final ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(modalWindow
 						.getContentId(), file, modalWindow) {
-
 					private static final long serialVersionUID = 1L;
-
 					@Override
 					public void onDelete(final AjaxRequestTarget target, final Form<?> form) {
 						if (file.isDirectory()) {
@@ -105,12 +95,52 @@ public abstract class UploadCenterPanel extends Panel {
 						UploadCenterPanel.this.onDelete(target);
 						modalWindow.close(target);
 					}
-
 				};
 				modalWindow.setContent(confirmDeletePanel);
 				modalWindow.show(target);
 			}
-		}.add(new Image("deleteImage", CommonConstants.REF_DELETE_IMG)));
+		};
+	}
+
+	private InternalDownloadLink createDownloadLink() {
+		File file = fileModel.getObject();
+		InternalDownloadLink downloadLink = newDownloadLink();
+		downloadLink.add(new Image("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
+		downloadLink.setVisible(file == null || file.isFile());
+		return downloadLink;
+	}
+
+	private InternalDownloadLink newDownloadLink() {
+		final File file = fileModel.getObject();
+		return new InternalDownloadLink("downloadLink") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			protected File getFile() {
+				return file;
+			}
+		};
+	}
+
+	private Link<File> createCreateDownloadLink(boolean createDownload) {
+		File file = fileModel.getObject();
+		Link<File> createDownloadLink = newCreateDownloadLink();
+		createDownloadLink.setVisible((file == null || file.isFile()) && createDownload
+				&& sharedRegistry.isResourceAvailable("createDownloadPage"));
+		createDownloadLink.add(new Image("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
+		return createDownloadLink;
+	}
+
+	private Link<File> newCreateDownloadLink() {
+		return new Link<File>("createDownloadLink", fileModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				final CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
+				setResponsePage(createDownloadPage.newInstance(fileModel.getObject().toURI().toString()));
+			}
+
+		};
 	}
 
 	public abstract void onDelete(final AjaxRequestTarget target);

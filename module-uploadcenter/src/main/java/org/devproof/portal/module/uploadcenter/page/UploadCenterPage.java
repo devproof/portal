@@ -32,6 +32,8 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.PageCreator;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.extensions.markup.html.tree.table.ColumnLocation;
 import org.apache.wicket.extensions.markup.html.tree.table.IColumn;
 import org.apache.wicket.extensions.markup.html.tree.table.IRenderable;
@@ -61,24 +63,38 @@ public class UploadCenterPage extends TemplatePage {
 	private DateFormat dateFormat;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private final TreeTable tree;
 	private final File rootFolder;
 	private File selectedFolder;
 	private DefaultMutableTreeNode rootNode;
 	private DefaultMutableTreeNode selectedNode;
-	private final boolean hasRightCreateDownload;
-
-	public UploadCenterPage(final PageParameters params) {
+	private boolean hasRightCreateDownload;
+	private ModalWindow modalWindow;
+	private TreeTable folderTreeTable;
+	public UploadCenterPage(PageParameters params) {
 		super(params);
 		rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
 		selectedFolder = rootFolder;
-		PortalSession session = (PortalSession) getSession();
-		hasRightCreateDownload = session.hasRight("page.DownloadEditPage");
+		setHasRightToCreate();
+		add(modalWindow = createModalWindow());
+		add(folderTreeTable = createFolderTreeTable());
+		addPageAdminBoxLink(createUploadLink());
+		addPageAdminBoxLink(createFolderLink());
 
-		final ModalWindow modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		add(modalWindow);
+	}
 
+	private AjaxLink<ModalWindow> createFolderLink() {
+		AjaxLink<ModalWindow> createFolderLink = newCreateFolderLink();
+		createFolderLink.add(new Label("linkName", getString("createFolderLink")));
+		return createFolderLink;
+	}
+
+	private AjaxLink<ModalWindow> createUploadLink() {
+		AjaxLink<ModalWindow> uploadLink = newUploadLink(modalWindow);
+		uploadLink.add(new Label("linkName", getString("uploadLink")));
+		return uploadLink;
+	}
+
+	private TreeTable createFolderTreeTable() {
 		IColumn columns[] = new IColumn[] {
 				new PropertyTreeColumn(new ColumnLocation(Alignment.MIDDLE, 8, Unit.PROPORTIONAL), this
 						.getString("tableFilename"), "userObject.name"),
@@ -89,12 +105,19 @@ public class UploadCenterPage extends TemplatePage {
 				new PropertyLinkedColumn(new ColumnLocation(Alignment.RIGHT, 80, Unit.PX), "", "userObject.file",
 						modalWindow) };
 
-		tree = new TreeTable("treeTable", createTreeModel(), columns) {
+		TreeTable tree = newFolderTreeTable(columns);
+		tree.getTreeState().collapseAll();
+		tree.setRootLess(true);
+		return tree;
+	}
+
+	private TreeTable newFolderTreeTable(IColumn[] columns) {
+		return new TreeTable("treeTable", createTreeModel(), columns) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onNodeLinkClicked(final AjaxRequestTarget target, final TreeNode node) {
-				if (tree.getTreeState().isNodeSelected(node)) {
+				if (getTreeState().isNodeSelected(node)) {
 					DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
 					FileBean fileBean = (FileBean) n.getUserObject();
 
@@ -111,10 +134,52 @@ public class UploadCenterPage extends TemplatePage {
 				}
 			}
 		};
-		tree.getTreeState().collapseAll();
-		tree.setRootLess(true);
-		add(tree);
+	}
 
+	private AjaxLink<ModalWindow> newCreateFolderLink() {
+		return new AjaxLink<ModalWindow>("adminLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(final AjaxRequestTarget target) {
+				modalWindow.setInitialHeight(170);
+				modalWindow.setInitialWidth(400);
+				modalWindow.setContent(createCreateFolderPanel());
+				modalWindow.show(target);
+			}
+
+			private CreateFolderPanel createCreateFolderPanel() {
+				return new CreateFolderPanel(modalWindow.getContentId(), selectedFolder) {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void onCreate(final AjaxRequestTarget target) {
+						UploadCenterPage.this.forceRefresh(target);
+						modalWindow.close(target);
+					}
+
+				};
+			}
+		};
+	}
+
+	private ModalWindow createModalWindow() {
+		ModalWindow modalWindow = new ModalWindow("modalWindow");
+		modalWindow.setTitle("Portal");
+		return modalWindow;
+	}
+
+	private void setHasRightToCreate() {
+		PortalSession session = (PortalSession) getSession();
+		hasRightCreateDownload = session.hasRight("page.DownloadEditPage");
+	}
+	
+	
+
+	public boolean hasRightCreateDownload() {
+		return hasRightCreateDownload;
+	}
+
+	private AjaxLink<ModalWindow> newUploadLink(final ModalWindow modalWindow) {
 		AjaxLink<ModalWindow> uploadLink = new AjaxLink<ModalWindow>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
@@ -122,55 +187,35 @@ public class UploadCenterPage extends TemplatePage {
 			public void onClick(final AjaxRequestTarget target) {
 				modalWindow.setInitialHeight(400);
 				modalWindow.setInitialWidth(600);
+				modalWindow.setPageCreator(createPageCreator());
+				modalWindow.setWindowClosedCallback(createWindowCloseCallback());
+				modalWindow.show(target);
+			}
 
-				modalWindow.setPageCreator(new ModalWindow.PageCreator() {
+			private PageCreator createPageCreator() {
+				return new ModalWindow.PageCreator() {
 					private static final long serialVersionUID = 1L;
 
 					public Page createPage() {
 						return new UploadFilePage(selectedFolder);
 					}
-				});
-				modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+				};
+			}
+
+			private WindowClosedCallback createWindowCloseCallback() {
+				return new ModalWindow.WindowClosedCallback() {
 					private static final long serialVersionUID = 1L;
 
 					public void onClose(final AjaxRequestTarget target) {
 						UploadCenterPage.this.forceRefresh(target);
 					}
-				});
-				modalWindow.show(target);
+				};
 			}
 		};
-		uploadLink.add(new Label("linkName", getString("uploadLink")));
-		addPageAdminBoxLink(uploadLink);
-		AjaxLink<ModalWindow> createFolderLink = new AjaxLink<ModalWindow>("adminLink") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(final AjaxRequestTarget target) {
-				modalWindow.setInitialHeight(170);
-				modalWindow.setInitialWidth(400);
-
-				modalWindow.setContent(new CreateFolderPanel(modalWindow.getContentId(), selectedFolder) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void onCreate(final AjaxRequestTarget target) {
-						UploadCenterPage.this.forceRefresh(target);
-						modalWindow.close(target);
-					}
-
-				});
-
-				modalWindow.show(target);
-			}
-		};
-		createFolderLink.add(new Label("linkName", getString("createFolderLink")));
-		addPageAdminBoxLink(createFolderLink);
-
+		return uploadLink;
 	}
 
 	private TreeModel createTreeModel() {
-
 		rootNode = new DefaultMutableTreeNode(new FileBean(rootFolder, dateFormat));
 		selectedNode = rootNode;
 		TreeModel model = new DefaultTreeModel(rootNode);
@@ -222,9 +267,9 @@ public class UploadCenterPage extends TemplatePage {
 					DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
 					n.removeFromParent();
 					TreeModel model = new DefaultTreeModel(rootNode);
-					tree.setModelObject(model);
-					tree.modelChanged();
-					tree.updateTree(target);
+					folderTreeTable.setModelObject(model);
+					folderTreeTable.modelChanged();
+					folderTreeTable.updateTree(target);
 					selectedFolder = rootFolder;
 					selectedNode = rootNode;
 				}
@@ -241,8 +286,8 @@ public class UploadCenterPage extends TemplatePage {
 		selectedNode.removeAllChildren();
 		add(selectedNode, selectedFolder);
 		TreeModel model = new DefaultTreeModel(rootNode);
-		tree.setModelObject(model);
-		tree.modelChanged();
-		tree.updateTree(target);
+		folderTreeTable.setModelObject(model);
+		folderTreeTable.modelChanged();
+		folderTreeTable.updateTree(target);
 	}
 }

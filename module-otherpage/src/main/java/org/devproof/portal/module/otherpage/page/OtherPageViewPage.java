@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -38,58 +39,140 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	@SpringBean(name = "otherPageService")
 	private OtherPageService otherPageService;
 
+	private PageParameters params;
+	private String contentId;
+	private OtherPageEntity otherPage;
+	
 	public OtherPageViewPage(final PageParameters params) {
 		super(params);
+		this.params = params;
+		contentId = getContentIdParameter();
+		otherPage = otherPageService.findOtherPageByContentId(contentId);
+
+		add(createAuthorContainer());
+		add(createAppropriateContentLabel());
+		
+		redirectToErrorPageIfHasNoRights();
+	}
+
+	private WebMarkupContainer createAuthorContainer() {
+		WebMarkupContainer authorContainer = new WebMarkupContainer("authorContainer");
+		authorContainer.setVisible(isAuthor());
+		authorContainer.add(createAppropriateAuthorPanel());
+		authorContainer.add(createAppropriateMetaInfoPanel());
+		return authorContainer;
+	}
+
+	private Component createAppropriateContentLabel() {
+		Component contentLabel;
+		if (otherPage == null) {
+			contentLabel = createNoContentLabel();
+		} else {
+			contentLabel = createContentLabel();
+		}
+		return contentLabel;
+	}
+
+	private Component createAppropriateMetaInfoPanel() {
+		Component metaInfoPanel;
+		if (otherPage == null) {
+			metaInfoPanel = createHiddenMetaInfoPanel();
+		} else {
+			metaInfoPanel = createMetaInfoPanel();
+		}
+		return metaInfoPanel;
+	}
+
+	private ExtendedLabel createContentLabel() {
+		return new ExtendedLabel("content", otherPage.getContent());
+	}
+
+	private MetaInfoPanel createMetaInfoPanel() {
+		MetaInfoPanel metaInfo = new MetaInfoPanel("metaInfo", otherPage);
+		return metaInfo;
+	}
+
+	private void redirectToErrorPageIfHasNoRights() {
+		if (otherPage != null && hasRightToViewOtherPage(otherPage)) {
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(
+					getString("missing.right"), getRequestURL()));
+		}
+	}
+
+	private WebMarkupContainer createAppropriateAuthorPanel() {
+		WebMarkupContainer authorPanel;
+		if (isAuthor()) {
+			authorPanel = createAuthorPanel();
+		} else {
+			authorPanel = createHiddenAuthorPanel();
+		}
+		return authorPanel;
+	}
+
+	private WebMarkupContainer createHiddenAuthorPanel() {
+		WebMarkupContainer authorPanel = new WebMarkupContainer("authorButtons");
+		authorPanel.setVisible(false);
+		return authorPanel;
+	}
+
+	private AuthorPanel<OtherPageEntity> createAuthorPanel() {
+		AuthorPanel<OtherPageEntity> authorPanel = newAuthorPanel();
+		authorPanel.setRedirectPage(OtherPagePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
+		return authorPanel;
+	}
+
+	private AuthorPanel<OtherPageEntity> newAuthorPanel() {
+		AuthorPanel<OtherPageEntity> authorButtons = new AuthorPanel<OtherPageEntity>("authorButtons", otherPage) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onDelete(final AjaxRequestTarget target) {
+				otherPageService.delete(getEntity());
+			}
+
+			@Override
+			public void onEdit(final AjaxRequestTarget target) {
+				OtherPageEntity editPage = otherPage;
+				// create new empty page if not exists
+				if (editPage == null) {
+					editPage = otherPageService.newOtherPageEntity();
+					editPage.setContentId(contentId);
+				}
+				setResponsePage(new OtherPageEditPage(editPage));
+			}
+		};
+		return authorButtons;
+	}
+
+	private boolean hasRightToViewOtherPage(OtherPageEntity page) {
 		PortalSession session = (PortalSession) getSession();
+		return !session.hasRight("otherPage.view") && !session.hasRight(page.getViewRights());
+	}
+
+	private MetaInfoPanel createHiddenMetaInfoPanel() {
+		MetaInfoPanel metaInfo = new MetaInfoPanel("metaInfo", createOtherPageEntity());
+		metaInfo.setVisible(false);
+		return metaInfo;
+	}
+
+	private ExtendedLabel createNoContentLabel() {
+		return new ExtendedLabel("content", getString("noContent"));
+	}
+
+	private OtherPageEntity createOtherPageEntity() {
+		OtherPageEntity tmp = otherPageService.newOtherPageEntity();
+		tmp.setCreatedAt(PortalUtil.now());
+		tmp.setModifiedAt(PortalUtil.now());
+		tmp.setCreatedBy("");
+		tmp.setModifiedBy("");
+		return tmp;
+	}
+
+	private String getContentIdParameter() {
 		String contentId = params.getString("0");
 		if (contentId == null) {
 			contentId = getRequest().getParameter("optparam");
 		}
-		final OtherPageEntity page = otherPageService.findOtherPageByContentId(contentId);
-
-		WebMarkupContainer authorPanel = new WebMarkupContainer("authorPanel");
-		authorPanel.setVisible(isAuthor());
-		add(authorPanel);
-		if (isAuthor()) {
-			final String internalContentId = contentId;
-			authorPanel.add(new AuthorPanel<OtherPageEntity>("authorButtons", page) {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onDelete(final AjaxRequestTarget target) {
-					otherPageService.delete(getEntity());
-				}
-
-				@Override
-				public void onEdit(final AjaxRequestTarget target) {
-					OtherPageEntity editPage = page;
-					// create new empty page if not exists
-					if (editPage == null) {
-						editPage = otherPageService.newOtherPageEntity();
-						editPage.setContentId(internalContentId);
-					}
-					setResponsePage(new OtherPageEditPage(editPage));
-				}
-			}.setRedirectPage(OtherPagePage.class, new PageParameters("infoMsg=" + getString("msg.deleted"))));
-		} else {
-			authorPanel.add(new WebMarkupContainer("authorButtons").setVisible(false));
-		}
-
-		if (page == null) {
-			OtherPageEntity tmp = otherPageService.newOtherPageEntity();
-			tmp.setCreatedAt(PortalUtil.now());
-			tmp.setModifiedAt(PortalUtil.now());
-			tmp.setCreatedBy("");
-			tmp.setModifiedBy("");
-			authorPanel.add(new MetaInfoPanel("metaInfo", tmp).setVisible(false));
-			add(new ExtendedLabel("content", getString("noContent")));
-		} else {
-			authorPanel.add(new MetaInfoPanel("metaInfo", page));
-			add(new ExtendedLabel("content", page.getContent()));
-			if (!session.hasRight("otherPage.view") && !session.hasRight(page.getViewRights())) {
-				throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(
-						getString("missing.right"), getRequestURL()));
-			}
-		}
+		return contentId;
 	}
 }
