@@ -47,14 +47,13 @@ public class UploadFilePage extends WebPage {
 	private ConfigurationService configurationService;
 	private final File uploadFolder;
 	private IModel<Collection<FileUpload>> uploadModel;
-	private Form<Collection<FileUpload>> uploadForm;
+
 	public UploadFilePage(File uploadFolder) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		this.uploadFolder = uploadFolder;
 		this.uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
 		add(createFeedbackPanel());
-		add(uploadForm = createUploadForm());
-
+		add(createUploadForm());
 	}
 
 	private Form<Collection<FileUpload>> createUploadForm() {
@@ -63,11 +62,11 @@ public class UploadFilePage extends WebPage {
 		uploadForm.setMultiPart(true);
 		uploadForm.add(createMultiFileUploadField());
 		uploadForm.setMaxSize(getMaxFileSize());
-		uploadForm.add(createUploadProgressBar());
+		uploadForm.add(createUploadProgressBar(uploadForm));
 		return uploadForm;
 	}
 
-	private UploadProgressBar createUploadProgressBar() {
+	private UploadProgressBar createUploadProgressBar(Form<Collection<FileUpload>> uploadForm) {
 		return new UploadProgressBar("progress", uploadForm);
 	}
 
