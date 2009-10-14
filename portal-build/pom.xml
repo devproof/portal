@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -11,7 +10,7 @@
 	<name>devproof portal build project</name>
 	<!-- this is not the real version. see devproof.version -->
 	<version>FIXED</version>
-	
+
 	<properties>
 		<devproof.version>1.0-rc3-SNAPSHOT</devproof.version>
 		<wicket.version>1.4.1</wicket.version>
@@ -30,6 +29,15 @@
 		<module>../portal-bundle</module>
 	</modules>
 	
+	<build>
+		<plugins>
+			<!-- workaround for a defect mvn eclipse plugin -->
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>central</id>
@@ -55,7 +63,7 @@
 			</releases>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -193,7 +201,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<version>2.5.6</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
@@ -215,10 +223,10 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-		    <groupId>rome</groupId>
-		    <artifactId>rome</artifactId>
-		    <version>0.9</version>
-		</dependency> 
+			<groupId>rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>0.9</version>
+		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
@@ -263,5 +271,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
 </project>
