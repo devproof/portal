@@ -37,6 +37,7 @@ public class PrintPage extends WebPage {
 	public PrintPage(final PageParameters params) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		add(CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css"));
+		
 		add(new Label("content", "Halo"));
 		add(new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE)));
 		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
