@@ -52,10 +52,10 @@ public class ArticleEditPage extends ArticleBasePage {
 	@SpringBean(name = "articleTagService")
 	private TagService<ArticleTagEntity> articleTagService;
 
-	private final ArticleEntity article;
+	private ArticleEntity article;
 	private RequiredTextField<String> contentIdField;
 
-	public ArticleEditPage(final ArticleEntity article) {
+	public ArticleEditPage(ArticleEntity article) {
 		super(new PageParameters());
 		this.article = article;
 		add(createArticleEditForm());

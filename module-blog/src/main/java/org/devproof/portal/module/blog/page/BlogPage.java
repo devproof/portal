@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -34,6 +35,7 @@ import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.print.page.PrintablePage;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.BlogConstants;
@@ -46,7 +48,7 @@ import org.devproof.portal.module.blog.service.BlogService;
 /**
  * @author Carsten Hufe
  */
-public class BlogPage extends BlogBasePage {
+public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "blogService")
@@ -58,11 +60,11 @@ public class BlogPage extends BlogBasePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	
-	private final BlogDataView dataView;
-	private final BlogQuery query;
-	private final PageParameters params;
+	private BlogDataView dataView;
+	private BlogQuery query;
+	private PageParameters params;
 	
-	public BlogPage(final PageParameters params) {
+	public BlogPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		query = createBlogQuery();
@@ -97,33 +99,33 @@ public class BlogPage extends BlogBasePage {
 		blogDataProvider.setQueryObject(query);
 		return query;
 	}
-
+	
+	private BlogView createBlogView(Item<BlogEntity> item) {
+		return new BlogView("blogView", item);
+	}
+	
 	private class BlogDataView extends DataView<BlogEntity> {
 		private static final long serialVersionUID = 1L;
-		private final boolean onlyOneBlogEntryInResult;
+		private boolean onlyOneBlogEntryInResult;
 
-		public BlogDataView(final String id) {
+		public BlogDataView(String id) {
 			super(id, blogDataProvider);
 			onlyOneBlogEntryInResult = blogDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
 		}
 
 		@Override
-		protected void populateItem(final Item<BlogEntity> item) {
+		protected void populateItem(Item<BlogEntity> item) {
 			setBlogTitleAsPageTitle(item);
 			item.setOutputMarkupId(true);
 			item.add(createBlogView(item));
 		}
 
-		private void setBlogTitleAsPageTitle(final Item<BlogEntity> item) {
+		private void setBlogTitleAsPageTitle(Item<BlogEntity> item) {
 			if (onlyOneBlogEntryInResult) {
 				BlogEntity blog = item.getModelObject();
 				setPageTitle(blog.getHeadline());
 			}
-		}
-
-		private BlogView createBlogView(final Item<BlogEntity> item) {
-			return new BlogView("blogView", item);
 		}
 	}
 
@@ -133,7 +135,7 @@ public class BlogPage extends BlogBasePage {
 
 		private BlogEntity blog;
 		
-		public BlogView(final String id, final Item<BlogEntity> item) {
+		public BlogView(String id, Item<BlogEntity> item) {
 			super(id, "blogView", BlogPage.this);
 			this.blog = item.getModelObject();
 			add(createAppropriateAuthorPanel(item));
@@ -143,7 +145,7 @@ public class BlogPage extends BlogBasePage {
 			add(createContentLabel());
 		}
 		
-		private Component createAppropriateAuthorPanel(final Item<BlogEntity> item) {
+		private Component createAppropriateAuthorPanel(Item<BlogEntity> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
 			} else {
@@ -156,7 +158,7 @@ public class BlogPage extends BlogBasePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					blogService.delete(getEntity());
 					item.setVisible(false);
 					target.addComponent(item);
@@ -165,7 +167,7 @@ public class BlogPage extends BlogBasePage {
 				}
 
 				@Override
-				public void onEdit(final AjaxRequestTarget target) {
+				public void onEdit(AjaxRequestTarget target) {
 					setResponsePage(new BlogEditPage(item.getModelObject()));
 				}
 			};
@@ -197,5 +199,12 @@ public class BlogPage extends BlogBasePage {
 			return new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blog.getTags()),
 					BlogPage.class, params);
 		}
+	}
+
+	@Override
+	public Component createPrintablePart(String wicketId, Integer primaryKey) {
+		BlogEntity blog = blogService.findById(primaryKey);
+		Item<BlogEntity> item = new Item<BlogEntity>("", 0, Model.of(blog));
+		return createBlogView(item);
 	}
 }
