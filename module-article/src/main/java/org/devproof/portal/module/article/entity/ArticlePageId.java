@@ -35,7 +35,7 @@ public class ArticlePageId implements Serializable {
 	public ArticlePageId() {
 	}
 
-	public ArticlePageId(final String contentId, final Integer page) {
+	public ArticlePageId(String contentId, Integer page) {
 		this.contentId = contentId;
 		this.page = page;
 	}
@@ -44,7 +44,7 @@ public class ArticlePageId implements Serializable {
 		return contentId;
 	}
 
-	public void setContentId(final String contentId) {
+	public void setContentId(String contentId) {
 		this.contentId = contentId;
 	}
 
@@ -52,13 +52,13 @@ public class ArticlePageId implements Serializable {
 		return page;
 	}
 
-	public void setPage(final Integer page) {
+	public void setPage(Integer page) {
 		this.page = page;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
 		result = prime * result + ((page == null) ? 0 : page.hashCode());
@@ -66,7 +66,7 @@ public class ArticlePageId implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

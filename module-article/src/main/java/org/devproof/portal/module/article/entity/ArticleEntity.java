@@ -83,7 +83,7 @@ final public class ArticleEntity extends BaseEntity {
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -91,7 +91,7 @@ final public class ArticleEntity extends BaseEntity {
 		return contentId;
 	}
 
-	public void setContentId(final String contentId) {
+	public void setContentId(String contentId) {
 		this.contentId = contentId;
 	}
 
@@ -99,7 +99,7 @@ final public class ArticleEntity extends BaseEntity {
 		return title;
 	}
 
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -107,7 +107,7 @@ final public class ArticleEntity extends BaseEntity {
 		return teaser;
 	}
 
-	public void setTeaser(final String teaser) {
+	public void setTeaser(String teaser) {
 		this.teaser = teaser;
 	}
 
@@ -118,7 +118,7 @@ final public class ArticleEntity extends BaseEntity {
 		return articlePages;
 	}
 
-	public void setArticlePages(final List<ArticlePageEntity> articlePages) {
+	public void setArticlePages(List<ArticlePageEntity> articlePages) {
 		this.articlePages = articlePages;
 	}
 
@@ -129,7 +129,7 @@ final public class ArticleEntity extends BaseEntity {
 		return allRights;
 	}
 
-	public void setAllRights(final List<RightEntity> allRights) {
+	public void setAllRights(List<RightEntity> allRights) {
 		this.allRights = allRights;
 	}
 
@@ -137,7 +137,7 @@ final public class ArticleEntity extends BaseEntity {
 		return tags;
 	}
 
-	public void setTags(final List<ArticleTagEntity> tags) {
+	public void setTags(List<ArticleTagEntity> tags) {
 		this.tags = tags;
 	}
 
@@ -145,9 +145,9 @@ final public class ArticleEntity extends BaseEntity {
 	public String getFullArticle() {
 		String back = "";
 		if (articlePages != null) {
-			final StringBuilder buf = new StringBuilder();
+			StringBuilder buf = new StringBuilder();
 			boolean firstArticlePage = true;
-			for (final ArticlePageEntity page : articlePages) {
+			for (ArticlePageEntity page : articlePages) {
 				if (firstArticlePage) {
 					firstArticlePage = false;
 				} else {
@@ -161,7 +161,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	@Transient
-	public void setFullArticle(final String fullArticle) {
+	public void setFullArticle(String fullArticle) {
 		String[] splittedPages = getSplittedPages(fullArticle);
 		for (int i = 0; i < splittedPages.length; i++) {
 			ArticlePageEntity page = null;
@@ -178,7 +178,7 @@ final public class ArticleEntity extends BaseEntity {
 	}
 
 	@Transient
-	public ArticlePageEntity newArticlePageEntity(final Integer page) {
+	public ArticlePageEntity newArticlePageEntity(Integer page) {
 		ArticlePageEntity e = new ArticlePageEntity();
 		e.setArticle(this);
 		e.setContentId(getContentId());
@@ -186,7 +186,7 @@ final public class ArticleEntity extends BaseEntity {
 		return e;
 	}
 
-	private String[] getSplittedPages(final String pages) {
+	private String[] getSplittedPages(String pages) {
 		String splittedPages[] = null;
 		if (pages != null) {
 			splittedPages = StringUtils.splitByWholeSeparator(pages, ArticleConstants.PAGEBREAK);
@@ -199,14 +199,14 @@ final public class ArticleEntity extends BaseEntity {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -216,7 +216,7 @@ final public class ArticleEntity extends BaseEntity {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final ArticleEntity other = (ArticleEntity) obj;
+		ArticleEntity other = (ArticleEntity) obj;
 		if (id == null) {
 			if (other.id != null) {
 				return false;

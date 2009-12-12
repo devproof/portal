@@ -50,7 +50,7 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 	private ConfigurationService configurationService;
 
 	@Override
-	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
+	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
 		setRoleForDataProviderQuery(role);
 		Iterator<? extends ArticleEntity> iterator = getArticleEntries();
@@ -65,7 +65,7 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 		return iterator;
 	}
 
-	protected SyndFeed generateFeed(final RequestCycle rc) {
+	protected SyndFeed generateFeed(RequestCycle rc) {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName());
 		feed.setLink(getUrl(rc));
@@ -77,12 +77,11 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 		return feed;
 	}
 
-	protected String getUrl(final RequestCycle rc) {
+	protected String getUrl(RequestCycle rc) {
 		return rc.urlFor(ArticlePage.class, new PageParameters()).toString();
 	}
 
-	protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
-			final Iterator<? extends ArticleEntity> iterator) {
+	protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends ArticleEntity> iterator) {
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		while (iterator.hasNext()) {
 			ArticleEntity articleEntity = iterator.next();
@@ -103,11 +102,11 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 		return entries;
 	}
 
-	protected String getUrl(final RequestCycle rc, final ArticleEntity ArticleEntity) {
+	protected String getUrl(RequestCycle rc, ArticleEntity ArticleEntity) {
 		return rc.urlFor(ArticlePage.class, new PageParameters("id=" + ArticleEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(final RoleEntity role) {
+	protected void setRoleForDataProviderQuery(RoleEntity role) {
 		ArticleQuery query = new ArticleQuery();
 		query.setRole(role);
 		articleDataProvider.setQueryObject(query);
@@ -129,12 +128,12 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setArticleDataProvider(final SortableQueryDataProvider<ArticleEntity> articleDataProvider) {
+	public void setArticleDataProvider(SortableQueryDataProvider<ArticleEntity> articleDataProvider) {
 		this.articleDataProvider = articleDataProvider;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 }

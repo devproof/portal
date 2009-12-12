@@ -80,7 +80,7 @@ public class ArticleEditPageTest extends TestCase {
 		tester.assertContains("testing teaser");
 	}
 
-	private void assertArticleViewPage(final String contentId) {
+	private void assertArticleViewPage(String contentId) {
 		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewArticleEditPage());
 		tester.assertRenderedPage(ArticleReadPage.class);
 		tester.assertInfoMessages(expectedMsgs);

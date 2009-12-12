@@ -45,7 +45,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
 
-	public ArticleBoxPanel(final String id) {
+	public ArticleBoxPanel(String id) {
 		super(id);
 		List<ArticleEntity> latestArticles = getLatestArticles();
 		setVisible(latestArticles.size() > 0);
@@ -66,7 +66,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 		return latestArticles;
 	}
 
-	private RepeatingView createRepeatingViewWithArticles(final List<ArticleEntity> articles) {
+	private RepeatingView createRepeatingViewWithArticles(List<ArticleEntity> articles) {
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (ArticleEntity article : articles) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
@@ -76,8 +76,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 		return repeating;
 	}
 
-	private BookmarkablePageLink<ArticlePage> createLinkToArticle(
-			ArticleEntity article) {
+	private BookmarkablePageLink<ArticlePage> createLinkToArticle(ArticleEntity article) {
 		BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
 		link.setParameter("id", article.getId());
 		link.add(new Label("linkName", article.getTitle()));
@@ -85,7 +84,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

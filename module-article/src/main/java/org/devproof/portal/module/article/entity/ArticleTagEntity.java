@@ -48,7 +48,7 @@ final public class ArticleTagEntity extends BaseTagEntity<ArticleEntity> {
 	 *            the referencedObjects to set
 	 */
 	@Override
-	public void setReferencedObjects(final List<ArticleEntity> referencedObjects) {
+	public void setReferencedObjects(List<ArticleEntity> referencedObjects) {
 		this.referencedObjects = referencedObjects;
 	}
 

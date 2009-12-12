@@ -85,7 +85,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            page number
 	 * @return {@link ArticlePageEntity}
 	 */
-	public ArticlePageEntity findArticlePageByContentIdAndPage(final String contentId, final Integer page);
+	public ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page);
 
 	/**
 	 * Returns the Article by id

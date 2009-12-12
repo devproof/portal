@@ -52,12 +52,12 @@ public class ArticleFeedProviderImplTest extends TestCase {
 		configurationServiceMock = EasyMock.createMock(ConfigurationService.class);
 		impl = new ArticleFeedProviderImpl() {
 			@Override
-			protected String getUrl(final RequestCycle rc) {
+			protected String getUrl(RequestCycle rc) {
 				return "http://url";
 			}
 
 			@Override
-			protected String getUrl(final RequestCycle rc, final ArticleEntity articleEntity) {
+			protected String getUrl(RequestCycle rc, ArticleEntity articleEntity) {
 				return "http://url/" + articleEntity.getId();
 			}
 		};

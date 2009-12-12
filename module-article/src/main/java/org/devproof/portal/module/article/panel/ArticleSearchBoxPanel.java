@@ -35,8 +35,8 @@ public class ArticleSearchBoxPanel extends BaseSearchBoxPanel {
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
 
-	public ArticleSearchBoxPanel(final String id, final ArticleQuery query, final QueryDataProvider<?> dataProvider,
-			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public ArticleSearchBoxPanel(String id, ArticleQuery query, QueryDataProvider<?> dataProvider, TemplatePage parent,
+			IPageable dataview, PageParameters params) {
 		super(id, query, dataProvider, "page.ArticleEditPage", parent, dataview, params);
 		getForm().add(createSearchTextField());
 		add(titleContainer = createTitleContainer());
@@ -51,7 +51,7 @@ public class ArticleSearchBoxPanel extends BaseSearchBoxPanel {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }
