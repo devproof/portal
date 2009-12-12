@@ -36,13 +36,13 @@ public class ArticleServiceImpl implements ArticleService {
 	private TagService<ArticleTagEntity> articleTagService;
 
 	@Override
-	public boolean existsContentId(final String contentId) {
+	public boolean existsContentId(String contentId) {
 		return articleDao.existsContentId(contentId) > 0;
 	}
 
 	@Override
-	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(final RoleEntity role,
-			final Integer firstResult, final Integer maxResult) {
+	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult) {
 		return articleDao.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
 	}
 
@@ -52,12 +52,12 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public ArticlePageEntity newArticlePageEntity(final ArticleEntity article, final Integer page) {
+	public ArticlePageEntity newArticlePageEntity(ArticleEntity article, Integer page) {
 		return article.newArticlePageEntity(page);
 	}
 
 	@Override
-	public void delete(final ArticleEntity entity) {
+	public void delete(ArticleEntity entity) {
 		articleDao.delete(entity);
 		articleTagService.deleteUnusedTags();
 	}
@@ -68,43 +68,48 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public ArticleEntity findById(final Integer id) {
+	public ArticleEntity findById(Integer id) {
 		return articleDao.findById(id);
 	}
 
 	@Override
-	public void save(final ArticleEntity entity) {
+	public void save(ArticleEntity entity) {
 		articleDao.save(entity);
 		articleTagService.deleteUnusedTags();
 	}
 
 	@Override
-	public long getPageCount(final String contentId) {
+	public long getPageCount(String contentId) {
 		return articlePageDao.getPageCount(contentId);
 	}
 
 	@Override
-	public ArticlePageEntity findArticlePageByContentIdAndPage(final String contentId, final Integer page) {
+	public ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page) {
 		return articlePageDao.findById(new ArticlePageId(contentId, page));
 	}
 
 	@Override
-	public ArticleEntity findByIdAndPrefetch(final Integer id) {
+	public ArticleEntity findByIdAndPrefetch(Integer id) {
 		return articleDao.findByIdAndPrefetch(id);
 	}
 
+	@Override
+	public ArticleEntity findByContentId(String contentId) {
+		return articleDao.findByContentId(contentId);
+	}
+
 	@Required
-	public void setArticleDao(final ArticleDao articleDao) {
+	public void setArticleDao(ArticleDao articleDao) {
 		this.articleDao = articleDao;
 	}
 
 	@Required
-	public void setArticlePageDao(final ArticlePageDao articlePageDao) {
+	public void setArticlePageDao(ArticlePageDao articlePageDao) {
 		this.articlePageDao = articlePageDao;
 	}
 
 	@Required
-	public void setArticleTagService(final TagService<ArticleTagEntity> articleTagService) {
+	public void setArticleTagService(TagService<ArticleTagEntity> articleTagService) {
 		this.articleTagService = articleTagService;
 	}
 }

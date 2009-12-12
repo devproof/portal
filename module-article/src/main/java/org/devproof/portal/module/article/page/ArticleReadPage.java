@@ -21,6 +21,7 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
@@ -30,6 +31,7 @@ import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
+import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.entity.ArticleEntity;
@@ -52,13 +54,13 @@ public class ArticleReadPage extends ArticleBasePage {
 	@SpringBean(name = "articleTagService")
 	private TagService<ArticleTagEntity> articleTagService;
 
-	private final PageParameters params;
-	private final ArticlePageEntity page;
-	private final String contentId;
-	private final int currentPage;
-	private final int numberOfPages;
+	private PageParameters params;
+	private ArticlePageEntity page;
+	private String contentId;
+	private int currentPage;
+	private int numberOfPages;
 
-	public ArticleReadPage(final PageParameters params) {
+	public ArticleReadPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		contentId = getContentId(params);
@@ -69,6 +71,7 @@ public class ArticleReadPage extends ArticleBasePage {
 		validateAccessRights();
 		add(createTitleLabel());
 		add(createMetaInfoPanel());
+		add(createPrintLink());
 		add(createAppropriateAuthorPanel());
 		add(createTagPanel(params));
 		add(createContentLabel());
@@ -83,12 +86,12 @@ public class ArticleReadPage extends ArticleBasePage {
 				ArticlePage.class, params);
 	}
 
-	private int getCurrentPage(final PageParameters params) {
+	private int getCurrentPage(PageParameters params) {
 		int currentPage = params.getAsInteger("1", 1);
 		return currentPage;
 	}
 
-	private String getContentId(final PageParameters params) {
+	private String getContentId(PageParameters params) {
 		String contentId = params.getString("0");
 		if (contentId == null) {
 			contentId = getRequest().getParameter("optparam");
@@ -97,11 +100,10 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private void validateAccessRights() {
-		final PortalSession session = (PortalSession) getSession();
+		PortalSession session = (PortalSession) getSession();
 		if (page == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
-		}
-		if (page != null && !session.hasRight("article.read") && !session.hasRight(page.getArticle().getReadRights())) {
+		} else if (!session.hasRight("article.read") && !session.hasRight(page.getArticle().getReadRights())) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"),
 					getRequestURL()));
 		}
@@ -113,6 +115,17 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	private MetaInfoPanel createMetaInfoPanel() {
 		return new MetaInfoPanel("metaInfo", page.getArticle());
+	}
+
+	private Component createPrintLink() {
+		BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
+				ArticlePrintPage.class, new PageParameters("0=" + contentId));
+		link.add(createPrintImage());
+		return link;
+	}
+
+	private Component createPrintImage() {
+		return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
 	}
 
 	private Component createAppropriateAuthorPanel() {
@@ -128,16 +141,15 @@ public class ArticleReadPage extends ArticleBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onDelete(final AjaxRequestTarget target) {
+			public void onDelete(AjaxRequestTarget target) {
 				articleService.delete(page.getArticle());
 			}
 
 			@Override
-			public void onEdit(final AjaxRequestTarget target) {
+			public void onEdit(AjaxRequestTarget target) {
 				ArticleEntity article = page.getArticle();
 				article = articleService.findByIdAndPrefetch(article.getId());
-				final ArticleEditPage articlePage = new ArticleEditPage(article);
-				setResponsePage(articlePage);
+				setResponsePage(new ArticleEditPage(article));
 			}
 		}.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
 	}
@@ -150,7 +162,7 @@ public class ArticleReadPage extends ArticleBasePage {
 		return new ExtendedLabel("content", page.getContent());
 	}
 
-	private ContentTagPanel<ArticleTagEntity> createTagPanel(final PageParameters params) {
+	private ContentTagPanel<ArticleTagEntity> createTagPanel(PageParameters params) {
 		return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(page.getArticle()
 				.getTags()), ArticlePage.class, params);
 	}

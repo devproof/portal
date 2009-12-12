@@ -92,7 +92,16 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 * 
 	 * @param id
 	 *            primary key
-	 * @return a prefetched/initialized ArticleEntity
+	 * @return a prefetched/initialized {@link ArticleEntity}
 	 */
 	public ArticleEntity findByIdAndPrefetch(Integer id);
+
+	/**
+	 * Returns the Article by content id
+	 * 
+	 * @param contentId
+	 *            content id
+	 * @return {@link ArticleEntity}
+	 */
+	public ArticleEntity findByContentId(String contentId);
 }

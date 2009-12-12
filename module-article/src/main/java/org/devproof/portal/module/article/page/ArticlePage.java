@@ -36,6 +36,7 @@ import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.ArticleConstants;
@@ -59,7 +60,7 @@ public class ArticlePage extends ArticleBasePage {
 	private TagService<ArticleTagEntity> articleTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	
+
 	private ArticleDataView dataView;
 	private final ArticleQuery query;
 	private final PageParameters params;
@@ -125,7 +126,7 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private ArticleView createArticleView(final Item<ArticleEntity> item) {
-			return new ArticleView("articleView",  item);
+			return new ArticleView("articleView", item);
 		}
 	}
 
@@ -137,7 +138,7 @@ public class ArticlePage extends ArticleBasePage {
 		private static final long serialVersionUID = 1L;
 		private ArticleEntity article;
 		private boolean allowedToRead = false;
-		
+
 		public ArticleView(final String id, final Item<ArticleEntity> item) {
 			super(id, "articleView", ArticlePage.this);
 			article = item.getModelObject();
@@ -145,9 +146,22 @@ public class ArticlePage extends ArticleBasePage {
 			add(createAppropriateAuthorPanel(item));
 			add(createTitleLink());
 			add(createMetaInfoPanel());
+			add(createPrintLink());
 			add(createTeaserLabel());
 			add(createTagPanel());
 			add(createReadMoreLink());
+		}
+
+		private Component createPrintLink() {
+			BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
+					ArticlePrintPage.class, new PageParameters("0=" + article.getContentId()));
+			link.add(createPrintImage());
+			link.setVisible(allowedToRead);
+			return link;
+		}
+
+		private Component createPrintImage() {
+			return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
 		}
 
 		private Component createAppropriateAuthorPanel(final Item<ArticleEntity> item) {
@@ -174,12 +188,12 @@ public class ArticlePage extends ArticleBasePage {
 
 		private Label createReadMoreLabel() {
 			String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
-			return new Label("readMoreLabel", getString(labelKey));
+			return new Label("readMoreLabel", ArticlePage.this.getString(labelKey));
 		}
 
 		private ContentTagPanel<ArticleTagEntity> createTagPanel() {
-			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(article
-					.getTags()), ArticlePage.class, params);
+			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(article.getTags()),
+					ArticlePage.class, params);
 		}
 
 		private ExtendedLabel createTeaserLabel() {

@@ -62,18 +62,6 @@ public abstract class PrintPage extends WebPage {
 		return new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
 	}
 
-	protected Component getMessageLabel(String id, String messageKey) {
-		return new Label(id, getString(messageKey));
-	}
-
-	protected Component getMissingRightsLabel(String id) {
-		return getMessageLabel(id, "missingRights");
-	}
-
-	protected Component getMissingParameterLabel(String id) {
-		return getMessageLabel(id, "missingParameter");
-	}
-
 	/**
 	 * Returns the printable component
 	 * 

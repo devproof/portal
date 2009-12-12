@@ -13,40 +13,43 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.blog.panel;
+package org.devproof.portal.module.article.panel;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.article.ArticleConstants;
+import org.devproof.portal.module.article.entity.ArticleEntity;
 
 /**
  * @author Carsten Hufe
  */
-public class BlogPrintPanel extends Panel {
+public class ArticlePrintPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	private BlogEntity blog;
+	private ArticleEntity article;
 
-	public BlogPrintPanel(String id, BlogEntity blog) {
+	public ArticlePrintPanel(String id, ArticleEntity article) {
 		super(id);
-		this.blog = blog;
-		add(createHeadline());
+		this.article = article;
+		add(createTitle());
 		add(createMetaInfoPanel());
 		add(createContentLabel());
 	}
 
-	private Label createHeadline() {
-		return new Label("headline", blog.getHeadline());
+	private Label createTitle() {
+		return new Label("title", article.getTitle());
 	}
 
 	private MetaInfoPanel createMetaInfoPanel() {
-		return new MetaInfoPanel("metaInfo", blog);
+		return new MetaInfoPanel("metaInfo", article);
 	}
 
 	private ExtendedLabel createContentLabel() {
-		return new ExtendedLabel("content", blog.getContent());
+		String content = article.getFullArticle();
+		content = content.replace(ArticleConstants.PAGEBREAK, "<br/><br/>");
+		return new ExtendedLabel("content", content);
 	}
 }
