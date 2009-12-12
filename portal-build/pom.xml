@@ -18,6 +18,7 @@
 	</properties>
 	<modules>
 		<module>../portal-core</module>
+		<module>../module-comment</module>
 		<module>../module-blog</module>
 		<module>../module-article</module>
 		<module>../module-deadlinkcheck</module>
