@@ -139,8 +139,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager
-			</artifactId>
+			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.3.2.GA</version>
 		</dependency>
 		<dependency>
