@@ -30,6 +30,11 @@
     				<property name="registerMainNavigationLink" value="true"/>
     				<property name="defaultStartPage" value="true"/>
     			</bean>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/print/blog"/>
+    				<property name="pageClass" value="org.devproof.portal.module.blog.page.BlogPrintPage"/>
+    				<property name="indexMountedPath" value="true"/>
+    			</bean>
     		</list>
     	</property>
     </bean>

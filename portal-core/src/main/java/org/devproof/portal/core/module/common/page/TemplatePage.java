@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.common.page;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
@@ -29,7 +28,6 @@ import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -40,12 +38,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.collections.MiniMap;
-import org.apache.wicket.util.string.UrlUtils;
-import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
@@ -58,6 +52,7 @@ import org.devproof.portal.core.module.common.panel.PageAdminBoxPanel;
 import org.devproof.portal.core.module.common.panel.SearchBoxPanel;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.component.Atom1Link;
 import org.devproof.portal.core.module.feed.component.Rss2Link;
@@ -163,37 +158,7 @@ public abstract class TemplatePage extends WebPage {
 	 * Adds the Css and JavaScript of the SyntaxHighligher to the page
 	 */
 	protected void addSyntaxHighlighter() {
-		add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/SyntaxHighlighter.css"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shCore.js"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/shBrushJava.js"));
-		add(JavascriptPackageResource
-				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushSql.js"));
-		add(JavascriptPackageResource
-				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushXml.js"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/shBrushJScript.js"));
-		add(JavascriptPackageResource
-				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCpp.js"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/shBrushCSharp.js"));
-		add(JavascriptPackageResource
-				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCss.js"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/shBrushDelphi.js"));
-		add(JavascriptPackageResource
-				.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushPhp.js"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/shBrushPython.js"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/shBrushRuby.js"));
-		add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushVb.js"));
-		final Map<String, Object> values = new MiniMap<String, Object>(1);
-		values.put("swfPath", UrlUtils.rewriteToContextRelative("resources/"
-				+ CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF, getRequest()));
-		add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class,
-				"js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
+		PortalUtil.addSyntaxHightlighter(this);
 	}
 
 	/**
