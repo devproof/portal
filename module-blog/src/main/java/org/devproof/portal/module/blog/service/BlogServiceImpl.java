@@ -31,7 +31,7 @@ public class BlogServiceImpl implements BlogService {
 	private TagService<BlogTagEntity> blogTagService;
 
 	@Override
-	public void delete(final BlogEntity entity) {
+	public void delete(BlogEntity entity) {
 		blogDao.delete(entity);
 		blogTagService.deleteUnusedTags();
 	}
@@ -42,12 +42,12 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public BlogEntity findById(final Integer id) {
+	public BlogEntity findById(Integer id) {
 		return blogDao.findById(id);
 	}
 
 	@Override
-	public void save(final BlogEntity entity) {
+	public void save(BlogEntity entity) {
 		blogDao.save(entity);
 		blogTagService.deleteUnusedTags();
 	}
@@ -58,12 +58,12 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Required
-	public void setBlogDao(final BlogDao blogDao) {
+	public void setBlogDao(BlogDao blogDao) {
 		this.blogDao = blogDao;
 	}
 
 	@Required
-	public void setBlogTagService(final TagService<BlogTagEntity> blogTagService) {
+	public void setBlogTagService(TagService<BlogTagEntity> blogTagService) {
 		this.blogTagService = blogTagService;
 	}
 }
