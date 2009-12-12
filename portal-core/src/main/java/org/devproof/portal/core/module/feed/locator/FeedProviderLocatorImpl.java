@@ -40,7 +40,7 @@ public class FeedProviderLocatorImpl implements ApplicationContextAware, FeedPro
 	}
 
 	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		context = applicationContext;
 	}
 }

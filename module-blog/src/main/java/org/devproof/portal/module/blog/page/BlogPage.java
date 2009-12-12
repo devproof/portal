@@ -20,11 +20,11 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -35,7 +35,7 @@ import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.print.page.PrintablePage;
+import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.BlogConstants;
@@ -48,7 +48,7 @@ import org.devproof.portal.module.blog.service.BlogService;
 /**
  * @author Carsten Hufe
  */
-public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
+public class BlogPage extends BlogBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "blogService")
@@ -59,11 +59,11 @@ public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
 	private TagService<BlogTagEntity> blogTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	
+
 	private BlogDataView dataView;
 	private BlogQuery query;
 	private PageParameters params;
-	
+
 	public BlogPage(PageParameters params) {
 		super(params);
 		this.params = params;
@@ -99,11 +99,11 @@ public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
 		blogDataProvider.setQueryObject(query);
 		return query;
 	}
-	
+
 	private BlogView createBlogView(Item<BlogEntity> item) {
 		return new BlogView("blogView", item);
 	}
-	
+
 	private class BlogDataView extends DataView<BlogEntity> {
 		private static final long serialVersionUID = 1L;
 		private boolean onlyOneBlogEntryInResult;
@@ -129,22 +129,34 @@ public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
 		}
 	}
 
-	private class BlogView extends Fragment {
+	public class BlogView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
 
 		private BlogEntity blog;
-		
+
 		public BlogView(String id, Item<BlogEntity> item) {
 			super(id, "blogView", BlogPage.this);
 			this.blog = item.getModelObject();
 			add(createAppropriateAuthorPanel(item));
 			add(createHeadline());
-			add(createTagPanel());
 			add(createMetaInfoPanel());
+			add(createPrintLink());
+			add(createTagPanel());
 			add(createContentLabel());
 		}
-		
+
+		private Component createPrintLink() {
+			BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink",
+					BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
+			link.add(createPrintImage());
+			return link;
+		}
+
+		private Component createPrintImage() {
+			return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
+		}
+
 		private Component createAppropriateAuthorPanel(Item<BlogEntity> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
@@ -152,7 +164,7 @@ public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
 				return createEmptyAuthorPanel();
 			}
 		}
-		
+
 		private AuthorPanel<BlogEntity> createAuthorPanel(final Item<BlogEntity> item) {
 			return new AuthorPanel<BlogEntity>("authorButtons", blog) {
 				private static final long serialVersionUID = 1L;
@@ -176,9 +188,9 @@ public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
 		private WebMarkupContainer createEmptyAuthorPanel() {
 			return new WebMarkupContainer("authorButtons");
 		}
-		
+
 		private BookmarkablePageLink<BlogPage> createHeadline() {
-			final BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink",
+			BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink",
 					BlogPage.class);
 			if (params == null || !params.containsKey("id")) {
 				headlineLink.setParameter("id", blog.getId());
@@ -199,12 +211,5 @@ public class BlogPage extends BlogBasePage implements PrintablePage<Integer> {
 			return new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blog.getTags()),
 					BlogPage.class, params);
 		}
-	}
-
-	@Override
-	public Component createPrintablePart(String wicketId, Integer primaryKey) {
-		BlogEntity blog = blogService.findById(primaryKey);
-		Item<BlogEntity> item = new Item<BlogEntity>("", 0, Model.of(blog));
-		return createBlogView(item);
 	}
 }

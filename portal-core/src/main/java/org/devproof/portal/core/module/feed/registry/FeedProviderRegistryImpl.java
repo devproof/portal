@@ -43,13 +43,13 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 	}
 
 	@Override
-	public FeedProvider getFeedProviderByPath(final String path) {
+	public FeedProvider getFeedProviderByPath(String path) {
 		String newPath = getPathWithoutLeadingSlash(path);
 		return feedProviders.get(newPath);
 	}
 
 	@Override
-	public void registerFeedProvider(final String path, final FeedProvider feedProvider) {
+	public void registerFeedProvider(String path, FeedProvider feedProvider) {
 		String newPath = getPathWithoutLeadingSlash(path);
 		if (feedProviders.containsKey(newPath)) {
 			throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
@@ -59,12 +59,12 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 	}
 
 	@Override
-	public void removeFeedProvider(final String path) {
+	public void removeFeedProvider(String path) {
 		String newPath = getPathWithoutLeadingSlash(path);
 		feedProviders.remove(newPath);
 	}
 
-	private String getPathWithoutLeadingSlash(final String path) {
+	private String getPathWithoutLeadingSlash(String path) {
 		String newPath = path;
 		if (newPath.startsWith("/")) {
 			newPath = path.substring(1);
@@ -73,12 +73,12 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 	}
 
 	@Override
-	public String getPathByPageClass(final Class<? extends Page> pageClass) {
+	public String getPathByPageClass(Class<? extends Page> pageClass) {
 		return feedPaths.get(pageClass);
 	}
 
 	@Override
-	public boolean hasFeedSupport(final Class<? extends Page> pageClass) {
+	public boolean hasFeedSupport(Class<? extends Page> pageClass) {
 		return feedPaths.containsKey(pageClass);
 	}
 
@@ -95,7 +95,7 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 		}
 	}
 
-	private void registerFeedPath(final String mountPath) {
+	private void registerFeedPath(String mountPath) {
 		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
 		for (PageConfiguration page : pages) {
 			if (page.getMountPath().equals(mountPath)) {
@@ -110,12 +110,12 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 	}
 
 	@Required
-	public void setPageLocator(final PageLocator pageLocator) {
+	public void setPageLocator(PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}
 
 	@Required
-	public void setFeedProviderLocator(final FeedProviderLocator feedProviderLocator) {
+	public void setFeedProviderLocator(FeedProviderLocator feedProviderLocator) {
 		this.feedProviderLocator = feedProviderLocator;
 	}
 }

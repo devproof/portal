@@ -43,7 +43,7 @@ public class MetaInfoPanel extends Panel {
 	@SpringBean(name = "userService")
 	private UserService userService;
 
-	public MetaInfoPanel(final String id, final BaseEntity entity) {
+	public MetaInfoPanel(String id, BaseEntity entity) {
 		super(id);
 		boolean showRealAuthor = configurationService.findAsBoolean(CommonConstants.CONF_SHOW_REAL_AUTHOR);
 		boolean showModifiedBy = configurationService.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_BY);

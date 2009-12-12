@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.print.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -23,28 +24,64 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.print.PrintConstants;
 
 /**
  * @author Carsten Hufe
  */
-public class PrintPage extends WebPage {
+public abstract class PrintPage extends WebPage {
 
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public PrintPage(final PageParameters params) {
+	public PrintPage(PageParameters params) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		add(CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css"));
-		
-		add(new Label("content", "Halo"));
-		add(new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE)));
+		PortalUtil.addSyntaxHightlighter(this);
+		add(createPrintableComponent("content", params));
+		add(createPageTitle());
+		add(createCopyrightContainer());
+		add(createFooterLabel());
+	}
+
+	private Component createFooterLabel() {
+		String footerContent = configurationService.findAsString("footer_content");
+		return new Label("footerLabel", footerContent).setEscapeModelStrings(false);
+	}
+
+	private WebMarkupContainer createCopyrightContainer() {
 		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
 		copyright.add(new SimpleAttributeModifier("content", configurationService
 				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
-		add(copyright);
-		String footerContent = configurationService.findAsString("footer_content");
-		add(new Label("footerLabel", footerContent).setEscapeModelStrings(false));
+		return copyright;
 	}
+
+	private Label createPageTitle() {
+		return new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
+	}
+
+	protected Component getMessageLabel(String id, String messageKey) {
+		return new Label(id, getString(messageKey));
+	}
+
+	protected Component getMissingRightsLabel(String id) {
+		return getMessageLabel(id, "missingRights");
+	}
+
+	protected Component getMissingParameterLabel(String id) {
+		return getMessageLabel(id, "missingParameter");
+	}
+
+	/**
+	 * Returns the printable component
+	 * 
+	 * @param id
+	 *            wicket id
+	 * @param params
+	 *            Page Parameter
+	 * @return Instanciated component
+	 */
+	protected abstract Component createPrintableComponent(String id, PageParameters params);
 }

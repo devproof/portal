@@ -30,7 +30,7 @@ public interface FeedProvider {
 	/**
 	 * Returns the feed with feed items. See https://rome.dev.java.net/
 	 */
-	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role);
+	public SyndFeed getFeed(RequestCycle rc, RoleEntity role);
 
 	/**
 	 * Returns the supported feed pages where the feed reference will be
