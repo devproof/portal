@@ -77,13 +77,13 @@ public class DeliciousSyncPanel extends Panel {
 	private ProgressBar progressBar;
 	private DeliciousFormBean deliciousFormBean;
 	private FeedbackPanel feedbackPanel;
-	
-	public DeliciousSyncPanel(final String id) {
+
+	public DeliciousSyncPanel(String id) {
 		super(id);
 		allSelectedRightsModel = new ListModel<RightEntity>(new ArrayList<RightEntity>());
 		deliciousFormBean = new DeliciousFormBean();
 		progressionModel = createProgressionModel();
-		
+
 		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
 		add(feedbackPanel = createFeedbackPanel());
 		add(createDeliciousSyncForm());
@@ -128,14 +128,13 @@ public class DeliciousSyncPanel extends Panel {
 		return new RequiredTextField<String>("username");
 	}
 
-	private IndicatingAjaxButton createStartButton(
-			final DeliciousFormBean formBean,
-			final Form<DeliciousFormBean> form, final ProgressBar bar) {
+	private IndicatingAjaxButton createStartButton(final DeliciousFormBean formBean, Form<DeliciousFormBean> form,
+			final ProgressBar bar) {
 		return new IndicatingAjaxButton("startButton", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				// Start the progress bar, will set visibility to true
 				bar.start(target);
 				final UserEntity user = ((PortalSession) Session.get()).getUser();
@@ -143,7 +142,7 @@ public class DeliciousSyncPanel extends Panel {
 					@Override
 					public void run() {
 						fetching = true;
-						final DeliciousBean bean = synchronizeService.getDataFromDelicious(formBean.username,
+						DeliciousBean bean = synchronizeService.getDataFromDelicious(formBean.username,
 								formBean.password, formBean.tags);
 						deliciousBean = bean;
 						if (bean.hasError()) {
@@ -154,25 +153,22 @@ public class DeliciousSyncPanel extends Panel {
 						deleteBookmarks(bean, bookmarksToSave);
 					}
 
-					private Collection<BookmarkEntity> retrieveBookmarks(
-							final DeliciousBean bean) {
+					private Collection<BookmarkEntity> retrieveBookmarks(DeliciousBean bean) {
 						List<BookmarkEntity> newBookmarks = synchronizeService.getNewDeliciousBookmarks(bean);
 						newBookmarksCount = newBookmarks.size();
-						List<BookmarkEntity> modifiedBookmarks = synchronizeService
-								.getModifiedDeliciousBookmarks(bean);
+						List<BookmarkEntity> modifiedBookmarks = synchronizeService.getModifiedDeliciousBookmarks(bean);
 						modifiedBookmarksCount = modifiedBookmarks.size();
 						maxItem = bean.getPosts().size();
 						fetching = false;
-						Collection<BookmarkEntity> bookmarksToSave = new ArrayList<BookmarkEntity>(
-								newBookmarksCount + modifiedBookmarksCount);
+						Collection<BookmarkEntity> bookmarksToSave = new ArrayList<BookmarkEntity>(newBookmarksCount
+								+ modifiedBookmarksCount);
 						bookmarksToSave.addAll(newBookmarks);
 						bookmarksToSave.addAll(modifiedBookmarks);
 						return bookmarksToSave;
 					}
 
-					private void saveBookmarks(final UserEntity user,
-							Collection<BookmarkEntity> bookmarksToSave) {
-						for (final BookmarkEntity bookmark : bookmarksToSave) {
+					private void saveBookmarks(UserEntity user, Collection<BookmarkEntity> bookmarksToSave) {
+						for (BookmarkEntity bookmark : bookmarksToSave) {
 							actualItem++;
 							bookmark.setAllRights(allSelectedRightsModel.getObject());
 							if (bookmark.getCreatedAt() == null) {
@@ -184,10 +180,10 @@ public class DeliciousSyncPanel extends Panel {
 
 							bookmark.setModifiedAt(PortalUtil.now());
 							bookmark.setModifiedBy(user.getUsername());
-							final List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags()
+							List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags()
 									.size());
-							for (final BookmarkTagEntity tag : bookmark.getTags()) {
-								final BookmarkTagEntity refreshedTag = tagService.findById(tag.getTagname());
+							for (BookmarkTagEntity tag : bookmark.getTags()) {
+								BookmarkTagEntity refreshedTag = tagService.findById(tag.getTagname());
 								if (refreshedTag == null) {
 									newTags.add(tag);
 									tagService.save(tag);
@@ -200,15 +196,13 @@ public class DeliciousSyncPanel extends Panel {
 						}
 					}
 
-					private void deleteBookmarks(final DeliciousBean bean,
-							Collection<BookmarkEntity> bookmarksToSave) {
-						final List<BookmarkEntity> deletedBookmarks = synchronizeService
-								.getRemovedDeliciousBookmarks(bean);
+					private void deleteBookmarks(DeliciousBean bean, Collection<BookmarkEntity> bookmarksToSave) {
+						List<BookmarkEntity> deletedBookmarks = synchronizeService.getRemovedDeliciousBookmarks(bean);
 						// set to 100% the counter does not work perfect, when a
 						// user has manual edited delious bookmarks
 						maxItem = deletedBookmarks.size() + bookmarksToSave.size();
 						deletedBookmarksCount = deletedBookmarks.size();
-						for (final BookmarkEntity bookmark : deletedBookmarks) {
+						for (BookmarkEntity bookmark : deletedBookmarks) {
 							actualItem++;
 							bookmarkService.delete(bookmark);
 						}
@@ -223,11 +217,11 @@ public class DeliciousSyncPanel extends Panel {
 	}
 
 	private ProgressBar createProgressBar() {
-		final ProgressBar bar = new ProgressBar("bar", progressionModel) {
+		return new ProgressBar("bar", progressionModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onFinished(final AjaxRequestTarget target) {
+			protected void onFinished(AjaxRequestTarget target) {
 				if (deliciousBean != null && deliciousBean.hasError()) {
 					if (deliciousBean.getHttpCode() == HttpStatus.SC_UNAUTHORIZED) {
 						error(getString("loginFailed"));
@@ -243,11 +237,10 @@ public class DeliciousSyncPanel extends Panel {
 				target.addComponent(feedbackPanel);
 			}
 		};
-		return bar;
 	}
 
 	private ProgressionModel createProgressionModel() {
-		final ProgressionModel model = new ProgressionModel() {
+		return new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -271,7 +264,6 @@ public class DeliciousSyncPanel extends Panel {
 				return new Progression(progressInPercent, descr);
 			}
 		};
-		return model;
 	}
 
 	private FeedbackPanel createFeedbackPanel() {

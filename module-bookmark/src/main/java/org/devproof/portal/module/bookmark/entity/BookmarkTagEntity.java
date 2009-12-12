@@ -41,7 +41,7 @@ final public class BookmarkTagEntity extends BaseTagEntity<BookmarkEntity> {
 	}
 
 	@Override
-	public void setReferencedObjects(final List<BookmarkEntity> referencedObjects) {
+	public void setReferencedObjects(List<BookmarkEntity> referencedObjects) {
 		this.referencedObjects = referencedObjects;
 	}
 

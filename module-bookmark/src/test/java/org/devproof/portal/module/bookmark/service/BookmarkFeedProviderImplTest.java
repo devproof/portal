@@ -52,12 +52,12 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 		configurationServiceMock = EasyMock.createMock(ConfigurationService.class);
 		impl = new BookmarkFeedProviderImpl() {
 			@Override
-			protected String getUrl(final RequestCycle rc) {
+			protected String getUrl(RequestCycle rc) {
 				return "http://url";
 			}
 
 			@Override
-			protected String getUrl(final RequestCycle rc, final BookmarkEntity bookmarkEntity) {
+			protected String getUrl(RequestCycle rc, BookmarkEntity bookmarkEntity) {
 				return "http://url/" + bookmarkEntity.getId();
 			}
 		};
@@ -125,13 +125,13 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 		final StringBuilder callOrder = new StringBuilder();
 		impl = new BookmarkFeedProviderImpl() {
 			@Override
-			protected SyndFeed generateFeed(final RequestCycle rc) {
+			protected SyndFeed generateFeed(RequestCycle rc) {
 				callOrder.append("1");
 				return new SyndFeedImpl();
 			}
 
 			@Override
-			protected void setRoleForDataProviderQuery(final RoleEntity role) {
+			protected void setRoleForDataProviderQuery(RoleEntity role) {
 				callOrder.append("2");
 			}
 
@@ -142,14 +142,13 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 			}
 
 			@Override
-			protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
-					final Iterator<? extends BookmarkEntity> iterator) {
+			protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BookmarkEntity> iterator) {
 				callOrder.append("4");
 				return entries;
 			}
 
 			@Override
-			protected String getUrl(final RequestCycle rc) {
+			protected String getUrl(RequestCycle rc) {
 				return "";
 			}
 		};

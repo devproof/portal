@@ -63,11 +63,11 @@ public class BookmarkPage extends BookmarkBasePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	private final BookmarkDataView dataView;
-	private final BookmarkQuery query;
-	private final PageParameters params;
+	private BookmarkDataView dataView;
+	private BookmarkQuery query;
+	private PageParameters params;
 
-	public BookmarkPage(final PageParameters params) {
+	public BookmarkPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		query = createBookmarkQuery();
@@ -109,22 +109,22 @@ public class BookmarkPage extends BookmarkBasePage {
 
 	private class BookmarkDataView extends DataView<BookmarkEntity> {
 		private static final long serialVersionUID = 1L;
-		private final boolean onlyOneBookmarkInResult;
+		private boolean onlyOneBookmarkInResult;
 
-		public BookmarkDataView(final String id) {
+		public BookmarkDataView(String id) {
 			super(id, bookmarkDataProvider);
 			onlyOneBookmarkInResult = bookmarkDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARKS_PER_PAGE));
 		}
 
 		@Override
-		protected void populateItem(final Item<BookmarkEntity> item) {
+		protected void populateItem(Item<BookmarkEntity> item) {
 			setBookmarkNameAsPageTitle(item);
 			item.setOutputMarkupId(true);
 			item.add(createBookmarkView(item));
 		}
 
-		private void setBookmarkNameAsPageTitle(final Item<BookmarkEntity> item) {
+		private void setBookmarkNameAsPageTitle(Item<BookmarkEntity> item) {
 			if (onlyOneBookmarkInResult) {
 				BookmarkEntity bookmark = item.getModelObject();
 				setPageTitle(bookmark.getTitle());
@@ -140,7 +140,7 @@ public class BookmarkPage extends BookmarkBasePage {
 
 		private static final long serialVersionUID = 1L;
 
-		private final Model<Boolean> hasVoted;
+		private Model<Boolean> hasVoted;
 		private BookmarkEntity bookmark;
 
 		public BookmarkView(String id, Item<BookmarkEntity> item) {
@@ -191,12 +191,12 @@ public class BookmarkPage extends BookmarkBasePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected boolean onIsStarActive(final int star) {
+				protected boolean onIsStarActive(int star) {
 					return star < ((int) (bookmark.getCalculatedRating() + 0.5));
 				}
 
 				@Override
-				protected void onRated(final int rating) {
+				protected void onRated(int rating) {
 					if (isAllowedToVote()) {
 						hasVoted.setObject(Boolean.TRUE);
 						bookmarkService.rateBookmark(rating, bookmark);
@@ -267,7 +267,7 @@ public class BookmarkPage extends BookmarkBasePage {
 					&& bookmark.getBroken());
 		}
 
-		private Component createAppropriateAuthorPanel(final Item<BookmarkEntity> item) {
+		private Component createAppropriateAuthorPanel(Item<BookmarkEntity> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
 			} else {
@@ -280,7 +280,7 @@ public class BookmarkPage extends BookmarkBasePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					bookmarkService.delete(getEntity());
 					item.setVisible(false);
 					target.addComponent(item);
@@ -289,7 +289,7 @@ public class BookmarkPage extends BookmarkBasePage {
 				}
 
 				@Override
-				public void onEdit(final AjaxRequestTarget target) {
+				public void onEdit(AjaxRequestTarget target) {
 					BookmarkEntity refreshedBookmark = bookmarkService.findById(bookmark.getId());
 					setResponsePage(new BookmarkEditPage(refreshedBookmark));
 				}

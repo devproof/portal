@@ -49,7 +49,7 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 	private ConfigurationService configurationService;
 
 	@Override
-	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
+	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
 		setRoleForDataProviderQuery(role);
 		Iterator<? extends BookmarkEntity> iterator = getBookmarkEntries();
@@ -64,7 +64,7 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 		return iterator;
 	}
 
-	protected SyndFeed generateFeed(final RequestCycle rc) {
+	protected SyndFeed generateFeed(RequestCycle rc) {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName());
 		feed.setLink(getUrl(rc));
@@ -76,12 +76,11 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 		return feed;
 	}
 
-	protected String getUrl(final RequestCycle rc) {
+	protected String getUrl(RequestCycle rc) {
 		return rc.urlFor(BookmarkPage.class, new PageParameters()).toString();
 	}
 
-	protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
-			final Iterator<? extends BookmarkEntity> iterator) {
+	protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BookmarkEntity> iterator) {
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		while (iterator.hasNext()) {
 			BookmarkEntity bookmarkEntity = iterator.next();
@@ -102,11 +101,11 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 		return entries;
 	}
 
-	protected String getUrl(final RequestCycle rc, final BookmarkEntity BookmarkEntity) {
+	protected String getUrl(RequestCycle rc, BookmarkEntity BookmarkEntity) {
 		return rc.urlFor(BookmarkPage.class, new PageParameters("id=" + BookmarkEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(final RoleEntity role) {
+	protected void setRoleForDataProviderQuery(RoleEntity role) {
 		BookmarkQuery query = new BookmarkQuery();
 		query.setRole(role);
 		bookmarkDataProvider.setQueryObject(query);
@@ -127,12 +126,12 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setBookmarkDataProvider(final SortableQueryDataProvider<BookmarkEntity> bookmarkDataProvider) {
+	public void setBookmarkDataProvider(SortableQueryDataProvider<BookmarkEntity> bookmarkDataProvider) {
 		this.bookmarkDataProvider = bookmarkDataProvider;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 }

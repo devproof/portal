@@ -36,59 +36,59 @@ public class BlogServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.mock = EasyMock.createStrictMock(BlogDao.class);
+		mock = EasyMock.createStrictMock(BlogDao.class);
 		@SuppressWarnings("unchecked")
 		TagService<BlogTagEntity> tagService = EasyMock.createStrictMock(TagService.class);
-		this.mockTag = tagService;
-		this.impl = new BlogServiceImpl();
-		this.impl.setBlogDao(this.mock);
-		this.impl.setBlogTagService(this.mockTag);
+		mockTag = tagService;
+		impl = new BlogServiceImpl();
+		impl.setBlogDao(mock);
+		impl.setBlogTagService(mockTag);
 	}
 
 	public void testSave() {
-		BlogEntity e = this.impl.newBlogEntity();
+		BlogEntity e = impl.newBlogEntity();
 		e.setId(1);
-		this.mock.save(e);
-		this.mockTag.deleteUnusedTags();
-		EasyMock.replay(this.mock);
-		EasyMock.replay(this.mockTag);
-		this.impl.save(e);
-		EasyMock.verify(this.mock);
-		EasyMock.verify(this.mockTag);
+		mock.save(e);
+		mockTag.deleteUnusedTags();
+		EasyMock.replay(mock);
+		EasyMock.replay(mockTag);
+		impl.save(e);
+		EasyMock.verify(mock);
+		EasyMock.verify(mockTag);
 	}
 
 	public void testDelete() {
-		BlogEntity e = this.impl.newBlogEntity();
+		BlogEntity e = impl.newBlogEntity();
 		e.setId(1);
-		this.mock.delete(e);
-		this.mockTag.deleteUnusedTags();
-		EasyMock.replay(this.mock);
-		EasyMock.replay(this.mockTag);
-		this.impl.delete(e);
-		EasyMock.verify(this.mock);
-		EasyMock.verify(this.mockTag);
+		mock.delete(e);
+		mockTag.deleteUnusedTags();
+		EasyMock.replay(mock);
+		EasyMock.replay(mockTag);
+		impl.delete(e);
+		EasyMock.verify(mock);
+		EasyMock.verify(mockTag);
 	}
 
 	public void testFindAll() {
 		List<BlogEntity> list = new ArrayList<BlogEntity>();
-		list.add(this.impl.newBlogEntity());
-		list.add(this.impl.newBlogEntity());
-		EasyMock.expect(this.mock.findAll()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAll());
-		EasyMock.verify(this.mock);
+		list.add(impl.newBlogEntity());
+		list.add(impl.newBlogEntity());
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAll());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindById() {
-		BlogEntity e = this.impl.newBlogEntity();
+		BlogEntity e = impl.newBlogEntity();
 		e.setId(1);
-		EasyMock.expect(this.mock.findById(1)).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findById(1), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findById(1)).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findById(1), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testNewBlogEntity() {
-		assertNotNull(this.impl.newBlogEntity());
+		assertNotNull(impl.newBlogEntity());
 	}
 }

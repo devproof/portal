@@ -31,10 +31,10 @@ public class BookmarkRedirectPage extends WebPage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "bookmarkService")
 	private BookmarkService bookmarkService;
-	
+
 	private PageParameters params;
-	
-	public BookmarkRedirectPage(final PageParameters params) {
+
+	public BookmarkRedirectPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		if (hasFirstParameter()) {
@@ -59,7 +59,7 @@ public class BookmarkRedirectPage extends WebPage {
 	}
 
 	private boolean hasVisitRight(BookmarkEntity bookmark) {
-		if(bookmark == null) {
+		if (bookmark == null) {
 			return false;
 		}
 		PortalSession session = (PortalSession) getSession();

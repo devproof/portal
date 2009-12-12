@@ -44,7 +44,8 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 *            maximum result
 	 * @return list with bookmarks
 	 */
-	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult);
 
 	/**
 	 * Returns all bookmarks with the given source
@@ -53,7 +54,7 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 *            manual/delicious
 	 * @return list with bookmarks
 	 */
-	public List<BookmarkEntity> findBookmarksBySource(final Source source);
+	public List<BookmarkEntity> findBookmarksBySource(Source source);
 
 	/**
 	 * Increments the hits by 1

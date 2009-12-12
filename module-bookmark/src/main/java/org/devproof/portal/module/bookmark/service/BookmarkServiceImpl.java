@@ -33,28 +33,28 @@ public class BookmarkServiceImpl implements BookmarkService {
 	private TagService<BookmarkTagEntity> bookmarkTagService;
 
 	@Override
-	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(final RoleEntity role,
-			final Integer firstResult, final Integer maxResult) {
+	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult) {
 		return bookmarkDao.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
 	}
 
 	@Override
-	public List<BookmarkEntity> findBookmarksBySource(final Source source) {
+	public List<BookmarkEntity> findBookmarksBySource(Source source) {
 		return bookmarkDao.findBookmarksBySource(source);
 	}
 
 	@Override
-	public void incrementHits(final BookmarkEntity bookmark) {
+	public void incrementHits(BookmarkEntity bookmark) {
 		bookmarkDao.incrementHits(bookmark);
 	}
 
 	@Override
-	public void markBrokenBookmark(final BookmarkEntity bookmark) {
+	public void markBrokenBookmark(BookmarkEntity bookmark) {
 		bookmarkDao.markBrokenBookmark(bookmark);
 	}
 
 	@Override
-	public void markValidBookmark(final BookmarkEntity bookmark) {
+	public void markValidBookmark(BookmarkEntity bookmark) {
 		bookmarkDao.markValidBookmark(bookmark);
 	}
 
@@ -64,13 +64,13 @@ public class BookmarkServiceImpl implements BookmarkService {
 	}
 
 	@Override
-	public void rateBookmark(final Integer rating, final BookmarkEntity bookmark) {
+	public void rateBookmark(Integer rating, BookmarkEntity bookmark) {
 		bookmarkDao.rateBookmark(rating, bookmark);
 		bookmarkDao.refresh(bookmark);
 	}
 
 	@Override
-	public void delete(final BookmarkEntity entity) {
+	public void delete(BookmarkEntity entity) {
 		bookmarkDao.delete(entity);
 		bookmarkTagService.deleteUnusedTags();
 	}
@@ -81,23 +81,23 @@ public class BookmarkServiceImpl implements BookmarkService {
 	}
 
 	@Override
-	public BookmarkEntity findById(final Integer id) {
+	public BookmarkEntity findById(Integer id) {
 		return bookmarkDao.findById(id);
 	}
 
 	@Override
-	public void save(final BookmarkEntity entity) {
+	public void save(BookmarkEntity entity) {
 		bookmarkDao.save(entity);
 		bookmarkTagService.deleteUnusedTags();
 	}
 
 	@Required
-	public void setBookmarkDao(final BookmarkDao bookmarkDao) {
+	public void setBookmarkDao(BookmarkDao bookmarkDao) {
 		this.bookmarkDao = bookmarkDao;
 	}
 
 	@Required
-	public void setBookmarkTagService(final TagService<BookmarkTagEntity> bookmarkTagService) {
+	public void setBookmarkTagService(TagService<BookmarkTagEntity> bookmarkTagService) {
 		this.bookmarkTagService = bookmarkTagService;
 	}
 }
