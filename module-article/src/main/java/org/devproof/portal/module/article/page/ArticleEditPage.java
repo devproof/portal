@@ -88,7 +88,7 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private RequiredTextField<String> createContentIdField() {
-		final RequiredTextField<String> contentId = new RequiredTextField<String>("contentId");
+		RequiredTextField<String> contentId = new RequiredTextField<String>("contentId");
 		contentId.setEnabled(isNewArticle());
 		contentId.add(newContentIdValidator());
 		contentId.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
@@ -144,7 +144,7 @@ public class ArticleEditPage extends ArticleBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onValidate(final IValidatable<String> ivalidatable) {
+			protected void onValidate(IValidatable<String> ivalidatable) {
 				if (articleService.existsContentId(ivalidatable.getValue()) && isNewArticle()) {
 					error(ivalidatable);
 				}

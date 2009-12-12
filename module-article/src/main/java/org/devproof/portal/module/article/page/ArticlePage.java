@@ -62,10 +62,10 @@ public class ArticlePage extends ArticleBasePage {
 	private ConfigurationService configurationService;
 
 	private ArticleDataView dataView;
-	private final ArticleQuery query;
-	private final PageParameters params;
+	private ArticleQuery query;
+	private PageParameters params;
 
-	public ArticlePage(final PageParameters params) {
+	public ArticlePage(PageParameters params) {
 		super(params);
 		this.params = params;
 		query = createArticleQuery();
@@ -103,29 +103,29 @@ public class ArticlePage extends ArticleBasePage {
 
 	private class ArticleDataView extends DataView<ArticleEntity> {
 		private static final long serialVersionUID = 1L;
-		private final boolean onlyOneArticleInResult;
+		private boolean onlyOneArticleInResult;
 
-		public ArticleDataView(final String id) {
+		public ArticleDataView(String id) {
 			super(id, articleDataProvider);
 			onlyOneArticleInResult = articleDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
 		}
 
 		@Override
-		protected void populateItem(final Item<ArticleEntity> item) {
+		protected void populateItem(Item<ArticleEntity> item) {
 			setArticleTitleAsPageTitle(item);
 			item.setOutputMarkupId(true);
 			item.add(createArticleView(item));
 		}
 
-		private void setArticleTitleAsPageTitle(final Item<ArticleEntity> item) {
+		private void setArticleTitleAsPageTitle(Item<ArticleEntity> item) {
 			if (onlyOneArticleInResult) {
 				ArticleEntity article = item.getModelObject();
 				setPageTitle(article.getTitle());
 			}
 		}
 
-		private ArticleView createArticleView(final Item<ArticleEntity> item) {
+		private ArticleView createArticleView(Item<ArticleEntity> item) {
 			return new ArticleView("articleView", item);
 		}
 	}
@@ -139,7 +139,7 @@ public class ArticlePage extends ArticleBasePage {
 		private ArticleEntity article;
 		private boolean allowedToRead = false;
 
-		public ArticleView(final String id, final Item<ArticleEntity> item) {
+		public ArticleView(String id, Item<ArticleEntity> item) {
 			super(id, "articleView", ArticlePage.this);
 			article = item.getModelObject();
 			allowedToRead = isAllowedToRead(article);
@@ -164,7 +164,7 @@ public class ArticlePage extends ArticleBasePage {
 			return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
 		}
 
-		private Component createAppropriateAuthorPanel(final Item<ArticleEntity> item) {
+		private Component createAppropriateAuthorPanel(Item<ArticleEntity> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
 			} else {
@@ -208,14 +208,14 @@ public class ArticlePage extends ArticleBasePage {
 			return new WebMarkupContainer("authorButtons");
 		}
 
-		private boolean isAllowedToRead(final ArticleEntity articleEntity) {
+		private boolean isAllowedToRead(ArticleEntity articleEntity) {
 			PortalSession session = (PortalSession) getSession();
 			return session.hasRight("article.read") || session.hasRight(articleEntity.getReadRights());
 		}
 
 		private BookmarkablePageLink<ArticleReadPage> createTitleLink() {
-			final BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>(
-					"titleLink", ArticleReadPage.class);
+			BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>("titleLink",
+					ArticleReadPage.class);
 			titleLink.setParameter("0", article.getContentId());
 			titleLink.setEnabled(allowedToRead);
 			titleLink.add(new Label("titleLabel", article.getTitle()));
@@ -228,7 +228,7 @@ public class ArticlePage extends ArticleBasePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					articleService.delete(getEntity());
 					item.setVisible(false);
 					target.addComponent(item);
@@ -237,9 +237,9 @@ public class ArticlePage extends ArticleBasePage {
 				}
 
 				@Override
-				public void onEdit(final AjaxRequestTarget target) {
+				public void onEdit(AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					final ArticleEntity tmp = articleService.findByIdAndPrefetch(article.getId());
+					ArticleEntity tmp = articleService.findByIdAndPrefetch(article.getId());
 					setResponsePage(new ArticleEditPage(tmp));
 				}
 			};

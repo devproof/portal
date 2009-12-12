@@ -38,7 +38,7 @@ public class ArticleQuery implements IQuery<ArticleTagEntity>, ITagQuery<Article
 		return this.role;
 	}
 
-	public void setRole(final RoleEntity role) {
+	public void setRole(RoleEntity role) {
 		this.role = role;
 	}
 
@@ -47,7 +47,7 @@ public class ArticleQuery implements IQuery<ArticleTagEntity>, ITagQuery<Article
 		return this.tag;
 	}
 
-	public void setTag(final ArticleTagEntity tag) {
+	public void setTag(ArticleTagEntity tag) {
 		this.tag = tag;
 	}
 
@@ -56,7 +56,7 @@ public class ArticleQuery implements IQuery<ArticleTagEntity>, ITagQuery<Article
 		return this.allTextFields;
 	}
 
-	public void setAllTextFields(final String allTextFields) {
+	public void setAllTextFields(String allTextFields) {
 		this.allTextFields = allTextFields;
 	}
 
@@ -65,7 +65,7 @@ public class ArticleQuery implements IQuery<ArticleTagEntity>, ITagQuery<Article
 		return this.id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

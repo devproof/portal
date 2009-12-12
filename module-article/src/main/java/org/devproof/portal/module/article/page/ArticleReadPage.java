@@ -168,7 +168,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {
-		final BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
+		BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
 				ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 

@@ -34,10 +34,10 @@ public class ArticleBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "articleService")
 	private ArticleService articleService;
-	
+
 	private boolean isAuthor = false;
-	
-	public ArticleBasePage(final PageParameters params) {
+
+	public ArticleBasePage(PageParameters params) {
 		super(params);
 		setAuthorRight();
 		add(CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS));
@@ -61,9 +61,10 @@ public class ArticleBasePage extends TemplatePage {
 	private Link<?> createArticleAddLink() {
 		Link<?> addLink = new Link<Object>("adminLink") {
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onClick() {
-				final ArticleEntity newEntry = articleService.newArticleEntity();
+				ArticleEntity newEntry = articleService.newArticleEntity();
 				setResponsePage(new ArticleEditPage(newEntry));
 			}
 		};

@@ -57,7 +57,7 @@ final public class ArticlePageEntity implements Serializable {
 		return content;
 	}
 
-	public void setContent(final String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -65,11 +65,11 @@ final public class ArticlePageEntity implements Serializable {
 		return article;
 	}
 
-	public void setArticle(final ArticleEntity article) {
+	public void setArticle(ArticleEntity article) {
 		this.article = article;
 	}
 
-	// public void setVersion(final Integer version) {
+	// public void setVersion(Integer version) {
 	// this.version = version;
 	// }
 	//
@@ -81,7 +81,7 @@ final public class ArticlePageEntity implements Serializable {
 		return contentId;
 	}
 
-	public void setContentId(final String contentId) {
+	public void setContentId(String contentId) {
 		this.contentId = contentId;
 	}
 
@@ -89,13 +89,13 @@ final public class ArticlePageEntity implements Serializable {
 		return page;
 	}
 
-	public void setPage(final Integer page) {
+	public void setPage(Integer page) {
 		this.page = page;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
 		result = prime * result + ((page == null) ? 0 : page.hashCode());
@@ -103,7 +103,7 @@ final public class ArticlePageEntity implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
