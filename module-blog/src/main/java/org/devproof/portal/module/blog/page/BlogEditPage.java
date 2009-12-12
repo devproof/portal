@@ -48,8 +48,8 @@ public class BlogEditPage extends BlogBasePage {
 	private TagService<BlogTagEntity> blogTagService;
 
 	private BlogEntity blog;
-	
-	public BlogEditPage(final BlogEntity blog) {
+
+	public BlogEditPage(BlogEntity blog) {
 		super(new PageParameters());
 		this.blog = blog;
 		add(createBlogEditForm());

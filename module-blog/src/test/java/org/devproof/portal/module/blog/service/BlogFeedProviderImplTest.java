@@ -52,12 +52,12 @@ public class BlogFeedProviderImplTest extends TestCase {
 		configurationServiceMock = EasyMock.createMock(ConfigurationService.class);
 		impl = new BlogFeedProviderImpl() {
 			@Override
-			protected String getUrl(final RequestCycle rc) {
+			protected String getUrl(RequestCycle rc) {
 				return "http://url";
 			}
 
 			@Override
-			protected String getUrl(final RequestCycle rc, final BlogEntity blogEntity) {
+			protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
 				return "http://url/" + blogEntity.getId();
 			}
 		};
@@ -124,13 +124,13 @@ public class BlogFeedProviderImplTest extends TestCase {
 		final StringBuilder callOrder = new StringBuilder();
 		impl = new BlogFeedProviderImpl() {
 			@Override
-			protected SyndFeed generateFeed(final RequestCycle rc) {
+			protected SyndFeed generateFeed(RequestCycle rc) {
 				callOrder.append("1");
 				return new SyndFeedImpl();
 			}
 
 			@Override
-			protected void setRoleForDataProviderQuery(final RoleEntity role) {
+			protected void setRoleForDataProviderQuery(RoleEntity role) {
 				callOrder.append("2");
 			}
 
@@ -141,14 +141,13 @@ public class BlogFeedProviderImplTest extends TestCase {
 			}
 
 			@Override
-			protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
-					final Iterator<? extends BlogEntity> iterator) {
+			protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
 				callOrder.append("4");
 				return entries;
 			}
 
 			@Override
-			protected String getUrl(final RequestCycle rc) {
+			protected String getUrl(RequestCycle rc) {
 				return "";
 			}
 		};

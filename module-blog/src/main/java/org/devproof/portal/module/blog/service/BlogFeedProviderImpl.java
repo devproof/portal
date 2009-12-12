@@ -49,7 +49,7 @@ public class BlogFeedProviderImpl implements FeedProvider {
 	private ConfigurationService configurationService;
 
 	@Override
-	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
+	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
 		setRoleForDataProviderQuery(role);
 		Iterator<? extends BlogEntity> iterator = getBlogEntries();
@@ -64,7 +64,7 @@ public class BlogFeedProviderImpl implements FeedProvider {
 		return iterator;
 	}
 
-	protected SyndFeed generateFeed(final RequestCycle rc) {
+	protected SyndFeed generateFeed(RequestCycle rc) {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName());
 		feed.setLink(getUrl(rc));
@@ -76,11 +76,11 @@ public class BlogFeedProviderImpl implements FeedProvider {
 		return feed;
 	}
 
-	protected String getUrl(final RequestCycle rc) {
+	protected String getUrl(RequestCycle rc) {
 		return rc.urlFor(BlogPage.class, new PageParameters()).toString();
 	}
 
-	protected List<SyndEntry> generateFeedEntries(final RequestCycle rc, final Iterator<? extends BlogEntity> iterator) {
+	protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		while (iterator.hasNext()) {
 			BlogEntity blogEntity = iterator.next();
@@ -99,11 +99,11 @@ public class BlogFeedProviderImpl implements FeedProvider {
 		return entries;
 	}
 
-	protected String getUrl(final RequestCycle rc, final BlogEntity blogEntity) {
+	protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
 		return rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(final RoleEntity role) {
+	protected void setRoleForDataProviderQuery(RoleEntity role) {
 		BlogQuery query = new BlogQuery();
 		query.setRole(role);
 		blogDataProvider.setQueryObject(query);
@@ -124,12 +124,12 @@ public class BlogFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setBlogDataProvider(final SortableQueryDataProvider<BlogEntity> blogDataProvider) {
+	public void setBlogDataProvider(SortableQueryDataProvider<BlogEntity> blogDataProvider) {
 		this.blogDataProvider = blogDataProvider;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 }

@@ -41,7 +41,7 @@ final public class BlogTagEntity extends BaseTagEntity<BlogEntity> {
 	}
 
 	@Override
-	public void setReferencedObjects(final List<BlogEntity> referencedObjects) {
+	public void setReferencedObjects(List<BlogEntity> referencedObjects) {
 		this.referencedObjects = referencedObjects;
 	}
 }

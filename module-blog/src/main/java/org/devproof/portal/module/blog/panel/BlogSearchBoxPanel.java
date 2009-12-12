@@ -32,8 +32,8 @@ public class BlogSearchBoxPanel extends BaseSearchBoxPanel {
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
 
-	public BlogSearchBoxPanel(final String id, final BlogQuery query, final QueryDataProvider<?> dataProvider,
-			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public BlogSearchBoxPanel(String id, BlogQuery query, QueryDataProvider<?> dataProvider, TemplatePage parent,
+			IPageable dataview, PageParameters params) {
 		super(id, query, dataProvider, "page.BlogEditPage", parent, dataview, params);
 		TextField<String> fc = new TextField<String>("allTextFields");
 		getForm().add(fc);
@@ -41,7 +41,7 @@ public class BlogSearchBoxPanel extends BaseSearchBoxPanel {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

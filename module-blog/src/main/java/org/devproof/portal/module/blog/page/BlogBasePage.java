@@ -34,10 +34,9 @@ public abstract class BlogBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "blogService")
 	private BlogService blogService;
-
 	private boolean isAuthor = false;
-	
-	public BlogBasePage(final PageParameters params) {
+
+	public BlogBasePage(PageParameters params) {
 		super(params);
 		setAuthorRight();
 		add(CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS));
@@ -60,7 +59,7 @@ public abstract class BlogBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				final BlogEntity newEntry = blogService.newBlogEntity();
+				BlogEntity newEntry = blogService.newBlogEntity();
 				setResponsePage(new BlogEditPage(newEntry));
 			}
 		};

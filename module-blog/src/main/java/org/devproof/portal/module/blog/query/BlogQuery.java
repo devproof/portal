@@ -38,7 +38,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 		return role;
 	}
 
-	public void setRole(final RoleEntity role) {
+	public void setRole(RoleEntity role) {
 		this.role = role;
 	}
 
@@ -47,7 +47,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 		return tag;
 	}
 
-	public void setTag(final BlogTagEntity tag) {
+	public void setTag(BlogTagEntity tag) {
 		this.tag = tag;
 	}
 
@@ -56,7 +56,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 		return allTextFields;
 	}
 
-	public void setAllTextFields(final String allTextFields) {
+	public void setAllTextFields(String allTextFields) {
 		this.allTextFields = allTextFields;
 	}
 
@@ -65,7 +65,7 @@ public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
