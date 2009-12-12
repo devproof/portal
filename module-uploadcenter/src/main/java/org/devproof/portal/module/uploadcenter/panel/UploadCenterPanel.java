@@ -44,12 +44,12 @@ import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
 public abstract class UploadCenterPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(UploadCenterPanel.class);
+
 	@SpringBean(name = "sharedRegistry")
 	private SharedRegistry sharedRegistry;
-
 	private IModel<File> fileModel;
 	private ModalWindow modalWindow;
-	
+
 	public UploadCenterPanel(String id, IModel<File> fileModel, ModalWindow modalWindow, boolean createDownload) {
 		super(id, fileModel);
 		this.fileModel = fileModel;
@@ -75,16 +75,17 @@ public abstract class UploadCenterPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
-				final ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(modalWindow
-						.getContentId(), file, modalWindow) {
+			public void onClick(AjaxRequestTarget target) {
+				ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(modalWindow.getContentId(),
+						file, modalWindow) {
 					private static final long serialVersionUID = 1L;
+
 					@Override
-					public void onDelete(final AjaxRequestTarget target, final Form<?> form) {
+					public void onDelete(AjaxRequestTarget target, Form<?> form) {
 						if (file.isDirectory()) {
 							try {
 								FileUtils.deleteDirectory(file);
-							} catch (final IOException e) {
+							} catch (IOException e) {
 								throw new UnhandledException(e);
 							}
 						} else {
@@ -114,6 +115,7 @@ public abstract class UploadCenterPanel extends Panel {
 		final File file = fileModel.getObject();
 		return new InternalDownloadLink("downloadLink") {
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected File getFile() {
 				return file;
@@ -136,12 +138,12 @@ public abstract class UploadCenterPanel extends Panel {
 
 			@Override
 			public void onClick() {
-				final CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
+				CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
 				setResponsePage(createDownloadPage.newInstance(fileModel.getObject().toURI().toString()));
 			}
 
 		};
 	}
 
-	public abstract void onDelete(final AjaxRequestTarget target);
+	public abstract void onDelete(AjaxRequestTarget target);
 }

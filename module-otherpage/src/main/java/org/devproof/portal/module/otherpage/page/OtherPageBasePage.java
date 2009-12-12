@@ -35,7 +35,7 @@ public class OtherPageBasePage extends TemplatePage {
 	@SpringBean(name = "otherPageService")
 	private OtherPageService otherPageService;
 
-	public OtherPageBasePage(final PageParameters params) {
+	public OtherPageBasePage(PageParameters params) {
 		super(params);
 		setAuthorRight();
 		addSyntaxHighlighter();
@@ -60,7 +60,7 @@ public class OtherPageBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				final OtherPageEntity newEntry = otherPageService.newOtherPageEntity();
+				OtherPageEntity newEntry = otherPageService.newOtherPageEntity();
 				setResponsePage(new OtherPageEditPage(newEntry));
 			}
 		};

@@ -42,7 +42,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 	private OtherPageService otherPageService;
 
 	private OtherPageEntity otherPage;
-	
+
 	public OtherPageEditPage(OtherPageEntity otherPage) {
 		super(new PageParameters());
 		this.otherPage = otherPage;
@@ -59,7 +59,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String>fc = new RichTextArea("content");
+		FormComponent<String> fc = new RichTextArea("content");
 		fc.setRequired(true);
 		fc.add(StringValidator.minimumLength(10));
 		return fc;
@@ -68,16 +68,21 @@ public class OtherPageEditPage extends OtherPageBasePage {
 	private FormComponent<String> createContentIdField() {
 		FormComponent<String> fc = new RequiredTextField<String>("contentId");
 		fc.add(StringValidator.minimumLength(5));
-		fc.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
+		fc.add(createContentIdPatternValidator());
 		fc.add(createContentIdValidator());
 		return fc;
+	}
+
+	private PatternValidator createContentIdPatternValidator() {
+		return new PatternValidator("[A-Za-z0-9\\_\\._\\-]*");
 	}
 
 	private AbstractValidator<String> createContentIdValidator() {
 		return new AbstractValidator<String>() {
 			private static final long serialVersionUID = 1L;
+
 			@Override
-			protected void onValidate(final IValidatable<String> ivalidatable) {
+			protected void onValidate(IValidatable<String> ivalidatable) {
 				if (otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
 					error(ivalidatable);
 				}
@@ -95,8 +100,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 	}
 
 	private Form<OtherPageEntity> newOtherPageEditForm() {
-		return new Form<OtherPageEntity>("form", new CompoundPropertyModel<OtherPageEntity>(
-				otherPage)) {
+		return new Form<OtherPageEntity>("form", new CompoundPropertyModel<OtherPageEntity>(otherPage)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

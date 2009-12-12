@@ -41,7 +41,7 @@ final public class DownloadTagEntity extends BaseTagEntity<DownloadEntity> {
 	}
 
 	@Override
-	public void setReferencedObjects(final List<DownloadEntity> referencedObjects) {
+	public void setReferencedObjects(List<DownloadEntity> referencedObjects) {
 		this.referencedObjects = referencedObjects;
 	}
 

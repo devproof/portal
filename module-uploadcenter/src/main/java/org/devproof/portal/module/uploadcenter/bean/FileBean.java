@@ -25,12 +25,12 @@ import java.util.Date;
  */
 public class FileBean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private final File file;
-	private final String name;
-	private final String size;
-	private final String date;
+	private File file;
+	private String name;
+	private String size;
+	private String date;
 
-	public FileBean(final File file, final DateFormat dateFormat) {
+	public FileBean(File file, DateFormat dateFormat) {
 		this.file = file;
 		date = dateFormat.format(new Date(file.lastModified()));
 		if (file.isFile()) {

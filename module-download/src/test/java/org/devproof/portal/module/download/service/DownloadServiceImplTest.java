@@ -39,108 +39,108 @@ public class DownloadServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		this.mock = EasyMock.createStrictMock(DownloadDao.class);
+		mock = EasyMock.createStrictMock(DownloadDao.class);
 		@SuppressWarnings("unchecked")
 		TagService<DownloadTagEntity> tagService = EasyMock.createStrictMock(TagService.class);
-		this.mockTag = tagService;
-		this.impl = new DownloadServiceImpl();
-		this.impl.setDownloadDao(this.mock);
-		this.impl.setDownloadTagService(this.mockTag);
+		mockTag = tagService;
+		impl = new DownloadServiceImpl();
+		impl.setDownloadDao(mock);
+		impl.setDownloadTagService(mockTag);
 	}
 
 	public void testSave() {
-		DownloadEntity e = this.impl.newDownloadEntity();
+		DownloadEntity e = impl.newDownloadEntity();
 		e.setId(1);
-		this.mock.save(e);
-		this.mockTag.deleteUnusedTags();
-		EasyMock.replay(this.mock);
-		EasyMock.replay(this.mockTag);
-		this.impl.save(e);
-		EasyMock.verify(this.mock);
-		EasyMock.verify(this.mockTag);
+		mock.save(e);
+		mockTag.deleteUnusedTags();
+		EasyMock.replay(mock);
+		EasyMock.replay(mockTag);
+		impl.save(e);
+		EasyMock.verify(mock);
+		EasyMock.verify(mockTag);
 	}
 
 	public void testDelete() {
-		DownloadEntity e = this.impl.newDownloadEntity();
+		DownloadEntity e = impl.newDownloadEntity();
 		e.setId(1);
-		this.mock.delete(e);
-		this.mockTag.deleteUnusedTags();
-		EasyMock.replay(this.mock);
-		EasyMock.replay(this.mockTag);
-		this.impl.delete(e);
-		EasyMock.verify(this.mock);
-		EasyMock.verify(this.mockTag);
+		mock.delete(e);
+		mockTag.deleteUnusedTags();
+		EasyMock.replay(mock);
+		EasyMock.replay(mockTag);
+		impl.delete(e);
+		EasyMock.verify(mock);
+		EasyMock.verify(mockTag);
 	}
 
 	public void testFindAll() {
 		List<DownloadEntity> list = new ArrayList<DownloadEntity>();
-		list.add(this.impl.newDownloadEntity());
-		list.add(this.impl.newDownloadEntity());
-		EasyMock.expect(this.mock.findAll()).andReturn(list);
-		EasyMock.replay(this.mock);
-		assertEquals(list, this.impl.findAll());
-		EasyMock.verify(this.mock);
+		list.add(impl.newDownloadEntity());
+		list.add(impl.newDownloadEntity());
+		EasyMock.expect(mock.findAll()).andReturn(list);
+		EasyMock.replay(mock);
+		assertEquals(list, impl.findAll());
+		EasyMock.verify(mock);
 	}
 
 	public void testFindById() {
-		DownloadEntity e = this.impl.newDownloadEntity();
+		DownloadEntity e = impl.newDownloadEntity();
 		e.setId(1);
-		EasyMock.expect(this.mock.findById(1)).andReturn(e);
-		EasyMock.replay(this.mock);
-		assertEquals(this.impl.findById(1), e);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findById(1)).andReturn(e);
+		EasyMock.replay(mock);
+		assertEquals(impl.findById(1), e);
+		EasyMock.verify(mock);
 	}
 
 	public void testNewDownloadEntity() {
-		assertNotNull(this.impl.newDownloadEntity());
+		assertNotNull(impl.newDownloadEntity());
 	}
 
 	public void testFindAllDownloadsForRoleOrderedByDateDesc() {
 		List<DownloadEntity> list = new ArrayList<DownloadEntity>();
-		list.add(this.impl.newDownloadEntity());
-		list.add(this.impl.newDownloadEntity());
+		list.add(impl.newDownloadEntity());
+		list.add(impl.newDownloadEntity());
 		RoleEntity role = new RoleEntity();
 		role.setId(1);
-		EasyMock.expect(this.mock.findAllDownloadsForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
-		EasyMock.replay(this.mock);
-		this.impl.findAllDownloadsForRoleOrderedByDateDesc(role, 0, 2);
-		EasyMock.verify(this.mock);
+		EasyMock.expect(mock.findAllDownloadsForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
+		EasyMock.replay(mock);
+		impl.findAllDownloadsForRoleOrderedByDateDesc(role, 0, 2);
+		EasyMock.verify(mock);
 	}
 
 	public void testIncrementHits() {
-		DownloadEntity e = this.impl.newDownloadEntity();
+		DownloadEntity e = impl.newDownloadEntity();
 		e.setId(1);
-		this.mock.incrementHits(e);
-		EasyMock.replay(this.mock);
-		this.impl.incrementHits(e);
-		EasyMock.verify(this.mock);
+		mock.incrementHits(e);
+		EasyMock.replay(mock);
+		impl.incrementHits(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testMarkBrokenDownload() {
-		DownloadEntity e = this.impl.newDownloadEntity();
+		DownloadEntity e = impl.newDownloadEntity();
 		e.setId(1);
-		this.mock.markBrokenDownload(e);
-		EasyMock.replay(this.mock);
-		this.impl.markBrokenDownload(e);
-		EasyMock.verify(this.mock);
+		mock.markBrokenDownload(e);
+		EasyMock.replay(mock);
+		impl.markBrokenDownload(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testMarkValidDownload() {
-		DownloadEntity e = this.impl.newDownloadEntity();
+		DownloadEntity e = impl.newDownloadEntity();
 		e.setId(1);
-		this.mock.markValidDownload(e);
-		EasyMock.replay(this.mock);
-		this.impl.markValidDownload(e);
-		EasyMock.verify(this.mock);
+		mock.markValidDownload(e);
+		EasyMock.replay(mock);
+		impl.markValidDownload(e);
+		EasyMock.verify(mock);
 	}
 
 	public void testRateDownload() {
-		DownloadEntity e = this.impl.newDownloadEntity();
+		DownloadEntity e = impl.newDownloadEntity();
 		e.setId(1);
-		this.mock.rateDownload(5, e);
-		this.mock.refresh(e);
-		EasyMock.replay(this.mock);
-		this.impl.rateDownload(5, e);
-		EasyMock.verify(this.mock);
+		mock.rateDownload(5, e);
+		mock.refresh(e);
+		EasyMock.replay(mock);
+		impl.rateDownload(5, e);
+		EasyMock.verify(mock);
 	}
 }

@@ -43,7 +43,7 @@ public class OtherPagePage extends OtherPageBasePage {
 	@SpringBean(name = "otherPageDataProvider")
 	private ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
 
-	public OtherPagePage(final PageParameters params) {
+	public OtherPagePage(PageParameters params) {
 		super(params);
 		add(createContentIdOrderHeader());
 		add(createModifiedByOrderHeader());
@@ -65,12 +65,12 @@ public class OtherPagePage extends OtherPageBasePage {
 	private class OtherPageDataView extends DataView<OtherPageEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public OtherPageDataView(final String id) {
+		public OtherPageDataView(String id) {
 			super(id, otherPageDataProvider);
 		}
 
 		@Override
-		protected void populateItem(final Item<OtherPageEntity> item) {
+		protected void populateItem(Item<OtherPageEntity> item) {
 			OtherPageEntity otherPage = item.getModelObject();
 			item.add(createContentIdLabel(otherPage));
 			item.add(createModifiedByLabel(otherPage));
@@ -80,8 +80,7 @@ public class OtherPagePage extends OtherPageBasePage {
 			item.setOutputMarkupId(true);
 		}
 
-		private BookmarkablePageLink<OtherPageViewPage> createViewLink(
-				OtherPageEntity otherPage) {
+		private BookmarkablePageLink<OtherPageViewPage> createViewLink(OtherPageEntity otherPage) {
 			BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink",
 					OtherPageViewPage.class);
 			viewLink.setParameter("0", otherPage.getContentId());
@@ -95,8 +94,7 @@ public class OtherPagePage extends OtherPageBasePage {
 			return viewImage;
 		}
 
-		private AttributeModifier createEvenOddModifier(
-				final Item<OtherPageEntity> item) {
+		private AttributeModifier createEvenOddModifier(final Item<OtherPageEntity> item) {
 			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
 
@@ -107,13 +105,12 @@ public class OtherPagePage extends OtherPageBasePage {
 			});
 		}
 
-		private AuthorPanel<OtherPageEntity> createAuthorPanel(
-				final Item<OtherPageEntity> item) {
+		private AuthorPanel<OtherPageEntity> createAuthorPanel(final Item<OtherPageEntity> item) {
 			return new AuthorPanel<OtherPageEntity>("authorButtons", item.getModelObject()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					otherPageService.delete(getEntity());
 					item.setVisible(false);
 					target.addComponent(item);
@@ -122,7 +119,7 @@ public class OtherPagePage extends OtherPageBasePage {
 				}
 
 				@Override
-				public void onEdit(final AjaxRequestTarget target) {
+				public void onEdit(AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
 					OtherPageEntity tmp = otherPageService.findById(getEntity().getId());
 					setResponsePage(new OtherPageEditPage(tmp));
@@ -130,11 +127,11 @@ public class OtherPagePage extends OtherPageBasePage {
 			};
 		}
 
-		private Label createModifiedByLabel(final OtherPageEntity otherPage) {
+		private Label createModifiedByLabel(OtherPageEntity otherPage) {
 			return new Label("modifiedBy", otherPage.getModifiedBy());
 		}
 
-		private Label createContentIdLabel(final OtherPageEntity otherPage) {
+		private Label createContentIdLabel(OtherPageEntity otherPage) {
 			return new Label("contentId", otherPage.getContentId());
 		}
 	}

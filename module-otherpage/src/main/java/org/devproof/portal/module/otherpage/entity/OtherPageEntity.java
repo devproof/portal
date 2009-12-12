@@ -59,7 +59,7 @@ final public class OtherPageEntity extends BaseEntity {
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -67,7 +67,7 @@ final public class OtherPageEntity extends BaseEntity {
 		return contentId;
 	}
 
-	public void setContentId(final String contentId) {
+	public void setContentId(String contentId) {
 		this.contentId = contentId;
 	}
 
@@ -75,7 +75,7 @@ final public class OtherPageEntity extends BaseEntity {
 		return content;
 	}
 
-	public void setContent(final String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -86,7 +86,7 @@ final public class OtherPageEntity extends BaseEntity {
 		return allRights;
 	}
 
-	public void setAllRights(final List<RightEntity> allRights) {
+	public void setAllRights(List<RightEntity> allRights) {
 		this.allRights = allRights;
 	}
 
@@ -97,14 +97,14 @@ final public class OtherPageEntity extends BaseEntity {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -114,7 +114,7 @@ final public class OtherPageEntity extends BaseEntity {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final OtherPageEntity other = (OtherPageEntity) obj;
+		OtherPageEntity other = (OtherPageEntity) obj;
 		if (id == null) {
 			if (other.id != null) {
 				return false;

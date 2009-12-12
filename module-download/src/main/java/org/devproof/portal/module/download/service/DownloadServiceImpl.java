@@ -32,23 +32,23 @@ public class DownloadServiceImpl implements DownloadService {
 	private TagService<DownloadTagEntity> downloadTagService;
 
 	@Override
-	public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(final RoleEntity role,
-			final Integer firstResult, final Integer maxResult) {
+	public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult) {
 		return downloadDao.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
 	}
 
 	@Override
-	public void incrementHits(final DownloadEntity download) {
+	public void incrementHits(DownloadEntity download) {
 		downloadDao.incrementHits(download);
 	}
 
 	@Override
-	public void markBrokenDownload(final DownloadEntity download) {
+	public void markBrokenDownload(DownloadEntity download) {
 		downloadDao.markBrokenDownload(download);
 	}
 
 	@Override
-	public void markValidDownload(final DownloadEntity download) {
+	public void markValidDownload(DownloadEntity download) {
 		downloadDao.markValidDownload(download);
 	}
 
@@ -58,13 +58,13 @@ public class DownloadServiceImpl implements DownloadService {
 	}
 
 	@Override
-	public void rateDownload(final Integer rating, final DownloadEntity download) {
+	public void rateDownload(Integer rating, DownloadEntity download) {
 		downloadDao.rateDownload(rating, download);
 		downloadDao.refresh(download);
 	}
 
 	@Override
-	public void delete(final DownloadEntity entity) {
+	public void delete(DownloadEntity entity) {
 		downloadDao.delete(entity);
 		downloadTagService.deleteUnusedTags();
 	}
@@ -75,23 +75,23 @@ public class DownloadServiceImpl implements DownloadService {
 	}
 
 	@Override
-	public DownloadEntity findById(final Integer id) {
+	public DownloadEntity findById(Integer id) {
 		return downloadDao.findById(id);
 	}
 
 	@Override
-	public void save(final DownloadEntity entity) {
+	public void save(DownloadEntity entity) {
 		downloadDao.save(entity);
 		downloadTagService.deleteUnusedTags();
 	}
 
 	@Required
-	public void setDownloadDao(final DownloadDao downloadDao) {
+	public void setDownloadDao(DownloadDao downloadDao) {
 		this.downloadDao = downloadDao;
 	}
 
 	@Required
-	public void setDownloadTagService(final TagService<DownloadTagEntity> downloadTagService) {
+	public void setDownloadTagService(TagService<DownloadTagEntity> downloadTagService) {
 		this.downloadTagService = downloadTagService;
 	}
 }

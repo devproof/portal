@@ -40,7 +40,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 		return role;
 	}
 
-	public void setRole(final RoleEntity role) {
+	public void setRole(RoleEntity role) {
 		this.role = role;
 	}
 
@@ -49,7 +49,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 		return tag;
 	}
 
-	public void setTag(final DownloadTagEntity tag) {
+	public void setTag(DownloadTagEntity tag) {
 		this.tag = tag;
 	}
 
@@ -59,7 +59,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 		return allTextFields;
 	}
 
-	public void setAllTextFields(final String allTextFields) {
+	public void setAllTextFields(String allTextFields) {
 		this.allTextFields = allTextFields;
 	}
 
@@ -68,7 +68,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 		return broken;
 	}
 
-	public void setBroken(final Boolean broken) {
+	public void setBroken(Boolean broken) {
 		this.broken = broken;
 	}
 
@@ -77,7 +77,7 @@ public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<Downl
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -156,7 +156,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 						return false;
 					}
 
-					private String buildAbsoluteUrl(final String baseUrl, String url) {
+					private String buildAbsoluteUrl(String baseUrl, String url) {
 						if (isNotExternalUrl(url)) {
 							if (isRelativeUrl(url)) {
 								url = url.substring(1);
@@ -203,7 +203,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onFinished(final AjaxRequestTarget target) {
+			protected void onFinished(AjaxRequestTarget target) {
 				info(new StringResourceModel(section + "Finished", this, null,
 						new Object[] { DeadlinkCheckPanel.this.brokenFound }).getString());
 				target.addComponent(feedbackPanel);
@@ -223,7 +223,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 	 * @param brokenEntity
 	 *            broken entity
 	 */
-	public abstract void onBroken(final T brokenEntity);
+	public abstract void onBroken(T brokenEntity);
 
 	/**
 	 * called on every valid entity
@@ -231,5 +231,5 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 	 * @param validEntity
 	 *            valid entity
 	 */
-	public abstract void onValid(final T validEntity);
+	public abstract void onValid(T validEntity);
 }

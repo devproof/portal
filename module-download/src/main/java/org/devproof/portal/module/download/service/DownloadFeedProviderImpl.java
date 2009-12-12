@@ -49,7 +49,7 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 	private ConfigurationService configurationService;
 
 	@Override
-	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
+	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
 		setRoleForDataProviderQuery(role);
 		Iterator<? extends DownloadEntity> iterator = getDownloadEntries();
@@ -64,7 +64,7 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 		return iterator;
 	}
 
-	protected SyndFeed generateFeed(final RequestCycle rc) {
+	protected SyndFeed generateFeed(RequestCycle rc) {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName());
 		feed.setLink(getUrl(rc));
@@ -76,12 +76,11 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 		return feed;
 	}
 
-	protected String getUrl(final RequestCycle rc) {
+	protected String getUrl(RequestCycle rc) {
 		return rc.urlFor(DownloadPage.class, new PageParameters()).toString();
 	}
 
-	protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
-			final Iterator<? extends DownloadEntity> iterator) {
+	protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
 		List<SyndEntry> entries = new ArrayList<SyndEntry>();
 		while (iterator.hasNext()) {
 			DownloadEntity downloadEntity = iterator.next();
@@ -102,11 +101,11 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 		return entries;
 	}
 
-	protected String getUrl(final RequestCycle rc, final DownloadEntity DownloadEntity) {
+	protected String getUrl(RequestCycle rc, DownloadEntity DownloadEntity) {
 		return rc.urlFor(DownloadPage.class, new PageParameters("id=" + DownloadEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(final RoleEntity role) {
+	protected void setRoleForDataProviderQuery(RoleEntity role) {
 		DownloadQuery query = new DownloadQuery();
 		query.setRole(role);
 		downloadDataProvider.setQueryObject(query);
@@ -127,12 +126,12 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setDownloadDataProvider(final SortableQueryDataProvider<DownloadEntity> downloadDataProvider) {
+	public void setDownloadDataProvider(SortableQueryDataProvider<DownloadEntity> downloadDataProvider) {
 		this.downloadDataProvider = downloadDataProvider;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 }
