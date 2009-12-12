@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.blog.page;
+package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
@@ -22,41 +22,41 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.print.page.PrintPage;
-import org.devproof.portal.module.blog.entity.BlogEntity;
-import org.devproof.portal.module.blog.panel.BlogPrintPanel;
-import org.devproof.portal.module.blog.service.BlogService;
+import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.panel.ArticlePrintPanel;
+import org.devproof.portal.module.article.service.ArticleService;
 
 /**
  * @author Carsten Hufe
  */
-public class BlogPrintPage extends PrintPage {
-	@SpringBean(name = "blogService")
-	private BlogService blogService;
+public class ArticlePrintPage extends PrintPage {
+	@SpringBean(name = "articleService")
+	private ArticleService articleService;
 
-	public BlogPrintPage(PageParameters params) {
+	public ArticlePrintPage(PageParameters params) {
 		super(params);
 	}
 
 	@Override
 	protected Component createPrintableComponent(String id, PageParameters params) {
-		Integer blogId = params.getAsInteger("0");
-		if (blogId == null) {
+		String contentId = params.getString("0");
+		if (contentId == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage
 					.getMessagePage(getString("missing.parameter")));
 		}
-		BlogEntity blog = blogService.findById(blogId);
-		validateAccessRights(blog);
-		return new BlogPrintPanel(id, blog);
+		ArticleEntity article = articleService.findByContentId(contentId);
+		validateAccessRights(article);
+		return new ArticlePrintPanel(id, article);
 	}
 
-	private void validateAccessRights(BlogEntity blog) {
-		if (blog == null || !isAllowedToRead(blog)) {
+	private void validateAccessRights(ArticleEntity article) {
+		if (article == null || !isAllowedToRead(article)) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
 		}
 	}
 
-	private boolean isAllowedToRead(BlogEntity blog) {
+	private boolean isAllowedToRead(ArticleEntity article) {
 		PortalSession session = (PortalSession) getSession();
-		return session.hasRight(blog.getViewRights()) || session.hasRight("blog.view");
+		return session.hasRight(article.getReadRights()) || session.hasRight("article.read");
 	}
 }

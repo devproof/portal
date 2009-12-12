@@ -35,6 +35,11 @@
     				<property name="pageClass" value="org.devproof.portal.module.article.page.ArticleReadPage"/>
     				<property name="indexMountedPath" value="true"/>
     			</bean>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/print/article"/>
+    				<property name="pageClass" value="org.devproof.portal.module.article.page.ArticlePrintPage"/>
+    				<property name="indexMountedPath" value="true"/>
+    			</bean>
     		</list>
     	</property>
 

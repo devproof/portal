@@ -30,6 +30,9 @@ public interface ArticleDao extends GenericDao<ArticleEntity, Integer> {
 	@Query("select a from ArticleEntity a left join fetch a.articlePages where a.id = ?")
 	public ArticleEntity findByIdAndPrefetch(Integer id);
 
+	@Query("select a from ArticleEntity a where a.contentId = ?")
+	public ArticleEntity findByContentId(String contentId);
+
 	@Query(value = "select distinct(a) from ArticleEntity a join a.allRights vr"
 			+ " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'article.view%') order by a.modifiedAt desc", limitClause = true)
 	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,

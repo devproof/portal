@@ -52,7 +52,7 @@ final public class ArticleEntity extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
-	@Column(name = "content_id")
+	@Column(name = "content_id", unique = true)
 	private String contentId;
 	@Column(name = "title")
 	private String title;
