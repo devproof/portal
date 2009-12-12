@@ -30,7 +30,7 @@ public class DeliciousFormBean implements Serializable {
 		return username;
 	}
 
-	public void setUsername(final String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 
@@ -38,7 +38,7 @@ public class DeliciousFormBean implements Serializable {
 		return password;
 	}
 
-	public void setPassword(final String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
@@ -46,7 +46,7 @@ public class DeliciousFormBean implements Serializable {
 		return tags;
 	}
 
-	public void setTags(final String tags) {
+	public void setTags(String tags) {
 		this.tags = tags;
 	}
 }

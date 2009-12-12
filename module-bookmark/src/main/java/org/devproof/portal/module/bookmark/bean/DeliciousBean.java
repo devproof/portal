@@ -50,11 +50,11 @@ public class DeliciousBean implements Serializable {
 		return posts;
 	}
 
-	public void setPosts(final List<DeliciousPostBean> posts) {
+	public void setPosts(List<DeliciousPostBean> posts) {
 		this.posts = posts;
 	}
 
-	public boolean add(final DeliciousPostBean e) {
+	public boolean add(DeliciousPostBean e) {
 		return posts.add(e);
 	}
 
@@ -62,7 +62,7 @@ public class DeliciousBean implements Serializable {
 		return httpCode;
 	}
 
-	public void setHttpCode(final Integer httpCode) {
+	public void setHttpCode(Integer httpCode) {
 		this.httpCode = httpCode;
 	}
 
@@ -70,7 +70,7 @@ public class DeliciousBean implements Serializable {
 		return errorMessage;
 	}
 
-	public void setErrorMessage(final String errorMessage) {
+	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
 

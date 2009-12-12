@@ -40,7 +40,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -49,7 +49,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 		return role;
 	}
 
-	public void setRole(final RoleEntity role) {
+	public void setRole(RoleEntity role) {
 		this.role = role;
 	}
 
@@ -58,7 +58,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 		return tag;
 	}
 
-	public void setTag(final BookmarkTagEntity tag) {
+	public void setTag(BookmarkTagEntity tag) {
 		this.tag = tag;
 	}
 
@@ -67,7 +67,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 		return allTextFields;
 	}
 
-	public void setAllTextFields(final String allTextFields) {
+	public void setAllTextFields(String allTextFields) {
 		this.allTextFields = allTextFields;
 	}
 
@@ -76,7 +76,7 @@ public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<Bookm
 		return broken;
 	}
 
-	public void setBroken(final Boolean broken) {
+	public void setBroken(Boolean broken) {
 		this.broken = broken;
 	}
 

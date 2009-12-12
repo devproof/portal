@@ -84,7 +84,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target) {
 				ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
 				DeliciousSyncPanel syncPanel = createDeliciousSyncPanel(modalWindow.getContentId());
 				modalWindow.setInitialHeight(600);
@@ -123,7 +123,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				final BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
+				BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
 				setResponsePage(new BookmarkEditPage(newBookmark));
 			}
 		};
@@ -140,9 +140,10 @@ public abstract class BookmarkBasePage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target) {
 				ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
-				DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(modalWindow.getContentId());
+				DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(modalWindow
+						.getContentId());
 				modalWindow.setInitialHeight(300);
 				modalWindow.setInitialWidth(500);
 				modalWindow.setContent(deadlinkCheckPanel);
@@ -160,12 +161,12 @@ public abstract class BookmarkBasePage extends TemplatePage {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onBroken(final BookmarkEntity brokenEntity) {
+					public void onBroken(BookmarkEntity brokenEntity) {
 						bookmarkService.markBrokenBookmark(brokenEntity);
 					}
 
 					@Override
-					public void onValid(final BookmarkEntity validEntity) {
+					public void onValid(BookmarkEntity validEntity) {
 						bookmarkService.markValidBookmark(validEntity);
 					}
 				};

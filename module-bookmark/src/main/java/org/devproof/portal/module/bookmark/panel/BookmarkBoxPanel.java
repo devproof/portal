@@ -44,7 +44,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
 
-	public BookmarkBoxPanel(final String id) {
+	public BookmarkBoxPanel(String id) {
 		super(id);
 		List<BookmarkEntity> latestBookmarks = getLatestBookmarks();
 		setVisible(latestBookmarks.size() > 0);
@@ -52,8 +52,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 		add(createRepeatingViewWithBookmarks(latestBookmarks));
 	}
 
-	private RepeatingView createRepeatingViewWithBookmarks(
-			List<BookmarkEntity> latestBookmarks) {
+	private RepeatingView createRepeatingViewWithBookmarks(List<BookmarkEntity> latestBookmarks) {
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (BookmarkEntity bookmark : latestBookmarks) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
@@ -63,8 +62,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 		return repeating;
 	}
 
-	private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(
-			BookmarkEntity bookmark) {
+	private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(BookmarkEntity bookmark) {
 		BookmarkablePageLink<BookmarkPage> link = new BookmarkablePageLink<BookmarkPage>("link", BookmarkPage.class);
 		link.setParameter("id", bookmark.getId());
 		link.add(new Label("linkName", bookmark.getTitle()));
@@ -84,7 +82,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

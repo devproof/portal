@@ -81,7 +81,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 		return allRights;
 	}
 
-	public void setAllRights(final List<RightEntity> allRights) {
+	public void setAllRights(List<RightEntity> allRights) {
 		this.allRights = allRights;
 	}
 
@@ -89,7 +89,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 		return tags;
 	}
 
-	public void setTags(final List<BookmarkTagEntity> tags) {
+	public void setTags(List<BookmarkTagEntity> tags) {
 		this.tags = tags;
 	}
 
@@ -97,7 +97,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 		return source;
 	}
 
-	public void setSource(final Source source) {
+	public void setSource(Source source) {
 		this.source = source;
 	}
 
@@ -105,7 +105,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 		return syncUsername;
 	}
 
-	public void setSyncUsername(final String syncUsername) {
+	public void setSyncUsername(String syncUsername) {
 		this.syncUsername = syncUsername;
 	}
 
@@ -113,7 +113,7 @@ final public class BookmarkEntity extends BaseLinkEntity {
 		return syncHash;
 	}
 
-	public void setSyncHash(final String syncHash) {
+	public void setSyncHash(String syncHash) {
 		this.syncHash = syncHash;
 	}
 

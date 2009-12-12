@@ -57,11 +57,11 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	private TagService<BookmarkTagEntity> tagService;
 
 	@Override
-	public DeliciousBean getDataFromDelicious(final String username, final String password, final String tags) {
+	public DeliciousBean getDataFromDelicious(String username, String password, String tags) {
 		LOG.debug("Retrieve data from delicious");
-		final HttpClient httpClient = new HttpClient();
-		final HttpClientParams httpClientParams = new HttpClientParams();
-		final DefaultHttpMethodRetryHandler defaultHttpMethodRetryHandler = new DefaultHttpMethodRetryHandler(0, false);
+		HttpClient httpClient = new HttpClient();
+		HttpClientParams httpClientParams = new HttpClientParams();
+		DefaultHttpMethodRetryHandler defaultHttpMethodRetryHandler = new DefaultHttpMethodRetryHandler(0, false);
 		httpClientParams.setParameter("User-Agent", BookmarkConstants.USER_AGENT);
 		httpClientParams.setParameter(HttpClientParams.RETRY_HANDLER, defaultHttpMethodRetryHandler);
 		httpClient.setParams(httpClientParams);
@@ -70,14 +70,14 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 		if (StringUtils.isNotEmpty(tags)) {
 			urlTag = "tag=" + tags;
 		}
-		final HttpMethod method = new GetMethod(BookmarkConstants.DELICIOUS_API + urlTag);
+		HttpMethod method = new GetMethod(BookmarkConstants.DELICIOUS_API + urlTag);
 		method.setDoAuthentication(true);
 		DeliciousBean bean = new DeliciousBean();
 		try {
-			final int httpCode = httpClient.executeMethod(method);
+			int httpCode = httpClient.executeMethod(method);
 			bean.setHttpCode(httpCode);
 			if (!bean.hasError()) {
-				final XStream xstream = new XStream(new DomDriver());
+				XStream xstream = new XStream(new DomDriver());
 				xstream.alias("posts", DeliciousBean.class);
 				xstream.alias("post", DeliciousPostBean.class);
 				xstream.addImplicitCollection(DeliciousBean.class, "posts");
@@ -88,9 +88,9 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 			} else {
 				bean.setErrorMessage("Unknown Error: Http Status: " + httpCode);
 			}
-		} catch (final HttpException e) {
+		} catch (HttpException e) {
 			bean.setErrorMessage(e.getMessage());
-		} catch (final IOException e) {
+		} catch (IOException e) {
 			bean.setErrorMessage(e.getMessage());
 		}
 		method.releaseConnection();
@@ -98,12 +98,12 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	}
 
 	@Override
-	public List<BookmarkEntity> getModifiedDeliciousBookmarks(final DeliciousBean bean) {
+	public List<BookmarkEntity> getModifiedDeliciousBookmarks(DeliciousBean bean) {
 		LOG.debug("Retrieve modified data from delicious");
-		final List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
-		final List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
-		for (final DeliciousPostBean post : bean.getPosts()) {
-			for (final BookmarkEntity bookmark : bookmarks) {
+		List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
+		List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
+		for (DeliciousPostBean post : bean.getPosts()) {
+			for (BookmarkEntity bookmark : bookmarks) {
 				if (post.getHash().equals(bookmark.getSyncHash())) {
 					bookmark.setSource(Source.DELICIOUS);
 					bookmark.setTitle(post.getDescription());
@@ -126,21 +126,21 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 	}
 
 	@Override
-	public List<BookmarkEntity> getNewDeliciousBookmarks(final DeliciousBean bean) {
+	public List<BookmarkEntity> getNewDeliciousBookmarks(DeliciousBean bean) {
 		LOG.debug("Retrieve new data from delicious");
-		final List<BookmarkEntity> bookmarks = bookmarkService.findAll();
-		final List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
+		List<BookmarkEntity> bookmarks = bookmarkService.findAll();
+		List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
 
-		for (final DeliciousPostBean post : bean.getPosts()) {
+		for (DeliciousPostBean post : bean.getPosts()) {
 			boolean found = false;
-			for (final BookmarkEntity bookmark : bookmarks) {
+			for (BookmarkEntity bookmark : bookmarks) {
 				if (post.getHref().equals(bookmark.getUrl()) || post.getHash().equals(bookmark.getSyncHash())) {
 					found = true;
 					break;
 				}
 			}
 			if (!found && post.getHref() != null) {
-				final BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
+				BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
 				newBookmark.setSource(Source.DELICIOUS);
 				newBookmark.setTitle(post.getDescription());
 				newBookmark.setSyncUsername(bean.getUser());
@@ -158,26 +158,26 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 		return back;
 	}
 
-	private List<BookmarkTagEntity> getTagsFromString(final String tags) {
-		final StringTokenizer tokenizer = new StringTokenizer(tags, TagConstants.TAG_SEPERATORS, false);
-		final List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(tokenizer.countTokens());
+	private List<BookmarkTagEntity> getTagsFromString(String tags) {
+		StringTokenizer tokenizer = new StringTokenizer(tags, TagConstants.TAG_SEPERATORS, false);
+		List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(tokenizer.countTokens());
 		while (tokenizer.hasMoreTokens()) {
-			final String token = tokenizer.nextToken().trim();
-			final BookmarkTagEntity tag = tagService.newTagEntity(token);
+			String token = tokenizer.nextToken().trim();
+			BookmarkTagEntity tag = tagService.newTagEntity(token);
 			newTags.add(tag);
 		}
 		return newTags;
 	}
 
 	@Override
-	public List<BookmarkEntity> getRemovedDeliciousBookmarks(final DeliciousBean bean) {
+	public List<BookmarkEntity> getRemovedDeliciousBookmarks(DeliciousBean bean) {
 		LOG.debug("Retrieve removed data from delicious");
-		final List<BookmarkTagEntity> searchTags = getTagsFromString(bean.getTag());
-		final List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
-		final List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
-		for (final BookmarkEntity bookmark : bookmarks) {
+		List<BookmarkTagEntity> searchTags = getTagsFromString(bean.getTag());
+		List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
+		List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
+		for (BookmarkEntity bookmark : bookmarks) {
 			boolean found = false;
-			for (final DeliciousPostBean post : bean.getPosts()) {
+			for (DeliciousPostBean post : bean.getPosts()) {
 				if (post.getHash().equals(bookmark.getSyncHash())) {
 					found = true;
 					break;
@@ -190,11 +190,11 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 		return back;
 	}
 
-	private boolean containsTag(final Collection<BookmarkTagEntity> org, final Collection<BookmarkTagEntity> search) {
+	private boolean containsTag(Collection<BookmarkTagEntity> org, Collection<BookmarkTagEntity> search) {
 		if (search.size() == 0) {
 			return true;
 		}
-		for (final BookmarkTagEntity tag : search) {
+		for (BookmarkTagEntity tag : search) {
 			if (org.contains(tag)) {
 				return true;
 			}
@@ -202,11 +202,11 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 		return false;
 	}
 
-	public void setBookmarkService(final BookmarkService bookmarkService) {
+	public void setBookmarkService(BookmarkService bookmarkService) {
 		this.bookmarkService = bookmarkService;
 	}
 
-	public void setTagService(final TagService<BookmarkTagEntity> tagService) {
+	public void setTagService(TagService<BookmarkTagEntity> tagService) {
 		this.tagService = tagService;
 	}
 }

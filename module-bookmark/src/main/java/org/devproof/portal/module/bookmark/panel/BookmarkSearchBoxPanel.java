@@ -39,8 +39,9 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 	private WebMarkupContainer titleContainer;
 	private PageParameters params;
 	private BookmarkQuery query;
-	public BookmarkSearchBoxPanel(String id, final BookmarkQuery query, final QueryDataProvider<?> dataProvider,
-			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+
+	public BookmarkSearchBoxPanel(String id, BookmarkQuery query, QueryDataProvider<?> dataProvider,
+			TemplatePage parent, IPageable dataview, PageParameters params) {
 		super(id, query, dataProvider, "page.BookmarkEditPage", parent, dataview, params);
 		this.params = params;
 		this.query = query;
@@ -65,7 +66,7 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 
 			@Override
 			public void onSearch() {
-				final IBrokenQuery brokenQuery = query;
+				IBrokenQuery brokenQuery = query;
 				if (brokenQuery.getBroken() != null && BookmarkSearchBoxPanel.this.isAuthor()) {
 					params.put("broken", brokenQuery.getBroken().toString());
 				}
@@ -92,7 +93,7 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }
