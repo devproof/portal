@@ -35,8 +35,8 @@ public class DownloadEditPageFactory implements CommonPageFactory, InitializingB
 	private DownloadService downloadService;
 
 	@Override
-	public Page newInstance(final Object... obj) {
-		final DownloadEntity download = downloadService.newDownloadEntity();
+	public Page newInstance(Object... obj) {
+		DownloadEntity download = downloadService.newDownloadEntity();
 		download.setUrl((String) obj[0]);
 		return new DownloadEditPage(download);
 	}
@@ -46,11 +46,11 @@ public class DownloadEditPageFactory implements CommonPageFactory, InitializingB
 		sharedRegistry.registerResource("createDownloadPage", this);
 	}
 
-	public void setDownloadService(final DownloadService downloadService) {
+	public void setDownloadService(DownloadService downloadService) {
 		this.downloadService = downloadService;
 	}
 
-	public void setSharedRegistry(final SharedRegistry sharedRegistry) {
+	public void setSharedRegistry(SharedRegistry sharedRegistry) {
 		this.sharedRegistry = sharedRegistry;
 	}
 }

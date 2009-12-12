@@ -31,8 +31,8 @@ public class FooterLinkFactory implements CommonMarkupContainerFactory, Initiali
 	private SharedRegistry sharedRegistry;
 
 	@Override
-	public MarkupContainer newInstance(final String id, final Object... obj) {
-		final BookmarkablePageLink<OtherPageViewPage> footerLink = new BookmarkablePageLink<OtherPageViewPage>(id,
+	public MarkupContainer newInstance(String id, Object... obj) {
+		BookmarkablePageLink<OtherPageViewPage> footerLink = new BookmarkablePageLink<OtherPageViewPage>(id,
 				OtherPageViewPage.class);
 		footerLink.setParameter("0", "about");
 		return footerLink;
@@ -43,7 +43,7 @@ public class FooterLinkFactory implements CommonMarkupContainerFactory, Initiali
 		sharedRegistry.registerResource("footerLink", this);
 	}
 
-	public void setSharedRegistry(final SharedRegistry sharedRegistry) {
+	public void setSharedRegistry(SharedRegistry sharedRegistry) {
 		this.sharedRegistry = sharedRegistry;
 	}
 }

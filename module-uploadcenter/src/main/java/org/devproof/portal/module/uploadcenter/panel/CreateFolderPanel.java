@@ -37,10 +37,9 @@ public abstract class CreateFolderPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private File actualFolder;
-	
 	private FeedbackPanel feedbackPanel;
 	private ValueMap values = new ValueMap();
-	
+
 	public CreateFolderPanel(String id, File actualFolder) {
 		super(id);
 		this.actualFolder = actualFolder;
@@ -61,10 +60,10 @@ public abstract class CreateFolderPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				try {
-					FileUtils
-							.forceMkdir(new File(actualFolder.getAbsolutePath() + File.separator + values.getString("foldername")));
+					FileUtils.forceMkdir(new File(actualFolder.getAbsolutePath() + File.separator
+							+ values.getString("foldername")));
 				} catch (IOException e) {
 					throw new UnhandledException(e);
 				}
@@ -72,7 +71,7 @@ public abstract class CreateFolderPanel extends Panel {
 			}
 
 			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.addComponent(feedbackPanel);
 			}
 		};
@@ -85,7 +84,7 @@ public abstract class CreateFolderPanel extends Panel {
 	}
 
 	private RequiredTextField<String> createFoldernameField() {
-		final RequiredTextField<String> foldername = new RequiredTextField<String>("foldername");
+		RequiredTextField<String> foldername = new RequiredTextField<String>("foldername");
 		foldername.add(new PatternValidator("[A-Za-z0-9\\.]*"));
 		return foldername;
 	}

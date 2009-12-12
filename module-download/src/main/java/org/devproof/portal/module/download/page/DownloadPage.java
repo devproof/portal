@@ -71,9 +71,9 @@ public class DownloadPage extends DownloadBasePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	private final DownloadDataView dataView;
-	private final DownloadQuery query;
-	private final PageParameters params;
+	private DownloadDataView dataView;
+	private DownloadQuery query;
+	private PageParameters params;
 
 	public DownloadPage(PageParameters params) {
 		super(params);
@@ -119,8 +119,8 @@ public class DownloadPage extends DownloadBasePage {
 	}
 
 	private DownloadQuery createDownloadQuery() {
-		final PortalSession session = (PortalSession) getSession();
-		final DownloadQuery query = new DownloadQuery();
+		PortalSession session = (PortalSession) getSession();
+		DownloadQuery query = new DownloadQuery();
 
 		if (!session.hasRight("download.view")) {
 			query.setRole(session.getRole());
@@ -134,26 +134,26 @@ public class DownloadPage extends DownloadBasePage {
 
 	private class DownloadDataView extends DataView<DownloadEntity> {
 		private static final long serialVersionUID = 1L;
-		private final boolean onlyOneDownloadInResult;
+		private boolean onlyOneDownloadInResult;
 
-		public DownloadDataView(final String id) {
+		public DownloadDataView(String id) {
 			super(id, downloadDataProvider);
 			onlyOneDownloadInResult = downloadDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOADS_PER_PAGE));
 		}
 
 		@Override
-		protected void populateItem(final Item<DownloadEntity> item) {
+		protected void populateItem(Item<DownloadEntity> item) {
 			setDownloadNameAsPageTitle(item);
 			item.setOutputMarkupId(true);
 			item.add(createDownloadViewPanel(item));
 		}
 
-		private DownloadView createDownloadViewPanel(final Item<DownloadEntity> item) {
+		private DownloadView createDownloadViewPanel(Item<DownloadEntity> item) {
 			return new DownloadView("downloadView", item);
 		}
 
-		private void setDownloadNameAsPageTitle(final Item<DownloadEntity> item) {
+		private void setDownloadNameAsPageTitle(Item<DownloadEntity> item) {
 			if (onlyOneDownloadInResult) {
 				DownloadEntity download = item.getModelObject();
 				setPageTitle(download.getTitle());
@@ -165,7 +165,7 @@ public class DownloadPage extends DownloadBasePage {
 
 		private static final long serialVersionUID = 1L;
 
-		private final Model<Boolean> hasVoted;
+		private Model<Boolean> hasVoted;
 		private DownloadEntity download;
 
 		public DownloadView(String id, Item<DownloadEntity> item) {
@@ -185,7 +185,7 @@ public class DownloadPage extends DownloadBasePage {
 			add(createDownloadLink());
 		}
 
-		private Component createAppropriateAuthorPanel(final Item<DownloadEntity> item) {
+		private Component createAppropriateAuthorPanel(Item<DownloadEntity> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
 			} else {
@@ -198,7 +198,7 @@ public class DownloadPage extends DownloadBasePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					downloadService.delete(getEntity());
 					item.setVisible(false);
 					target.addComponent(item);
@@ -207,7 +207,7 @@ public class DownloadPage extends DownloadBasePage {
 				}
 
 				@Override
-				public void onEdit(final AjaxRequestTarget target) {
+				public void onEdit(AjaxRequestTarget target) {
 					DownloadEntity refreshedDownload = downloadService.findById(download.getId());
 					setResponsePage(new DownloadEditPage(refreshedDownload));
 				}
@@ -229,11 +229,11 @@ public class DownloadPage extends DownloadBasePage {
 					if (StringUtils.isNotEmpty(value)) {
 						repeating.add(createInfoLine(repeating.newChildId(), fieldName, value));
 					}
-				} catch (final IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					throw new UnhandledException(e);
-				} catch (final IllegalAccessException e) {
+				} catch (IllegalAccessException e) {
 					throw new UnhandledException(e);
-				} catch (final InvocationTargetException e) {
+				} catch (InvocationTargetException e) {
 					throw new UnhandledException(e);
 				}
 			}
@@ -305,12 +305,12 @@ public class DownloadPage extends DownloadBasePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected boolean onIsStarActive(final int star) {
+				protected boolean onIsStarActive(int star) {
 					return star < ((int) (download.getCalculatedRating() + 0.5));
 				}
 
 				@Override
-				protected void onRated(final int rating) {
+				protected void onRated(int rating) {
 					if (isAllowedToDownload()) {
 						hasVoted.setObject(Boolean.TRUE);
 						downloadService.rateDownload(rating, download);

@@ -45,13 +45,13 @@ import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
 public class UploadFilePage extends WebPage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private final File uploadFolder;
+	private File uploadFolder;
 	private IModel<Collection<FileUpload>> uploadModel;
 
 	public UploadFilePage(File uploadFolder) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		this.uploadFolder = uploadFolder;
-		this.uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
+		uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
 		add(createFeedbackPanel());
 		add(createUploadForm());
 	}
@@ -71,8 +71,7 @@ public class UploadFilePage extends WebPage {
 	}
 
 	private Bytes getMaxFileSize() {
-		return Bytes.kilobytes(configurationService
-				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE));
+		return Bytes.kilobytes(configurationService.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE));
 	}
 
 	private MultiFileUploadField createMultiFileUploadField() {
@@ -88,11 +87,12 @@ public class UploadFilePage extends WebPage {
 	private Form<Collection<FileUpload>> newUploadForm() {
 		return new Form<Collection<FileUpload>>("uploadForm", uploadModel) {
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			protected void onSubmit() {
 				Iterator<FileUpload> it = uploadModel.getObject().iterator();
 				while (it.hasNext()) {
-					final FileUpload upload = it.next();
+					FileUpload upload = it.next();
 					File newFile = new File(UploadFilePage.this.getUploadFolder(), upload.getClientFileName());
 					UploadFilePage.this.deleteFile(newFile);
 					try {
@@ -112,7 +112,7 @@ public class UploadFilePage extends WebPage {
 		};
 	}
 
-	private void deleteFile(final File newFile) {
+	private void deleteFile(File newFile) {
 		if (newFile.exists()) {
 			if (!Files.remove(newFile)) {
 				throw new IllegalStateException("Unable to overwrite " + newFile.getAbsolutePath());

@@ -44,7 +44,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
 
-	public DownloadBoxPanel(final String id) {
+	public DownloadBoxPanel(String id) {
 		super(id);
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
@@ -66,7 +66,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

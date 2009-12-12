@@ -42,8 +42,8 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	private PageParameters params;
 	private String contentId;
 	private OtherPageEntity otherPage;
-	
-	public OtherPageViewPage(final PageParameters params) {
+
+	public OtherPageViewPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		contentId = getContentIdParameter();
@@ -51,7 +51,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
 
 		add(createAuthorContainer());
 		add(createAppropriateContentLabel());
-		
+
 		redirectToErrorPageIfHasNoRights();
 	}
 
@@ -94,8 +94,8 @@ public class OtherPageViewPage extends OtherPageBasePage {
 
 	private void redirectToErrorPageIfHasNoRights() {
 		if (otherPage != null && hasRightToViewOtherPage(otherPage)) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(
-					getString("missing.right"), getRequestURL()));
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"),
+					getRequestURL()));
 		}
 	}
 
@@ -126,12 +126,12 @@ public class OtherPageViewPage extends OtherPageBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onDelete(final AjaxRequestTarget target) {
+			public void onDelete(AjaxRequestTarget target) {
 				otherPageService.delete(getEntity());
 			}
 
 			@Override
-			public void onEdit(final AjaxRequestTarget target) {
+			public void onEdit(AjaxRequestTarget target) {
 				OtherPageEntity editPage = otherPage;
 				// create new empty page if not exists
 				if (editPage == null) {

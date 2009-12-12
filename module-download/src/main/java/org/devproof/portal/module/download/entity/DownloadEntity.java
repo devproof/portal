@@ -77,7 +77,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return softwareVersion;
 	}
 
-	public void setSoftwareVersion(final String softwareVersion) {
+	public void setSoftwareVersion(String softwareVersion) {
 		this.softwareVersion = softwareVersion;
 	}
 
@@ -85,7 +85,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return downloadSize;
 	}
 
-	public void setDownloadSize(final String downloadSize) {
+	public void setDownloadSize(String downloadSize) {
 		this.downloadSize = downloadSize;
 	}
 
@@ -93,7 +93,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return manufacturerHomepage;
 	}
 
-	public void setManufacturerHomepage(final String manufacturerHomepage) {
+	public void setManufacturerHomepage(String manufacturerHomepage) {
 		this.manufacturerHomepage = manufacturerHomepage;
 	}
 
@@ -101,7 +101,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return licence;
 	}
 
-	public void setLicence(final String licence) {
+	public void setLicence(String licence) {
 		this.licence = licence;
 	}
 
@@ -109,7 +109,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return price;
 	}
 
-	public void setPrice(final String price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 
@@ -117,7 +117,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return manufacturer;
 	}
 
-	public void setManufacturer(final String manufacturer) {
+	public void setManufacturer(String manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 
@@ -128,7 +128,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return allRights;
 	}
 
-	public void setAllRights(final List<RightEntity> allRights) {
+	public void setAllRights(List<RightEntity> allRights) {
 		this.allRights = allRights;
 	}
 
@@ -136,7 +136,7 @@ final public class DownloadEntity extends BaseLinkEntity {
 		return tags;
 	}
 
-	public void setTags(final List<DownloadTagEntity> tags) {
+	public void setTags(List<DownloadTagEntity> tags) {
 		this.tags = tags;
 	}
 }

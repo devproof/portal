@@ -38,8 +38,8 @@ public class DownloadSearchBoxPanel extends BaseSearchBoxPanel {
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
 
-	public DownloadSearchBoxPanel(final String id, final DownloadQuery query, final QueryDataProvider<?> dataProvider,
-			final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public DownloadSearchBoxPanel(String id, final DownloadQuery query, QueryDataProvider<?> dataProvider,
+			TemplatePage parent, IPageable dataview, final PageParameters params) {
 		super(id, query, dataProvider, "page.DownloadEditPage", parent, dataview, params);
 		TextField<String> fc = new TextField<String>("allTextFields");
 		getForm().add(fc);
@@ -56,7 +56,7 @@ public class DownloadSearchBoxPanel extends BaseSearchBoxPanel {
 
 			@Override
 			public void onSearch() {
-				final IBrokenQuery brokenQuery = query;
+				IBrokenQuery brokenQuery = query;
 				if (brokenQuery.getBroken() != null && DownloadSearchBoxPanel.this.isAuthor()) {
 					params.put("broken", brokenQuery.getBroken().toString());
 				}
@@ -70,7 +70,7 @@ public class DownloadSearchBoxPanel extends BaseSearchBoxPanel {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

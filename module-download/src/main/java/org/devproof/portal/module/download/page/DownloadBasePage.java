@@ -44,7 +44,7 @@ public abstract class DownloadBasePage extends TemplatePage {
 	private WebMarkupContainer modalWindow;
 	private boolean isAuthor;
 
-	public DownloadBasePage(final PageParameters params) {
+	public DownloadBasePage(PageParameters params) {
 		super(params);
 		add(CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS));
 		setAuthorRight();
@@ -136,7 +136,7 @@ public abstract class DownloadBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				final DownloadEntity newDownload = downloadService.newDownloadEntity();
+				DownloadEntity newDownload = downloadService.newDownloadEntity();
 				setResponsePage(new DownloadEditPage(newDownload));
 			}
 		};

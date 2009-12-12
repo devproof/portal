@@ -57,7 +57,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -65,7 +65,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return title;
 	}
 
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -73,7 +73,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -81,7 +81,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return url;
 	}
 
-	public void setUrl(final String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
@@ -89,7 +89,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return hits;
 	}
 
-	public void setHits(final Integer hits) {
+	public void setHits(Integer hits) {
 		this.hits = hits;
 	}
 
@@ -97,7 +97,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return numberOfVotes;
 	}
 
-	public void setNumberOfVotes(final Integer numberOfVotes) {
+	public void setNumberOfVotes(Integer numberOfVotes) {
 		this.numberOfVotes = numberOfVotes;
 	}
 
@@ -105,7 +105,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return sumOfRating;
 	}
 
-	public void setSumOfRating(final Integer sumOfRating) {
+	public void setSumOfRating(Integer sumOfRating) {
 		this.sumOfRating = sumOfRating;
 	}
 
@@ -113,7 +113,7 @@ public abstract class BaseLinkEntity extends BaseEntity {
 		return broken;
 	}
 
-	public void setBroken(final Boolean broken) {
+	public void setBroken(Boolean broken) {
 		this.broken = broken;
 	}
 
@@ -128,14 +128,14 @@ public abstract class BaseLinkEntity extends BaseEntity {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

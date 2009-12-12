@@ -41,7 +41,7 @@ public class DownloadRedirectPage extends WebPage {
 
 	private PageParameters params;
 
-	public DownloadRedirectPage(final PageParameters params) {
+	public DownloadRedirectPage(PageParameters params) {
 		super(params);
 		this.params = params;
 

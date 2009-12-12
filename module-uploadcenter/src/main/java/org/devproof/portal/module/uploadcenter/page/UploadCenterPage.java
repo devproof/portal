@@ -63,13 +63,14 @@ public class UploadCenterPage extends TemplatePage {
 	private DateFormat dateFormat;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private final File rootFolder;
+	private File rootFolder;
 	private File selectedFolder;
 	private DefaultMutableTreeNode rootNode;
 	private DefaultMutableTreeNode selectedNode;
 	private boolean hasRightCreateDownload;
 	private ModalWindow modalWindow;
 	private TreeTable folderTreeTable;
+
 	public UploadCenterPage(PageParameters params) {
 		super(params);
 		rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
@@ -115,7 +116,7 @@ public class UploadCenterPage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onNodeLinkClicked(final AjaxRequestTarget target, final TreeNode node) {
+			protected void onNodeLinkClicked(AjaxRequestTarget target, TreeNode node) {
 				if (getTreeState().isNodeSelected(node)) {
 					DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
 					FileBean fileBean = (FileBean) n.getUserObject();
@@ -140,7 +141,7 @@ public class UploadCenterPage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target) {
 				modalWindow.setInitialHeight(170);
 				modalWindow.setInitialWidth(400);
 				modalWindow.setContent(createCreateFolderPanel());
@@ -150,8 +151,9 @@ public class UploadCenterPage extends TemplatePage {
 			private CreateFolderPanel createCreateFolderPanel() {
 				return new CreateFolderPanel(modalWindow.getContentId(), selectedFolder) {
 					private static final long serialVersionUID = 1L;
+
 					@Override
-					public void onCreate(final AjaxRequestTarget target) {
+					public void onCreate(AjaxRequestTarget target) {
 						UploadCenterPage.this.forceRefresh(target);
 						modalWindow.close(target);
 					}
@@ -171,19 +173,17 @@ public class UploadCenterPage extends TemplatePage {
 		PortalSession session = (PortalSession) getSession();
 		hasRightCreateDownload = session.hasRight("page.DownloadEditPage");
 	}
-	
-	
 
 	public boolean hasRightCreateDownload() {
 		return hasRightCreateDownload;
 	}
 
 	private AjaxLink<ModalWindow> newUploadLink(final ModalWindow modalWindow) {
-		AjaxLink<ModalWindow> uploadLink = new AjaxLink<ModalWindow>("adminLink") {
+		return new AjaxLink<ModalWindow>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target) {
 				modalWindow.setInitialHeight(400);
 				modalWindow.setInitialWidth(600);
 				modalWindow.setPageCreator(createPageCreator());
@@ -205,13 +205,12 @@ public class UploadCenterPage extends TemplatePage {
 				return new ModalWindow.WindowClosedCallback() {
 					private static final long serialVersionUID = 1L;
 
-					public void onClose(final AjaxRequestTarget target) {
+					public void onClose(AjaxRequestTarget target) {
 						UploadCenterPage.this.forceRefresh(target);
 					}
 				};
 			}
 		};
-		return uploadLink;
 	}
 
 	private TreeModel createTreeModel() {
@@ -223,7 +222,7 @@ public class UploadCenterPage extends TemplatePage {
 
 	}
 
-	private void add(final DefaultMutableTreeNode parent, final File folder) {
+	private void add(DefaultMutableTreeNode parent, File folder) {
 		List<File> files = new ArrayList<File>();
 		if (folder != null) {
 			File tmpFiles[] = folder.listFiles();
@@ -246,23 +245,23 @@ public class UploadCenterPage extends TemplatePage {
 
 	private class PropertyLinkedColumn extends PropertyRenderableColumn {
 		private static final long serialVersionUID = 1L;
-		private final ModalWindow modalWindow;
+		private ModalWindow modalWindow;
 
-		public PropertyLinkedColumn(final ColumnLocation location, final String header,
-				final String propertyExpression, final ModalWindow modalWindow) {
+		public PropertyLinkedColumn(ColumnLocation location, String header, String propertyExpression,
+				ModalWindow modalWindow) {
 			super(location, header, propertyExpression);
 			this.modalWindow = modalWindow;
 
 		}
 
 		@Override
-		public Component newCell(final MarkupContainer parent, final String id, final TreeNode node, final int level) {
+		public Component newCell(MarkupContainer parent, String id, final TreeNode node, int level) {
 			return new UploadCenterPanel(id, new PropertyModel<File>(node, getPropertyExpression()), modalWindow,
 					hasRightCreateDownload) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
 					n.removeFromParent();
 					TreeModel model = new DefaultTreeModel(rootNode);
@@ -276,12 +275,12 @@ public class UploadCenterPage extends TemplatePage {
 		}
 
 		@Override
-		public IRenderable newCell(final TreeNode node, final int level) {
+		public IRenderable newCell(TreeNode node, int level) {
 			return null;
 		}
 	}
 
-	private void forceRefresh(final AjaxRequestTarget target) {
+	private void forceRefresh(AjaxRequestTarget target) {
 		selectedNode.removeAllChildren();
 		add(selectedNode, selectedFolder);
 		TreeModel model = new DefaultTreeModel(rootNode);
