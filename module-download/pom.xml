@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 	<name>devproof module-download</name>
 	<version>${devproof.version}</version>
-	<description>Portal download check module</description>
+	<description>Portal download module</description>
 	<url>http://www.devproof.org</url>
 	<parent>
     	<groupId>org.devproof.portal</groupId>
@@ -17,7 +17,7 @@
 	
 	<developers>
 		<developer>
-			<id>tocsulus</id>
+			<id>Carsten.Hufe</id>
 			<name>Carsten Hufe</name>
 			<email>carsten.hufe@devproof.org</email>
 			<url>http://www.devproof.org</url>
