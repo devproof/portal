@@ -17,6 +17,7 @@
 package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
@@ -84,7 +85,7 @@ import org.apache.wicket.util.time.Duration;
  * @author Christopher Hlubek (hlubek), modified by Carsten Hufe
  * 
  *         Modified by Carsten Hufe - make it compatible to Wicket 1.4 -
- *         customize it (i hate pink)
+ *         customized it (I hate pink)
  * 
  */
 public class ProgressBar extends Panel {
@@ -95,36 +96,43 @@ public class ProgressBar extends Panel {
 	private int width = 400;
 	private ProgressionModel model;
 
-	public ProgressBar(String id, final ProgressionModel model) {
+	public ProgressBar(String id, ProgressionModel model) {
 		super(id, model);
 		this.model = model;
-
-		// add CSS to parent to render the CSS even if the progress bar is
-		// initially
-		// invisible
-		HeaderContributor cssContributor = CSSPackageResource.getHeaderContribution(CSS);
-		if (getParent() != null) {
-			getParent().add(cssContributor);
-		} else {
-			add(cssContributor);
-		}
-
-		add(new Label("label", getLabelModel(model)));
-		add(new Label("message", getMessageModel(model)));
-		add(new WebMarkupContainer("bar").add(new AttributeModifier("style", true, new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String getObject() {
-				// ProgressionModel model = (ProgressionModel) getModel();
-				Progression progression = model.getProgression();
-
-				// set the width of the bar in % of the progress
-				// this is coupled with the specific CSS
-				return "width: " + progression.getProgress() + "%";
-			}
-		})));
+		add(createCSSHeaderContributor());
+		add(createProgressPercentageLabel());
+		add(createProgressMessageLabel());
+		add(createProgressBarContainer());
 		setOutputMarkupId(true);
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CSS);
+	}
+
+	private Component createProgressBarContainer() {
+		return new WebMarkupContainer("bar").add(new AttributeModifier("style", true,
+				new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public String getObject() {
+						// ProgressionModel model = (ProgressionModel)
+						// getModel();
+						Progression progression = model.getProgression();
+						// set the width of the bar in % of the progress
+						// this is coupled with the specific CSS
+						return "width: " + progression.getProgress() + "%";
+					}
+				}));
+	}
+
+	private Label createProgressMessageLabel() {
+		return new Label("progressMessage", createProgressMessageModel());
+	}
+
+	private Label createProgressPercentageLabel() {
+		return new Label("progessPercentage", createProgressPercentageModel());
 	}
 
 	/**
@@ -137,7 +145,7 @@ public class ProgressBar extends Panel {
 	 * 
 	 * @return A model for the bar label
 	 */
-	protected AbstractReadOnlyModel<String> getLabelModel(final ProgressionModel model) {
+	protected AbstractReadOnlyModel<String> createProgressPercentageModel() {
 		return new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
@@ -159,7 +167,7 @@ public class ProgressBar extends Panel {
 	 * 
 	 * @return A model for the bar message label
 	 */
-	protected IModel<String> getMessageModel(final ProgressionModel model) {
+	protected IModel<String> createProgressMessageModel() {
 		return new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 

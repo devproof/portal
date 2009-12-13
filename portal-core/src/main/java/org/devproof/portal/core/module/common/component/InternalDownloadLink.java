@@ -44,48 +44,57 @@ public abstract class InternalDownloadLink extends StatelessLink {
 	@Override
 	public void onClick() {
 		try {
-			final File file = getFile();
-			final FileInputStream fis = new FileInputStream(file);
-
-			IResourceStream resourceStream = new IResourceStream() {
-				private static final long serialVersionUID = 1L;
-
-				public void close() throws IOException {
-					fis.close();
-				}
-
-				public String getContentType() {
-					return "application/octet-stream";
-				}
-
-				public InputStream getInputStream() throws ResourceStreamNotFoundException {
-					return fis;
-				}
-
-				public Locale getLocale() {
-					return null;
-				}
-
-				public long length() {
-					return file.length();
-				}
-
-				public void setLocale(Locale locale) {
-				}
-
-				public Time lastModifiedTime() {
-					return Time.milliseconds(file.lastModified());
-				}
-			};
-			getRequestCycle().setRequestTarget(new ResourceStreamRequestTarget(resourceStream) {
-				@Override
-				public String getFileName() {
-					return (file.getName());
-				}
-			});
+			File file = getFile();
+			FileInputStream fis = new FileInputStream(file);
+			IResourceStream resourceStream = createFileResourceStream(file, fis);
+			getRequestCycle().setRequestTarget(createFileResourceStreamRequestTarget(file, resourceStream));
 		} catch (FileNotFoundException e) {
 			throw new UnhandledException(e);
 		}
+	}
+
+	private ResourceStreamRequestTarget createFileResourceStreamRequestTarget(final File file,
+			IResourceStream resourceStream) {
+		return new ResourceStreamRequestTarget(resourceStream) {
+			@Override
+			public String getFileName() {
+				return (file.getName());
+			}
+		};
+	}
+
+	private IResourceStream createFileResourceStream(final File file, final FileInputStream fis) {
+		IResourceStream resourceStream = new IResourceStream() {
+			private static final long serialVersionUID = 1L;
+
+			public void close() throws IOException {
+				fis.close();
+			}
+
+			public String getContentType() {
+				return "application/octet-stream";
+			}
+
+			public InputStream getInputStream() throws ResourceStreamNotFoundException {
+				return fis;
+			}
+
+			public Locale getLocale() {
+				return null;
+			}
+
+			public long length() {
+				return file.length();
+			}
+
+			public void setLocale(Locale locale) {
+			}
+
+			public Time lastModifiedTime() {
+				return Time.milliseconds(file.lastModified());
+			}
+		};
+		return resourceStream;
 	}
 
 	/**

@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.print.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -37,13 +38,21 @@ public abstract class PrintPage extends WebPage {
 	private ConfigurationService configurationService;
 
 	public PrintPage(PageParameters params) {
-		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
-		add(CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css"));
 		PortalUtil.addSyntaxHightlighter(this);
+		add(createDefaultCSSHeaderContributor());
+		add(createPrinterCSSHeaderContributor());
 		add(createPrintableComponent("content", params));
 		add(createPageTitle());
 		add(createCopyrightContainer());
 		add(createFooterLabel());
+	}
+
+	private HeaderContributor createPrinterCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css");
+	}
+
+	private HeaderContributor createDefaultCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
 	}
 
 	private Component createFooterLabel() {
