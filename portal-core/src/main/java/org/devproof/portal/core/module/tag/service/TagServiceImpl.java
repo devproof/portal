@@ -36,28 +36,28 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 	}
 
 	@Override
-	public List<T> findMostPopularTags(final Integer firstResult, final Integer maxResult) {
+	public List<T> findMostPopularTags(Integer firstResult, Integer maxResult) {
 		return tagDao.findMostPopularTags(firstResult, maxResult);
 	}
 
 	@Override
-	public List<T> findMostPopularTags(final RoleEntity role, final Integer firstResult, final Integer maxResult) {
+	public List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
 		return tagDao.findMostPopularTags(role, relatedTagRight, firstResult, maxResult);
 	}
 
 	@Override
-	public List<T> findTagsStartingWith(final String prefix) {
+	public List<T> findTagsStartingWith(String prefix) {
 		return tagDao.findTagsStartingWith(prefix);
 	}
 
 	@Override
-	public T newTagEntity(final String tag) {
+	public T newTagEntity(String tag) {
 		T obj;
 		try {
 			obj = tagDao.getType().newInstance();
-		} catch (final InstantiationException e) {
+		} catch (InstantiationException e) {
 			throw new UnhandledException(e);
-		} catch (final IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			throw new UnhandledException(e);
 		}
 		obj.setTagname(tag);
@@ -70,7 +70,7 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 	}
 
 	@Override
-	public void delete(final T entity) {
+	public void delete(T entity) {
 		tagDao.delete(entity);
 	}
 
@@ -80,12 +80,12 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 	}
 
 	@Override
-	public T findById(final String id) {
+	public T findById(String id) {
 		return tagDao.findById(id);
 	}
 
 	@Override
-	public void save(final T entity) {
+	public void save(T entity) {
 		tagDao.save(entity);
 	}
 
@@ -100,12 +100,12 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 	}
 
 	@Required
-	public void setTagDao(final TagDao<T> tagDao) {
+	public void setTagDao(TagDao<T> tagDao) {
 		this.tagDao = tagDao;
 	}
 
 	@Required
-	public void setRelatedTagRight(final String relatedTagRight) {
+	public void setRelatedTagRight(String relatedTagRight) {
 		this.relatedTagRight = relatedTagRight;
 	}
 }

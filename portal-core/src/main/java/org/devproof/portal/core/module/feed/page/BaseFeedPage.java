@@ -44,7 +44,7 @@ public abstract class BaseFeedPage extends WebPage {
 
 	private String path = "";
 
-	public BaseFeedPage(final PageParameters params) {
+	public BaseFeedPage(PageParameters params) {
 		super(params);
 		if (params.size() > 0) {
 			path = params.getString("0");
@@ -52,7 +52,7 @@ public abstract class BaseFeedPage extends WebPage {
 	}
 
 	@Override
-	protected final void onRender(final MarkupStream markupStream) {
+	protected final void onRender(MarkupStream markupStream) {
 		getResponse().setContentType(getContentType());
 		PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
 		SyndFeedOutput output = new SyndFeedOutput();

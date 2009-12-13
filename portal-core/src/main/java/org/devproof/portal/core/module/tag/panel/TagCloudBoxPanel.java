@@ -47,14 +47,14 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 	private ConfigurationService configurationService;
 
 	private T selectedTag;
-	private final DataView<T> dataView;
-	private final WebMarkupContainer titleContainer;
+	private DataView<T> dataView;
+	private WebMarkupContainer titleContainer;
 
-	public TagCloudBoxPanel(final String id, final TagService<T> tagService, final IModel<T> tagTarget,
-			final Class<? extends Page> page, final PageParameters params) {
+	public TagCloudBoxPanel(String id, TagService<T> tagService, IModel<T> tagTarget, final Class<? extends Page> page,
+			PageParameters params) {
 		super(id);
 		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
-		final PortalSession session = (PortalSession) getSession();
+		PortalSession session = (PortalSession) getSession();
 		List<T> tags = null;
 		if (session.hasRight(tagService.getRelatedTagRight())) {
 			tags = tagService
@@ -77,10 +77,10 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final Item<T> item) {
-				final T tag = item.getModelObject();
+			protected void populateItem(Item<T> item) {
+				T tag = item.getModelObject();
 
-				final BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("tagLink", page);
+				BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("tagLink", page);
 				link.add(new Label("tagLabel", tag.getTagname()));
 				item.add(link);
 				if (tag.equals(TagCloudBoxPanel.this.selectedTag)) {
@@ -101,7 +101,7 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

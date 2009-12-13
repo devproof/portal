@@ -44,13 +44,13 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry, Initi
 	}
 
 	@Override
-	public void registerPage(final Class<? extends Page> page) {
+	public void registerPage(Class<? extends Page> page) {
 		pages.add(page);
 	}
 
 	@Override
-	public void registerPages(final List<Class<? extends Page>> pages) {
-		for (final Class<? extends Page> page : pages) {
+	public void registerPages(List<Class<? extends Page>> pages) {
+		for (Class<? extends Page> page : pages) {
 			registerPage(page);
 		}
 	}
@@ -61,7 +61,7 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry, Initi
 	}
 
 	@Override
-	public void removePage(final Class<? extends Page> page) {
+	public void removePage(Class<? extends Page> page) {
 		pages.remove(page);
 	}
 
@@ -83,11 +83,11 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry, Initi
 		buildNavigation();
 	}
 
-	public void setPageLocator(final PageLocator pageLocator) {
+	public void setPageLocator(PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}
 
-	public void setModuleService(final ModuleService moduleService) {
+	public void setModuleService(ModuleService moduleService) {
 		this.moduleService = moduleService;
 	}
 

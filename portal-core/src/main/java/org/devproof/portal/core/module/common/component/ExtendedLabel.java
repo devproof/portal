@@ -55,7 +55,7 @@ public class ExtendedLabel extends Panel {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public ExtendedLabel(final String id, final String content) {
+	public ExtendedLabel(String id, String content) {
 		super(id);
 
 		RepeatingView repeating = new RepeatingView("repeating");
@@ -145,10 +145,10 @@ public class ExtendedLabel extends Panel {
 	public static class ImgResourceReference extends ResourceReference {
 		private static final long serialVersionUID = 1L;
 		private static final long MAX_AGE = 1000 * 60 * 10; // TEN MINUTES
-		private final Resource resource;
-		private final Date time = PortalUtil.now();
+		private Resource resource;
+		private Date time = PortalUtil.now();
 
-		public ImgResourceReference(final String hash, final Resource resource) {
+		public ImgResourceReference(String hash, Resource resource) {
 			super(ExtendedLabel.class, hash);
 			this.resource = resource;
 		}

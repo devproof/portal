@@ -33,9 +33,8 @@ package org.devproof.portal.core.module.common.component;
  *         comment Carsten Hufe: nothing modified
  */
 public class Progression {
-	private final int progress;
-
-	private final String message;
+	private int progress;
+	private String message;
 
 	/**
 	 * Create a new Progression value object from a percentage progress value.
@@ -43,7 +42,7 @@ public class Progression {
 	 * @param progress
 	 *            The progress in percent from 0 to 100, where 100 means done
 	 */
-	public Progression(final int progress) {
+	public Progression(int progress) {
 		this.progress = progress;
 		message = null;
 	}
@@ -57,7 +56,7 @@ public class Progression {
 	 * @param message
 	 *            message
 	 */
-	public Progression(final int progress, final String message) {
+	public Progression(int progress, String message) {
 		this.progress = progress;
 		this.message = message;
 	}

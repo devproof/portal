@@ -35,27 +35,28 @@ import org.devproof.portal.core.module.tag.service.TagService;
  * 
  * @author Carsten Hufe
  */
-public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> implements IFormModelUpdateListener {
+public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> implements
+		IFormModelUpdateListener {
 	private static final long serialVersionUID = 1L;
-	private final TagService<T> tagService;
+	private TagService<T> tagService;
 	private IModel<List<T>> originalTagsModel = null;
-	
-	private TagField(final String id, final String tags, final TagService<T> tagService) {
+
+	private TagField(String id, String tags, TagService<T> tagService) {
 		super(id, Model.of(tags));
 		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
 		this.tagService = tagService;
 	}
-	
-	public TagField(final String id, final IModel<List<T>> tags, final TagService<T> tagService) {
+
+	public TagField(String id, IModel<List<T>> tags, TagService<T> tagService) {
 		super(id, Model.of(createModelString(tags.getObject())));
 		originalTagsModel = tags;
 		this.tagService = tagService;
 	}
 
-	private static <T extends BaseTagEntity<?>> String createModelString(final List<T> tags) {
+	private static <T extends BaseTagEntity<?>> String createModelString(List<T> tags) {
 		StringBuilder concat = new StringBuilder();
 		if (tags != null) {
-			for (final T tag : tags) {
+			for (T tag : tags) {
 				concat.append(tag.getTagname()).append(TagConstants.TAG_DEFAULT_SEPERATOR);
 			}
 		}
@@ -63,18 +64,18 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 	}
 
 	@Override
-	protected Iterator<String> getChoices(final String input) {
+	protected Iterator<String> getChoices(String input) {
 
 		if (Strings.isEmpty(input)) {
 			return new ArrayList<String>().iterator();
 		}
 
 		String lastWord = getLastWord(input);
-		final List<String> choices = new ArrayList<String>(10);
+		List<String> choices = new ArrayList<String>(10);
 		if (isSearchable(input, lastWord)) {
-			final String leadingTags = getLeadingTags(input, lastWord);
-			final List<T> matchingCompletionTags = tagService.findTagsStartingWith(lastWord);
-			for (final T matchingCompletionTag : matchingCompletionTags) {
+			String leadingTags = getLeadingTags(input, lastWord);
+			List<T> matchingCompletionTags = tagService.findTagsStartingWith(lastWord);
+			for (T matchingCompletionTag : matchingCompletionTags) {
 				choices.add(leadingTags + matchingCompletionTag.getTagname());
 			}
 		}
@@ -82,17 +83,17 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 
 	}
 
-	private String getLeadingTags(final String input, String lastWord) {
-		final String prefix = input.substring(0, input.length() - lastWord.length());
+	private String getLeadingTags(String input, String lastWord) {
+		String prefix = input.substring(0, input.length() - lastWord.length());
 		return prefix;
 	}
 
-	private boolean isSearchable(final String input, String lastWord) {
+	private boolean isSearchable(String input, String lastWord) {
 		return lastWord.length() > 1 && input.endsWith(lastWord);
 	}
 
-	private String getLastWord(final String input) {
-		final StringTokenizer tokenizer = new StringTokenizer(input, TagConstants.TAG_SEPERATORS, false);
+	private String getLastWord(String input) {
+		StringTokenizer tokenizer = new StringTokenizer(input, TagConstants.TAG_SEPERATORS, false);
 		String lastToken = "";
 		while (tokenizer.hasMoreTokens()) {
 			lastToken = tokenizer.nextToken();
@@ -104,11 +105,10 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 	 * Returns the tags and stores it
 	 */
 	private List<T> getTagsAndStore() {
-
-		final List<T> back = new ArrayList<T>();
-		final StringTokenizer tokenizer = new StringTokenizer(getValue(), TagConstants.TAG_SEPERATORS, false);
+		List<T> back = new ArrayList<T>();
+		StringTokenizer tokenizer = new StringTokenizer(getValue(), TagConstants.TAG_SEPERATORS, false);
 		while (tokenizer.hasMoreTokens()) {
-			final String tagName = tokenizer.nextToken().trim();
+			String tagName = tokenizer.nextToken().trim();
 			// save only token with 3 letters or more!
 			if (!Strings.isEmpty(tagName) && tagName.length() > 2) {
 				T tag = tagService.findByIdAndCreateIfNotExists(tagName);

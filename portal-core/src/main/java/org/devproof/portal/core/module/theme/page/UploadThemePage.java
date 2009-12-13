@@ -46,11 +46,11 @@ public class UploadThemePage extends WebPage {
 
 	public UploadThemePage() {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
-		final FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
+		FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
 		add(uploadFeedback);
 		final FileUploadField uploadField = new FileUploadField("fileInput");
 		uploadField.setRequired(true);
-		final Form<FileUpload> uploadForm = new Form<FileUpload>("uploadForm") {
+		Form<FileUpload> uploadForm = new Form<FileUpload>("uploadForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override

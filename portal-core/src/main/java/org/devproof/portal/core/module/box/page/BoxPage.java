@@ -50,10 +50,10 @@ public class BoxPage extends TemplatePage {
 	private BoxService boxService;
 	@SpringBean(name = "boxRegistry")
 	private BoxRegistry boxRegistry;
-	private final ModalWindow modalWindow;
-	private final WebMarkupContainer boxDataViewWithRefreshContainer;
+	private ModalWindow modalWindow;
+	private WebMarkupContainer boxDataViewWithRefreshContainer;
 
-	public BoxPage(final PageParameters params) {
+	public BoxPage(PageParameters params) {
 		super(params);
 		add(boxDataViewWithRefreshContainer = createBoxDataViewWithRefreshContainer());
 		add(modalWindow = createModalWindow());
@@ -82,13 +82,12 @@ public class BoxPage extends TemplatePage {
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				final BoxEditPanel boxEditPanel = new BoxEditPanel(modalWindow.getContentId(), boxService
-						.newBoxEntity()) {
+				BoxEditPanel boxEditPanel = new BoxEditPanel(modalWindow.getContentId(), boxService.newBoxEntity()) {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onSave(final AjaxRequestTarget target) {
+					public void onSave(AjaxRequestTarget target) {
 						target.addComponent(boxDataViewWithRefreshContainer);
 						target.addComponent(BoxPage.this.getFeedback());
 						info(getString("msg.saved"));
@@ -114,13 +113,13 @@ public class BoxPage extends TemplatePage {
 	private class BoxDataView extends DataView<BoxEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public BoxDataView(final String id) {
+		public BoxDataView(String id) {
 			super(id, boxDataProvider);
 		}
 
 		@Override
-		protected void populateItem(final Item<BoxEntity> item) {
-			final BoxEntity box = item.getModelObject();
+		protected void populateItem(Item<BoxEntity> item) {
+			BoxEntity box = item.getModelObject();
 			item.add(createSortLabel(box));
 			item.add(createTypeLabel(box));
 			item.add(createTitleLabel(box));
@@ -141,7 +140,7 @@ public class BoxPage extends TemplatePage {
 			});
 		}
 
-		private MarkupContainer createMoveDownLink(final BoxEntity box) {
+		private MarkupContainer createMoveDownLink(BoxEntity box) {
 			AjaxLink<BoxEntity> moveDownLink = newMoveDownLink(box);
 			moveDownLink.add(new Image("downImage", CommonConstants.REF_DOWN_IMG));
 			return moveDownLink;
@@ -152,14 +151,14 @@ public class BoxPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(final AjaxRequestTarget target) {
+				public void onClick(AjaxRequestTarget target) {
 					boxService.moveDown(box);
 					target.addComponent(boxDataViewWithRefreshContainer);
 				}
 			};
 		}
 
-		private MarkupContainer createMoveUpLink(final BoxEntity box) {
+		private MarkupContainer createMoveUpLink(BoxEntity box) {
 			AjaxLink<BoxEntity> moveUpLink = newMoveUpLink(box);
 			moveUpLink.add(new Image("upImage", CommonConstants.REF_UP_IMG));
 			return moveUpLink;
@@ -170,7 +169,7 @@ public class BoxPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(final AjaxRequestTarget target) {
+				public void onClick(AjaxRequestTarget target) {
 					boxService.moveUp(box);
 					target.addComponent(boxDataViewWithRefreshContainer);
 				}
@@ -182,7 +181,7 @@ public class BoxPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					boxService.delete(box);
 					target.addComponent(boxDataViewWithRefreshContainer);
 					target.addComponent(getFeedback());
@@ -191,12 +190,12 @@ public class BoxPage extends TemplatePage {
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
-					final BoxEditPanel editUserPanel = new BoxEditPanel(modalWindow.getContentId(), box) {
+					BoxEditPanel editUserPanel = new BoxEditPanel(modalWindow.getContentId(), box) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public void onSave(final AjaxRequestTarget target) {
+						public void onSave(AjaxRequestTarget target) {
 							target.addComponent(boxDataViewWithRefreshContainer);
 							target.addComponent(getFeedback());
 							info(getString("msg.saved"));
@@ -212,16 +211,16 @@ public class BoxPage extends TemplatePage {
 			};
 		}
 
-		private Label createTitleLabel(final BoxEntity box) {
+		private Label createTitleLabel(BoxEntity box) {
 			return new Label("title", box.getTitle());
 		}
 
-		private Label createTypeLabel(final BoxEntity box) {
+		private Label createTypeLabel(BoxEntity box) {
 			String name = boxRegistry.getNameBySimpleClassName(box.getBoxType());
 			return new Label("type", name);
 		}
 
-		private Label createSortLabel(final BoxEntity box) {
+		private Label createSortLabel(BoxEntity box) {
 			return new Label("sort", Integer.toString(box.getSort()));
 		}
 	};

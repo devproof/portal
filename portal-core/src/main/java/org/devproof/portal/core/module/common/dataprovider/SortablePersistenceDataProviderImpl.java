@@ -45,7 +45,7 @@ public class SortablePersistenceDataProviderImpl<T> extends SortableDataProvider
 	private String countQuery;
 
 	@Override
-	public Iterator<? extends T> iterator(final int first, final int count) {
+	public Iterator<? extends T> iterator(int first, int count) {
 		SortParam sp = getSort();
 		List<T> list = dataProviderDao.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count,
 				queryObject, prefetch);
@@ -53,7 +53,7 @@ public class SortablePersistenceDataProviderImpl<T> extends SortableDataProvider
 	}
 
 	@Override
-	public IModel<T> model(final Object arg0) {
+	public IModel<T> model(Object arg0) {
 		return new CompoundPropertyModel<T>(arg0);
 	}
 
@@ -72,23 +72,23 @@ public class SortablePersistenceDataProviderImpl<T> extends SortableDataProvider
 	}
 
 	@Override
-	public void setQueryObject(final Serializable queryObject) {
+	public void setQueryObject(Serializable queryObject) {
 		this.queryObject = queryObject;
 	}
 
-	public void setEntityClass(final Class<T> entityClass) {
+	public void setEntityClass(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
 
-	public void setDataProviderDao(final DataProviderDao<T> dataProviderDao) {
+	public void setDataProviderDao(DataProviderDao<T> dataProviderDao) {
 		this.dataProviderDao = dataProviderDao;
 	}
 
-	public void setPrefetch(final List<String> prefetch) {
+	public void setPrefetch(List<String> prefetch) {
 		this.prefetch = prefetch;
 	}
 
-	public void setCountQuery(final String countQuery) {
+	public void setCountQuery(String countQuery) {
 		this.countQuery = countQuery;
 	}
 }

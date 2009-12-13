@@ -31,12 +31,11 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 	private BoxLocator boxLocator;
-
 	private final Map<String, BoxConfiguration> boxes = new HashMap<String, BoxConfiguration>();
 
 	@Override
-	public String getNameBySimpleClassName(final String clazz) {
-		final BoxConfiguration box = boxes.get(clazz);
+	public String getNameBySimpleClassName(String clazz) {
+		BoxConfiguration box = boxes.get(clazz);
 		if (box != null) {
 			return box.getName();
 		}
@@ -49,25 +48,25 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 	}
 
 	@Override
-	public boolean isBoxClassRegistered(final String clazz) {
+	public boolean isBoxClassRegistered(String clazz) {
 		return boxes.containsKey(clazz);
 	}
 
 	@Override
-	public void registerBox(final BoxConfiguration box) {
+	public void registerBox(BoxConfiguration box) {
 		boxes.put(box.getBoxClass().getSimpleName(), box);
 	};
 
 	@Override
-	public void removeBox(final BoxConfiguration box) {
+	public void removeBox(BoxConfiguration box) {
 		boxes.remove(box.getBoxClass().getSimpleName());
 	}
 
 	@Override
-	public BoxConfiguration getBoxConfigurationBySimpleClassName(final String simpleClazz) {
-		final BoxConfiguration box = boxes.get(simpleClazz);
+	public BoxConfiguration getBoxConfigurationBySimpleClassName(String simpleClazz) {
+		BoxConfiguration box = boxes.get(simpleClazz);
 		if (box != null) {
-			final BoxConfiguration back = new BoxConfiguration();
+			BoxConfiguration back = new BoxConfiguration();
 			back.setBoxClass(box.getBoxClass());
 			back.setName(box.getName());
 			return back;
@@ -76,8 +75,8 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 	}
 
 	@Override
-	public Class<? extends Component> getClassBySimpleClassName(final String simpleClazz) {
-		final BoxConfiguration box = boxes.get(simpleClazz);
+	public Class<? extends Component> getClassBySimpleClassName(String simpleClazz) {
+		BoxConfiguration box = boxes.get(simpleClazz);
 		if (box != null) {
 			return box.getBoxClass();
 		}
@@ -86,13 +85,13 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		final Collection<BoxConfiguration> boxes = boxLocator.getBoxes();
-		for (final BoxConfiguration box : boxes) {
+		Collection<BoxConfiguration> boxes = boxLocator.getBoxes();
+		for (BoxConfiguration box : boxes) {
 			registerBox(box);
 		}
 	}
 
-	public void setBoxLocator(final BoxLocator boxLocator) {
+	public void setBoxLocator(BoxLocator boxLocator) {
 		this.boxLocator = boxLocator;
 	}
 }

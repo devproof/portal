@@ -38,14 +38,14 @@ import org.devproof.portal.core.module.common.query.IQuery;
 public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
-	private final StatelessForm<IQuery<?>> form;
-	private final List<BaseSearchBoxListener> listener = new ArrayList<BaseSearchBoxListener>();
-	private final boolean isAuthor;
+	private StatelessForm<IQuery<?>> form;
+	private List<BaseSearchBoxListener> listener = new ArrayList<BaseSearchBoxListener>();
+	private boolean isAuthor;
 
-	public BaseSearchBoxPanel(final String id, final IQuery<?> query, final QueryDataProvider<?> dataProvider,
-			final String authorRight, final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public BaseSearchBoxPanel(String id, final IQuery<?> query, final QueryDataProvider<?> dataProvider,
+			String authorRight, final TemplatePage parent, final IPageable dataview, final PageParameters params) {
 		super(id);
-		final PortalSession session = (PortalSession) getSession();
+		PortalSession session = (PortalSession) getSession();
 		isAuthor = session.hasRight(authorRight);
 		form = new StatelessForm<IQuery<?>>("searchForm", new CompoundPropertyModel<IQuery<?>>(query)) {
 			private static final long serialVersionUID = 1L;
@@ -86,7 +86,7 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		return isAuthor;
 	}
 
-	public void addListener(final BaseSearchBoxListener listener) {
+	public void addListener(BaseSearchBoxListener listener) {
 		this.listener.add(listener);
 	}
 }

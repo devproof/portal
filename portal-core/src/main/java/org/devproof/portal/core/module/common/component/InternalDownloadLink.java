@@ -37,13 +37,12 @@ import org.apache.wicket.util.time.Time;
 public abstract class InternalDownloadLink extends StatelessLink {
 	private static final long serialVersionUID = 1L;
 
-	public InternalDownloadLink(final String id) {
+	public InternalDownloadLink(String id) {
 		super(id);
 	}
 
 	@Override
 	public void onClick() {
-
 		try {
 			final File file = getFile();
 			final FileInputStream fis = new FileInputStream(file);
@@ -71,7 +70,7 @@ public abstract class InternalDownloadLink extends StatelessLink {
 					return file.length();
 				}
 
-				public void setLocale(final Locale locale) {
+				public void setLocale(Locale locale) {
 				}
 
 				public Time lastModifiedTime() {

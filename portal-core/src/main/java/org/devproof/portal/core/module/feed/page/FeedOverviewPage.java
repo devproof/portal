@@ -34,7 +34,7 @@ public class FeedOverviewPage extends TemplatePage {
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
 
-	public FeedOverviewPage(final PageParameters params) {
+	public FeedOverviewPage(PageParameters params) {
 		super(params);
 		RepeatingView tableRow = new RepeatingView("tableRow");
 		add(tableRow);
@@ -53,7 +53,7 @@ public class FeedOverviewPage extends TemplatePage {
 		}
 	}
 
-	private String getSupportedPagesString(final FeedProvider provider) {
+	private String getSupportedPagesString(FeedProvider provider) {
 		StringBuilder buf = new StringBuilder();
 		for (Class<? extends TemplatePage> page : provider.getSupportedFeedPages()) {
 			buf.append(page.getSimpleName()).append(", ");

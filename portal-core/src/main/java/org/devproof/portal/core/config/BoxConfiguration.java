@@ -39,7 +39,7 @@ public class BoxConfiguration implements Serializable {
 	 * @param boxClass
 	 *            class off the box
 	 */
-	public BoxConfiguration(final String name, final Class<? extends Component> boxClass) {
+	public BoxConfiguration(String name, Class<? extends Component> boxClass) {
 		this.name = name;
 		this.boxClass = boxClass;
 	}
@@ -55,7 +55,7 @@ public class BoxConfiguration implements Serializable {
 	 * @param name
 	 *            name of the box
 	 */
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -70,7 +70,7 @@ public class BoxConfiguration implements Serializable {
 	 * @param boxClass
 	 *            box class (must be a wicket component)
 	 */
-	public void setBoxClass(final Class<? extends Component> boxClass) {
+	public void setBoxClass(Class<? extends Component> boxClass) {
 		this.boxClass = boxClass;
 	}
 

@@ -33,7 +33,7 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
-	public BoxEntity findBoxBySort(final Integer sort) {
+	public BoxEntity findBoxBySort(Integer sort) {
 		return boxDao.findBoxBySort(sort);
 	}
 
@@ -52,7 +52,7 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
-	public void delete(final BoxEntity entity) {
+	public void delete(BoxEntity entity) {
 		int maxSort = boxDao.getMaxSortNum();
 		int deleteSort = entity.getSort();
 		boxDao.delete(entity);
@@ -72,17 +72,17 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
-	public BoxEntity findById(final Integer id) {
+	public BoxEntity findById(Integer id) {
 		return boxDao.findById(id);
 	}
 
 	@Override
-	public void save(final BoxEntity entity) {
+	public void save(BoxEntity entity) {
 		boxDao.save(entity);
 	}
 
 	@Override
-	public void moveDown(final BoxEntity box) {
+	public void moveDown(BoxEntity box) {
 		int maxSort = boxDao.getMaxSortNum();
 		if (box.getSort() < maxSort) {
 			BoxEntity moveDown = box;
@@ -95,7 +95,7 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
-	public void moveUp(final BoxEntity box) {
+	public void moveUp(BoxEntity box) {
 		if (box.getSort() > 1) {
 			BoxEntity moveUp = box;
 			BoxEntity moveDown = boxDao.findBoxBySort(box.getSort() - 1);
@@ -107,7 +107,7 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Required
-	public void setBoxDao(final BoxDao boxDao) {
+	public void setBoxDao(BoxDao boxDao) {
 		this.boxDao = boxDao;
 	}
 }

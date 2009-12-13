@@ -45,7 +45,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return username;
 	}
 
-	public void setUsername(final String username) {
+	public void setUsername(String username) {
 		this.username = username;
 	}
 
@@ -53,7 +53,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return firstname;
 	}
 
-	public void setFirstname(final String firstname) {
+	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 
@@ -61,7 +61,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return lastname;
 	}
 
-	public void setLastname(final String lastname) {
+	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
 
@@ -69,7 +69,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return email;
 	}
 
-	public void setEmail(final String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -77,7 +77,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return birthday;
 	}
 
-	public void setBirthday(final Date birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 
@@ -85,7 +85,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return confirmationLink;
 	}
 
-	public void setConfirmationLink(final String confirmationLink) {
+	public void setConfirmationLink(String confirmationLink) {
 		this.confirmationLink = confirmationLink;
 	}
 
@@ -93,7 +93,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return resetPasswordLink;
 	}
 
-	public void setResetPasswordLink(final String resetPasswordLink) {
+	public void setResetPasswordLink(String resetPasswordLink) {
 		this.resetPasswordLink = resetPasswordLink;
 	}
 
@@ -101,7 +101,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return content;
 	}
 
-	public void setContent(final String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -109,7 +109,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return toUsername;
 	}
 
-	public void setToUsername(final String toUsername) {
+	public void setToUsername(String toUsername) {
 		this.toUsername = toUsername;
 	}
 
@@ -117,7 +117,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return toFirstname;
 	}
 
-	public void setToFirstname(final String toFirstname) {
+	public void setToFirstname(String toFirstname) {
 		this.toFirstname = toFirstname;
 	}
 
@@ -125,7 +125,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return toLastname;
 	}
 
-	public void setToLastname(final String toLastname) {
+	public void setToLastname(String toLastname) {
 		this.toLastname = toLastname;
 	}
 
@@ -133,7 +133,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return toEmail;
 	}
 
-	public void setToEmail(final String toEmail) {
+	public void setToEmail(String toEmail) {
 		this.toEmail = toEmail;
 	}
 
@@ -141,7 +141,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return contactFullname;
 	}
 
-	public void setContactFullname(final String contactFullname) {
+	public void setContactFullname(String contactFullname) {
 		this.contactFullname = contactFullname;
 	}
 
@@ -149,7 +149,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return contactEmail;
 	}
 
-	public void setContactEmail(final String contactEmail) {
+	public void setContactEmail(String contactEmail) {
 		this.contactEmail = contactEmail;
 	}
 
@@ -157,7 +157,7 @@ public class EmailPlaceholderBean implements Serializable {
 		return contactIp;
 	}
 
-	public void setContactIp(final String contactIp) {
+	public void setContactIp(String contactIp) {
 		this.contactIp = contactIp;
 	}
 }

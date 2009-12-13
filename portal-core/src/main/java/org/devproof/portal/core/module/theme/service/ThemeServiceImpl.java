@@ -57,11 +57,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.context.ServletContextAware;
 
 public class ThemeServiceImpl implements ThemeService, ServletContextAware, ApplicationContextAware {
+	private static final Log LOG = LogFactory.getLog(ThemeServiceImpl.class);
 	private ServletContext servletContext;
 	private ApplicationContext applicationContext;
 	private ConfigurationService configurationService;
 	private String themeVersion;
-	private static final Log LOG = LogFactory.getLog(ThemeServiceImpl.class);
 
 	@Override
 	public List<ThemeBean> findAllThemes() {
@@ -98,7 +98,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 	}
 
 	@Override
-	public void install(final File themeArchive) {
+	public void install(File themeArchive) {
 		String uuid = UUID.randomUUID().toString();
 		try {
 			File folder = new File(servletContext.getRealPath("/WEB-INF/themes"));
@@ -129,7 +129,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 	}
 
 	@Override
-	public void selectTheme(final ThemeBean theme) {
+	public void selectTheme(ThemeBean theme) {
 		ConfigurationEntity conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
 		conf.setValue(theme.getUuid());
 		configurationService.save(conf);
@@ -138,7 +138,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 	}
 
 	@Override
-	public void uninstall(final ThemeBean theme) {
+	public void uninstall(ThemeBean theme) {
 		try {
 			File folder = new File(servletContext.getRealPath("/WEB-INF/themes/" + theme.getUuid()));
 			FileUtils.deleteDirectory(folder);
@@ -158,7 +158,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 	}
 
 	@Override
-	public ValidationKey validateTheme(final File themeArchive) {
+	public ValidationKey validateTheme(File themeArchive) {
 		try {
 			ZipFile zip = new ZipFile(themeArchive);
 			ZipEntry entry = zip.getEntry("theme.properties");
@@ -197,7 +197,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		return createDefaultTheme(ThemeConstants.SMALL_THEME_PATHS, ThemeConstants.FILTER_PATHS);
 	}
 
-	private File createDefaultTheme(final String[] themePaths, final String[] filterPaths) {
+	private File createDefaultTheme(String[] themePaths, String[] filterPaths) {
 		try {
 			@SuppressWarnings("unchecked")
 			Set<String> libs = servletContext.getResourcePaths("/WEB-INF/lib");
@@ -268,7 +268,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		return null;
 	}
 
-	private boolean isFiltered(final String[] themePaths, final String filtered[], final String current) {
+	private boolean isFiltered(String[] themePaths, String filtered[], String current) {
 		if (themePaths != null) {
 			boolean found = false;
 			for (String themePath : themePaths) {
@@ -295,7 +295,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		return true;
 	}
 
-	private String getZipPath(final Resource roots[], final Resource current) throws IOException {
+	private String getZipPath(Resource roots[], Resource current) throws IOException {
 		String currentPath = current.getURL().getPath();
 		for (Resource root : roots) {
 			String rootPath = root.getURL().getPath();
@@ -306,8 +306,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		return null;
 	}
 
-	private ThemeBean getBeanFromInputStream(final String uuid, final InputStream fis) throws FileNotFoundException,
-			IOException {
+	private ThemeBean getBeanFromInputStream(String uuid, InputStream fis) throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
 		prop.load(fis);
 		ThemeBean bean = new ThemeBean();
@@ -320,22 +319,22 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 		return bean;
 	}
 
-	public void setServletContext(final ServletContext servletContext) {
+	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 
 	@Required
-	public void setThemeVersion(final String themeVersion) {
+	public void setThemeVersion(String themeVersion) {
 		this.themeVersion = themeVersion;
 	}
 
 	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
 }

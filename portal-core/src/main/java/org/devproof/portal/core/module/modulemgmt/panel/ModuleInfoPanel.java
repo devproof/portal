@@ -33,7 +33,7 @@ public class ModuleInfoPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	public ModuleInfoPanel(final String id, final ModuleConfiguration module) {
+	public ModuleInfoPanel(String id, ModuleConfiguration module) {
 		super(id);
 		// List pages
 		RepeatingView tableRow = new RepeatingView("pageRow");

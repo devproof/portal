@@ -56,7 +56,7 @@ public class ContactPageTest extends TestCase {
 		assertEmail(emailServiceMock);
 	}
 
-	private void assertEmail(final EmailServiceMock emailServiceMock) {
+	private void assertEmail(EmailServiceMock emailServiceMock) {
 		EmailPlaceholderBean emailPlaceholderBean = emailServiceMock.getEmailPlaceholderBean();
 		assertEquals("Max Power", emailPlaceholderBean.getContactFullname());
 		assertEquals("max.power@no.domain", emailPlaceholderBean.getContactEmail());
@@ -83,7 +83,7 @@ public class ContactPageTest extends TestCase {
 		tester.assertRenderedPage(ContactPage.class);
 	}
 
-	private void setEmailServiceMock(final EmailService emailServiceMock) throws Exception {
+	private void setEmailServiceMock(EmailService emailServiceMock) throws Exception {
 		ContactPage lastRenderedPage = (ContactPage) tester.getLastRenderedPage();
 		Field emailServiceField = ContactPage.class.getDeclaredField("emailService");
 		emailServiceField.setAccessible(true);

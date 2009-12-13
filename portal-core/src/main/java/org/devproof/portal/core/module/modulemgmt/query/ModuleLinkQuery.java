@@ -30,10 +30,10 @@ public class ModuleLinkQuery implements Serializable {
 
 	@BeanQuery("e.linkType = ?")
 	public LinkType getLinkType() {
-		return this.linkType;
+		return linkType;
 	}
 
-	public void setLinkType(final LinkType linkType) {
+	public void setLinkType(LinkType linkType) {
 		this.linkType = linkType;
 	}
 

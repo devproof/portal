@@ -59,7 +59,7 @@ final public class RightEntity extends BaseEntity {
 	public RightEntity() {
 	}
 
-	public RightEntity(final String right) {
+	public RightEntity(String right) {
 		this.right = right;
 	}
 
@@ -68,7 +68,7 @@ final public class RightEntity extends BaseEntity {
 		return right;
 	}
 
-	public void setRight(final String right) {
+	public void setRight(String right) {
 		this.right = right;
 	}
 
@@ -76,7 +76,7 @@ final public class RightEntity extends BaseEntity {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -87,15 +87,15 @@ final public class RightEntity extends BaseEntity {
 		return roles;
 	}
 
-	public void setRoles(final List<RoleEntity> roles) {
+	public void setRoles(List<RoleEntity> roles) {
 		this.roles = roles;
 	}
 
-	public boolean add(final RoleEntity e) {
+	public boolean add(RoleEntity e) {
 		return roles.add(e);
 	}
 
-	public boolean addAll(final Collection<? extends RoleEntity> c) {
+	public boolean addAll(Collection<? extends RoleEntity> c) {
 		return roles.addAll(c);
 	}
 
@@ -103,20 +103,20 @@ final public class RightEntity extends BaseEntity {
 		return selected;
 	}
 
-	public void setSelected(final boolean pSelected) {
+	public void setSelected(boolean pSelected) {
 		selected = pSelected;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((right == null) ? 0 : right.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -126,7 +126,7 @@ final public class RightEntity extends BaseEntity {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final RightEntity other = (RightEntity) obj;
+		RightEntity other = (RightEntity) obj;
 		if (right == null) {
 			if (other.right != null) {
 				return false;

@@ -31,7 +31,7 @@ public class ContactBean implements Serializable {
 		return fullname;
 	}
 
-	public void setFullname(final String fullname) {
+	public void setFullname(String fullname) {
 		this.fullname = fullname;
 	}
 
@@ -39,7 +39,7 @@ public class ContactBean implements Serializable {
 		return email;
 	}
 
-	public void setEmail(final String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
@@ -47,7 +47,7 @@ public class ContactBean implements Serializable {
 		return content;
 	}
 
-	public void setContent(final String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -55,7 +55,7 @@ public class ContactBean implements Serializable {
 		return touser;
 	}
 
-	public void setTouser(final String touser) {
+	public void setTouser(String touser) {
 		this.touser = touser;
 	}
 

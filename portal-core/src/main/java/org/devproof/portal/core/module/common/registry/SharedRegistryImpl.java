@@ -31,24 +31,24 @@ public class SharedRegistryImpl implements SharedRegistry {
 	}
 
 	@Override
-	public <T> T getResource(final String resourceKey) {
+	public <T> T getResource(String resourceKey) {
 		@SuppressWarnings("unchecked")
 		T back = (T) resources.get(resourceKey);
 		return back;
 	}
 
 	@Override
-	public void registerResource(final String resourceKey, final Object resource) {
+	public void registerResource(String resourceKey, Object resource) {
 		resources.put(resourceKey, resource);
 	}
 
 	@Override
-	public void removeResource(final String resourceKey) {
+	public void removeResource(String resourceKey) {
 		resources.remove(resourceKey);
 	}
 
 	@Override
-	public boolean isResourceAvailable(final String resourceKey) {
+	public boolean isResourceAvailable(String resourceKey) {
 		return resources.containsKey(resourceKey);
 	}
 }

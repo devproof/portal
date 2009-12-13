@@ -55,7 +55,7 @@ public class RightServiceImpl implements RightService {
 	}
 
 	@Override
-	public List<RightEntity> findRightsStartingWith(final String prefix) {
+	public List<RightEntity> findRightsStartingWith(String prefix) {
 		return rightDao.findRightsStartingWith(prefix);
 	}
 
@@ -65,12 +65,12 @@ public class RightServiceImpl implements RightService {
 	}
 
 	@Override
-	public RightEntity newRightEntity(final String right) {
+	public RightEntity newRightEntity(String right) {
 		return new RightEntity(right);
 	}
 
 	@Override
-	public void delete(final RightEntity entity) {
+	public void delete(RightEntity entity) {
 		rightDao.delete(entity);
 	}
 
@@ -80,17 +80,17 @@ public class RightServiceImpl implements RightService {
 	}
 
 	@Override
-	public RightEntity findById(final String id) {
+	public RightEntity findById(String id) {
 		return rightDao.findById(id);
 	}
 
 	@Override
-	public void save(final RightEntity entity) {
+	public void save(RightEntity entity) {
 		rightDao.save(entity);
 	}
 
 	@Required
-	public void setRightDao(final RightDao rightDao) {
+	public void setRightDao(RightDao rightDao) {
 		this.rightDao = rightDao;
 	}
 }

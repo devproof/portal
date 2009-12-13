@@ -87,10 +87,9 @@ public abstract class TemplatePage extends WebPage {
 	private PageAdminBoxPanel pageAdminBox;
 	private boolean filterBoxHideTitle;
 	private boolean tagCloudBoxHideTitle;
-	private final IModel<String> pageTitle;
+	private IModel<String> pageTitle;
 
-	
-	public TemplatePage(final PageParameters params) {
+	public TemplatePage(PageParameters params) {
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css"));
 		if (params.containsKey("infoMsg")) {
@@ -121,16 +120,16 @@ public abstract class TemplatePage extends WebPage {
 		feedback.setOutputMarkupId(true);
 		addBoxes(params);
 
-		final boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
-		final WebMarkupContainer googleAnalytics1 = new WebMarkupContainer("googleAnalytics1");
+		boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
+		WebMarkupContainer googleAnalytics1 = new WebMarkupContainer("googleAnalytics1");
 		googleAnalytics1.setVisible(googleEnabled);
 		add(googleAnalytics1);
-		final WebComponent googleAnalytics2 = new WebComponent("googleAnalytics2") {
+		WebComponent googleAnalytics2 = new WebComponent("googleAnalytics2") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
-				final StringBuilder buf = new StringBuilder();
+			protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+				StringBuilder buf = new StringBuilder();
 				buf.append("try {\n");
 				buf.append("var pageTracker = _gat._getTracker(\"");
 				buf.append(configurationService.findAsString(CommonConstants.CONF_GOOGLE_WEBPROPERTY_ID));
@@ -148,7 +147,7 @@ public abstract class TemplatePage extends WebPage {
 		}
 		pageTitle = Model.of(localPageTitle + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
 		add(new Label("pageTitle", pageTitle));
-		final WebMarkupContainer copyright = new WebMarkupContainer("copyright");
+		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
 		copyright.add(new SimpleAttributeModifier("content", configurationService
 				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
 		add(copyright);
@@ -165,13 +164,13 @@ public abstract class TemplatePage extends WebPage {
 	 * Adds the Main Navigation on the top
 	 */
 	private void addMainNavigation() {
-		final RepeatingView repeating = new RepeatingView("repeatingMainNav");
+		RepeatingView repeating = new RepeatingView("repeatingMainNav");
 		add(repeating);
-		final List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
-		for (final Class<? extends Page> pageClass : registeredPages) {
-			final WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
+		List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
+		for (Class<? extends Page> pageClass : registeredPages) {
+			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
-			final BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("mainNavigationLink", pageClass);
+			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("mainNavigationLink", pageClass);
 			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
 					CommonConstants.MAIN_NAVIGATION_LINK_LABEL);
 			if (StringUtils.isEmpty(label)) {
@@ -186,17 +185,17 @@ public abstract class TemplatePage extends WebPage {
 	/**
 	 * Add the boxes on the right hand side
 	 */
-	private void addBoxes(final PageParameters params) {
-		final List<BoxEntity> boxes = boxService.findAllOrderedBySort();
-		final RepeatingView repeating = new RepeatingView("repeatingSideNav");
+	private void addBoxes(PageParameters params) {
+		List<BoxEntity> boxes = boxService.findAllOrderedBySort();
+		RepeatingView repeating = new RepeatingView("repeatingSideNav");
 		add(repeating);
-		for (final BoxEntity box : boxes) {
-			final WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
+		for (BoxEntity box : boxes) {
+			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
 			Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
 			Component boxInstance = null;
 			if (boxClazz == null) {
-				final BoxEntity error = new BoxEntity();
+				BoxEntity error = new BoxEntity();
 				error.setTitle("!Error!");
 				error.setContent("Box type is not available!");
 				item.add(boxInstance = new OtherBoxPanel("box", Model.of(error)));
@@ -228,14 +227,14 @@ public abstract class TemplatePage extends WebPage {
 				item.add(boxInstance = new FeedBoxPanel("box", getPageClass()));
 			} else {
 				boolean found = false;
-				for (final Constructor<?> constr : boxClazz.getConstructors()) {
-					final Class<?> param[] = constr.getParameterTypes();
+				for (Constructor<?> constr : boxClazz.getConstructors()) {
+					Class<?> param[] = constr.getParameterTypes();
 					if (param.length == 2 && param[0] == String.class && param[1] == PageParameters.class) {
 						try {
 							boxInstance = (Component) constr.newInstance("box", params);
 							found = true;
 							break;
-						} catch (final Exception e) {
+						} catch (Exception e) {
 							throw new UnhandledException(e);
 						}
 					} else if (param.length == 1 && param[0] == String.class) {
@@ -243,7 +242,7 @@ public abstract class TemplatePage extends WebPage {
 							boxInstance = (Component) constr.newInstance("box");
 							found = true;
 							break;
-						} catch (final Exception e) {
+						} catch (Exception e) {
 							throw new UnhandledException(e);
 						}
 					}
@@ -267,7 +266,7 @@ public abstract class TemplatePage extends WebPage {
 	/**
 	 * Set the Filter Box e.g. search or tags
 	 */
-	public void addFilterBox(final Panel filterBox) {
+	public void addFilterBox(Panel filterBox) {
 		if (this.filterBox != null) {
 			if (filterBox instanceof BoxTitleVisibility) {
 				((BoxTitleVisibility) filterBox).setTitleVisible(!filterBoxHideTitle);
@@ -280,8 +279,8 @@ public abstract class TemplatePage extends WebPage {
 	/**
 	 * Set the TagCloud Box e.g. search or tags
 	 */
-	public <T extends BaseTagEntity<?>> void addTagCloudBox(final TagService<T> tagService, final IModel<T> model,
-			final Class<? extends Page> page, final PageParameters params) {
+	public <T extends BaseTagEntity<?>> void addTagCloudBox(TagService<T> tagService, IModel<T> model,
+			Class<? extends Page> page, PageParameters params) {
 		TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, model, page, params);
 		newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
 		tagCloudBox.replaceWith(newTagCloudBox);
@@ -293,7 +292,7 @@ public abstract class TemplatePage extends WebPage {
 	 */
 	public void cleanTagSelection() {
 		if (tagCloudBox instanceof TagCloudBoxPanel<?>) {
-			final TagCloudBoxPanel<?> box = (TagCloudBoxPanel<?>) tagCloudBox;
+			TagCloudBoxPanel<?> box = (TagCloudBoxPanel<?>) tagCloudBox;
 			box.cleanSelection();
 		}
 	}
@@ -301,7 +300,7 @@ public abstract class TemplatePage extends WebPage {
 	/**
 	 * Add a link to the page admin panel
 	 */
-	public void addPageAdminBoxLink(final Component link) {
+	public void addPageAdminBoxLink(Component link) {
 		if (pageAdminBox != null) {
 			pageAdminBox.addLink(link);
 		}
@@ -310,7 +309,7 @@ public abstract class TemplatePage extends WebPage {
 	/**
 	 * Change the page title
 	 */
-	public void setPageTitle(final String title) {
+	public void setPageTitle(String title) {
 		pageTitle.setObject(title + " - " + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
 	}
 

@@ -30,7 +30,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 public class TooltipLabel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public TooltipLabel(final String id, final Component label, final Component tooltip) {
+	public TooltipLabel(String id, Component label, Component tooltip) {
 		super(id);
 		add(JavascriptPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.js"));
 		add(CSSPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.css"));

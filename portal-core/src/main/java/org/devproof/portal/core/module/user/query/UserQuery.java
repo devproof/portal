@@ -35,7 +35,7 @@ public class UserQuery implements Serializable {
 		return allnames;
 	}
 
-	public void setAllnames(final String allnames) {
+	public void setAllnames(String allnames) {
 		this.allnames = allnames;
 	}
 
@@ -44,7 +44,7 @@ public class UserQuery implements Serializable {
 		return active;
 	}
 
-	public void setActive(final Boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -53,7 +53,7 @@ public class UserQuery implements Serializable {
 		return confirmed;
 	}
 
-	public void setConfirmed(final Boolean confirmed) {
+	public void setConfirmed(Boolean confirmed) {
 		this.confirmed = confirmed;
 	}
 }

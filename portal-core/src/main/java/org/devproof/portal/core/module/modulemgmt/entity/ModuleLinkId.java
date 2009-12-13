@@ -37,7 +37,7 @@ public class ModuleLinkId implements Serializable {
 	public ModuleLinkId() {
 	}
 
-	public ModuleLinkId(final String pageName, final LinkType linkType) {
+	public ModuleLinkId(String pageName, LinkType linkType) {
 		this.pageName = pageName;
 		this.linkType = linkType;
 	}
@@ -46,7 +46,7 @@ public class ModuleLinkId implements Serializable {
 		return pageName;
 	}
 
-	public void setPageName(final String pageName) {
+	public void setPageName(String pageName) {
 		this.pageName = pageName;
 	}
 
@@ -54,13 +54,13 @@ public class ModuleLinkId implements Serializable {
 		return linkType;
 	}
 
-	public void setLinkType(final LinkType linkType) {
+	public void setLinkType(LinkType linkType) {
 		this.linkType = linkType;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((linkType == null) ? 0 : linkType.hashCode());
 		result = prime * result + ((pageName == null) ? 0 : pageName.hashCode());
@@ -68,7 +68,7 @@ public class ModuleLinkId implements Serializable {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

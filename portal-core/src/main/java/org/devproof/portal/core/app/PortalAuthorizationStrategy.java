@@ -38,13 +38,13 @@ import org.springframework.context.ApplicationContext;
  * 
  */
 public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
-	private final RightService rightService;
+	private RightService rightService;
 
-	public PortalAuthorizationStrategy(final ApplicationContext context) {
+	public PortalAuthorizationStrategy(ApplicationContext context) {
 		rightService = (RightService) context.getBean("rightService");
 	}
 
-	public boolean isActionAuthorized(final Component component, final Action action) {
+	public boolean isActionAuthorized(Component component, Action action) {
 		// false means the component will not be rendered
 		PortalSession session = ((PortalSession) Session.get());
 		List<RightEntity> allRights = rightService.getAllRights();
@@ -69,7 +69,8 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
 		}
 		// problem with tree table, i dont know why
 		else if (!(component instanceof TreeTable)) {
-			String rightName = RightConstants.COMPONENT_RIGHT_PREFIX + component.getPage().getClass().getSimpleName() + "." + component.getId();
+			String rightName = RightConstants.COMPONENT_RIGHT_PREFIX + component.getPage().getClass().getSimpleName()
+					+ "." + component.getId();
 			RightEntity right = rightService.newRightEntity(rightName);
 			if (allRights.contains(right)) {
 				return session.hasRight(right);
@@ -85,7 +86,7 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean isInstantiationAuthorized(final Class componentClass) {
+	public boolean isInstantiationAuthorized(Class componentClass) {
 		// false means the whole page is blocked
 		PortalSession session = ((PortalSession) Session.get());
 		List<RightEntity> allRights = rightService.getAllRights();

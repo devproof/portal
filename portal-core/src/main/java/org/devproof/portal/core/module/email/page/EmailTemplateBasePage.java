@@ -31,14 +31,14 @@ public class EmailTemplateBasePage extends TemplatePage {
 	@SpringBean(name = "emailService")
 	private EmailService emailService;
 
-	public EmailTemplateBasePage(final PageParameters params) {
+	public EmailTemplateBasePage(PageParameters params) {
 		super(params);
 		addPageAdminBoxLink(new Link<EmailTemplateEntity>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				final EmailTemplateEntity newEntry = emailService.newEmailTemplateEntity();
+				EmailTemplateEntity newEntry = emailService.newEmailTemplateEntity();
 				setResponsePage(new EmailTemplateEditPage(newEntry));
 			}
 		}.add(new Label("linkName", getString("createLink"))));

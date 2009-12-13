@@ -38,12 +38,12 @@ public class UserServiceImpl implements UserService {
 	private ConfigurationService configurationService;
 
 	@Override
-	public long countUserForRole(final RoleEntity role) {
+	public long countUserForRole(RoleEntity role) {
 		return userDao.countUserForRole(role);
 	}
 
 	@Override
-	public boolean existsUsername(final String username) {
+	public boolean existsUsername(String username) {
 		if (UserConstants.UNKNOWN_USERNAME.equalsIgnoreCase(username)) {
 			return true;
 		}
@@ -51,27 +51,27 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserEntity> findUserByEmail(final String email) {
+	public List<UserEntity> findUserByEmail(String email) {
 		return userDao.findUserByEmail(email);
 	}
 
 	@Override
-	public UserEntity findUserBySessionId(final String sessionId) {
+	public UserEntity findUserBySessionId(String sessionId) {
 		return userDao.findUserBySessionId(sessionId);
 	}
 
 	@Override
-	public UserEntity findUserByUsername(final String username) {
+	public UserEntity findUserByUsername(String username) {
 		return userDao.findUserByUsername(username);
 	}
 
 	@Override
-	public List<UserEntity> findUserWithRight(final String right) {
+	public List<UserEntity> findUserWithRight(String right) {
 		return userDao.findUserWithRight(right);
 	}
 
 	@Override
-	public void delete(final UserEntity entity) {
+	public void delete(UserEntity entity) {
 		userDao.delete(entity);
 	}
 
@@ -81,12 +81,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserEntity findById(final Integer id) {
+	public UserEntity findById(Integer id) {
 		return userDao.findById(id);
 	}
 
 	@Override
-	public void save(final UserEntity entity) {
+	public void save(UserEntity entity) {
 		userDao.save(entity);
 	}
 
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean activateUser(final String username, final String activationCode) {
+	public boolean activateUser(String username, String activationCode) {
 		UserEntity user = findUserByUsername(username);
 		if (user != null && activationCode.equals(user.getConfirmationCode())) {
 			user.setConfirmationApprovedAt(PortalUtil.now());
@@ -119,8 +119,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void registerUser(final UserEntity user, final String password, final String url,
-			final String confirmationCode) {
+	public void registerUser(UserEntity user, String password, String url, String confirmationCode) {
 		setUserRegistrationValues(user, password);
 		if (isConfirmationRequired()) {
 			EmailPlaceholderBean placeholder = generateEmailPlaceHolder(user);
@@ -134,11 +133,11 @@ public class UserServiceImpl implements UserService {
 		save(user);
 	}
 
-	protected EmailPlaceholderBean generateEmailPlaceHolder(final UserEntity user) {
+	protected EmailPlaceholderBean generateEmailPlaceHolder(UserEntity user) {
 		return PortalUtil.getEmailPlaceHolderByUser(user);
 	}
 
-	protected void setUserRegistrationValues(final UserEntity user, final String password) {
+	protected void setUserRegistrationValues(UserEntity user, String password) {
 		user.setActive(Boolean.TRUE);
 		user.setPasswordMD5(PortalUtil.generateMd5(password));
 		user.setRegistrationDate(PortalUtil.now());
@@ -150,18 +149,18 @@ public class UserServiceImpl implements UserService {
 		return configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION);
 	}
 
-	protected void sendConfirmationEmail(final String url, final EmailPlaceholderBean placeholder) {
+	protected void sendConfirmationEmail(String url, EmailPlaceholderBean placeholder) {
 		placeholder.setConfirmationLink(url);
 		emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL), placeholder);
 	}
 
-	protected void setConfirmationCode(final UserEntity user, final String confirmationCode) {
+	protected void setConfirmationCode(UserEntity user, String confirmationCode) {
 		user.setConfirmationCode(confirmationCode);
 		user.setConfirmationRequestedAt(PortalUtil.now());
 		user.setConfirmed(false);
 	}
 
-	protected void sendEmailNotificationToAdmins(final EmailPlaceholderBean placeholder) {
+	protected void sendEmailNotificationToAdmins(EmailPlaceholderBean placeholder) {
 		Integer templateId = configurationService.findAsInteger(UserConstants.CONF_NOTIFY_USER_REGISTRATION);
 		List<UserEntity> notifyUsers = findUserWithRight("emailnotification.registered.user");
 		for (UserEntity notifyUser : notifyUsers) {
@@ -174,7 +173,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void setNewPassword(final String username, final String newPassword) {
+	public void setNewPassword(String username, String newPassword) {
 		UserEntity user = findUserByUsername(username);
 		user.setPasswordMD5(PortalUtil.generateMd5(newPassword));
 		user.setChangedAt(PortalUtil.now());
@@ -183,22 +182,22 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Required
-	public void setRoleService(final RoleService roleService) {
+	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
 	}
 
 	@Required
-	public void setEmailService(final EmailService emailService) {
+	public void setEmailService(EmailService emailService) {
 		this.emailService = emailService;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 
 	@Required
-	public void setUserDao(final UserDao userDao) {
+	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}
 }

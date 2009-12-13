@@ -64,23 +64,23 @@ public class RolePage extends TemplatePage {
 	private RightService rightService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private final WebMarkupContainer container;
-	private final ModalWindow modalWindow;
+	private WebMarkupContainer container;
+	private ModalWindow modalWindow;
 
-	public RolePage(final PageParameters params) {
+	public RolePage(PageParameters params) {
 		super(params);
 		addPageAdminBoxLink(new AjaxLink<RoleEntity>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target) {
 				final RoleEditPanel editRolePanel = new RoleEditPanel(modalWindow.getContentId(), roleService
 						.newRoleEntity(), true) {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onSave(final AjaxRequestTarget target) {
+					public void onSave(AjaxRequestTarget target) {
 						target.addComponent(container);
 						target.addComponent(RolePage.this.getFeedback());
 						rightService.refreshGlobalApplicationRights();
@@ -109,14 +109,14 @@ public class RolePage extends TemplatePage {
 		modalWindow.setTitle("Portal");
 		add(modalWindow);
 
-		final RoleDataView dataView = new RoleDataView("tableRow", roleDataProvider, params);
+		RoleDataView dataView = new RoleDataView("tableRow", roleDataProvider, params);
 		container.add(dataView);
 
 		addFilterBox(new RoleSearchBoxPanel("box", query) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target) {
+			protected void onSubmit(AjaxRequestTarget target) {
 				target.addComponent(container);
 			}
 
@@ -126,7 +126,7 @@ public class RolePage extends TemplatePage {
 	private class RoleDataView extends DataView<RoleEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public RoleDataView(final String id, final IDataProvider<RoleEntity> dataProvider, final PageParameters params) {
+		public RoleDataView(String id, IDataProvider<RoleEntity> dataProvider, PageParameters params) {
 			super(id, dataProvider);
 		}
 
@@ -142,15 +142,14 @@ public class RolePage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(final AjaxRequestTarget target) {
+				public void onClick(AjaxRequestTarget target) {
 					RoleEntity refreshedRole = roleService.findById(role.getId());
-					final RoleEditPanel editRolePanel = new RoleEditPanel(modalWindow.getContentId(), refreshedRole,
-							false) {
+					RoleEditPanel editRolePanel = new RoleEditPanel(modalWindow.getContentId(), refreshedRole, false) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public void onSave(final AjaxRequestTarget target) {
+						public void onSave(AjaxRequestTarget target) {
 							target.addComponent(container);
 							target.addComponent(getFeedback());
 							rightService.refreshGlobalApplicationRights();
@@ -170,36 +169,36 @@ public class RolePage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(final AjaxRequestTarget target) {
+				public void onClick(AjaxRequestTarget target) {
 					long numUser = userService.countUserForRole(role);
 					Integer guestRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
 					Integer reguserRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE);
 					if (guestRoleId.equals(role.getId())) {
 						String msg = new StringResourceModel("msg.cannot.delete.guestrole", this, null,
 								new Object[] { numUser }).getString();
-						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
+						InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
 								modalWindow);
 						modalWindow.setContent(infoMessagePanel);
 					} else if (reguserRoleId.equals(role.getId())) {
 						String msg = new StringResourceModel("msg.cannot.delete.reguserrole", this, null,
 								new Object[] { numUser }).getString();
-						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
+						InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
 								modalWindow);
 						modalWindow.setContent(infoMessagePanel);
 					} else if (numUser != 0) {
 						String msg = new StringResourceModel("msg.cannot.delete.assigneduser", this, null,
 								new Object[] { numUser }).getString();
-						final InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
+						InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
 								modalWindow);
 						modalWindow.setContent(infoMessagePanel);
 					} else {
-						final ConfirmDeletePanel<RoleEntity> confirmDeletePanel = new ConfirmDeletePanel<RoleEntity>(
+						ConfirmDeletePanel<RoleEntity> confirmDeletePanel = new ConfirmDeletePanel<RoleEntity>(
 								modalWindow.getContentId(), role, modalWindow) {
 
 							private static final long serialVersionUID = 1L;
 
 							@Override
-							public void onDelete(final AjaxRequestTarget target, final Form<?> form) {
+							public void onDelete(AjaxRequestTarget target, Form<?> form) {
 								roleService.delete(role);
 								target.addComponent(container);
 								target.addComponent(getFeedback());

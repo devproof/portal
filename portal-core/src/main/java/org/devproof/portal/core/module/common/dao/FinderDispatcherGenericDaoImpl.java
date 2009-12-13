@@ -70,7 +70,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		result.setTarget(genericDao);
 		result.setInterfaces(new Class[] { daoInterface });
 		result.addAdvice(new MethodInterceptor() {
-			public Object invoke(final MethodInvocation invocation) throws Throwable {
+			public Object invoke(MethodInvocation invocation) throws Throwable {
 				Object result = null;
 				/*
 				 * If the session is opened at this place, the same method will
@@ -155,7 +155,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		return servicesImpl;
 	}
 
-	public void setServicesImpl(final Object servicesImpl) {
+	public void setServicesImpl(Object servicesImpl) {
 		this.servicesImpl = servicesImpl;
 	}
 
@@ -164,7 +164,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	}
 
 	@Required
-	public void setEntityClass(final Class<T> entityClass) {
+	public void setEntityClass(Class<T> entityClass) {
 		this.entityClass = entityClass;
 	}
 
@@ -173,12 +173,12 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	}
 
 	@Required
-	public void setDaoInterface(final Class<GenericDao<T, PK>> daoInterface) {
+	public void setDaoInterface(Class<GenericDao<T, PK>> daoInterface) {
 		this.daoInterface = daoInterface;
 	}
 
 	@Required
-	public void setUsernameResolver(final UsernameResolver usernameResolver) {
+	public void setUsernameResolver(UsernameResolver usernameResolver) {
 		this.usernameResolver = usernameResolver;
 	}
 }

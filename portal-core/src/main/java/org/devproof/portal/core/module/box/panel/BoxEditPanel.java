@@ -48,10 +48,10 @@ public abstract class BoxEditPanel extends Panel {
 	@SpringBean(name = "boxRegistry")
 	private BoxRegistry boxRegistry;
 	private FeedbackPanel feedbackPanel;
-	private final IModel<BoxConfiguration> boxSelectionModel;
-	private final BoxEntity box;
+	private IModel<BoxConfiguration> boxSelectionModel;
+	private BoxEntity box;
 
-	public BoxEditPanel(final String id, final BoxEntity box) {
+	public BoxEditPanel(String id, BoxEntity box) {
 		super(id);
 		this.box = box;
 		boxSelectionModel = getBoxConfigurationModel(box);
@@ -75,7 +75,7 @@ public abstract class BoxEditPanel extends Panel {
 		return new CheckBox("hideTitle");
 	}
 
-	private IModel<BoxConfiguration> getBoxConfigurationModel(final BoxEntity box) {
+	private IModel<BoxConfiguration> getBoxConfigurationModel(BoxEntity box) {
 		IModel<BoxConfiguration> selectBoxModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box
 				.getBoxType()));
 		return selectBoxModel;
@@ -101,7 +101,7 @@ public abstract class BoxEditPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				if (box.getSort() == null) {
 					Integer sort = boxService.getMaxSortNum();
 					box.setSort(sort);
@@ -112,7 +112,7 @@ public abstract class BoxEditPanel extends Panel {
 			}
 
 			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.addComponent(feedbackPanel);
 			}
 		};

@@ -30,7 +30,7 @@ import org.devproof.portal.core.module.contact.page.ContactPage;
 public class UsernamePanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public UsernamePanel(final String id, final String username, final String displayName, final boolean exists) {
+	public UsernamePanel(String id, String username, String displayName, boolean exists) {
 		super(id);
 		PortalSession session = (PortalSession) getSession();
 		WebMarkupContainer link = null;

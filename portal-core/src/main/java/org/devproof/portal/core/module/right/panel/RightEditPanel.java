@@ -55,7 +55,7 @@ public abstract class RightEditPanel extends Panel {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 
-	public RightEditPanel(final String id, final RightEntity right, final boolean isRightEditable) {
+	public RightEditPanel(String id, RightEntity right, boolean isRightEditable) {
 		super(id, Model.of(right));
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
@@ -84,7 +84,7 @@ public abstract class RightEditPanel extends Panel {
 				.findAllOrderByDescription());
 		IModel<List<RoleEntity>> rightsRoles = new ListModel<RoleEntity>(right.getRoles());
 
-		final Palette<RoleEntity> palette = new Palette<RoleEntity>("roles", rightsRoles, allRoles, renderer, 10, false) {
+		Palette<RoleEntity> palette = new Palette<RoleEntity>("roles", rightsRoles, allRoles, renderer, 10, false) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -93,12 +93,12 @@ public abstract class RightEditPanel extends Panel {
 			}
 
 			@Override
-			protected Component newAvailableHeader(final String componentId) {
+			protected Component newAvailableHeader(String componentId) {
 				return new Label(componentId, getString("palette.available"));
 			}
 
 			@Override
-			protected Component newSelectedHeader(final String componentId) {
+			protected Component newSelectedHeader(String componentId) {
 				return new Label(componentId, getString("palette.selected"));
 			}
 		};
@@ -109,13 +109,13 @@ public abstract class RightEditPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				rightService.save((RightEntity) form.getModelObject());
 				RightEditPanel.this.onSave(target);
 			}
 
 			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.addComponent(feedback);
 			}
 		});

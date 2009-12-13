@@ -35,14 +35,14 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
 
-	public UserBoxPanel(final String id) {
+	public UserBoxPanel(String id) {
 		super(id);
 		add(titleContainer = new WebMarkupContainer("title"));
 		PortalSession session = (PortalSession) getSession();
 		titleContainer.add(new Label("username", session.getUser().getUsername() + " - "
 				+ session.getUser().getRole().getDescription()));
 
-		final StatelessLink logoutLink = new StatelessLink("logoutLink") {
+		StatelessLink logoutLink = new StatelessLink("logoutLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -55,7 +55,7 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

@@ -33,7 +33,7 @@ public class RoleQuery implements Serializable {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -42,7 +42,7 @@ public class RoleQuery implements Serializable {
 		return active;
 	}
 
-	public void setActive(final Boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 }

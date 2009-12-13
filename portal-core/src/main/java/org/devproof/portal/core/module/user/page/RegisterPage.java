@@ -46,7 +46,7 @@ public class RegisterPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public RegisterPage(final PageParameters params) {
+	public RegisterPage(PageParameters params) {
 		super(params);
 		if (params.containsKey(PARAM_USER) && params.containsKey(PARAM_KEY)) {
 			activateUser(params);
@@ -64,7 +64,7 @@ public class RegisterPage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onValidate(final IValidatable<String> ivalidatable) {
+			protected void onValidate(IValidatable<String> ivalidatable) {
 				if (userService.existsUsername(ivalidatable.getValue())) {
 					error(ivalidatable);
 				}
@@ -104,7 +104,7 @@ public class RegisterPage extends TemplatePage {
 		password1.add(StringValidator.minimumLength(5));
 		password1.setRequired(true);
 		form.add(password1);
-		final PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
+		PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
 		password2.add(StringValidator.minimumLength(5));
 		password2.setRequired(true);
 		form.add(password2);
@@ -132,7 +132,7 @@ public class RegisterPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected void onValidate(final IValidatable<String> ivalidatable) {
+				protected void onValidate(IValidatable<String> ivalidatable) {
 					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
 						captchaImageResource.invalidate();
 						error(ivalidatable);
@@ -170,7 +170,7 @@ public class RegisterPage extends TemplatePage {
 		});
 	}
 
-	private void activateUser(final PageParameters params) {
+	private void activateUser(PageParameters params) {
 		String username = params.getString(PARAM_USER);
 		String key = params.getString(PARAM_KEY);
 		if (userService.activateUser(username, key)) {

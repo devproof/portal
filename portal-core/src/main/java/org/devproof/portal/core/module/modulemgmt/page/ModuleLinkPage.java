@@ -29,7 +29,7 @@ public class ModuleLinkPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
-	public ModuleLinkPage(final PageParameters params) {
+	public ModuleLinkPage(PageParameters params) {
 		super(params);
 		RepeatingView tableRow = new RepeatingView("repeater");
 		add(tableRow);

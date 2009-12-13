@@ -62,7 +62,7 @@ public class SettingsPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public SettingsPage(final PageParameters params) {
+	public SettingsPage(PageParameters params) {
 		super(params);
 		PortalSession session = (PortalSession) getSession();
 		final UserEntity user = userService.findById(session.getUser().getId());
@@ -108,7 +108,7 @@ public class SettingsPage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onValidate(final IValidatable<String> ivalidatable) {
+			protected void onValidate(IValidatable<String> ivalidatable) {
 				if (StringUtils.isNotEmpty(ivalidatable.getValue())
 						&& !user.getPasswordMD5().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
 					error(ivalidatable, "wrong.oldPassword");
@@ -119,7 +119,7 @@ public class SettingsPage extends TemplatePage {
 		final PasswordTextField password1 = new PasswordTextField("password1", new Model<String>());
 		password1.setRequired(false);
 		form.add(password1);
-		final PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
+		PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
 		password2.setRequired(false);
 		form.add(password2);
 		form.add(new AbstractFormValidator() {
@@ -131,7 +131,7 @@ public class SettingsPage extends TemplatePage {
 			}
 
 			@Override
-			public void validate(final Form<?> form) {
+			public void validate(Form<?> form) {
 				if (StringUtils.isNotEmpty(password1.getValue()) && StringUtils.isEmpty(oldPassword.getValue())) {
 					error(oldPassword, "oldPassword.required");
 				}

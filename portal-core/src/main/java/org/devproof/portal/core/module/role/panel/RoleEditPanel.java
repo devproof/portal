@@ -55,7 +55,7 @@ public abstract class RoleEditPanel extends Panel {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 
-	public RoleEditPanel(final String id, final RoleEntity role, final boolean isRightEditable) {
+	public RoleEditPanel(String id, RoleEntity role, boolean isRightEditable) {
 		super(id, Model.of(role));
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
@@ -79,11 +79,7 @@ public abstract class RoleEditPanel extends Panel {
 				.findAllOrderByDescription());
 		IModel<List<RightEntity>> roleRights = new ListModel<RightEntity>(role.getRights());
 
-		final Palette<RightEntity> palette = new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10,
-				false) {
-			// final Palette palette = new Palette("rights", new
-			// Model<Serializable>((Serializable)role.getRights()), new
-			// Model<Serializable>((Serializable)rights), renderer, 10, false) {
+		Palette<RightEntity> palette = new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10, false) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -92,12 +88,12 @@ public abstract class RoleEditPanel extends Panel {
 			}
 
 			@Override
-			protected Component newAvailableHeader(final String componentId) {
+			protected Component newAvailableHeader(String componentId) {
 				return new Label(componentId, getString("palette.available"));
 			}
 
 			@Override
-			protected Component newSelectedHeader(final String componentId) {
+			protected Component newSelectedHeader(String componentId) {
 				return new Label(componentId, getString("palette.selected"));
 			}
 		};
@@ -108,13 +104,13 @@ public abstract class RoleEditPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				roleService.save((RoleEntity) form.getModelObject());
 				RoleEditPanel.this.onSave(target);
 			}
 
 			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				// repaint the feedback panel so errors are shown
 				target.addComponent(feedback);
 			}

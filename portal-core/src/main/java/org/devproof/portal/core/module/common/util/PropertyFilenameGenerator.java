@@ -28,7 +28,7 @@ public class PropertyFilenameGenerator {
 	 *            filename suffix
 	 * @return whole file name
 	 */
-	public static String generate(final String prefix, final String suffix) {
+	public static String generate(String prefix, String suffix) {
 		return prefix + System.getenv("COMPUTERNAME") + suffix;
 	}
 }

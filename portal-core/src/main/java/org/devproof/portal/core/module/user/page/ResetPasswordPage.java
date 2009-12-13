@@ -76,7 +76,7 @@ public class ResetPasswordPage extends TemplatePage {
 		password1.add(StringValidator.minimumLength(5));
 		password1.setRequired(true);
 		form.add(password1);
-		final PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
+		PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
 		password2.add(StringValidator.minimumLength(5));
 		password2.setRequired(true);
 		form.add(password2);

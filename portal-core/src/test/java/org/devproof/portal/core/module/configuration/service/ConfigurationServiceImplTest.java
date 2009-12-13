@@ -59,7 +59,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testSave() {
-		final ConfigurationEntity e = new ConfigurationEntity();
+		ConfigurationEntity e = new ConfigurationEntity();
 		e.setKey("foo");
 		e.setValue("bar");
 		mock.save(e);
@@ -69,7 +69,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testDelete() {
-		final ConfigurationEntity e = new ConfigurationEntity();
+		ConfigurationEntity e = new ConfigurationEntity();
 		e.setKey("foo");
 		e.setValue("bar");
 		mock.delete(e);
@@ -79,7 +79,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindById() {
-		final ConfigurationEntity e = new ConfigurationEntity();
+		ConfigurationEntity e = new ConfigurationEntity();
 		e.setKey("foo");
 		e.setValue("bar");
 		EasyMock.expect(mock.findById("foo")).andReturn(e);
@@ -89,7 +89,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindAll() {
-		final List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
+		List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
 		list.add(new ConfigurationEntity());
 		list.add(new ConfigurationEntity());
 		EasyMock.expect(mock.findAll()).andReturn(list);
@@ -99,7 +99,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindConfigurationGroups() {
-		final List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		list.add("group1");
 		list.add("group2");
 		EasyMock.expect(mock.findConfigurationGroups()).andReturn(list);
@@ -109,7 +109,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindConfigurationsByGroup() {
-		final List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
+		List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
 		list.add(new ConfigurationEntity());
 		list.add(new ConfigurationEntity());
 		EasyMock.expect(mock.findConfigurationsByGroup("group")).andReturn(list);
@@ -119,7 +119,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindAsObject() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("value");
 		c.setType(String.class.getName());
@@ -132,7 +132,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindAsBoolean() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("true");
 		c.setType(Boolean.class.getName());
@@ -145,7 +145,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindAsDate() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("15-01-2008");
 		c.setType(Date.class.getName());
@@ -158,7 +158,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindAsDouble() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("12.34");
 		c.setType(Double.class.getName());
@@ -166,13 +166,13 @@ public class ConfigurationServiceImplTest extends TestCase {
 		EasyMock.expect(mock.findAll()).andReturn(list);
 		EasyMock.replay(mock);
 		impl.init();
-		final double d = impl.findAsDouble("key");
+		double d = impl.findAsDouble("key");
 		assertEquals(d, 12.34, 0.05);
 		EasyMock.verify(mock);
 	}
 
 	public void testFindAsInteger() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("12");
 		c.setType(Integer.class.getName());
@@ -185,7 +185,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindAsString() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("string");
 		c.setType(String.class.getName());
@@ -198,7 +198,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	}
 
 	public void testFindAsFile() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("java.io.tmpdir");
 		c.setType(String.class.getName());
@@ -215,7 +215,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 	};
 
 	public void testFindAsEnum() {
-		final ConfigurationEntity c = new ConfigurationEntity();
+		ConfigurationEntity c = new ConfigurationEntity();
 		c.setKey("key");
 		c.setValue("TEST2");
 		c.setType(TestEnum.class.getName());

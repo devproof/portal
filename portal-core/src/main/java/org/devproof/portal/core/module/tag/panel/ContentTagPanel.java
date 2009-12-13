@@ -39,21 +39,20 @@ import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public ContentTagPanel(final String id, final IModel<List<T>> tagModel, final Class<? extends Page> page,
-			final PageParameters params) {
+	public ContentTagPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page, PageParameters params) {
 		super(id);
 		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
 		String selectedTag = null;
 		if (params != null && params.containsKey("tag")) {
 			selectedTag = params.getString("tag");
 		}
-		final RepeatingView repeating = new RepeatingView("repeating");
+		RepeatingView repeating = new RepeatingView("repeating");
 		add(repeating);
 
-		for (final T tag : tagModel.getObject()) {
-			final WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
+		for (T tag : tagModel.getObject()) {
+			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
-			final BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("tagLink", page);
+			BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("tagLink", page);
 			link.add(new Label("tagName", tag.getTagname()));
 			if (tag.getTagname().equals(selectedTag)) {
 				item.add(new SimpleAttributeModifier("class", "tagViewSelected"));

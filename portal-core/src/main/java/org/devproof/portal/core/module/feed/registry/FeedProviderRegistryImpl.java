@@ -86,7 +86,7 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
 	public void afterPropertiesSet() throws Exception {
 		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
 		Collection<FeedProvider> feeds = feedProviderLocator.getFeedProviders();
-		for (final FeedProvider feed : feeds) {
+		for (FeedProvider feed : feeds) {
 			for (PageConfiguration page : pages) {
 				if (feed.getSupportedFeedPages().contains(page.getPageClass())) {
 					registerFeedProvider(page.getMountPath(), feed);

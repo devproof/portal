@@ -62,7 +62,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 		return moduleName;
 	}
 
-	public void setModuleName(final String moduleName) {
+	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
 
@@ -70,7 +70,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 		return pageName;
 	}
 
-	public void setPageName(final String pageName) {
+	public void setPageName(String pageName) {
 		this.pageName = pageName;
 	}
 
@@ -78,7 +78,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 		return sort;
 	}
 
-	public void setSort(final Integer sort) {
+	public void setSort(Integer sort) {
 		this.sort = sort;
 	}
 
@@ -86,7 +86,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 		return linkType;
 	}
 
-	public void setLinkType(final LinkType linkType) {
+	public void setLinkType(LinkType linkType) {
 		this.linkType = linkType;
 	}
 
@@ -94,13 +94,13 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 		return visible;
 	}
 
-	public void setVisible(final Boolean visible) {
+	public void setVisible(Boolean visible) {
 		this.visible = visible;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((linkType == null) ? 0 : linkType.hashCode());
 		result = prime * result + ((pageName == null) ? 0 : pageName.hashCode());
@@ -108,7 +108,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -137,7 +137,7 @@ final public class ModuleLinkEntity extends BaseEntity implements Comparable<Mod
 	}
 
 	@Override
-	public int compareTo(final ModuleLinkEntity arg0) {
+	public int compareTo(ModuleLinkEntity arg0) {
 		return sort.compareTo(arg0.getSort());
 	}
 }

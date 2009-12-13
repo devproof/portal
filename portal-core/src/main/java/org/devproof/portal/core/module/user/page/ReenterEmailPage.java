@@ -48,14 +48,14 @@ public class ReenterEmailPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public ReenterEmailPage(final String username) {
+	public ReenterEmailPage(String username) {
 		super(new PageParameters("username=" + username));
 		UserEntity user = userService.findUserByUsername(username);
 		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
 		form.setOutputMarkupId(true);
 		add(form);
 
-		final RequiredTextField<?> email = new RequiredTextField<String>("email");
+		RequiredTextField<?> email = new RequiredTextField<String>("email");
 		form.add(email);
 
 		form.add(new Button("requestButton") {

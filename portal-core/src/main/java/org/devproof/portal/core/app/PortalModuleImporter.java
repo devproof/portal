@@ -70,7 +70,7 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 		applicationContext.refresh();
 	}
 
-	private String[] convertListToArray(final List<String> modules) {
+	private String[] convertListToArray(List<String> modules) {
 		String[] configs = new String[modules.size()];
 		int i = 0;
 		for (String module : modules) {
@@ -81,12 +81,12 @@ public class PortalModuleImporter implements ServletContextAware, ApplicationCon
 	}
 
 	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = (ConfigurableWebApplicationContext) applicationContext;
 	}
 
 	@Override
-	public void setServletContext(final ServletContext servletContext) {
+	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}
 }

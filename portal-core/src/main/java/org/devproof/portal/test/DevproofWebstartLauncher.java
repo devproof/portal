@@ -32,7 +32,7 @@ public class DevproofWebstartLauncher extends JFrame {
 	private JButton startButton;
 	private JButton stopButton;
 
-	public static void main(final String[] args) {
+	public static void main(String[] args) {
 		new DevproofWebstartLauncher();
 	}
 
@@ -63,14 +63,14 @@ public class DevproofWebstartLauncher extends JFrame {
 		setSize(400, 200);
 		startButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(final ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				startServer();
 			}
 		});
 
 		stopButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(final ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				stopServer();
 			}
 		});

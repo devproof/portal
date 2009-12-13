@@ -36,12 +36,12 @@ import org.devproof.portal.core.module.common.CommonConstants;
 public abstract class AuthorPanel<T> extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private final T entity;
+	private T entity;
 	private Class<? extends Page> redirectPageClazz = null;
 	private PageParameters redirectParams = null;
 	private boolean deleted = false;
 
-	public AuthorPanel(final String id, final T entity) {
+	public AuthorPanel(String id, final T entity) {
 		super(id);
 		this.entity = entity;
 		final ModalWindow modalWindow = new ModalWindow("modalWindow");
@@ -51,7 +51,7 @@ public abstract class AuthorPanel<T> extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target) {
 				AuthorPanel.this.onEdit(target);
 			}
 		}.add(new Image("editImage", CommonConstants.REF_EDIT_IMG)));
@@ -60,13 +60,13 @@ public abstract class AuthorPanel<T> extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
-				final ConfirmDeletePanel<T> confirmDeletePanel = new ConfirmDeletePanel<T>(modalWindow.getContentId(),
+			public void onClick(AjaxRequestTarget target) {
+				ConfirmDeletePanel<T> confirmDeletePanel = new ConfirmDeletePanel<T>(modalWindow.getContentId(),
 						entity, modalWindow) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onDelete(final AjaxRequestTarget target, final Form<?> form) {
+					public void onDelete(AjaxRequestTarget target, Form<?> form) {
 						AuthorPanel.this.deleted = true;
 						modalWindow.close(target);
 						AuthorPanel.this.onDelete(target);
@@ -76,7 +76,7 @@ public abstract class AuthorPanel<T> extends Panel {
 				modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
 					private static final long serialVersionUID = 1L;
 
-					public void onClose(final AjaxRequestTarget target) {
+					public void onClose(AjaxRequestTarget target) {
 						if (AuthorPanel.this.redirectPageClazz != null && AuthorPanel.this.deleted) {
 							setResponsePage(AuthorPanel.this.redirectPageClazz, AuthorPanel.this.redirectParams);
 							AuthorPanel.this.deleted = false;
@@ -93,8 +93,7 @@ public abstract class AuthorPanel<T> extends Panel {
 		return this.entity;
 	}
 
-	public AuthorPanel<T> setRedirectPage(final Class<? extends Page> redirectPageClazz,
-			final PageParameters redirectParams) {
+	public AuthorPanel<T> setRedirectPage(Class<? extends Page> redirectPageClazz, PageParameters redirectParams) {
 		this.redirectPageClazz = redirectPageClazz;
 		this.redirectParams = redirectParams;
 		return this;

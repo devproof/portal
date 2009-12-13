@@ -58,7 +58,7 @@ public class PortalSession extends WebSession {
 	private long dirtyTime = 0l;
 	private UserEntity user;
 
-	public PortalSession(final Request request) {
+	public PortalSession(Request request) {
 		super(request);
 	}
 
@@ -72,7 +72,7 @@ public class PortalSession extends WebSession {
 	 * @return null if there is no error, if there is an error it returns the
 	 *         error message key
 	 */
-	public final String authenticate(final String username, final String password) throws UserNotConfirmedException {
+	public final String authenticate(String username, String password) throws UserNotConfirmedException {
 		UserEntity user = getUserService().findUserByUsername(username);
 		LOG.info("Authentificate user " + username);
 		if (user != null && PortalUtil.generateMd5(password).equals(user.getPasswordMD5())) {
@@ -205,7 +205,7 @@ public class PortalSession extends WebSession {
 	 *            right as string
 	 * @return true if he has the right
 	 */
-	public boolean hasRight(final String rightName) {
+	public boolean hasRight(String rightName) {
 		RightEntity right = getRightService().newRightEntity(rightName);
 		return this.hasRight(right);
 	}
@@ -217,7 +217,7 @@ public class PortalSession extends WebSession {
 	 *            right entity
 	 * @return true if he has
 	 */
-	public boolean hasRight(final RightEntity right) {
+	public boolean hasRight(RightEntity right) {
 		UserEntity user = getUser();
 		return user.getRole().getRights().contains(right);
 	}
@@ -229,7 +229,7 @@ public class PortalSession extends WebSession {
 	 *            collection with rights
 	 * @return true if he has one right
 	 */
-	public boolean hasRight(final Collection<RightEntity> rights) {
+	public boolean hasRight(Collection<RightEntity> rights) {
 		UserEntity user = getUser();
 		Collection<RightEntity> userRights = user.getRole().getRights();
 		for (RightEntity right : rights) {
@@ -249,7 +249,7 @@ public class PortalSession extends WebSession {
 	 *            collection with rights
 	 * @return true if he has one right
 	 */
-	public boolean hasRight(final String adminRight, final Collection<RightEntity> rights) {
+	public boolean hasRight(String adminRight, Collection<RightEntity> rights) {
 		if (this.hasRight(adminRight)) {
 			return true;
 		}

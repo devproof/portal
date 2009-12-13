@@ -33,12 +33,12 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 public class RichTextArea extends TextArea<String> {
 	private static final long serialVersionUID = 1L;
 
-	public RichTextArea(final String id) {
+	public RichTextArea(String id) {
 		super(id);
 		init();
 	}
 
-	public RichTextArea(final String id, final IModel<String> model) {
+	public RichTextArea(String id, IModel<String> model) {
 		super(id, model);
 		init();
 	}

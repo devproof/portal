@@ -43,12 +43,12 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * 
  */
 public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
-	private final SessionFactory sessionFactory;
-	private final ConfigurationService configurationService;
-	private final UserService userService;
-	private final EmailService emailService;
+	private SessionFactory sessionFactory;
+	private ConfigurationService configurationService;
+	private UserService userService;
+	private EmailService emailService;
 
-	public PortalRequestCycleProcessor(final ApplicationContext context, final boolean production) {
+	public PortalRequestCycleProcessor(ApplicationContext context, boolean production) {
 		sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 		configurationService = (ConfigurationService) context.getBean("configurationService");
 		userService = (UserService) context.getBean("userService");
@@ -56,13 +56,13 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 	}
 
 	@Override
-	protected Page onRuntimeException(final Page page, final RuntimeException e) {
+	protected Page onRuntimeException(Page page, RuntimeException e) {
 		// send mail to the admin!
 		if (!(e instanceof PageExpiredException) && !(e instanceof UnauthorizedInstantiationException)) {
 			Integer templateId = configurationService.findAsInteger(CommonConstants.CONF_UNKNOWN_ERROR_EMAIL);
 
-			final Writer content = new StringWriter();
-			final PrintWriter printWriter = new PrintWriter(content);
+			Writer content = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(content);
 			e.printStackTrace(printWriter);
 			sendEmailToUsers(templateId, content.toString());
 
@@ -75,7 +75,7 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 		return super.onRuntimeException(page, e);
 	}
 
-	private void sendEmailToUsers(final Integer templateId, final String content) {
+	private void sendEmailToUsers(Integer templateId, String content) {
 		EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
 		placeholder.setContent(content);
 		List<UserEntity> users = userService.findUserWithRight("emailnotification.unknown.application.error");

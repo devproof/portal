@@ -37,7 +37,7 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 public class DummyFeedProviderImpl implements FeedProvider {
 
 	@Override
-	public SyndFeed getFeed(final RequestCycle rc, final RoleEntity role) {
+	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName());
 		feed.setLink("http://dummy.feed.link");

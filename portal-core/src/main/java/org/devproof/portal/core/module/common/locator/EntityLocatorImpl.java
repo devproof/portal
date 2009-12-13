@@ -43,7 +43,7 @@ public class EntityLocatorImpl implements ApplicationContextAware, EntityLocator
 	}
 
 	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		context = applicationContext;
 	}
 

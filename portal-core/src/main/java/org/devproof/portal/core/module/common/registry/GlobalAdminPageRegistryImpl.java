@@ -43,12 +43,12 @@ public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry, Ini
 	}
 
 	@Override
-	public void registerGlobalAdminPage(final Class<? extends Page> adminPage) {
+	public void registerGlobalAdminPage(Class<? extends Page> adminPage) {
 		adminPages.add(adminPage);
 	}
 
 	@Override
-	public void removeGlobalAdminPage(final Class<? extends Page> adminPage) {
+	public void removeGlobalAdminPage(Class<? extends Page> adminPage) {
 		adminPages.remove(adminPage);
 
 	}
@@ -71,11 +71,11 @@ public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry, Ini
 		buildNavigation();
 	}
 
-	public void setPageLocator(final PageLocator pageLocator) {
+	public void setPageLocator(PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}
 
-	public void setModuleService(final ModuleService moduleService) {
+	public void setModuleService(ModuleService moduleService) {
 		this.moduleService = moduleService;
 	}
 }

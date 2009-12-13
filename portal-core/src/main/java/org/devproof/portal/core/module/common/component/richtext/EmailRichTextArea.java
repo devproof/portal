@@ -34,7 +34,7 @@ public class EmailRichTextArea extends TextArea<String> {
 	private static final ResourceReference REF_EMAIL_CSS = new ResourceReference(EmailRichTextArea.class,
 			"css/email.css");
 
-	public EmailRichTextArea(final String id) {
+	public EmailRichTextArea(String id) {
 		super(id);
 		add(JavascriptPackageResource.getHeaderContribution(EmailRichTextArea.class, "tinymce/tiny_mce.js"));
 		Map<String, Object> variables = new MiniMap<String, Object>(1);

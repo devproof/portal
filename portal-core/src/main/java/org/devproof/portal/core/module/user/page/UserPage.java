@@ -57,11 +57,11 @@ public class UserPage extends TemplatePage {
 	@SpringBean(name = "dateFormat")
 	private SimpleDateFormat dateFormat;
 
-	private final ModalWindow modalWindow;
-	private final WebMarkupContainer container;
+	private ModalWindow modalWindow;
+	private WebMarkupContainer container;
 	private boolean authorLinksAdded = false;
 
-	public UserPage(final PageParameters params) {
+	public UserPage(PageParameters params) {
 		super(params);
 		UserQuery query = new UserQuery();
 		userDataProvider.setQueryObject(query);
@@ -87,7 +87,7 @@ public class UserPage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target) {
+			protected void onSubmit(AjaxRequestTarget target) {
 				target.addComponent(container);
 			}
 
@@ -98,14 +98,12 @@ public class UserPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(final AjaxRequestTarget target) {
-					final UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), new UserEntity(),
-							true) {
-
+				public void onClick(AjaxRequestTarget target) {
+					UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), new UserEntity(), true) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public void onSave(final AjaxRequestTarget target) {
+						public void onSave(AjaxRequestTarget target) {
 							target.addComponent(container);
 							target.addComponent(UserPage.this.getFeedback());
 							info(getString("msg.saved"));
@@ -131,7 +129,7 @@ public class UserPage extends TemplatePage {
 	private class UserDataView extends DataView<UserEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public UserDataView(final String id, final IDataProvider<UserEntity> dataProvider, final PageParameters params) {
+		public UserDataView(String id, IDataProvider<UserEntity> dataProvider, PageParameters params) {
 			super(id, dataProvider);
 			setItemsPerPage(50);
 		}
@@ -159,11 +157,10 @@ public class UserPage extends TemplatePage {
 			item.add(new Label("active", user.getActive() != null ? getString("active." + user.getActive().toString())
 					: ""));
 			item.add(new AuthorPanel<UserEntity>("authorButtons", user) {
-
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					userService.delete(user);
 					target.addComponent(container);
 					target.addComponent(getFeedback());
@@ -172,20 +169,17 @@ public class UserPage extends TemplatePage {
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
-					final UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), user, false) {
-
+					UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), user, false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public void onSave(final AjaxRequestTarget target) {
+						public void onSave(AjaxRequestTarget target) {
 							target.addComponent(container);
 							target.addComponent(getFeedback());
 							info(getString("msg.saved"));
 							modalWindow.close(target);
 						}
-
 					};
-
 					modalWindow.setContent(editUserPanel);
 					modalWindow.show(target);
 				}

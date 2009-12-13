@@ -39,17 +39,17 @@ public class EmailServiceMock implements EmailService, Serializable {
 	}
 
 	@Override
-	public void sendEmail(final EmailTemplateEntity template, final EmailPlaceholderBean placeholder) {
+	public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
 		emailPlaceholderBean = placeholder;
 	}
 
 	@Override
-	public void sendEmail(final Integer templateId, final EmailPlaceholderBean placeholder) {
+	public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
 		emailPlaceholderBean = placeholder;
 	}
 
 	@Override
-	public void delete(final EmailTemplateEntity entity) {
+	public void delete(EmailTemplateEntity entity) {
 
 	}
 
@@ -59,12 +59,12 @@ public class EmailServiceMock implements EmailService, Serializable {
 	}
 
 	@Override
-	public EmailTemplateEntity findById(final Integer id) {
+	public EmailTemplateEntity findById(Integer id) {
 		return null;
 	}
 
 	@Override
-	public void save(final EmailTemplateEntity entity) {
+	public void save(EmailTemplateEntity entity) {
 
 	}
 }

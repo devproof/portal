@@ -35,19 +35,19 @@ public class LoginPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
-	public LoginPage(final PageParameters params) {
+	public LoginPage(PageParameters params) {
 		super(params);
 		final RequiredTextField<String> username = new RequiredTextField<String>("username");
 		final PasswordTextField password = new PasswordTextField("password");
-		final StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm") {
+		StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
-				final PortalSession session = (PortalSession) getSession();
+				PortalSession session = (PortalSession) getSession();
 				try {
 
-					final String message = session.authenticate(username.getValue(), password.getValue());
+					String message = session.authenticate(username.getValue(), password.getValue());
 					if (message == null) {
 						boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
 						// production mode check is for unit tests
@@ -59,7 +59,7 @@ public class LoginPage extends TemplatePage {
 					} else {
 						error(getString(message));
 					}
-				} catch (final UserNotConfirmedException e) {
+				} catch (UserNotConfirmedException e) {
 					setResponsePage(new ReenterEmailPage(username.getValue()));
 				}
 			}

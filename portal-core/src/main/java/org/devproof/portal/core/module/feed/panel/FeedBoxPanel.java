@@ -38,7 +38,7 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
 
-	public FeedBoxPanel(final String id, final Class<? extends Page> page) {
+	public FeedBoxPanel(String id, Class<? extends Page> page) {
 		super(id);
 		add(titleContainer = new WebMarkupContainer("title"));
 		String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
@@ -55,7 +55,7 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

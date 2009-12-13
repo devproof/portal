@@ -41,7 +41,7 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	private GlobalAdminPageRegistry adminPageRegistry;
 	private WebMarkupContainer titleContainer;
 
-	public GlobalAdminBoxPanel(final String id) {
+	public GlobalAdminBoxPanel(String id) {
 		super(id);
 		add(titleContainer = new WebMarkupContainer("title"));
 		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredGlobalAdminPages();
@@ -63,7 +63,7 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

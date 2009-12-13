@@ -31,7 +31,7 @@ public class Rss2Link extends BookmarkablePageLink<Rss2Link> {
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
 
-	public Rss2Link(final String id, final Class<? extends TemplatePage> page) {
+	public Rss2Link(String id, Class<? extends TemplatePage> page) {
 		super(id, Rss2FeedPage.class);
 		String title = "";
 		if (feedProviderRegistry.hasFeedSupport(page)) {

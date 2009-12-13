@@ -29,7 +29,7 @@ public class UsernameResolverImpl implements UsernameResolver {
 	@Override
 	public String getUsername() {
 		if (RequestCycle.get() != null) {
-			final PortalSession session = ((PortalSession) Session.get());
+			PortalSession session = ((PortalSession) Session.get());
 			UserEntity user = session.getUser();
 			return user.getUsername();
 		}

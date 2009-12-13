@@ -36,7 +36,7 @@ public class ThemeBean implements Serializable {
 		return theme;
 	}
 
-	public void setTheme(final String theme) {
+	public void setTheme(String theme) {
 		this.theme = theme;
 	}
 
@@ -44,7 +44,7 @@ public class ThemeBean implements Serializable {
 		return author;
 	}
 
-	public void setAuthor(final String author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 
@@ -52,7 +52,7 @@ public class ThemeBean implements Serializable {
 		return url;
 	}
 
-	public void setUrl(final String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 
@@ -60,7 +60,7 @@ public class ThemeBean implements Serializable {
 		return portalThemeVersion;
 	}
 
-	public void setPortalThemeVersion(final String portalThemeVersion) {
+	public void setPortalThemeVersion(String portalThemeVersion) {
 		this.portalThemeVersion = portalThemeVersion;
 	}
 
@@ -68,7 +68,7 @@ public class ThemeBean implements Serializable {
 		return portalVersion;
 	}
 
-	public void setPortalVersion(final String portalVersion) {
+	public void setPortalVersion(String portalVersion) {
 		this.portalVersion = portalVersion;
 	}
 
@@ -76,7 +76,7 @@ public class ThemeBean implements Serializable {
 		return uuid;
 	}
 
-	public void setUuid(final String uuid) {
+	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 }
