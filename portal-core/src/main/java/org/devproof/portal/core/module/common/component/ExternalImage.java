@@ -21,7 +21,6 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.string.UrlUtils;
-import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * For external images. If the path doesn't start with a / it corrects the path
@@ -42,7 +41,7 @@ public class ExternalImage extends WebComponent {
 
 	public ExternalImage(String id, ResourceReference imageResource) {
 		super(id);
-		String url = PortalUtil.toUrl(imageResource, getRequest());
+		String url = getRequestCycle().urlFor(imageResource).toString();
 		add(new AttributeModifier("src", true, Model.of(url)));
 		setVisible(!(url == null || url.equals("")));
 	}

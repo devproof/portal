@@ -84,7 +84,8 @@ public class BoxServiceImpl implements BoxService {
 	@Override
 	public void moveDown(BoxEntity box) {
 		int maxSort = boxDao.getMaxSortNum();
-		if (box.getSort() < maxSort) {
+		boolean isNotLowestBox = box.getSort() < maxSort;
+		if (isNotLowestBox) {
 			BoxEntity moveDown = box;
 			BoxEntity moveUp = boxDao.findBoxBySort(box.getSort() + 1);
 			moveUp.setSort(moveUp.getSort() - 1);
@@ -96,7 +97,8 @@ public class BoxServiceImpl implements BoxService {
 
 	@Override
 	public void moveUp(BoxEntity box) {
-		if (box.getSort() > 1) {
+		boolean isNotHighestBox = box.getSort() > 1;
+		if (isNotHighestBox) {
 			BoxEntity moveUp = box;
 			BoxEntity moveDown = boxDao.findBoxBySort(box.getSort() - 1);
 			moveUp.setSort(moveUp.getSort() - 1);
