@@ -50,7 +50,7 @@ public class PageLocatorImpl implements ApplicationContextAware, PageLocator {
 	}
 
 	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		context = applicationContext;
 	}
 }

@@ -49,7 +49,7 @@ public class ThemePage extends TemplatePage {
 	@SpringBean(name = "themeService")
 	private ThemeService themeService;
 
-	public ThemePage(final PageParameters params) {
+	public ThemePage(PageParameters params) {
 		super(params);
 		build();
 		final ModalWindow modalWindow = new ModalWindow("modalWindow");
@@ -60,7 +60,7 @@ public class ThemePage extends TemplatePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
+			public void onClick(AjaxRequestTarget target) {
 				modalWindow.setInitialHeight(250);
 				modalWindow.setInitialWidth(600);
 
@@ -74,7 +74,7 @@ public class ThemePage extends TemplatePage {
 				modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
 					private static final long serialVersionUID = 1L;
 
-					public void onClose(final AjaxRequestTarget target) {
+					public void onClose(AjaxRequestTarget target) {
 						ThemePage.this.build();
 						target.addComponent(ThemePage.this);
 					}

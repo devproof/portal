@@ -30,7 +30,7 @@ public class RegistryServiceImpl implements RegistryService {
 	private PageAdminPageRegistry pageAdminPageRegistry;
 
 	@Override
-	public void rebuildRegistries(final LinkType type) {
+	public void rebuildRegistries(LinkType type) {
 		if (type == LinkType.TOP_NAVIGATION) {
 			mainNavigationRegistry.buildNavigation();
 		} else if (type == LinkType.PAGE_ADMINISTRATION) {
@@ -43,17 +43,17 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 
 	@Required
-	public void setMainNavigationRegistry(final MainNavigationRegistry mainNavigationRegistry) {
+	public void setMainNavigationRegistry(MainNavigationRegistry mainNavigationRegistry) {
 		this.mainNavigationRegistry = mainNavigationRegistry;
 	}
 
 	@Required
-	public void setGlobalAdminPageRegistry(final GlobalAdminPageRegistry globalAdminPageRegistry) {
+	public void setGlobalAdminPageRegistry(GlobalAdminPageRegistry globalAdminPageRegistry) {
 		this.globalAdminPageRegistry = globalAdminPageRegistry;
 	}
 
 	@Required
-	public void setPageAdminPageRegistry(final PageAdminPageRegistry pageAdminPageRegistry) {
+	public void setPageAdminPageRegistry(PageAdminPageRegistry pageAdminPageRegistry) {
 		this.pageAdminPageRegistry = pageAdminPageRegistry;
 	}
 }

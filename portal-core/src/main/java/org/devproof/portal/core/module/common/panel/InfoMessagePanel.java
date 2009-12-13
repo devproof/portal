@@ -32,7 +32,7 @@ public class InfoMessagePanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	public InfoMessagePanel(final String id, final String msg, final ModalWindow modalWindow) {
+	public InfoMessagePanel(String id, String msg, final ModalWindow modalWindow) {
 		super(id);
 		modalWindow.setInitialHeight(140);
 		modalWindow.setInitialWidth(300);
@@ -44,7 +44,7 @@ public class InfoMessagePanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				modalWindow.close(target);
 			}
 		});

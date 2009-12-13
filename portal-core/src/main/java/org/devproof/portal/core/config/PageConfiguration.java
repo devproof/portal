@@ -45,7 +45,7 @@ public class PageConfiguration {
 	 * @param mountPath
 	 *            the mount path of the page
 	 */
-	public void setMountPath(final String mountPath) {
+	public void setMountPath(String mountPath) {
 		this.mountPath = mountPath;
 	}
 
@@ -60,7 +60,7 @@ public class PageConfiguration {
 	 * @param pageClass
 	 *            page class (must extend the wicket page class)
 	 */
-	public void setPageClass(final Class<? extends Page> pageClass) {
+	public void setPageClass(Class<? extends Page> pageClass) {
 		this.pageClass = pageClass;
 	}
 
@@ -77,7 +77,7 @@ public class PageConfiguration {
 	 *            true if the mount path is indexed: indexed means e.g.
 	 *            /hello/arg0/arg1
 	 */
-	public void setIndexMountedPath(final boolean indexMountedPath) {
+	public void setIndexMountedPath(boolean indexMountedPath) {
 		this.indexMountedPath = indexMountedPath;
 	}
 
@@ -93,7 +93,7 @@ public class PageConfiguration {
 	 *            true if this page should be the default start page of the
 	 *            portal
 	 */
-	public void setDefaultStartPage(final boolean defaultStartPage) {
+	public void setDefaultStartPage(boolean defaultStartPage) {
 		this.defaultStartPage = defaultStartPage;
 	}
 
@@ -112,7 +112,7 @@ public class PageConfiguration {
 	 *            "Global Administration" on the right side. The page properties
 	 *            file must contain a value adminLinkLabel for the title
 	 */
-	public void setRegisterGlobalAdminLink(final boolean registerGlobalAdminLink) {
+	public void setRegisterGlobalAdminLink(boolean registerGlobalAdminLink) {
 		this.registerGlobalAdminLink = registerGlobalAdminLink;
 	}
 
@@ -133,7 +133,7 @@ public class PageConfiguration {
 	 *            admin link. The page properties file must contain a value
 	 *            adminLinkLabel for the title
 	 */
-	public void setRegisterPageAdminLink(final boolean registerPageAdminLink) {
+	public void setRegisterPageAdminLink(boolean registerPageAdminLink) {
 		this.registerPageAdminLink = registerPageAdminLink;
 	}
 
@@ -152,7 +152,7 @@ public class PageConfiguration {
 	 *            Bookmarks, etc. The page properties file must contain a value
 	 *            mainNavigationLinkLabel for the title
 	 */
-	public void setRegisterMainNavigationLink(final boolean registerMainNavigationLink) {
+	public void setRegisterMainNavigationLink(boolean registerMainNavigationLink) {
 		this.registerMainNavigationLink = registerMainNavigationLink;
 	}
 
@@ -169,7 +169,7 @@ public class PageConfiguration {
 	 *            the parent module, must not be set in the spring
 	 *            configuration, is only set from the PageLocator
 	 */
-	public void setModule(final ModuleConfiguration module) {
+	public void setModule(ModuleConfiguration module) {
 		this.module = module;
 	}
 }

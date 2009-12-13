@@ -94,7 +94,7 @@ public class JettyWebstart {
 		}
 	}
 
-	public void startServer(final int port) {
+	public void startServer(int port) {
 		connector.setPort(port);
 		try {
 			server.start();

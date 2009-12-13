@@ -43,22 +43,22 @@ import org.devproof.portal.core.module.user.page.RegisterPage;
 public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
-	private final ValueMap properties = new ValueMap();
+	private ValueMap properties = new ValueMap();
 	private WebMarkupContainer titleContainer;
 
-	public LoginBoxPanel(final String id, final PageParameters params) {
+	public LoginBoxPanel(String id, PageParameters params) {
 		super(id);
 		add(titleContainer = new WebMarkupContainer("title"));
 		final HiddenField<String> hiddenParam = new HiddenField<String>("optparam", Model.of(params.getString("0")));
-		final StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm") {
+		StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
-				final PortalSession session = (PortalSession) getSession();
+				PortalSession session = (PortalSession) getSession();
 				try {
 
-					final String message = session.authenticate(properties.getString("username"), properties
+					String message = session.authenticate(properties.getString("username"), properties
 							.getString("password"));
 					if (message == null) {
 
@@ -81,7 +81,7 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 					} else {
 						error(getString(message));
 					}
-				} catch (final UserNotConfirmedException e) {
+				} catch (UserNotConfirmedException e) {
 					setResponsePage(new ReenterEmailPage(properties.getString("username")));
 				}
 			}
@@ -109,7 +109,7 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

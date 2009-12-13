@@ -27,12 +27,12 @@ public class SearchBoxPanel extends Component {
 
 	private static final long serialVersionUID = 1L;
 
-	public SearchBoxPanel(final String id) {
+	public SearchBoxPanel(String id) {
 		super(id);
 	}
 
 	@Override
-	protected void onRender(final MarkupStream markupStream) {
+	protected void onRender(MarkupStream markupStream) {
 
 	}
 }

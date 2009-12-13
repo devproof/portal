@@ -47,7 +47,7 @@ public class ModuleConfiguration {
 	 * @param name
 	 *            name of the module
 	 */
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -62,7 +62,7 @@ public class ModuleConfiguration {
 	 * @param moduleVersion
 	 *            module version
 	 */
-	public void setModuleVersion(final String moduleVersion) {
+	public void setModuleVersion(String moduleVersion) {
 		this.moduleVersion = moduleVersion;
 	}
 
@@ -77,7 +77,7 @@ public class ModuleConfiguration {
 	 * @param author
 	 *            author of the module
 	 */
-	public void setAuthor(final String author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 
@@ -92,7 +92,7 @@ public class ModuleConfiguration {
 	 * @param portalVersion
 	 *            portal version (written for devproof portal version ...)
 	 */
-	public void setPortalVersion(final String portalVersion) {
+	public void setPortalVersion(String portalVersion) {
 		this.portalVersion = portalVersion;
 	}
 
@@ -109,7 +109,7 @@ public class ModuleConfiguration {
 	 *            list with module related entities (JPA and hibernate
 	 *            annotations are possible)
 	 */
-	public void setEntities(final List<Class<?>> entities) {
+	public void setEntities(List<Class<?>> entities) {
 		this.entities = entities;
 	}
 
@@ -124,7 +124,7 @@ public class ModuleConfiguration {
 	 * @param pages
 	 *            list with page {@link PageConfiguration}
 	 */
-	public void setPages(final Collection<PageConfiguration> pages) {
+	public void setPages(Collection<PageConfiguration> pages) {
 		this.pages = pages;
 	}
 
@@ -139,7 +139,7 @@ public class ModuleConfiguration {
 	 * @param boxes
 	 *            List with boxes (right navigation) {@link BoxConfiguration}
 	 */
-	public void setBoxes(final Collection<BoxConfiguration> boxes) {
+	public void setBoxes(Collection<BoxConfiguration> boxes) {
 		this.boxes = boxes;
 	}
 
@@ -154,7 +154,7 @@ public class ModuleConfiguration {
 	 * @param url
 	 *            url of the authors homepage
 	 */
-	public void setUrl(final String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 

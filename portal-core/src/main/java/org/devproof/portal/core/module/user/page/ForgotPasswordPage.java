@@ -57,7 +57,7 @@ public class ForgotPasswordPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public ForgotPasswordPage(final PageParameters params) {
+	public ForgotPasswordPage(PageParameters params) {
 		super(params);
 		Form<Serializable> form = new Form<Serializable>("form");
 		form.setOutputMarkupId(true);
@@ -89,7 +89,7 @@ public class ForgotPasswordPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected void onValidate(final IValidatable<String> ivalidatable) {
+				protected void onValidate(IValidatable<String> ivalidatable) {
 					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
 						captchaImageResource.invalidate();
 						error(ivalidatable);

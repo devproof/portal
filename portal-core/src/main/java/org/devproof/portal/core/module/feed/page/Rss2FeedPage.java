@@ -24,7 +24,7 @@ import org.apache.wicket.PageParameters;
  */
 public class Rss2FeedPage extends BaseFeedPage {
 
-	public Rss2FeedPage(final PageParameters params) {
+	public Rss2FeedPage(PageParameters params) {
 		super(params);
 	}
 

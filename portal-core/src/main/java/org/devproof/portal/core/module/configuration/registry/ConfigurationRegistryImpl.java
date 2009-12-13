@@ -27,17 +27,17 @@ public class ConfigurationRegistryImpl implements ConfigurationRegistry {
 	private final Map<String, ConfigurationEntity> configurations = new HashMap<String, ConfigurationEntity>();
 
 	@Override
-	public ConfigurationEntity getConfiguration(final String key) {
+	public ConfigurationEntity getConfiguration(String key) {
 		return configurations.get(key);
 	}
 
 	@Override
-	public void registerConfiguration(final String key, final ConfigurationEntity configurationEntity) {
+	public void registerConfiguration(String key, ConfigurationEntity configurationEntity) {
 		configurations.put(key, configurationEntity);
 	}
 
 	@Override
-	public void removeConfiguration(final String key) {
+	public void removeConfiguration(String key) {
 		configurations.remove(key);
 	}
 

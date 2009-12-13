@@ -33,17 +33,17 @@ import org.apache.wicket.markup.html.image.resource.RenderedDynamicImageResource
 public class String2ImageResource extends RenderedDynamicImageResource {
 
 	private static final long serialVersionUID = 1L;
-	private final List<String> lines;
-	private final Font font;
+	private List<String> lines;
+	private Font font;
 	private int height;
 	private int width;
-	private final int size;
+	private int size;
 
-	public String2ImageResource(final List<String> lines, final Font font) {
+	public String2ImageResource(List<String> lines, Font font) {
 		super(100, 100);
 		this.lines = lines;
 		this.font = font;
-		final BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
 		width = 0;
 		size = font.getSize();
 		Graphics2D g = (Graphics2D) image.getGraphics();
@@ -61,7 +61,7 @@ public class String2ImageResource extends RenderedDynamicImageResource {
 	}
 
 	@Override
-	protected boolean render(final Graphics2D g) {
+	protected boolean render(Graphics2D g) {
 		g.setBackground(Color.WHITE);
 		g.clearRect(0, 0, width, height);
 		g.setColor(Color.BLACK);

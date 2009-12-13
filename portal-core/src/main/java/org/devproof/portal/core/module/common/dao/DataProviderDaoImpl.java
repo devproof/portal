@@ -34,27 +34,27 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public T findById(final Class<T> clazz, final Serializable id) {
+	public T findById(Class<T> clazz, Serializable id) {
 		return (T) this.getSession().get(clazz, id);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<T> findAll(final Class<T> clazz) {
+	public List<T> findAll(Class<T> clazz) {
 		return getSession().createQuery("Select distinct(e) from " + clazz.getSimpleName() + " e").list();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<T> findAll(final Class<T> clazz, final int first, final int count) {
+	public List<T> findAll(Class<T> clazz, int first, int count) {
 		Query q = this.getSession().createQuery("Select distinct(e) from " + clazz.getSimpleName() + " e");
 		q.setFirstResult(first);
 		q.setMaxResults(count);
 		return q.list();
 	}
 
-	private Query createHibernateQuery(final String target, final Class<T> clazz, final String sortParam,
-			final boolean ascending, final Serializable beanQuery, final List<String> prefetch) {
+	private Query createHibernateQuery(String target, Class<T> clazz, String sortParam, boolean ascending,
+			Serializable beanQuery, List<String> prefetch) {
 		StringBuilder buf = new StringBuilder();
 		buf.append("Select ").append(target).append(" from ").append(clazz.getSimpleName()).append(" e ");
 
@@ -116,8 +116,8 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<T> findAllWithQuery(final Class<T> clazz, final String sortParam, final boolean ascending,
-			final int first, final int count, final Serializable beanQuery, final List<String> prefetch) {
+	public List<T> findAllWithQuery(Class<T> clazz, String sortParam, boolean ascending, int first, int count,
+			Serializable beanQuery, List<String> prefetch) {
 		Query q = createHibernateQuery("distinct(e)", clazz, sortParam, ascending, beanQuery, prefetch);
 		q.setFirstResult(first);
 		q.setMaxResults(count);
@@ -125,13 +125,13 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 	}
 
 	@Override
-	public int getSize(final Class<T> clazz, final Serializable beanQuery) {
+	public int getSize(Class<T> clazz, Serializable beanQuery) {
 		// count(distinct e)
 		return getSize(clazz, "count(distinct e)", beanQuery);
 	}
 
 	@Override
-	public int getSize(final Class<T> clazz, final String countQuery, final Serializable beanQuery) {
+	public int getSize(Class<T> clazz, String countQuery, Serializable beanQuery) {
 		Long count = (Long) createHibernateQuery(countQuery, clazz, null, false, beanQuery, null).uniqueResult();
 		return count.intValue();
 	}

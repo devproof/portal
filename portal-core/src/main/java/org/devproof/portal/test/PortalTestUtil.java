@@ -63,7 +63,7 @@ public class PortalTestUtil {
 	/**
 	 * Returns the content of a file as String
 	 */
-	public static String getFileContent(final String file) throws IOException {
+	public static String getFileContent(String file) throws IOException {
 		ResourceLoader resourceLoader = new DefaultResourceLoader();
 		Resource r = null;
 		if (file.startsWith("file:/")) {
@@ -71,8 +71,8 @@ public class PortalTestUtil {
 		} else {
 			r = resourceLoader.getResource("classpath:/sql/create/" + file);
 		}
-		final InputStream is = r.getInputStream();
-		final byte buffer[] = new byte[is.available()];
+		InputStream is = r.getInputStream();
+		byte buffer[] = new byte[is.available()];
 		is.read(buffer);
 		is.close();
 		String str = new String(buffer);
@@ -84,9 +84,9 @@ public class PortalTestUtil {
 	 * Creates the data structure with the sql files Uses the default from
 	 * spring-test-datasource.xml
 	 */
-	public static void createDataStructure(final List<String> files) throws SQLException, IOException {
+	public static void createDataStructure(List<String> files) throws SQLException, IOException {
 		try {
-			final DataSource ds = (DataSource) new JndiTemplate().lookup(CommonConstants.JNDI_DATASOURCE);
+			DataSource ds = (DataSource) new JndiTemplate().lookup(CommonConstants.JNDI_DATASOURCE);
 			Connection connection = ds.getConnection();
 			Statement stmt = connection.createStatement();
 			// clean db
@@ -94,7 +94,7 @@ public class PortalTestUtil {
 			stmt.close();
 			connection.close();
 			connection = ds.getConnection();
-			for (final String file : files) {
+			for (String file : files) {
 				stmt = connection.createStatement();
 				stmt.addBatch(PortalTestUtil.getFileContent(file));
 				stmt.executeBatch();
@@ -110,7 +110,7 @@ public class PortalTestUtil {
 	 * Creates the data structure with the sql files Uses the default from
 	 * spring-test-datasource.xml
 	 */
-	public static void createDefaultDataStructure(final String[] sqlFiles) throws SQLException, IOException {
+	public static void createDefaultDataStructure(String[] sqlFiles) throws SQLException, IOException {
 		List<String> files = new ArrayList<String>();
 		for (String file : SQL_FILES) {
 			files.add(file);
@@ -128,14 +128,14 @@ public class PortalTestUtil {
 	 */
 	public static WicketTester createWicketTesterWithSpring() {
 		final MockServletContext sandbox = getSandbox();
-		final PortalApplication app = new PortalApplication() {
+		PortalApplication app = new PortalApplication() {
 			@Override
 			public ServletContext getServletContext() {
 				return sandbox;
 			}
 
 			@Override
-			public org.apache.wicket.Session newSession(final Request request, final Response response) {
+			public org.apache.wicket.Session newSession(Request request, Response response) {
 				org.apache.wicket.Session session = super.newSession(request, response);
 				session.setLocale(Locale.ENGLISH);
 				return session;
@@ -154,7 +154,7 @@ public class PortalTestUtil {
 			sandbox = new MockServletContext("") {
 				// this is for the theme page test
 				@Override
-				public String getRealPath(final String arg0) {
+				public String getRealPath(String arg0) {
 					return System.getProperty("java.io.tmpdir");
 				}
 			};
@@ -169,7 +169,7 @@ public class PortalTestUtil {
 	/**
 	 * Create database and spring context
 	 */
-	public static WicketTester createWicketTesterWithSpringAndDatabase(final String... sqlFiles) throws SQLException,
+	public static WicketTester createWicketTesterWithSpringAndDatabase(String... sqlFiles) throws SQLException,
 			IOException {
 		registerJndiBindings();
 		createDefaultDataStructure(sqlFiles);
@@ -190,7 +190,7 @@ public class PortalTestUtil {
 		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, "org.hibernate.dialect.HSQLDialect");
 	}
 
-	private static void registerResource(final String jndiName, final Object jndiObj) {
+	private static void registerResource(String jndiName, Object jndiObj) {
 		try {
 			new org.mortbay.jetty.plus.naming.Resource(jndiName, jndiObj);
 		} catch (NamingException e) {
@@ -198,26 +198,26 @@ public class PortalTestUtil {
 		}
 	}
 
-	public static void destroy(final WicketTester tester) {
+	public static void destroy(WicketTester tester) {
 		tester.destroy();
 	}
 
 	/**
 	 * Login the default admin user
 	 */
-	public static void loginDefaultAdminUser(final WicketTester tester) throws UserNotConfirmedException {
+	public static void loginDefaultAdminUser(WicketTester tester) throws UserNotConfirmedException {
 		tester.startPage(LoginPage.class);
-		final FormTester form = tester.newFormTester("loginForm");
+		FormTester form = tester.newFormTester("loginForm");
 		form.setValue("username", "admin");
 		form.setValue("password", "admin");
 		form.submit();
 	}
 
-	public static String[] getMessage(final String key, final Component component) {
+	public static String[] getMessage(String key, Component component) {
 		return new String[] { new StringResourceModel(key, component, null).getString() };
 	}
 
-	public static <T> T getBean(final String beanName) {
+	public static <T> T getBean(String beanName) {
 		@SuppressWarnings("unchecked")
 		T back = (T) ContextLoader.getCurrentWebApplicationContext().getBean(beanName);
 		return back;

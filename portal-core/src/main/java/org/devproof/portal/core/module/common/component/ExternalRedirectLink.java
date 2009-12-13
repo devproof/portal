@@ -27,14 +27,13 @@ public class ExternalRedirectLink extends StatelessLink {
 	private static final long serialVersionUID = 1L;
 	private String url = null;
 
-	public ExternalRedirectLink(final String id, final String url) {
+	public ExternalRedirectLink(String id, String url) {
 		super(id);
 		this.url = url;
 	}
 
 	@Override
 	public void onClick() {
-		getRequestCycle().setRequestTarget(new RedirectRequestTarget(this.url));
+		getRequestCycle().setRequestTarget(new RedirectRequestTarget(url));
 	}
-
 }

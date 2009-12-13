@@ -42,12 +42,12 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry, Initial
 	}
 
 	@Override
-	public void registerPageAdminPage(final Class<? extends Page> adminPage) {
+	public void registerPageAdminPage(Class<? extends Page> adminPage) {
 		adminPages.add(adminPage);
 	}
 
 	@Override
-	public void removePageAdminPage(final Class<? extends Page> adminPage) {
+	public void removePageAdminPage(Class<? extends Page> adminPage) {
 		adminPages.remove(adminPage);
 	}
 
@@ -69,11 +69,11 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry, Initial
 		}
 	}
 
-	public void setPageLocator(final PageLocator pageLocator) {
+	public void setPageLocator(PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}
 
-	public void setModuleService(final ModuleService moduleService) {
+	public void setModuleService(ModuleService moduleService) {
 		this.moduleService = moduleService;
 	}
 }

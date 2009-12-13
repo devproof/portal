@@ -49,23 +49,23 @@ public class RightPage extends TemplatePage {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 
-	private final WebMarkupContainer container;
-	private final ModalWindow modalWindow;
+	private WebMarkupContainer container;
+	private ModalWindow modalWindow;
 
-	public RightPage(final PageParameters params) {
+	public RightPage(PageParameters params) {
 		super(params);
 
 		addPageAdminBoxLink(new AjaxLink<Object>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(final AjaxRequestTarget target) {
-				final RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(), rightService
+			public void onClick(AjaxRequestTarget target) {
+				RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(), rightService
 						.newRightEntity(), true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onSave(final AjaxRequestTarget target) {
+					public void onSave(AjaxRequestTarget target) {
 						target.addComponent(container);
 						target.addComponent(RightPage.this.getFeedback());
 						rightService.refreshGlobalApplicationRights();
@@ -94,14 +94,14 @@ public class RightPage extends TemplatePage {
 		modalWindow.setTitle("Portal");
 		add(modalWindow);
 
-		final RightDataView dataView = new RightDataView("tableRow", rightDataProvider, params);
+		RightDataView dataView = new RightDataView("tableRow", rightDataProvider, params);
 		container.add(dataView);
 
 		addFilterBox(new RightSearchBoxPanel("box", query) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target) {
+			protected void onSubmit(AjaxRequestTarget target) {
 				target.addComponent(container);
 			}
 
@@ -111,7 +111,7 @@ public class RightPage extends TemplatePage {
 	private class RightDataView extends DataView<RightEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public RightDataView(final String id, final IDataProvider<RightEntity> dataProvider, final PageParameters params) {
+		public RightDataView(String id, IDataProvider<RightEntity> dataProvider, PageParameters params) {
 			super(id, dataProvider);
 		}
 
@@ -125,7 +125,7 @@ public class RightPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public void onDelete(AjaxRequestTarget target) {
 					rightService.delete(right);
 					target.addComponent(container);
 					target.addComponent(getFeedback());
@@ -134,15 +134,15 @@ public class RightPage extends TemplatePage {
 				}
 
 				@Override
-				public void onEdit(final AjaxRequestTarget target) {
+				public void onEdit(AjaxRequestTarget target) {
 					RightEntity refreshedRight = rightService.findById(right.getRight());
-					final RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(),
-							refreshedRight, false) {
+					RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(), refreshedRight,
+							false) {
 
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						public void onSave(final AjaxRequestTarget target) {
+						public void onSave(AjaxRequestTarget target) {
 							target.addComponent(container);
 							target.addComponent(getFeedback());
 							rightService.refreshGlobalApplicationRights();

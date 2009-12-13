@@ -34,10 +34,10 @@ import org.apache.wicket.util.time.Time;
 public class FileResourceStream implements IResourceStream {
 
 	private static final long serialVersionUID = 1L;
-	private final FileInputStream fis;
-	private final File file;
+	private FileInputStream fis;
+	private File file;
 
-	public FileResourceStream(final File file) throws FileNotFoundException {
+	public FileResourceStream(File file) throws FileNotFoundException {
 		this.file = file;
 		fis = new FileInputStream(file);
 	}
@@ -62,7 +62,7 @@ public class FileResourceStream implements IResourceStream {
 		return file.length();
 	}
 
-	public void setLocale(final Locale locale) {
+	public void setLocale(Locale locale) {
 	}
 
 	public Time lastModifiedTime() {

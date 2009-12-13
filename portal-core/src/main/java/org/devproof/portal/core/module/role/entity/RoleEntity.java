@@ -62,7 +62,7 @@ final public class RoleEntity extends BaseEntity {
 		return id;
 	}
 
-	public void setId(final Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -70,7 +70,7 @@ final public class RoleEntity extends BaseEntity {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -78,7 +78,7 @@ final public class RoleEntity extends BaseEntity {
 		return active;
 	}
 
-	public void setActive(final Boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -89,28 +89,28 @@ final public class RoleEntity extends BaseEntity {
 		return rights;
 	}
 
-	public void setRights(final List<RightEntity> rights) {
+	public void setRights(List<RightEntity> rights) {
 		this.rights = rights;
 	}
 
-	public boolean add(final RightEntity e) {
+	public boolean add(RightEntity e) {
 		return rights.add(e);
 	}
 
-	public boolean addAll(final Collection<? extends RightEntity> c) {
+	public boolean addAll(Collection<? extends RightEntity> c) {
 		return rights.addAll(c);
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -120,7 +120,7 @@ final public class RoleEntity extends BaseEntity {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final RoleEntity other = (RoleEntity) obj;
+		RoleEntity other = (RoleEntity) obj;
 		if (id == null) {
 			if (other.id != null) {
 				return false;

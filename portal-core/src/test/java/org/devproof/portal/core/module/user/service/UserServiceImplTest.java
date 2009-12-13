@@ -178,7 +178,7 @@ public class UserServiceImplTest extends TestCase {
 		final StringBuilder callOrder = new StringBuilder();
 		impl = new UserServiceImpl() {
 			@Override
-			protected void setUserRegistrationValues(final UserEntity user, final String password) {
+			protected void setUserRegistrationValues(UserEntity user, String password) {
 				callOrder.append("1");
 			}
 
@@ -189,28 +189,28 @@ public class UserServiceImplTest extends TestCase {
 			}
 
 			@Override
-			protected EmailPlaceholderBean generateEmailPlaceHolder(final UserEntity user) {
+			protected EmailPlaceholderBean generateEmailPlaceHolder(UserEntity user) {
 				callOrder.append("3");
 				return null;
 			}
 
 			@Override
-			protected void setConfirmationCode(final UserEntity user, final String confirmationCode) {
+			protected void setConfirmationCode(UserEntity user, String confirmationCode) {
 				callOrder.append("4");
 			}
 
 			@Override
-			protected void sendConfirmationEmail(final String url, final EmailPlaceholderBean placeholder) {
+			protected void sendConfirmationEmail(String url, EmailPlaceholderBean placeholder) {
 				callOrder.append("5");
 			}
 
 			@Override
-			protected void sendEmailNotificationToAdmins(final EmailPlaceholderBean placeholder) {
+			protected void sendEmailNotificationToAdmins(EmailPlaceholderBean placeholder) {
 				callOrder.append("6");
 			}
 
 			@Override
-			public void save(final UserEntity user) {
+			public void save(UserEntity user) {
 				callOrder.append("7");
 			}
 		};

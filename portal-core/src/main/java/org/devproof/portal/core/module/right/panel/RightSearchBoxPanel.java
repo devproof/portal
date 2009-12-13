@@ -32,7 +32,7 @@ public abstract class RightSearchBoxPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	public RightSearchBoxPanel(final String id, final RightQuery query) {
+	public RightSearchBoxPanel(String id, RightQuery query) {
 		super(id);
 		Form<RightQuery> form = new Form<RightQuery>("searchForm", new CompoundPropertyModel<RightQuery>(query));
 		form.setOutputMarkupId(true);
@@ -50,18 +50,17 @@ public abstract class RightSearchBoxPanel extends Panel {
 	private class AjaxRefresh extends AjaxFormSubmitBehavior {
 		private static final long serialVersionUID = 1L;
 
-		public AjaxRefresh(final String event) {
+		public AjaxRefresh(String event) {
 			super(event);
 			setThrottleDelay(Duration.ONE_SECOND);
 		}
 
 		@Override
-		protected void onError(final AjaxRequestTarget target) {
-
+		protected void onError(AjaxRequestTarget target) {
 		}
 
 		@Override
-		protected void onSubmit(final AjaxRequestTarget target) {
+		protected void onSubmit(AjaxRequestTarget target) {
 			RightSearchBoxPanel.this.onSubmit(target);
 		}
 	}

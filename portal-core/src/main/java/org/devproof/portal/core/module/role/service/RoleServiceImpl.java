@@ -41,7 +41,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public void delete(final RoleEntity entity) {
+	public void delete(RoleEntity entity) {
 		roleDao.delete(entity);
 	}
 
@@ -51,12 +51,12 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public RoleEntity findById(final Integer id) {
+	public RoleEntity findById(Integer id) {
 		return roleDao.findById(id);
 	}
 
 	@Override
-	public void save(final RoleEntity entity) {
+	public void save(RoleEntity entity) {
 		roleDao.save(entity);
 	}
 
@@ -73,12 +73,12 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Required
-	public void setRoleDao(final RoleDao roleDao) {
+	public void setRoleDao(RoleDao roleDao) {
 		this.roleDao = roleDao;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 

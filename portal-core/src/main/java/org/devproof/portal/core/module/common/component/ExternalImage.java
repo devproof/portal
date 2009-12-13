@@ -33,14 +33,14 @@ public class ExternalImage extends WebComponent {
 
 	private static final long serialVersionUID = 1L;
 
-	public ExternalImage(final String id, final String imageUrl) {
+	public ExternalImage(String id, String imageUrl) {
 		super(id);
 		String url = UrlUtils.rewriteToContextRelative(imageUrl, getRequest());
 		add(new AttributeModifier("src", true, Model.of(url)));
 		setVisible(!(url == null || url.equals("")));
 	}
 
-	public ExternalImage(final String id, final ResourceReference imageResource) {
+	public ExternalImage(String id, ResourceReference imageResource) {
 		super(id);
 		String url = PortalUtil.toUrl(imageResource, getRequest());
 		add(new AttributeModifier("src", true, Model.of(url)));
@@ -48,7 +48,7 @@ public class ExternalImage extends WebComponent {
 	}
 
 	@Override
-	protected void onComponentTag(final ComponentTag tag) {
+	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
 		checkComponentTag(tag, "img");
 	}

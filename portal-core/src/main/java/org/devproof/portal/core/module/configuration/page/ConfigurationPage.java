@@ -54,7 +54,7 @@ public class ConfigurationPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public ConfigurationPage(final PageParameters params) {
+	public ConfigurationPage(PageParameters params) {
 		super(params);
 		final List<ConfigurationEntity> allConfigurations = new ArrayList<ConfigurationEntity>();
 		Form<List<ConfigurationEntity>> form = new Form<List<ConfigurationEntity>>("form") {
@@ -99,7 +99,7 @@ public class ConfigurationPage extends TemplatePage {
 	 * @return editor fragment for for the matching configuration type
 	 */
 
-	protected Component getEditorForConfiguration(final ConfigurationEntity configurationEntity) {
+	protected Component getEditorForConfiguration(ConfigurationEntity configurationEntity) {
 		if (configurationEntity.getKey().startsWith(ConfigurationConstants.SPRING_CONFIGURATION_PREFIX)) {
 			// special case foraccessing a spring dao
 			return new SpringBeanEditor("editor", configurationEntity);
@@ -127,7 +127,7 @@ public class ConfigurationPage extends TemplatePage {
 
 		private static final long serialVersionUID = 1L;
 
-		public ValueEditor(final String id, final ConfigurationEntity configurationEntity) {
+		public ValueEditor(String id, ConfigurationEntity configurationEntity) {
 			super(id, "valueEditor", ConfigurationPage.this);
 			Class<?> clazz;
 			try {
@@ -154,7 +154,7 @@ public class ConfigurationPage extends TemplatePage {
 	private class BooleanEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
 
-		public BooleanEditor(final String id, final ConfigurationEntity configurationEntity) {
+		public BooleanEditor(String id, ConfigurationEntity configurationEntity) {
 			super(id, "booleanEditor", ConfigurationPage.this);
 			add(new CheckBox("edit", new PropertyModel<Boolean>(configurationEntity, "booleanValue")).setLabel(Model
 					.of(configurationEntity.getKey())));
@@ -164,7 +164,7 @@ public class ConfigurationPage extends TemplatePage {
 	private class EnumEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
 
-		public EnumEditor(final String id, final ConfigurationEntity configurationEntity) {
+		public EnumEditor(String id, ConfigurationEntity configurationEntity) {
 			super(id, "enumEditor", ConfigurationPage.this);
 			Class<?> clazz;
 			try {
@@ -190,7 +190,7 @@ public class ConfigurationPage extends TemplatePage {
 	private class SpringBeanEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
 
-		public SpringBeanEditor(final String id, final ConfigurationEntity configurationEntity) {
+		public SpringBeanEditor(String id, final ConfigurationEntity configurationEntity) {
 			super(id, "springBeanEditor", ConfigurationPage.this);
 
 			String typeWithoutPrefix = configurationEntity.getKey().substring(
@@ -242,7 +242,7 @@ public class ConfigurationPage extends TemplatePage {
 					return configurationEntity;
 				}
 
-				public void setObject(final ConfigurationEntity object) {
+				public void setObject(ConfigurationEntity object) {
 					configurationEntity.setValue(object.getValue());
 				}
 
@@ -260,7 +260,7 @@ public class ConfigurationPage extends TemplatePage {
 	private class DateEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
 
-		public DateEditor(final String id, final ConfigurationEntity configurationEntity) {
+		public DateEditor(String id, ConfigurationEntity configurationEntity) {
 			super(id, "dateEditor", ConfigurationPage.this);
 			DateTextField dateTextField = new DateTextField("edit", new PropertyModel<Date>(configurationEntity,
 					"dateValue"));
@@ -272,7 +272,7 @@ public class ConfigurationPage extends TemplatePage {
 	private class GroupHeader extends Fragment {
 		private static final long serialVersionUID = 1L;
 
-		public GroupHeader(final String id, final String headline) {
+		public GroupHeader(String id, String headline) {
 			super(id, "groupHeader", ConfigurationPage.this);
 			add(new Label("headline", headline));
 		}

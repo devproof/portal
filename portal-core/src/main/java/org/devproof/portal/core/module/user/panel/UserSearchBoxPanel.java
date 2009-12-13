@@ -67,17 +67,17 @@ public abstract class UserSearchBoxPanel extends Panel {
 	private class AjaxRefresh extends AjaxFormSubmitBehavior {
 		private static final long serialVersionUID = 1L;
 
-		public AjaxRefresh(final String event) {
+		public AjaxRefresh(String event) {
 			super(event);
 			setThrottleDelay(Duration.ONE_SECOND);
 		}
 
 		@Override
-		protected void onError(final AjaxRequestTarget target) {
+		protected void onError(AjaxRequestTarget target) {
 		}
 
 		@Override
-		protected void onSubmit(final AjaxRequestTarget target) {
+		protected void onSubmit(AjaxRequestTarget target) {
 			UserSearchBoxPanel.this.onSubmit(target);
 		}
 	}

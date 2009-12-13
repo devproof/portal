@@ -91,13 +91,11 @@ public class ProgressBar extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	private int width = 400;
-
 	private static final ResourceReference CSS = new ResourceReference(ProgressBar.class, "ProgressBar.css");
+	private int width = 400;
+	private ProgressionModel model;
 
-	private final ProgressionModel model;
-
-	public ProgressBar(final String id, final ProgressionModel model) {
+	public ProgressBar(String id, final ProgressionModel model) {
 		super(id, model);
 		this.model = model;
 
@@ -179,13 +177,13 @@ public class ProgressBar extends Panel {
 	 * 
 	 * @param target
 	 */
-	public void start(final AjaxRequestTarget target) {
+	public void start(AjaxRequestTarget target) {
 		setVisible(true);
 		add(new DynamicAjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onPostProcessTarget(final AjaxRequestTarget target) {
+			protected void onPostProcessTarget(AjaxRequestTarget target) {
 				// ProgressionModel model = (ProgressionModel) getModel();
 				Progression progression = model.getProgression();
 				if (progression.isDone()) {
@@ -211,7 +209,7 @@ public class ProgressBar extends Panel {
 	 * 
 	 * @param target
 	 */
-	protected void onFinished(final AjaxRequestTarget target) {
+	protected void onFinished(AjaxRequestTarget target) {
 
 	}
 
@@ -228,7 +226,7 @@ public class ProgressBar extends Panel {
 	 * @param width
 	 *            the width of the ProgressBar in px
 	 */
-	public void setWidth(final int width) {
+	public void setWidth(int width) {
 		this.width = width;
 	}
 }

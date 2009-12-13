@@ -49,7 +49,7 @@ public abstract class BaseEntity implements Serializable {
 	// @Column(name="version")
 	// private Integer version = 1;
 
-	public void setModifiedBy(final String modifiedBy) {
+	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
@@ -57,7 +57,7 @@ public abstract class BaseEntity implements Serializable {
 		return modifiedAt;
 	}
 
-	public void setModifiedAt(final Date modifiedAt) {
+	public void setModifiedAt(Date modifiedAt) {
 		this.modifiedAt = modifiedAt;
 	}
 
@@ -65,7 +65,7 @@ public abstract class BaseEntity implements Serializable {
 		return createdBy;
 	}
 
-	public void setCreatedBy(final String createdBy) {
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
@@ -73,7 +73,7 @@ public abstract class BaseEntity implements Serializable {
 		return createdAt;
 	}
 
-	public void setCreatedAt(final Date createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -82,9 +82,9 @@ public abstract class BaseEntity implements Serializable {
 	}
 
 	@Transient
-	protected List<RightEntity> getRightsStartingWith(final List<RightEntity> rights, final String prefix) {
-		final List<RightEntity> back = new ArrayList<RightEntity>();
-		for (final RightEntity right : rights) {
+	protected List<RightEntity> getRightsStartingWith(List<RightEntity> rights, String prefix) {
+		List<RightEntity> back = new ArrayList<RightEntity>();
+		for (RightEntity right : rights) {
 			if (right.getRight().startsWith(prefix)) {
 				back.add(right);
 			}

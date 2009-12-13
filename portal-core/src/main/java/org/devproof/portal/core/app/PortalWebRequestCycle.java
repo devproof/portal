@@ -35,10 +35,10 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class PortalWebRequestCycle extends WebRequestCycle {
 
-	private final SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
-	public PortalWebRequestCycle(final WebApplication application, final WebRequest request, final Response response,
-			final ApplicationContext context) {
+	public PortalWebRequestCycle(WebApplication application, WebRequest request, Response response,
+			ApplicationContext context) {
 		super(application, request, response);
 		sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 	}

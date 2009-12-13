@@ -51,7 +51,7 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public void delete(final EmailTemplateEntity entity) {
+	public void delete(EmailTemplateEntity entity) {
 		emailTemplateDao.delete(entity);
 	}
 
@@ -61,17 +61,17 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public EmailTemplateEntity findById(final Integer id) {
+	public EmailTemplateEntity findById(Integer id) {
 		return emailTemplateDao.findById(id);
 	}
 
 	@Override
-	public void save(final EmailTemplateEntity entity) {
+	public void save(EmailTemplateEntity entity) {
 		emailTemplateDao.save(entity);
 	}
 
 	@Override
-	public void sendEmail(final EmailTemplateEntity template, final EmailPlaceholderBean placeholder) {
+	public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
 		// Create email
 		try {
 			MimeMessage msg = javaMailSender.createMimeMessage();
@@ -117,12 +117,12 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public void sendEmail(final Integer templateId, final EmailPlaceholderBean placeholder) {
+	public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
 		EmailTemplateEntity template = emailTemplateDao.findById(templateId);
 		this.sendEmail(template, placeholder);
 	}
 
-	private String replace(final String in, final EmailPlaceholderBean placeholder) {
+	private String replace(String in, EmailPlaceholderBean placeholder) {
 		String content = in;
 		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_USERNAME,
 				placeholder.getUsername() != null ? placeholder.getUsername() : "");
@@ -160,22 +160,22 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Required
-	public void setEmailTemplateDao(final EmailTemplateDao emailTemplateDao) {
+	public void setEmailTemplateDao(EmailTemplateDao emailTemplateDao) {
 		this.emailTemplateDao = emailTemplateDao;
 	}
 
 	@Required
-	public void setConfigurationService(final ConfigurationService configurationService) {
+	public void setConfigurationService(ConfigurationService configurationService) {
 		this.configurationService = configurationService;
 	}
 
 	@Required
-	public void setJavaMailSender(final JavaMailSender javaMailSender) {
+	public void setJavaMailSender(JavaMailSender javaMailSender) {
 		this.javaMailSender = javaMailSender;
 	}
 
 	@Required
-	public void setDateFormat(final SimpleDateFormat dateFormat) {
+	public void setDateFormat(SimpleDateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 	}
 }

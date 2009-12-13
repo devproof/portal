@@ -34,7 +34,7 @@ public class UserInfoPanel extends Panel {
 	@SpringBean(name = "dateTimeFormat")
 	private SimpleDateFormat dateTimeFormat;
 
-	public UserInfoPanel(final String id, final UserEntity user) {
+	public UserInfoPanel(String id, UserEntity user) {
 		super(id);
 
 		add(new Label("username", user.getUsername()));

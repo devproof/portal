@@ -48,12 +48,12 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 
 	@Override
 	public List<ModuleBean> findModules() {
-		final List<ModuleBean> coreModules = new ArrayList<ModuleBean>();
-		final List<ModuleBean> otherModules = new ArrayList<ModuleBean>();
+		List<ModuleBean> coreModules = new ArrayList<ModuleBean>();
+		List<ModuleBean> otherModules = new ArrayList<ModuleBean>();
 		@SuppressWarnings("unchecked")
-		final Map<String, ModuleConfiguration> beans = applicationContext.getBeansOfType(ModuleConfiguration.class);
-		for (final ModuleConfiguration module : beans.values()) {
-			final ModuleBean bean = new ModuleBean();
+		Map<String, ModuleConfiguration> beans = applicationContext.getBeansOfType(ModuleConfiguration.class);
+		for (ModuleConfiguration module : beans.values()) {
+			ModuleBean bean = new ModuleBean();
 			bean.setConfiguration(module);
 			bean.setLocation(getLocations(module));
 			if ("core".equals(module.getPortalVersion()) && "core".equals(module.getModuleVersion())) {
@@ -62,7 +62,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 				otherModules.add(bean);
 			}
 		}
-		final List<ModuleBean> back = new ArrayList<ModuleBean>(coreModules.size() + otherModules.size());
+		List<ModuleBean> back = new ArrayList<ModuleBean>(coreModules.size() + otherModules.size());
 		back.addAll(coreModules);
 		back.addAll(otherModules);
 		return back;
@@ -70,7 +70,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 	}
 
 	@Override
-	public void moveDown(final ModuleLinkEntity link) {
+	public void moveDown(ModuleLinkEntity link) {
 		int maxSort = moduleLinkDao.getMaxSortNum(link.getLinkType());
 		if (link.getSort() < maxSort) {
 			ModuleLinkEntity moveDown = link;
@@ -83,7 +83,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 	}
 
 	@Override
-	public void moveUp(final ModuleLinkEntity link) {
+	public void moveUp(ModuleLinkEntity link) {
 		if (link.getSort() > 1) {
 			ModuleLinkEntity moveUp = link;
 			ModuleLinkEntity moveDown = moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() - 1);
@@ -95,7 +95,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 	}
 
 	@Override
-	public void save(final ModuleLinkEntity link) {
+	public void save(ModuleLinkEntity link) {
 		moduleLinkDao.save(link);
 	}
 
@@ -177,7 +177,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 		}
 	}
 
-	private ModuleLinkEntity mapTo(final PageConfiguration configuration, final LinkType linkType) {
+	private ModuleLinkEntity mapTo(PageConfiguration configuration, LinkType linkType) {
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setLinkType(linkType);
 		// link.setModuleName(configuration.)
@@ -196,7 +196,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 		return link;
 	}
 
-	private String getLocations(final ModuleConfiguration config) {
+	private String getLocations(ModuleConfiguration config) {
 		Set<String> locations = new HashSet<String>();
 		for (BoxConfiguration c : config.getBoxes()) {
 			locations.add(getLocation(c.getBoxClass()));
@@ -213,7 +213,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 		return StringUtils.replaceChars(locations.toString(), "[]", "");
 	}
 
-	private String getLocation(final Class<?> clazz) {
+	private String getLocation(Class<?> clazz) {
 		URL url = clazz.getResource("");
 		if (!"jar".equals(url.getProtocol())) {
 			return "WAR";
@@ -230,17 +230,17 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 	}
 
 	@Override
-	public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 	}
 
 	@Required
-	public void setModuleLinkDao(final ModuleLinkDao moduleLinkDao) {
+	public void setModuleLinkDao(ModuleLinkDao moduleLinkDao) {
 		this.moduleLinkDao = moduleLinkDao;
 	}
 
 	@Required
-	public void setPageLocator(final PageLocator pageLocator) {
+	public void setPageLocator(PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}
 }

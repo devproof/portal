@@ -32,17 +32,19 @@ import org.apache.wicket.model.IModel;
 public abstract class StatelessRatingPanel extends RatingPanel {
 	private static final long serialVersionUID = 1L;
 
-	private final IModel<Boolean> hasVoted;
-	private final PageParameters params;
-	private final Integer contentId;
+	private IModel<Boolean> hasVoted;
+	private PageParameters params;
+	private Integer contentId;
 
-	public StatelessRatingPanel(final String id, final IModel<Integer> rating, final IModel<Integer> nrOfStars, final IModel<Integer> nrOfVotes, final IModel<Boolean> hasVoted,
-			final boolean addDefaultCssStyle, final PageParameters params, final Integer contentId) {
+	public StatelessRatingPanel(String id, IModel<Integer> rating, IModel<Integer> nrOfStars,
+			IModel<Integer> nrOfVotes, IModel<Boolean> hasVoted, boolean addDefaultCssStyle, PageParameters params,
+			Integer contentId) {
 		super(id, rating, nrOfStars, nrOfVotes, hasVoted, addDefaultCssStyle);
 		this.hasVoted = hasVoted;
 		this.params = params;
 		this.contentId = contentId;
-		if (StatelessRatingPanel.this.params.containsKey("rateid") && StatelessRatingPanel.this.params.containsKey("vote")) {
+		if (StatelessRatingPanel.this.params.containsKey("rateid")
+				&& StatelessRatingPanel.this.params.containsKey("vote")) {
 			Integer rateId = StatelessRatingPanel.this.params.getAsInteger("rateid");
 			Integer vote = StatelessRatingPanel.this.params.getAsInteger("vote");
 			if (vote > nrOfStars.getObject()) {
@@ -56,7 +58,7 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 	}
 
 	@Override
-	protected Component newRatingStarBar(final String id, final IModel<Integer> nrOfStars) {
+	protected Component newRatingStarBar(String id, IModel<Integer> nrOfStars) {
 		return new StatelessRatingStarBar(id, nrOfStars);
 	}
 
@@ -67,32 +69,33 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 		/** For serialization. */
 		private static final long serialVersionUID = 1L;
 
-		private StatelessRatingStarBar(final String id, final IModel<Integer> model) {
+		private StatelessRatingStarBar(String id, IModel<Integer> model) {
 			super(id, model);
 		}
 
 		@Override
-		protected void populateItem(final LoopItem item) {
+		protected void populateItem(LoopItem item) {
 			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link", getPage().getClass());
-			link.setEnabled(!StatelessRatingPanel.this.hasVoted.getObject());
+			link.setEnabled(!hasVoted.getObject());
 
-			for (String key : StatelessRatingPanel.this.params.keySet()) {
-				link.setParameter(key, StatelessRatingPanel.this.params.getString(key));
+			for (String key : params.keySet()) {
+				link.setParameter(key, params.getString(key));
 			}
-			link.setParameter("rateid", StatelessRatingPanel.this.contentId);
+			link.setParameter("rateid", contentId);
 			link.setParameter("vote", item.getIteration());
 
 			int iteration = item.getIteration();
 
 			// add the star image, which is either active (highlighted) or
 			// inactive (no star)
-			link.add(new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
+			link.add(new WebMarkupContainer("star").add(new SimpleAttributeModifier("src",
+					(onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
 			item.add(link);
 		}
 	}
 
 	@Override
-	protected void onRated(final int rating, final AjaxRequestTarget target) {
+	protected void onRated(int rating, AjaxRequestTarget target) {
 		this.onRated(rating);
 	}
 

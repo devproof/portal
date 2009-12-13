@@ -40,7 +40,7 @@ public abstract class BaseTagEntity<T> extends BaseEntity {
 		return this.tagname;
 	}
 
-	public void setTagname(final String tagname) {
+	public void setTagname(String tagname) {
 		this.tagname = tagname != null ? tagname.toLowerCase() : null;
 	}
 
@@ -55,14 +55,14 @@ public abstract class BaseTagEntity<T> extends BaseEntity {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((this.tagname == null) ? 0 : this.tagname.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -72,7 +72,7 @@ public abstract class BaseTagEntity<T> extends BaseEntity {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final BaseTagEntity<?> other = (BaseTagEntity<?>) obj;
+		BaseTagEntity<?> other = (BaseTagEntity<?>) obj;
 		if (this.tagname == null) {
 			if (other.tagname != null) {
 				return false;

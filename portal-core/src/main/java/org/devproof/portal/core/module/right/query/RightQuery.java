@@ -32,7 +32,7 @@ public class RightQuery implements Serializable {
 		return rightAndDescription;
 	}
 
-	public void setRightAndDescription(final String rightAndDescription) {
+	public void setRightAndDescription(String rightAndDescription) {
 		this.rightAndDescription = rightAndDescription;
 	}
 }

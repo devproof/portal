@@ -60,17 +60,17 @@ public class PortalApplication extends WebApplication {
 	}
 
 	private void loadTheme() {
-		final ConfigurationService configurationService = this.getSpringBean("configurationService");
-		final String themeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
+		ConfigurationService configurationService = this.getSpringBean("configurationService");
+		String themeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
 		getResourceSettings().setResourceStreamLocator(new PortalResourceStreamLocator(getServletContext(), themeUuid));
 	}
 
 	private void mountPagesAndSetStartPage() {
 		startPage = NoStartPage.class;
-		final PageLocator pageLocator = this.getSpringBean("pageLocator");
-		final MainNavigationRegistry mainNavigationRegistry = this.getSpringBean("mainNavigationRegistry");
-		final Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
-		for (final PageConfiguration page : pages) {
+		PageLocator pageLocator = this.getSpringBean("pageLocator");
+		MainNavigationRegistry mainNavigationRegistry = this.getSpringBean("mainNavigationRegistry");
+		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
+		for (PageConfiguration page : pages) {
 			if (page.getMountPath() != null) {
 				if (page.isIndexMountedPath()) {
 					mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
@@ -104,8 +104,8 @@ public class PortalApplication extends WebApplication {
 		return productionMode;
 	}
 
-	public void setThemeUuid(final String themeUuid) {
-		final PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings()
+	public void setThemeUuid(String themeUuid) {
+		PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings()
 				.getResourceStreamLocator();
 		locator.setThemeUuid(themeUuid);
 		getMarkupSettings().getMarkupCache().clear();
@@ -131,20 +131,20 @@ public class PortalApplication extends WebApplication {
 		return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 	}
 
-	public <T> T getSpringBean(final String id) {
+	public <T> T getSpringBean(String id) {
 		@SuppressWarnings("unchecked")
-		final T back = (T) getSpringContext().getBean(id);
+		T back = (T) getSpringContext().getBean(id);
 		return back;
 	}
 
 	@Override
-	public Session newSession(final Request request, final Response response) {
+	public Session newSession(Request request, Response response) {
 		LOG.debug("New session created.");
 		return new PortalSession(request);
 	}
-	
+
 	@Override
-	public RequestCycle newRequestCycle(final Request request, final Response response) {
+	public RequestCycle newRequestCycle(Request request, Response response) {
 		return new PortalWebRequestCycle(this, (WebRequest) request, (WebResponse) response, getSpringContext());
 	}
 }

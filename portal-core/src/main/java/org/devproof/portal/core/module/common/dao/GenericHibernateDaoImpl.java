@@ -46,13 +46,13 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 	private UsernameResolver usernameResolver;
 	private Class<T> type;
 
-	public GenericHibernateDaoImpl(final Class<T> type) {
+	public GenericHibernateDaoImpl(Class<T> type) {
 		this.type = type;
 		LOG.debug("Constructor GenericHibernateDaoImpl");
 	}
 
 	@SuppressWarnings(value = "unchecked")
-	public T findById(final PK id) {
+	public T findById(PK id) {
 		return (T) getSession().get(this.type, id);
 	}
 
@@ -61,15 +61,15 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		return getSession().createQuery("Select distinct(e) from " + type.getSimpleName() + " e").list();
 	}
 
-	public void save(final T entity) {
-		final SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
+	public void save(T entity) {
+		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
 		if (holder.getTransaction() == null) {
 			holder.setTransaction(holder.getSession().beginTransaction());
 		}
 		LOG.debug("save " + type);
 
 		if (entity instanceof BaseEntity) {
-			final BaseEntity base = (BaseEntity) entity;
+			BaseEntity base = (BaseEntity) entity;
 			// only works in the request
 			String username = usernameResolver.getUsername();
 			LOG.debug("BaseEntity " + entity + "set creation date and user");
@@ -86,12 +86,12 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 	}
 
 	@Override
-	public void refresh(final T entity) {
+	public void refresh(T entity) {
 		this.getSession().refresh(entity);
 	}
 
-	public void delete(final T entity) {
-		final SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
+	public void delete(T entity) {
+		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
 		if (holder.getTransaction() == null) {
 			LOG.debug("No transaction found, start one.");
 			holder.setTransaction(holder.getSession().beginTransaction());
@@ -99,13 +99,13 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		this.getSession().delete(entity);
 	}
 
-	public Object executeFinder(final String query, final Object[] queryArgs, final Class<?> returnType,
-			final Integer firstResults, final Integer maxResults) {
+	public Object executeFinder(String query, Object[] queryArgs, Class<?> returnType, Integer firstResults,
+			Integer maxResults) {
 		String tmpQuery = query;
 		if (query.contains("$TYPE")) {
 			tmpQuery = tmpQuery.replace("$TYPE", type.getSimpleName());
 		}
-		final Query q = this.getSession().createQuery(tmpQuery);
+		Query q = this.getSession().createQuery(tmpQuery);
 		if (queryArgs != null) {
 			for (int i = 0; i < queryArgs.length; i++) {
 				q.setParameter(i, queryArgs[i]);
@@ -124,12 +124,12 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		}
 	}
 
-	public void executeUpdate(final String query, final Object[] queryArgs) {
+	public void executeUpdate(String query, Object[] queryArgs) {
 		String tmpQuery = query;
 		if (query.contains("$TYPE")) {
 			tmpQuery = tmpQuery.replace("$TYPE", type.getSimpleName());
 		}
-		final Query q = getSession().createQuery(tmpQuery);
+		Query q = getSession().createQuery(tmpQuery);
 		if (queryArgs != null) {
 			for (int i = 0; i < queryArgs.length; i++) {
 				q.setParameter(i, queryArgs[i]);
@@ -143,12 +143,12 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 	}
 
 	@Required
-	public void setType(final Class<T> type) {
+	public void setType(Class<T> type) {
 		this.type = type;
 	}
 
 	@Required
-	public void setUsernameResolver(final UsernameResolver usernameResolver) {
+	public void setUsernameResolver(UsernameResolver usernameResolver) {
 		this.usernameResolver = usernameResolver;
 	}
 }

@@ -52,10 +52,10 @@ public class ModuleLinkPanel extends Panel {
 	@SpringBean(name = "registryService")
 	private RegistryService registryService;
 
-	private final WebMarkupContainer container;
-	private final Form<ModuleLinkEntity> form;
+	private WebMarkupContainer container;
+	private Form<ModuleLinkEntity> form;
 
-	public ModuleLinkPanel(final String id, final LinkType linkType) {
+	public ModuleLinkPanel(String id, LinkType linkType) {
 		super(id);
 		add(new Label("naviTitle", getString(linkType.toString().toLowerCase())));
 		container = new WebMarkupContainer("refreshTable");
@@ -76,7 +76,7 @@ public class ModuleLinkPanel extends Panel {
 	private class ModuleLinkView extends DataView<ModuleLinkEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public ModuleLinkView(final String id, final IDataProvider<ModuleLinkEntity> dataProvider) {
+		public ModuleLinkView(String id, IDataProvider<ModuleLinkEntity> dataProvider) {
 			super(id, dataProvider);
 		}
 
@@ -91,7 +91,7 @@ public class ModuleLinkPanel extends Panel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected void onSelectionChanged(final Object newSelection) {
+				protected void onSelectionChanged(Object newSelection) {
 					moduleService.save(link);
 					registryService.rebuildRegistries(link.getLinkType());
 					Boolean selection = (Boolean) newSelection;
@@ -113,7 +113,7 @@ public class ModuleLinkPanel extends Panel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(final AjaxRequestTarget target) {
+				public void onClick(AjaxRequestTarget target) {
 					moduleService.moveUp(link);
 					registryService.rebuildRegistries(link.getLinkType());
 					target.addComponent(container);
@@ -124,7 +124,7 @@ public class ModuleLinkPanel extends Panel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(final AjaxRequestTarget target) {
+				public void onClick(AjaxRequestTarget target) {
 					moduleService.moveDown(link);
 					registryService.rebuildRegistries(link.getLinkType());
 					target.addComponent(container);

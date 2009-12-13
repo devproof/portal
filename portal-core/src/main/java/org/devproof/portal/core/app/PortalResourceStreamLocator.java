@@ -32,16 +32,16 @@ import org.devproof.portal.core.module.theme.ThemeConstants;
  * 
  */
 public class PortalResourceStreamLocator extends ResourceStreamLocator {
-	private final ServletContext servletContext;
+	private ServletContext servletContext;
 	private String themeUuid;
 
-	public PortalResourceStreamLocator(final ServletContext servletContext, final String themeUuid) {
+	public PortalResourceStreamLocator(ServletContext servletContext, String themeUuid) {
 		this.servletContext = servletContext;
 		setThemeUuid(themeUuid);
 	}
 
 	@Override
-	public IResourceStream locate(final Class<?> clazz, final String path) {
+	public IResourceStream locate(Class<?> clazz, String path) {
 		// try to load the resource from the web context
 		if (themeUuid != null) {
 			try {
@@ -58,7 +58,7 @@ public class PortalResourceStreamLocator extends ResourceStreamLocator {
 		return super.locate(clazz, path);
 	}
 
-	public void setThemeUuid(final String themeUuid) {
+	public void setThemeUuid(String themeUuid) {
 		if (ThemeConstants.CONF_SELECTED_THEME_DEFAULT.equals(themeUuid)) {
 			this.themeUuid = null;
 		} else {

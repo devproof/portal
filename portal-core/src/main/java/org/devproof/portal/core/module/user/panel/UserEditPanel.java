@@ -57,7 +57,7 @@ public abstract class UserEditPanel extends Panel {
 	@SpringBean(name = "userService")
 	private UserService userService;
 
-	public UserEditPanel(final String id, final UserEntity user, final boolean isCreate) {
+	public UserEditPanel(String id, UserEntity user, final boolean isCreate) {
 		super(id);
 		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
@@ -76,7 +76,7 @@ public abstract class UserEditPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onValidate(final IValidatable<String> ivalidatable) {
+			protected void onValidate(IValidatable<String> ivalidatable) {
 				if (userService.existsUsername(ivalidatable.getValue()) && isCreate) {
 					error(ivalidatable);
 				}
@@ -108,15 +108,15 @@ public abstract class UserEditPanel extends Panel {
 		form.add(fc);
 
 		IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
-		final DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", new PropertyModel<RoleEntity>(user,
-				"role"), roleService.findAll(), renderer);
+		DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", new PropertyModel<RoleEntity>(user, "role"),
+				roleService.findAll(), renderer);
 		role.setRequired(true);
 		form.add(role);
 
 		final PasswordTextField password1 = new PasswordTextField("password1", new Model<String>());
 		password1.setRequired(isCreate);
 		form.add(password1);
-		final PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
+		PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
 		password2.setRequired(isCreate);
 		form.add(password2);
 
@@ -128,7 +128,7 @@ public abstract class UserEditPanel extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				UserEntity user = (UserEntity) form.getModelObject();
 				if (password1.getValue() != null && !"".equals(password1.getValue().trim())) {
 					user.setPasswordMD5(PortalUtil.generateMd5(password1.getValue()));
@@ -142,7 +142,7 @@ public abstract class UserEditPanel extends Panel {
 			}
 
 			@Override
-			protected void onError(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.addComponent(feedback);
 			}
 		});

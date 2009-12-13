@@ -55,7 +55,7 @@ final public class ConfigurationEntity implements Serializable {
 	}
 
 	@Transient
-	public void setIntegerValue(final Integer value) {
+	public void setIntegerValue(Integer value) {
 		this.value = String.valueOf(value);
 	}
 
@@ -65,7 +65,7 @@ final public class ConfigurationEntity implements Serializable {
 	}
 
 	@Transient
-	public void setDoubleValue(final Double value) {
+	public void setDoubleValue(Double value) {
 		this.value = String.valueOf(value);
 	}
 
@@ -75,7 +75,7 @@ final public class ConfigurationEntity implements Serializable {
 	}
 
 	@Transient
-	public void setBooleanValue(final Boolean value) {
+	public void setBooleanValue(Boolean value) {
 		this.value = String.valueOf(value);
 	}
 
@@ -83,13 +83,13 @@ final public class ConfigurationEntity implements Serializable {
 	public Date getDateValue() {
 		try {
 			return ConfigurationConstants.DATE_FORMAT.parse(value);
-		} catch (final ParseException e) {
+		} catch (ParseException e) {
 			throw new UnhandledException("The configuration date format is wrong!", e);
 		}
 	}
 
 	@Transient
-	public void setDateValue(final Date value) {
+	public void setDateValue(Date value) {
 		this.value = ConfigurationConstants.DATE_FORMAT.format(value);
 	}
 
@@ -98,7 +98,7 @@ final public class ConfigurationEntity implements Serializable {
 		return key;
 	}
 
-	public void setKey(final String key) {
+	public void setKey(String key) {
 		this.key = key;
 	}
 
@@ -106,7 +106,7 @@ final public class ConfigurationEntity implements Serializable {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -114,7 +114,7 @@ final public class ConfigurationEntity implements Serializable {
 		return value;
 	}
 
-	public void setValue(final String value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 
@@ -122,7 +122,7 @@ final public class ConfigurationEntity implements Serializable {
 		return group;
 	}
 
-	public void setGroup(final String group) {
+	public void setGroup(String group) {
 		this.group = group;
 	}
 
@@ -130,20 +130,20 @@ final public class ConfigurationEntity implements Serializable {
 		return type;
 	}
 
-	public void setType(final String type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		int prime = 31;
 		int result = 1;
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -153,7 +153,7 @@ final public class ConfigurationEntity implements Serializable {
 		if (this.getClass() != obj.getClass()) {
 			return false;
 		}
-		final ConfigurationEntity other = (ConfigurationEntity) obj;
+		ConfigurationEntity other = (ConfigurationEntity) obj;
 		if (key == null) {
 			if (other.key != null) {
 				return false;

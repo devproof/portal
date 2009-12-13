@@ -42,41 +42,41 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
-	public Object findAsObject(final String key) {
-		final ConfigurationEntity c = configurationRegistry.getConfiguration(key);
+	public Object findAsObject(String key) {
+		ConfigurationEntity c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
 		try {
-			final Class<?> clazz = Class.forName(c.getType());
+			Class<?> clazz = Class.forName(c.getType());
 			if (clazz.isEnum()) {
 				@SuppressWarnings("unchecked")
-				final Enum<?> e = Enum.valueOf((Class) clazz, c.getValue());
+				Enum<?> e = Enum.valueOf((Class) clazz, c.getValue());
 				return e;
 			} else {
-				final Constructor<?> constructor = clazz.getConstructor(String.class);
+				Constructor<?> constructor = clazz.getConstructor(String.class);
 				return constructor.newInstance(c.getValue());
 			}
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" has an invalid type! " + e);
 		}
 	}
 
 	@Override
-	public Boolean findAsBoolean(final String key) {
+	public Boolean findAsBoolean(String key) {
 		return (Boolean) findAsObject(key);
 	}
 
 	@Override
-	public Date findAsDate(final String key) {
-		final ConfigurationEntity c = configurationRegistry.getConfiguration(key);
+	public Date findAsDate(String key) {
+		ConfigurationEntity c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
 		if (Date.class.getName().equals(c.getType())) {
 			try {
 				return dateFormat.parse(c.getValue());
-			} catch (final ParseException e) {
+			} catch (ParseException e) {
 				throw new NoSuchElementException("Configuration element \"" + key + "\" has not a valid date!");
 			}
 		} else {
@@ -85,27 +85,27 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
-	public Double findAsDouble(final String key) {
+	public Double findAsDouble(String key) {
 		return (Double) findAsObject(key);
 	}
 
 	@Override
-	public Enum<?> findAsEnum(final String key) {
+	public Enum<?> findAsEnum(String key) {
 		return (Enum<?>) findAsObject(key);
 	}
 
 	@Override
-	public Integer findAsInteger(final String key) {
+	public Integer findAsInteger(String key) {
 		return (Integer) findAsObject(key);
 	}
 
 	@Override
-	public String findAsString(final String key) {
+	public String findAsString(String key) {
 		return (String) findAsObject(key);
 	}
 
 	@Override
-	public File findAsFile(final String key) {
+	public File findAsFile(String key) {
 		String path = findAsString(key);
 		if (path.equals("java.io.tmpdir")) {
 			path = System.getProperty("java.io.tmpdir");
@@ -115,8 +115,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public void refreshGlobalConfiguration() {
-		final List<ConfigurationEntity> list = findAll();
-		for (final ConfigurationEntity configuration : list) {
+		List<ConfigurationEntity> list = findAll();
+		for (ConfigurationEntity configuration : list) {
 			configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
 		}
 		// Refresh global date formater
@@ -135,42 +135,42 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
-	public List<ConfigurationEntity> findConfigurationsByGroup(final String group) {
+	public List<ConfigurationEntity> findConfigurationsByGroup(String group) {
 		return configurationDao.findConfigurationsByGroup(group);
 	}
 
 	@Override
-	public void delete(final ConfigurationEntity entity) {
+	public void delete(ConfigurationEntity entity) {
 		configurationDao.delete(entity);
 	}
 
 	@Override
-	public ConfigurationEntity findById(final String id) {
+	public ConfigurationEntity findById(String id) {
 		return configurationDao.findById(id);
 	}
 
 	@Override
-	public void save(final ConfigurationEntity entity) {
+	public void save(ConfigurationEntity entity) {
 		configurationDao.save(entity);
 	}
 
 	@Required
-	public void setConfigurationDao(final ConfigurationDao configurationDao) {
+	public void setConfigurationDao(ConfigurationDao configurationDao) {
 		this.configurationDao = configurationDao;
 	}
 
 	@Required
-	public void setDateFormat(final SimpleDateFormat dateFormat) {
+	public void setDateFormat(SimpleDateFormat dateFormat) {
 		this.dateFormat = dateFormat;
 	}
 
 	@Required
-	public void setDateTimeFormat(final SimpleDateFormat dateTimeFormat) {
+	public void setDateTimeFormat(SimpleDateFormat dateTimeFormat) {
 		this.dateTimeFormat = dateTimeFormat;
 	}
 
 	@Required
-	public void setConfigurationRegistry(final ConfigurationRegistry configurationRegistry) {
+	public void setConfigurationRegistry(ConfigurationRegistry configurationRegistry) {
 		this.configurationRegistry = configurationRegistry;
 	}
 }

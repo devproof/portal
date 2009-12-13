@@ -42,10 +42,10 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
 	@SpringBean(name = "pageAdminPageRegistry")
 	private PageAdminPageRegistry adminPageRegistry;
-	private final RepeatingView repeating;
+	private RepeatingView repeating;
 	private WebMarkupContainer titleContainer;
 
-	public PageAdminBoxPanel(final String id) {
+	public PageAdminBoxPanel(String id) {
 		super(id);
 		add(titleContainer = new WebMarkupContainer("title"));
 		repeating = new RepeatingView("repeatingNav1");
@@ -68,14 +68,14 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 		}
 	}
 
-	public void addLink(final Component link) {
+	public void addLink(Component link) {
 		WebMarkupContainer container = new WebMarkupContainer(repeating.newChildId());
 		repeating.add(container);
 		container.add(link);
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
 }

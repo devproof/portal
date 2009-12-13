@@ -38,7 +38,7 @@ public class ModuleOverviewPage extends TemplatePage {
 	@SpringBean(name = "moduleService")
 	private ModuleService moduleService;
 
-	public ModuleOverviewPage(final PageParameters params) {
+	public ModuleOverviewPage(PageParameters params) {
 		super(params);
 		List<ModuleBean> modules = moduleService.findModules();
 		RepeatingView tableRow = new RepeatingView("tableRow");

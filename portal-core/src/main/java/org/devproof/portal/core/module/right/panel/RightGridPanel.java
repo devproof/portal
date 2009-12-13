@@ -44,21 +44,20 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 
 	@SpringBean(name = "rightService")
 	private RightService rightService;
-	private final List<RightEntity> allRights;
+	private List<RightEntity> allRights;
 	private List<RightEntity> originalRightsListReference;
 	private List<RightEntity> originalSelectedRights;
-	
-	public RightGridPanel(final String id, final String rightPrefix, 
-			IModel<List<RightEntity>> selectedRights) {
+
+	public RightGridPanel(String id, String rightPrefix, IModel<List<RightEntity>> selectedRights) {
 		super(id);
 		originalRightsListReference = selectedRights.getObject();
 		originalSelectedRights = new ArrayList<RightEntity>();
 		for (Iterator<? extends RightEntity> it = originalRightsListReference.iterator(); it.hasNext();) {
 			RightEntity right = it.next();
-			if(right.getRight().startsWith(rightPrefix)) {
+			if (right.getRight().startsWith(rightPrefix)) {
 				originalSelectedRights.add(right);
 				it.remove();
-			}			
+			}
 		}
 		allRights = rightService.findRightsStartingWith(rightPrefix);
 		final Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new HashMap<RightEntity, CheckBox>();
@@ -67,8 +66,8 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final Item<RightEntity> item) {
-				final RightEntity right = item.getModel().getObject();
+			protected void populateItem(Item<RightEntity> item) {
+				RightEntity right = item.getModel().getObject();
 				right.setSelected(originalSelectedRights.contains(right));
 				CheckBox checkBox = keepCheckBoxStateAfterValidation.get(right);
 				if (checkBox == null) {
@@ -80,7 +79,7 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 			}
 
 			@Override
-			protected void populateEmptyItem(final Item<RightEntity> item) {
+			protected void populateEmptyItem(Item<RightEntity> item) {
 				item.add(new CheckBox("right_checkbox").setVisible(false));
 				item.add(new Label("right", ""));
 			}

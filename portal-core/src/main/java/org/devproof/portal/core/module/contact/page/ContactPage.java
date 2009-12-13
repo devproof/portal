@@ -63,9 +63,9 @@ public class ContactPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private final String captchaChallengeCode;
+	private String captchaChallengeCode;
 
-	public ContactPage(final PageParameters params) {
+	public ContactPage(PageParameters params) {
 		super(params);
 		add(CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS));
 		String username = "§$$§";
@@ -143,7 +143,7 @@ public class ContactPage extends TemplatePage {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected void onValidate(final IValidatable<String> ivalidatable) {
+				protected void onValidate(IValidatable<String> ivalidatable) {
 					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
 						captchaImageResource.invalidate();
 						error(ivalidatable);

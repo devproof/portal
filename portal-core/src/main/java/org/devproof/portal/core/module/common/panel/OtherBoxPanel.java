@@ -32,7 +32,7 @@ public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private Label titleLabel;
 
-	public OtherBoxPanel(final String id, final IModel<BoxEntity> model) {
+	public OtherBoxPanel(String id, IModel<BoxEntity> model) {
 		super(id, model);
 		BoxEntity box = model.getObject();
 		add(titleLabel = new Label("title", box.getTitle()));
@@ -40,7 +40,7 @@ public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	@Override
-	public void setTitleVisible(final boolean visible) {
+	public void setTitleVisible(boolean visible) {
 		titleLabel.setVisible(visible);
 	}
 }

@@ -31,7 +31,7 @@ public class Atom1Link extends BookmarkablePageLink<Atom1Link> {
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
 
-	public Atom1Link(final String id, final Class<? extends TemplatePage> page) {
+	public Atom1Link(String id, Class<? extends TemplatePage> page) {
 		super(id, Atom1FeedPage.class);
 		String title = "";
 		if (feedProviderRegistry.hasFeedSupport(page)) {

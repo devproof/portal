@@ -32,7 +32,7 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	public ConfirmDeletePanel(final String id, final T entity, final ModalWindow modalWindow) {
+	public ConfirmDeletePanel(String id, T entity, final ModalWindow modalWindow) {
 		super(id);
 		modalWindow.setInitialHeight(108);
 		modalWindow.setInitialWidth(300);
@@ -44,7 +44,7 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				ConfirmDeletePanel.this.onDelete(target, form);
 			}
 		});
@@ -53,7 +53,7 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				modalWindow.close(target);
 			}
 		});
