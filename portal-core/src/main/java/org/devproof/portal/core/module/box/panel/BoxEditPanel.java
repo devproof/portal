@@ -55,7 +55,6 @@ public abstract class BoxEditPanel extends Panel {
 		super(id);
 		this.box = box;
 		boxSelectionModel = getBoxConfigurationModel(box);
-
 		add(feedbackPanel = createFeedbackPanel());
 		add(createBoxEditForm());
 	}

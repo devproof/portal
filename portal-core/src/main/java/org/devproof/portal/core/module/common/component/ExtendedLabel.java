@@ -27,7 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -42,7 +42,7 @@ import org.springframework.web.util.HtmlUtils;
  * @author Carsten Hufe
  * 
  */
-public class ExtendedLabel extends Panel {
+public class ExtendedLabel extends Label {
 	private static final long serialVersionUID = 1L;
 	private static final String PRETAG = "[string2img";
 	private static final String CLOSE_SEP = "]";
@@ -52,13 +52,8 @@ public class ExtendedLabel extends Panel {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	public static void main(final String[] args) throws Exception {
-
-	}
-
 	public ExtendedLabel(String id, String content) {
 		super(id);
-
 		String modifiedContent = content;
 		String tagParts[] = StringUtils.substringsBetween(modifiedContent, PRETAG, POSTTAG);
 		if (tagParts != null) {
@@ -111,9 +106,8 @@ public class ExtendedLabel extends Panel {
 						+ "\" alt=\"\"/>");
 			}
 		}
-		Label label = new Label("extendedLabel", modifiedContent);
-		label.setEscapeModelStrings(false);
-		add(label);
+		setDefaultModel(Model.of(modifiedContent));
+		setEscapeModelStrings(false);
 	}
 
 	public static class ImgResourceReference extends ResourceReference {
