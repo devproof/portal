@@ -54,60 +54,84 @@ public class ExtendedLabel extends Label {
 
 	public ExtendedLabel(String id, String content) {
 		super(id);
+		cleanupExpiredImages();
 		String modifiedContent = content;
 		String tagParts[] = StringUtils.substringsBetween(modifiedContent, PRETAG, POSTTAG);
 		if (tagParts != null) {
 			for (String tagPart : tagParts) {
-				String tag = PRETAG + tagPart + POSTTAG;
-				String attrs[] = StringUtils.split(StringUtils.substringBefore(tag, CLOSE_SEP), "= ");
-				int size = 12;
-				for (int j = 0; j < attrs.length; j++) {
-					String value = attrs[j].trim();
-					if ("size".equalsIgnoreCase(value) && (j + 1) < attrs.length) {
-						try {
-							size = Integer.valueOf(attrs[j + 1].trim());
-						} catch (NumberFormatException e) {
-							// do nothing!
-						}
-					}
-				}
-
-				String str2img = StringUtils.substringAfter(tagPart, CLOSE_SEP);
-				List<String> str2ImgLines = new ArrayList<String>();
-				String tmp[] = StringUtils.splitByWholeSeparator(str2img, "<br />");
-				StringBuilder hash = new StringBuilder();
-				for (String t : tmp) {
-					str2ImgLines.add(HtmlUtils.htmlUnescape(t.replaceAll("\\<.*?>", "")));
-					hash.append(t.hashCode());
-				}
-				String uuid = String.valueOf(hash.toString());
-				String fontName = configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
-				Font font = new Font(fontName, Font.PLAIN, size);
-				String2ImageResource resource = new String2ImageResource(str2ImgLines, font);
-				ImgResourceReference imgResource = images.get(uuid);
-				if (imgResource == null) {
-					imgResource = new ImgResourceReference(uuid, resource);
-					// is internally syncronized
-					if (!images.containsKey(hash.toString())) {
-						Iterator<String> it = images.keySet().iterator();
-						while (it.hasNext()) {
-							String key = it.next();
-							ImgResourceReference ref = images.get(key);
-							if (ref.isExpired()) {
-								ref.invalidate();
-								((WebApplication) getApplication()).getSharedResources().remove(key);
-								it.remove();
-							}
-						}
-						images.put(uuid, imgResource);
-					}
-				}
-				modifiedContent = modifiedContent.replace(tag, "<img src=\"" + getRequestCycle().urlFor(imgResource)
-						+ "\" alt=\"\"/>");
+				String fullTag = PRETAG + tagPart + POSTTAG;
+				String splittedAttribute[] = StringUtils.split(StringUtils.substringBefore(fullTag, CLOSE_SEP), "= ");
+				int fontSize = getFontSize(splittedAttribute);
+				List<String> str2ImgLines = getTextLines(tagPart);
+				Font font = getFont(fontSize);
+				ImgResourceReference imgResource = getImageResourceAndCache(str2ImgLines, font);
+				modifiedContent = replaceTagWithImage(modifiedContent, fullTag, imgResource);
 			}
 		}
 		setDefaultModel(Model.of(modifiedContent));
 		setEscapeModelStrings(false);
+	}
+
+	private ImgResourceReference getImageResourceAndCache(List<String> str2ImgLines, Font font) {
+		String uuid = String.valueOf(str2ImgLines.hashCode());
+		String2ImageResource resource = new String2ImageResource(str2ImgLines, font);
+		ImgResourceReference imgResource = images.get(uuid);
+		if (imgResource == null) {
+			imgResource = new ImgResourceReference(uuid, resource);
+			// ConcurrentHashMap
+			images.put(uuid, imgResource);
+		}
+		return imgResource;
+	}
+
+	private String replaceTagWithImage(String modifiedContent, String fullTag, ImgResourceReference imgResource) {
+		modifiedContent = modifiedContent.replace(fullTag, "<img src=\"" + getRequestCycle().urlFor(imgResource)
+				+ "\" alt=\"\"/>");
+		return modifiedContent;
+	}
+
+	private void cleanupExpiredImages() {
+		Iterator<String> it = images.keySet().iterator();
+		while (it.hasNext()) {
+			String key = it.next();
+			ImgResourceReference ref = images.get(key);
+			if (ref.isExpired()) {
+				ref.invalidate();
+				((WebApplication) getApplication()).getSharedResources().remove(key);
+				it.remove();
+			}
+		}
+	}
+
+	private Font getFont(int fontSize) {
+		String fontName = configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
+		Font font = new Font(fontName, Font.PLAIN, fontSize);
+		return font;
+	}
+
+	private List<String> getTextLines(String tagPart) {
+		String str2img = StringUtils.substringAfter(tagPart, CLOSE_SEP);
+		List<String> str2ImgLines = new ArrayList<String>();
+		String tmp[] = StringUtils.splitByWholeSeparator(str2img, "<br />");
+		for (String t : tmp) {
+			str2ImgLines.add(HtmlUtils.htmlUnescape(t.replaceAll("\\<.*?>", "")));
+		}
+		return str2ImgLines;
+	}
+
+	private int getFontSize(String[] attrs) {
+		int size = 12;
+		for (int j = 0; j < attrs.length; j++) {
+			String value = attrs[j].trim();
+			if ("size".equalsIgnoreCase(value) && (j + 1) < attrs.length) {
+				try {
+					size = Integer.valueOf(attrs[j + 1].trim());
+				} catch (NumberFormatException e) {
+					// do nothing!
+				}
+			}
+		}
+		return size;
 	}
 
 	public static class ImgResourceReference extends ResourceReference {
