@@ -26,11 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -55,35 +52,19 @@ public class ExtendedLabel extends Panel {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
+	public static void main(final String[] args) throws Exception {
+
+	}
+
 	public ExtendedLabel(String id, String content) {
 		super(id);
 
-		RepeatingView repeating = new RepeatingView("repeating");
-		add(repeating);
-
-		String s = content;
-		String tags[] = StringUtils.substringsBetween(s, PRETAG, POSTTAG);
-		List<String> other = new ArrayList<String>();
-		if (tags != null) {
-			for (String tag : tags) {
-				String t = PRETAG + tag + POSTTAG;
-				other.add(StringUtils.substringBefore(s, t));
-				s = StringUtils.substringAfter(s, t);
-			}
-		}
-		other.add(s);
-
-		int i = 0;
-		for (String label : other) {
-			WebMarkupContainer container = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(container);
-			Label item = new Label("label", label);
-			item.setEscapeModelStrings(false);
-			container.add(item);
-
-			if (tags != null && tags.length > i) {
-				String img = tags[i];
-				String attrs[] = StringUtils.split(StringUtils.substringBefore(img, CLOSE_SEP), "= ");
+		String modifiedContent = content;
+		String tagParts[] = StringUtils.substringsBetween(modifiedContent, PRETAG, POSTTAG);
+		if (tagParts != null) {
+			for (String tagPart : tagParts) {
+				String tag = PRETAG + tagPart + POSTTAG;
+				String attrs[] = StringUtils.split(StringUtils.substringBefore(tag, CLOSE_SEP), "= ");
 				int size = 12;
 				for (int j = 0; j < attrs.length; j++) {
 					String value = attrs[j].trim();
@@ -96,18 +77,18 @@ public class ExtendedLabel extends Panel {
 					}
 				}
 
-				img = StringUtils.substringAfter(img, CLOSE_SEP);
-				List<String> lines = new ArrayList<String>();
-				String tmp[] = StringUtils.splitByWholeSeparator(img, "<br />");
+				String str2img = StringUtils.substringAfter(tagPart, CLOSE_SEP);
+				List<String> str2ImgLines = new ArrayList<String>();
+				String tmp[] = StringUtils.splitByWholeSeparator(str2img, "<br />");
 				StringBuilder hash = new StringBuilder();
 				for (String t : tmp) {
-					lines.add(HtmlUtils.htmlUnescape(t.replaceAll("\\<.*?>", "")));
+					str2ImgLines.add(HtmlUtils.htmlUnescape(t.replaceAll("\\<.*?>", "")));
 					hash.append(t.hashCode());
 				}
 				String uuid = String.valueOf(hash.toString());
 				String fontName = configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
 				Font font = new Font(fontName, Font.PLAIN, size);
-				String2ImageResource resource = new String2ImageResource(lines, font);
+				String2ImageResource resource = new String2ImageResource(str2ImgLines, font);
 				ImgResourceReference imgResource = images.get(uuid);
 				if (imgResource == null) {
 					imgResource = new ImgResourceReference(uuid, resource);
@@ -126,20 +107,13 @@ public class ExtendedLabel extends Panel {
 						images.put(uuid, imgResource);
 					}
 				}
-				container.add(new Image("image", imgResource) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected boolean getStatelessHint() {
-						return true;
-					}
-				});
-			} else {
-				container.add(new WebMarkupContainer("image").setVisible(false));
+				modifiedContent = modifiedContent.replace(tag, "<img src=\"" + getRequestCycle().urlFor(imgResource)
+						+ "\" alt=\"\"/>");
 			}
-
-			i++;
 		}
+		Label label = new Label("extendedLabel", modifiedContent);
+		label.setEscapeModelStrings(false);
+		add(label);
 	}
 
 	public static class ImgResourceReference extends ResourceReference {
