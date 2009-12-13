@@ -22,7 +22,6 @@ import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
@@ -36,7 +35,7 @@ public class RichTextArea extends TextArea<String> {
 	private static final long serialVersionUID = 1L;
 
 	public RichTextArea(String id) {
-		this(id, Model.of(""));
+		this(id, null);
 	}
 
 	public RichTextArea(String id, IModel<String> model) {
