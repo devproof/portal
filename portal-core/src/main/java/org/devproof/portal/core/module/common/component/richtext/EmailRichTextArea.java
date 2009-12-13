@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.common.component.richtext;
 import java.util.Map;
 
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -36,12 +37,24 @@ public class EmailRichTextArea extends TextArea<String> {
 
 	public EmailRichTextArea(String id) {
 		super(id);
-		add(JavascriptPackageResource.getHeaderContribution(EmailRichTextArea.class, "tinymce/tiny_mce.js"));
+		add(createTinyMCEResource());
+		add(createTinyMCEConfiguration());
+		add(createTinyMCEAttributeModifier());
+	}
+
+	private SimpleAttributeModifier createTinyMCEAttributeModifier() {
+		return new SimpleAttributeModifier("class", "mceRichTextArea");
+	}
+
+	private TextTemplateHeaderContributor createTinyMCEConfiguration() {
 		Map<String, Object> variables = new MiniMap<String, Object>(1);
 		variables.put("emailCss", UrlUtils.rewriteToContextRelative(
 				"resources/" + REF_EMAIL_CSS.getSharedResourceKey(), getRequest()));
-		add(TextTemplateHeaderContributor.forJavaScript(EmailRichTextArea.class, "EmailRichTextArea.js",
-				new MapModel<String, Object>(variables)));
-		add(new SimpleAttributeModifier("class", "mceRichTextArea"));
+		return TextTemplateHeaderContributor.forJavaScript(EmailRichTextArea.class, "EmailRichTextArea.js",
+				new MapModel<String, Object>(variables));
+	}
+
+	private HeaderContributor createTinyMCEResource() {
+		return JavascriptPackageResource.getHeaderContribution(EmailRichTextArea.class, "tinymce/tiny_mce.js");
 	}
 }

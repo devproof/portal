@@ -17,10 +17,12 @@ package org.devproof.portal.core.module.common.component.richtext;
 
 import java.util.Map;
 
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
@@ -34,23 +36,30 @@ public class RichTextArea extends TextArea<String> {
 	private static final long serialVersionUID = 1L;
 
 	public RichTextArea(String id) {
-		super(id);
-		init();
+		this(id, Model.of(""));
 	}
 
 	public RichTextArea(String id, IModel<String> model) {
 		super(id, model);
-		init();
+		add(createTinyMCEResource());
+		add(createTinyMCEConfiguration());
+		add(createTinyMCEAtrributeModifier());
 	}
 
-	private void init() {
-		add(JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "tinymce/tiny_mce.js"));
+	private SimpleAttributeModifier createTinyMCEAtrributeModifier() {
+		return new SimpleAttributeModifier("class", "mceRichTextArea");
+	}
+
+	private TextTemplateHeaderContributor createTinyMCEConfiguration() {
 		Map<String, Object> variables = new MiniMap<String, Object>(3);
 		variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
 		variables.put("iconcodeImg", PortalUtil.toUrl(CommonConstants.REF_ICONCODE_IMG, getRequest()));
 		variables.put("string2imgImg", PortalUtil.toUrl(CommonConstants.REF_STRING2IMG_IMG, getRequest()));
-		add(TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "RichTextArea.js",
-				new MapModel<String, Object>(variables)));
-		add(new SimpleAttributeModifier("class", "mceRichTextArea"));
+		return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "RichTextArea.js",
+				new MapModel<String, Object>(variables));
+	}
+
+	private HeaderContributor createTinyMCEResource() {
+		return JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "tinymce/tiny_mce.js");
 	}
 }
