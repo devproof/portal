@@ -43,16 +43,20 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 		this.hasVoted = hasVoted;
 		this.params = params;
 		this.contentId = contentId;
-		if (StatelessRatingPanel.this.params.containsKey("rateid")
-				&& StatelessRatingPanel.this.params.containsKey("vote")) {
-			Integer rateId = StatelessRatingPanel.this.params.getAsInteger("rateid");
-			Integer vote = StatelessRatingPanel.this.params.getAsInteger("vote");
+		executeStatelessVoting(nrOfStars, hasVoted, params, contentId);
+	}
+
+	private void executeStatelessVoting(IModel<Integer> nrOfStars, IModel<Boolean> hasVoted, PageParameters params,
+			Integer contentId) {
+		if (params.containsKey("rateid") && params.containsKey("vote")) {
+			Integer rateId = params.getAsInteger("rateid");
+			Integer vote = params.getAsInteger("vote");
 			if (vote > nrOfStars.getObject()) {
 				vote = nrOfStars.getObject();
 			}
-			if (StatelessRatingPanel.this.contentId.equals(rateId)) {
+			if (contentId.equals(rateId)) {
 				hasVoted.setObject(Boolean.TRUE);
-				StatelessRatingPanel.this.onRated(vote + 1);
+				onRated(vote + 1);
 			}
 		}
 	}
@@ -75,22 +79,27 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 
 		@Override
 		protected void populateItem(LoopItem item) {
+			item.add(creatingStarBookmarkableLink(item));
+		}
+
+		private BookmarkablePageLink<Void> creatingStarBookmarkableLink(LoopItem item) {
 			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link", getPage().getClass());
 			link.setEnabled(!hasVoted.getObject());
-
-			for (String key : params.keySet()) {
-				link.setParameter(key, params.getString(key));
-			}
 			link.setParameter("rateid", contentId);
 			link.setParameter("vote", item.getIteration());
-
+			copyParameterToLink(link);
 			int iteration = item.getIteration();
-
 			// add the star image, which is either active (highlighted) or
 			// inactive (no star)
 			link.add(new WebMarkupContainer("star").add(new SimpleAttributeModifier("src",
 					(onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
-			item.add(link);
+			return link;
+		}
+
+		private void copyParameterToLink(BookmarkablePageLink<Void> link) {
+			for (String key : params.keySet()) {
+				link.setParameter(key, params.getString(key));
+			}
 		}
 	}
 

@@ -51,10 +51,10 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
 	private Form<OtherPageEntity> createOtherPageEditForm() {
 		Form<OtherPageEntity> form = newOtherPageEditForm();
-		form.setOutputMarkupId(true);
 		form.add(createContentIdField());
 		form.add(createContentField());
 		form.add(createViewRightPanel());
+		form.setOutputMarkupId(true);
 		return form;
 	}
 

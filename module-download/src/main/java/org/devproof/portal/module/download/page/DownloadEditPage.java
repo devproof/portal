@@ -58,7 +58,6 @@ public class DownloadEditPage extends DownloadBasePage {
 
 	private Form<DownloadEntity> createDownloadEditForm() {
 		Form<DownloadEntity> form = newDownloadEditForm();
-		form.setOutputMarkupId(true);
 		form.add(createTitleField());
 		form.add(createDescriptionField());
 		form.add(createUrlField());
@@ -75,6 +74,7 @@ public class DownloadEditPage extends DownloadBasePage {
 		form.add(createViewRightPanel());
 		form.add(createDownloadRightPanel());
 		form.add(createVoteRightPanel());
+		form.setOutputMarkupId(true);
 		return form;
 	}
 

@@ -20,6 +20,7 @@ import java.util.List;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -46,11 +47,15 @@ public abstract class DownloadBasePage extends TemplatePage {
 
 	public DownloadBasePage(PageParameters params) {
 		super(params);
-		add(CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS));
 		setAuthorRight();
+		add(createCSSHeaderContributor());
 		addDownloadAddLink();
 		addDeadlinkCheckLink();
-		add(modalWindow = createHiddenModalWindow());
+		add(createHiddenModalWindow());
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS);
 	}
 
 	private void addDeadlinkCheckLink() {
@@ -66,15 +71,14 @@ public abstract class DownloadBasePage extends TemplatePage {
 	}
 
 	private WebMarkupContainer createHiddenModalWindow() {
-		WebMarkupContainer window = null;
 		if (isAuthor()) {
-			window = new ModalWindow("modalWindow");
+			modalWindow = new ModalWindow("modalWindow");
 
 		} else {
-			window = new WebMarkupContainer("modalWindow");
-			window.setVisible(false);
+			modalWindow = new WebMarkupContainer("modalWindow");
+			modalWindow.setVisible(false);
 		}
-		return window;
+		return modalWindow;
 	}
 
 	private AjaxLink<DownloadEntity> createDeadlinkCheckLink() {

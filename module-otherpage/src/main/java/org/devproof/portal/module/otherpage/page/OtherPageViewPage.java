@@ -38,7 +38,6 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "otherPageService")
 	private OtherPageService otherPageService;
-
 	private PageParameters params;
 	private String contentId;
 	private OtherPageEntity otherPage;
@@ -46,13 +45,15 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	public OtherPageViewPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		contentId = getContentIdParameter();
-		otherPage = otherPageService.findOtherPageByContentId(contentId);
-
+		setContentId();
+		setOtherPageEntity();
 		add(createAuthorContainer());
 		add(createAppropriateContentLabel());
-
 		redirectToErrorPageIfHasNoRights();
+	}
+
+	private void setOtherPageEntity() {
+		otherPage = otherPageService.findOtherPageByContentId(contentId);
 	}
 
 	private WebMarkupContainer createAuthorContainer() {
@@ -168,8 +169,8 @@ public class OtherPageViewPage extends OtherPageBasePage {
 		return tmp;
 	}
 
-	private String getContentIdParameter() {
-		String contentId = params.getString("0");
+	private String setContentId() {
+		contentId = params.getString("0");
 		if (contentId == null) {
 			contentId = getRequest().getParameter("optparam");
 		}

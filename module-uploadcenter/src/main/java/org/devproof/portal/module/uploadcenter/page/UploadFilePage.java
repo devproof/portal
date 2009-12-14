@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.lang.UnhandledException;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
@@ -46,23 +47,25 @@ public class UploadFilePage extends WebPage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private File uploadFolder;
-	private IModel<Collection<FileUpload>> uploadModel;
+	private IModel<Collection<FileUpload>> uploadModel  = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());;
 
 	public UploadFilePage(File uploadFolder) {
-		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
 		this.uploadFolder = uploadFolder;
-		uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
+		add(createCSSHeaderContributor());
 		add(createFeedbackPanel());
 		add(createUploadForm());
 	}
 
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
+	}
+
 	private Form<Collection<FileUpload>> createUploadForm() {
 		Form<Collection<FileUpload>> uploadForm = newUploadForm();
-		// set this form to multipart mode (allways needed for uploads!)
-		uploadForm.setMultiPart(true);
 		uploadForm.add(createMultiFileUploadField());
-		uploadForm.setMaxSize(getMaxFileSize());
 		uploadForm.add(createUploadProgressBar(uploadForm));
+		uploadForm.setMaxSize(getMaxFileSize());
+		uploadForm.setMultiPart(true);
 		return uploadForm;
 	}
 
@@ -80,8 +83,7 @@ public class UploadFilePage extends WebPage {
 	}
 
 	private FeedbackPanel createFeedbackPanel() {
-		FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
-		return uploadFeedback;
+		return new FeedbackPanel("uploadFeedback");
 	}
 
 	private Form<Collection<FileUpload>> newUploadForm() {

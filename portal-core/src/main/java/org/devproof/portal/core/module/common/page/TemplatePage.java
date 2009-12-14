@@ -24,6 +24,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
@@ -88,43 +89,52 @@ public abstract class TemplatePage extends WebPage {
 	private boolean filterBoxHideTitle;
 	private boolean tagCloudBoxHideTitle;
 	private IModel<String> pageTitle;
-
+	private PageParameters params;
+	
 	public TemplatePage(PageParameters params) {
-		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
-		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css"));
-		if (params.containsKey("infoMsg")) {
-			info(params.getString("infoMsg"));
-		}
-		if (params.containsKey("errorMsg")) {
-			info(params.getString("errorMsg"));
-		}
-
+		this.params = params;
+		handleInfoMessageParams();
+		handleErrorMessageParams();
+		add(createDefaultCSSHeaderContributor());
+		add(createBodyCSSHeaderContributor());
+		add(createRss2LinkReference());
+		add(createAtom1LinkReference());
+		add(createPageTitleLabel());
+		add(createFeedbackPanel());
+		add(createGoogleAnalyticsPart1());
+		add(createGoogleAnalyticsPart2());
+		add(createFooterLink());
+		add(createCopyrightLabel());
+		add(createRepeatingMainNavigation());
+		add(createRepeatingBoxes());
 		setOutputMarkupId(true);
-		addMainNavigation();
+	}
 
-		add(new Rss2Link("rss2reference", getClass()));
-		add(new Atom1Link("atom1reference", getClass()));
+	private WebMarkupContainer createCopyrightLabel() {
+		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
+		copyright.add(new SimpleAttributeModifier("content", configurationService
+				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
+		return copyright;
+	}
 
-		String footerContent = configurationService.findAsString("footer_content");
-		CommonMarkupContainerFactory factory = sharedRegistry.getResource("footerLink");
-		MarkupContainer footerLink;
-		if (factory != null) {
-			footerLink = factory.newInstance("footerLink");
-		} else {
-			footerLink = new WebMarkupContainer("footerLink");
+	private Label createPageTitleLabel() {
+		String localPageTitle = this.getString("contentTitle", null, "");
+		if (StringUtils.isNotEmpty(localPageTitle)) {
+			localPageTitle += " - ";
 		}
-		footerLink.add(new Label("footerLabel", footerContent).setEscapeModelStrings(false));
-		add(footerLink);
-		add(feedback = new FeedbackPanel("feedbackPanel"));
+		pageTitle = Model.of(localPageTitle + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
+		return new Label("pageTitle", pageTitle);
+	}
 
-		feedback.setOutputMarkupId(true);
-		addBoxes(params);
-
+	private WebComponent createGoogleAnalyticsPart2() {
 		boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
-		WebMarkupContainer googleAnalytics1 = new WebMarkupContainer("googleAnalytics1");
-		googleAnalytics1.setVisible(googleEnabled);
-		add(googleAnalytics1);
-		WebComponent googleAnalytics2 = new WebComponent("googleAnalytics2") {
+		WebComponent googleAnalytics2 = newGoogleAnalyticsPart2();
+		googleAnalytics2.setVisible(googleEnabled);
+		return googleAnalytics2;
+	}
+
+	private WebComponent newGoogleAnalyticsPart2() {
+		return new WebComponent("googleAnalytics2") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -139,18 +149,60 @@ public abstract class TemplatePage extends WebPage {
 				replaceComponentTagBody(markupStream, openTag, buf.toString());
 			}
 		};
-		googleAnalytics2.setVisible(googleEnabled);
-		add(googleAnalytics2);
-		String localPageTitle = this.getString("contentTitle", null, "");
-		if (StringUtils.isNotEmpty(localPageTitle)) {
-			localPageTitle += " - ";
+	}
+
+	private WebMarkupContainer createGoogleAnalyticsPart1() {
+		boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
+		WebMarkupContainer googleAnalytics1 = new WebMarkupContainer("googleAnalytics1");
+		googleAnalytics1.setVisible(googleEnabled);
+		return googleAnalytics1;
+	}
+
+	private FeedbackPanel createFeedbackPanel() {
+		feedback = new FeedbackPanel("feedbackPanel");
+		feedback.setOutputMarkupId(true);
+		return feedback;
+	}
+
+	private void handleErrorMessageParams() {
+		if (params.containsKey("errorMsg")) {
+			info(params.getString("errorMsg"));
 		}
-		pageTitle = Model.of(localPageTitle + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
-		add(new Label("pageTitle", pageTitle));
-		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
-		copyright.add(new SimpleAttributeModifier("content", configurationService
-				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
-		add(copyright);
+	}
+
+	private void handleInfoMessageParams() {
+		if (params.containsKey("infoMsg")) {
+			info(params.getString("infoMsg"));
+		}
+	}
+
+	private MarkupContainer createFooterLink() {
+		String footerContent = configurationService.findAsString("footer_content");
+		CommonMarkupContainerFactory factory = sharedRegistry.getResource("footerLink");
+		MarkupContainer footerLink;
+		if (factory != null) {
+			footerLink = factory.newInstance("footerLink");
+		} else {
+			footerLink = new WebMarkupContainer("footerLink");
+		}
+		footerLink.add(new Label("footerLabel", footerContent).setEscapeModelStrings(false));
+		return footerLink;
+	}
+
+	private HeaderContributor createBodyCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css");
+	}
+
+	private HeaderContributor createDefaultCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
+	}
+
+	private Atom1Link createAtom1LinkReference() {
+		return new Atom1Link("atom1reference", getClass());
+	}
+
+	private Rss2Link createRss2LinkReference() {
+		return new Rss2Link("rss2reference", getClass());
 	}
 
 	/**
@@ -161,106 +213,152 @@ public abstract class TemplatePage extends WebPage {
 	}
 
 	/**
-	 * Adds the Main Navigation on the top
+	 * creates the Main Navigation on the top
 	 */
-	private void addMainNavigation() {
+	private RepeatingView createRepeatingMainNavigation() {
 		RepeatingView repeating = new RepeatingView("repeatingMainNav");
-		add(repeating);
 		List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
 		for (Class<? extends Page> pageClass : registeredPages) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(item);
-			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("mainNavigationLink", pageClass);
-			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-					CommonConstants.MAIN_NAVIGATION_LINK_LABEL);
-			if (StringUtils.isEmpty(label)) {
-				label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-						CommonConstants.CONTENT_TITLE_LABEL);
-			}
-			link.add(new Label("mainNavigationLinkLabel", label));
-			item.add(link);
+			repeating.add(createMenuItem(repeating.newChildId(), pageClass));
 		}
+		return repeating;
+	}
+
+	private WebMarkupContainer createMenuItem(String id, Class<? extends Page> pageClass) {
+		WebMarkupContainer item = new WebMarkupContainer(id);
+		item.add(createMenuLink(pageClass));
+		return item;
+	}
+
+	private BookmarkablePageLink<Void> createMenuLink(Class<? extends Page> pageClass) {
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("mainNavigationLink", pageClass);
+		link.add(createMenuLinkLabel(pageClass));
+		return link;
+	}
+
+	private Label createMenuLinkLabel(Class<? extends Page> pageClass) {
+		String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+				CommonConstants.MAIN_NAVIGATION_LINK_LABEL);
+		if (StringUtils.isEmpty(label)) {
+			label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+					CommonConstants.CONTENT_TITLE_LABEL);
+		}
+		return new Label("mainNavigationLinkLabel", label);
 	}
 
 	/**
-	 * Add the boxes on the right hand side
+	 * Create the boxes on the right hand side
 	 */
-	private void addBoxes(PageParameters params) {
-		List<BoxEntity> boxes = boxService.findAllOrderedBySort();
+	private RepeatingView createRepeatingBoxes() {
 		RepeatingView repeating = new RepeatingView("repeatingSideNav");
-		add(repeating);
+		List<BoxEntity> boxes = boxService.findAllOrderedBySort();
 		for (BoxEntity box : boxes) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(item);
-			Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
-			Component boxInstance = null;
-			if (boxClazz == null) {
-				BoxEntity error = new BoxEntity();
-				error.setTitle("!Error!");
-				error.setContent("Box type is not available!");
-				item.add(boxInstance = new OtherBoxPanel("box", Model.of(error)));
-			} else if (boxClazz.isAssignableFrom(SearchBoxPanel.class)) {
-				if (filterBox == null) {
-					item.add(filterBox = new WebMarkupContainer("box").setVisible(false));
-					filterBoxHideTitle = box.getHideTitle();
-				}
-			} else if (boxClazz.isAssignableFrom(OtherBoxPanel.class)) {
-				item.add(boxInstance = new OtherBoxPanel("box", Model.of(box)));
-			} else if (boxClazz.isAssignableFrom(PageAdminBoxPanel.class)) {
-				item.add(pageAdminBox = new PageAdminBoxPanel("box"));
-				boxInstance = pageAdminBox;
-			} else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
-				if (!(this instanceof LoginPage)) {
-					item.add(boxInstance = new LoginBoxPanel("box", params));
-				} else {
-					item.remove();
-				}
-			} else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
-				if (tagCloudBox == null) {
-					item.add(tagCloudBox = new WebMarkupContainer("box").setVisible(false));
-					tagCloudBoxHideTitle = box.getHideTitle();
-					boxInstance = tagCloudBox;
-				}
-			} else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
-				item.add(boxInstance = new GlobalAdminBoxPanel("box"));
-			} else if (boxClazz.isAssignableFrom(FeedBoxPanel.class)) {
-				item.add(boxInstance = new FeedBoxPanel("box", getPageClass()));
-			} else {
-				boolean found = false;
-				for (Constructor<?> constr : boxClazz.getConstructors()) {
-					Class<?> param[] = constr.getParameterTypes();
-					if (param.length == 2 && param[0] == String.class && param[1] == PageParameters.class) {
-						try {
-							boxInstance = (Component) constr.newInstance("box", params);
-							found = true;
-							break;
-						} catch (Exception e) {
-							throw new UnhandledException(e);
-						}
-					} else if (param.length == 1 && param[0] == String.class) {
-						try {
-							boxInstance = (Component) constr.newInstance("box");
-							found = true;
-							break;
-						} catch (Exception e) {
-							throw new UnhandledException(e);
-						}
-					}
-				}
-				if (!found) {
-					throw new IllegalArgumentException(
-							"The box class "
-									+ boxClazz
-									+ " does not have a default constructor with a String id parameter or String and PageParameters");
-				} else {
-					item.add(boxInstance);
-				}
-			}
+			repeating.add(createBoxItem(repeating.newChildId(), box));
+		}
+		return repeating;
+	}
 
-			if (boxInstance instanceof BoxTitleVisibility) {
-				((BoxTitleVisibility) boxInstance).setTitleVisible(!box.getHideTitle());
+	private WebMarkupContainer createBoxItem(String id, BoxEntity box) {
+		WebMarkupContainer item = new WebMarkupContainer(id);
+		Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
+		Component boxInstance = null;
+		if (boxClazz == null) {
+			item.add(boxInstance = createBoxNotFoundPanel());
+		} else if (boxClazz.isAssignableFrom(SearchBoxPanel.class)) {
+			if (filterBox == null) {
+				item.add(filterBox = createEmptyFilterBox());
+				filterBoxHideTitle = box.getHideTitle();
+			}
+		} else if (boxClazz.isAssignableFrom(OtherBoxPanel.class)) {
+			item.add(boxInstance = createOtherBox(box));
+		} else if (boxClazz.isAssignableFrom(PageAdminBoxPanel.class)) {
+			item.add(pageAdminBox = createPageAdminBox());
+			boxInstance = pageAdminBox;
+		} else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
+			if (isNotLoginPage()) {
+				item.add(boxInstance = createLoginBox());
+			} else {
+				item.remove();
+			}
+		} else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
+			if (tagCloudBox == null) {
+				item.add(tagCloudBox = createEmptyFilterBox());
+				tagCloudBoxHideTitle = box.getHideTitle();
+				boxInstance = tagCloudBox;
+			}
+		} else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
+			item.add(boxInstance = new GlobalAdminBoxPanel("box"));
+		} else if (boxClazz.isAssignableFrom(FeedBoxPanel.class)) {
+			item.add(boxInstance = new FeedBoxPanel("box", getPageClass()));
+		} else {
+			boxInstance = createGenericBoxInstance(boxClazz);
+			if (boxInstance == null) {
+				throw new IllegalArgumentException(
+						"The box class "
+								+ boxClazz
+								+ " does not have a default constructor with a String id parameter or String and PageParameters");
+			} else {
+				item.add(boxInstance);
 			}
 		}
+
+		setBoxTitleVisibility(box, boxInstance);
+		return item;
+	}
+
+	private Component createEmptyFilterBox() {
+		return new WebMarkupContainer("box").setVisible(false);
+	}
+
+	private Component createGenericBoxInstance(Class<? extends Component> boxClazz) {
+		for (Constructor<?> constr : boxClazz.getConstructors()) {
+			Class<?> param[] = constr.getParameterTypes();
+			if (param.length == 2 && param[0] == String.class && param[1] == PageParameters.class) {
+				try {
+					return (Component) constr.newInstance("box", params);
+				} catch (Exception e) {
+					throw new UnhandledException(e);
+				}
+			} else if (param.length == 1 && param[0] == String.class) {
+				try {
+					return (Component) constr.newInstance("box");
+				} catch (Exception e) {
+					throw new UnhandledException(e);
+				}
+			}
+		}
+		return null;
+	}
+
+	private void setBoxTitleVisibility(BoxEntity box, Component boxInstance) {
+		if (boxInstance instanceof BoxTitleVisibility) {
+			((BoxTitleVisibility) boxInstance).setTitleVisible(!box.getHideTitle());
+		}
+	}
+
+	private boolean isNotLoginPage() {
+		return !(this instanceof LoginPage);
+	}
+
+	private LoginBoxPanel createLoginBox() {
+		return new LoginBoxPanel("box", params);
+	}
+
+	private PageAdminBoxPanel createPageAdminBox() {
+		return new PageAdminBoxPanel("box");
+	}
+
+	private OtherBoxPanel createOtherBox(BoxEntity box) {
+		return new OtherBoxPanel("box", Model.of(box));
+	}
+
+	private Component createBoxNotFoundPanel() {
+		Component boxInstance;
+		BoxEntity error = new BoxEntity();
+		error.setTitle("!Error!");
+		error.setContent("Box type is not available!");
+		boxInstance = createOtherBox(error);
+		return boxInstance;
 	}
 
 	/**

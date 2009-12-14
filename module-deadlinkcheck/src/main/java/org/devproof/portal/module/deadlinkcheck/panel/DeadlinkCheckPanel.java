@@ -63,21 +63,29 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 		super(id, Model.ofList(listToCheck));
 		this.section = section;
 		this.listToCheck = listToCheck;
-		maxItem = listToCheck.size();
+		this.maxItem = listToCheck.size();
 
-		add(feedbackPanel = createFeedbackPanel());
-		add(new Label("title", getString(section + "Title")));
+		add(createFeedbackPanel());
+		add(createTitleLabel());
 		add(createDeadlinkCheckForm());
 
 	}
 
+	private Label createTitleLabel() {
+		return new Label("title", getString(section + "Title"));
+	}
+
 	private Form<Void> createDeadlinkCheckForm() {
 		Form<Void> form = new Form<Void>("form");
-		form.add(new Label("description", getString(section + "Description")));
-		form.add(progressBar = createProgressBar());
-		form.setOutputMarkupId(true);
+		form.add(createDescriptionLabel());
+		form.add(createProgressBar());
 		form.add(createAjaxButton());
+		form.setOutputMarkupId(true);
 		return form;
+	}
+
+	private Label createDescriptionLabel() {
+		return new Label("description", getString(section + "Description"));
 	}
 
 	private IndicatingAjaxButton createAjaxButton() {
@@ -199,7 +207,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 
 	private ProgressBar createProgressBar() {
 		ProgressionModel progressionModel = createProgressionModel();
-		return new ProgressBar("bar", progressionModel) {
+		progressBar = new ProgressBar("bar", progressionModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -209,12 +217,13 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 				target.addComponent(feedbackPanel);
 			}
 		};
+		return progressBar;
 	}
 
 	private FeedbackPanel createFeedbackPanel() {
-		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		return feedback;
+		feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		return feedbackPanel;
 	}
 
 	/**

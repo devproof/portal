@@ -16,6 +16,7 @@
 package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -40,9 +41,13 @@ public class ArticleBasePage extends TemplatePage {
 	public ArticleBasePage(PageParameters params) {
 		super(params);
 		setAuthorRight();
-		add(CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS));
+		add(createCSSHeaderContributor());
 		addSyntaxHighlighter();
 		addArticleAddLink();
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS);
 	}
 
 	private void setAuthorRight() {
@@ -59,7 +64,7 @@ public class ArticleBasePage extends TemplatePage {
 	}
 
 	private Link<?> createArticleAddLink() {
-		Link<?> addLink = new Link<Object>("adminLink") {
+		return new Link<Object>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -68,7 +73,6 @@ public class ArticleBasePage extends TemplatePage {
 				setResponsePage(new ArticleEditPage(newEntry));
 			}
 		};
-		return addLink;
 	}
 
 	public boolean isAuthor() {

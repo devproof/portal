@@ -57,11 +57,11 @@ public class BlogEditPage extends BlogBasePage {
 
 	private Form<BlogEntity> createBlogEditForm() {
 		Form<BlogEntity> form = newBlogEditForm();
-		form.setOutputMarkupId(true);
 		form.add(createHeadlineField());
 		form.add(createContentField());
 		form.add(createTagField());
 		form.add(createViewRightPanel());
+		form.setOutputMarkupId(true);
 		return form;
 	}
 

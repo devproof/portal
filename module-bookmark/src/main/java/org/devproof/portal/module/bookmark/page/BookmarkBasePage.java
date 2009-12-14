@@ -20,6 +20,7 @@ import java.util.List;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -48,23 +49,26 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	public BookmarkBasePage(final PageParameters params) {
 		super(params);
-		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
 		setAuthorRight();
+		add(createCSSHeaderContributor());
+		add(createHiddenModalWindow());
 		addBookmarkAddLink();
 		addDeadlinkCheckLink();
 		addDeliciousSyncLink();
-		add(modalWindow = createHiddenModalWindow());
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS);
 	}
 
 	private WebMarkupContainer createHiddenModalWindow() {
-		WebMarkupContainer window = null;
 		if (isAuthor()) {
-			window = new ModalWindow("modalWindow");
+			modalWindow = new ModalWindow("modalWindow");
 		} else {
-			window = new WebMarkupContainer("modalWindow");
-			window.setVisible(false);
+			modalWindow = new WebMarkupContainer("modalWindow");
+			modalWindow.setVisible(false);
 		}
-		return window;
+		return modalWindow;
 	}
 
 	private void addDeliciousSyncLink() {
@@ -113,8 +117,12 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	private Link<?> createBookmarkAddLink() {
 		Link<?> addLink = newBookmarkAddLink();
-		addLink.add(new Label("linkName", getString("createLink")));
+		addLink.add(createAddLinkLabel());
 		return addLink;
+	}
+
+	private Label createAddLinkLabel() {
+		return new Label("linkName", getString("createLink"));
 	}
 
 	private Link<?> newBookmarkAddLink() {
@@ -131,8 +139,12 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	private AjaxLink<BookmarkEntity> createDeadlinkCheckLink() {
 		AjaxLink<BookmarkEntity> deadlinkCheckLink = newDeadlinkCheckLink();
-		deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
+		deadlinkCheckLink.add(createDeadlinkCheckLabel());
 		return deadlinkCheckLink;
+	}
+
+	private Label createDeadlinkCheckLabel() {
+		return new Label("linkName", getString("deadlinkCheckLink"));
 	}
 
 	private AjaxLink<BookmarkEntity> newDeadlinkCheckLink() {

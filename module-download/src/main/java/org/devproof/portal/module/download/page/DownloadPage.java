@@ -78,10 +78,9 @@ public class DownloadPage extends DownloadBasePage {
 	public DownloadPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		query = createDownloadQuery();
-		add(dataView = createDownloadDataView());
+		createDownloadQuery();
+		add(createDownloadDataView());
 		addFilterBox(createDownloadSearchBoxPanel());
-
 		add(createPagingPanel());
 		addTagCloudBox();
 		redirectToCreateDownloadPage();
@@ -114,13 +113,13 @@ public class DownloadPage extends DownloadBasePage {
 	}
 
 	private DownloadDataView createDownloadDataView() {
-		DownloadDataView dataView = new DownloadDataView("listDownload");
+		dataView = new DownloadDataView("listDownload");
 		return dataView;
 	}
 
 	private DownloadQuery createDownloadQuery() {
 		PortalSession session = (PortalSession) getSession();
-		DownloadQuery query = new DownloadQuery();
+		query = new DownloadQuery();
 
 		if (!session.hasRight("download.view")) {
 			query.setRole(session.getRole());

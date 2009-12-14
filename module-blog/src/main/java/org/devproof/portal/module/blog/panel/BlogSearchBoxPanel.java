@@ -34,10 +34,18 @@ public class BlogSearchBoxPanel extends BaseSearchBoxPanel {
 
 	public BlogSearchBoxPanel(String id, BlogQuery query, QueryDataProvider<?> dataProvider, TemplatePage parent,
 			IPageable dataview, PageParameters params) {
-		super(id, query, dataProvider, "page.BlogEditPage", parent, dataview, params);
-		TextField<String> fc = new TextField<String>("allTextFields");
-		getForm().add(fc);
-		add(titleContainer = new WebMarkupContainer("title"));
+		super(id, query, dataProvider, "blog.view", parent, dataview, params);
+		addToForm(createSearchTextField());
+		add(createTitleContainer());
+	}
+
+	private TextField<String> createSearchTextField() {
+		return new TextField<String>("allTextFields");
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
 	}
 
 	@Override

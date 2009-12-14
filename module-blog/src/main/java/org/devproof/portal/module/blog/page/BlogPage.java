@@ -67,8 +67,8 @@ public class BlogPage extends BlogBasePage {
 	public BlogPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		query = createBlogQuery();
-		add(dataView = createBlogDataView());
+		createBlogQuery();
+		add(createBlogDataView());
 		addFilterBox(createBlogSearchBoxPanel());
 		add(createPagingPanel());
 		addTagCloudBox();
@@ -87,12 +87,13 @@ public class BlogPage extends BlogBasePage {
 	}
 
 	private BlogDataView createBlogDataView() {
-		return new BlogDataView("listBlog");
+		dataView = new BlogDataView("listBlog");
+		return dataView;
 	}
 
 	private BlogQuery createBlogQuery() {
 		PortalSession session = (PortalSession) getSession();
-		BlogQuery query = new BlogQuery();
+		query = new BlogQuery();
 		if (!session.hasRight("blog.view")) {
 			query.setRole(session.getRole());
 		}

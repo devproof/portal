@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
@@ -32,26 +33,55 @@ public class TooltipLabel extends Panel {
 
 	public TooltipLabel(String id, Component label, Component tooltip) {
 		super(id);
-		add(JavascriptPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.js"));
-		add(CSSPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.css"));
-		tooltip.setMarkupId("tooltip");
-		label.setMarkupId("label");
-		WebMarkupContainer link = new WebMarkupContainer("link");
-		add(link);
-		link.add(label);
+		String tooltipMarkupId = getTooltipMarkupId();
+		modifyMarkupId(label, tooltip, tooltipMarkupId);
+		add(createJavascriptHeaderContributor());
+		add(createCSSHeaderContributor());
+		add(createTooltipLink(label, tooltipMarkupId));
 		add(tooltip);
+	}
 
-		// modifying tags
+	private String getTooltipMarkupId() {
 		double d = Math.random();
 		String str = Double.toString(d).substring(2);
-		String strTT = "TT" + str;
-		String strL = "L" + str;
+		String tooltipMarkupId = "MID" + str;
+		return tooltipMarkupId;
+	}
 
-		link
-				.add(new SimpleAttributeModifier("onmouseover", "xstooltip_show('" + strTT + "', '" + strL
-						+ "', 289, 49);"));
-		link.add(new SimpleAttributeModifier("onmouseout", "xstooltip_hide('" + strTT + "');"));
-		tooltip.add(new SimpleAttributeModifier("id", strTT));
-		link.add(new SimpleAttributeModifier("id", strL));
+	private void modifyMarkupId(Component label, Component tooltip, String tooltipMarkupId) {
+		tooltip.setMarkupId("tooltip");
+		label.setMarkupId("label");
+		tooltip.add(createIdAttributeModifier(tooltipMarkupId));
+	}
+
+	private WebMarkupContainer createTooltipLink(Component label, String tooltipMarkupId) {
+		String labelMarkupId = getTooltipMarkupId();
+		WebMarkupContainer link = new WebMarkupContainer("link");
+		link.add(createOnMouseOverAttributeModifier(tooltipMarkupId, labelMarkupId));
+		link.add(createOnMouseOutAttributeModifier(tooltipMarkupId));
+		link.add(createIdAttributeModifier(labelMarkupId));
+		link.add(label);
+		return link;
+	}
+
+	private SimpleAttributeModifier createIdAttributeModifier(String tooltipMarkupId) {
+		return new SimpleAttributeModifier("id", tooltipMarkupId);
+	}
+
+	private SimpleAttributeModifier createOnMouseOutAttributeModifier(String strTT) {
+		return new SimpleAttributeModifier("onmouseout", "xstooltip_hide('" + strTT + "');");
+	}
+
+	private SimpleAttributeModifier createOnMouseOverAttributeModifier(String strTT, String tooltipMarkupId) {
+		return new SimpleAttributeModifier("onmouseover", "xstooltip_show('" + strTT + "', '" + tooltipMarkupId
+				+ "', 289, 49);");
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.css");
+	}
+
+	private HeaderContributor createJavascriptHeaderContributor() {
+		return JavascriptPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.js");
 	}
 }

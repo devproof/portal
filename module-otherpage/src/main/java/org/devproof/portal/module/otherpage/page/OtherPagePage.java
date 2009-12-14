@@ -83,8 +83,8 @@ public class OtherPagePage extends OtherPageBasePage {
 		private BookmarkablePageLink<OtherPageViewPage> createViewLink(OtherPageEntity otherPage) {
 			BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink",
 					OtherPageViewPage.class);
-			viewLink.setParameter("0", otherPage.getContentId());
 			viewLink.add(createViewLinkImage());
+			viewLink.setParameter("0", otherPage.getContentId());
 			return viewLink;
 		}
 

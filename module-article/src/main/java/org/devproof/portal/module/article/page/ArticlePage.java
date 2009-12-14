@@ -68,8 +68,8 @@ public class ArticlePage extends ArticleBasePage {
 	public ArticlePage(PageParameters params) {
 		super(params);
 		this.params = params;
-		query = createArticleQuery();
-		add(dataView = createArticleDataView());
+		createArticleQuery();
+		add(createArticleDataView());
 		add(createPagingPanel());
 		addFilterBox(createArticleSearchBoxPanel());
 		addTagCloudBox();
@@ -84,7 +84,8 @@ public class ArticlePage extends ArticleBasePage {
 	}
 
 	private ArticleDataView createArticleDataView() {
-		return new ArticleDataView("listArticle");
+		dataView = new ArticleDataView("listArticle");
+		return dataView;
 	}
 
 	private BookmarkablePagingPanel createPagingPanel() {
@@ -92,7 +93,7 @@ public class ArticlePage extends ArticleBasePage {
 	}
 
 	private ArticleQuery createArticleQuery() {
-		ArticleQuery query = new ArticleQuery();
+		query = new ArticleQuery();
 		PortalSession session = (PortalSession) getSession();
 		if (!session.hasRight("article.view")) {
 			query.setRole(session.getRole());
@@ -218,8 +219,12 @@ public class ArticlePage extends ArticleBasePage {
 					ArticleReadPage.class);
 			titleLink.setParameter("0", article.getContentId());
 			titleLink.setEnabled(allowedToRead);
-			titleLink.add(new Label("titleLabel", article.getTitle()));
+			titleLink.add(createTitleLabel());
 			return titleLink;
+		}
+
+		private Label createTitleLabel() {
+			return new Label("titleLabel", article.getTitle());
 		}
 
 		private AuthorPanel<ArticleEntity> createAuthorPanel(final Item<ArticleEntity> item) {

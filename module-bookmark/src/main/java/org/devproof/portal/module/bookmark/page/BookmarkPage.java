@@ -70,8 +70,8 @@ public class BookmarkPage extends BookmarkBasePage {
 	public BookmarkPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		query = createBookmarkQuery();
-		add(dataView = createBookmarkDataView());
+		createBookmarkQuery();
+		add(createBookmarkDataView());
 		add(createPagingPanel());
 		addFilterBox(createBookmarkSearchBoxPanel());
 		addTagCloudBox();
@@ -91,12 +91,13 @@ public class BookmarkPage extends BookmarkBasePage {
 	}
 
 	private BookmarkDataView createBookmarkDataView() {
-		return new BookmarkDataView("listBookmark");
+		dataView = new BookmarkDataView("listBookmark");
+		return dataView;
 	}
 
 	private BookmarkQuery createBookmarkQuery() {
 		PortalSession session = (PortalSession) getSession();
-		BookmarkQuery query = new BookmarkQuery();
+		query = new BookmarkQuery();
 		if (!session.hasRight("bookmark.view")) {
 			query.setRole(session.getRole());
 		}
