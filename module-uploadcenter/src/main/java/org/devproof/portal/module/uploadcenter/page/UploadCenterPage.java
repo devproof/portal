@@ -73,13 +73,21 @@ public class UploadCenterPage extends TemplatePage {
 
 	public UploadCenterPage(PageParameters params) {
 		super(params);
-		rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
-		selectedFolder = rootFolder;
-		setHasRightToCreate();
-		add(modalWindow = createModalWindow());
-		add(folderTreeTable = createFolderTreeTable());
+		createRootFolder();
+		createSelectedFolder();
+		createHasRightToCreate();
+		add(createModalWindow());
+		add(createFolderTreeTable());
 		addPageAdminBoxLink(createUploadLink());
 		addPageAdminBoxLink(createFolderLink());
+	}
+
+	private void createSelectedFolder() {
+		selectedFolder = rootFolder;
+	}
+
+	private void createRootFolder() {
+		rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
 	}
 
 	private AjaxLink<ModalWindow> createFolderLink() {
@@ -105,10 +113,10 @@ public class UploadCenterPage extends TemplatePage {
 				new PropertyLinkedColumn(new ColumnLocation(Alignment.RIGHT, 80, Unit.PX), "", "userObject.file",
 						modalWindow) };
 
-		TreeTable tree = newFolderTreeTable(columns);
-		tree.getTreeState().collapseAll();
-		tree.setRootLess(true);
-		return tree;
+		folderTreeTable = newFolderTreeTable(columns);
+		folderTreeTable.getTreeState().collapseAll();
+		folderTreeTable.setRootLess(true);
+		return folderTreeTable;
 	}
 
 	private TreeTable newFolderTreeTable(IColumn[] columns) {
@@ -129,7 +137,7 @@ public class UploadCenterPage extends TemplatePage {
 						selectedNode = (DefaultMutableTreeNode) node.getParent();
 					}
 				} else {
-					selectedFolder = rootFolder;
+					createSelectedFolder();
 					selectedNode = rootNode;
 				}
 			}
@@ -164,12 +172,12 @@ public class UploadCenterPage extends TemplatePage {
 	}
 
 	private ModalWindow createModalWindow() {
-		ModalWindow modalWindow = new ModalWindow("modalWindow");
+		modalWindow = new ModalWindow("modalWindow");
 		modalWindow.setTitle("Portal");
 		return modalWindow;
 	}
 
-	private void setHasRightToCreate() {
+	private void createHasRightToCreate() {
 		PortalSession session = (PortalSession) getSession();
 		hasRightCreateDownload = session.hasRight("page.DownloadEditPage");
 	}

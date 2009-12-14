@@ -58,7 +58,6 @@ public class BookmarkEditPage extends BookmarkBasePage {
 
 	private Form<BookmarkEntity> createBookmarkEditForm() {
 		Form<BookmarkEntity> form = newBookmarkEditForm();
-		form.setOutputMarkupId(true);
 		form.add(createTitleField());
 		form.add(createDescriptionField());
 		form.add(createUrlField());
@@ -69,6 +68,7 @@ public class BookmarkEditPage extends BookmarkBasePage {
 		form.add(createViewRightPanel());
 		form.add(createVisitRightPanel());
 		form.add(createVoteRightPanel());
+		form.setOutputMarkupId(true);
 		return form;
 	}
 

@@ -43,21 +43,26 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
-
+	private List<BookmarkEntity> latestBookmarks;
+	
 	public BookmarkBoxPanel(String id) {
 		super(id);
-		List<BookmarkEntity> latestBookmarks = getLatestBookmarks();
-		setVisible(latestBookmarks.size() > 0);
-		add(titleContainer = createTitleContainer());
-		add(createRepeatingViewWithBookmarks(latestBookmarks));
+		createLatestBookmarks();
+		setVisible(isBookmarkAvailable());
+		add(createTitleContainer());
+		add(createRepeatingViewWithBookmarks());
 	}
 
-	private RepeatingView createRepeatingViewWithBookmarks(List<BookmarkEntity> latestBookmarks) {
+	private boolean isBookmarkAvailable() {
+		return latestBookmarks.size() > 0;
+	}
+
+	private RepeatingView createRepeatingViewWithBookmarks() {
 		RepeatingView repeating = new RepeatingView("repeating");
 		for (BookmarkEntity bookmark : latestBookmarks) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(item);
 			item.add(createLinkToBookmark(bookmark));
+			repeating.add(item);
 		}
 		return repeating;
 	}
@@ -69,7 +74,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 		return link;
 	}
 
-	private List<BookmarkEntity> getLatestBookmarks() {
+	private List<BookmarkEntity> createLatestBookmarks() {
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
 		List<BookmarkEntity> bookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0,
@@ -78,7 +83,8 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	private WebMarkupContainer createTitleContainer() {
-		return new WebMarkupContainer("title");
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
 	}
 
 	@Override

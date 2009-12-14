@@ -63,7 +63,7 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	private Form<ArticleEntity> createArticleEditForm() {
 		Form<ArticleEntity> form = newArticleEditForm();
-		form.add(contentIdField = createContentIdField());
+		form.add(createContentIdField());
 		form.add(createTitleField());
 		form.add(createTeaserField());
 		form.add(createContentField());
@@ -92,6 +92,7 @@ public class ArticleEditPage extends ArticleBasePage {
 		contentId.setEnabled(isNewArticle());
 		contentId.add(newContentIdValidator());
 		contentId.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
+		contentIdField = contentId;
 		return contentId;
 	}
 
@@ -112,8 +113,7 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String> fc;
-		fc = new RichTextArea("fullArticle");
+		FormComponent<String> fc = new RichTextArea("fullArticle");
 		fc.add(StringValidator.minimumLength(3));
 		fc.setRequired(true);
 		return fc;

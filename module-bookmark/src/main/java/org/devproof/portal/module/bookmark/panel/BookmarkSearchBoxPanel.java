@@ -42,12 +42,12 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 
 	public BookmarkSearchBoxPanel(String id, BookmarkQuery query, QueryDataProvider<?> dataProvider,
 			TemplatePage parent, IPageable dataview, PageParameters params) {
-		super(id, query, dataProvider, "page.BookmarkEditPage", parent, dataview, params);
+		super(id, query, dataProvider, "bookmark.view", parent, dataview, params);
 		this.params = params;
 		this.query = query;
-		getForm().add(createSearchTextField());
-		getForm().add(createBrokenDropDown());
-		add(titleContainer = createTitleContainer());
+		addToForm(createSearchTextField());
+		addToForm(createBrokenDropDown());
+		add(createTitleContainer());
 		addListener(createSearchBoxListener());
 		setBrokenParamInQuery();
 	}
@@ -75,7 +75,8 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 	}
 
 	private WebMarkupContainer createTitleContainer() {
-		return new WebMarkupContainer("title");
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
 	}
 
 	private TextField<String> createSearchTextField() {

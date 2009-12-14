@@ -37,9 +37,9 @@ public class ArticleSearchBoxPanel extends BaseSearchBoxPanel {
 
 	public ArticleSearchBoxPanel(String id, ArticleQuery query, QueryDataProvider<?> dataProvider, TemplatePage parent,
 			IPageable dataview, PageParameters params) {
-		super(id, query, dataProvider, "page.ArticleEditPage", parent, dataview, params);
-		getForm().add(createSearchTextField());
-		add(titleContainer = createTitleContainer());
+		super(id, query, dataProvider, "article.view", parent, dataview, params);
+		addToForm(createSearchTextField());
+		add(createTitleContainer());
 	}
 
 	private TextField<String> createSearchTextField() {
@@ -47,7 +47,8 @@ public class ArticleSearchBoxPanel extends BaseSearchBoxPanel {
 	}
 
 	private WebMarkupContainer createTitleContainer() {
-		return new WebMarkupContainer("title");
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
 	}
 
 	@Override

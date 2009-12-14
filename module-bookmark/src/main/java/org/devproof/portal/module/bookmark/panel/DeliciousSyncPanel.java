@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.form.Form;
@@ -72,35 +73,36 @@ public class DeliciousSyncPanel extends Panel {
 	private int modifiedBookmarksCount = 0;
 	private int deletedBookmarksCount = 0;
 	private DeliciousBean deliciousBean;
-	private ListModel<RightEntity> allSelectedRightsModel;
+	private ListModel<RightEntity> allSelectedRightsModel = new ListModel<RightEntity>(new ArrayList<RightEntity>());
 	private ProgressionModel progressionModel;
 	private ProgressBar progressBar;
-	private DeliciousFormBean deliciousFormBean;
+	private DeliciousFormBean deliciousFormBean = new DeliciousFormBean();
 	private FeedbackPanel feedbackPanel;
 
 	public DeliciousSyncPanel(String id) {
 		super(id);
-		allSelectedRightsModel = new ListModel<RightEntity>(new ArrayList<RightEntity>());
-		deliciousFormBean = new DeliciousFormBean();
-		progressionModel = createProgressionModel();
-
-		add(CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS));
-		add(feedbackPanel = createFeedbackPanel());
+		createProgressionModel();
+		add(createCSSHeaderContributor());
+		add(createFeedbackPanel());
 		add(createDeliciousSyncForm());
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS);
 	}
 
 	private Form<DeliciousFormBean> createDeliciousSyncForm() {
 		Form<DeliciousFormBean> form = new Form<DeliciousFormBean>("form",
 				new CompoundPropertyModel<DeliciousFormBean>(deliciousFormBean));
-		form.setOutputMarkupId(true);
 		form.add(createUsernameField());
 		form.add(createPasswordField());
 		form.add(createTagField());
 		form.add(createViewRightPanel());
 		form.add(createVisitRightPanel());
 		form.add(createVoteRightPanel());
-		form.add(progressBar = createProgressBar());
-		form.add(createStartButton(deliciousFormBean, form, progressBar));
+		form.add(createProgressBar());
+		form.add(createStartButton(form));
+		form.setOutputMarkupId(true);
 		return form;
 	}
 
@@ -128,22 +130,21 @@ public class DeliciousSyncPanel extends Panel {
 		return new RequiredTextField<String>("username");
 	}
 
-	private IndicatingAjaxButton createStartButton(final DeliciousFormBean formBean, Form<DeliciousFormBean> form,
-			final ProgressBar bar) {
+	private IndicatingAjaxButton createStartButton(Form<DeliciousFormBean> form) {
 		return new IndicatingAjaxButton("startButton", form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				// Start the progress bar, will set visibility to true
-				bar.start(target);
+				progressBar.start(target);
 				final UserEntity user = ((PortalSession) Session.get()).getUser();
 				new Thread() {
 					@Override
 					public void run() {
 						fetching = true;
-						DeliciousBean bean = synchronizeService.getDataFromDelicious(formBean.username,
-								formBean.password, formBean.tags);
+						DeliciousBean bean = synchronizeService.getDataFromDelicious(deliciousFormBean.username,
+								deliciousFormBean.password, deliciousFormBean.tags);
 						deliciousBean = bean;
 						if (bean.hasError()) {
 							return;
@@ -217,7 +218,7 @@ public class DeliciousSyncPanel extends Panel {
 	}
 
 	private ProgressBar createProgressBar() {
-		return new ProgressBar("bar", progressionModel) {
+		progressBar = new ProgressBar("bar", progressionModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -237,10 +238,11 @@ public class DeliciousSyncPanel extends Panel {
 				target.addComponent(feedbackPanel);
 			}
 		};
+		return progressBar;
 	}
 
 	private ProgressionModel createProgressionModel() {
-		return new ProgressionModel() {
+		progressionModel = new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -264,11 +266,12 @@ public class DeliciousSyncPanel extends Panel {
 				return new Progression(progressInPercent, descr);
 			}
 		};
+		return progressionModel;
 	}
 
 	private FeedbackPanel createFeedbackPanel() {
-		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		return feedback;
+		feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		return feedbackPanel;
 	}
 }

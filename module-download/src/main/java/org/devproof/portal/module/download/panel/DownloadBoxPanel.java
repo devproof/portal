@@ -43,26 +43,47 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
-
+	private List<DownloadEntity> latestDownloads;
 	public DownloadBoxPanel(String id) {
 		super(id);
+		createLatestDownloads();
+		setVisible(isDownloadAvailable());
+		add(createRepeatingViewWithDownloads());
+		add(createTitleContainer());
+	}
+
+	private boolean isDownloadAvailable() {
+		return latestDownloads.size() > 0;
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
+	}
+
+	private RepeatingView createRepeatingViewWithDownloads() {
+		RepeatingView repeating = new RepeatingView("repeating");
+		for (DownloadEntity download : latestDownloads) {
+			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
+			item.add(createLinkToDownload(download));
+			repeating.add(item);
+		}
+		return repeating;
+	}
+
+	private BookmarkablePageLink<DownloadPage> createLinkToDownload(DownloadEntity download) {
+		BookmarkablePageLink<DownloadPage> link = new BookmarkablePageLink<DownloadPage>("link", DownloadPage.class);
+		link.setParameter("id", download.getId());
+		link.add(new Label("linkName", download.getTitle()));
+		return link;
+	}
+
+	private List<DownloadEntity> createLatestDownloads() {
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
-		List<DownloadEntity> downloads = downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0,
+		latestDownloads = downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0,
 				num);
-
-		RepeatingView repeating = new RepeatingView("repeating");
-		for (DownloadEntity download : downloads) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(item);
-			BookmarkablePageLink<DownloadPage> link = new BookmarkablePageLink<DownloadPage>("link", DownloadPage.class);
-			link.setParameter("id", download.getId());
-			link.add(new Label("linkName", download.getTitle()));
-			item.add(link);
-		}
-		add(titleContainer = new WebMarkupContainer("title"));
-		add(repeating);
-		setVisible(downloads.size() > 0);
+		return latestDownloads;
 	}
 
 	@Override

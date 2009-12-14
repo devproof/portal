@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.common.panel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
@@ -80,6 +81,10 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 
 	public StatelessForm<IQuery<?>> getForm() {
 		return form;
+	}
+	
+	public void addToForm(Component component) {
+		form.add(component);
 	}
 
 	public boolean isAuthor() {

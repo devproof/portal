@@ -44,31 +44,41 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
-
+	private List<ArticleEntity> latestArticles;
+	
 	public ArticleBoxPanel(String id) {
 		super(id);
-		List<ArticleEntity> latestArticles = getLatestArticles();
-		setVisible(latestArticles.size() > 0);
-		add(titleContainer = createTitleContainer());
-		add(createRepeatingViewWithArticles(latestArticles));
+		createLatestArticles();
+		setVisible(isArticleAvailable());
+		add(createTitleContainer());
+		add(createRepeatingViewWithArticles());
+	}
+
+	private boolean isArticleAvailable() {
+		return latestArticles.size() > 0;
+	}
+
+	private List<ArticleEntity> createLatestArticles() {
+		latestArticles = getLatestArticles();
+		return latestArticles;
 	}
 
 	private WebMarkupContainer createTitleContainer() {
-		return new WebMarkupContainer("title");
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
 	}
 
 	private List<ArticleEntity> getLatestArticles() {
 		Integer numberOfLatestArticles = configurationService
 				.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
 		PortalSession session = (PortalSession) getSession();
-		List<ArticleEntity> latestArticles = articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(),
+		return articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(),
 				0, numberOfLatestArticles);
-		return latestArticles;
 	}
 
-	private RepeatingView createRepeatingViewWithArticles(List<ArticleEntity> articles) {
+	private RepeatingView createRepeatingViewWithArticles() {
 		RepeatingView repeating = new RepeatingView("repeating");
-		for (ArticleEntity article : articles) {
+		for (ArticleEntity article : latestArticles) {
 			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
 			repeating.add(item);
 			item.add(createLinkToArticle(article));

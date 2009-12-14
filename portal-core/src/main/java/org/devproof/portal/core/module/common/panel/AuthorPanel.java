@@ -15,11 +15,13 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -40,28 +42,35 @@ public abstract class AuthorPanel<T> extends Panel {
 	private Class<? extends Page> redirectPageClazz = null;
 	private PageParameters redirectParams = null;
 	private boolean deleted = false;
-
+	private ModalWindow modalWindow;
+	
 	public AuthorPanel(String id, final T entity) {
 		super(id);
 		this.entity = entity;
-		final ModalWindow modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setOutputMarkupId(true);
-		add(modalWindow);
-		add(new AjaxLink<T>("editLink") {
+		add(createModalWindow());
+		add(createEditLink());
+		add(createDeleteLink());
+	}
+
+	private MarkupContainer createDeleteLink() {
+		AjaxLink<T> link = newDeleteLink();
+		link.add(createDeleteImage());
+		return link;
+	}
+
+	private AjaxLink<T> newDeleteLink() {
+		return new AjaxLink<T>("deleteLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				AuthorPanel.this.onEdit(target);
+				modalWindow.setWindowClosedCallback(createWindowCloseCallback());
+				modalWindow.setContent(createConfirmDeletePanel());
+				modalWindow.show(target);
 			}
-		}.add(new Image("editImage", CommonConstants.REF_EDIT_IMG)));
 
-		add(new AjaxLink<T>("deleteLink") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				ConfirmDeletePanel<T> confirmDeletePanel = new ConfirmDeletePanel<T>(modalWindow.getContentId(),
+			private ConfirmDeletePanel<T> createConfirmDeletePanel() {
+				return new ConfirmDeletePanel<T>(modalWindow.getContentId(),
 						entity, modalWindow) {
 					private static final long serialVersionUID = 1L;
 
@@ -73,7 +82,10 @@ public abstract class AuthorPanel<T> extends Panel {
 					}
 
 				};
-				modalWindow.setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
+			}
+
+			private WindowClosedCallback createWindowCloseCallback() {
+				return new ModalWindow.WindowClosedCallback() {
 					private static final long serialVersionUID = 1L;
 
 					public void onClose(AjaxRequestTarget target) {
@@ -82,11 +94,40 @@ public abstract class AuthorPanel<T> extends Panel {
 							AuthorPanel.this.deleted = false;
 						}
 					}
-				});
-				modalWindow.setContent(confirmDeletePanel);
-				modalWindow.show(target);
+				};
 			}
-		}.add(new Image("deleteImage", CommonConstants.REF_DELETE_IMG)));
+		};
+	}
+
+	private Image createDeleteImage() {
+		return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
+	}
+
+	private MarkupContainer createEditLink() {
+		AjaxLink<T> link = newEditLink();
+		link.add(createEditImage());
+		return link;
+	}
+
+	private AjaxLink<T> newEditLink() {
+		return new AjaxLink<T>("editLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				AuthorPanel.this.onEdit(target);
+			}
+		};
+	}
+
+	private Image createEditImage() {
+		return new Image("editImage", CommonConstants.REF_EDIT_IMG);
+	}
+
+	private ModalWindow createModalWindow() {
+		modalWindow = new ModalWindow("modalWindow");
+		modalWindow.setOutputMarkupId(true);
+		return modalWindow;
 	}
 
 	public T getEntity() {
