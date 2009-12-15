@@ -40,43 +40,80 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 
 	private static final long serialVersionUID = 1L;
 	private StatelessForm<IQuery<?>> form;
-	private List<BaseSearchBoxListener> listener = new ArrayList<BaseSearchBoxListener>();
+	private List<BaseSearchBoxListener> listeners = new ArrayList<BaseSearchBoxListener>();
 	private boolean isAuthor;
+	private IQuery<?> query;
+	private QueryDataProvider<?> dataProvider;
+	private String authorRightName;
+	private TemplatePage parent;
+	private IPageable dataview;
+	private PageParameters params;
+	
 
-	public BaseSearchBoxPanel(String id, final IQuery<?> query, final QueryDataProvider<?> dataProvider,
-			String authorRight, final TemplatePage parent, final IPageable dataview, final PageParameters params) {
+	public BaseSearchBoxPanel(String id, IQuery<?> query, QueryDataProvider<?> dataProvider,
+			String authorRightName, TemplatePage parent, IPageable dataview, PageParameters params) {
 		super(id);
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight(authorRight);
-		form = new StatelessForm<IQuery<?>>("searchForm", new CompoundPropertyModel<IQuery<?>>(query)) {
-			private static final long serialVersionUID = 1L;
+		this.query = query;
+		this.dataProvider = dataProvider;
+		this.authorRightName = authorRightName;
+		this.parent = parent;
+		this.dataview = dataview;
+		this.params = params;
+		
+		setAuthorRight();
+		add(createStatelessForm());
+		copyParameterToQuery();
+	}
 
-			@Override
-			protected void onSubmit() {
-				params.clear();
-				if (query.getAllTextFields() != null) {
-					params.put("search", query.getAllTextFields());
-				}
-				for (BaseSearchBoxListener l : listener) {
-					l.onSearch();
-				}
-				query.clearSelection();
-				params.remove("tag");
-				dataProvider.setQueryObject(query);
-				parent.addOrReplace(new BookmarkablePagingPanel("paging", dataview, parent.getPageClass(), params));
-				parent.cleanTagSelection();
-			}
-
-		};
-		form.setOutputMarkupId(true);
-		add(form);
-
+	private void copyParameterToQuery() {
 		if (params != null && params.containsKey("search")) {
 			query.setAllTextFields(params.getString("search"));
 		}
 		if (params != null && params.containsKey("id")) {
 			query.setId(params.getAsInteger("id"));
 		}
+	}
+
+	private void setAuthorRight() {
+		PortalSession session = (PortalSession) getSession();
+		isAuthor = session.hasRight(this.authorRightName);
+	}
+
+	private StatelessForm<IQuery<?>> createStatelessForm() {
+		form = newStatelessForm();
+		form.setOutputMarkupId(true);
+		return form;
+	}
+
+	private StatelessForm<IQuery<?>> newStatelessForm() {
+		return new StatelessForm<IQuery<?>>("searchForm", new CompoundPropertyModel<IQuery<?>>(query)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit() {
+				copyQueryToParameter();
+				for (BaseSearchBoxListener listenener : listeners) {
+					listenener.onSearch();
+				}
+				query.clearSelection();
+				dataProvider.setQueryObject(query);
+				parent.addOrReplace(createPagingPanel());
+				parent.cleanTagSelection();
+			}
+
+			private void copyQueryToParameter() {
+				params.clear();
+				if (query.getAllTextFields() != null) {
+					params.put("search", query.getAllTextFields());
+				}
+				params.remove("tag");
+			}
+
+			private BookmarkablePagingPanel createPagingPanel() {
+				return new BookmarkablePagingPanel("paging", dataview, parent.getPageClass(), params);
+			}
+
+		};
 	}
 
 	public StatelessForm<IQuery<?>> getForm() {
@@ -92,6 +129,6 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 	}
 
 	public void addListener(BaseSearchBoxListener listener) {
-		this.listener.add(listener);
+		this.listeners.add(listener);
 	}
 }
