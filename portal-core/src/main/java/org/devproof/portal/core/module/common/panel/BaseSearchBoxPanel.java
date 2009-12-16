@@ -61,7 +61,7 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		this.params = params;
 		
 		setAuthorRight();
-		add(createStatelessForm());
+		add(createSearchForm());
 		copyParameterToQuery();
 	}
 
@@ -79,7 +79,7 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		isAuthor = session.hasRight(this.authorRightName);
 	}
 
-	private StatelessForm<IQuery<?>> createStatelessForm() {
+	private StatelessForm<IQuery<?>> createSearchForm() {
 		form = newStatelessForm();
 		form.setOutputMarkupId(true);
 		return form;
