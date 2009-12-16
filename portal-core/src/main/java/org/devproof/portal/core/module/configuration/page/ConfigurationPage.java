@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -128,7 +129,7 @@ public class ConfigurationPage extends TemplatePage {
 		try {
 			return Class.forName(type);
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+			throw new UnhandledException(e);
 		}
 	}
 
