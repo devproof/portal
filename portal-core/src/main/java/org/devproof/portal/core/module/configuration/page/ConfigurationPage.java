@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.configuration.page;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,7 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -54,10 +56,61 @@ public class ConfigurationPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
+	private List<ConfigurationEntity> allConfigurations = new ArrayList<ConfigurationEntity>();
+
 	public ConfigurationPage(PageParameters params) {
 		super(params);
-		final List<ConfigurationEntity> allConfigurations = new ArrayList<ConfigurationEntity>();
-		Form<List<ConfigurationEntity>> form = new Form<List<ConfigurationEntity>>("form") {
+		add(createConfigurationForm());
+	}
+
+	private Form<List<ConfigurationEntity>> createConfigurationForm() {
+		Form<List<ConfigurationEntity>> form = newConfigurationForm();
+		form.add(createTableRepeatingView());
+		return form;
+	}
+
+	private RepeatingView createTableRepeatingView() {
+		List<String> groups = configurationService.findConfigurationGroups();
+		RepeatingView table = new RepeatingView("tableRow");
+		for (String group : groups) {
+			table.add(createGroupHeaderRowContainer(table.newChildId(), group));
+			List<ConfigurationEntity> configurations = configurationService.findConfigurationsByGroup(group);
+			for (ConfigurationEntity configuration : configurations) {
+				table.add(createEditRowContainer(table.newChildId(), configuration));
+				allConfigurations.add(configuration);
+			}
+		}
+		return table;
+	}
+
+	private WebMarkupContainer createEditRowContainer(String id, ConfigurationEntity configuration) {
+		WebMarkupContainer row = new WebMarkupContainer(id);
+		row.add(createEditRowLabel(configuration));
+		row.add(createEditorForConfiguration(configuration));
+		return row;
+	}
+
+	private Label createEditRowLabel(ConfigurationEntity configuration) {
+		return new Label("description", configuration.getDescription());
+	}
+
+	private WebMarkupContainer createGroupHeaderRowContainer(String id, String group) {
+		WebMarkupContainer row = new WebMarkupContainer(id);
+		row.add(createGroupHeader(group));
+		row.add(createEmptyLabel());
+		return row;
+	}
+
+	private Label createEmptyLabel() {
+		return new Label("editor", "");
+	}
+
+	private GroupHeader createGroupHeader(String group) {
+		return new GroupHeader("description", group);
+	}
+
+	private Form<List<ConfigurationEntity>> newConfigurationForm() {
+		return new Form<List<ConfigurationEntity>>("form") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -69,25 +122,13 @@ public class ConfigurationPage extends TemplatePage {
 				info(getString("msg.saved"));
 			}
 		};
-		add(form);
+	}
 
-		List<String> groups = configurationService.findConfigurationGroups();
-		RepeatingView tableRow = new RepeatingView("tableRow");
-		form.add(tableRow);
-		for (String group : groups) {
-			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
-			row.add(new GroupHeader("description", group));
-			row.add(new Label("editor", ""));
-			tableRow.add(row);
-
-			List<ConfigurationEntity> configurations = configurationService.findConfigurationsByGroup(group);
-			for (ConfigurationEntity configuration : configurations) {
-				row = new WebMarkupContainer(tableRow.newChildId());
-				row.add(new Label("description", configuration.getDescription()));
-				row.add(getEditorForConfiguration(configuration));
-				tableRow.add(row);
-				allConfigurations.add(configuration);
-			}
+	private Class<?> getClassByString(String type) {
+		try {
+			return Class.forName(type);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -99,9 +140,9 @@ public class ConfigurationPage extends TemplatePage {
 	 * @return editor fragment for for the matching configuration type
 	 */
 
-	protected Component getEditorForConfiguration(ConfigurationEntity configurationEntity) {
+	protected Component createEditorForConfiguration(ConfigurationEntity configurationEntity) {
 		if (configurationEntity.getKey().startsWith(ConfigurationConstants.SPRING_CONFIGURATION_PREFIX)) {
-			// special case foraccessing a spring dao
+			// special case for accessing a spring dao
 			return new SpringBeanEditor("editor", configurationEntity);
 		} else {
 			Class<?> clazz;
@@ -124,76 +165,125 @@ public class ConfigurationPage extends TemplatePage {
 	}
 
 	private class ValueEditor extends Fragment {
-
 		private static final long serialVersionUID = 1L;
+		private ConfigurationEntity configuration;
 
-		public ValueEditor(String id, ConfigurationEntity configurationEntity) {
+		public ValueEditor(String id, ConfigurationEntity configuration) {
 			super(id, "valueEditor", ConfigurationPage.this);
-			Class<?> clazz;
-			try {
-				clazz = Class.forName(configurationEntity.getType());
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
-			}
-			IModel<String> label = Model.of(configurationEntity.getKey());
+			this.configuration = configuration;
+			add(createAppropriateValueTextField());
+		}
+
+		private Component createAppropriateValueTextField() {
+			Class<?> clazz = getClassByString(configuration.getType());
 			if (Double.class.isAssignableFrom(clazz)) {
-				add(new RequiredTextField<Double>("edit", new PropertyModel<Double>(configurationEntity, "doubleValue"))
-						.setLabel(label));
+				return createDoubleTextField();
 			} else if (Integer.class.isAssignableFrom(clazz)) {
-				add(new RequiredTextField<Integer>("edit", new PropertyModel<Integer>(configurationEntity,
-						"integerValue")).setLabel(label));
+				return createIntegerTextField();
 			} else if (String.class.isAssignableFrom(clazz)) {
-				add(new RequiredTextField<String>("edit", new PropertyModel<String>(configurationEntity, "value"))
-						.setLabel(label));
+				return createStringTextField();
 			} else {
 				throw new IllegalArgumentException("Configuration type is not allowed!");
 			}
+		}
+
+		private RequiredTextField<Integer> createIntegerTextField() {
+			IModel<String> label = Model.of(configuration.getKey());
+			RequiredTextField<Integer> textField = new RequiredTextField<Integer>("edit", new PropertyModel<Integer>(
+					configuration, "integerValue"));
+			textField.setLabel(label);
+			return textField;
+		}
+
+		private RequiredTextField<Double> createDoubleTextField() {
+			IModel<String> label = Model.of(configuration.getKey());
+			RequiredTextField<Double> textField = new RequiredTextField<Double>("edit", new PropertyModel<Double>(
+					configuration, "doubleValue"));
+			textField.setLabel(label);
+			return textField;
+		}
+
+		private RequiredTextField<String> createStringTextField() {
+			IModel<String> label = Model.of(configuration.getKey());
+			RequiredTextField<String> textField = new RequiredTextField<String>("edit", new PropertyModel<String>(
+					configuration, "value"));
+			textField.setLabel(label);
+			return textField;
 		}
 	}
 
 	private class BooleanEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
+		private ConfigurationEntity configuration;
 
-		public BooleanEditor(String id, ConfigurationEntity configurationEntity) {
+		public BooleanEditor(String id, ConfigurationEntity configuration) {
 			super(id, "booleanEditor", ConfigurationPage.this);
-			add(new CheckBox("edit", new PropertyModel<Boolean>(configurationEntity, "booleanValue")).setLabel(Model
-					.of(configurationEntity.getKey())));
+			this.configuration = configuration;
+			add(createCheckBox());
+		}
+
+		private FormComponent<Boolean> createCheckBox() {
+			CheckBox checkBox = new CheckBox("edit", new PropertyModel<Boolean>(configuration, "booleanValue"));
+			checkBox.setLabel(Model.of(configuration.getKey()));
+			return checkBox;
 		}
 	}
 
 	private class EnumEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
+		private ConfigurationEntity configuration;
 
-		public EnumEditor(String id, ConfigurationEntity configurationEntity) {
+		public EnumEditor(String id, ConfigurationEntity configuration) {
 			super(id, "enumEditor", ConfigurationPage.this);
-			Class<?> clazz;
-			try {
-				clazz = Class.forName(configurationEntity.getType());
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
-			}
+			this.configuration = configuration;
+			add(createEnumDropDownChoice());
+		}
 
+		private DropDownChoice<String> createEnumDropDownChoice() {
+			List<String> enumChoices = getEnumChoices();
+			DropDownChoice<String> ddc = new DropDownChoice<String>("edit", new PropertyModel<String>(configuration,
+					"value"), enumChoices);
+			ddc.setLabel(Model.of(configuration.getDescription()));
+			ddc.setRequired(true);
+			return ddc;
+		}
+
+		private List<String> getEnumChoices() {
+			Class<?> clazz = getClassByString(configuration.getType());
 			Object tmp[] = clazz.getEnumConstants();
 			List<String> values = new ArrayList<String>();
 			for (int i = 0; i < tmp.length; i++) {
 				values.add(((Enum<?>) tmp[i]).name());
 			}
-			DropDownChoice<String> ddc = new DropDownChoice<String>("edit", new PropertyModel<String>(
-					configurationEntity, "value"), values);
-			ddc.setLabel(Model.of(configurationEntity.getDescription()));
-			ddc.setRequired(true);
-
-			add(ddc);
+			return values;
 		}
 	}
 
 	private class SpringBeanEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
 
-		public SpringBeanEditor(String id, final ConfigurationEntity configurationEntity) {
-			super(id, "springBeanEditor", ConfigurationPage.this);
+		private ConfigurationEntity configuration;
+		private List<ConfigurationEntity> possibleSelectionValues;
 
-			String typeWithoutPrefix = configurationEntity.getKey().substring(
+		public SpringBeanEditor(String id, ConfigurationEntity configuration) {
+			super(id, "springBeanEditor", ConfigurationPage.this);
+			this.configuration = configuration;
+			setPossibleSelectionValues();
+			add(createSpringDropDownChoice());
+		}
+
+		private DropDownChoice<ConfigurationEntity> createSpringDropDownChoice() {
+			DropDownChoice<ConfigurationEntity> ddc = new DropDownChoice<ConfigurationEntity>("edit",
+					possibleSelectionValues, new ChoiceRenderer<ConfigurationEntity>("description", "value"));
+			ddc.setModel(newConfigurationModel());
+			ddc.setLabel(Model.of(configuration.getDescription()));
+			ddc.setRequired(true);
+			return ddc;
+		}
+
+		private void setPossibleSelectionValues() {
+			possibleSelectionValues = new ArrayList<ConfigurationEntity>();
+			String typeWithoutPrefix = configuration.getKey().substring(
 					ConfigurationConstants.SPRING_CONFIGURATION_PREFIX.length());
 			int index = typeWithoutPrefix.indexOf('.');
 			String springBeanName = typeWithoutPrefix.substring(0, index);
@@ -208,73 +298,87 @@ public class ConfigurationPage extends TemplatePage {
 			String primaryKey = typeWithoutPrefix.substring(0, index);
 
 			ApplicationContext context = ((PortalApplication) getApplication()).getSpringContext();
-
 			Object springBean = context.getBean(springBeanName);
-			List<ConfigurationEntity> result = new ArrayList<ConfigurationEntity>();
 			try {
 				Method method = springBean.getClass().getMethod(methodName);
-				List<?> tmpResult = (List<?>) method.invoke(springBean);
-				if (tmpResult != null && tmpResult.size() > 0) {
-					Method primaryKeyMethod = tmpResult.get(0).getClass().getMethod(PortalUtil.addGet(primaryKey));
-					Method displayMethod = tmpResult.get(0).getClass().getMethod(PortalUtil.addGet(displayName));
+				List<?> results = (List<?>) method.invoke(springBean);
+				if (results != null && results.size() > 0) {
+					Method primaryKeyMethod = results.get(0).getClass().getMethod(PortalUtil.addGet(primaryKey));
+					Method displayMethod = results.get(0).getClass().getMethod(PortalUtil.addGet(displayName));
 					Method primaryKeyMethodToString = primaryKeyMethod.getReturnType().getMethod("toString");
 					Method displayMethodToString = displayMethod.getReturnType().getMethod("toString");
 
-					for (Object tmp : tmpResult) {
-						ConfigurationEntity c = new ConfigurationEntity();
-						c.setDescription((String) displayMethodToString.invoke(displayMethod.invoke(tmp)));
-						c.setValue((String) primaryKeyMethodToString.invoke(primaryKeyMethod.invoke(tmp)));
-						result.add(c);
+					for (Object result : results) {
+						ConfigurationEntity c = createConfigurationEntity(primaryKeyMethod, displayMethod,
+								primaryKeyMethodToString, displayMethodToString, result);
+						possibleSelectionValues.add(c);
 					}
 				}
-
 			} catch (Exception e) {
 				throw new RuntimeException("Invalid spring configuration key!", e);
 			}
+		}
 
-			DropDownChoice<ConfigurationEntity> ddc = new DropDownChoice<ConfigurationEntity>("edit", result,
-					new ChoiceRenderer<ConfigurationEntity>("description", "value"));
-			ddc.setModel(new IModel<ConfigurationEntity>() {
+		private ConfigurationEntity createConfigurationEntity(Method primaryKeyMethod, Method displayMethod,
+				Method primaryKeyMethodToString, Method displayMethodToString, Object tmp)
+				throws IllegalAccessException, InvocationTargetException {
+			ConfigurationEntity c = new ConfigurationEntity();
+			c.setDescription((String) displayMethodToString.invoke(displayMethod.invoke(tmp)));
+			c.setValue((String) primaryKeyMethodToString.invoke(primaryKeyMethod.invoke(tmp)));
+			return c;
+		}
+
+		private IModel<ConfigurationEntity> newConfigurationModel() {
+			return new IModel<ConfigurationEntity>() {
 
 				private static final long serialVersionUID = 1L;
 
 				public ConfigurationEntity getObject() {
-					return configurationEntity;
+					return configuration;
 				}
 
 				public void setObject(ConfigurationEntity object) {
-					configurationEntity.setValue(object.getValue());
+					configuration.setValue(object.getValue());
 				}
 
 				public void detach() {
 
 				}
-			});
-			ddc.setLabel(Model.of(configurationEntity.getDescription()));
-			ddc.setRequired(true);
-
-			add(ddc);
+			};
 		}
 	}
 
 	private class DateEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
+		private ConfigurationEntity configuration;
 
-		public DateEditor(String id, ConfigurationEntity configurationEntity) {
+		public DateEditor(String id, ConfigurationEntity configuration) {
 			super(id, "dateEditor", ConfigurationPage.this);
-			DateTextField dateTextField = new DateTextField("edit", new PropertyModel<Date>(configurationEntity,
-					"dateValue"));
+			this.configuration = configuration;
+			add(createDateTextField());
+		}
+
+		private DateTextField createDateTextField() {
+			DateTextField dateTextField = new DateTextField("edit", new PropertyModel<Date>(configuration, "dateValue"));
 			dateTextField.add(new DatePicker());
-			add(dateTextField.setLabel(Model.of(configurationEntity.getKey())).setRequired(true));
+			dateTextField.setLabel(Model.of(configuration.getKey()));
+			dateTextField.setRequired(true);
+			return dateTextField;
 		}
 	}
 
 	private class GroupHeader extends Fragment {
 		private static final long serialVersionUID = 1L;
+		private String headline;
 
 		public GroupHeader(String id, String headline) {
 			super(id, "groupHeader", ConfigurationPage.this);
-			add(new Label("headline", headline));
+			this.headline = headline;
+			add(createHeadlineLabel());
+		}
+
+		private Label createHeadlineLabel() {
+			return new Label("headline", headline);
 		}
 	}
 }

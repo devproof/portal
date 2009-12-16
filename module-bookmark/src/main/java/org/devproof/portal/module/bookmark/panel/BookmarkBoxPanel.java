@@ -44,7 +44,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
 	private List<BookmarkEntity> latestBookmarks;
-	
+
 	public BookmarkBoxPanel(String id) {
 		super(id);
 		createLatestBookmarks();
@@ -77,9 +77,8 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 	private List<BookmarkEntity> createLatestBookmarks() {
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
-		List<BookmarkEntity> bookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0,
-				num);
-		return bookmarks;
+		latestBookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0, num);
+		return latestBookmarks;
 	}
 
 	private WebMarkupContainer createTitleContainer() {
