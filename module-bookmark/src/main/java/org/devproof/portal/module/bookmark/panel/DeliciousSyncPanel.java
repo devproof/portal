@@ -101,7 +101,7 @@ public class DeliciousSyncPanel extends Panel {
 		form.add(createVisitRightPanel());
 		form.add(createVoteRightPanel());
 		form.add(createProgressBar());
-		form.add(createStartButton(form));
+		form.add(createStartButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -130,8 +130,8 @@ public class DeliciousSyncPanel extends Panel {
 		return new RequiredTextField<String>("username");
 	}
 
-	private IndicatingAjaxButton createStartButton(Form<DeliciousFormBean> form) {
-		return new IndicatingAjaxButton("startButton", form) {
+	private IndicatingAjaxButton createStartButton() {
+		return new IndicatingAjaxButton("startButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override

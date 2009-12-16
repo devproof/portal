@@ -32,21 +32,38 @@ public class InfoMessagePanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	public InfoMessagePanel(String id, String msg, final ModalWindow modalWindow) {
+	private String message;
+	private ModalWindow modalWindow;
+	
+	public InfoMessagePanel(String id, String message, final ModalWindow modalWindow) {
 		super(id);
-		modalWindow.setInitialHeight(140);
-		modalWindow.setInitialWidth(300);
+		this.message = message;
+		this.modalWindow = modalWindow;
+		setModalWindowSize();
+		add(createOkButtonForm());
+	}
+
+	private Form<?> createOkButtonForm() {
 		Form<?> form = new Form<Object>("form");
+		form.add(new Label("infoMessage", message));
+		form.add(createOkAjaxButton());
 		form.setOutputMarkupId(true);
-		add(form);
-		form.add(new Label("infoMessage", msg));
-		form.add(new AjaxButton("okButton", form) {
+		return form;
+	}
+
+	private AjaxButton createOkAjaxButton() {
+		return new AjaxButton("okButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				modalWindow.close(target);
 			}
-		});
+		};
+	}
+
+	private void setModalWindowSize() {
+		modalWindow.setInitialHeight(140);
+		modalWindow.setInitialWidth(300);
 	}
 }

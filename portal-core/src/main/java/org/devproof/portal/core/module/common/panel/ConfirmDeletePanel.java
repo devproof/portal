@@ -32,32 +32,52 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
+	private T entity;
+	private ModalWindow modalWindow;
+//	private Form<T> form;
+	
 	public ConfirmDeletePanel(String id, T entity, final ModalWindow modalWindow) {
 		super(id);
-		modalWindow.setInitialHeight(108);
-		modalWindow.setInitialWidth(300);
+		this.entity = entity;
+		this.modalWindow = modalWindow;
+		setModalWindowSize();
+		add(createConfirmDeletePanelForm());
+
+	}
+
+	private Form<T> createConfirmDeletePanelForm() {
 		Form<T> form = new Form<T>("form", new CompoundPropertyModel<T>(entity));
+		form.add(createYesAjaxButton());
+		form.add(createNoAjaxButton());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		form.add(new AjaxButton("yesButton", form) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				ConfirmDeletePanel.this.onDelete(target, form);
-			}
-		});
-
-		form.add(new AjaxButton("noButton", form) {
+	private AjaxButton createNoAjaxButton() {
+		return new AjaxButton("noButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				modalWindow.close(target);
 			}
-		});
+		};
+	}
 
+	private AjaxButton createYesAjaxButton() {
+		return new AjaxButton("yesButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				ConfirmDeletePanel.this.onDelete(target, form);
+			}
+		};
+	}
+
+	private void setModalWindowSize() {
+		modalWindow.setInitialHeight(108);
+		modalWindow.setInitialWidth(300);
 	}
 
 	/**
