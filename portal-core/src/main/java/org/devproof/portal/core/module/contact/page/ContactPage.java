@@ -139,25 +139,32 @@ public class ContactPage extends TemplatePage {
 		trCaptcha2.add(fc);
 
 		if (enableCaptcha) {
-			fc.add(new AbstractValidator<String>() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void onValidate(IValidatable<String> ivalidatable) {
-					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
-						captchaImageResource.invalidate();
-						error(ivalidatable);
-					}
-				}
-
-				@Override
-				protected String resourceKey() {
-					return "wrong.captchacode";
-				}
-			});
+			fc.add(createCaptchaValidator(captchaImageResource));
 		}
+		form.add(createSendButton(contactBean));
+	}
 
-		form.add(new Button("sendButton") {
+	private AbstractValidator<String> createCaptchaValidator(final CaptchaImageResource captchaImageResource) {
+		return new AbstractValidator<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onValidate(IValidatable<String> ivalidatable) {
+				if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
+					captchaImageResource.invalidate();
+					error(ivalidatable);
+				}
+			}
+
+			@Override
+			protected String resourceKey() {
+				return "wrong.captchacode";
+			}
+		};
+	}
+
+	private Button createSendButton(final ContactBean contactBean) {
+		return new Button("sendButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -176,7 +183,7 @@ public class ContactPage extends TemplatePage {
 				emailService.sendEmail(templateId, placeholder);
 				setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
 			}
-		});
+		};
 	}
 
 	public String getCaptchaChallengeCode() {
