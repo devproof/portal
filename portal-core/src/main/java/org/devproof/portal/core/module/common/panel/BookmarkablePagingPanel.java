@@ -30,39 +30,25 @@ public class BookmarkablePagingPanel extends Panel {
 
 	private BookmarkablePageLink<String> backLink;
 	private BookmarkablePageLink<String> forwardLink;
-
-	public BookmarkablePagingPanel(String id, final IPageable pageable, Class<? extends Page> parentClazz,
+	private IPageable pageable;
+	private Class<? extends Page> parentClazz;
+	private PageParameters params;
+	
+	public BookmarkablePagingPanel(String id, IPageable pageable, Class<? extends Page> parentClazz,
 			PageParameters params) {
 		super(id);
-		if (params != null && params.containsKey("page")) {
-			int page = params.getAsInteger("page", 1);
-			if (page > 0 && page <= pageable.getPageCount()) {
-				pageable.setCurrentPage(page - 1);
-			}
-		}
+		this.pageable = pageable;
+		this.parentClazz = parentClazz;
+		this.params = params;
+		
+		add(createBackLink());
+		add(createForwardLink());
+		handleCurrentPageParameter();
+		copySearchParameterToPagingLinks();
 
-		backLink = new BookmarkablePageLink<String>("backLink", parentClazz) {
-			private static final long serialVersionUID = 1L;
+	}
 
-			@Override
-			public boolean isVisible() {
-				return pageable.getCurrentPage() != 0;
-			}
-		};
-		backLink.setParameter("page", pageable.getCurrentPage());
-		add(backLink);
-
-		forwardLink = new BookmarkablePageLink<String>("forwardLink", parentClazz) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isVisible() {
-				return (pageable.getPageCount() - 1) > pageable.getCurrentPage();
-			}
-
-		};
-		forwardLink.setParameter("page", pageable.getCurrentPage() + 2);
-		add(forwardLink);
+	private void copySearchParameterToPagingLinks() {
 		if (params != null) {
 			for (String key : params.keySet()) {
 				if ("broken".equals(key) || "search".equals(key) || "tag".equals(key)) {
@@ -72,6 +58,50 @@ public class BookmarkablePagingPanel extends Panel {
 				}
 			}
 		}
+	}
 
+	private void handleCurrentPageParameter() {
+		if (params != null && params.containsKey("page")) {
+			int page = params.getAsInteger("page", 1);
+			if (page > 0 && page <= pageable.getPageCount()) {
+				pageable.setCurrentPage(page - 1);
+			}
+		}
+	}
+
+	private BookmarkablePageLink<String> createForwardLink() {
+		forwardLink = newForwardLink();
+		forwardLink.setParameter("page", pageable.getCurrentPage() + 2);
+		return forwardLink;
+	}
+
+	private BookmarkablePageLink<String> newForwardLink() {
+		BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink", parentClazz) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return (pageable.getPageCount() - 1) > pageable.getCurrentPage();
+			}
+
+		};
+		return forwardLink;
+	}
+
+	private BookmarkablePageLink<String> createBackLink() {
+		BookmarkablePageLink<String> backLink = newBackLink(pageable, parentClazz);
+		backLink.setParameter("page", pageable.getCurrentPage());
+		return backLink;
+	}
+
+	private BookmarkablePageLink<String> newBackLink(final IPageable pageable, Class<? extends Page> parentClazz) {
+		return new BookmarkablePageLink<String>("backLink", parentClazz) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return pageable.getCurrentPage() != 0;
+			}
+		};
 	}
 }

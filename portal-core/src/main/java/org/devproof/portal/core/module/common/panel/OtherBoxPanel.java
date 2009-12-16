@@ -30,13 +30,25 @@ public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 
+	private BoxEntity box;
 	private Label titleLabel;
 
 	public OtherBoxPanel(String id, IModel<BoxEntity> model) {
 		super(id, model);
-		BoxEntity box = model.getObject();
-		add(titleLabel = new Label("title", box.getTitle()));
-		add(new Label("content", box.getContent()).setEscapeModelStrings(false));
+		this.box = model.getObject();
+		add(createTitleLabel());
+		add(createContentLabel());
+	}
+
+	private Label createContentLabel() {
+		Label content = new Label("content", box.getContent());
+		content.setEscapeModelStrings(false);
+		return content;
+	}
+
+	private Label createTitleLabel() {
+		titleLabel = new Label("title", box.getTitle());
+		return titleLabel;
 	}
 
 	@Override

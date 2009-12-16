@@ -42,35 +42,61 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
 	@SpringBean(name = "pageAdminPageRegistry")
 	private PageAdminPageRegistry adminPageRegistry;
-	private RepeatingView repeating;
+	private RepeatingView extendableRepeating;
 	private WebMarkupContainer titleContainer;
 
 	public PageAdminBoxPanel(String id) {
 		super(id);
-		add(titleContainer = new WebMarkupContainer("title"));
-		repeating = new RepeatingView("repeatingNav1");
-		add(repeating);
+		add(createTitleContainer());
+		add(createExtendableRepeatingView());
+		add(createFixedRepeatingView());
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
+	}
+
+	private RepeatingView createFixedRepeatingView() {
+		RepeatingView repeating = new RepeatingView("repeatingNav2");
 		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredPageAdminPages();
-		RepeatingView repeating2 = new RepeatingView("repeatingNav2");
-		add(repeating2);
 		for (Class<? extends Page> pageClass : registeredAdminPages) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating2.newChildId());
-			repeating2.add(item);
-			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-					CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
-			if (StringUtils.isEmpty(label)) {
-				label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-						CommonConstants.CONTENT_TITLE_LABEL);
-			}
-			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
-			link.add(new Label("adminLinkLabel", label));
-			item.add(link);
+			repeating.add(createAdminItem(repeating.newChildId(), pageClass));
 		}
+		return repeating;
+	}
+
+	private WebMarkupContainer createAdminItem(String id, Class<? extends Page> pageClass) {
+		WebMarkupContainer item = new WebMarkupContainer(id);
+		item.add(createAdminItemLink(pageClass));
+		return item;
+	}
+
+	private RepeatingView createExtendableRepeatingView() {
+		extendableRepeating = new RepeatingView("repeatingNav1");
+		return extendableRepeating;
+	}
+
+	private BookmarkablePageLink<Void> createAdminItemLink(Class<? extends Page> pageClass) {
+		String label = getLinkLabelName(pageClass);
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
+		link.add(new Label("adminLinkLabel", label));
+		return link;
+	}
+
+	private String getLinkLabelName(Class<? extends Page> pageClass) {
+		String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+				CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+		if (StringUtils.isEmpty(label)) {
+			label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+					CommonConstants.CONTENT_TITLE_LABEL);
+		}
+		return label;
 	}
 
 	public void addLink(Component link) {
-		WebMarkupContainer container = new WebMarkupContainer(repeating.newChildId());
-		repeating.add(container);
+		WebMarkupContainer container = new WebMarkupContainer(extendableRepeating.newChildId());
+		extendableRepeating.add(container);
 		container.add(link);
 	}
 

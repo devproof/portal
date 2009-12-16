@@ -43,23 +43,49 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
 	public GlobalAdminBoxPanel(String id) {
 		super(id);
-		add(titleContainer = new WebMarkupContainer("title"));
-		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredGlobalAdminPages();
+		add(createTitleContainer());
+		add(createLinkRepeatingView());
+	}
+
+	private RepeatingView createLinkRepeatingView() {
 		RepeatingView repeating = new RepeatingView("repeatingNav");
-		add(repeating);
+		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredGlobalAdminPages();
 		for (Class<? extends Page> pageClass : registeredAdminPages) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(item);
-			String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-					CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
-			if (StringUtils.isEmpty(label)) {
-				label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-						CommonConstants.CONTENT_TITLE_LABEL);
-			}
-			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
-			link.add(new Label("adminLinkLabel", label));
-			item.add(link);
+			repeating.add(createLinkItem(repeating.newChildId(), pageClass));
 		}
+		return repeating;
+	}
+
+	private WebMarkupContainer createLinkItem(String id, Class<? extends Page> pageClass) {
+		WebMarkupContainer item = new WebMarkupContainer(id);
+		item.add(createAdminLink(pageClass));
+		return item;
+	}
+
+	private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
+		link.add(createAdminLinkLabel(pageClass));
+		return link;
+	}
+
+	private Label createAdminLinkLabel(Class<? extends Page> pageClass) {
+		String label = getLinkNameByClass(pageClass);
+		return new Label("adminLinkLabel", label);
+	}
+
+	private String getLinkNameByClass(Class<? extends Page> pageClass) {
+		String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+				CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+		if (StringUtils.isEmpty(label)) {
+			label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+					CommonConstants.CONTENT_TITLE_LABEL);
+		}
+		return label;
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
 	}
 
 	@Override
