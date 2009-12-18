@@ -40,20 +40,56 @@ public class ModuleOverviewPage extends TemplatePage {
 
 	public ModuleOverviewPage(PageParameters params) {
 		super(params);
-		List<ModuleBean> modules = moduleService.findModules();
-		RepeatingView tableRow = new RepeatingView("tableRow");
-		add(tableRow);
-		for (ModuleBean module : modules) {
-			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
+		add(createModuleOverviewTable());
+	}
 
-			ModuleInfoPanel moduleInfo = new ModuleInfoPanel("tooltip", module.getConfiguration());
-			row.add(new TooltipLabel("name", new Label("label", module.getConfiguration().getName()), moduleInfo));
-			row.add(new Label("moduleVersion", module.getConfiguration().getModuleVersion()));
-			row.add(new ExternalLink("authorHomepageLink", module.getConfiguration().getUrl(), module
-					.getConfiguration().getAuthor()));
-			row.add(new Label("portalVersion", module.getConfiguration().getPortalVersion()));
-			row.add(new Label("location", module.getLocation()));
-			tableRow.add(row);
+	private RepeatingView createModuleOverviewTable() {
+		List<ModuleBean> modules = moduleService.findModules();
+		RepeatingView table = new RepeatingView("tableRow");
+		for (ModuleBean module : modules) {
+			table.add(createModuleRow(table.newChildId(), module));
 		}
+		return table;
+	}
+
+	private WebMarkupContainer createModuleRow(String id, ModuleBean module) {
+		WebMarkupContainer row = new WebMarkupContainer(id);
+		row.add(createTooltipLabel(module));
+		row.add(createModuleVersionLabel(module));
+		row.add(createAuthorHomepageLink(module));
+		row.add(createPortalVersionLabel(module));
+		row.add(createLocationLabel(module));
+		return row;
+	}
+
+	private TooltipLabel createTooltipLabel(ModuleBean module) {
+		ModuleInfoPanel moduleTooltip = createModuleTooltipPanel(module);
+		Label label = createTooltipLabelLabel(module);
+		return new TooltipLabel("name", label, moduleTooltip);
+	}
+
+	private Label createTooltipLabelLabel(ModuleBean module) {
+		return new Label("label", module.getConfiguration().getName());
+	}
+
+	private Label createModuleVersionLabel(ModuleBean module) {
+		return new Label("moduleVersion", module.getConfiguration().getModuleVersion());
+	}
+
+	private ExternalLink createAuthorHomepageLink(ModuleBean module) {
+		return new ExternalLink("authorHomepageLink", module.getConfiguration().getUrl(), module
+				.getConfiguration().getAuthor());
+	}
+
+	private Label createPortalVersionLabel(ModuleBean module) {
+		return new Label("portalVersion", module.getConfiguration().getPortalVersion());
+	}
+
+	private Label createLocationLabel(ModuleBean module) {
+		return new Label("location", module.getLocation());
+	}
+
+	private ModuleInfoPanel createModuleTooltipPanel(ModuleBean module) {
+		return new ModuleInfoPanel("tooltip", module.getConfiguration());
 	}
 }

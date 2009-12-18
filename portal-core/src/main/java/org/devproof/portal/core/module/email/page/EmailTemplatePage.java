@@ -42,9 +42,21 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 	public EmailTemplatePage(final PageParameters params) {
 		super(params);
-		add(new OrderByBorder("table_subject", "subject", emailTemplateDataProvider));
-		add(new OrderByBorder("table_modified_by", "modifiedBy", emailTemplateDataProvider));
-		add(new EmailTemplateDataView("tableRow"));
+		add(createSubjectTableOrder());
+		add(createModifiedTableOrder());
+		add(createEmailTemplateDataView());
+	}
+
+	private OrderByBorder createModifiedTableOrder() {
+		return new OrderByBorder("table_modified_by", "modifiedBy", emailTemplateDataProvider);
+	}
+
+	private OrderByBorder createSubjectTableOrder() {
+		return new OrderByBorder("table_subject", "subject", emailTemplateDataProvider);
+	}
+
+	private EmailTemplateDataView createEmailTemplateDataView() {
+		return new EmailTemplateDataView("tableRow");
 	}
 
 	private class EmailTemplateDataView extends DataView<EmailTemplateEntity> {
@@ -55,17 +67,43 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 		}
 
 		@Override
-		protected void populateItem(final Item<EmailTemplateEntity> item) {
-			final EmailTemplateEntity template = item.getModelObject();
+		protected void populateItem(Item<EmailTemplateEntity> item) {
+			item.add(createSubjectLabel(item));
+			item.add(createModifiedByLabel(item));
+			item.add(createAuthorPanel(item));
+			item.add(createAlternatingCssClassModifier(item));
 			item.setOutputMarkupId(true);
-			item.add(new Label("subject", template.getSubject()));
-			item.add(new Label("modifiedBy", template.getModifiedBy()));
+		}
 
-			item.add(new AuthorPanel<EmailTemplateEntity>("authorButtons", template) {
+		private Label createModifiedByLabel(Item<EmailTemplateEntity> item) {
+			return new Label("modifiedBy", item.getModelObject().getModifiedBy());
+		}
+
+		private Label createSubjectLabel(Item<EmailTemplateEntity> item) {
+			return new Label("subject", item.getModelObject().getSubject());
+		}
+
+		private AttributeModifier createAlternatingCssClassModifier(Item<EmailTemplateEntity> item) {
+			return new AttributeModifier("class", true, createAlternatingModel(item));
+		}
+
+		private AbstractReadOnlyModel<String> createAlternatingModel(final Item<EmailTemplateEntity> item) {
+			return new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onDelete(final AjaxRequestTarget target) {
+				public String getObject() {
+					return (item.getIndex() % 2 != 0) ? "even" : "odd";
+				}
+			};
+		}
+
+		private AuthorPanel<EmailTemplateEntity> createAuthorPanel(final Item<EmailTemplateEntity> item) {
+			return new AuthorPanel<EmailTemplateEntity>("authorButtons", item.getModelObject()) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onDelete(AjaxRequestTarget target) {
 					emailService.delete(getEntity());
 					info(EmailTemplatePage.this.getString("msg.deleted"));
 					item.setVisible(false);
@@ -74,21 +112,12 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 				}
 
 				@Override
-				public void onEdit(final AjaxRequestTarget target) {
+				public void onEdit(AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					EmailTemplateEntity tmp = emailService.findById(template.getId());
-					setResponsePage(new EmailTemplateEditPage(tmp));
+					EmailTemplateEntity tamplateToEdit = emailService.findById(item.getModelObject().getId());
+					setResponsePage(new EmailTemplateEditPage(tamplateToEdit));
 				}
-			});
-
-			item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public String getObject() {
-					return (item.getIndex() % 2 != 0) ? "even" : "odd";
-				}
-			}));
+			};
 		}
 	}
 }

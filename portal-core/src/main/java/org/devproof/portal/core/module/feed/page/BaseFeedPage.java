@@ -41,11 +41,16 @@ public abstract class BaseFeedPage extends WebPage {
 	private FeedProviderRegistry feedProviderRegistry;
 	@SpringBean(name = "roleService")
 	private RoleService roleService;
-
+	private PageParameters params;
 	private String path = "";
 
 	public BaseFeedPage(PageParameters params) {
 		super(params);
+		this.params = params;
+		setPath();
+	}
+
+	private void setPath() {
 		if (params.size() > 0) {
 			path = params.getString("0");
 		}
@@ -57,15 +62,7 @@ public abstract class BaseFeedPage extends WebPage {
 		PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
 		SyndFeedOutput output = new SyndFeedOutput();
 		try {
-			FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
-			SyndFeed feed = null;
-			if (feedProvider != null) {
-				RoleEntity guestRole = roleService.findGuestRole();
-				feed = feedProvider.getFeed(getRequestCycle(), guestRole);
-			} else {
-				feed = new SyndFeedImpl();
-			}
-			feed.setFeedType(getFeedType());
+			SyndFeed feed = createAppropriateFeedProvider();
 			output.output(feed, writer);
 			writer.close();
 		} catch (IOException e) {
@@ -73,6 +70,19 @@ public abstract class BaseFeedPage extends WebPage {
 		} catch (FeedException e) {
 			throw new UnhandledException("Error streaming feed.", e);
 		}
+	}
+
+	private SyndFeed createAppropriateFeedProvider() {
+		FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
+		SyndFeed feed = null;
+		if (feedProvider != null) {
+			RoleEntity guestRole = roleService.findGuestRole();
+			feed = feedProvider.getFeed(getRequestCycle(), guestRole);
+		} else {
+			feed = new SyndFeedImpl();
+		}
+		feed.setFeedType(getFeedType());
+		return feed;
 	}
 
 	protected abstract String getContentType();

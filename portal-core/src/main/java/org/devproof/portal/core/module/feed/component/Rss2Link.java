@@ -15,35 +15,21 @@
  */
 package org.devproof.portal.core.module.feed.component;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.page.Rss2FeedPage;
-import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 
 /**
  * @author Carsten Hufe
  */
-public class Rss2Link extends BookmarkablePageLink<Rss2Link> {
+public class Rss2Link extends BaseFeedLink {
 	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "feedProviderRegistry")
-	private FeedProviderRegistry feedProviderRegistry;
-
+	
 	public Rss2Link(String id, Class<? extends TemplatePage> page) {
-		super(id, Rss2FeedPage.class);
-		String title = "";
-		if (feedProviderRegistry.hasFeedSupport(page)) {
-			String path = feedProviderRegistry.getPathByPageClass(page);
-			setParameter("0", path);
-			title = feedProviderRegistry.getFeedProviderByPath(path).getFeedName();
-		} else {
-			setVisible(false);
-		}
-		add(new SimpleAttributeModifier("title",
-				new StringResourceModel("feedName", this, null, new String[] { title }).getString()));
-		add(new SimpleAttributeModifier("type", "application/rss+xml"));
-		add(new SimpleAttributeModifier("rel", "alternate"));
+		super(id, page,  Rss2FeedPage.class);
+	}
+
+	@Override
+	protected String getContentType() {
+		return "application/rss+xml";
 	}
 }

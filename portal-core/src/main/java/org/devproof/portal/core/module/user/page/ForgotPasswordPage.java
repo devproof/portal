@@ -125,7 +125,7 @@ public class ForgotPasswordPage extends TemplatePage {
 						user.setForgotPasswordCode(PortalUtil.generateMd5(getSession().getId() + Math.random()));
 						userService.save(user);
 
-						EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
+						EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
 						StringBuffer url = getWebRequestCycle().getWebRequest().getHttpServletRequest().getRequestURL();
 						PageParameters param = new PageParameters();
 						param.add(ResetPasswordPage.PARAM_USER, user.getUsername());

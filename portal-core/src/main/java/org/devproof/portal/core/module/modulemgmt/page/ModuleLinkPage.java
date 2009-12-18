@@ -31,12 +31,20 @@ public class ModuleLinkPage extends TemplatePage {
 
 	public ModuleLinkPage(PageParameters params) {
 		super(params);
-		RepeatingView tableRow = new RepeatingView("repeater");
-		add(tableRow);
+		add(createModuleLinkTables());
+	}
+
+	private RepeatingView createModuleLinkTables() {
+		RepeatingView repeater = new RepeatingView("repeater");
 		for (LinkType linkType : LinkType.values()) {
-			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
-			row.add(new ModuleLinkPanel("content", linkType));
-			tableRow.add(row);
+			repeater.add(createModuleLinkTableForLinkType(repeater.newChildId(), linkType));
 		}
+		return repeater;
+	}
+
+	private WebMarkupContainer createModuleLinkTableForLinkType(String id, LinkType linkType) {
+		WebMarkupContainer row = new WebMarkupContainer(id);
+		row.add(new ModuleLinkPanel("content", linkType));
+		return row;
 	}
 }

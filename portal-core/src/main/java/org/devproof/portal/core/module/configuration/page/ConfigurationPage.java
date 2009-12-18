@@ -178,17 +178,17 @@ public class ConfigurationPage extends TemplatePage {
 		private Component createAppropriateValueTextField() {
 			Class<?> clazz = getClassByString(configuration.getType());
 			if (Double.class.isAssignableFrom(clazz)) {
-				return createDoubleTextField();
+				return createDoubleField();
 			} else if (Integer.class.isAssignableFrom(clazz)) {
-				return createIntegerTextField();
+				return createIntegerField();
 			} else if (String.class.isAssignableFrom(clazz)) {
-				return createStringTextField();
+				return createStringField();
 			} else {
 				throw new IllegalArgumentException("Configuration type is not allowed!");
 			}
 		}
 
-		private RequiredTextField<Integer> createIntegerTextField() {
+		private RequiredTextField<Integer> createIntegerField() {
 			IModel<String> label = Model.of(configuration.getKey());
 			RequiredTextField<Integer> textField = new RequiredTextField<Integer>("edit", new PropertyModel<Integer>(
 					configuration, "integerValue"));
@@ -196,7 +196,7 @@ public class ConfigurationPage extends TemplatePage {
 			return textField;
 		}
 
-		private RequiredTextField<Double> createDoubleTextField() {
+		private RequiredTextField<Double> createDoubleField() {
 			IModel<String> label = Model.of(configuration.getKey());
 			RequiredTextField<Double> textField = new RequiredTextField<Double>("edit", new PropertyModel<Double>(
 					configuration, "doubleValue"));
@@ -204,7 +204,7 @@ public class ConfigurationPage extends TemplatePage {
 			return textField;
 		}
 
-		private RequiredTextField<String> createStringTextField() {
+		private RequiredTextField<String> createStringField() {
 			IModel<String> label = Model.of(configuration.getKey());
 			RequiredTextField<String> textField = new RequiredTextField<String>("edit", new PropertyModel<String>(
 					configuration, "value"));
@@ -356,10 +356,10 @@ public class ConfigurationPage extends TemplatePage {
 		public DateEditor(String id, ConfigurationEntity configuration) {
 			super(id, "dateEditor", ConfigurationPage.this);
 			this.configuration = configuration;
-			add(createDateTextField());
+			add(createDateField());
 		}
 
-		private DateTextField createDateTextField() {
+		private DateTextField createDateField() {
 			DateTextField dateTextField = new DateTextField("edit", new PropertyModel<Date>(configuration, "dateValue"));
 			dateTextField.add(new DatePicker());
 			dateTextField.setLabel(Model.of(configuration.getKey()));

@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.feed.page;
 
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -33,24 +34,60 @@ import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 public class FeedOverviewPage extends TemplatePage {
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
-
+	private Map<String, FeedProvider> allFeedProvider;
+	
 	public FeedOverviewPage(PageParameters params) {
 		super(params);
+		setAllFeedProvider();
+		add(createFeedOverviewTable());
+	}
+
+	private void setAllFeedProvider() {
+		allFeedProvider = feedProviderRegistry.getAllFeedProvider();
+	}
+
+	private RepeatingView createFeedOverviewTable() {
 		RepeatingView tableRow = new RepeatingView("tableRow");
-		add(tableRow);
-		Map<String, FeedProvider> allFeedProvider = feedProviderRegistry.getAllFeedProvider();
 		for (String path : allFeedProvider.keySet()) {
-			FeedProvider provider = allFeedProvider.get(path);
-			WebMarkupContainer row = new WebMarkupContainer(tableRow.newChildId());
-			row.add(new Label("feedName", provider.getFeedName()));
-			row.add(new Label("path", path));
-			row.add(new Label("pages", getSupportedPagesString(provider)).setEscapeModelStrings(false));
-			row.add(new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class, new PageParameters("0="
-					+ path)));
-			row.add(new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0="
-					+ path)));
+			WebMarkupContainer row = createFeedRow(tableRow.newChildId(), path);
 			tableRow.add(row);
 		}
+		return tableRow;
+	}
+
+	private WebMarkupContainer createFeedRow(String id, String path) {
+		FeedProvider provider = allFeedProvider.get(path);
+		WebMarkupContainer row = new WebMarkupContainer(id);
+		row.add(createFeedNameLabel(provider));
+		row.add(createPathLabel(path));
+		row.add(createSupportedPagesLabel(provider));
+		row.add(createAtom1Link(path));
+		row.add(createRss2Link(path));
+		return row;
+	}
+
+	private BookmarkablePageLink<Rss2FeedPage> createRss2Link(String path) {
+		return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0="
+				+ path));
+	}
+
+	private BookmarkablePageLink<Atom1FeedPage> createAtom1Link(String path) {
+		return new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class, new PageParameters("0="
+				+ path));
+	}
+
+	private Component createSupportedPagesLabel(FeedProvider provider) {
+		Label supportedPages = new Label("pages", getSupportedPagesString(provider));
+		supportedPages.setEscapeModelStrings(false);
+		return supportedPages;
+	}
+
+	private Label createPathLabel(String path) {
+		return new Label("path", path);
+	}
+
+	private Label createFeedNameLabel(FeedProvider provider) {
+		return new Label("feedName", provider.getFeedName());
 	}
 
 	private String getSupportedPagesString(FeedProvider provider) {

@@ -37,20 +37,43 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
-
+	private Class<? extends Page> page;
+	private PageParameters linkParameter;
 	public FeedBoxPanel(String id, Class<? extends Page> page) {
 		super(id);
-		add(titleContainer = new WebMarkupContainer("title"));
-		String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
-		PageParameters pageParameters = new PageParameters("0=" + pathByPageClass);
-		BookmarkablePageLink<Atom1FeedPage> atom1FeedLink = new BookmarkablePageLink<Atom1FeedPage>("atomLink",
-				Atom1FeedPage.class, pageParameters);
+		this.page = page;
+		setVisibility();
+		setLinkParameter();
+		add(createTitleContainer());
+		add(createAtom1Link());
+		add(createRss2Link());
+	}
+
+	private BookmarkablePageLink<Rss2FeedPage> createRss2Link() {
 		BookmarkablePageLink<Rss2FeedPage> rss2FeedLink = new BookmarkablePageLink<Rss2FeedPage>("rssLink",
-				Rss2FeedPage.class, pageParameters);
-		atom1FeedLink.add(new Image("atomImage", FeedConstants.REF_ATOM1));
+				Rss2FeedPage.class, linkParameter);
 		rss2FeedLink.add(new Image("rssImage", FeedConstants.REF_RSS2));
-		add(atom1FeedLink);
-		add(rss2FeedLink);
+		return rss2FeedLink;
+	}
+
+	private BookmarkablePageLink<Atom1FeedPage> createAtom1Link() {
+		BookmarkablePageLink<Atom1FeedPage> atom1FeedLink = new BookmarkablePageLink<Atom1FeedPage>("atomLink",
+				Atom1FeedPage.class, linkParameter);
+		atom1FeedLink.add(new Image("atomImage", FeedConstants.REF_ATOM1));
+		return atom1FeedLink;
+	}
+
+	private void setLinkParameter() {
+		String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
+		linkParameter = new PageParameters("0=" + pathByPageClass);
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
+	}
+
+	private void setVisibility() {
 		setVisible(feedProviderRegistry.hasFeedSupport(page));
 	}
 

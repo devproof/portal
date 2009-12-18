@@ -33,7 +33,21 @@ public class EmailTemplateBasePage extends TemplatePage {
 
 	public EmailTemplateBasePage(PageParameters params) {
 		super(params);
-		addPageAdminBoxLink(new Link<EmailTemplateEntity>("adminLink") {
+		addPageAdminBoxLink(createCreateEmailTemplateLink());
+	}
+
+	private Link<EmailTemplateEntity> createCreateEmailTemplateLink() {
+		Link<EmailTemplateEntity> adminLink = newCreateEmailTemplateLink();
+		adminLink.add(createCreateEmailTemplateLinkLabel());
+		return adminLink;
+	}
+
+	private Label createCreateEmailTemplateLinkLabel() {
+		return new Label("linkName", getString("createLink"));
+	}
+
+	private Link<EmailTemplateEntity> newCreateEmailTemplateLink() {
+		Link<EmailTemplateEntity> adminLink = new Link<EmailTemplateEntity>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -41,6 +55,7 @@ public class EmailTemplateBasePage extends TemplatePage {
 				EmailTemplateEntity newEntry = emailService.newEmailTemplateEntity();
 				setResponsePage(new EmailTemplateEditPage(newEntry));
 			}
-		}.add(new Label("linkName", getString("createLink"))));
+		};
+		return adminLink;
 	}
 }

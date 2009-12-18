@@ -69,7 +69,7 @@ public class ReenterEmailPage extends TemplatePage {
 				user.setConfirmationCode(UUID.randomUUID().toString());
 				user.setConfirmationRequestedAt(PortalUtil.now());
 
-				EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
+				EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
 
 				String requestUrl = getRequestURL();
 				PageParameters param = new PageParameters();

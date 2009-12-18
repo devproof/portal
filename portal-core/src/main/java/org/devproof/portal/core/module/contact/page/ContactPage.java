@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.contact.page;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -63,85 +64,166 @@ public class ContactPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private PageParameters params;
 	private String captchaChallengeCode;
-
+	private CaptchaImageResource captchaImageResource;
+	private UserEntity toUser;
+	private ContactBean contactBean;
+	private Boolean captchaEnabled;
+	
 	public ContactPage(PageParameters params) {
 		super(params);
-		add(CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS));
-		String username = "§$$§";
-		if (params != null && params.containsKey("0")) {
-			username = params.getString("0");
-		}
-		UserEntity touser = userService.findUserByUsername(username);
-		if (touser == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
-					.getString("user.doesnotexist")));
-		}
-		if (!touser.getRole().getRights().contains(new RightEntity("contact.form.enable"))) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
-					.getString("user.missing.right")));
-		}
-		if (!Boolean.TRUE.equals(touser.getEnableContactForm())) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
-					.getString("user.contactform.disabled")));
-		}
+		this.params = params;
+		setToUser();
+		setContactFormBean();
+		setCaptchaChallengeCode();
+		setCaptchaImageResource();
+		setCaptchaEnabled();
+		validateToUser();
+		add(createCSSHeaderContributor());
+		add(createContactForm());
+	}
 
+	private Form<ContactBean> createContactForm() {
+		Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBean));
+		form.add(createToUserField());
+		form.add(createFullnameField());
+		form.add(createEmailField());
+		form.add(createContentField());
+		form.add(createCaptchaImageContainer());
+		form.add(createCaptchaFieldContainer());
+		form.add(createSendButton());
+		form.setOutputMarkupId(true);
+		return form;
+	}
+
+	private WebMarkupContainer createCaptchaFieldContainer() {
+		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
+		trCaptcha2.add(createCaptchaField());
+		trCaptcha2.setVisible(captchaEnabled);
+		return trCaptcha2;
+	}
+
+	private WebMarkupContainer createCaptchaImageContainer() {
+		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
+		trCaptcha1.setVisible(captchaEnabled);
+		trCaptcha1.add(createCaptchaImage());
+		return trCaptcha1;
+	}
+
+	private Image createCaptchaImage() {
+		return new Image("captchacodeimage", captchaImageResource);
+	}
+
+	private FormComponent<String> createCaptchaField() {
+		FormComponent<String> fc;
+		fc = new TextField<String>("captchacode", Model.of(""));
+		fc.setRequired(captchaEnabled);
+
+		if (captchaEnabled) {
+			fc.add(createCaptchaValidator(captchaImageResource));
+		}
+		return fc;
+	}
+
+	private void setCaptchaEnabled() {
+		captchaEnabled = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
+	}
+
+	private void setCaptchaImageResource() {
+		captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
+	}
+
+	private void setCaptchaChallengeCode() {
+		captchaChallengeCode = PortalUtil.randomString(6, 8);
+	}
+
+	private FormComponent<String> createContentField() {
+		FormComponent<String> fc;
+		fc = new TextArea<String>("content");
+		fc.add(StringValidator.minimumLength(30));
+		return fc;
+	}
+
+	private FormComponent<String> createEmailField() {
+		FormComponent<String> fc = new RequiredTextField<String>("email");
+		fc.add(EmailAddressValidator.getInstance());
+		fc.add(StringValidator.maximumLength(100));
+		return fc;
+	}
+
+	private FormComponent<String> createFullnameField() {
+		FormComponent<String> fc = new RequiredTextField<String>("fullname");
+		fc.add(StringValidator.minimumLength(5));
+		fc.add(StringValidator.maximumLength(100));
+		return fc;
+	}
+
+	private FormComponent<String> createToUserField() {
+		FormComponent<String> fc = new RequiredTextField<String>("touser");
+		fc.setEnabled(false);
+		return fc;
+	}
+
+	private void setContactFormBean() {
 		PortalSession session = (PortalSession) getSession();
-		final ContactBean contactBean = new ContactBean();
-		contactBean.setTouser(username);
+		contactBean = new ContactBean();
+		contactBean.setTouser(getToUsername());
 		if (session.isSignedIn()) {
 			UserEntity user = session.getUser();
-			if (user.getFirstname() != null && user.getLastname() != null) {
+			if (isFullnameGiven(user)) {
 				contactBean.setFullname(user.getFirstname() + " " + user.getLastname());
 			}
-			if (user.getEmail() != null) {
+			if (isEmailGiven(user)) {
 				contactBean.setEmail(user.getEmail());
 			}
 		}
-		Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBean));
-		form.setOutputMarkupId(true);
-		add(form);
+	}
 
-		FormComponent<String> fc;
+	private boolean isEmailGiven(UserEntity user) {
+		return user.getEmail() != null;
+	}
 
-		fc = new RequiredTextField<String>("touser");
-		fc.setEnabled(false);
-		form.add(fc);
+	private boolean isFullnameGiven(UserEntity user) {
+		return user.getFirstname() != null && user.getLastname() != null;
+	}
 
-		fc = new RequiredTextField<String>("fullname");
-		fc.add(StringValidator.minimumLength(5));
-		fc.add(StringValidator.maximumLength(100));
-		form.add(fc);
-
-		fc = new RequiredTextField<String>("email");
-		fc.add(EmailAddressValidator.getInstance());
-		fc.add(StringValidator.maximumLength(100));
-		form.add(fc);
-
-		fc = new TextArea<String>("content");
-		fc.add(StringValidator.minimumLength(30));
-		form.add(fc);
-
-		Boolean enableCaptcha = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
-		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
-		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
-		trCaptcha1.setVisible(enableCaptcha);
-		trCaptcha2.setVisible(enableCaptcha);
-
-		form.add(trCaptcha1);
-		form.add(trCaptcha2);
-		captchaChallengeCode = PortalUtil.randomString(6, 8);
-		final CaptchaImageResource captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
-		trCaptcha1.add(new Image("captchacodeimage", captchaImageResource));
-
-		fc = new TextField<String>("captchacode", Model.of(""));
-		fc.setRequired(enableCaptcha);
-		trCaptcha2.add(fc);
-
-		if (enableCaptcha) {
-			fc.add(createCaptchaValidator(captchaImageResource));
+	private void validateToUser() {
+		if (toUser == null) {
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
+					.getString("user.doesnotexist")));
 		}
-		form.add(createSendButton(contactBean));
+		if (hasContactFormPermission(toUser)) {
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
+					.getString("user.missing.right")));
+		}
+		if (isRecipientContactFormEnabled(toUser)) {
+			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
+					.getString("user.contactform.disabled")));
+		}
+	}
+
+	private void setToUser() {
+		toUser = userService.findUserByUsername(getToUsername());
+	}
+
+	private boolean isRecipientContactFormEnabled(UserEntity touser) {
+		return !Boolean.TRUE.equals(touser.getEnableContactForm());
+	}
+
+	private boolean hasContactFormPermission(UserEntity touser) {
+		return !touser.getRole().getRights().contains(new RightEntity("contact.form.enable"));
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS);
+	}
+
+	private String getToUsername() {
+		if (params != null && params.containsKey("0")) {
+			return params.getString("0");
+		}
+		return "§$$§";
 	}
 
 	private AbstractValidator<String> createCaptchaValidator(final CaptchaImageResource captchaImageResource) {
@@ -163,25 +245,33 @@ public class ContactPage extends TemplatePage {
 		};
 	}
 
-	private Button createSendButton(final ContactBean contactBean) {
+	private Button createSendButton() {
 		return new Button("sendButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
 				// send notification
-				UserEntity touser = userService.findUserByUsername(contactBean.getTouser());
 				Integer templateId = configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
-				EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(touser);
-				placeholder.setContactEmail(contactBean.getEmail());
-				placeholder.setContactFullname(contactBean.getFullname());
-				ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo())
-						.getProperties();
-				placeholder.setContactIp(prop.getRemoteAddress());
-				placeholder.setContent(contactBean.getContent());
-
+				EmailPlaceholderBean placeholder = createEmailPlaceholderBean(toUser);
 				emailService.sendEmail(templateId, placeholder);
 				setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
+			}
+
+			private EmailPlaceholderBean createEmailPlaceholderBean(UserEntity touser) {
+				EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(touser);
+				placeholder.setContactEmail(contactBean.getEmail());
+				placeholder.setContactFullname(contactBean.getFullname());
+				placeholder.setContactIp(getIpAddress());
+				placeholder.setContent(contactBean.getContent());
+				return placeholder;
+			}
+
+			private String getIpAddress() {
+				ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo())
+						.getProperties();
+				String ip = prop.getRemoteAddress();
+				return ip;
 			}
 		};
 	}

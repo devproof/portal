@@ -46,7 +46,7 @@ public class PortalUtil {
 	/**
 	 * Converts user to email placeholder
 	 */
-	public static EmailPlaceholderBean getEmailPlaceHolderByUser(UserEntity user) {
+	public static EmailPlaceholderBean createEmailPlaceHolderByUser(UserEntity user) {
 		EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
 		placeholder.setBirthday(user.getBirthday());
 		placeholder.setUsername(user.getUsername());

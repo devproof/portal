@@ -36,15 +36,25 @@ public abstract class PrintPage extends WebPage {
 
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-
+	private PageParameters params;
 	public PrintPage(PageParameters params) {
-		PortalUtil.addSyntaxHightlighter(this);
+		super(params);
+		this.params = params;
+		addSyntaxHighlighter();
 		add(createDefaultCSSHeaderContributor());
 		add(createPrinterCSSHeaderContributor());
-		add(createPrintableComponent("content", params));
+		add(createPrintableComponent());
 		add(createPageTitle());
 		add(createCopyrightContainer());
 		add(createFooterLabel());
+	}
+
+	private Component createPrintableComponent() {
+		return createPrintableComponent("content", params);
+	}
+
+	private void addSyntaxHighlighter() {
+		PortalUtil.addSyntaxHightlighter(this);
 	}
 
 	private HeaderContributor createPrinterCSSHeaderContributor() {
