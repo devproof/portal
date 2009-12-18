@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	protected EmailPlaceholderBean generateEmailPlaceHolder(UserEntity user) {
-		return PortalUtil.getEmailPlaceHolderByUser(user);
+		return PortalUtil.createEmailPlaceHolderByUser(user);
 	}
 
 	protected void setUserRegistrationValues(UserEntity user, String password) {

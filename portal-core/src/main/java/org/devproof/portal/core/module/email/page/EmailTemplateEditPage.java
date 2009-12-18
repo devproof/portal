@@ -35,9 +35,24 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 	@SpringBean(name = "emailService")
 	private EmailService emailService;
 
-	public EmailTemplateEditPage(final EmailTemplateEntity emailTemplate) {
+	private EmailTemplateEntity emailTemplate;
+	
+	public EmailTemplateEditPage(EmailTemplateEntity emailTemplate) {
 		super(new PageParameters());
-		Form<EmailTemplateEntity> form = new Form<EmailTemplateEntity>("form",
+		this.emailTemplate = emailTemplate;
+		add(createEditEmailTemplateForm());
+	}
+
+	private Form<EmailTemplateEntity> createEditEmailTemplateForm() {
+		Form<EmailTemplateEntity> form = newEditEmailTemplateForm();
+		form.add(createSubjectField());
+		form.add(createContentField());
+		form.setOutputMarkupId(true);
+		return form;
+	}
+
+	private Form<EmailTemplateEntity> newEditEmailTemplateForm() {
+		return new Form<EmailTemplateEntity>("form",
 				new CompoundPropertyModel<EmailTemplateEntity>(emailTemplate)) {
 			private static final long serialVersionUID = 1L;
 
@@ -49,18 +64,20 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 				setResponsePage(EmailTemplatePage.class);
 			}
 		};
-		form.setOutputMarkupId(true);
-		add(form);
+	}
 
+	private FormComponent<String> createContentField() {
 		FormComponent<String> fc;
-
-		fc = new RequiredTextField<String>("subject");
-		fc.add(StringValidator.minimumLength(5));
-		form.add(fc);
-
 		fc = new EmailRichTextArea("content");
 		fc.setRequired(true);
 		fc.add(StringValidator.minimumLength(10));
-		form.add(fc);
+		return fc;
+	}
+
+	private FormComponent<String> createSubjectField() {
+		FormComponent<String> fc;
+		fc = new RequiredTextField<String>("subject");
+		fc.add(StringValidator.minimumLength(5));
+		return fc;
 	}
 }

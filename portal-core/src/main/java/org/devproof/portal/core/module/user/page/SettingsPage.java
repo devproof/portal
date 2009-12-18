@@ -159,7 +159,7 @@ public class SettingsPage extends TemplatePage {
 					user.setConfirmationCode(UUID.randomUUID().toString());
 					user.setConfirmationRequestedAt(PortalUtil.now());
 
-					EmailPlaceholderBean placeholder = PortalUtil.getEmailPlaceHolderByUser(user);
+					EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
 
 					String requestUrl = getRequestURL();
 					// url.append("/").append(PARAM_KEY).append("/").append(user.getConfirmationCode());
