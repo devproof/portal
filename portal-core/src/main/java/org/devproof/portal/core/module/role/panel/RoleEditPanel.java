@@ -54,31 +54,38 @@ public abstract class RoleEditPanel extends Panel {
 	private RoleService roleService;
 	@SpringBean(name = "rightService")
 	private RightService rightService;
+	private FeedbackPanel feedback;
+	private RoleEntity role;
+	private boolean isRightEditable;
 
 	public RoleEditPanel(String id, RoleEntity role, boolean isRightEditable) {
 		super(id, Model.of(role));
-		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		add(feedback);
+		this.role = role;
+		this.isRightEditable = isRightEditable;
+		add(createFeedbackPanel());
+		add(createRoleEditForm());
+	}
 
+	private Form<RoleEntity> createRoleEditForm() {
 		Form<RoleEntity> form = new Form<RoleEntity>("form", new CompoundPropertyModel<RoleEntity>(role));
+		form.add(createRoleDescriptionField());
+		form.add(createActiveCheckBox());
+		form.add(createRightPalette());
+		form.add(createSaveButton());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		FormComponent<String> fc;
-
-		fc = new RequiredTextField<String>("description");
-		fc.add(StringValidator.minimumLength(5));
-		fc.setEnabled(isRightEditable);
-		form.add(fc);
-
-		form.add(new CheckBox("active"));
-
+	private Palette<RightEntity> createRightPalette() {
 		IChoiceRenderer<RightEntity> renderer = new ChoiceRenderer<RightEntity>("description", "right");
 		IModel<Collection<RightEntity>> allRights = new CollectionModel<RightEntity>(rightService
 				.findAllOrderByDescription());
 		IModel<List<RightEntity>> roleRights = new ListModel<RightEntity>(role.getRights());
+		return newRightsPalette(renderer, allRights, roleRights);
+	}
 
+	private Palette<RightEntity> newRightsPalette(IChoiceRenderer<RightEntity> renderer,
+			IModel<Collection<RightEntity>> allRights, IModel<List<RightEntity>> roleRights) {
 		Palette<RightEntity> palette = new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10, false) {
 			private static final long serialVersionUID = 1L;
 
@@ -97,10 +104,11 @@ public abstract class RoleEditPanel extends Panel {
 				return new Label(componentId, getString("palette.selected"));
 			}
 		};
+		return palette;
+	}
 
-		form.add(palette);
-
-		form.add(new AjaxButton("saveButton", form) {
+	private AjaxButton createSaveButton() {
+		return new AjaxButton("saveButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -114,7 +122,24 @@ public abstract class RoleEditPanel extends Panel {
 				// repaint the feedback panel so errors are shown
 				target.addComponent(feedback);
 			}
-		});
+		};
+	}
+
+	private CheckBox createActiveCheckBox() {
+		return new CheckBox("active");
+	}
+
+	private FormComponent<String> createRoleDescriptionField() {
+		FormComponent<String> fc = new RequiredTextField<String>("description");
+		fc.add(StringValidator.minimumLength(5));
+		fc.setEnabled(isRightEditable);
+		return fc;
+	}
+
+	private FeedbackPanel createFeedbackPanel() {
+		feedback = new FeedbackPanel("feedbackPanel");
+		feedback.setOutputMarkupId(true);
+		return feedback;
 	}
 
 	public abstract void onSave(AjaxRequestTarget target);

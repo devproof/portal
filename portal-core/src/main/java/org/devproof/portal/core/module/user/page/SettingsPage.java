@@ -61,99 +61,49 @@ public class SettingsPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private UserEntity user;
+	private String currentEmail;
+	private PasswordTextField currentPassword;
+	private PasswordTextField newPassword1;
+	private PasswordTextField newPassword2;
 
 	public SettingsPage(PageParameters params) {
 		super(params);
-		PortalSession session = (PortalSession) getSession();
-		final UserEntity user = userService.findById(session.getUser().getId());
-		final String oldEmail = user.getEmail();
-		final Form<UserEntity> form = new Form<UserEntity>("form");
+		setUser();
+		setCurrentEmail();
+		add(createSettingsForm());
+	}
+
+	private Form<UserEntity> createSettingsForm() {
+		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
+		form.add(createUsernameField());
+		form.add(createFirstnameField());
+		form.add(createLastnameField());
+		form.add(createBirthdayField());
+		form.add(createEmailField());
+		form.add(createEnableContactFormCheckBox());
+		form.add(createCurrentPasswordField());
+		form.add(createPasswordField1());
+		form.add(createPasswordField2());
+		form.add(createMissingCurrentPasswordValidator());
+		form.add(createEqualPasswordValidator());
+		form.add(createSaveButton());
 		form.setOutputMarkupId(true);
-		add(form);
-		form.setModel(new CompoundPropertyModel<UserEntity>(user));
-		FormComponent<String> fc;
+		return form;
+	}
 
-		fc = new RequiredTextField<String>("username");
-		fc.setEnabled(false);
-		form.add(fc);
-
-		fc = new TextField<String>("firstname");
-		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
-		form.add(fc);
-
-		fc = new TextField<String>("lastname");
-		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
-		form.add(fc);
-
-		String dateFormat = configurationService.findAsString("date_format");
-		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
-		dateTextField.add(new DatePicker());
-		dateTextField
-				.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
-		form.add(dateTextField);
-
-		fc = new RequiredTextField<String>("email");
-		fc.add(EmailAddressValidator.getInstance());
-		fc.add(StringValidator.maximumLength(100));
-		form.add(fc);
-
-		CheckBox cb = new CheckBox("enableContactForm");
-		form.add(cb);
-
-		final PasswordTextField oldPassword = new PasswordTextField("oldPassword", new Model<String>());
-		oldPassword.setRequired(false);
-		oldPassword.add(new AbstractValidator<String>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (StringUtils.isNotEmpty(ivalidatable.getValue())
-						&& !user.getPasswordMD5().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
-					error(ivalidatable, "wrong.oldPassword");
-				}
-			}
-		});
-		form.add(oldPassword);
-		final PasswordTextField password1 = new PasswordTextField("password1", new Model<String>());
-		password1.setRequired(false);
-		form.add(password1);
-		PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
-		password2.setRequired(false);
-		form.add(password2);
-		form.add(new AbstractFormValidator() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public FormComponent<?>[] getDependentFormComponents() {
-				return new FormComponent[] { oldPassword, password1 };
-			}
-
-			@Override
-			public void validate(Form<?> form) {
-				if (StringUtils.isNotEmpty(password1.getValue()) && StringUtils.isEmpty(oldPassword.getValue())) {
-					error(oldPassword, "oldPassword.required");
-				}
-			}
-
-		});
-
-		form.add(new EqualPasswordInputValidator(password1, password2));
-
-		form.add(new Button("saveButton") {
+	private Button createSaveButton() {
+		return new Button("saveButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
-				UserEntity user = form.getModelObject();
-				if (StringUtils.isNotEmpty(password1.getValue())) {
-					user.setPasswordMD5(PortalUtil.generateMd5(password1.getValue()));
+				if (StringUtils.isNotEmpty(newPassword1.getValue())) {
+					user.setPasswordMD5(PortalUtil.generateMd5(newPassword1.getValue()));
 				}
-
 				user.setChangedAt(PortalUtil.now());
 				info(SettingsPage.this.getString("saved"));
-				if (!oldEmail.equals(user.getEmail())
+				if (!currentEmail.equals(user.getEmail())
 						&& configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 					user.setConfirmed(false);
 					user.setConfirmationCode(UUID.randomUUID().toString());
@@ -176,6 +126,110 @@ public class SettingsPage extends TemplatePage {
 				}
 				userService.save(user);
 			}
-		});
+		};
+	}
+
+	private EqualPasswordInputValidator createEqualPasswordValidator() {
+		return new EqualPasswordInputValidator(newPassword1, newPassword2);
+	}
+
+	private PasswordTextField createPasswordField1() {
+		newPassword1 = new PasswordTextField("newPassword1", new Model<String>());
+		newPassword1.setRequired(false);
+		return newPassword1;
+	}
+
+	private PasswordTextField createPasswordField2() {
+		newPassword2 = new PasswordTextField("newPassword2", new Model<String>());
+		newPassword2.setRequired(false);
+		return newPassword2;
+	}
+
+	private PasswordTextField createCurrentPasswordField() {
+		currentPassword = new PasswordTextField("currentPassword", new Model<String>());
+		currentPassword.add(createCurrentPasswordValidator());
+		currentPassword.setRequired(false);
+		return currentPassword;
+	}
+
+	private AbstractValidator<String> createCurrentPasswordValidator() {
+		return new AbstractValidator<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onValidate(IValidatable<String> ivalidatable) {
+				if (StringUtils.isNotEmpty(ivalidatable.getValue())
+						&& !user.getPasswordMD5().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
+					error(ivalidatable, "wrong.currentPassword");
+				}
+			}
+		};
+	}
+
+	private AbstractFormValidator createMissingCurrentPasswordValidator() {
+		return new AbstractFormValidator() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public FormComponent<?>[] getDependentFormComponents() {
+				return new FormComponent[] { currentPassword, newPassword1 };
+			}
+
+			@Override
+			public void validate(Form<?> form) {
+				if (StringUtils.isNotEmpty(newPassword1.getValue()) && StringUtils.isEmpty(currentPassword.getValue())) {
+					error(currentPassword, "oldPassword.required");
+				}
+			}
+		};
+	}
+
+	private CheckBox createEnableContactFormCheckBox() {
+		return new CheckBox("enableContactForm");
+	}
+
+	private FormComponent<String> createEmailField() {
+		FormComponent<String> fc = new RequiredTextField<String>("email");
+		fc.add(EmailAddressValidator.getInstance());
+		fc.add(StringValidator.maximumLength(100));
+		return fc;
+	}
+
+	private DateTextField createBirthdayField() {
+		String dateFormat = configurationService.findAsString("date_format");
+		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
+		dateTextField.add(new DatePicker());
+		dateTextField
+				.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
+		return dateTextField;
+	}
+
+	private FormComponent<String> createLastnameField() {
+		FormComponent<String> fc = new TextField<String>("lastname");
+		fc.add(StringValidator.maximumLength(100));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		return fc;
+	}
+
+	private FormComponent<String> createFirstnameField() {
+		FormComponent<String> fc = new TextField<String>("firstname");
+		fc.add(StringValidator.maximumLength(100));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		return fc;
+	}
+
+	private FormComponent<String> createUsernameField() {
+		FormComponent<String> fc = new RequiredTextField<String>("username");
+		fc.setEnabled(false);
+		return fc;
+	}
+
+	private void setCurrentEmail() {
+		currentEmail = user.getEmail();
+	}
+
+	private void setUser() {
+		PortalSession session = (PortalSession) getSession();
+		user = userService.findById(session.getUser().getId());
 	}
 }

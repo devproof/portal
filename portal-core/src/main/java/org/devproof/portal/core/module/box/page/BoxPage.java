@@ -55,9 +55,9 @@ public class BoxPage extends TemplatePage {
 
 	public BoxPage(PageParameters params) {
 		super(params);
-		add(boxDataViewWithRefreshContainer = createBoxDataViewWithRefreshContainer());
-		add(modalWindow = createModalWindow());
-		addPageAdminBoxLink(createAddLink());
+		add(createBoxDataViewWithRefreshContainer());
+		add(createModalWindow());
+		addPageAdminBoxLink(createCreateBoxLink());
 	}
 
 	private BoxDataView createBoxDataView() {
@@ -65,25 +65,33 @@ public class BoxPage extends TemplatePage {
 	}
 
 	private ModalWindow createModalWindow() {
-		ModalWindow modalWindow = new ModalWindow("modalWindow");
+		modalWindow = new ModalWindow("modalWindow");
 		modalWindow.setTitle("Portal");
 		return modalWindow;
 	}
 
-	private AjaxLink<BoxEntity> createAddLink() {
-		AjaxLink<BoxEntity> createLink = newAddLink();
-		createLink.add(new Label("linkName", getString("createLink")));
+	private AjaxLink<BoxEntity> createCreateBoxLink() {
+		AjaxLink<BoxEntity> createLink = newCreateBoxLink();
+		createLink.add(createBoxLinkLabel());
 		return createLink;
 	}
 
-	private AjaxLink<BoxEntity> newAddLink() {
+	private Label createBoxLinkLabel() {
+		return new Label("linkName", getString("createLink"));
+	}
+
+	private AjaxLink<BoxEntity> newCreateBoxLink() {
 		return new AjaxLink<BoxEntity>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
-				BoxEditPanel boxEditPanel = new BoxEditPanel(modalWindow.getContentId(), boxService.newBoxEntity()) {
+				BoxEditPanel boxEditPanel = newBoxEditPanel();
+				setBoxEditPanelToModalWindow(target, boxEditPanel);
+			}
 
+			private BoxEditPanel newBoxEditPanel() {
+				return new BoxEditPanel(modalWindow.getContentId(), boxService.newBoxEntity()) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -95,6 +103,9 @@ public class BoxPage extends TemplatePage {
 					}
 
 				};
+			}
+
+			private void setBoxEditPanelToModalWindow(final AjaxRequestTarget target, BoxEditPanel boxEditPanel) {
 				modalWindow.setInitialHeight(280);
 				modalWindow.setInitialWidth(550);
 				modalWindow.setContent(boxEditPanel);
@@ -104,10 +115,10 @@ public class BoxPage extends TemplatePage {
 	}
 
 	private WebMarkupContainer createBoxDataViewWithRefreshContainer() {
-		WebMarkupContainer refreshContainer = new WebMarkupContainer("refreshTable");
-		refreshContainer.setOutputMarkupId(true);
-		refreshContainer.add(createBoxDataView());
-		return refreshContainer;
+		boxDataViewWithRefreshContainer = new WebMarkupContainer("refreshTable");
+		boxDataViewWithRefreshContainer.add(createBoxDataView());
+		boxDataViewWithRefreshContainer.setOutputMarkupId(true);
+		return boxDataViewWithRefreshContainer;
 	}
 
 	private class BoxDataView extends DataView<BoxEntity> {
@@ -142,8 +153,12 @@ public class BoxPage extends TemplatePage {
 
 		private MarkupContainer createMoveDownLink(BoxEntity box) {
 			AjaxLink<BoxEntity> moveDownLink = newMoveDownLink(box);
-			moveDownLink.add(new Image("downImage", CommonConstants.REF_DOWN_IMG));
+			moveDownLink.add(createMoveDownLinkImage());
 			return moveDownLink;
+		}
+
+		private Image createMoveDownLinkImage() {
+			return new Image("downImage", CommonConstants.REF_DOWN_IMG);
 		}
 
 		private AjaxLink<BoxEntity> newMoveDownLink(final BoxEntity box) {
@@ -160,8 +175,12 @@ public class BoxPage extends TemplatePage {
 
 		private MarkupContainer createMoveUpLink(BoxEntity box) {
 			AjaxLink<BoxEntity> moveUpLink = newMoveUpLink(box);
-			moveUpLink.add(new Image("upImage", CommonConstants.REF_UP_IMG));
+			moveUpLink.add(createMoveUpLinkImage());
 			return moveUpLink;
+		}
+
+		private Image createMoveUpLinkImage() {
+			return new Image("upImage", CommonConstants.REF_UP_IMG);
 		}
 
 		private AjaxLink<BoxEntity> newMoveUpLink(final BoxEntity box) {

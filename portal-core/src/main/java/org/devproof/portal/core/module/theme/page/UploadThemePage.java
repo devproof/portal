@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebPage;
@@ -43,14 +44,29 @@ public class UploadThemePage extends WebPage {
 
 	@SpringBean(name = "themeService")
 	private ThemeService themeService;
+	private Form<FileUpload> uploadForm;
+	private FileUploadField uploadField;
 
 	public UploadThemePage() {
-		add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css"));
-		FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
-		add(uploadFeedback);
-		final FileUploadField uploadField = new FileUploadField("fileInput");
-		uploadField.setRequired(true);
-		Form<FileUpload> uploadForm = new Form<FileUpload>("uploadForm") {
+		add(createCSSHeaderContributor());
+		add(createFeedbackPanel());
+		add(createUploadForm());
+	}
+
+	private Form<FileUpload> createUploadForm() {
+		Form<FileUpload> uploadForm = newUploadForm();
+		uploadForm.add(createUploadField());
+		uploadForm.add(createUploadProgressBar());
+		uploadForm.setMultiPart(true);
+		return uploadForm;
+	}
+
+	private UploadProgressBar createUploadProgressBar() {
+		return new UploadProgressBar("progress", uploadForm);
+	}
+
+	private Form<FileUpload> newUploadForm() {
+		uploadForm = new Form<FileUpload>("uploadForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -62,14 +78,8 @@ public class UploadThemePage extends WebPage {
 					if (key == ValidationKey.VALID) {
 						themeService.install(tmpFile);
 						info(getString("msg.installed"));
-					} else if (key == ValidationKey.INVALID_DESCRIPTOR_FILE) {
-						error(getString("msg.invalid_descriptor_file"));
-					} else if (key == ValidationKey.MISSING_DESCRIPTOR_FILE) {
-						error(getString("msg.missing_descriptor_file"));
-					} else if (key == ValidationKey.NOT_A_JARFILE) {
-						error(getString("msg.not_a_jarfile"));
-					} else if (key == ValidationKey.WRONG_VERSION) {
-						error(getString("wrong_version"));
+					} else {
+						handleErrorMessage(key);
 					}
 					if (!tmpFile.delete()) {
 						LOG.error("Could not delete " + tmpFile);
@@ -79,11 +89,36 @@ public class UploadThemePage extends WebPage {
 				}
 				super.onSubmit();
 			}
+
+			private void handleErrorMessage(ValidationKey key) {
+				if (key == ValidationKey.INVALID_DESCRIPTOR_FILE) {
+					error(getString("msg.invalid_descriptor_file"));
+				} else if (key == ValidationKey.MISSING_DESCRIPTOR_FILE) {
+					error(getString("msg.missing_descriptor_file"));
+				} else if (key == ValidationKey.NOT_A_JARFILE) {
+					error(getString("msg.not_a_jarfile"));
+				} else if (key == ValidationKey.WRONG_VERSION) {
+					error(getString("wrong_version"));
+				} else {
+					throw new IllegalArgumentException("Unknown ValidationKey: " + key);
+				}
+			}
 		};
-		// set this form to multipart mode (allways needed for uploads!)
-		uploadForm.setMultiPart(true);
-		uploadForm.add(uploadField);
-		add(uploadForm);
-		uploadForm.add(new UploadProgressBar("progress", uploadForm));
+		return uploadForm;
+	}
+
+	private FileUploadField createUploadField() {
+		uploadField = new FileUploadField("fileInput");
+		uploadField.setRequired(true);
+		return uploadField;
+	}
+
+	private FeedbackPanel createFeedbackPanel() {
+		FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
+		return uploadFeedback;
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
 	}
 }

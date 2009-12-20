@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -45,24 +46,82 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-
+	private TagService<T> tagService;
+	private IModel<T> tagTarget;
+	private Class<? extends Page> page;
+	private PageParameters params;
 	private T selectedTag;
 	private DataView<T> dataView;
 	private WebMarkupContainer titleContainer;
+	private List<T> tags;
 
 	public TagCloudBoxPanel(String id, TagService<T> tagService, IModel<T> tagTarget, final Class<? extends Page> page,
 			PageParameters params) {
 		super(id);
-		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
-		PortalSession session = (PortalSession) getSession();
-		List<T> tags = null;
-		if (session.hasRight(tagService.getRelatedTagRight())) {
-			tags = tagService
-					.findMostPopularTags(0, configurationService.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
-		} else {
-			tags = tagService.findMostPopularTags(session.getRole(), 0, configurationService
-					.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
-		}
+		this.tagService = tagService;
+		this.tagTarget = tagTarget;
+		this.page = page;
+		this.params = params;
+		setTags();
+		setSelectedTag();
+		setVisibility();
+		add(createCSSHeaderContributor());
+		add(createTagDataView());
+		add(createTitleContainer());
+	}
+
+	private void setVisibility() {
+		setVisible(tags.size() > 0);
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
+	}
+
+	private DataView<T> createTagDataView() {
+		ListDataProvider<T> provider = new ListDataProvider<T>(tags);
+		return newTagDataView(provider);
+	}
+
+	private DataView<T> newTagDataView(ListDataProvider<T> provider) {
+		dataView = new DataView<T>("liRow", provider) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(Item<T> item) {
+				if (isTagSelected(item)) {
+					item.add(createClassTagSelectionModifier());
+				}
+				item.add(createTagLink(item));
+			}
+
+			private SimpleAttributeModifier createClassTagSelectionModifier() {
+				return new SimpleAttributeModifier("class", "selsidenav");
+			}
+
+			private BookmarkablePageLink<Void> createTagLink(Item<T> item) {
+				T tag = item.getModelObject();
+				BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("tagLink", page);
+				link.add(createTagLinkLabel(tag));
+				if (!isTagSelected(item)) {
+					link.setParameter("tag", tag.getTagname());
+				}
+				return link;
+			}
+
+			private boolean isTagSelected(Item<T> item) {
+				return item.getModelObject().equals(TagCloudBoxPanel.this.selectedTag);
+			}
+
+			private Label createTagLinkLabel(T tag) {
+				return new Label("tagLabel", tag.getTagname());
+			}
+		};
+		return dataView;
+	}
+
+	private void setSelectedTag() {
 		if (params != null && params.containsKey("tag")) {
 			selectedTag = tagService.findById(params.getString("tag"));
 			tagTarget.setObject(this.selectedTag);
@@ -71,29 +130,21 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 				tags.add(selectedTag);
 			}
 		}
+	}
 
-		ListDataProvider<T> provider = new ListDataProvider<T>(tags);
-		dataView = new DataView<T>("liRow", provider) {
-			private static final long serialVersionUID = 1L;
+	private void setTags() {
+		PortalSession session = (PortalSession) getSession();
+		if (session.hasRight(tagService.getRelatedTagRight())) {
+			tags = tagService
+					.findMostPopularTags(0, configurationService.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
+		} else {
+			tags = tagService.findMostPopularTags(session.getRole(), 0, configurationService
+					.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
+		}
+	}
 
-			@Override
-			protected void populateItem(Item<T> item) {
-				T tag = item.getModelObject();
-
-				BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("tagLink", page);
-				link.add(new Label("tagLabel", tag.getTagname()));
-				item.add(link);
-				if (tag.equals(TagCloudBoxPanel.this.selectedTag)) {
-					item.add(new SimpleAttributeModifier("class", "selsidenav"));
-				} else {
-					link.setParameter("tag", tag.getTagname());
-				}
-			}
-
-		};
-		add(dataView);
-		add(titleContainer = new WebMarkupContainer("title"));
-		setVisible(tags.size() > 0);
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);
 	}
 
 	public void cleanSelection() {

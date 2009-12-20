@@ -45,11 +45,11 @@ public class BookmarkSearchBoxPanel extends BaseSearchBoxPanel {
 		super(id, query, dataProvider, "bookmark.view", parent, dataview, params);
 		this.params = params;
 		this.query = query;
+		setBrokenParamInQuery();
 		addToForm(createSearchTextField());
 		addToForm(createBrokenDropDown());
 		add(createTitleContainer());
 		addListener(createSearchBoxListener());
-		setBrokenParamInQuery();
 	}
 
 	private void setBrokenParamInQuery() {

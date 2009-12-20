@@ -37,12 +37,29 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 
 	public UserBoxPanel(String id) {
 		super(id);
-		add(titleContainer = new WebMarkupContainer("title"));
-		PortalSession session = (PortalSession) getSession();
-		titleContainer.add(new Label("username", session.getUser().getUsername() + " - "
-				+ session.getUser().getRole().getDescription()));
+		add(createTitleContainer());
+		add(createSettingsLink());
+		add(createLogoutLink());
+	}
 
-		StatelessLink logoutLink = new StatelessLink("logoutLink") {
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		titleContainer.add(createTitleLabel());
+		return titleContainer;
+	}
+
+	private Label createTitleLabel() {
+		PortalSession session = (PortalSession) getSession();
+		return new Label("username", session.getUser().getUsername() + " - "
+				+ session.getUser().getRole().getDescription());
+	}
+
+	private BookmarkablePageLink<Void> createSettingsLink() {
+		return new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class);
+	}
+
+	private StatelessLink createLogoutLink() {
+		return new StatelessLink("logoutLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -50,8 +67,6 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 				setResponsePage(MessagePage.getMessagePageWithLogout(getString("loggedout")));
 			}
 		};
-		add(new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class));
-		add(logoutLink);
 	}
 
 	@Override

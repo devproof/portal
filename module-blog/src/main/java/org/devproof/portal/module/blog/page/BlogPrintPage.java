@@ -39,14 +39,19 @@ public class BlogPrintPage extends PrintPage {
 
 	@Override
 	protected Component createPrintableComponent(String id, PageParameters params) {
+		Integer blogId = getBlogId(params);
+		BlogEntity blog = blogService.findById(blogId);
+		validateAccessRights(blog);
+		return new BlogPrintPanel(id, blog);
+	}
+
+	private Integer getBlogId(PageParameters params) {
 		Integer blogId = params.getAsInteger("0");
 		if (blogId == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage
 					.getMessagePage(getString("missing.parameter")));
 		}
-		BlogEntity blog = blogService.findById(blogId);
-		validateAccessRights(blog);
-		return new BlogPrintPanel(id, blog);
+		return blogId;
 	}
 
 	private void validateAccessRights(BlogEntity blog) {

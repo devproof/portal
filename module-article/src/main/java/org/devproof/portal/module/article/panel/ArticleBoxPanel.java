@@ -17,6 +17,7 @@ package org.devproof.portal.module.article.panel;
 
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -48,17 +49,21 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 	
 	public ArticleBoxPanel(String id) {
 		super(id);
-		createLatestArticles();
-		setVisible(isArticleAvailable());
+		setLatestArticles();
+		setVisibility();
 		add(createTitleContainer());
 		add(createRepeatingViewWithArticles());
+	}
+
+	private Component setVisibility() {
+		return setVisible(isArticleAvailable());
 	}
 
 	private boolean isArticleAvailable() {
 		return latestArticles.size() > 0;
 	}
 
-	private List<ArticleEntity> createLatestArticles() {
+	private List<ArticleEntity> setLatestArticles() {
 		latestArticles = getLatestArticles();
 		return latestArticles;
 	}

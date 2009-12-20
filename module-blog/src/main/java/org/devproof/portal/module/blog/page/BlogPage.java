@@ -67,7 +67,7 @@ public class BlogPage extends BlogBasePage {
 	public BlogPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		createBlogQuery();
+		setBlogQuery();
 		add(createBlogDataView());
 		addFilterBox(createBlogSearchBoxPanel());
 		add(createPagingPanel());
@@ -91,14 +91,13 @@ public class BlogPage extends BlogBasePage {
 		return dataView;
 	}
 
-	private BlogQuery createBlogQuery() {
+	private void setBlogQuery() {
 		PortalSession session = (PortalSession) getSession();
 		query = new BlogQuery();
 		if (!session.hasRight("blog.view")) {
 			query.setRole(session.getRole());
 		}
 		blogDataProvider.setQueryObject(query);
-		return query;
 	}
 
 	private BlogView createBlogView(Item<BlogEntity> item) {
@@ -138,7 +137,7 @@ public class BlogPage extends BlogBasePage {
 
 		public BlogView(String id, Item<BlogEntity> item) {
 			super(id, "blogView", BlogPage.this);
-			this.blog = item.getModelObject();
+			blog = item.getModelObject();
 			add(createAppropriateAuthorPanel(item));
 			add(createHeadline());
 			add(createMetaInfoPanel());

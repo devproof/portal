@@ -39,14 +39,19 @@ public class ArticlePrintPage extends PrintPage {
 
 	@Override
 	protected Component createPrintableComponent(String id, PageParameters params) {
+		String contentId = getContentId(params);
+		ArticleEntity article = articleService.findByContentId(contentId);
+		validateAccessRights(article);
+		return new ArticlePrintPanel(id, article);
+	}
+
+	private String getContentId(PageParameters params) {
 		String contentId = params.getString("0");
 		if (contentId == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage
 					.getMessagePage(getString("missing.parameter")));
 		}
-		ArticleEntity article = articleService.findByContentId(contentId);
-		validateAccessRights(article);
-		return new ArticlePrintPanel(id, article);
+		return contentId;
 	}
 
 	private void validateAccessRights(ArticleEntity article) {

@@ -45,108 +45,102 @@ public class RegisterPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private Boolean captchaEnabled;
+	private PageParameters params;
+	private UserEntity user;
+	private PasswordTextField password1;
+	private PasswordTextField password2;
+	private String captchaChallengeCode;
+	private CaptchaImageResource captchaImageResource;
 
 	public RegisterPage(PageParameters params) {
 		super(params);
-		if (params.containsKey(PARAM_USER) && params.containsKey(PARAM_KEY)) {
-			activateUser(params);
-		}
-		final UserEntity user = userService.newUserEntity();
+		this.params = params;
+		activateUserIfParamsGiven();
+		setCaptchaEnabled();
+		setCaptchaChallengeCode();
+		setCaptchaImageResource();
+		setUser();
+		add(createRegisterForm());
+	}
+
+	private Form<UserEntity> createRegisterForm() {
 		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
+		form.add(createUsernameField());
+		form.add(createFirstnameField());
+		form.add(createLastnameField());
+		form.add(createBirthdayField());
+		form.add(createEmailField());
+		form.add(createPasswordField1());
+		form.add(createPasswordField2());
+		form.add(createCaptchaImageContainer());
+		form.add(createCaptchaFieldContainer());
+		form.add(createRegisterButton());
+		form.add(createEqualPasswordValidator());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		FormComponent<String> fc;
+	private WebMarkupContainer createCaptchaFieldContainer() {
+		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
+		trCaptcha2.add(createCaptchaCodeField());
+		trCaptcha2.setVisible(captchaEnabled);
+		return trCaptcha2;
+	}
 
-		fc = new RequiredTextField<String>("username");
-		fc.add(StringValidator.lengthBetween(3, 30));
-		fc.add(new AbstractValidator<String>() {
+	private WebMarkupContainer createCaptchaImageContainer() {
+		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
+		trCaptcha1.add(createCaptchaImage());
+		trCaptcha1.setVisible(captchaEnabled);
+		return trCaptcha1;
+	}
+
+	private FormComponent<String> createCaptchaCodeField() {
+		FormComponent<String> fc = new TextField<String>("captchacode", Model.of(""));
+		if (captchaEnabled) {
+			fc.add(createCaptchaValidator());
+		}
+		fc.setRequired(captchaEnabled);
+		return fc;
+	}
+
+	private Image createCaptchaImage() {
+		return new Image("captchacodeimage", captchaImageResource);
+	}
+
+	private void setCaptchaImageResource() {
+		captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
+	}
+
+	private void setCaptchaChallengeCode() {
+		captchaChallengeCode = PortalUtil.randomString(6, 8);
+	}
+
+	private AbstractValidator<String> createCaptchaValidator() {
+		return new AbstractValidator<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (userService.existsUsername(ivalidatable.getValue())) {
+				if (!captchaChallengeCode.equalsIgnoreCase(ivalidatable.getValue())) {
+					captchaImageResource.invalidate();
 					error(ivalidatable);
 				}
 			}
 
 			@Override
 			protected String resourceKey() {
-				return "existing.username";
+				return "wrong.captchacode";
 			}
-		});
-		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
-		form.add(fc);
+		};
+	}
 
-		fc = new TextField<String>("firstname");
-		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
-		form.add(fc);
+	private void setCaptchaEnabled() {
+		captchaEnabled = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
+	}
 
-		fc = new TextField<String>("lastname");
-		fc.add(StringValidator.maximumLength(100));
-		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
-		form.add(fc);
-
-		String dateFormat = configurationService.findAsString("date_format");
-		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
-		dateTextField.add(new DatePicker());
-		dateTextField
-				.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
-		form.add(dateTextField);
-
-		fc = new RequiredTextField<String>("email");
-		fc.add(EmailAddressValidator.getInstance());
-		fc.add(StringValidator.maximumLength(100));
-		form.add(fc);
-
-		final PasswordTextField password1 = new PasswordTextField("password1", new Model<String>());
-		password1.add(StringValidator.minimumLength(5));
-		password1.setRequired(true);
-		form.add(password1);
-		PasswordTextField password2 = new PasswordTextField("password2", new Model<String>());
-		password2.add(StringValidator.minimumLength(5));
-		password2.setRequired(true);
-		form.add(password2);
-
-		form.add(new EqualPasswordInputValidator(password1, password2));
-
-		Boolean enableCaptcha = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
-		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
-		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
-		trCaptcha1.setVisible(enableCaptcha);
-		trCaptcha2.setVisible(enableCaptcha);
-
-		form.add(trCaptcha1);
-		form.add(trCaptcha2);
-
-		final CaptchaImageResource captchaImageResource = new CaptchaImageResource(PortalUtil.randomString(6, 8));
-		trCaptcha1.add(new Image("captchacodeimage", captchaImageResource));
-
-		fc = new TextField<String>("captchacode", Model.of(""));
-		fc.setRequired(enableCaptcha);
-		trCaptcha2.add(fc);
-
-		if (enableCaptcha) {
-			fc.add(new AbstractValidator<String>() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void onValidate(IValidatable<String> ivalidatable) {
-					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
-						captchaImageResource.invalidate();
-						error(ivalidatable);
-					}
-				}
-
-				@Override
-				protected String resourceKey() {
-					return "wrong.captchacode";
-				}
-			});
-		}
-
-		form.add(new Button("registerButton") {
+	private Button createRegisterButton() {
+		return new Button("registerButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -167,13 +161,100 @@ public class RegisterPage extends TemplatePage {
 				userService.registerUser(user, password1.getValue(), url.toString(), confirmationCode);
 				setResponsePage(MessagePage.getMessagePage(getString(msg)));
 			}
-		});
+		};
 	}
 
-	private void activateUser(PageParameters params) {
+	private EqualPasswordInputValidator createEqualPasswordValidator() {
+		return new EqualPasswordInputValidator(password1, password2);
+	}
+
+	private PasswordTextField createPasswordField1() {
+		password1 = createPasswordField("password1");
+		return password1;
+	}
+
+	private PasswordTextField createPasswordField2() {
+		password2 = createPasswordField("password2");
+		return password2;
+	}
+
+	private PasswordTextField createPasswordField(String id) {
+		PasswordTextField password = new PasswordTextField(id, new Model<String>());
+		password.add(StringValidator.minimumLength(5));
+		password.setRequired(true);
+		return password;
+	}
+
+	private DateTextField createBirthdayField() {
+		String dateFormat = configurationService.findAsString("date_format");
+		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
+		dateTextField.add(new DatePicker());
+		dateTextField
+				.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
+		return dateTextField;
+	}
+
+	private FormComponent<String> createEmailField() {
+		FormComponent<String> fc = new RequiredTextField<String>("email");
+		fc.add(EmailAddressValidator.getInstance());
+		fc.add(StringValidator.maximumLength(100));
+		return fc;
+	}
+
+	private FormComponent<String> createLastnameField() {
+		FormComponent<String> fc = new TextField<String>("lastname");
+		fc.add(StringValidator.maximumLength(100));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		return fc;
+	}
+
+	private FormComponent<String> createFirstnameField() {
+		FormComponent<String> fc = new TextField<String>("firstname");
+		fc.add(StringValidator.maximumLength(100));
+		fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+		return fc;
+	}
+
+	private FormComponent<String> createUsernameField() {
+		FormComponent<String> fc = new RequiredTextField<String>("username");
+		fc.add(StringValidator.lengthBetween(3, 30));
+		fc.add(createExistingUsernameValidator());
+		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+		return fc;
+	}
+
+	private AbstractValidator<String> createExistingUsernameValidator() {
+		return new AbstractValidator<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onValidate(IValidatable<String> ivalidatable) {
+				if (userService.existsUsername(ivalidatable.getValue())) {
+					error(ivalidatable);
+				}
+			}
+
+			@Override
+			protected String resourceKey() {
+				return "existing.username";
+			}
+		};
+	}
+
+	private void setUser() {
+		user = userService.newUserEntity();
+	}
+
+	private void activateUserIfParamsGiven() {
+		if (params.containsKey(PARAM_USER) && params.containsKey(PARAM_KEY)) {
+			activateUser();
+		}
+	}
+
+	private void activateUser() {
 		String username = params.getString(PARAM_USER);
-		String key = params.getString(PARAM_KEY);
-		if (userService.activateUser(username, key)) {
+		String confirmationCode = params.getString(PARAM_KEY);
+		if (userService.activateUser(username, confirmationCode)) {
 			setResponsePage(MessagePage.getMessagePage(getString("confirmed")));
 		} else {
 			setResponsePage(MessagePage.getMessagePage(getString("notconfirmed")));

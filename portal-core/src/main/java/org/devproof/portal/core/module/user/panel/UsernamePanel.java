@@ -29,17 +29,34 @@ import org.devproof.portal.core.module.contact.page.ContactPage;
  */
 public class UsernamePanel extends Panel {
 	private static final long serialVersionUID = 1L;
+	private String username;
+	private String displayName;
+	private boolean exists;
 
 	public UsernamePanel(String id, String username, String displayName, boolean exists) {
 		super(id);
+		this.username = username;
+		this.displayName = displayName;
+		this.exists = exists;
+		add(createContactPageLink());
+	}
+
+	private WebMarkupContainer createContactPageLink() {
+		WebMarkupContainer link = newContactPageLink();
+		link.add(createUsernameLabel());
+		return link;
+	}
+
+	private WebMarkupContainer newContactPageLink() {
 		PortalSession session = (PortalSession) getSession();
-		WebMarkupContainer link = null;
 		if (session.hasRight("page.ContactPage") && exists) {
-			link = new BookmarkablePageLink<ContactPage>("userLink", ContactPage.class).setParameter("0", username);
+			return new BookmarkablePageLink<ContactPage>("userLink", ContactPage.class).setParameter("0", username);
 		} else {
-			link = new WebMarkupContainer("userLink");
+			return new WebMarkupContainer("userLink");
 		}
-		link.add(new Label("username", displayName));
-		add(link);
+	}
+
+	private Label createUsernameLabel() {
+		return new Label("username", displayName);
 	}
 }

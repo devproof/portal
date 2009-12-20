@@ -35,42 +35,71 @@ public class LoginPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
+	private ValueMap valueMap = new ValueMap();
+
 	public LoginPage(PageParameters params) {
 		super(params);
-		final RequiredTextField<String> username = new RequiredTextField<String>("username");
-		final PasswordTextField password = new PasswordTextField("password");
-		StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm") {
+		add(createLoginForm());
+		add(createRegisterLink());
+		add(createForgotPasswordLink());
+	}
+
+	private StatelessForm<ValueMap> createLoginForm() {
+		StatelessForm<ValueMap> form = newLoginForm();
+		form.add(createUsernameField());
+		form.add(createPasswordField());
+		form.setOutputMarkupId(true);
+		return form;
+	}
+
+	private PasswordTextField createPasswordField() {
+		return new PasswordTextField("password");
+	}
+
+	private RequiredTextField<String> createUsernameField() {
+		return new RequiredTextField<String>("username");
+	}
+
+	private StatelessForm<ValueMap> newLoginForm() {
+		StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm", new CompoundPropertyModel<ValueMap>(
+				valueMap)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
 				PortalSession session = (PortalSession) getSession();
+				String username = valueMap.getString("username");
+				String password = valueMap.getString("password");
 				try {
-
-					String message = session.authenticate(username.getValue(), password.getValue());
+					String message = session.authenticate(username, password);
 					if (message == null) {
-						boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
-						// production mode check is for unit tests
-						if (productionMode) {
-							@SuppressWarnings("unchecked")
-							Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-							setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
-						}
+						redirectToPortalHomePage();
 					} else {
 						error(getString(message));
 					}
 				} catch (UserNotConfirmedException e) {
-					setResponsePage(new ReenterEmailPage(username.getValue()));
+					setResponsePage(new ReenterEmailPage(username));
 				}
 			}
 
+			private void redirectToPortalHomePage() {
+				boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
+				// production mode check is for unit tests
+				if (productionMode) {
+					@SuppressWarnings("unchecked")
+					Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
+					setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
+				}
+			}
 		};
-		form.setModel(new CompoundPropertyModel<ValueMap>(new ValueMap()));
-		form.setOutputMarkupId(true);
-		form.add(username);
-		form.add(password);
-		add(form);
-		add(new BookmarkablePageLink<Void>("registerLink", RegisterPage.class));
-		add(new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class));
+		return form;
+	}
+
+	private BookmarkablePageLink<Void> createForgotPasswordLink() {
+		return new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class);
+	}
+
+	private BookmarkablePageLink<Void> createRegisterLink() {
+		return new BookmarkablePageLink<Void>("registerLink", RegisterPage.class);
 	}
 }

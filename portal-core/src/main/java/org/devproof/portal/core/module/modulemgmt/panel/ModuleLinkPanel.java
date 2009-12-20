@@ -104,12 +104,12 @@ public class ModuleLinkPanel extends Panel {
 			item.add(createPageNameLabel(item));
 			item.add(createModuleNameLabel(item));
 			item.add(createVisibleCheckBox(item));
-			item.add(createUpLink(item));
-			item.add(createDownLink(item));
+			item.add(createMoveUpLink(item));
+			item.add(createMoveDownLink(item));
 			item.add(createAlternatingModifier(item));
 		}
 
-		private AjaxLink<ModuleLinkEntity> createUpLink(Item<ModuleLinkEntity> item) {
+		private AjaxLink<ModuleLinkEntity> createMoveUpLink(Item<ModuleLinkEntity> item) {
 			AjaxLink<ModuleLinkEntity> upLink = newUpLink(item);
 			upLink.add(createUpLinkImage());
 			return upLink;
@@ -132,7 +132,7 @@ public class ModuleLinkPanel extends Panel {
 			};
 		}
 
-		private AjaxLink<ModuleLinkEntity> createDownLink(Item<ModuleLinkEntity> item) {
+		private AjaxLink<ModuleLinkEntity> createMoveDownLink(Item<ModuleLinkEntity> item) {
 			AjaxLink<ModuleLinkEntity> downLink = newDownLink(item);
 			downLink.add(createDownLinkImage());
 			return downLink;
@@ -176,6 +176,10 @@ public class ModuleLinkPanel extends Panel {
 				protected void onSelectionChanged(Object newSelection) {
 					moduleService.save(item.getModelObject());
 					registryService.rebuildRegistries(item.getModelObject().getLinkType());
+					setSelectionMessage(newSelection);
+				}
+
+				private void setSelectionMessage(Object newSelection) {
 					Boolean selection = (Boolean) newSelection;
 					if (selection) {
 						info(getString("msg.selected"));

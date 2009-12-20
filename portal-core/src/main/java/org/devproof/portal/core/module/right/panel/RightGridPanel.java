@@ -44,13 +44,81 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 
 	@SpringBean(name = "rightService")
 	private RightService rightService;
+	private String rightPrefix;
+	private Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new HashMap<RightEntity, CheckBox>();
 	private List<RightEntity> allRights;
 	private List<RightEntity> originalRightsListReference;
 	private List<RightEntity> originalSelectedRights;
 
 	public RightGridPanel(String id, String rightPrefix, IModel<List<RightEntity>> selectedRights) {
 		super(id);
-		originalRightsListReference = selectedRights.getObject();
+		this.rightPrefix = rightPrefix;
+		this.originalRightsListReference = selectedRights.getObject();
+		setOriginalSelectedRights();
+		setAllRights();
+		add(createRightGridView());
+	}
+
+	private void setAllRights() {
+		allRights = rightService.findRightsStartingWith(rightPrefix);
+	}
+
+	private GridView<RightEntity> createRightGridView() {
+		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(allRights);
+		GridView<RightEntity> gridView = newRightGridView(ldp);
+		gridView.setColumns(3);
+		return gridView;
+	}
+
+	private GridView<RightEntity> newRightGridView(ListDataProvider<RightEntity> ldp) {
+		return new GridView<RightEntity>("rights_rows", ldp) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(Item<RightEntity> item) {
+				setRightOriginalSelectionState(item);
+				item.add(createRightCheckBox(item));
+				item.add(createRightNameLabel(item));
+			}
+
+			private void setRightOriginalSelectionState(Item<RightEntity> item) {
+				RightEntity right = item.getModelObject();
+				right.setSelected(originalSelectedRights.contains(right));
+			}
+
+			private Label createRightNameLabel(Item<RightEntity> item) {
+				return new Label("right", item.getModelObject().getDescription());
+			}
+
+			private CheckBox createRightCheckBox(Item<RightEntity> item) {
+				RightEntity right = item.getModelObject();
+				CheckBox checkBox = keepCheckBoxStateAfterValidation.get(right);
+				if (checkBox == null) {
+					checkBox = new CheckBox("right_checkbox", new PropertyModel<Boolean>(right, "selected"));
+					keepCheckBoxStateAfterValidation.put(right, checkBox);
+				}
+				return checkBox;
+			}
+
+			@Override
+			protected void populateEmptyItem(Item<RightEntity> item) {
+				item.add(createHiddenRightCheckBox());
+				item.add(createEmptyRightNameLabel());
+			}
+
+			private CheckBox createHiddenRightCheckBox() {
+				CheckBox cb = new CheckBox("right_checkbox");
+				cb.setVisible(false);
+				return cb;
+			}
+
+			private Label createEmptyRightNameLabel() {
+				return new Label("right", "");
+			}
+		};
+	}
+
+	private void setOriginalSelectedRights() {
 		originalSelectedRights = new ArrayList<RightEntity>();
 		for (Iterator<? extends RightEntity> it = originalRightsListReference.iterator(); it.hasNext();) {
 			RightEntity right = it.next();
@@ -59,33 +127,6 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 				it.remove();
 			}
 		}
-		allRights = rightService.findRightsStartingWith(rightPrefix);
-		final Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new HashMap<RightEntity, CheckBox>();
-		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(allRights);
-		GridView<RightEntity> gridView = new GridView<RightEntity>("rights_rows", ldp) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void populateItem(Item<RightEntity> item) {
-				RightEntity right = item.getModel().getObject();
-				right.setSelected(originalSelectedRights.contains(right));
-				CheckBox checkBox = keepCheckBoxStateAfterValidation.get(right);
-				if (checkBox == null) {
-					checkBox = new CheckBox("right_checkbox", new PropertyModel<Boolean>(right, "selected"));
-					keepCheckBoxStateAfterValidation.put(right, checkBox);
-				}
-				item.add(checkBox);
-				item.add(new Label("right", right.getDescription()));
-			}
-
-			@Override
-			protected void populateEmptyItem(Item<RightEntity> item) {
-				item.add(new CheckBox("right_checkbox").setVisible(false));
-				item.add(new Label("right", ""));
-			}
-		};
-		gridView.setColumns(3);
-		add(gridView);
 	}
 
 	private List<? extends RightEntity> getSelectedRights() {

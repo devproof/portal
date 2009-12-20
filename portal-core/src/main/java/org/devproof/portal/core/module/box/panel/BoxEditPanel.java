@@ -47,15 +47,15 @@ public abstract class BoxEditPanel extends Panel {
 	private BoxService boxService;
 	@SpringBean(name = "boxRegistry")
 	private BoxRegistry boxRegistry;
-	private FeedbackPanel feedbackPanel;
+	private FeedbackPanel feedback;
 	private IModel<BoxConfiguration> boxSelectionModel;
 	private BoxEntity box;
 
 	public BoxEditPanel(String id, BoxEntity box) {
 		super(id);
 		this.box = box;
-		boxSelectionModel = getBoxConfigurationModel(box);
-		add(feedbackPanel = createFeedbackPanel());
+		setBoxConfigurationModel();
+		add(createFeedbackPanel());
 		add(createBoxEditForm());
 	}
 
@@ -74,10 +74,8 @@ public abstract class BoxEditPanel extends Panel {
 		return new CheckBox("hideTitle");
 	}
 
-	private IModel<BoxConfiguration> getBoxConfigurationModel(BoxEntity box) {
-		IModel<BoxConfiguration> selectBoxModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box
-				.getBoxType()));
-		return selectBoxModel;
+	private void setBoxConfigurationModel() {
+		boxSelectionModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box.getBoxType()));
 	}
 
 	private DropDownChoice<BoxConfiguration> createBoxTypeChoice() {
@@ -112,7 +110,7 @@ public abstract class BoxEditPanel extends Panel {
 
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(feedbackPanel);
+				target.addComponent(feedback);
 			}
 		};
 	}
@@ -122,7 +120,7 @@ public abstract class BoxEditPanel extends Panel {
 	}
 
 	private FeedbackPanel createFeedbackPanel() {
-		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
+		feedback = new FeedbackPanel("feedbackPanel");
 		feedback.setOutputMarkupId(true);
 		return feedback;
 	}
