@@ -35,7 +35,7 @@ public class FeedOverviewPage extends TemplatePage {
 	@SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
 	private Map<String, FeedProvider> allFeedProvider;
-	
+
 	public FeedOverviewPage(PageParameters params) {
 		super(params);
 		setAllFeedProvider();
@@ -47,12 +47,11 @@ public class FeedOverviewPage extends TemplatePage {
 	}
 
 	private RepeatingView createFeedOverviewTable() {
-		RepeatingView tableRow = new RepeatingView("tableRow");
+		RepeatingView feedsTable = new RepeatingView("tableRow");
 		for (String path : allFeedProvider.keySet()) {
-			WebMarkupContainer row = createFeedRow(tableRow.newChildId(), path);
-			tableRow.add(row);
+			feedsTable.add(createFeedRow(feedsTable.newChildId(), path));
 		}
-		return tableRow;
+		return feedsTable;
 	}
 
 	private WebMarkupContainer createFeedRow(String id, String path) {
@@ -67,13 +66,12 @@ public class FeedOverviewPage extends TemplatePage {
 	}
 
 	private BookmarkablePageLink<Rss2FeedPage> createRss2Link(String path) {
-		return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0="
-				+ path));
+		return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0=" + path));
 	}
 
 	private BookmarkablePageLink<Atom1FeedPage> createAtom1Link(String path) {
-		return new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class, new PageParameters("0="
-				+ path));
+		return new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class,
+				new PageParameters("0=" + path));
 	}
 
 	private Component createSupportedPagesLabel(FeedProvider provider) {
