@@ -55,7 +55,7 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 	private WebMarkupContainer titleContainer;
 	private List<T> tags;
 
-	public TagCloudBoxPanel(String id, TagService<T> tagService, IModel<T> tagTarget, final Class<? extends Page> page,
+	public TagCloudBoxPanel(String id, TagService<T> tagService, IModel<T> tagTarget, Class<? extends Page> page,
 			PageParameters params) {
 		super(id);
 		this.tagService = tagService;

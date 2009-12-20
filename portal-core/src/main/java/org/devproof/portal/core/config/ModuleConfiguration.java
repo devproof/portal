@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.config;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +26,8 @@ import java.util.List;
  * @author Carsten Hufe
  * 
  */
-public class ModuleConfiguration {
+public class ModuleConfiguration implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String moduleVersion;
 	private String author;

@@ -34,8 +34,8 @@ public class InfoMessagePanel extends Panel {
 
 	private String message;
 	private ModalWindow modalWindow;
-	
-	public InfoMessagePanel(String id, String message, final ModalWindow modalWindow) {
+
+	public InfoMessagePanel(String id, String message, ModalWindow modalWindow) {
 		super(id);
 		this.message = message;
 		this.modalWindow = modalWindow;
@@ -45,10 +45,14 @@ public class InfoMessagePanel extends Panel {
 
 	private Form<?> createOkButtonForm() {
 		Form<?> form = new Form<Object>("form");
-		form.add(new Label("infoMessage", message));
+		form.add(createInfoMessageLabel());
 		form.add(createOkAjaxButton());
 		form.setOutputMarkupId(true);
 		return form;
+	}
+
+	private Label createInfoMessageLabel() {
+		return new Label("infoMessage", message);
 	}
 
 	private AjaxButton createOkAjaxButton() {

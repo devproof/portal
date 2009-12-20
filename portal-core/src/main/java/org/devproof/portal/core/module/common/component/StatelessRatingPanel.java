@@ -35,6 +35,7 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 	private IModel<Boolean> hasVoted;
 	private PageParameters params;
 	private Integer contentId;
+	private IModel<Integer> nrOfStars;
 
 	public StatelessRatingPanel(String id, IModel<Integer> rating, IModel<Integer> nrOfStars,
 			IModel<Integer> nrOfVotes, IModel<Boolean> hasVoted, boolean addDefaultCssStyle, PageParameters params,
@@ -43,12 +44,12 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 		this.hasVoted = hasVoted;
 		this.params = params;
 		this.contentId = contentId;
-		executeStatelessVoting(nrOfStars, hasVoted, params, contentId);
+		this.nrOfStars = nrOfStars;
+		executeStatelessVoting();
 	}
 
-	private void executeStatelessVoting(IModel<Integer> nrOfStars, IModel<Boolean> hasVoted, PageParameters params,
-			Integer contentId) {
-		if (params.containsKey("rateid") && params.containsKey("vote")) {
+	private void executeStatelessVoting() {
+		if (hasNecessaryParameter()) {
 			Integer rateId = params.getAsInteger("rateid");
 			Integer vote = params.getAsInteger("vote");
 			if (vote > nrOfStars.getObject()) {
@@ -59,6 +60,10 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 				onRated(vote + 1);
 			}
 		}
+	}
+
+	private boolean hasNecessaryParameter() {
+		return params.containsKey("rateid") && params.containsKey("vote");
 	}
 
 	@Override
@@ -87,13 +92,18 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 			link.setEnabled(!hasVoted.getObject());
 			link.setParameter("rateid", contentId);
 			link.setParameter("vote", item.getIteration());
+			link.add(createStarContainer(item));
 			copyParameterToLink(link);
+			return link;
+		}
+
+		private Component createStarContainer(LoopItem item) {
 			int iteration = item.getIteration();
 			// add the star image, which is either active (highlighted) or
 			// inactive (no star)
-			link.add(new WebMarkupContainer("star").add(new SimpleAttributeModifier("src",
-					(onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
-			return link;
+			Component star = new WebMarkupContainer("star").add(new SimpleAttributeModifier("src",
+					(onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
+			return star;
 		}
 
 		private void copyParameterToLink(BookmarkablePageLink<Void> link) {

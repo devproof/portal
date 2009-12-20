@@ -43,8 +43,8 @@ public abstract class AuthorPanel<T> extends Panel {
 	private PageParameters redirectParams = null;
 	private boolean deleted = false;
 	private ModalWindow modalWindow;
-	
-	public AuthorPanel(String id, final T entity) {
+
+	public AuthorPanel(String id, T entity) {
 		super(id);
 		this.entity = entity;
 		add(createModalWindow());
@@ -70,8 +70,7 @@ public abstract class AuthorPanel<T> extends Panel {
 			}
 
 			private ConfirmDeletePanel<T> createConfirmDeletePanel() {
-				return new ConfirmDeletePanel<T>(modalWindow.getContentId(),
-						entity, modalWindow) {
+				return new ConfirmDeletePanel<T>(modalWindow.getContentId(), entity, modalWindow) {
 					private static final long serialVersionUID = 1L;
 
 					@Override

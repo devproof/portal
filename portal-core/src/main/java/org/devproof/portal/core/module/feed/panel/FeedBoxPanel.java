@@ -52,15 +52,23 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 	private BookmarkablePageLink<Rss2FeedPage> createRss2Link() {
 		BookmarkablePageLink<Rss2FeedPage> rss2FeedLink = new BookmarkablePageLink<Rss2FeedPage>("rssLink",
 				Rss2FeedPage.class, linkParameter);
-		rss2FeedLink.add(new Image("rssImage", FeedConstants.REF_RSS2));
+		rss2FeedLink.add(createRss2LinkImage());
 		return rss2FeedLink;
+	}
+
+	private Image createRss2LinkImage() {
+		return new Image("rssImage", FeedConstants.REF_RSS2);
 	}
 
 	private BookmarkablePageLink<Atom1FeedPage> createAtom1Link() {
 		BookmarkablePageLink<Atom1FeedPage> atom1FeedLink = new BookmarkablePageLink<Atom1FeedPage>("atomLink",
 				Atom1FeedPage.class, linkParameter);
-		atom1FeedLink.add(new Image("atomImage", FeedConstants.REF_ATOM1));
+		atom1FeedLink.add(createAtom1LinkImage());
 		return atom1FeedLink;
+	}
+
+	private Image createAtom1LinkImage() {
+		return new Image("atomImage", FeedConstants.REF_ATOM1);
 	}
 
 	private void setLinkParameter() {

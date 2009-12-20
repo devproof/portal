@@ -33,19 +33,17 @@ public class BookmarkablePagingPanel extends Panel {
 	private IPageable pageable;
 	private Class<? extends Page> parentClazz;
 	private PageParameters params;
-	
+
 	public BookmarkablePagingPanel(String id, IPageable pageable, Class<? extends Page> parentClazz,
 			PageParameters params) {
 		super(id);
 		this.pageable = pageable;
 		this.parentClazz = parentClazz;
 		this.params = params;
-		
 		add(createBackLink());
 		add(createForwardLink());
 		handleCurrentPageParameter();
 		copySearchParameterToPagingLinks();
-
 	}
 
 	private void copySearchParameterToPagingLinks() {
