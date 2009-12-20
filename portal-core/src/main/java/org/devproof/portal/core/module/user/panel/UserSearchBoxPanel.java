@@ -32,34 +32,48 @@ import org.devproof.portal.core.module.user.query.UserQuery;
  * @author Carsten Hufe
  */
 public abstract class UserSearchBoxPanel extends Panel {
-
 	private static final long serialVersionUID = 1L;
 
-	public UserSearchBoxPanel(final String id, final UserQuery query) {
+	private UserQuery query;
+
+	public UserSearchBoxPanel(String id, UserQuery query) {
 		super(id);
+		this.query = query;
+		add(createUserSearchForm());
+
+	}
+
+	private Form<UserQuery> createUserSearchForm() {
 		Form<UserQuery> form = new Form<UserQuery>("searchForm", new CompoundPropertyModel<UserQuery>(query));
+		form.add(createSearchTextField());
+		form.add(createActiveDropDown());
+		form.add(createConfirmedDropDown());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		FormComponent<?> fc = null;
-		fc = new TextField<String>("allnames");
-		fc.add(new AjaxRefresh("onkeyup"));
-		form.add(fc);
-
-		Select active = new Select("active");
-		form.add(active);
-		active.add(new SelectOption<Boolean>("chooseActive", new Model<Boolean>()));
-		active.add(new SelectOption<Boolean>("activeTrue", Model.of(Boolean.TRUE)));
-		active.add(new SelectOption<Boolean>("activeFalse", Model.of(Boolean.FALSE)));
-		active.add(new AjaxRefresh("onchange"));
-
+	private Select createConfirmedDropDown() {
 		Select confirmed = new Select("confirmed");
-		form.add(confirmed);
 		confirmed.add(new SelectOption<Boolean>("chooseConfirmed", new Model<Boolean>()));
 		confirmed.add(new SelectOption<Boolean>("confirmedTrue", Model.of(Boolean.TRUE)));
 		confirmed.add(new SelectOption<Boolean>("confirmedFalse", Model.of(Boolean.FALSE)));
 		confirmed.add(new AjaxRefresh("onchange"));
+		return confirmed;
+	}
 
+	private Select createActiveDropDown() {
+		Select active = new Select("active");
+		active.add(new SelectOption<Boolean>("chooseActive", new Model<Boolean>()));
+		active.add(new SelectOption<Boolean>("activeTrue", Model.of(Boolean.TRUE)));
+		active.add(new SelectOption<Boolean>("activeFalse", Model.of(Boolean.FALSE)));
+		active.add(new AjaxRefresh("onchange"));
+		return active;
+	}
+
+	private FormComponent<String> createSearchTextField() {
+		FormComponent<String> fc = new TextField<String>("allnames");
+		fc.add(new AjaxRefresh("onkeyup"));
+		return fc;
 	}
 
 	protected abstract void onSubmit(AjaxRequestTarget target);

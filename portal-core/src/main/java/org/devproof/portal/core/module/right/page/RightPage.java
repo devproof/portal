@@ -48,64 +48,100 @@ public class RightPage extends TemplatePage {
 	private QueryDataProvider<RightEntity> rightDataProvider;
 	@SpringBean(name = "rightService")
 	private RightService rightService;
-
-	private WebMarkupContainer container;
+	private WebMarkupContainer refreshTable;
 	private ModalWindow modalWindow;
+	private RightQuery query = new RightQuery();
+	private PageParameters params;
 
 	public RightPage(PageParameters params) {
 		super(params);
+		this.params = params;
+		setQueryToDataProvider();
+		add(createRightRefreshTableContainer());
+		add(createModalWindow());
+		addPageAdminBoxLink(createCreateRightLink());
+		addFilterBox(createRightSearchBoxPanel());
+	}
 
-		addPageAdminBoxLink(new AjaxLink<Object>("adminLink") {
+	private RightSearchBoxPanel createRightSearchBoxPanel() {
+		return new RightSearchBoxPanel("box", query) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target) {
+				target.addComponent(refreshTable);
+			}
+		};
+	}
+
+	private WebMarkupContainer createRightRefreshTableContainer() {
+		refreshTable = new WebMarkupContainer("refreshTable");
+		refreshTable.add(createRightNameTableOrder());
+		refreshTable.add(createRightDescriptionTableOrder());
+		refreshTable.add(createRightDataView());
+		refreshTable.setOutputMarkupId(true);
+		return refreshTable;
+	}
+
+	private RightDataView createRightDataView() {
+		return new RightDataView("tableRow", rightDataProvider, params);
+	}
+
+	private OrderByBorder createRightDescriptionTableOrder() {
+		return new OrderByBorder("table_description", "description", rightDataProvider);
+	}
+
+	private OrderByBorder createRightNameTableOrder() {
+		return new OrderByBorder("table_right", "right", rightDataProvider);
+	}
+
+	private ModalWindow createModalWindow() {
+		modalWindow = new ModalWindow("modalWindow");
+		modalWindow.setTitle("Portal");
+		return modalWindow;
+	}
+
+	private void setQueryToDataProvider() {
+		rightDataProvider.setQueryObject(query);
+	}
+
+	private AjaxLink<Void> createCreateRightLink() {
+		AjaxLink<Void> adminLink = newCreateRightLink();
+		adminLink.add(createRightLinkLabel());
+		return adminLink;
+	}
+
+	private Label createRightLinkLabel() {
+		return new Label("linkName", getString("createLink"));
+	}
+
+	private AjaxLink<Void> newCreateRightLink() {
+		return new AjaxLink<Void>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(), rightService
-						.newRightEntity(), true) {
+				modalWindow.setInitialHeight(440);
+				modalWindow.setInitialWidth(620);
+				modalWindow.setContent(createRightEditPanel());
+				modalWindow.show(target);
+			}
+
+			private RightEditPanel createRightEditPanel() {
+				return new RightEditPanel(modalWindow.getContentId(), rightService.newRightEntity(), true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSave(AjaxRequestTarget target) {
-						target.addComponent(container);
+						target.addComponent(refreshTable);
 						target.addComponent(RightPage.this.getFeedback());
 						rightService.refreshGlobalApplicationRights();
 						info(getString("msg.saved"));
 						modalWindow.close(target);
 					}
-
 				};
-				modalWindow.setInitialHeight(440);
-				modalWindow.setInitialWidth(620);
-				modalWindow.setContent(editRightPanel);
-				modalWindow.show(target);
 			}
-		}.add(new Label("linkName", getString("createLink"))));
-		RightQuery query = new RightQuery();
-		rightDataProvider.setQueryObject(query);
-
-		container = new WebMarkupContainer("refreshTable");
-		container.setOutputMarkupId(true);
-		add(container);
-
-		container.add(new OrderByBorder("table_right", "right", rightDataProvider));
-		container.add(new OrderByBorder("table_description", "description", rightDataProvider));
-
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		add(modalWindow);
-
-		RightDataView dataView = new RightDataView("tableRow", rightDataProvider, params);
-		container.add(dataView);
-
-		addFilterBox(new RightSearchBoxPanel("box", query) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				target.addComponent(container);
-			}
-
-		});
+		};
 	}
 
 	private class RightDataView extends DataView<RightEntity> {
@@ -116,58 +152,74 @@ public class RightPage extends TemplatePage {
 		}
 
 		@Override
-		protected void populateItem(final Item<RightEntity> item) {
-			final RightEntity right = item.getModelObject();
+		protected void populateItem(Item<RightEntity> item) {
+			item.add(createRightNameLabel(item));
+			item.add(createRightDescriptionLabel(item));
+			item.add(createAuthorPanel(item));
+			item.add(createAlternatingModifier(item));
+		}
 
-			item.add(new Label("right", right.getRight()));
-			item.add(new Label("description", right.getDescription()));
-			item.add(new AuthorPanel<RightEntity>("authorButtons", right) {
+		private Label createRightDescriptionLabel(Item<RightEntity> item) {
+			return new Label("description", item.getModelObject().getDescription());
+		}
+
+		private Label createRightNameLabel(Item<RightEntity> item) {
+			return new Label("right", item.getModelObject().getRight());
+		}
+
+		private AuthorPanel<RightEntity> createAuthorPanel(Item<RightEntity> item) {
+			final RightEntity right = item.getModelObject();
+			return new AuthorPanel<RightEntity>("authorButtons", right) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
 					rightService.delete(right);
-					target.addComponent(container);
-					target.addComponent(getFeedback());
 					rightService.refreshGlobalApplicationRights();
+					target.addComponent(refreshTable);
+					target.addComponent(getFeedback());
 					info(getString("msg.deleted"));
 				}
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					RightEntity refreshedRight = rightService.findById(right.getRight());
-					RightEditPanel editRightPanel = new RightEditPanel(modalWindow.getContentId(), refreshedRight,
-							false) {
+					modalWindow.setInitialHeight(440);
+					modalWindow.setInitialWidth(620);
+					modalWindow.setContent(createRightEditPanel(right));
+					modalWindow.show(target);
+				}
 
+				private RightEditPanel createRightEditPanel(final RightEntity right) {
+					RightEntity refreshedRight = rightService.findById(right.getRight());
+					return newRightEditPanel(refreshedRight);
+				}
+
+				private RightEditPanel newRightEditPanel(RightEntity refreshedRight) {
+					return new RightEditPanel(modalWindow.getContentId(), refreshedRight, false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(AjaxRequestTarget target) {
-							target.addComponent(container);
-							target.addComponent(getFeedback());
 							rightService.refreshGlobalApplicationRights();
+							target.addComponent(refreshTable);
+							target.addComponent(getFeedback());
 							info(getString("msg.saved"));
 							modalWindow.close(target);
 						}
-
 					};
-					modalWindow.setInitialHeight(440);
-					modalWindow.setInitialWidth(620);
-					modalWindow.setContent(editRightPanel);
-					modalWindow.show(target);
-
 				}
+			};
+		}
 
-			});
-
-			item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+		private AttributeModifier createAlternatingModifier(final Item<RightEntity> item) {
+			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public String getObject() {
 					return (item.getIndex() % 2 != 0) ? "even" : "odd";
 				}
-			}));
+			});
 		}
 	};
 

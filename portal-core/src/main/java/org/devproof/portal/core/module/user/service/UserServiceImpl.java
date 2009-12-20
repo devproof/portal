@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void setNewPassword(String username, String newPassword) {
+	public void saveNewPassword(String username, String newPassword) {
 		UserEntity user = findUserByUsername(username);
 		user.setPasswordMD5(PortalUtil.generateMd5(newPassword));
 		user.setChangedAt(PortalUtil.now());

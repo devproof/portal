@@ -80,5 +80,5 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	/**
 	 * Sets a new password
 	 */
-	public void setNewPassword(String username, String newPassword);
+	public void saveNewPassword(String username, String newPassword);
 }

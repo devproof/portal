@@ -292,7 +292,7 @@ public class UserServiceImplTest extends TestCase {
 		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(user);
 		userDaoMock.save(user);
 		EasyMock.replay(userDaoMock);
-		impl.setNewPassword("testuser", "12345");
+		impl.saveNewPassword("testuser", "12345");
 		assertNull(user.getForgotPasswordCode());
 		assertEquals(PortalUtil.generateMd5("12345"), user.getPasswordMD5());
 		EasyMock.verify(userDaoMock);

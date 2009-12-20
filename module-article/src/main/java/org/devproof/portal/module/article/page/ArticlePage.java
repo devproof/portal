@@ -68,7 +68,7 @@ public class ArticlePage extends ArticleBasePage {
 	public ArticlePage(PageParameters params) {
 		super(params);
 		this.params = params;
-		createArticleQuery();
+		setArticleQuery();
 		add(createArticleDataView());
 		add(createPagingPanel());
 		addFilterBox(createArticleSearchBoxPanel());
@@ -92,14 +92,13 @@ public class ArticlePage extends ArticleBasePage {
 		return new BookmarkablePagingPanel("paging", dataView, ArticlePage.class, params);
 	}
 
-	private ArticleQuery createArticleQuery() {
+	private void setArticleQuery() {
 		query = new ArticleQuery();
 		PortalSession session = (PortalSession) getSession();
 		if (!session.hasRight("article.view")) {
 			query.setRole(session.getRole());
 		}
 		articleDataProvider.setQueryObject(query);
-		return query;
 	}
 
 	private class ArticleDataView extends DataView<ArticleEntity> {

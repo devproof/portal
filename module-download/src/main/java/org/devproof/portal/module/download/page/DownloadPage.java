@@ -78,7 +78,7 @@ public class DownloadPage extends DownloadBasePage {
 	public DownloadPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		createDownloadQuery();
+		setDownloadQuery();
 		add(createDownloadDataView());
 		addFilterBox(createDownloadSearchBoxPanel());
 		add(createPagingPanel());
@@ -117,7 +117,7 @@ public class DownloadPage extends DownloadBasePage {
 		return dataView;
 	}
 
-	private DownloadQuery createDownloadQuery() {
+	private DownloadQuery setDownloadQuery() {
 		PortalSession session = (PortalSession) getSession();
 		query = new DownloadQuery();
 

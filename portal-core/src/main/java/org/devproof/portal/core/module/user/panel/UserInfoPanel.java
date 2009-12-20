@@ -33,21 +33,63 @@ public class UserInfoPanel extends Panel {
 	private SimpleDateFormat dateFormat;
 	@SpringBean(name = "dateTimeFormat")
 	private SimpleDateFormat dateTimeFormat;
+	private UserEntity user;
 
 	public UserInfoPanel(String id, UserEntity user) {
 		super(id);
+		this.user = user;
+		add(createUsernameLabel());
+		add(createFirstnameLabel());
+		add(createLastnameLabel());
+		add(createBirthdayLabel());
+		add(createEmailLabel());
+		add(createActiveLabel());
+		add(createConfirmedLabel());
+		add(createRegistrationDateLabel());
+		add(createLastLoginTimeLabel());
+		add(createLastIpLabel());
+	}
 
-		add(new Label("username", user.getUsername()));
-		add(new Label("firstname", user.getFirstname()));
-		add(new Label("lastname", user.getLastname()));
-		add(new Label("birthday", user.getBirthday() != null ? dateFormat.format(user.getBirthday()) : ""));
-		add(new Label("email", user.getEmail()));
-		add(new Label("active", user.getActive() != null ? getString("active." + user.getActive().toString()) : ""));
-		add(new Label("confirmed", user.getConfirmed() != null ? getString("confirmed."
-				+ user.getConfirmed().toString()) : ""));
-		add(new Label("registeredAt", user.getRegistrationDate() != null ? dateTimeFormat.format(user
-				.getRegistrationDate()) : ""));
-		add(new Label("lastLoginAt", user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt()) : ""));
-		add(new Label("lastIp", user.getLastIp()));
+	private Label createLastIpLabel() {
+		return new Label("lastIp", user.getLastIp());
+	}
+
+	private Label createLastLoginTimeLabel() {
+		return new Label("lastLoginAt", user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt())
+				: "");
+	}
+
+	private Label createRegistrationDateLabel() {
+		return new Label("registeredAt", user.getRegistrationDate() != null ? dateTimeFormat.format(user
+				.getRegistrationDate()) : "");
+	}
+
+	private Label createConfirmedLabel() {
+		return new Label("confirmed", user.getConfirmed() != null ? getString("confirmed."
+				+ user.getConfirmed().toString()) : "");
+	}
+
+	private Label createActiveLabel() {
+		return new Label("active", user.getActive() != null ? getString("active." + user.getActive().toString()) : "");
+	}
+
+	private Label createEmailLabel() {
+		return new Label("email", user.getEmail());
+	}
+
+	private Label createBirthdayLabel() {
+		return new Label("birthday", user.getBirthday() != null ? dateFormat.format(user.getBirthday()) : "");
+	}
+
+	private Label createLastnameLabel() {
+		return new Label("lastname", user.getLastname());
+	}
+
+	private Label createFirstnameLabel() {
+		return new Label("firstname", user.getFirstname());
+	}
+
+	private Label createUsernameLabel() {
+		return new Label("username", user.getUsername());
 	}
 }

@@ -22,6 +22,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.MessagePage;
@@ -48,22 +49,34 @@ public class ReenterEmailPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
+	private String username;
+	private UserEntity user;
+
 	public ReenterEmailPage(String username) {
-		super(new PageParameters("username=" + username));
-		UserEntity user = userService.findUserByUsername(username);
+		super(new PageParameters());
+		this.username = username;
+		setUser();
+		add(createReenterEmailForm());
+	}
+
+	private Form<UserEntity> createReenterEmailForm() {
 		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
+		form.add(createEmailField());
+		form.add(createRequestButton());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		RequiredTextField<?> email = new RequiredTextField<String>("email");
-		form.add(email);
+	private TextField<String> createEmailField() {
+		return new RequiredTextField<String>("email");
+	}
 
-		form.add(new Button("requestButton") {
+	private Button createRequestButton() {
+		return new Button("requestButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
-				UserEntity user = (UserEntity) getForm().getModelObject();
 				user.setChangedAt(PortalUtil.now());
 				user.setConfirmed(false);
 				user.setConfirmationCode(UUID.randomUUID().toString());
@@ -81,9 +94,13 @@ public class ReenterEmailPage extends TemplatePage {
 
 				emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
 						placeholder);
-				setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
 				userService.save(user);
+				setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
 			}
-		});
+		};
+	}
+
+	private void setUser() {
+		user = userService.findUserByUsername(username);
 	}
 }

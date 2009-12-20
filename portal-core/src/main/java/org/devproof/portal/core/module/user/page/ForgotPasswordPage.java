@@ -56,59 +56,91 @@ public class ForgotPasswordPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private String captchaChallengeCode;
+	private CaptchaImageResource captchaImageResource;
+	private Boolean captchaEnabled;
+	private TextField<String> emailOrUser;
 
 	public ForgotPasswordPage(PageParameters params) {
 		super(params);
+		setCaptchaEnabled();
+		setCaptchaChallengeCode();
+		setCaptchaImageResource();
+		add(createForgotPasswordForm());
+	}
+
+	private Form<Serializable> createForgotPasswordForm() {
 		Form<Serializable> form = new Form<Serializable>("form");
+		form.add(createEmailOrUsernameField());
+		form.add(createCaptchaImageContainer());
+		form.add(createCaptchaFieldContainer());
+		form.add(createRequestButton());
 		form.setOutputMarkupId(true);
-		addOrReplace(form);
+		return form;
+	}
 
-		FormComponent<String> fc;
-
-		final RequiredTextField<?> emailoruser = new RequiredTextField<String>("emailoruser", Model.of(""));
-		form.add(emailoruser);
-
-		Boolean enableCaptcha = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
-		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
+	private WebMarkupContainer createCaptchaFieldContainer() {
 		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
-		trCaptcha1.setVisible(enableCaptcha);
-		trCaptcha2.setVisible(enableCaptcha);
+		trCaptcha2.add(createCaptchaCodeField());
+		trCaptcha2.setVisible(captchaEnabled);
+		return trCaptcha2;
+	}
 
-		form.add(trCaptcha1);
-		form.add(trCaptcha2);
+	private WebMarkupContainer createCaptchaImageContainer() {
+		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
+		trCaptcha1.add(createCaptchaImage());
+		trCaptcha1.setVisible(captchaEnabled);
+		return trCaptcha1;
+	}
 
-		final CaptchaImageResource captchaImageResource = new CaptchaImageResource(PortalUtil.randomString(6, 8));
-		trCaptcha1.add(new Image("captchacodeimage", captchaImageResource));
+	private void setCaptchaImageResource() {
+		captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
+	}
 
+	private void setCaptchaChallengeCode() {
+		captchaChallengeCode = PortalUtil.randomString(6, 8);
+	}
+
+	private Image createCaptchaImage() {
+		return new Image("captchacodeimage", captchaImageResource);
+	}
+
+	private FormComponent<String> createCaptchaCodeField() {
+		FormComponent<String> fc;
 		fc = new TextField<String>("captchacode", Model.of(""));
-		fc.setRequired(enableCaptcha);
-		trCaptcha2.add(fc);
-
-		if (enableCaptcha) {
-			fc.add(new AbstractValidator<String>() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void onValidate(IValidatable<String> ivalidatable) {
-					if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
-						captchaImageResource.invalidate();
-						error(ivalidatable);
-					}
-				}
-
-				@Override
-				protected String resourceKey() {
-					return "wrong.captchacode";
-				}
-			});
+		fc.setRequired(captchaEnabled);
+		if (captchaEnabled) {
+			fc.add(createCaptchaValidator());
 		}
+		return fc;
+	}
 
-		form.add(new Button("requestButton") {
+	private AbstractValidator<String> createCaptchaValidator() {
+		return new AbstractValidator<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onValidate(IValidatable<String> ivalidatable) {
+				if (!captchaChallengeCode.equalsIgnoreCase(ivalidatable.getValue())) {
+					captchaImageResource.invalidate();
+					error(ivalidatable);
+				}
+			}
+
+			@Override
+			protected String resourceKey() {
+				return "wrong.captchacode";
+			}
+		};
+	}
+
+	private Button createRequestButton() {
+		return new Button("requestButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
-				String value = emailoruser.getValue();
+				String value = emailOrUser.getValue();
 				UserEntity userByName = userService.findUserByUsername(value);
 				List<UserEntity> users = new ArrayList<UserEntity>();
 				if (userByName == null) {
@@ -129,7 +161,7 @@ public class ForgotPasswordPage extends TemplatePage {
 						StringBuffer url = getWebRequestCycle().getWebRequest().getHttpServletRequest().getRequestURL();
 						PageParameters param = new PageParameters();
 						param.add(ResetPasswordPage.PARAM_USER, user.getUsername());
-						param.add(ResetPasswordPage.PARAM_KEY, user.getForgotPasswordCode());
+						param.add(ResetPasswordPage.PARAM_CONFIRMATION_CODE, user.getForgotPasswordCode());
 						url = new StringBuffer(StringUtils.substringBeforeLast(url.toString(), "/")).append("/");
 						url.append(ForgotPasswordPage.this.getWebRequestCycle().urlFor(ResetPasswordPage.class, param));
 						placeholder.setResetPasswordLink(url.toString());
@@ -139,6 +171,15 @@ public class ForgotPasswordPage extends TemplatePage {
 					setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
 				}
 			}
-		});
+		};
+	}
+
+	private TextField<String> createEmailOrUsernameField() {
+		emailOrUser = new RequiredTextField<String>("emailoruser", Model.of(""));
+		return emailOrUser;
+	}
+
+	private void setCaptchaEnabled() {
+		captchaEnabled = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 	}
 }

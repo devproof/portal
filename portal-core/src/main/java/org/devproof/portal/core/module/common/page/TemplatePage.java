@@ -90,7 +90,7 @@ public abstract class TemplatePage extends WebPage {
 	private boolean tagCloudBoxHideTitle;
 	private IModel<String> pageTitle;
 	private PageParameters params;
-	
+
 	public TemplatePage(PageParameters params) {
 		this.params = params;
 		handleInfoMessageParams();
@@ -275,11 +275,8 @@ public abstract class TemplatePage extends WebPage {
 			item.add(pageAdminBox = createPageAdminBox());
 			boxInstance = pageAdminBox;
 		} else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
-			if (isNotLoginPage()) {
-				item.add(boxInstance = createLoginBox());
-			} else {
-				item.remove();
-			}
+			item.add(boxInstance = createLoginBox());
+			item.setVisible(isNotLoginPage());
 		} else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
 			if (tagCloudBox == null) {
 				item.add(tagCloudBox = createEmptyFilterBox());

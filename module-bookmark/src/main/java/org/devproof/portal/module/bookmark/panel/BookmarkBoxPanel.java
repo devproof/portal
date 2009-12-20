@@ -47,10 +47,14 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 
 	public BookmarkBoxPanel(String id) {
 		super(id);
-		createLatestBookmarks();
-		setVisible(isBookmarkAvailable());
+		setLatestBookmarks();
+		setVisibility();
 		add(createTitleContainer());
 		add(createRepeatingViewWithBookmarks());
+	}
+
+	private void setVisibility() {
+		setVisible(isBookmarkAvailable());
 	}
 
 	private boolean isBookmarkAvailable() {
@@ -74,7 +78,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 		return link;
 	}
 
-	private List<BookmarkEntity> createLatestBookmarks() {
+	private List<BookmarkEntity> setLatestBookmarks() {
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
 		latestBookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0, num);

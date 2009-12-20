@@ -73,33 +73,41 @@ public class UploadCenterPage extends TemplatePage {
 
 	public UploadCenterPage(PageParameters params) {
 		super(params);
-		createRootFolder();
-		createSelectedFolder();
-		createHasRightToCreate();
+		setRootFolder();
+		setSelectedFolder();
+		setHasRightToCreate();
 		add(createModalWindow());
 		add(createFolderTreeTable());
 		addPageAdminBoxLink(createUploadLink());
 		addPageAdminBoxLink(createFolderLink());
 	}
 
-	private void createSelectedFolder() {
+	private void setSelectedFolder() {
 		selectedFolder = rootFolder;
 	}
 
-	private void createRootFolder() {
+	private void setRootFolder() {
 		rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
 	}
 
 	private AjaxLink<ModalWindow> createFolderLink() {
 		AjaxLink<ModalWindow> createFolderLink = newCreateFolderLink();
-		createFolderLink.add(new Label("linkName", getString("createFolderLink")));
+		createFolderLink.add(createFolderLinkLabel());
 		return createFolderLink;
+	}
+
+	private Label createFolderLinkLabel() {
+		return new Label("linkName", getString("createFolderLink"));
 	}
 
 	private AjaxLink<ModalWindow> createUploadLink() {
 		AjaxLink<ModalWindow> uploadLink = newUploadLink(modalWindow);
-		uploadLink.add(new Label("linkName", getString("uploadLink")));
+		uploadLink.add(createUploadLinkLabel());
 		return uploadLink;
+	}
+
+	private Label createUploadLinkLabel() {
+		return new Label("linkName", getString("uploadLink"));
 	}
 
 	private TreeTable createFolderTreeTable() {
@@ -137,7 +145,7 @@ public class UploadCenterPage extends TemplatePage {
 						selectedNode = (DefaultMutableTreeNode) node.getParent();
 					}
 				} else {
-					createSelectedFolder();
+					setSelectedFolder();
 					selectedNode = rootNode;
 				}
 			}
@@ -165,7 +173,6 @@ public class UploadCenterPage extends TemplatePage {
 						UploadCenterPage.this.forceRefresh(target);
 						modalWindow.close(target);
 					}
-
 				};
 			}
 		};
@@ -177,7 +184,7 @@ public class UploadCenterPage extends TemplatePage {
 		return modalWindow;
 	}
 
-	private void createHasRightToCreate() {
+	private void setHasRightToCreate() {
 		PortalSession session = (PortalSession) getSession();
 		hasRightCreateDownload = session.hasRight("page.DownloadEditPage");
 	}

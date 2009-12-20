@@ -29,20 +29,27 @@ import org.devproof.portal.core.module.right.query.RightQuery;
  * @author Carsten Hufe
  */
 public abstract class RightSearchBoxPanel extends Panel {
-
 	private static final long serialVersionUID = 1L;
+
+	private RightQuery query;
 
 	public RightSearchBoxPanel(String id, RightQuery query) {
 		super(id);
+		this.query = query;
+		add(createRightSearchForm());
+	}
+
+	private Form<RightQuery> createRightSearchForm() {
 		Form<RightQuery> form = new Form<RightQuery>("searchForm", new CompoundPropertyModel<RightQuery>(query));
+		form.add(createSearchTextField());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		FormComponent<?> fc = null;
-		fc = new TextField<String>("rightAndDescription");
+	private FormComponent<String> createSearchTextField() {
+		FormComponent<String> fc = new TextField<String>("rightAndDescription");
 		fc.add(new AjaxRefresh("onkeyup"));
-		form.add(fc);
-
+		return fc;
 	}
 
 	protected abstract void onSubmit(AjaxRequestTarget target);

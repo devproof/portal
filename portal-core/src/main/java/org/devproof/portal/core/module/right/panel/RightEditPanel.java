@@ -54,36 +54,55 @@ public abstract class RightEditPanel extends Panel {
 	private RoleService roleService;
 	@SpringBean(name = "rightService")
 	private RightService rightService;
+	private FeedbackPanel feedback;
+	private RightEntity right;
+	private boolean isRightEditable;
 
 	public RightEditPanel(String id, RightEntity right, boolean isRightEditable) {
 		super(id, Model.of(right));
-		final FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		add(feedback);
+		this.right = right;
+		this.isRightEditable = isRightEditable;
+		add(createFeedbackPanel());
+		add(createRightEditForm());
+	}
 
+	private Form<RightEntity> createRightEditForm() {
 		Form<RightEntity> form = new Form<RightEntity>("form", new CompoundPropertyModel<RightEntity>(right));
+		form.add(createRightNameField());
+		form.add(createDescriptionField());
+		form.add(createRolesPalette());
+		form.add(createSaveButton());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		FormComponent<String> fc;
+	private AjaxButton createSaveButton() {
+		return new AjaxButton("saveButton") {
+			private static final long serialVersionUID = 1L;
 
-		fc = new RequiredTextField<String>("right");
-		fc.add(StringValidator.minimumLength(5));
-		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
-		fc.setEnabled(isRightEditable);
-		form.add(fc);
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				rightService.save((RightEntity) form.getModelObject());
+				RightEditPanel.this.onSave(target);
+			}
 
-		fc = new TextArea<String>("description");
-		fc.setRequired(true);
-		fc.add(StringValidator.minimumLength(10));
-		form.add(fc);
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				target.addComponent(feedback);
+			}
+		};
+	}
 
-		// roles
+	private Palette<RoleEntity> createRolesPalette() {
 		IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
 		IModel<Collection<RoleEntity>> allRoles = new CollectionModel<RoleEntity>(roleService
 				.findAllOrderByDescription());
 		IModel<List<RoleEntity>> rightsRoles = new ListModel<RoleEntity>(right.getRoles());
+		return newRolesPalette(renderer, allRoles, rightsRoles);
+	}
 
+	private Palette<RoleEntity> newRolesPalette(IChoiceRenderer<RoleEntity> renderer,
+			IModel<Collection<RoleEntity>> allRoles, IModel<List<RoleEntity>> rightsRoles) {
 		Palette<RoleEntity> palette = new Palette<RoleEntity>("roles", rightsRoles, allRoles, renderer, 10, false) {
 			private static final long serialVersionUID = 1L;
 
@@ -102,23 +121,30 @@ public abstract class RightEditPanel extends Panel {
 				return new Label(componentId, getString("palette.selected"));
 			}
 		};
+		return palette;
+	}
 
-		form.add(palette);
+	private FormComponent<String> createDescriptionField() {
+		FormComponent<String> fc;
+		fc = new TextArea<String>("description");
+		fc.setRequired(true);
+		fc.add(StringValidator.minimumLength(10));
+		return fc;
+	}
 
-		form.add(new AjaxButton("saveButton", form) {
-			private static final long serialVersionUID = 1L;
+	private FormComponent<String> createRightNameField() {
+		FormComponent<String> fc;
+		fc = new RequiredTextField<String>("right");
+		fc.add(StringValidator.minimumLength(5));
+		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+		fc.setEnabled(isRightEditable);
+		return fc;
+	}
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				rightService.save((RightEntity) form.getModelObject());
-				RightEditPanel.this.onSave(target);
-			}
-
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(feedback);
-			}
-		});
+	private FeedbackPanel createFeedbackPanel() {
+		feedback = new FeedbackPanel("feedbackPanel");
+		feedback.setOutputMarkupId(true);
+		return feedback;
 	}
 
 	public abstract void onSave(AjaxRequestTarget target);

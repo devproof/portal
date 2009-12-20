@@ -22,11 +22,11 @@ import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.StatelessForm;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.pages.RedirectPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
@@ -43,69 +43,101 @@ import org.devproof.portal.core.module.user.page.RegisterPage;
 public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
-	private ValueMap properties = new ValueMap();
+	private PageParameters params;
+	private ValueMap valueMap;
 	private WebMarkupContainer titleContainer;
 
 	public LoginBoxPanel(String id, PageParameters params) {
 		super(id);
-		add(titleContainer = new WebMarkupContainer("title"));
-		final HiddenField<String> hiddenParam = new HiddenField<String>("optparam", Model.of(params.getString("0")));
-		StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm") {
+		this.params = params;
+		setValueMap();
+		add(createTitleContainer());
+		add(createLoginForm());
+		add(createRegisterLink());
+		add(createForgotPasswordLink());
+	}
+
+	private StatelessForm<ValueMap> createLoginForm() {
+		StatelessForm<ValueMap> form = newLoginForm();
+		form.add(createUsernameField());
+		form.add(createPasswordField());
+		form.add(createOptParamHiddenField());
+		return form;
+	}
+
+	private StatelessForm<ValueMap> newLoginForm() {
+		return new StatelessForm<ValueMap>("loginForm", new CompoundPropertyModel<ValueMap>(valueMap)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
+				String username = valueMap.getString("username");
+				String password = valueMap.getString("password");
 				PortalSession session = (PortalSession) getSession();
 				try {
 
-					String message = session.authenticate(properties.getString("username"), properties
-							.getString("password"));
+					String message = session.authenticate(username, password);
 					if (message == null) {
-
 						info(getString("logged.in"));
-						// redirect to the same page so that the rights will be
-						// rechecked!
-						if (getPage() instanceof MessagePage) {
-							MessagePage msgPage = (MessagePage) getPage();
-							String redirectUrl = msgPage.getRedirectURLAfterLogin();
-							if (redirectUrl != null) {
-								setResponsePage(new RedirectPage(redirectUrl));
-							} else {
-								@SuppressWarnings("unchecked")
-								Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-								setResponsePage(homePage);
-							}
-						} else {
-							setResponsePage(getPage().getClass(), new PageParameters("0=" + hiddenParam.getValue()));
-						}
+						redirectToSamePage();
 					} else {
 						error(getString(message));
 					}
 				} catch (UserNotConfirmedException e) {
-					setResponsePage(new ReenterEmailPage(properties.getString("username")));
+					setResponsePage(new ReenterEmailPage(valueMap.getString("username")));
 				}
 			}
 
-			@Override
-			protected void onValidate() {
-				if (getPage().getClass().equals(MessagePage.class)) {
-					setRedirect(false);
-					@SuppressWarnings("unchecked")
-					Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-					setResponsePage(homePage);
+			private void redirectToSamePage() {
+				// redirect to the same page so that the rights will be
+				// rechecked!
+				String optParam = valueMap.getString("optparam");
+				if (getPage() instanceof MessagePage) {
+					MessagePage msgPage = (MessagePage) getPage();
+					String redirectUrl = msgPage.getRedirectURLAfterLogin();
+					if (redirectUrl != null) {
+						setResponsePage(new RedirectPage(redirectUrl));
+					} else {
+						@SuppressWarnings("unchecked")
+						Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
+						setResponsePage(homePage);
+					}
+				} else {
+					setResponsePage(getPage().getClass(), new PageParameters("0=" + optParam));
 				}
-				super.onValidate();
 			}
-
 		};
-		form.setModel(new CompoundPropertyModel<ValueMap>(properties));
-		form.add(new RequiredTextField<String>("username"));
-		form.add(new PasswordTextField("password"));
+	}
+
+	private HiddenField<String> createOptParamHiddenField() {
 		// View for ArticleViewPage and OtherPageViewPage
-		form.add(hiddenParam);
-		add(form);
-		add(new BookmarkablePageLink<Void>("registerLink", RegisterPage.class));
-		add(new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class));
+		return new HiddenField<String>("optparam");
+	}
+
+	private PasswordTextField createPasswordField() {
+		return new PasswordTextField("password");
+	}
+
+	private TextField<String> createUsernameField() {
+		return new RequiredTextField<String>("username");
+	}
+
+	private BookmarkablePageLink<Void> createForgotPasswordLink() {
+		return new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class);
+	}
+
+	private BookmarkablePageLink<Void> createRegisterLink() {
+		return new BookmarkablePageLink<Void>("registerLink", RegisterPage.class);
+	}
+
+	private void setValueMap() {
+		valueMap = new ValueMap();
+		valueMap.add("optparam", params.getString("0"));
+	}
+
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
 	}
 
 	@Override

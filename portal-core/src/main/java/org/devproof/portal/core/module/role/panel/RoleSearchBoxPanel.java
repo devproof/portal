@@ -32,27 +32,37 @@ import org.devproof.portal.core.module.role.query.RoleQuery;
  * @author Carsten Hufe
  */
 public abstract class RoleSearchBoxPanel extends Panel {
-
 	private static final long serialVersionUID = 1L;
+
+	private RoleQuery query;
 
 	public RoleSearchBoxPanel(String id, RoleQuery query) {
 		super(id);
+		this.query = query;
+		add(createRoleSearchForm());
+	}
+
+	private Form<RoleQuery> createRoleSearchForm() {
 		Form<RoleQuery> form = new Form<RoleQuery>("searchForm", new CompoundPropertyModel<RoleQuery>(query));
+		form.add(createSearchTextField());
+		form.add(createActiveDropDown());
 		form.setOutputMarkupId(true);
-		add(form);
+		return form;
+	}
 
-		FormComponent<?> fc = null;
-		fc = new TextField<String>("description");
+	private FormComponent<String> createSearchTextField() {
+		FormComponent<String> fc = new TextField<String>("description");
 		fc.add(new AjaxRefresh("onkeyup"));
-		form.add(fc);
+		return fc;
+	}
 
+	private Select createActiveDropDown() {
 		Select active = new Select("active");
-		form.add(active);
 		active.add(new SelectOption<Boolean>("chooseActive", new Model<Boolean>()));
 		active.add(new SelectOption<Boolean>("activeTrue", Model.of(Boolean.TRUE)));
 		active.add(new SelectOption<Boolean>("activeFalse", Model.of(Boolean.FALSE)));
 		active.add(new AjaxRefresh("onchange"));
-
+		return active;
 	}
 
 	protected abstract void onSubmit(AjaxRequestTarget target);
@@ -73,7 +83,6 @@ public abstract class RoleSearchBoxPanel extends Panel {
 		@Override
 		protected void onSubmit(AjaxRequestTarget target) {
 			RoleSearchBoxPanel.this.onSubmit(target);
-
 		}
 	}
 }

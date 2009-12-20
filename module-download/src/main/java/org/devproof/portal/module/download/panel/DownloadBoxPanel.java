@@ -46,10 +46,14 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 	private List<DownloadEntity> latestDownloads;
 	public DownloadBoxPanel(String id) {
 		super(id);
-		createLatestDownloads();
-		setVisible(isDownloadAvailable());
+		setLatestDownloads();
+		setVisibility();
 		add(createRepeatingViewWithDownloads());
 		add(createTitleContainer());
+	}
+
+	private void setVisibility() {
+		setVisible(isDownloadAvailable());
 	}
 
 	private boolean isDownloadAvailable() {
@@ -78,7 +82,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 		return link;
 	}
 
-	private List<DownloadEntity> createLatestDownloads() {
+	private List<DownloadEntity> setLatestDownloads() {
 		PortalSession session = (PortalSession) getSession();
 		Integer num = configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
 		latestDownloads = downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0,
