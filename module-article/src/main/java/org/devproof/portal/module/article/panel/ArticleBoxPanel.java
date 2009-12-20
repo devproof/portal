@@ -94,8 +94,12 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 	private BookmarkablePageLink<ArticlePage> createLinkToArticle(ArticleEntity article) {
 		BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
 		link.setParameter("id", article.getId());
-		link.add(new Label("linkName", article.getTitle()));
+		link.add(createLinkToArticleLabel(article));
 		return link;
+	}
+
+	private Label createLinkToArticleLabel(ArticleEntity article) {
+		return new Label("linkName", article.getTitle());
 	}
 
 	@Override
