@@ -82,12 +82,12 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 			base.setModifiedAt(PortalUtil.now());
 			base.setModifiedBy(username);
 		}
-		this.getSession().merge(entity);
+		getSession().merge(entity);
 	}
 
 	@Override
 	public void refresh(T entity) {
-		this.getSession().refresh(entity);
+		getSession().refresh(entity);
 	}
 
 	public void delete(T entity) {
@@ -96,7 +96,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 			LOG.debug("No transaction found, start one.");
 			holder.setTransaction(holder.getSession().beginTransaction());
 		}
-		this.getSession().delete(entity);
+		getSession().delete(entity);
 	}
 
 	public Object executeFinder(String query, Object[] queryArgs, Class<?> returnType, Integer firstResults,
