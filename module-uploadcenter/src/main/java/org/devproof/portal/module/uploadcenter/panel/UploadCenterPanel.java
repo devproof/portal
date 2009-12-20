@@ -141,7 +141,6 @@ public abstract class UploadCenterPanel extends Panel {
 				CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
 				setResponsePage(createDownloadPage.newInstance(fileModel.getObject().toURI().toString()));
 			}
-
 		};
 	}
 

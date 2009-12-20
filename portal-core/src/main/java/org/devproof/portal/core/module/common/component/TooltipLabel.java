@@ -30,32 +30,41 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public class TooltipLabel extends Panel {
 	private static final long serialVersionUID = 1L;
+	private Component label;
+	private Component tooltip;
+	private String tooltipMarkupId;
 
 	public TooltipLabel(String id, Component label, Component tooltip) {
 		super(id);
-		String tooltipMarkupId = getTooltipMarkupId();
-		modifyMarkupId(label, tooltip, tooltipMarkupId);
+		this.label = label;
+		this.tooltip = tooltip;
+		setTooltipMarkupId();
+		modifyMarkupId();
 		add(createJavascriptHeaderContributor());
 		add(createCSSHeaderContributor());
-		add(createTooltipLink(label, tooltipMarkupId));
+		add(createTooltipLink());
 		add(tooltip);
 	}
 
-	private String getTooltipMarkupId() {
-		double d = Math.random();
-		String str = Double.toString(d).substring(2);
-		String tooltipMarkupId = "MID" + str;
-		return tooltipMarkupId;
+	private void setTooltipMarkupId() {
+		tooltipMarkupId = generateTooltipMarkupId();
 	}
 
-	private void modifyMarkupId(Component label, Component tooltip, String tooltipMarkupId) {
+	private String generateTooltipMarkupId() {
+		double d = Math.random();
+		String str = Double.toString(d).substring(2);
+		str = "MID" + str;
+		return str;
+	}
+
+	private void modifyMarkupId() {
 		tooltip.setMarkupId("tooltip");
 		label.setMarkupId("label");
 		tooltip.add(createIdAttributeModifier(tooltipMarkupId));
 	}
 
-	private WebMarkupContainer createTooltipLink(Component label, String tooltipMarkupId) {
-		String labelMarkupId = getTooltipMarkupId();
+	private WebMarkupContainer createTooltipLink() {
+		String labelMarkupId = generateTooltipMarkupId();
 		WebMarkupContainer link = new WebMarkupContainer("link");
 		link.add(createOnMouseOverAttributeModifier(tooltipMarkupId, labelMarkupId));
 		link.add(createOnMouseOutAttributeModifier(tooltipMarkupId));

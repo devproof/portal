@@ -56,12 +56,12 @@ public abstract class RoleEditPanel extends Panel {
 	private RightService rightService;
 	private FeedbackPanel feedback;
 	private RoleEntity role;
-	private boolean isRightEditable;
+	private boolean isRoleEditable;
 
-	public RoleEditPanel(String id, RoleEntity role, boolean isRightEditable) {
+	public RoleEditPanel(String id, RoleEntity role, boolean isRoleEditable) {
 		super(id, Model.of(role));
 		this.role = role;
-		this.isRightEditable = isRightEditable;
+		this.isRoleEditable = isRoleEditable;
 		add(createFeedbackPanel());
 		add(createRoleEditForm());
 	}
@@ -132,7 +132,7 @@ public abstract class RoleEditPanel extends Panel {
 	private FormComponent<String> createRoleDescriptionField() {
 		FormComponent<String> fc = new RequiredTextField<String>("description");
 		fc.add(StringValidator.minimumLength(5));
-		fc.setEnabled(isRightEditable);
+		fc.setEnabled(isRoleEditable);
 		return fc;
 	}
 

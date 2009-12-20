@@ -34,9 +34,8 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 
 	private T entity;
 	private ModalWindow modalWindow;
-//	private Form<T> form;
-	
-	public ConfirmDeletePanel(String id, T entity, final ModalWindow modalWindow) {
+
+	public ConfirmDeletePanel(String id, T entity, ModalWindow modalWindow) {
 		super(id);
 		this.entity = entity;
 		this.modalWindow = modalWindow;
