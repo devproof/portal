@@ -62,12 +62,13 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 	}
 
 	public void save(T entity) {
-		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
-		if (holder.getTransaction() == null) {
-			holder.setTransaction(holder.getSession().beginTransaction());
-		}
+		openTransaction();
 		LOG.debug("save " + type);
+		updateModificationData(entity);
+		getSession().merge(entity);
+	}
 
+	private void updateModificationData(T entity) {
 		if (entity instanceof BaseEntity) {
 			BaseEntity base = (BaseEntity) entity;
 			// only works in the request
@@ -82,7 +83,13 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 			base.setModifiedAt(PortalUtil.now());
 			base.setModifiedBy(username);
 		}
-		getSession().merge(entity);
+	}
+
+	private void openTransaction() {
+		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
+		if (holder.getTransaction() == null) {
+			holder.setTransaction(holder.getSession().beginTransaction());
+		}
 	}
 
 	@Override
@@ -101,22 +108,10 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 
 	public Object executeFinder(String query, Object[] queryArgs, Class<?> returnType, Integer firstResults,
 			Integer maxResults) {
-		String tmpQuery = query;
-		if (query.contains("$TYPE")) {
-			tmpQuery = tmpQuery.replace("$TYPE", type.getSimpleName());
-		}
-		Query q = getSession().createQuery(tmpQuery);
-		if (queryArgs != null) {
-			for (int i = 0; i < queryArgs.length; i++) {
-				q.setParameter(i, queryArgs[i]);
-			}
-		}
-		if (firstResults != null) {
-			q.setFirstResult(firstResults);
-		}
-		if (maxResults != null) {
-			q.setMaxResults(maxResults);
-		}
+		String hqlQuery = replaceGenericTypeName(query);
+		Query q = getSession().createQuery(hqlQuery);
+		setParameter(queryArgs, q);
+		setResultLimitations(firstResults, maxResults, q);
 		if (Collection.class.isAssignableFrom(returnType)) {
 			return q.list();
 		} else {
@@ -124,18 +119,35 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		}
 	}
 
-	public void executeUpdate(String query, Object[] queryArgs) {
-		String tmpQuery = query;
-		if (query.contains("$TYPE")) {
-			tmpQuery = tmpQuery.replace("$TYPE", type.getSimpleName());
+	private void setResultLimitations(Integer firstResults, Integer maxResults, Query q) {
+		if (firstResults != null) {
+			q.setFirstResult(firstResults);
 		}
-		Query q = getSession().createQuery(tmpQuery);
+		if (maxResults != null) {
+			q.setMaxResults(maxResults);
+		}
+	}
+
+	public void executeUpdate(String query, Object[] queryArgs) {
+		String hqlQuery = replaceGenericTypeName(query);
+		Query q = getSession().createQuery(hqlQuery);
+		setParameter(queryArgs, q);
+		q.executeUpdate();
+	}
+
+	private String replaceGenericTypeName(String query) {
+		if (query.contains("$TYPE")) {
+			return query.replace("$TYPE", type.getSimpleName());
+		}
+		return query;
+	}
+
+	private void setParameter(Object[] queryArgs, Query q) {
 		if (queryArgs != null) {
 			for (int i = 0; i < queryArgs.length; i++) {
 				q.setParameter(i, queryArgs[i]);
 			}
 		}
-		q.executeUpdate();
 	}
 
 	public Class<T> getType() {
