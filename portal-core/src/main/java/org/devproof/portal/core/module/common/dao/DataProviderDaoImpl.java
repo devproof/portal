@@ -55,59 +55,87 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 
 	private Query createHibernateQuery(String target, Class<T> clazz, String sortParam, boolean ascending,
 			Serializable beanQuery, List<String> prefetch) {
-		StringBuilder buf = new StringBuilder();
-		buf.append("Select ").append(target).append(" from ").append(clazz.getSimpleName()).append(" e ");
+		StringBuilder hqlQuery = new StringBuilder();
+		List<Object> queryParameter = new ArrayList<Object>();
+		appendSelectFrom(target, clazz, hqlQuery);
+		appendPrefetch(prefetch, hqlQuery);
+		appendWhereConditions(beanQuery, queryParameter, hqlQuery);
+		appendOrderBy(sortParam, ascending, hqlQuery);
+		return createHibernateQuery(hqlQuery.toString(), queryParameter);
+	}
 
-		if (prefetch != null) {
-			for (String preStr : prefetch) {
-				buf.append(" left join fetch e.").append(preStr).append(" ");
-			}
-		}
-
-		List<Object> values = new ArrayList<Object>();
+	private void appendWhereConditions(Serializable beanQuery, List<Object> queryParameter, StringBuilder hqlQuery) {
 		if (beanQuery != null) {
-			if (beanQuery.getClass().isAnnotationPresent(BeanJoin.class)) {
-				BeanJoin join = beanQuery.getClass().getAnnotation(BeanJoin.class);
-				buf.append(" ").append(join.value()).append(" ");
-			}
-
+			appendTableJoin(beanQuery, hqlQuery);
 			Method methods[] = beanQuery.getClass().getMethods();
 			if (methods.length > 0) {
 				boolean firstClause = true;
 				for (Method method : methods) {
-					if (method.getName().startsWith("get") && method.isAnnotationPresent(BeanQuery.class)) {
-						Object value = null;
-						try {
-							value = method.invoke(beanQuery);
-
-						} catch (Exception e) {
-							throw new UnhandledException(e);
-						}
+					if (isGetterWithBeanQuery(method)) {
+						Object value = invokeGetter(beanQuery, method);
 						if (value != null) {
 							if (firstClause) {
 								firstClause = false;
-								buf.append(" where ");
+								hqlQuery.append(" where ");
 							} else {
-								buf.append(" and ");
+								hqlQuery.append(" and ");
 							}
 							BeanQuery bean = method.getAnnotation(BeanQuery.class);
-							buf.append(bean.value());
+							hqlQuery.append(bean.value());
 							int countMatches = StringUtils.countMatches(bean.value(), "?");
 							for (int j = 0; j < countMatches; j++) {
-								values.add(value);
+								queryParameter.add(value);
 							}
 						}
 					}
 				}
 			}
 		}
+	}
 
-		if (sortParam != null) {
-			buf.append(" order by e.").append(sortParam).append(" ").append((ascending ? "ASC" : "DESC"));
+	private Object invokeGetter(Serializable beanQuery, Method method) {
+		Object value = null;
+		try {
+			value = method.invoke(beanQuery);
+
+		} catch (Exception e) {
+			throw new UnhandledException(e);
 		}
+		return value;
+	}
 
-		Query q = getSession().createQuery(buf.toString());
-		Object valArray[] = values.toArray();
+	private void appendTableJoin(Serializable beanQuery, StringBuilder hqlQuery) {
+		if (beanQuery.getClass().isAnnotationPresent(BeanJoin.class)) {
+			BeanJoin join = beanQuery.getClass().getAnnotation(BeanJoin.class);
+			hqlQuery.append(" ").append(join.value()).append(" ");
+		}
+	}
+
+	private boolean isGetterWithBeanQuery(Method method) {
+		return method.getName().startsWith("get") && method.isAnnotationPresent(BeanQuery.class);
+	}
+
+	private void appendOrderBy(String sortParam, boolean ascending, StringBuilder hqlQuery) {
+		if (sortParam != null) {
+			hqlQuery.append(" order by e.").append(sortParam).append(" ").append((ascending ? "ASC" : "DESC"));
+		}
+	}
+
+	private void appendPrefetch(List<String> prefetch, StringBuilder hqlQuery) {
+		if (prefetch != null) {
+			for (String preStr : prefetch) {
+				hqlQuery.append(" left join fetch e.").append(preStr).append(" ");
+			}
+		}
+	}
+
+	private void appendSelectFrom(String target, Class<T> clazz, StringBuilder hqlQuery) {
+		hqlQuery.append("Select ").append(target).append(" from ").append(clazz.getSimpleName()).append(" e ");
+	}
+
+	private Query createHibernateQuery(String query, List<Object> queryParameter) {
+		Query q = getSession().createQuery(query);
+		Object valArray[] = queryParameter.toArray();
 		for (int i = 0; i < valArray.length; i++) {
 			q.setParameter(i, valArray[i]);
 		}
