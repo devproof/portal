@@ -168,10 +168,14 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
 				SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
 						.unbindResource(sessionFactory);
+				commitTransaction(sessionHolder);
+				SessionFactoryUtils.closeSession(sessionHolder.getSession());
+			}
+
+			private void commitTransaction(SessionHolder sessionHolder) {
 				if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()) {
 					sessionHolder.getTransaction().commit();
 				}
-				SessionFactoryUtils.closeSession(sessionHolder.getSession());
 			}
 
 			private void openSession() {
