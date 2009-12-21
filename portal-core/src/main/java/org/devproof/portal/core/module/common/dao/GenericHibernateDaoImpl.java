@@ -105,7 +105,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		if (query.contains("$TYPE")) {
 			tmpQuery = tmpQuery.replace("$TYPE", type.getSimpleName());
 		}
-		Query q = this.getSession().createQuery(tmpQuery);
+		Query q = getSession().createQuery(tmpQuery);
 		if (queryArgs != null) {
 			for (int i = 0; i < queryArgs.length; i++) {
 				q.setParameter(i, queryArgs[i]);
