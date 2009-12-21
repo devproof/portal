@@ -57,14 +57,15 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 			Serializable beanQuery, List<String> prefetch) {
 		StringBuilder hqlQuery = new StringBuilder();
 		List<Object> queryParameter = new ArrayList<Object>();
-		appendSelectFrom(target, clazz, hqlQuery);
-		appendPrefetch(prefetch, hqlQuery);
-		appendWhereConditions(beanQuery, queryParameter, hqlQuery);
-		appendOrderBy(sortParam, ascending, hqlQuery);
+		hqlQuery.append(createSelectFrom(target, clazz));
+		hqlQuery.append(createPrefetch(prefetch));
+		hqlQuery.append(createWhereConditions(beanQuery, queryParameter));
+		hqlQuery.append(createOrderBy(sortParam, ascending));
 		return createHibernateQuery(hqlQuery.toString(), queryParameter);
 	}
 
-	private void appendWhereConditions(Serializable beanQuery, List<Object> queryParameter, StringBuilder hqlQuery) {
+	private StringBuilder createWhereConditions(Serializable beanQuery, List<Object> queryParameter) {
+		StringBuilder hqlQuery = new StringBuilder();
 		if (beanQuery != null) {
 			appendTableJoin(beanQuery, hqlQuery);
 			Method methods[] = beanQuery.getClass().getMethods();
@@ -91,6 +92,7 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 				}
 			}
 		}
+		return hqlQuery;
 	}
 
 	private Object invokeGetter(Serializable beanQuery, Method method) {
@@ -115,22 +117,28 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 		return method.getName().startsWith("get") && method.isAnnotationPresent(BeanQuery.class);
 	}
 
-	private void appendOrderBy(String sortParam, boolean ascending, StringBuilder hqlQuery) {
+	private StringBuilder createOrderBy(String sortParam, boolean ascending) {
+		StringBuilder hqlQuery = new StringBuilder();
 		if (sortParam != null) {
 			hqlQuery.append(" order by e.").append(sortParam).append(" ").append((ascending ? "ASC" : "DESC"));
 		}
+		return hqlQuery;
 	}
 
-	private void appendPrefetch(List<String> prefetch, StringBuilder hqlQuery) {
+	private StringBuilder createPrefetch(List<String> prefetch) {
+		StringBuilder hqlQuery = new StringBuilder();
 		if (prefetch != null) {
 			for (String preStr : prefetch) {
 				hqlQuery.append(" left join fetch e.").append(preStr).append(" ");
 			}
 		}
+		return hqlQuery;
 	}
 
-	private void appendSelectFrom(String target, Class<T> clazz, StringBuilder hqlQuery) {
+	private StringBuilder createSelectFrom(String target, Class<T> clazz) {
+		StringBuilder hqlQuery = new StringBuilder();
 		hqlQuery.append("Select ").append(target).append(" from ").append(clazz.getSimpleName()).append(" e ");
+		return hqlQuery;
 	}
 
 	private Query createHibernateQuery(String query, List<Object> queryParameter) {

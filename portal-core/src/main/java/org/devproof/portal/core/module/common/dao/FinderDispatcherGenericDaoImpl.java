@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.common.dao;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInterceptor;
@@ -77,63 +78,90 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		return new MethodInterceptor() {
 			public Object invoke(MethodInvocation invocation) throws Throwable {
 				/*
-				 * If the session will be opened at this place, the same method 
+				 * If the session will be opened at this place, the same method
 				 * closes the session and transaction
 				 */
-				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
-				boolean isSessionAvailable = TransactionSynchronizationManager.hasResource(sessionFactory);
+				boolean isSessionAvailable = isSessionAvailable();
 				if (!isSessionAvailable) {
 					openSession();
 				}
-
-				Object result = null;
-				Method method = invocation.getMethod();
-				if (method.isAnnotationPresent(Query.class)) {
-					Query query = method.getAnnotation(Query.class);
-					FinderExecutor target = (FinderExecutor) invocation.getThis();
-
-					if (query.limitClause()) {
-						Object orginal[] = invocation.getArguments();
-						int len = orginal.length - 2;
-						Object copy[] = new Object[len];
-						for (int i = 0; i < len; i++) {
-							copy[i] = orginal[i];
-						}
-						result = target.executeFinder(query.value(), copy, method.getReturnType(),
-								(Integer) orginal[len], (Integer) orginal[len + 1]);
-					} else {
-						result = target.executeFinder(query.value(), invocation.getArguments(), method.getReturnType(),
-								null, null);
-					}
-				} else if (method.isAnnotationPresent(BulkUpdate.class)) {
-					SessionHolder holder = (SessionHolder) TransactionSynchronizationManager
-							.getResource(sessionFactory);
-					if (holder.getTransaction() == null) {
-						holder.setTransaction(holder.getSession().beginTransaction());
-					}
-					BulkUpdate bulkUpdate = method.getAnnotation(BulkUpdate.class);
-					FinderExecutor target = (FinderExecutor) invocation.getThis();
-					target.executeUpdate(bulkUpdate.value(), invocation.getArguments());
-				} else {
-
-					Method serviceMethod = FinderDispatcherGenericDaoImpl.this.servicesImpl != null ? FinderDispatcherGenericDaoImpl.this.servicesImpl
-							.getClass().getMethod(invocation.getMethod().getName(),
-									invocation.getMethod().getParameterTypes())
-							: null;
-					if (serviceMethod != null) {
-						result = serviceMethod.invoke(FinderDispatcherGenericDaoImpl.this.servicesImpl, invocation
-								.getArguments());
-					} else {
-						// should be only save, update, delete from the generic
-						// dao
-						result = invocation.proceed();
-					}
-				}
+				Object result = evaluateMethodInvocation(invocation);
 				if (!isSessionAvailable) {
 					closeSession();
 				}
 				return result;
 
+			}
+
+			private Object evaluateMethodInvocation(MethodInvocation invocation) throws NoSuchMethodException,
+					IllegalAccessException, InvocationTargetException, Throwable {
+				Object result = null;
+				Method method = invocation.getMethod();
+				if (method.isAnnotationPresent(Query.class)) {
+					result = executeQuery(invocation);
+				} else if (method.isAnnotationPresent(BulkUpdate.class)) {
+					executeBulkUpdate(invocation);
+				} else {
+					result = delegateToServiceMethod(invocation);
+				}
+				return result;
+			}
+
+			private Object delegateToServiceMethod(MethodInvocation invocation) throws NoSuchMethodException,
+					IllegalAccessException, InvocationTargetException, Throwable {
+				Method serviceMethod = FinderDispatcherGenericDaoImpl.this.servicesImpl != null ? FinderDispatcherGenericDaoImpl.this.servicesImpl
+						.getClass().getMethod(invocation.getMethod().getName(),
+								invocation.getMethod().getParameterTypes())
+						: null;
+				if (serviceMethod != null) {
+					return serviceMethod.invoke(FinderDispatcherGenericDaoImpl.this.servicesImpl, invocation
+							.getArguments());
+				} else {
+					// should be only save, update, delete from the generic
+					// dao
+					return invocation.proceed();
+				}
+			}
+
+			private void executeBulkUpdate(MethodInvocation invocation) {
+				openTransaction();
+				Method method = invocation.getMethod();
+				BulkUpdate bulkUpdate = method.getAnnotation(BulkUpdate.class);
+				FinderExecutor target = (FinderExecutor) invocation.getThis();
+				target.executeUpdate(bulkUpdate.value(), invocation.getArguments());
+			}
+
+			private boolean isSessionAvailable() {
+				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				boolean isSessionAvailable = TransactionSynchronizationManager.hasResource(sessionFactory);
+				return isSessionAvailable;
+			}
+
+			private void openTransaction() {
+				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
+				if (holder.getTransaction() == null) {
+					holder.setTransaction(holder.getSession().beginTransaction());
+				}
+			}
+
+			private Object executeQuery(MethodInvocation invocation) {
+				Method method = invocation.getMethod();
+				Query query = method.getAnnotation(Query.class);
+				FinderExecutor target = (FinderExecutor) invocation.getThis();
+				if (query.limitClause()) {
+					Object orginal[] = invocation.getArguments();
+					int len = orginal.length - 2;
+					Object copy[] = new Object[len];
+					for (int i = 0; i < len; i++) {
+						copy[i] = orginal[i];
+					}
+					return target.executeFinder(query.value(), copy, method.getReturnType(), (Integer) orginal[len],
+							(Integer) orginal[len + 1]);
+				} else {
+					return target.executeFinder(query.value(), invocation.getArguments(), method.getReturnType(), null,
+							null);
+				}
 			}
 
 			private void closeSession() {
