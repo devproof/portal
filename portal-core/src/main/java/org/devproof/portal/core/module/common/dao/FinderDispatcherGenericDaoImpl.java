@@ -69,22 +69,24 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		genericDao.setUsernameResolver(usernameResolver);
 		result.setTarget(genericDao);
 		result.setInterfaces(new Class[] { daoInterface });
-		result.addAdvice(new MethodInterceptor() {
+		result.addAdvice(createGenericDaoInterceptor());
+		return result.getProxy();
+	}
+
+	private MethodInterceptor createGenericDaoInterceptor() {
+		return new MethodInterceptor() {
 			public Object invoke(MethodInvocation invocation) throws Throwable {
-				Object result = null;
 				/*
-				 * If the session is opened at this place, the same method will
-				 * close the session and transaction
+				 * If the session will be opened at this place, the same method 
+				 * closes the session and transaction
 				 */
 				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
-				boolean hasSession = TransactionSynchronizationManager.hasResource(sessionFactory);
-				if (!hasSession) {
-					Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-					SessionHolder holder = new SessionHolder(session);
-					session.setFlushMode(FlushMode.AUTO);
-					TransactionSynchronizationManager.bindResource(sessionFactory, holder);
+				boolean isSessionAvailable = TransactionSynchronizationManager.hasResource(sessionFactory);
+				if (!isSessionAvailable) {
+					openSession();
 				}
 
+				Object result = null;
 				Method method = invocation.getMethod();
 				if (method.isAnnotationPresent(Query.class)) {
 					Query query = method.getAnnotation(Query.class);
@@ -127,19 +129,31 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 						result = invocation.proceed();
 					}
 				}
-				if (!hasSession) {
-					SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
-							.unbindResource(sessionFactory);
-					if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()) {
-						sessionHolder.getTransaction().commit();
-					}
-					SessionFactoryUtils.closeSession(sessionHolder.getSession());
+				if (!isSessionAvailable) {
+					closeSession();
 				}
 				return result;
 
 			}
-		});
-		return result.getProxy();
+
+			private void closeSession() {
+				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
+						.unbindResource(sessionFactory);
+				if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()) {
+					sessionHolder.getTransaction().commit();
+				}
+				SessionFactoryUtils.closeSession(sessionHolder.getSession());
+			}
+
+			private void openSession() {
+				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+				SessionHolder holder = new SessionHolder(session);
+				session.setFlushMode(FlushMode.AUTO);
+				TransactionSynchronizationManager.bindResource(sessionFactory, holder);
+			}
+		};
 	}
 
 	@SuppressWarnings(value = "unchecked")
