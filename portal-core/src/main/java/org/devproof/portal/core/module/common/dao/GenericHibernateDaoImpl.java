@@ -53,7 +53,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 
 	@SuppressWarnings(value = "unchecked")
 	public T findById(PK id) {
-		return (T) getSession().get(this.type, id);
+		return (T) getSession().get(type, id);
 	}
 
 	@SuppressWarnings(value = "unchecked")
