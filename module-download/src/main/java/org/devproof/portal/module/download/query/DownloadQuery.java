@@ -27,7 +27,7 @@ import org.devproof.portal.module.download.entity.DownloadTagEntity;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights ar left join e.tags t")
-public class DownloadQuery implements IQuery<DownloadTagEntity>, ITagQuery<DownloadTagEntity>, IBrokenQuery {
+public class DownloadQuery implements IQuery, ITagQuery<DownloadTagEntity>, IBrokenQuery {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;

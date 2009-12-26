@@ -162,7 +162,6 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 
 	@Override
 	public int getSize(Class<T> clazz, Serializable beanQuery) {
-		// count(distinct e)
 		return getSize(clazz, "count(distinct e)", beanQuery);
 	}
 

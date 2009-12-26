@@ -26,7 +26,7 @@ import org.devproof.portal.module.article.entity.ArticleTagEntity;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
-public class ArticleQuery implements IQuery<ArticleTagEntity>, ITagQuery<ArticleTagEntity> {
+public class ArticleQuery implements IQuery, ITagQuery<ArticleTagEntity> {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;
