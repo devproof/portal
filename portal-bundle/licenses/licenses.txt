@@ -15,7 +15,7 @@ Frameworks for production:
 - Apache commons Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - XStream BSD license (http://www.freebsd.org/copyright/license.html)
 - TinyMCE LGPL (http://www.gnu.org/licenses/lgpl-3.0.txt)
-- Google Code Highlighter LGPL (http://www.gnu.org/licenses/lgpl-3.0.txt)
+- SyntaxHighlighter LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.txt)
 - EHCache  Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - Prototype MIT License (http://en.wikipedia.org/wiki/MIT_License)
 - Scriptaculous
