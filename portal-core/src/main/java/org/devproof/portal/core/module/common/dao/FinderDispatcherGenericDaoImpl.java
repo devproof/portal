@@ -59,19 +59,24 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 
 	private Object servicesImpl;
 	private Class<T> entityClass;
-	private Class<GenericDao<T, PK>> daoInterface;
+	private Class<?> daoInterface;
 	private UsernameResolver usernameResolver;
 
 	public Object getObject() throws Exception {
 		ProxyFactory result = new ProxyFactory();
-		GenericHibernateDaoImpl<T, PK> genericDao = new GenericHibernateDaoImpl<T, PK>(entityClass);
-		genericDao.setSessionFactory(getSessionFactory());
-		genericDao.setHibernateTemplate(getHibernateTemplate());
-		genericDao.setUsernameResolver(usernameResolver);
+		GenericDao<T, PK> genericDao = createGenericHibernateDao();
 		result.setTarget(genericDao);
 		result.setInterfaces(new Class[] { daoInterface });
 		result.addAdvice(createGenericDaoInterceptor());
 		return result.getProxy();
+	}
+
+	protected GenericDao<T, PK> createGenericHibernateDao() {
+		GenericHibernateDaoImpl<T, PK> genericDao = new GenericHibernateDaoImpl<T, PK>(entityClass);
+		genericDao.setSessionFactory(getSessionFactory());
+		genericDao.setHibernateTemplate(getHibernateTemplate());
+		genericDao.setUsernameResolver(usernameResolver);
+		return genericDao;
 	}
 
 	private MethodInterceptor createGenericDaoInterceptor() {
@@ -214,12 +219,12 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		this.entityClass = entityClass;
 	}
 
-	public Class<GenericDao<T, PK>> getDaoInterface() {
+	public Class<?> getDaoInterface() {
 		return daoInterface;
 	}
 
 	@Required
-	public void setDaoInterface(Class<GenericDao<T, PK>> daoInterface) {
+	public void setDaoInterface(Class<?> daoInterface) {
 		this.daoInterface = daoInterface;
 	}
 

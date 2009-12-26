@@ -27,7 +27,7 @@ import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights ar left join e.tags t")
-public class BookmarkQuery implements IQuery<BookmarkTagEntity>, ITagQuery<BookmarkTagEntity>, IBrokenQuery {
+public class BookmarkQuery implements IQuery, ITagQuery<BookmarkTagEntity>, IBrokenQuery {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;

@@ -26,7 +26,7 @@ import org.devproof.portal.module.blog.entity.BlogTagEntity;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
-public class BlogQuery implements IQuery<BlogTagEntity>, ITagQuery<BlogTagEntity> {
+public class BlogQuery implements IQuery, ITagQuery<BlogTagEntity> {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;

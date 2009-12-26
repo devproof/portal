@@ -39,19 +39,18 @@ import org.devproof.portal.core.module.common.query.IQuery;
 public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
-	private StatelessForm<IQuery<?>> form;
+	private StatelessForm<IQuery> form;
 	private List<BaseSearchBoxListener> listeners = new ArrayList<BaseSearchBoxListener>();
 	private boolean isAuthor;
-	private IQuery<?> query;
+	private IQuery query;
 	private QueryDataProvider<?> dataProvider;
 	private String authorRightName;
 	private TemplatePage parent;
 	private IPageable dataview;
 	private PageParameters params;
-	
 
-	public BaseSearchBoxPanel(String id, IQuery<?> query, QueryDataProvider<?> dataProvider,
-			String authorRightName, TemplatePage parent, IPageable dataview, PageParameters params) {
+	public BaseSearchBoxPanel(String id, IQuery query, QueryDataProvider<?> dataProvider, String authorRightName,
+			TemplatePage parent, IPageable dataview, PageParameters params) {
 		super(id);
 		this.query = query;
 		this.dataProvider = dataProvider;
@@ -59,7 +58,7 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		this.parent = parent;
 		this.dataview = dataview;
 		this.params = params;
-		
+
 		setAuthorRight();
 		add(createSearchForm());
 		copyParameterToQuery();
@@ -79,14 +78,14 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		isAuthor = session.hasRight(this.authorRightName);
 	}
 
-	private StatelessForm<IQuery<?>> createSearchForm() {
+	private StatelessForm<IQuery> createSearchForm() {
 		form = newStatelessForm();
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
-	private StatelessForm<IQuery<?>> newStatelessForm() {
-		return new StatelessForm<IQuery<?>>("searchForm", new CompoundPropertyModel<IQuery<?>>(query)) {
+	private StatelessForm<IQuery> newStatelessForm() {
+		return new StatelessForm<IQuery>("searchForm", new CompoundPropertyModel<IQuery>(query)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -116,10 +115,10 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		};
 	}
 
-	public StatelessForm<IQuery<?>> getForm() {
+	public StatelessForm<IQuery> getForm() {
 		return form;
 	}
-	
+
 	public void addToForm(Component component) {
 		form.add(component);
 	}

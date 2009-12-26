@@ -16,7 +16,8 @@ public class TestPdf {
 		Tidy tidy = new Tidy();
 		tidy.setXHTML(true);
 		StringWriter str = new StringWriter();
-		tidy.parse(new URL("http://localhost:8888/print").openStream(), str);
+		tidy.parse(new URL("http://localhost:8888/print/blog/1").openStream(),
+				str);
 		// tidy.parse(new URL("http://localhost:8888/print").openStream(), new
 		// FileOutputStream("d:/firstdoc.html"));
 		// String inputFile = "samples/firstdoc.xhtml";
@@ -29,7 +30,7 @@ public class TestPdf {
 		ITextRenderer renderer = new ITextRenderer();
 		// renderer.setDocumentFromString(str.toString());
 		// renderer.setDocument(new File("d:/print.htm"));
-		renderer.setDocument("http://localhost:8888/print");
+		renderer.setDocument("http://localhost:8888/print/blog/1");
 		// renderer.setDocument("http://www.devproof.org/article/portal_howto_create_modules");
 		renderer.layout();
 		renderer.createPDF(os, true);
