@@ -120,6 +120,11 @@ final public class UserEntity implements Serializable {
 		this.encryptedPassword = PortalUtil.generateMd5(plainPassword);
 	}
 
+	@Transient
+	public boolean equalPassword(String plainPassword) {
+		return PortalUtil.generateMd5(plainPassword).equals(encryptedPassword);
+	}
+
 	public String getForgotPasswordCode() {
 		return forgotPasswordCode;
 	}
