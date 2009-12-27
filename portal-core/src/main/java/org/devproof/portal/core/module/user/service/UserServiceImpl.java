@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
 			throws UserNotConfirmedException, AuthentificationFailedException {
 		UserEntity user = findUserByUsername(username);
 		LOG.info("Authentificate user " + username);
-		if (user != null && PortalUtil.generateMd5(password).equals(user.getEncryptedPassword())) {
+		if (user != null && user.equalPassword(password)) {
 			if (!user.getActive()) {
 				LOG.info("User account is inactive: " + username);
 				throw new AuthentificationFailedException("user.account.inactivated");
@@ -210,6 +210,7 @@ public class UserServiceImpl implements UserService {
 			user.setLastLoginAt(PortalUtil.now());
 			user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
 			save(user);
+			return user;
 		}
 		LOG.info("Invalid user password: " + username);
 		throw new AuthentificationFailedException("user.password.not.found");
