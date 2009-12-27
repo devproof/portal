@@ -99,7 +99,7 @@ public class SettingsPage extends TemplatePage {
 			@Override
 			public void onSubmit() {
 				if (StringUtils.isNotEmpty(newPassword1.getValue())) {
-					user.setPasswordMD5(PortalUtil.generateMd5(newPassword1.getValue()));
+					user.setEncryptedPassword(PortalUtil.generateMd5(newPassword1.getValue()));
 				}
 				user.setChangedAt(PortalUtil.now());
 				info(SettingsPage.this.getString("saved"));
@@ -159,7 +159,7 @@ public class SettingsPage extends TemplatePage {
 			@Override
 			protected void onValidate(IValidatable<String> ivalidatable) {
 				if (StringUtils.isNotEmpty(ivalidatable.getValue())
-						&& !user.getPasswordMD5().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
+						&& !user.getEncryptedPassword().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
 					error(ivalidatable, "wrong.currentPassword");
 				}
 			}

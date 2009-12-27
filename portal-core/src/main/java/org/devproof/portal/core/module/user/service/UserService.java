@@ -20,6 +20,8 @@ import java.util.List;
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
+import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 
 /**
  * @author Carsten Hufe
@@ -81,4 +83,35 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	 * Sets a new password
 	 */
 	public void saveNewPassword(String username, String newPassword);
+
+	/**
+	 * Authentificates a user
+	 * 
+	 * @param username
+	 *            the username to login
+	 * @param password
+	 *            the user password
+	 * @param ipAddress
+	 *            Current ip address (for logging)
+	 * @return returns the UserEntity when the authentification was successful
+	 * 
+	 * @throws UserNotConfirmedException
+	 *             thrown when a user is not confirmed
+	 * @throws AuthentificationFailedException
+	 *             thrown when an authentification failed e.g. wrong password
+	 */
+	public UserEntity authentificate(String username, String password, String ipAddress)
+			throws UserNotConfirmedException, AuthentificationFailedException;
+
+	/**
+	 * Re-Authentificates a user by tthe session id
+	 * 
+	 * @param sessionId
+	 *            Session ID
+	 * @param ipAddress
+	 *            Current IP address for logging
+	 * @return the authentificated UserEntity, if the authentification failes it
+	 *         returns the guest user
+	 */
+	public UserEntity authentificate(String sessionId, String ipAddress);
 }

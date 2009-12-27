@@ -40,7 +40,6 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
-import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
@@ -104,12 +103,8 @@ public abstract class UserEditPanel extends Panel {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				UserEntity user = (UserEntity) form.getModelObject();
 				if (password1.getValue() != null && !"".equals(password1.getValue().trim())) {
-					user.setPasswordMD5(PortalUtil.generateMd5(password1.getValue()));
+					user.setPlainPassword(password1.getValue());
 				}
-				if (user.getRegistrationDate() == null) {
-					user.setRegistrationDate(PortalUtil.now());
-				}
-				user.setChangedAt(PortalUtil.now());
 				userService.save(user);
 				UserEditPanel.this.onSave(target);
 			}

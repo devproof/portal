@@ -17,6 +17,8 @@ package org.devproof.portal.core.module.user.service;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
@@ -26,12 +28,15 @@ import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.dao.UserDao;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
+import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe
  */
 public class UserServiceImpl implements UserService {
+	private static final Log LOG = LogFactory.getLog(UserServiceImpl.class);
 	private UserDao userDao;
 	private RoleService roleService;
 	private EmailService emailService;
@@ -87,6 +92,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void save(UserEntity entity) {
+		if (entity.getRegistrationDate() == null) {
+			entity.setRegistrationDate(PortalUtil.now());
+		}
+		entity.setChangedAt(PortalUtil.now());
 		userDao.save(entity);
 	}
 
@@ -139,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
 	protected void setUserRegistrationValues(UserEntity user, String password) {
 		user.setActive(Boolean.TRUE);
-		user.setPasswordMD5(PortalUtil.generateMd5(password));
+		user.setEncryptedPassword(PortalUtil.generateMd5(password));
 		user.setRegistrationDate(PortalUtil.now());
 		user.setChangedAt(PortalUtil.now());
 		user.setRole(roleService.findDefaultRegistrationRole());
@@ -175,10 +184,47 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void saveNewPassword(String username, String newPassword) {
 		UserEntity user = findUserByUsername(username);
-		user.setPasswordMD5(PortalUtil.generateMd5(newPassword));
+		user.setEncryptedPassword(PortalUtil.generateMd5(newPassword));
 		user.setChangedAt(PortalUtil.now());
 		user.setForgotPasswordCode(null);
 		save(user);
+	}
+
+	@Override
+	public UserEntity authentificate(String username, String password, String ipAddress)
+			throws UserNotConfirmedException, AuthentificationFailedException {
+		UserEntity user = findUserByUsername(username);
+		LOG.info("Authentificate user " + username);
+		if (user != null && PortalUtil.generateMd5(password).equals(user.getEncryptedPassword())) {
+			if (!user.getActive()) {
+				LOG.info("User account is inactive: " + username);
+				throw new AuthentificationFailedException("user.account.inactivated");
+			} else if (!user.getRole().getActive()) {
+				LOG.info("User account role is inactive: " + username);
+				throw new AuthentificationFailedException("user.role.inactivated");
+			} else if (!user.getConfirmed()) {
+				LOG.info("User is not confirmed: " + username);
+				throw new UserNotConfirmedException();
+			}
+			user.setLastIp(ipAddress);
+			user.setLastLoginAt(PortalUtil.now());
+			user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
+			save(user);
+		}
+		LOG.info("Invalid user password: " + username);
+		throw new AuthentificationFailedException("user.password.not.found");
+	}
+
+	@Override
+	public UserEntity authentificate(String sessionId, String ipAddress) {
+		UserEntity user = findUserBySessionId(sessionId);
+		if (user != null && user.getActive() && user.getRole().getActive() && user.getConfirmed()) {
+			user.setLastIp(ipAddress);
+			user.setLastLoginAt(PortalUtil.now());
+			user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
+			save(user);
+		}
+		return findGuestUser();
 	}
 
 	@Required

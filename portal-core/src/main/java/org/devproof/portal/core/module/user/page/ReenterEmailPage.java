@@ -81,6 +81,7 @@ public class ReenterEmailPage extends TemplatePage {
 				user.setConfirmed(false);
 				user.setConfirmationCode(UUID.randomUUID().toString());
 				user.setConfirmationRequestedAt(PortalUtil.now());
+				userService.save(user);
 
 				EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
 
@@ -94,7 +95,6 @@ public class ReenterEmailPage extends TemplatePage {
 
 				emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
 						placeholder);
-				userService.save(user);
 				setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
 			}
 		};

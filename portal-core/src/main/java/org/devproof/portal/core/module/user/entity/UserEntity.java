@@ -51,7 +51,7 @@ final public class UserEntity implements Serializable {
 	@Column(name = "username", unique = true, length = 30)
 	private String username;
 	@Column(name = "password", nullable = false)
-	private String passwordMD5;
+	private String encryptedPassword;
 	@Column(name = "forgot_code", nullable = true)
 	private String forgotPasswordCode;
 	@Column(name = "firstname", length = 100, nullable = true)
@@ -107,12 +107,17 @@ final public class UserEntity implements Serializable {
 		this.username = username;
 	}
 
-	public String getPasswordMD5() {
-		return passwordMD5;
+	public String getEncryptedPassword() {
+		return encryptedPassword;
 	}
 
-	public void setPasswordMD5(String passwordMD5) {
-		this.passwordMD5 = passwordMD5;
+	public void setEncryptedPassword(String encryptedPassword) {
+		this.encryptedPassword = encryptedPassword;
+	}
+
+	@Transient
+	public void setPlainPassword(String plainPassword) {
+		this.encryptedPassword = PortalUtil.generateMd5(plainPassword);
 	}
 
 	public String getForgotPasswordCode() {
