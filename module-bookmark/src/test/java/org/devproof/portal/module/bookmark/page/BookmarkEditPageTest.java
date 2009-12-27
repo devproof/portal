@@ -81,6 +81,7 @@ public class BookmarkEditPageTest extends TestCase {
 		tester.startPage(BookmarkPage.class);
 		tester.assertRenderedPage(BookmarkPage.class);
 		tester.assertContains("This a sample bookmark and refers to devproof.org");
+		PortalTestUtil.callOnBeginRequest();
 		tester.clickLink("listBookmark:1:bookmarkView:authorButtons:editLink");
 		tester.assertRenderedPage(BookmarkEditPage.class);
 	}

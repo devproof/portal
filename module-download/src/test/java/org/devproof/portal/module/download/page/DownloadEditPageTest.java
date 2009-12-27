@@ -79,6 +79,7 @@ public class DownloadEditPageTest extends TestCase {
 		tester.startPage(DownloadPage.class);
 		tester.assertRenderedPage(DownloadPage.class);
 		tester.assertContains("This is a sample.");
+		PortalTestUtil.callOnBeginRequest();
 		tester.clickLink("listDownload:1:downloadView:authorButtons:editLink");
 		tester.assertRenderedPage(DownloadEditPage.class);
 	}
