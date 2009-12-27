@@ -229,7 +229,7 @@ public class UserServiceImplTest extends TestCase {
 		EasyMock.replay(roleServiceMock);
 		impl.setUserRegistrationValues(user, "12345");
 		assertTrue(user.getActive());
-		assertEquals(PortalUtil.generateMd5("12345"), user.getPasswordMD5());
+		assertEquals(PortalUtil.generateMd5("12345"), user.getEncryptedPassword());
 		assertNotNull(user.getRegistrationDate());
 		assertNotNull(user.getChangedAt());
 		assertEquals(role, user.getRole());
@@ -294,7 +294,7 @@ public class UserServiceImplTest extends TestCase {
 		EasyMock.replay(userDaoMock);
 		impl.saveNewPassword("testuser", "12345");
 		assertNull(user.getForgotPasswordCode());
-		assertEquals(PortalUtil.generateMd5("12345"), user.getPasswordMD5());
+		assertEquals(PortalUtil.generateMd5("12345"), user.getEncryptedPassword());
 		EasyMock.verify(userDaoMock);
 	}
 
@@ -305,7 +305,7 @@ public class UserServiceImplTest extends TestCase {
 		user.setFirstname("max");
 		user.setLastname("power");
 		user.setEmail("max.power@no.domain");
-		user.setPasswordMD5("xxx");
+		user.setEncryptedPassword("xxx");
 		user.setForgotPasswordCode("xxx");
 		return user;
 	}

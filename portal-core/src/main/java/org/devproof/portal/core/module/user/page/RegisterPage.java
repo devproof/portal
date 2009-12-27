@@ -153,7 +153,7 @@ public class RegisterPage extends TemplatePage {
 				StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
 				url.append(getWebRequestCycle().urlFor(RegisterPage.class, param));
 
-				UserEntity user = (UserEntity) getForm().getModelObject();
+				// UserEntity user = (UserEntity) getForm().getModelObject();
 				String msg = "success";
 				if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 					msg = "confirm.email";

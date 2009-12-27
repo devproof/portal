@@ -30,13 +30,13 @@ import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
 
@@ -73,34 +73,15 @@ public class PortalSession extends WebSession {
 	 *         error message key
 	 */
 	public final String authenticate(String username, String password) throws UserNotConfirmedException {
-		UserEntity user = getUserService().findUserByUsername(username);
-		LOG.info("Authentificate user " + username);
-		if (user != null && PortalUtil.generateMd5(password).equals(user.getPasswordMD5())) {
-			if (!user.getActive()) {
-				LOG.info("User account is inactive: " + username);
-				return "user.account.inactivated";
-			} else if (!user.getRole().getActive()) {
-				LOG.info("User account role is inactive: " + username);
-				return "user.role.inactivated";
-			} else if (!user.getConfirmed()) {
-				LOG.info("User is not confirmed: " + username);
-				throw new UserNotConfirmedException();
-			}
-			ClientProperties prop = ((WebClientInfo) getClientInfo()).getProperties();
-			user.setLastIp(prop.getRemoteAddress());
-			user.setLastLoginAt(PortalUtil.now());
-			user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
-			getUserService().save(user);
-
+		try {
+			user = getUserService().authentificate(username, password, getIpAddress());
 			getSessionStore().getSessionId(RequestCycle.get().getRequest(), true);
-
 			// Bind because the Login form is stateless...
-			this.user = user;
 			storeCookie();
 			return null;
+		} catch (AuthentificationFailedException e) {
+			return e.getMessage();
 		}
-		LOG.info("Invalid user password: " + username);
-		return "user.password.not.found";
 	}
 
 	/**
@@ -133,33 +114,26 @@ public class PortalSession extends WebSession {
 			WebRequest request = (WebRequest) RequestCycle.get().getRequest();
 			Cookie cookie = request.getCookie(CommonConstants.SESSION_ID_COOKIE);
 			if (cookie != null) {
-				String value = cookie.getValue();
-				if (value != null) {
-					user = getUserService().findUserBySessionId(value);
-					if (user != null && user.getActive() && user.getRole().getActive() && user.getConfirmed()) {
-						user.setLastIp(getIpAddress());
-						user.setLastLoginAt(PortalUtil.now());
-						user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
-						getUserService().save(user);
-						getSessionStore().getSessionId(RequestCycle.get().getRequest(), true);
-						storeCookie();
-					} else {
-						user = null;
-					}
+				String sessionId = cookie.getValue();
+				if (sessionId != null) {
+					user = getUserService().authentificate(sessionId, getIpAddress());
 				}
 			}
-			// no session found
 			if (user == null) {
 				user = getUserService().findGuestUser();
 			}
 		}
+		refreshRoleIfUpdated();
+		return user;
+	}
+
+	private void refreshRoleIfUpdated() {
 		long appDirtyTime = getRightService().getDirtyTime();
 		if (appDirtyTime != dirtyTime) {
 			dirtyTime = appDirtyTime;
 			RoleEntity role = getRoleService().findById(user.getRole().getId());
 			user.setRole(role);
 		}
-		return user;
 	}
 
 	private String getIpAddress() {
