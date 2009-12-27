@@ -17,6 +17,7 @@ package org.devproof.portal.test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,6 +35,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Response;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.tester.FormTester;
@@ -215,6 +217,17 @@ public class PortalTestUtil {
 
 	public static String[] getMessage(String key, Component component) {
 		return new String[] { new StringResourceModel(key, component, null).getString() };
+	}
+
+	public static void callOnBeginRequest() {
+		try {
+			Method method = RequestCycle.class.getDeclaredMethod("onBeginRequest", (Class<?>[]) null);
+			method.setAccessible(true);
+			method.invoke(RequestCycle.get(), (Object[]) null);
+		} catch (Exception e) {
+			throw new UnhandledException(e);
+		}
+
 	}
 
 	public static <T> T getBean(String beanName) {
