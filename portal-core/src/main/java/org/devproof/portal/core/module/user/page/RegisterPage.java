@@ -1,7 +1,5 @@
 package org.devproof.portal.core.module.user.page;
 
-import java.util.UUID;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
@@ -30,6 +28,7 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -145,21 +144,29 @@ public class RegisterPage extends TemplatePage {
 
 			@Override
 			public void onSubmit() {
-				String requestUrl = RegisterPage.this.getRequestURL();
-				String confirmationCode = UUID.randomUUID().toString();
-				PageParameters param = new PageParameters();
-				param.add(PARAM_USER, user.getUsername());
-				param.add(PARAM_KEY, confirmationCode);
-				StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-				url.append(getWebRequestCycle().urlFor(RegisterPage.class, param));
-
-				// UserEntity user = (UserEntity) getForm().getModelObject();
 				String msg = "success";
 				if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 					msg = "confirm.email";
 				}
-				userService.registerUser(user, password1.getValue(), url.toString(), confirmationCode);
+				user.setPlainPassword(password1.getValue());
+				userService.registerUser(user, createRegisterUrlCallback());
 				setResponsePage(MessagePage.getMessagePage(getString(msg)));
+			}
+
+			private UrlCallback createRegisterUrlCallback() {
+				return new UrlCallback() {
+					@Override
+					public String getUrl(String generatedCode) {
+						String requestUrl = getRequestURL();
+						PageParameters param = new PageParameters();
+						param.add(PARAM_USER, user.getUsername());
+						param.add(PARAM_KEY, generatedCode);
+						StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/"))
+								.append("/");
+						url.append(getWebRequestCycle().urlFor(RegisterPage.class, param));
+						return url.toString();
+					}
+				};
 			}
 		};
 	}

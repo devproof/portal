@@ -16,8 +16,6 @@
 package org.devproof.portal.core.module.user.page;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.PageParameters;
@@ -37,10 +35,8 @@ import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -50,8 +46,6 @@ public class ForgotPasswordPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "emailService")
-	private EmailService emailService;
 	@SpringBean(name = "userService")
 	private UserService userService;
 	@SpringBean(name = "configurationService")
@@ -140,36 +134,24 @@ public class ForgotPasswordPage extends TemplatePage {
 
 			@Override
 			public void onSubmit() {
-				String value = emailOrUser.getValue();
-				UserEntity userByName = userService.findUserByUsername(value);
-				List<UserEntity> users = new ArrayList<UserEntity>();
-				if (userByName == null) {
-					users = userService.findUserByEmail(value);
-				} else {
-					users.add(userByName);
-				}
+				userService.sendForgotPasswordCode(emailOrUser.getValue(), createForgotPasswordUrlCallback());
+				setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
+			}
 
-				if (users.size() == 0) {
-					error(getString("not.found"));
-				} else {
-					for (UserEntity user : users) {
-						user.setChangedAt(PortalUtil.now());
-						user.setForgotPasswordCode(PortalUtil.generateMd5(getSession().getId() + Math.random()));
-						userService.save(user);
-
-						EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
-						StringBuffer url = getWebRequestCycle().getWebRequest().getHttpServletRequest().getRequestURL();
+			private UrlCallback createForgotPasswordUrlCallback() {
+				return new UrlCallback() {
+					@Override
+					public String getUrl(String generatedCode) {
+						String requestUrl = getRequestURL();
 						PageParameters param = new PageParameters();
-						param.add(ResetPasswordPage.PARAM_USER, user.getUsername());
-						param.add(ResetPasswordPage.PARAM_CONFIRMATION_CODE, user.getForgotPasswordCode());
-						url = new StringBuffer(StringUtils.substringBeforeLast(url.toString(), "/")).append("/");
+						param.add(ResetPasswordPage.PARAM_USER, emailOrUser.getValue());
+						param.add(ResetPasswordPage.PARAM_CONFIRMATION_CODE, generatedCode);
+						StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/"))
+								.append("/");
 						url.append(ForgotPasswordPage.this.getWebRequestCycle().urlFor(ResetPasswordPage.class, param));
-						placeholder.setResetPasswordLink(url.toString());
-						emailService.sendEmail(configurationService
-								.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL), placeholder);
+						return url.toString();
 					}
-					setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
-				}
+				};
 			}
 		};
 	}

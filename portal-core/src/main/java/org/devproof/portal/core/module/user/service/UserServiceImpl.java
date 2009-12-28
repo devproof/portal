@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.core.module.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -128,12 +130,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void registerUser(UserEntity user, String password, String url, String confirmationCode) {
-		setUserRegistrationValues(user, password);
+	public void registerUser(UserEntity user, UrlCallback urlCallback) {
+		user.setActive(Boolean.TRUE);
+		user.setRole(roleService.findDefaultRegistrationRole());
 		if (isConfirmationRequired()) {
-			EmailPlaceholderBean placeholder = generateEmailPlaceHolder(user);
-			setConfirmationCode(user, confirmationCode);
-			sendConfirmationEmail(url, placeholder);
+			generateConfirmationCode(user);
+			EmailPlaceholderBean placeholder = generateEmailPlaceholderForConfirmation(user, urlCallback);
+			sendConfirmationEmail(placeholder);
 			sendEmailNotificationToAdmins(placeholder);
 		} else {
 			// no confirmation required
@@ -142,29 +145,27 @@ public class UserServiceImpl implements UserService {
 		save(user);
 	}
 
-	protected EmailPlaceholderBean generateEmailPlaceHolder(UserEntity user) {
-		return PortalUtil.createEmailPlaceHolderByUser(user);
-	}
-
-	protected void setUserRegistrationValues(UserEntity user, String password) {
-		user.setActive(Boolean.TRUE);
-		user.setEncryptedPassword(PortalUtil.generateMd5(password));
-		user.setRegistrationDate(PortalUtil.now());
-		user.setChangedAt(PortalUtil.now());
-		user.setRole(roleService.findDefaultRegistrationRole());
+	protected EmailPlaceholderBean generateEmailPlaceholderForConfirmation(UserEntity user, UrlCallback urlCallback) {
+		EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
+		placeholder.setConfirmationLink(urlCallback.getUrl(user.getConfirmationCode()));
+		return placeholder;
 	}
 
 	protected Boolean isConfirmationRequired() {
 		return configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION);
 	}
 
-	protected void sendConfirmationEmail(String url, EmailPlaceholderBean placeholder) {
-		placeholder.setConfirmationLink(url);
+	protected void sendConfirmationEmail(EmailPlaceholderBean placeholder) {
 		emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL), placeholder);
 	}
 
-	protected void setConfirmationCode(UserEntity user, String confirmationCode) {
-		user.setConfirmationCode(confirmationCode);
+	protected void resendConfirmationEmail(EmailPlaceholderBean placeholder) {
+		emailService
+				.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL), placeholder);
+	}
+
+	protected void generateConfirmationCode(UserEntity user) {
+		user.setConfirmationCode(generateCode());
 		user.setConfirmationRequestedAt(PortalUtil.now());
 		user.setConfirmed(false);
 	}
@@ -184,8 +185,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void saveNewPassword(String username, String newPassword) {
 		UserEntity user = findUserByUsername(username);
-		user.setEncryptedPassword(PortalUtil.generateMd5(newPassword));
-		user.setChangedAt(PortalUtil.now());
+		user.setPlainPassword(newPassword);
 		user.setForgotPasswordCode(null);
 		save(user);
 	}
@@ -208,7 +208,7 @@ public class UserServiceImpl implements UserService {
 			}
 			user.setLastIp(ipAddress);
 			user.setLastLoginAt(PortalUtil.now());
-			user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
+			user.setSessionId(generateCode());
 			save(user);
 			return user;
 		}
@@ -222,10 +222,58 @@ public class UserServiceImpl implements UserService {
 		if (user != null && user.getActive() && user.getRole().getActive() && user.getConfirmed()) {
 			user.setLastIp(ipAddress);
 			user.setLastLoginAt(PortalUtil.now());
-			user.setSessionId(PortalUtil.generateMd5(user.getSessionId() + Math.random()));
+			user.setSessionId(generateCode());
 			save(user);
+			return user;
 		}
 		return findGuestUser();
+	}
+
+	protected String generateCode() {
+		return UUID.randomUUID().toString();
+	}
+
+	@Override
+	public void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback) {
+		List<UserEntity> users = generateForgotPasswordCode(usernameOrEmail);
+		for (UserEntity user : users) {
+			EmailPlaceholderBean placeholder = generateEmailPlaceholderForLostPassword(user, urlCallback);
+			sendForgotPasswordEmail(placeholder);
+		}
+	}
+
+	protected EmailPlaceholderBean generateEmailPlaceholderForLostPassword(UserEntity user, UrlCallback urlCallback) {
+		EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
+		placeholder.setResetPasswordLink(urlCallback.getUrl(user.getForgotPasswordCode()));
+		return placeholder;
+	}
+
+	protected void sendForgotPasswordEmail(EmailPlaceholderBean placeholder) {
+		emailService
+				.sendEmail(configurationService.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL), placeholder);
+	}
+
+	protected List<UserEntity> generateForgotPasswordCode(String usernameOrEmail) {
+		UserEntity userByName = findUserByUsername(usernameOrEmail);
+		List<UserEntity> users = new ArrayList<UserEntity>();
+		if (userByName != null) {
+			users.add(userByName);
+		} else {
+			users = findUserByEmail(usernameOrEmail);
+		}
+		for (UserEntity user : users) {
+			user.setForgotPasswordCode(generateCode());
+			save(user);
+		}
+		return users;
+	}
+
+	@Override
+	public void resendConfirmationCode(UserEntity user, UrlCallback urlCallback) {
+		generateConfirmationCode(user);
+		EmailPlaceholderBean placeholder = generateEmailPlaceholderForConfirmation(user, urlCallback);
+		resendConfirmationEmail(placeholder);
+		save(user);
 	}
 
 	@Required

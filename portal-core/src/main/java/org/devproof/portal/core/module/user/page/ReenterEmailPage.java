@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.user.page;
 
-import java.util.UUID;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Button;
@@ -27,12 +25,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.service.EmailService;
-import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -41,14 +35,8 @@ import org.devproof.portal.core.module.user.service.UserService;
 public class ReenterEmailPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
-
-	@SpringBean(name = "emailService")
-	private EmailService emailService;
 	@SpringBean(name = "userService")
 	private UserService userService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-
 	private String username;
 	private UserEntity user;
 
@@ -77,25 +65,24 @@ public class ReenterEmailPage extends TemplatePage {
 
 			@Override
 			public void onSubmit() {
-				user.setChangedAt(PortalUtil.now());
-				user.setConfirmed(false);
-				user.setConfirmationCode(UUID.randomUUID().toString());
-				user.setConfirmationRequestedAt(PortalUtil.now());
-				userService.save(user);
-
-				EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
-
-				String requestUrl = getRequestURL();
-				PageParameters param = new PageParameters();
-				param.add(RegisterPage.PARAM_USER, user.getUsername());
-				param.add(RegisterPage.PARAM_KEY, user.getConfirmationCode());
-				StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-				url.append(ReenterEmailPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
-				placeholder.setConfirmationLink(url.toString());
-
-				emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
-						placeholder);
+				userService.resendConfirmationCode(user, createConfirmationUrlCallback());
 				setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
+			}
+
+			private UrlCallback createConfirmationUrlCallback() {
+				return new UrlCallback() {
+					@Override
+					public String getUrl(String generatedCode) {
+						String requestUrl = getRequestURL();
+						PageParameters param = new PageParameters();
+						param.add(RegisterPage.PARAM_USER, user.getUsername());
+						param.add(RegisterPage.PARAM_KEY, generatedCode);
+						StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/"))
+								.append("/");
+						url.append(ReenterEmailPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
+						return url.toString();
+					}
+				};
 			}
 		};
 	}

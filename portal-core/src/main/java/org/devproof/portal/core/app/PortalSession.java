@@ -97,11 +97,13 @@ public class PortalSession extends WebSession {
 	 * Stores a cookie for the relogin
 	 */
 	public void storeCookie() {
-		Cookie cookie = new Cookie(CommonConstants.SESSION_ID_COOKIE, user.getSessionId());
-		cookie.setMaxAge(COOKIE_MAX_AGE);
-		cookie.setPath("/");
-		((WebResponse) RequestCycle.get().getResponse()).addCookie(cookie);
-		LOG.debug("Store cookie.");
+		if (user != null && !user.isGuestRole()) {
+			Cookie cookie = new Cookie(CommonConstants.SESSION_ID_COOKIE, user.getSessionId());
+			cookie.setMaxAge(COOKIE_MAX_AGE);
+			cookie.setPath("/");
+			((WebResponse) RequestCycle.get().getResponse()).addCookie(cookie);
+			LOG.debug("Store cookie.");
+		}
 	}
 
 	/**
@@ -117,6 +119,7 @@ public class PortalSession extends WebSession {
 				String sessionId = cookie.getValue();
 				if (sessionId != null) {
 					user = getUserService().authentificate(sessionId, getIpAddress());
+					storeCookie();
 				}
 			}
 			if (user == null) {
