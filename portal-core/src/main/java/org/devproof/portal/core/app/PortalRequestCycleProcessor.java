@@ -18,13 +18,16 @@ package org.devproof.portal.core.app;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.page.UnsupportedOperationPage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
@@ -57,6 +60,15 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 
 	@Override
 	protected Page onRuntimeException(Page page, RuntimeException e) {
+		if (e instanceof WicketRuntimeException) {
+			WicketRuntimeException wre = (WicketRuntimeException) e;
+			if (wre.getCause() instanceof InvocationTargetException) {
+				InvocationTargetException ite = (InvocationTargetException) wre.getCause();
+				if (ite.getTargetException() instanceof UnsupportedOperationException) {
+					return new UnsupportedOperationPage();
+				}
+			}
+		}
 		// send mail to the admin!
 		if (!(e instanceof PageExpiredException) && !(e instanceof UnauthorizedInstantiationException)) {
 			Integer templateId = configurationService.findAsInteger(CommonConstants.CONF_UNKNOWN_ERROR_EMAIL);
