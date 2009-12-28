@@ -1,0 +1,33 @@
+/*
+ * Copyright 2009-2010 Carsten Hufe devproof.org
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *   
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package org.devproof.portal.core.module.user.service;
+
+/**
+ * Builds URLs in the service layer
+ * 
+ * @author Carsten Hufe
+ */
+public interface UrlCallback {
+	/**
+	 * Returns a URLs which is usally placed in an email
+	 * 
+	 * @param generatedCode
+	 *            code which is generated in the service layer, e.g.
+	 *            confirmation code
+	 * @return Full URL
+	 */
+	public String getUrl(String generatedCode);
+}

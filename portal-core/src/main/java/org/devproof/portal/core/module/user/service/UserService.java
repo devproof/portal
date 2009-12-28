@@ -70,7 +70,7 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	/**
 	 * Register a new user
 	 */
-	public void registerUser(UserEntity user, String password, String url, String confirmationCode);
+	public void registerUser(UserEntity user, UrlCallback urlCallback);
 
 	/**
 	 * Activate user
@@ -114,4 +114,24 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	 *         returns the guest user
 	 */
 	public UserEntity authentificate(String sessionId, String ipAddress);
+
+	/**
+	 * Sends the code for the lost password
+	 * 
+	 * @param usernameOrEmail
+	 *            username or email address
+	 * @param urlCallback
+	 *            callback to build the URLs
+	 */
+	public void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback);
+
+	/**
+	 * Resends the confirmation code
+	 * 
+	 * @param user
+	 *            user
+	 * @param urlCallback
+	 *            callback to build the URLs
+	 */
+	public void resendConfirmationCode(UserEntity user, UrlCallback urlCallback);
 }

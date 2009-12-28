@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.user.page;
 
-import java.util.UUID;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -40,12 +38,10 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -55,8 +51,6 @@ public class SettingsPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "emailService")
-	private EmailService emailService;
 	@SpringBean(name = "userService")
 	private UserService userService;
 	@SpringBean(name = "configurationService")
@@ -99,32 +93,36 @@ public class SettingsPage extends TemplatePage {
 			@Override
 			public void onSubmit() {
 				if (StringUtils.isNotEmpty(newPassword1.getValue())) {
-					user.setEncryptedPassword(PortalUtil.generateMd5(newPassword1.getValue()));
-				}
-				user.setChangedAt(PortalUtil.now());
-				info(SettingsPage.this.getString("saved"));
-				if (!currentEmail.equals(user.getEmail())
-						&& configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
-					user.setConfirmed(false);
-					user.setConfirmationCode(UUID.randomUUID().toString());
-					user.setConfirmationRequestedAt(PortalUtil.now());
-
-					EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
-
-					String requestUrl = getRequestURL();
-					// url.append("/").append(PARAM_KEY).append("/").append(user.getConfirmationCode());
-					PageParameters param = new PageParameters();
-					param.add(RegisterPage.PARAM_USER, user.getUsername());
-					param.add(RegisterPage.PARAM_KEY, user.getConfirmationCode());
-					StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-					url.append(SettingsPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
-					placeholder.setConfirmationLink(url.toString());
-
-					emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL),
-							placeholder);
-					setResponsePage(MessagePage.getMessagePageWithLogout(getString("reconfirm.email")));
+					user.setPlainPassword(newPassword1.getValue());
 				}
 				userService.save(user);
+				if (isReconfirmationRequired()) {
+					userService.resendConfirmationCode(user, createConfirmationUrlCallback());
+					setResponsePage(MessagePage.getMessagePageWithLogout(getString("reconfirm.email")));
+				} else {
+					info(SettingsPage.this.getString("saved"));
+				}
+			}
+
+			private boolean isReconfirmationRequired() {
+				return !currentEmail.equals(user.getEmail())
+						&& configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION);
+			}
+
+			private UrlCallback createConfirmationUrlCallback() {
+				return new UrlCallback() {
+					@Override
+					public String getUrl(String generatedCode) {
+						String requestUrl = getRequestURL();
+						PageParameters param = new PageParameters();
+						param.add(RegisterPage.PARAM_USER, user.getUsername());
+						param.add(RegisterPage.PARAM_KEY, user.getConfirmationCode());
+						StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/"))
+								.append("/");
+						url.append(SettingsPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
+						return url.toString();
+					}
+				};
 			}
 		};
 	}
@@ -158,8 +156,7 @@ public class SettingsPage extends TemplatePage {
 
 			@Override
 			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (StringUtils.isNotEmpty(ivalidatable.getValue())
-						&& !user.getEncryptedPassword().equals(PortalUtil.generateMd5(ivalidatable.getValue()))) {
+				if (StringUtils.isNotEmpty(ivalidatable.getValue()) && !user.equalPassword(ivalidatable.getValue())) {
 					error(ivalidatable, "wrong.currentPassword");
 				}
 			}
