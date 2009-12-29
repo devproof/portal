@@ -4,18 +4,15 @@
 <body>
 	<wicket:panel>
 		<div><h2>Kommentare</h2></div>
-		<div wicket:id="listBlog"><div wicket:id="blogView"/></div>
+		<div wicket:id="listComment"><div wicket:id="commentView"/></div>
 		<div wicket:id="paging">paging</div>	
-		
+		<div wicket:id="composeComment">comment</div>	
 		<wicket:fragment wicket:id="commentView">
 			<div class="descr">
 				<span wicket:id="metaInfo">[author name]</span>&nbsp;
-				<a wicket:id="printLink" target="_blank"><img wicket:id="printImage"/></a>
 				<span wicket:id="authorButtons"></span>
 			</div>
-			<div wicket:id="tags">tag1 tag2</div>
-			<br/>
-			<div wicket:id="content">[content]</div>
+			<div wicket:id="comment">[comment]</div>
 		</wicket:fragment>
 	</wicket:panel>
 </body>
