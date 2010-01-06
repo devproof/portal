@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.comment.panel;
 
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -26,6 +27,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
+import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 import org.devproof.portal.module.comment.query.CommentQuery;
 import org.devproof.portal.module.comment.service.CommentService;
@@ -48,6 +50,7 @@ public class CommentPanel extends Panel {
 
 	public CommentPanel(String id, String moduleName, String moduleContentId) {
 		super(id);
+		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
 		query = new CommentQuery();
 		query.setModuleName(moduleName);
 		query.setModuleContentId(moduleContentId);

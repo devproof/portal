@@ -46,7 +46,7 @@ public class CommonConstants {
 	public static final String CONF_GOOGLE_ANALYTICS_ENABLED = "google_analytics_enabled";
 	public static final String CONF_GOOGLE_WEBPROPERTY_ID = "google_webproperty_id";
 	public static final ResourceReference REF_SYNTAXHIGHLIGHTER_SWF = new ResourceReference(CommonConstants.class,
-			"js/SyntaxHighlighter/flash/clipboard.swf");
+			"js/SyntaxHighlighter/clipboard.swf");
 
 	public static final String GLOBAL_ADMIN_BOX_LINK_LABEL = "adminLinkLabel";
 	public static final String MAIN_NAVIGATION_LINK_LABEL = "mainNavigationLinkLabel";

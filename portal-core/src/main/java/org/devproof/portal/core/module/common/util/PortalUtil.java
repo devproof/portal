@@ -157,8 +157,6 @@ public class PortalUtil {
 	}
 
 	public static void addSyntaxHightlighter(Component component) {
-		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
-				"js/SyntaxHighlighter/SyntaxHighlighter.css"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
 				"js/SyntaxHighlighter/shCore.js"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
@@ -185,9 +183,18 @@ public class PortalUtil {
 				"js/SyntaxHighlighter/shBrushRuby.js"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
 				"js/SyntaxHighlighter/shBrushVb.js"));
+		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushScala.js"));
+		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushPlain.js"));
+		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushGroovy.js"));
+		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
+				"css/SyntaxHighlighter/shCore.css"));
+		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
+				"css/SyntaxHighlighter/shThemeDefault.css"));
 		Map<String, Object> values = new MiniMap<String, Object>(1);
-		values.put("swfPath", UrlUtils.rewriteToContextRelative("resources/"
-				+ CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF, RequestCycle.get().getRequest()));
+		values.put("swfPath", RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF));
 		component.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class,
 				"js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
 	}
