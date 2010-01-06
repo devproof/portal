@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.box.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -46,7 +47,7 @@ public class BoxEditPanelTest extends TestCase {
 
 	public static class TestBoxEditPanel extends BoxEditPanel {
 		public TestBoxEditPanel(String id) {
-			super(id, new BoxEntity());
+			super(id, Model.of(new BoxEntity()));
 		}
 
 		private static final long serialVersionUID = 1L;

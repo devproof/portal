@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
@@ -291,7 +292,8 @@ public class BookmarkPage extends BookmarkBasePage {
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
 					BookmarkEntity refreshedBookmark = bookmarkService.findById(bookmark.getId());
-					setResponsePage(new BookmarkEditPage(refreshedBookmark));
+					IModel<BookmarkEntity> bookmarkModel = Model.of(refreshedBookmark);
+					setResponsePage(new BookmarkEditPage(bookmarkModel));
 				}
 			};
 		}

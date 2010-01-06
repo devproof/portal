@@ -16,6 +16,7 @@
 package org.devproof.portal.module.download.factory;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.factory.CommonPageFactory;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.module.download.entity.DownloadEntity;
@@ -38,7 +39,7 @@ public class DownloadEditPageFactory implements CommonPageFactory, InitializingB
 	public Page newInstance(Object... obj) {
 		DownloadEntity download = downloadService.newDownloadEntity();
 		download.setUrl((String) obj[0]);
-		return new DownloadEditPage(download);
+		return new DownloadEditPage(Model.of(download));
 	}
 
 	@Override

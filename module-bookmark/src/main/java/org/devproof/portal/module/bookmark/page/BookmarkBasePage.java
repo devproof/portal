@@ -26,6 +26,8 @@ import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -132,7 +134,8 @@ public abstract class BookmarkBasePage extends TemplatePage {
 			@Override
 			public void onClick() {
 				BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
-				setResponsePage(new BookmarkEditPage(newBookmark));
+				IModel<BookmarkEntity> bookmarkModel = Model.of(newBookmark);
+				setResponsePage(new BookmarkEditPage(bookmarkModel));
 			}
 		};
 	}

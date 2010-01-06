@@ -18,6 +18,8 @@ package org.devproof.portal.core.module.email.page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
@@ -52,8 +54,9 @@ public class EmailTemplateBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				EmailTemplateEntity newEntry = emailService.newEmailTemplateEntity();
-				setResponsePage(new EmailTemplateEditPage(newEntry));
+				EmailTemplateEntity newEmailTemplate = emailService.newEmailTemplateEntity();
+				IModel<EmailTemplateEntity> emailTemplateModel = Model.of(newEmailTemplate);
+				setResponsePage(new EmailTemplateEditPage(emailTemplateModel));
 			}
 		};
 		return adminLink;

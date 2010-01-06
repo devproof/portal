@@ -180,7 +180,7 @@ public class BlogPage extends BlogBasePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					setResponsePage(new BlogEditPage(item.getModelObject()));
+					setResponsePage(new BlogEditPage(item.getModel()));
 				}
 			};
 		}

@@ -15,7 +15,20 @@
  */
 package org.devproof.portal.module.comment.panel;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
+import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
+import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.query.CommentQuery;
+import org.devproof.portal.module.comment.service.CommentService;
 
 /**
  * @author Carsten Hufe
@@ -26,11 +39,66 @@ public class CommentPanel extends Panel {
 
 	// @SpringBean(name = "configurationService")
 	// private ConfigurationService configurationService;
+	@SpringBean(name = "commentDataProvider")
+	private QueryDataProvider<CommentEntity> commentDataProvider;
+	@SpringBean(name = "commentService")
+	private CommentService commentService;
+
+	private CommentQuery query;
 
 	public CommentPanel(String id, String moduleName, String moduleContentId) {
 		super(id);
+		query = new CommentQuery();
+		query.setModuleName(moduleName);
+		query.setModuleContentId(moduleContentId);
+		commentDataProvider.setQueryObject(query);
 		// Repeater
-
+		add(new CommentDataView("listComment"));
 		// Form
+		final CommentEntity comment = new CommentEntity();
+		comment.setModuleName(moduleName);
+		comment.setModuleContentId(moduleContentId);
+		Form<CommentEntity> form = new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(comment)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit() {
+				comment.setIpAddress("123.123.123.123");
+				commentService.save(comment);
+			}
+		};
+
+		form.add(new TextArea<String>("comment"));
+		add(form);
+	}
+
+	private class CommentDataView extends DataView<CommentEntity> {
+		private static final long serialVersionUID = 1L;
+
+		public CommentDataView(String id) {
+			super(id, commentDataProvider);
+			// TODO in config
+			setItemsPerPage(10);
+		}
+
+		@Override
+		protected void populateItem(Item<CommentEntity> item) {
+			item.setOutputMarkupId(true);
+			item.add(new CommentView("commentView", item));
+		}
+	}
+
+	public class CommentView extends Fragment {
+
+		private static final long serialVersionUID = 1L;
+
+		private CommentEntity comment;
+
+		public CommentView(String id, Item<CommentEntity> item) {
+			super(id, "commentView", CommentPanel.this);
+			comment = item.getModelObject();
+			add(new MetaInfoPanel("metaInfo", comment));
+			add(new Label("comment", comment.getComment()));
+		}
 	}
 }

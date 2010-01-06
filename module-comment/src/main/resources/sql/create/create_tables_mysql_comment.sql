@@ -1,4 +1,4 @@
-CREATE TABLE `comments` (
+CREATE TABLE `comment` (
   `id` int(11) NOT NULL auto_increment,
   `created_at` datetime default NULL,
   `created_by` varchar(30) default NULL,
@@ -14,5 +14,5 @@ CREATE TABLE `comments` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX module_name_idx ON comments (module_name);
-CREATE INDEX module_content_id_idx ON comments (module_content_id);
+CREATE INDEX module_name_idx ON comment (module_name);
+CREATE INDEX module_content_id_idx ON comment (module_content_id);

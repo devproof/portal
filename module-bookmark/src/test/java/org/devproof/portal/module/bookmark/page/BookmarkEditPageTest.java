@@ -17,6 +17,7 @@ package org.devproof.portal.module.bookmark.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
@@ -66,7 +67,7 @@ public class BookmarkEditPageTest extends TestCase {
 	}
 
 	private BookmarkEditPage getNewBookmarkEditPage() {
-		return new BookmarkEditPage(new BookmarkEntity());
+		return new BookmarkEditPage(Model.of(new BookmarkEntity()));
 	}
 
 	private void submitBookmarkForm() {

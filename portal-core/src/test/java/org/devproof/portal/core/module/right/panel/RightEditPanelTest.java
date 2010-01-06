@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.right.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -46,7 +47,7 @@ public class RightEditPanelTest extends TestCase {
 
 	public static class TestRightEditPanel extends RightEditPanel {
 		public TestRightEditPanel(String id) {
-			super(id, new RightEntity(), true);
+			super(id, Model.of(new RightEntity()), true);
 		}
 
 		private static final long serialVersionUID = 1L;

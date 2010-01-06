@@ -20,6 +20,8 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
@@ -139,7 +141,8 @@ public class OtherPageViewPage extends OtherPageBasePage {
 					editPage = otherPageService.newOtherPageEntity();
 					editPage.setContentId(contentId);
 				}
-				setResponsePage(new OtherPageEditPage(editPage));
+				IModel<OtherPageEntity> otherPageModel = Model.of(editPage);
+				setResponsePage(new OtherPageEditPage(otherPageModel));
 			}
 		};
 		return authorButtons;

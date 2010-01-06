@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.role.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -46,7 +47,7 @@ public class RoleEditPanelTest extends TestCase {
 
 	public static class TestRoleEditPanel extends RoleEditPanel {
 		public TestRoleEditPanel(String id) {
-			super(id, new RoleEntity(), true);
+			super(id, Model.of(new RoleEntity()), true);
 		}
 
 		private static final long serialVersionUID = 1L;

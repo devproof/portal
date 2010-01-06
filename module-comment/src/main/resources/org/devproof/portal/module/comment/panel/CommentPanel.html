@@ -4,14 +4,20 @@
 <body>
 	<wicket:panel>
 		<div><h2>Kommentare</h2></div>
+		
+		<form wicket:id="form">
+		<textarea wicket:id="comment" cols="100" rows="15"></textarea><br/>
+		<input type="submit" wicket:message="value:save" class="button"/>
+		</form>
 		<div wicket:id="listComment"><div wicket:id="commentView"/></div>
-		<!-- div wicket:id="paging">paging</div>	
-		<div wicket:id="composeComment">comment</div -->	
+		
+		
+		<!-- div wicket:id="paging">paging</div -->	
 		<wicket:fragment wicket:id="commentView">
 			<div class="descr">
 				<span wicket:id="metaInfo">[author name]</span>&nbsp;
-				<!-- span wicket:id="authorButtons"></span -->
-			</div>
+				<!--<span wicket:id="authorButtons"></span>
+			--></div>
 			<div wicket:id="comment">[comment]</div>
 		</wicket:fragment>
 	</wicket:panel>

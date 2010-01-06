@@ -32,6 +32,7 @@ import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -61,9 +62,9 @@ public abstract class UserEditPanel extends Panel {
 	private PasswordTextField password1;
 	private PasswordTextField password2;
 
-	public UserEditPanel(String id, UserEntity user, boolean isCreate) {
-		super(id);
-		this.user = user;
+	public UserEditPanel(String id, IModel<UserEntity> userModel, boolean isCreate) {
+		super(id, userModel);
+		this.user = userModel.getObject();
 		this.isCreate = isCreate;
 		add(createFeedbackPanel());
 		add(createUserEditForm());

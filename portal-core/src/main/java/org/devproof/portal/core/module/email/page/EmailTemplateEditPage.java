@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.EmailRichTextArea;
@@ -36,10 +37,10 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 	private EmailService emailService;
 
 	private EmailTemplateEntity emailTemplate;
-	
-	public EmailTemplateEditPage(EmailTemplateEntity emailTemplate) {
+
+	public EmailTemplateEditPage(IModel<EmailTemplateEntity> emailTemplateModel) {
 		super(new PageParameters());
-		this.emailTemplate = emailTemplate;
+		this.emailTemplate = emailTemplateModel.getObject();
 		add(createEditEmailTemplateForm());
 	}
 
@@ -52,8 +53,7 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 	}
 
 	private Form<EmailTemplateEntity> newEditEmailTemplateForm() {
-		return new Form<EmailTemplateEntity>("form",
-				new CompoundPropertyModel<EmailTemplateEntity>(emailTemplate)) {
+		return new Form<EmailTemplateEntity>("form", new CompoundPropertyModel<EmailTemplateEntity>(emailTemplate)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

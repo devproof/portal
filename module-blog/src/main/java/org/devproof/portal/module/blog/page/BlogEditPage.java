@@ -49,9 +49,9 @@ public class BlogEditPage extends BlogBasePage {
 
 	private BlogEntity blog;
 
-	public BlogEditPage(BlogEntity blog) {
+	public BlogEditPage(IModel<BlogEntity> blogModel) {
 		super(new PageParameters());
-		this.blog = blog;
+		this.blog = blogModel.getObject();
 		add(createBlogEditForm());
 	}
 

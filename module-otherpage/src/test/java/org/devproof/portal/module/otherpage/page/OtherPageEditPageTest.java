@@ -17,6 +17,7 @@ package org.devproof.portal.module.otherpage.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -40,7 +41,7 @@ public class OtherPageEditPageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPage(new OtherPageEditPage(new OtherPageEntity()));
+		tester.startPage(new OtherPageEditPage(Model.of(new OtherPageEntity())));
 		tester.assertRenderedPage(OtherPageEditPage.class);
 	}
 }

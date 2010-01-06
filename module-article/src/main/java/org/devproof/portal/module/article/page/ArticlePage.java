@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -32,6 +33,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
+import org.devproof.portal.core.module.common.model.EntityModel;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
@@ -243,8 +245,9 @@ public class ArticlePage extends ArticleBasePage {
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					ArticleEntity tmp = articleService.findByIdAndPrefetch(article.getId());
-					setResponsePage(new ArticleEditPage(tmp));
+					IModel<ArticleEntity> articleModel = EntityModel.of(articleService.findByIdAndPrefetch(article
+							.getId()));
+					setResponsePage(new ArticleEditPage(articleModel));
 				}
 			};
 		}
