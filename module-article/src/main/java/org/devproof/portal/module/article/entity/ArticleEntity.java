@@ -36,6 +36,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang.StringUtils;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.model.EntityId;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.hibernate.annotations.Cascade;
@@ -46,7 +47,7 @@ import org.hibernate.annotations.Cascade;
 @Entity
 @Table(name = "article", uniqueConstraints = @UniqueConstraint(columnNames = { "content_id" }))
 // @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-final public class ArticleEntity extends BaseEntity {
+final public class ArticleEntity extends BaseEntity implements EntityId {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

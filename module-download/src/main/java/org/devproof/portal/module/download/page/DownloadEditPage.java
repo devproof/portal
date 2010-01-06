@@ -50,9 +50,9 @@ public class DownloadEditPage extends DownloadBasePage {
 
 	private DownloadEntity download;
 
-	public DownloadEditPage(DownloadEntity download) {
+	public DownloadEditPage(IModel<DownloadEntity> downloadModel) {
 		super(new PageParameters());
-		this.download = download;
+		this.download = downloadModel.getObject();
 		add(createDownloadEditForm());
 	}
 

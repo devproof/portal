@@ -28,6 +28,8 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.panel.BoxEditPanel;
@@ -91,7 +93,8 @@ public class BoxPage extends TemplatePage {
 			}
 
 			private BoxEditPanel newBoxEditPanel() {
-				return new BoxEditPanel(modalWindow.getContentId(), boxService.newBoxEntity()) {
+				IModel<BoxEntity> boxModel = Model.of(boxService.newBoxEntity());
+				return new BoxEditPanel(modalWindow.getContentId(), boxModel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -209,8 +212,8 @@ public class BoxPage extends TemplatePage {
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
-					BoxEditPanel editUserPanel = new BoxEditPanel(modalWindow.getContentId(), box) {
-
+					IModel<BoxEntity> boxModel = Model.of(box);
+					BoxEditPanel editUserPanel = new BoxEditPanel(modalWindow.getContentId(), boxModel) {
 						private static final long serialVersionUID = 1L;
 
 						@Override

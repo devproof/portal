@@ -27,6 +27,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -128,7 +130,8 @@ public class RightPage extends TemplatePage {
 			}
 
 			private RightEditPanel createRightEditPanel() {
-				return new RightEditPanel(modalWindow.getContentId(), rightService.newRightEntity(), true) {
+				IModel<RightEntity> rightModel = Model.of(rightService.newRightEntity());
+				return new RightEditPanel(modalWindow.getContentId(), rightModel, true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -195,7 +198,8 @@ public class RightPage extends TemplatePage {
 				}
 
 				private RightEditPanel newRightEditPanel(RightEntity refreshedRight) {
-					return new RightEditPanel(modalWindow.getContentId(), refreshedRight, false) {
+					IModel<RightEntity> rightModel = Model.of(refreshedRight);
+					return new RightEditPanel(modalWindow.getContentId(), rightModel, false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override

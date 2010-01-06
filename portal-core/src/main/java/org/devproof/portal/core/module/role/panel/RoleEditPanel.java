@@ -34,7 +34,6 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -58,9 +57,9 @@ public abstract class RoleEditPanel extends Panel {
 	private RoleEntity role;
 	private boolean isRoleEditable;
 
-	public RoleEditPanel(String id, RoleEntity role, boolean isRoleEditable) {
-		super(id, Model.of(role));
-		this.role = role;
+	public RoleEditPanel(String id, IModel<RoleEntity> roleModel, boolean isRoleEditable) {
+		super(id, roleModel);
+		this.role = roleModel.getObject();
 		this.isRoleEditable = isRoleEditable;
 		add(createFeedbackPanel());
 		add(createRoleEditForm());

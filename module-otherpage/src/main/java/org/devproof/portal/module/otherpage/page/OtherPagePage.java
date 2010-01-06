@@ -26,6 +26,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -120,9 +122,9 @@ public class OtherPagePage extends OtherPageBasePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					// Reload because LazyIntialization occur
-					OtherPageEntity tmp = otherPageService.findById(getEntity().getId());
-					setResponsePage(new OtherPageEditPage(tmp));
+					OtherPageEntity otherPage = otherPageService.findById(getEntity().getId());
+					IModel<OtherPageEntity> otherPageModel = Model.of(otherPage);
+					setResponsePage(new OtherPageEditPage(otherPageModel));
 				}
 			};
 		}

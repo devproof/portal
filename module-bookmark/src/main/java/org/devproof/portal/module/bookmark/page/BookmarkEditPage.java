@@ -50,9 +50,9 @@ public class BookmarkEditPage extends BookmarkBasePage {
 
 	private BookmarkEntity bookmark;
 
-	public BookmarkEditPage(BookmarkEntity bookmark) {
+	public BookmarkEditPage(IModel<BookmarkEntity> bookmarkModel) {
 		super(new PageParameters());
-		this.bookmark = bookmark;
+		this.bookmark = bookmarkModel.getObject();
 		add(createBookmarkEditForm());
 	}
 

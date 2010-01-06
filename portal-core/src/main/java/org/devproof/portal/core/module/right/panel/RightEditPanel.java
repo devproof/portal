@@ -34,7 +34,6 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -58,9 +57,9 @@ public abstract class RightEditPanel extends Panel {
 	private RightEntity right;
 	private boolean isRightEditable;
 
-	public RightEditPanel(String id, RightEntity right, boolean isRightEditable) {
-		super(id, Model.of(right));
-		this.right = right;
+	public RightEditPanel(String id, IModel<RightEntity> rightModel, boolean isRightEditable) {
+		super(id, rightModel);
+		this.right = rightModel.getObject();
 		this.isRightEditable = isRightEditable;
 		add(createFeedbackPanel());
 		add(createRightEditForm());

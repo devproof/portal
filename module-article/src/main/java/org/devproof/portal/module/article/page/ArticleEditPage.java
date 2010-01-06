@@ -55,9 +55,9 @@ public class ArticleEditPage extends ArticleBasePage {
 	private ArticleEntity article;
 	private RequiredTextField<String> contentIdField;
 
-	public ArticleEditPage(ArticleEntity article) {
+	public ArticleEditPage(IModel<ArticleEntity> articleModel) {
 		super(new PageParameters());
-		this.article = article;
+		this.article = articleModel.getObject();
 		add(createArticleEditForm());
 	}
 

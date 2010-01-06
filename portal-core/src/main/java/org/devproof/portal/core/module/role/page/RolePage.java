@@ -29,6 +29,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -143,7 +145,8 @@ public class RolePage extends TemplatePage {
 			}
 
 			private RoleEditPanel createRoleEditPanel() {
-				return new RoleEditPanel(modalWindow.getContentId(), roleService.newRoleEntity(), true) {
+				IModel<RoleEntity> roleModel = Model.of(roleService.newRoleEntity());
+				return new RoleEditPanel(modalWindow.getContentId(), roleModel, true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -296,7 +299,8 @@ public class RolePage extends TemplatePage {
 				}
 
 				private RoleEditPanel newRoleEditPanel(RoleEntity refreshedRole) {
-					return new RoleEditPanel(modalWindow.getContentId(), refreshedRole, false) {
+					IModel<RoleEntity> roleModel = Model.of(refreshedRole);
+					return new RoleEditPanel(modalWindow.getContentId(), roleModel, false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override

@@ -17,6 +17,7 @@ package org.devproof.portal.module.blog.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.blog.entity.BlogEntity;
@@ -46,7 +47,7 @@ public class BlogEditPageTest extends TestCase {
 	}
 
 	private BlogEditPage getNewBlogEditPage() {
-		return new BlogEditPage(new BlogEntity());
+		return new BlogEditPage(Model.of(new BlogEntity()));
 	}
 
 	public void testSaveBlogEntry() {

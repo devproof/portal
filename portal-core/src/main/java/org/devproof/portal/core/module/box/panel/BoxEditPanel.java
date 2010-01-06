@@ -51,9 +51,9 @@ public abstract class BoxEditPanel extends Panel {
 	private IModel<BoxConfiguration> boxSelectionModel;
 	private BoxEntity box;
 
-	public BoxEditPanel(String id, BoxEntity box) {
+	public BoxEditPanel(String id, IModel<BoxEntity> boxModel) {
 		super(id);
-		this.box = box;
+		this.box = boxModel.getObject();
 		setBoxConfigurationModel();
 		add(createFeedbackPanel());
 		add(createBoxEditForm());

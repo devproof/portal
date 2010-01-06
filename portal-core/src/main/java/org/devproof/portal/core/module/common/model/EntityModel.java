@@ -52,4 +52,7 @@ public class EntityModel<T extends EntityId> extends LoadableDetachableModel<T> 
 		return (T) hibernateTemplate.get(entityClass, entityId);
 	}
 
+	public static <T extends EntityId> EntityModel<T> of(T object) {
+		return new EntityModel<T>(object);
+	}
 }

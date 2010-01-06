@@ -24,6 +24,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.model.EntityId;
 
 /**
  * @author Carsten Hufe
@@ -31,7 +32,7 @@ import org.devproof.portal.core.module.common.entity.BaseEntity;
 @Entity
 @Table(name = "core_email_tpl")
 // @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-final public class EmailTemplateEntity extends BaseEntity {
+final public class EmailTemplateEntity extends BaseEntity implements EntityId {
 
 	private static final long serialVersionUID = 1L;
 

@@ -19,6 +19,8 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -60,8 +62,9 @@ public class OtherPageBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				OtherPageEntity newEntry = otherPageService.newOtherPageEntity();
-				setResponsePage(new OtherPageEditPage(newEntry));
+				OtherPageEntity newOtherPage = otherPageService.newOtherPageEntity();
+				IModel<OtherPageEntity> otherPageModel = Model.of(newOtherPage);
+				setResponsePage(new OtherPageEditPage(otherPageModel));
 			}
 		};
 		return link;

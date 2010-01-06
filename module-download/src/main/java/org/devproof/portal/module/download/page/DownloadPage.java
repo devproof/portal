@@ -32,6 +32,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
@@ -91,7 +92,8 @@ public class DownloadPage extends DownloadBasePage {
 		if (isCreateLinkFromUploadCenter() && isAuthor()) {
 			DownloadEntity newDownload = downloadService.newDownloadEntity();
 			newDownload.setUrl(params.getString("create"));
-			setResponsePage(new DownloadEditPage(newDownload));
+			IModel<DownloadEntity> downloadModel = Model.of(newDownload);
+			setResponsePage(new DownloadEditPage(downloadModel));
 		}
 	}
 
@@ -208,7 +210,8 @@ public class DownloadPage extends DownloadBasePage {
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
 					DownloadEntity refreshedDownload = downloadService.findById(download.getId());
-					setResponsePage(new DownloadEditPage(refreshedDownload));
+					IModel<DownloadEntity> downloadModel = Model.of(refreshedDownload);
+					setResponsePage(new DownloadEditPage(downloadModel));
 				}
 			};
 		}

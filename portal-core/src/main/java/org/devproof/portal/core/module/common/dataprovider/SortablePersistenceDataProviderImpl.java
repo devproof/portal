@@ -54,7 +54,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable> extends
 
 	public IModel<T> model(T obj) {
 		// return new CompoundPropertyModel<T>(obj);
-		return new Model<T>(obj);
+		return Model.of(obj);
 	}
 
 	@Override

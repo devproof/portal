@@ -23,11 +23,13 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
+import org.devproof.portal.core.module.common.model.EntityModel;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
@@ -160,7 +162,8 @@ public class ArticleReadPage extends ArticleBasePage {
 			public void onEdit(AjaxRequestTarget target) {
 				ArticleEntity article = page.getArticle();
 				article = articleService.findByIdAndPrefetch(article.getId());
-				setResponsePage(new ArticleEditPage(article));
+				IModel<ArticleEntity> articleModel = EntityModel.of(article);
+				setResponsePage(new ArticleEditPage(articleModel));
 			}
 		};
 		return authorPanel;

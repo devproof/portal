@@ -26,6 +26,8 @@ import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -141,7 +143,8 @@ public abstract class DownloadBasePage extends TemplatePage {
 			@Override
 			public void onClick() {
 				DownloadEntity newDownload = downloadService.newDownloadEntity();
-				setResponsePage(new DownloadEditPage(newDownload));
+				IModel<DownloadEntity> downloadModel = Model.of(newDownload);
+				setResponsePage(new DownloadEditPage(downloadModel));
 			}
 		};
 	}

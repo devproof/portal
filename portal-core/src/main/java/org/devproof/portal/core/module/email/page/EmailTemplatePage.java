@@ -24,6 +24,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
@@ -114,8 +116,9 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
 					// Reload because LazyIntialization occur
-					EmailTemplateEntity tamplateToEdit = emailService.findById(item.getModelObject().getId());
-					setResponsePage(new EmailTemplateEditPage(tamplateToEdit));
+					EmailTemplateEntity templateToEdit = emailService.findById(item.getModelObject().getId());
+					IModel<EmailTemplateEntity> emailTemplateModel = Model.of(templateToEdit);
+					setResponsePage(new EmailTemplateEditPage(emailTemplateModel));
 				}
 			};
 		}

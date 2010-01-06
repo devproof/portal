@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
@@ -43,9 +44,9 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
 	private OtherPageEntity otherPage;
 
-	public OtherPageEditPage(OtherPageEntity otherPage) {
+	public OtherPageEditPage(IModel<OtherPageEntity> otherPageModel) {
 		super(new PageParameters());
-		this.otherPage = otherPage;
+		this.otherPage = otherPageModel.getObject();
 		add(createOtherPageEditForm());
 	}
 

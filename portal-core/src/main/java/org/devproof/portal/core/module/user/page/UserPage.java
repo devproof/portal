@@ -31,6 +31,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.component.TooltipLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
@@ -95,7 +97,8 @@ public class UserPage extends TemplatePage {
 			}
 
 			private UserEditPanel createUserEditPanel() {
-				return new UserEditPanel(modalWindow.getContentId(), new UserEntity(), true) {
+				IModel<UserEntity> userModel = Model.of(userService.newUserEntity());
+				return new UserEditPanel(modalWindow.getContentId(), userModel, true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -278,8 +281,7 @@ public class UserPage extends TemplatePage {
 				}
 
 				private UserEditPanel createUserEditPanel(final Item<UserEntity> item) {
-					UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), item.getModelObject(),
-							false) {
+					UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), item.getModel(), false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
