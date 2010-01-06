@@ -17,6 +17,7 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -38,6 +39,7 @@ public class LazyCommentPanel extends Panel {
 		refreshContainer.setMarkupId("refreshCommentContainer");
 		refreshContainer.setOutputMarkupId(true);
 		refreshContainer.add(new WebMarkupContainer("comments"));
+		refreshContainer.add(new SimpleAttributeModifier("style", "display:none;"));
 		add(refreshContainer);
 		add(new AjaxLink<Void>("showCommentsLink") {
 			private static final long serialVersionUID = 1L;
