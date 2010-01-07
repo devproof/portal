@@ -54,7 +54,9 @@ public class DownloadServiceImpl implements DownloadService {
 
 	@Override
 	public DownloadEntity newDownloadEntity() {
-		return new DownloadEntity();
+		DownloadEntity download = new DownloadEntity();
+		download.setAllRights(downloadDao.findLastSelectedRights());
+		return download;
 	}
 
 	@Override

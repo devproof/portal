@@ -15,14 +15,20 @@
  */
 package org.devproof.portal.module.otherpage.dao;
 
+import java.util.List;
+
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 
 /**
  * @author Carsten Hufe
  */
 public interface OtherPageDao extends GenericDao<OtherPageEntity, Integer> {
+	@Query("select op.allRights from OtherPageEntity op where op.modifiedBy = (select max(modifiedBy) from OtherPageEntity)")
+	public List<RightEntity> findLastSelectedRights();
+	
 	@Query("select count(op.contentId) from OtherPageEntity op where op.contentId like ?")
 	public long existsContentId(String contentId);
 

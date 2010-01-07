@@ -48,7 +48,9 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public ArticleEntity newArticleEntity() {
-		return new ArticleEntity();
+		ArticleEntity article = new ArticleEntity();
+		article.setAllRights(articleDao.findLastSelectedRights());
+		return article;
 	}
 
 	@Override

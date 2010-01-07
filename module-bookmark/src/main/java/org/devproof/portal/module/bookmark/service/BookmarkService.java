@@ -18,6 +18,7 @@ package org.devproof.portal.module.bookmark.service;
 import java.util.List;
 
 import org.devproof.portal.core.module.common.service.CrudService;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
@@ -89,4 +90,10 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 *            bookmark
 	 */
 	public void markValidBookmark(BookmarkEntity bookmark);
+	
+	
+	/**
+	 * Returns the rights from the last editited bookmark
+	 */
+	public List<RightEntity> findLastSelectedRights();
 }

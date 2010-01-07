@@ -73,7 +73,7 @@ public class DeliciousSyncPanel extends Panel {
 	private int modifiedBookmarksCount = 0;
 	private int deletedBookmarksCount = 0;
 	private DeliciousBean deliciousBean;
-	private ListModel<RightEntity> allSelectedRightsModel = new ListModel<RightEntity>(new ArrayList<RightEntity>());
+	private ListModel<RightEntity> allSelectedRightsModel;
 	private ProgressionModel progressionModel;
 	private ProgressBar progressBar;
 	private DeliciousFormBean deliciousFormBean = new DeliciousFormBean();
@@ -81,10 +81,15 @@ public class DeliciousSyncPanel extends Panel {
 
 	public DeliciousSyncPanel(String id) {
 		super(id);
-		createProgressionModel();
+		setProgressionModel();
+		setAllSelectedRightsModel();
 		add(createCSSHeaderContributor());
 		add(createFeedbackPanel());
 		add(createDeliciousSyncForm());
+	}
+
+	private void setAllSelectedRightsModel() {
+		allSelectedRightsModel = new ListModel<RightEntity>(bookmarkService.findLastSelectedRights());
 	}
 
 	private HeaderContributor createCSSHeaderContributor() {
@@ -241,7 +246,7 @@ public class DeliciousSyncPanel extends Panel {
 		return progressBar;
 	}
 
-	private ProgressionModel createProgressionModel() {
+	private ProgressionModel setProgressionModel() {
 		progressionModel = new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
 

@@ -17,7 +17,8 @@ package org.devproof.portal.module.comment.page;
 
 import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.module.comment.panel.LazyCommentPanel;
+import org.devproof.portal.module.comment.config.CommentConfiguration;
+import org.devproof.portal.module.comment.panel.CommentPanel;
 
 /**
  * @author Carsten Hufe
@@ -31,6 +32,11 @@ public class GuestbookPage extends TemplatePage {
 
 	public GuestbookPage(PageParameters params) {
 		super(params);
-		add(new LazyCommentPanel("comments", "guestbook", "guestbook"));
+		CommentConfiguration config = new CommentConfiguration();
+		config.setModuleName("guestbook");
+		config.setModuleContentId("guestbook");
+		config.setReadRight("guestbook.comment.read");
+		config.setWriteRight("guestbook.comment.write");
+		add(new CommentPanel("comments",config));
 	}
 }
