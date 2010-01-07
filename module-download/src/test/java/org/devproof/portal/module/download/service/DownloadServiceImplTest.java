@@ -49,8 +49,7 @@ public class DownloadServiceImplTest extends TestCase {
 	}
 
 	public void testSave() {
-		DownloadEntity e = impl.newDownloadEntity();
-		e.setId(1);
+		DownloadEntity e = createDownloadEntity();
 		mock.save(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
@@ -61,8 +60,7 @@ public class DownloadServiceImplTest extends TestCase {
 	}
 
 	public void testDelete() {
-		DownloadEntity e = impl.newDownloadEntity();
-		e.setId(1);
+		DownloadEntity e = createDownloadEntity();
 		mock.delete(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
@@ -74,8 +72,8 @@ public class DownloadServiceImplTest extends TestCase {
 
 	public void testFindAll() {
 		List<DownloadEntity> list = new ArrayList<DownloadEntity>();
-		list.add(impl.newDownloadEntity());
-		list.add(impl.newDownloadEntity());
+		list.add(createDownloadEntity());
+		list.add(createDownloadEntity());
 		EasyMock.expect(mock.findAll()).andReturn(list);
 		EasyMock.replay(mock);
 		assertEquals(list, impl.findAll());
@@ -83,8 +81,7 @@ public class DownloadServiceImplTest extends TestCase {
 	}
 
 	public void testFindById() {
-		DownloadEntity e = impl.newDownloadEntity();
-		e.setId(1);
+		DownloadEntity e = createDownloadEntity();
 		EasyMock.expect(mock.findById(1)).andReturn(e);
 		EasyMock.replay(mock);
 		assertEquals(impl.findById(1), e);
@@ -97,8 +94,8 @@ public class DownloadServiceImplTest extends TestCase {
 
 	public void testFindAllDownloadsForRoleOrderedByDateDesc() {
 		List<DownloadEntity> list = new ArrayList<DownloadEntity>();
-		list.add(impl.newDownloadEntity());
-		list.add(impl.newDownloadEntity());
+		list.add(createDownloadEntity());
+		list.add(createDownloadEntity());
 		RoleEntity role = new RoleEntity();
 		role.setId(1);
 		EasyMock.expect(mock.findAllDownloadsForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
@@ -108,8 +105,7 @@ public class DownloadServiceImplTest extends TestCase {
 	}
 
 	public void testIncrementHits() {
-		DownloadEntity e = impl.newDownloadEntity();
-		e.setId(1);
+		DownloadEntity e = createDownloadEntity();
 		mock.incrementHits(e);
 		EasyMock.replay(mock);
 		impl.incrementHits(e);
@@ -117,8 +113,7 @@ public class DownloadServiceImplTest extends TestCase {
 	}
 
 	public void testMarkBrokenDownload() {
-		DownloadEntity e = impl.newDownloadEntity();
-		e.setId(1);
+		DownloadEntity e = createDownloadEntity();
 		mock.markBrokenDownload(e);
 		EasyMock.replay(mock);
 		impl.markBrokenDownload(e);
@@ -126,8 +121,7 @@ public class DownloadServiceImplTest extends TestCase {
 	}
 
 	public void testMarkValidDownload() {
-		DownloadEntity e = impl.newDownloadEntity();
-		e.setId(1);
+		DownloadEntity e = createDownloadEntity();
 		mock.markValidDownload(e);
 		EasyMock.replay(mock);
 		impl.markValidDownload(e);
@@ -135,12 +129,18 @@ public class DownloadServiceImplTest extends TestCase {
 	}
 
 	public void testRateDownload() {
-		DownloadEntity e = impl.newDownloadEntity();
-		e.setId(1);
+		DownloadEntity e = createDownloadEntity();
 		mock.rateDownload(5, e);
 		mock.refresh(e);
 		EasyMock.replay(mock);
 		impl.rateDownload(5, e);
 		EasyMock.verify(mock);
+	}
+	
+
+	private DownloadEntity createDownloadEntity() {
+		DownloadEntity download = new DownloadEntity();
+		download.setId(1);
+		return download;
 	}
 }

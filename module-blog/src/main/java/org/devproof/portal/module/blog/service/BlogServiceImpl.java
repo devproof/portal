@@ -54,7 +54,9 @@ public class BlogServiceImpl implements BlogService {
 
 	@Override
 	public BlogEntity newBlogEntity() {
-		return new BlogEntity();
+		BlogEntity blog = new BlogEntity();
+		blog.setAllRights(blogDao.findLastSelectedRights());
+		return blog;
 	}
 
 	@Required

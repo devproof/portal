@@ -15,12 +15,17 @@
  */
 package org.devproof.portal.module.blog.dao;
 
+import java.util.List;
+
+import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 
 /**
  * @author Carsten Hufe
  */
 public interface BlogDao extends GenericDao<BlogEntity, Integer> {
-
+	@Query("select b.allRights from BlogEntity b where b.modifiedBy = (select max(modifiedBy) from BlogEntity)")
+	public List<RightEntity> findLastSelectedRights();
 }

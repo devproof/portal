@@ -17,6 +17,7 @@ package org.devproof.portal.module.bookmark.service;
 
 import java.util.List;
 
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.bookmark.dao.BookmarkDao;
@@ -60,7 +61,9 @@ public class BookmarkServiceImpl implements BookmarkService {
 
 	@Override
 	public BookmarkEntity newBookmarkEntity() {
-		return new BookmarkEntity();
+		BookmarkEntity bookmark = new BookmarkEntity();
+		bookmark.setAllRights(bookmarkDao.findLastSelectedRights());
+		return bookmark;
 	}
 
 	@Override
@@ -89,6 +92,11 @@ public class BookmarkServiceImpl implements BookmarkService {
 	public void save(BookmarkEntity entity) {
 		bookmarkDao.save(entity);
 		bookmarkTagService.deleteUnusedTags();
+	}
+	
+	@Override
+	public List<RightEntity> findLastSelectedRights() {
+		return bookmarkDao.findLastSelectedRights();
 	}
 
 	@Required

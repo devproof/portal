@@ -39,7 +39,9 @@ public class OtherPageServiceImpl implements OtherPageService {
 
 	@Override
 	public OtherPageEntity newOtherPageEntity() {
-		return new OtherPageEntity();
+		OtherPageEntity otherPage = new OtherPageEntity();
+		otherPage.setAllRights(otherPageDao.findLastSelectedRights());
+		return otherPage;
 	}
 
 	@Override

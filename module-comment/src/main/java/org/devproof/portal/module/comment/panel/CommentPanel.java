@@ -28,6 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.module.comment.CommentConstants;
+import org.devproof.portal.module.comment.config.CommentConfiguration;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 import org.devproof.portal.module.comment.query.CommentQuery;
 import org.devproof.portal.module.comment.service.CommentService;
@@ -48,19 +49,19 @@ public class CommentPanel extends Panel {
 
 	private CommentQuery query;
 
-	public CommentPanel(String id, String moduleName, String moduleContentId) {
+	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
 		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
 		query = new CommentQuery();
-		query.setModuleName(moduleName);
-		query.setModuleContentId(moduleContentId);
+		query.setModuleName(configuration.getModuleName());
+		query.setModuleContentId(configuration.getModuleContentId());
 		commentDataProvider.setQueryObject(query);
 		// Repeater
 		add(new CommentDataView("listComment"));
 		// Form
 		final CommentEntity comment = new CommentEntity();
-		comment.setModuleName(moduleName);
-		comment.setModuleContentId(moduleContentId);
+		comment.setModuleName(configuration.getModuleName());
+		comment.setModuleContentId(configuration.getModuleContentId());
 		Form<CommentEntity> form = new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(comment)) {
 			private static final long serialVersionUID = 1L;
 

@@ -41,8 +41,7 @@ public class OtherPageServiceImplTest extends TestCase {
 	}
 
 	public void testSave() {
-		OtherPageEntity e = impl.newOtherPageEntity();
-		e.setId(1);
+		OtherPageEntity e = createOtherPageEntity();
 		mock.save(e);
 		EasyMock.replay(mock);
 		impl.save(e);
@@ -50,7 +49,7 @@ public class OtherPageServiceImplTest extends TestCase {
 	}
 
 	public void testDelete() {
-		OtherPageEntity e = impl.newOtherPageEntity();
+		OtherPageEntity e = createOtherPageEntity();
 		e.setId(1);
 		mock.delete(e);
 		EasyMock.replay(mock);
@@ -60,8 +59,8 @@ public class OtherPageServiceImplTest extends TestCase {
 
 	public void testFindAll() {
 		List<OtherPageEntity> list = new ArrayList<OtherPageEntity>();
-		list.add(impl.newOtherPageEntity());
-		list.add(impl.newOtherPageEntity());
+		list.add(createOtherPageEntity());
+		list.add(createOtherPageEntity());
 		EasyMock.expect(mock.findAll()).andReturn(list);
 		EasyMock.replay(mock);
 		assertEquals(list, impl.findAll());
@@ -69,8 +68,7 @@ public class OtherPageServiceImplTest extends TestCase {
 	}
 
 	public void testFindById() {
-		OtherPageEntity e = impl.newOtherPageEntity();
-		e.setId(1);
+		OtherPageEntity e = createOtherPageEntity();
 		EasyMock.expect(mock.findById(1)).andReturn(e);
 		EasyMock.replay(mock);
 		assertEquals(impl.findById(1), e);
@@ -86,5 +84,11 @@ public class OtherPageServiceImplTest extends TestCase {
 		EasyMock.replay(mock);
 		assertTrue(impl.existsContentId("contentId"));
 		EasyMock.verify(mock);
+	}
+	
+	private OtherPageEntity createOtherPageEntity() {
+		OtherPageEntity e = new OtherPageEntity();
+		e.setId(1);
+		return e;
 	}
 }

@@ -1,0 +1,15 @@
+- Nice Styles CSS
+- Stateless Form
+- Strip html and add<br>
+- Change constructor withArgument CommentConfiguration (moduleName, moduleContentId, read right, write right)
+- Blame Support
+- Deletion Support (means hiding)
+- Change MetaInfoPanel to a comment own panel
+- Overview for manageing comments (with searchbox: textsearch, moduleName, Blamed, deleted, not reviewed)
+- Paging
+- Configuration for paging
+- ExpandableCommentPanel nicer
+- Tests für Services
+- Tests für Pages
+- Configuration -> disable for each section
+- save real IP

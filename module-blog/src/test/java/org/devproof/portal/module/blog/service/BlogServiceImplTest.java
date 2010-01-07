@@ -46,8 +46,7 @@ public class BlogServiceImplTest extends TestCase {
 	}
 
 	public void testSave() {
-		BlogEntity e = impl.newBlogEntity();
-		e.setId(1);
+		BlogEntity e = createBlogEntity();
 		mock.save(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
@@ -58,8 +57,7 @@ public class BlogServiceImplTest extends TestCase {
 	}
 
 	public void testDelete() {
-		BlogEntity e = impl.newBlogEntity();
-		e.setId(1);
+		BlogEntity e = createBlogEntity();
 		mock.delete(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
@@ -71,8 +69,8 @@ public class BlogServiceImplTest extends TestCase {
 
 	public void testFindAll() {
 		List<BlogEntity> list = new ArrayList<BlogEntity>();
-		list.add(impl.newBlogEntity());
-		list.add(impl.newBlogEntity());
+		list.add(createBlogEntity());
+		list.add(createBlogEntity());
 		EasyMock.expect(mock.findAll()).andReturn(list);
 		EasyMock.replay(mock);
 		assertEquals(list, impl.findAll());
@@ -80,8 +78,7 @@ public class BlogServiceImplTest extends TestCase {
 	}
 
 	public void testFindById() {
-		BlogEntity e = impl.newBlogEntity();
-		e.setId(1);
+		BlogEntity e = createBlogEntity();
 		EasyMock.expect(mock.findById(1)).andReturn(e);
 		EasyMock.replay(mock);
 		assertEquals(impl.findById(1), e);
@@ -90,5 +87,12 @@ public class BlogServiceImplTest extends TestCase {
 
 	public void testNewBlogEntity() {
 		assertNotNull(impl.newBlogEntity());
+	}
+	
+
+	private BlogEntity createBlogEntity() {
+		BlogEntity blog = new BlogEntity();
+		blog.setId(1);
+		return blog;
 	}
 }

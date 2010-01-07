@@ -20,6 +20,7 @@ import java.util.List;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
@@ -28,6 +29,9 @@ import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
  * @author Carsten Hufe
  */
 public interface BookmarkDao extends GenericDao<BookmarkEntity, Integer> {
+	@Query("select b.allRights from BookmarkEntity b where b.modifiedBy = (select max(modifiedBy) from BookmarkEntity)")
+	public List<RightEntity> findLastSelectedRights();
+	
 	@Query(value = "select distinct(b) from BookmarkEntity b join b.allRights vr"
 			+ " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%') order by b.modifiedAt desc", limitClause = true)
 	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);

@@ -20,6 +20,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.bookmark.dao.BookmarkDao;
@@ -48,7 +49,7 @@ public class BookmarkServiceImplTest extends TestCase {
 	}
 
 	public void testSave() {
-		BookmarkEntity e = impl.newBookmarkEntity();
+		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.save(e);
 		mockTag.deleteUnusedTags();
@@ -60,7 +61,7 @@ public class BookmarkServiceImplTest extends TestCase {
 	}
 
 	public void testDelete() {
-		BookmarkEntity e = impl.newBookmarkEntity();
+		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.delete(e);
 		mockTag.deleteUnusedTags();
@@ -73,8 +74,8 @@ public class BookmarkServiceImplTest extends TestCase {
 
 	public void testFindAll() {
 		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
-		list.add(impl.newBookmarkEntity());
-		list.add(impl.newBookmarkEntity());
+		list.add(createBookmarkEntity());
+		list.add(createBookmarkEntity());
 		EasyMock.expect(mock.findAll()).andReturn(list);
 		EasyMock.replay(mock);
 		assertEquals(list, impl.findAll());
@@ -82,7 +83,7 @@ public class BookmarkServiceImplTest extends TestCase {
 	}
 
 	public void testFindById() {
-		BookmarkEntity e = impl.newBookmarkEntity();
+		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		EasyMock.expect(mock.findById(1)).andReturn(e);
 		EasyMock.replay(mock);
@@ -96,8 +97,8 @@ public class BookmarkServiceImplTest extends TestCase {
 
 	public void testFindAllBookmarksForRoleOrderedByDateDesc() {
 		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
-		list.add(impl.newBookmarkEntity());
-		list.add(impl.newBookmarkEntity());
+		list.add(createBookmarkEntity());
+		list.add(createBookmarkEntity());
 		RoleEntity role = new RoleEntity();
 		role.setId(1);
 		EasyMock.expect(mock.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
@@ -108,8 +109,8 @@ public class BookmarkServiceImplTest extends TestCase {
 
 	public void testFindBookmarksBySource() {
 		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
-		list.add(impl.newBookmarkEntity());
-		list.add(impl.newBookmarkEntity());
+		list.add(createBookmarkEntity());
+		list.add(createBookmarkEntity());
 		EasyMock.expect(mock.findBookmarksBySource(Source.DELICIOUS)).andReturn(list);
 		EasyMock.replay(mock);
 		impl.findBookmarksBySource(Source.DELICIOUS);
@@ -117,7 +118,7 @@ public class BookmarkServiceImplTest extends TestCase {
 	}
 
 	public void testIncrementHits() {
-		BookmarkEntity e = impl.newBookmarkEntity();
+		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.incrementHits(e);
 		EasyMock.replay(mock);
@@ -126,7 +127,7 @@ public class BookmarkServiceImplTest extends TestCase {
 	}
 
 	public void testMarkBrokenBookmark() {
-		BookmarkEntity e = impl.newBookmarkEntity();
+		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.markBrokenBookmark(e);
 		EasyMock.replay(mock);
@@ -135,7 +136,7 @@ public class BookmarkServiceImplTest extends TestCase {
 	}
 
 	public void testMarkValidBookmark() {
-		BookmarkEntity e = impl.newBookmarkEntity();
+		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.markValidBookmark(e);
 		EasyMock.replay(mock);
@@ -144,12 +145,24 @@ public class BookmarkServiceImplTest extends TestCase {
 	}
 
 	public void testRateBookmark() {
-		BookmarkEntity e = impl.newBookmarkEntity();
+		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.rateBookmark(5, e);
 		mock.refresh(e);
 		EasyMock.replay(mock);
 		impl.rateBookmark(5, e);
 		EasyMock.verify(mock);
+	}
+	
+	public void testFindLastSelectedRightsk() {
+		List<RightEntity> list = new ArrayList<RightEntity>();
+		EasyMock.expect(mock.findLastSelectedRights()).andReturn(list);
+		EasyMock.replay(mock);
+		assertTrue(impl.findLastSelectedRights() == list);
+		EasyMock.verify(mock);
+	}
+	
+	private BookmarkEntity createBookmarkEntity() {
+		return new BookmarkEntity();
 	}
 }

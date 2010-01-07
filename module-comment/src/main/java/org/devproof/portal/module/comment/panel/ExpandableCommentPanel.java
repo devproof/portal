@@ -19,24 +19,25 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.module.comment.CommentConstants;
+import org.devproof.portal.module.comment.config.CommentConfiguration;
 
 /**
  * @author Carsten Hufe
  */
-public class LazyCommentPanel extends Panel {
+public class ExpandableCommentPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
 	private WebMarkupContainer refreshContainer;
 
-	public LazyCommentPanel(String id, final String moduleName, final String moduleContentId) {
+	public ExpandableCommentPanel(String id, final CommentConfiguration configuration) {
 		super(id);
 		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
-		add(JavascriptPackageResource.getHeaderContribution(CommentConstants.class, "css/jquery-1.3.2.min.js"));
+		PortalUtil.addJQuery(this);
 		refreshContainer = new WebMarkupContainer("refreshCommentContainer");
 		refreshContainer.setMarkupId("refreshCommentContainer");
 		refreshContainer.setOutputMarkupId(true);
@@ -48,7 +49,7 @@ public class LazyCommentPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				refreshContainer.replace(new CommentPanel("comments", moduleName, moduleContentId));
+				refreshContainer.replace(new CommentPanel("comments", configuration));
 				target.addComponent(refreshContainer);
 				target.appendJavascript("$(\"#refreshCommentContainer\").slideDown(\"slow\");");
 			}
