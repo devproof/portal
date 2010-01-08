@@ -4,6 +4,8 @@ CREATE TABLE `comment` (
   `created_by` varchar(30) default NULL,
   `modified_at` datetime default NULL,
   `modified_by` varchar(30) default NULL,
+  `guest_name` varchar(50) default NULL,
+  `guest_email` varchar(50) default NULL,
   `comment` text,
   `ip_address` varchar(15) default NULL,
   `number_of_blames` int(11) default NULL,
