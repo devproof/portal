@@ -9,7 +9,6 @@
 - Tests für Services
 - Tests für Pages
 - Configuration -> disable for each section
-- save real IP
 - configuration show pseudonym/real name
 - configuration for captcha (enable captcha for guests, reg user)
 - Das registrieren einer Guestrole verhindern

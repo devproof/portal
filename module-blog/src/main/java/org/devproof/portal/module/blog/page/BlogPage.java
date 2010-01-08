@@ -216,7 +216,7 @@ public class BlogPage extends BlogBasePage {
 			config.setModuleContentId(blog.getId().toString());
 			return new ExpandableCommentPanel("comments", config);
 		}
-		
+
 		private ContentTagPanel<BlogTagEntity> createTagPanel() {
 			return new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blog.getTags()),
 					BlogPage.class, params);
