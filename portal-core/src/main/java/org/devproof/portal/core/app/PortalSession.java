@@ -139,7 +139,7 @@ public class PortalSession extends WebSession {
 		}
 	}
 
-	private String getIpAddress() {
+	public String getIpAddress() {
 		ClientProperties prop = ((WebClientInfo) getClientInfo()).getProperties();
 		return prop.getRemoteAddress();
 	}

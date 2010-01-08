@@ -40,6 +40,7 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -112,7 +113,7 @@ public class CommentPanel extends Panel {
 				String commentStr = comment.getComment();
 				commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
 				comment.setComment(commentStr);
-				comment.setIpAddress("123.123.123.123");
+				comment.setIpAddress(((PortalSession) getSession()).getIpAddress());
 				form.setVisible(false);
 				commentService.save(comment);
 				target.addComponent(CommentPanel.this);
@@ -185,7 +186,7 @@ public class CommentPanel extends Panel {
 	}
 
 	private void setCaptchaEnabled() {
-		captchaEnabled = Boolean.TRUE;// configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
+		captchaEnabled = Boolean.FALSE;// configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 	}
 
 	private class CommentDataView extends DataView<CommentEntity> {
