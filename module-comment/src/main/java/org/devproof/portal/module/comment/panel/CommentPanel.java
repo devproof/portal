@@ -15,8 +15,12 @@
  */
 package org.devproof.portal.module.comment.panel;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -66,15 +70,8 @@ public class CommentPanel extends Panel {
 		final CommentEntity comment = new CommentEntity();
 		comment.setModuleName(configuration.getModuleName());
 		comment.setModuleContentId(configuration.getModuleContentId());
-		StatelessForm<CommentEntity> form = new StatelessForm<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(comment)) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit() {
-				comment.setIpAddress("123.123.123.123");
-				commentService.save(comment);
-			}
-		};
+		final StatelessForm<CommentEntity> form = new StatelessForm<CommentEntity>("form",
+				new CompoundPropertyModel<CommentEntity>(comment));
 		TextField<String> guestNameField = new RequiredTextField<String>("guestName");
 		guestNameField.add(StringValidator.lengthBetween(3, 50));
 		form.add(guestNameField);
@@ -82,8 +79,25 @@ public class CommentPanel extends Panel {
 		guestEmailField.add(StringValidator.maximumLength(50));
 		guestEmailField.add(EmailAddressValidator.getInstance());
 		form.add(guestEmailField);
-		form.add(new TextArea<String>("comment"));
+		TextArea<String> commentField = new TextArea<String>("comment");
+		commentField.add(StringValidator.lengthBetween(10, 3000));
+		form.add(commentField);
+		form.add(new AjaxButton("addCommentButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				String commentStr = comment.getComment();
+				commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
+				comment.setComment(commentStr);
+				comment.setIpAddress("123.123.123.123");
+				form.setVisible(false);
+				commentService.save(comment);
+				target.addComponent(CommentPanel.this);
+			}
+		});
 		add(form);
+		setOutputMarkupId(true);
 	}
 
 	private class CommentDataView extends DataView<CommentEntity> {
@@ -92,7 +106,7 @@ public class CommentPanel extends Panel {
 		public CommentDataView(String id) {
 			super(id, commentDataProvider);
 			// TODO in config
-			setItemsPerPage(10);
+			// setItemsPerPage(10);
 		}
 
 		@Override
@@ -112,7 +126,9 @@ public class CommentPanel extends Panel {
 			super(id, "commentView", CommentPanel.this);
 			comment = item.getModelObject();
 			add(new MetaInfoPanel("metaInfo", comment));
-			add(new Label("comment", comment.getComment()));
+			Label commentLabel = new Label("comment", comment.getComment());
+			commentLabel.setEscapeModelStrings(false);
+			add(commentLabel);
 		}
 	}
 }

@@ -193,7 +193,7 @@ public class SettingsPage extends TemplatePage {
 	}
 
 	private DateTextField createBirthdayField() {
-		String dateFormat = configurationService.findAsString("date_format");
+		String dateFormat = configurationService.findAsString("display_date_format");
 		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
 		dateTextField.add(new DatePicker());
 		dateTextField

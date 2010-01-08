@@ -71,8 +71,11 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_by','Show modified by','General','java.lang.Boolean','true');
 
 
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('date_format','Default date format','General','java.lang.String','yyyy-MM-dd');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('date_time_format','Default date time format','General','java.lang.String','yyyy-MM-dd HH:mm');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('input_date_format','Default input date format','General','java.lang.String','yyyy-MM-dd');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('input_date_time_format','Default input date time format','General','java.lang.String','yyyy-MM-dd HH:mm');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('display_date_format','Default display date format','General','java.lang.String','EEEEE, MMMMM dd, yyyy');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('display_date_time_format','Default display date time format','General','java.lang.String','EEEEE, MMMMM dd, yyyy HH:mm');
+
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('email_validation','Enable email validation for registration','User','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('page_title','Page title','General','java.lang.String','devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('copyright_owner','Copyright owner','General','java.lang.String','devproof.org Copyright 2010');

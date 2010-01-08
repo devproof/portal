@@ -16,3 +16,4 @@
 - Das registrieren einer Guestrole verhindern
 - Guestrole namen konfigurierbar machen
 - show modified at as creation date in MetaInfopanel
+- fix BlogPageTest
