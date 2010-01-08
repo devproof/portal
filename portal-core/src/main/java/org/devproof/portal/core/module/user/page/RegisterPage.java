@@ -44,11 +44,11 @@ public class RegisterPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private Boolean captchaEnabled;
 	private PageParameters params;
 	private UserEntity user;
 	private PasswordTextField password1;
 	private PasswordTextField password2;
+	private Boolean captchaEnabled;
 	private String captchaChallengeCode;
 	private CaptchaImageResource captchaImageResource;
 

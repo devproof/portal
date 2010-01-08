@@ -3,13 +3,14 @@
 	  xmlns:wicket="http://wicket.apache.org/">
 <body>
 	<wicket:panel>
-		<div  style="width: 50%; margin: 0 auto; border: 3px dashed #CCC; padding: 15px;">
-			<h3 style="padding-left: 15px; color: #666;">Kommentare</h3>
-		
+		<div  style="width: 50%; margin: 0 auto; border: 3px dashed #CCC; padding:15px;">
+			<h3 style="color: #666; padding-left:15px;">Kommentare</h3>
+			<div wicket:id="noCommentsHint" style="color: #666; padding:15px 15px 3px 15px;">Keine Kommentare vorhanden</div>
 			<div wicket:id="listComment" style="padding-top:15px;">
-				<div wicket:id="commentView" style="border-top:1px solid #CCC; padding: 15px 15px 3px 15px; "/></div>
-			<div>
-			<div style="padding-top:25px;">
+				<div wicket:id="commentView" style="border-top:1px solid #CCC; padding: 15px 15px 3px 15px; "/>
+			</div>
+			<div>&nbsp;</div>
+			<div style="padding-top:15px; border-top:1px solid #CCC;">
 				<form wicket:id="form">
 				<table cellspacing="10" style="margin: 0 auto;">
 					<tr>
@@ -20,8 +21,16 @@
 						<td><label for="guestEmail" style="color: #666;"><wicket:message key="guestEmail"/></label></td>
 						<td><input type="text" id="guestEmail" wicket:id="guestEmail"/></td>
 					</tr>
+					<tr wicket:id="trCaptcha1">
+						<td><label style="color: #666;"><wicket:message key="captchacodeimage"/></label></td>
+						<td><img wicket:id="captchacodeimage" alt=""/></td>
+					</tr>
+					<tr wicket:id="trCaptcha2">
+						<td><label for="captchacode" style="color: #666;"><wicket:message key="captchacode"/></label></td>
+						<td><input type="text" id="captchacode" wicket:id="captchacode"/></td>
+					</tr>
 					<tr>
-						<td>&nbsp;</td>
+						<td><label for="comment" style="color: #666;"><wicket:message key="comment"/></label></td>
 						<td><textarea wicket:id="comment" cols="80" rows="6"></textarea></td>
 					</tr>
 					<tr>
@@ -30,7 +39,6 @@
 					</tr>
 				</table>
 				</form>
-			</div>
 			</div>
 		</div>
 		<!-- div wicket:id="paging">paging</div -->	
