@@ -3,20 +3,33 @@
 	  xmlns:wicket="http://wicket.apache.org/">
 <body>
 	<wicket:panel>
-		<div  style="width: 60%; margin: 0 auto;">
-			<h2>Kommentare</h2>
+		<div  style="width: 50%; margin: 0 auto; border: 3px dashed #CCC; padding: 15px;">
+			<h3 style="padding-left: 15px; color: #666;">Kommentare</h3>
 		
-			<div wicket:id="listComment" style="padding-top:1.1em;">
-				<div wicket:id="commentView" style="border-top:1px dotted #BBBBBB; padding-top:1.3em; padding-bottom:0.3em; "/></div>
+			<div wicket:id="listComment" style="padding-top:15px;">
+				<div wicket:id="commentView" style="border-top:1px solid #CCC; padding: 15px 15px 3px 15px; "/></div>
 			<div>
-			<div style="padding-top:1.1em;">
+			<div style="padding-top:25px;">
 				<form wicket:id="form">
-				Name: <input type="text" wicket:id="guestName"/><br/>
-				Email: <input type="text" wicket:id="guestEmail"/><br/>
-				<textarea wicket:id="comment" cols="60" rows="8"></textarea><br/><br/>
-				<input type="submit" value="Kommentar hinzufügen" class="button"/>
-				<!--<input type="submit" wicket:message="value:save" class="button"/>
-				--></form>
+				<table cellspacing="10" style="margin: 0 auto;">
+					<tr>
+						<td><label for="guestName" style="color: #666"><wicket:message key="guestName"/></label></td>
+						<td><input type="text" id="guestName" wicket:id="guestName"/></td>
+					</tr>
+					<tr>
+						<td><label for="guestEmail" style="color: #666;"><wicket:message key="guestEmail"/></label></td>
+						<td><input type="text" id="guestEmail" wicket:id="guestEmail"/></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><textarea wicket:id="comment" cols="80" rows="6"></textarea></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><input type="submit" value="Kommentar hinzufuegen" class="button" wicket:id="addCommentButton"/></td>
+					</tr>
+				</table>
+				</form>
 			</div>
 			</div>
 		</div>
@@ -25,8 +38,7 @@
 			<div wicket:id="comment" style="color: #666; ">[comment]</div>
 			<div  style="color: #888; font-size: 8pt;padding-top:0.5em;">
 				<span wicket:id="metaInfo">[author name]</span>&nbsp;
-				<!--<span wicket:id="authorButtons"></span>
-			--></div>
+			</div>
 		</wicket:fragment>
 	</wicket:panel>
 </body>

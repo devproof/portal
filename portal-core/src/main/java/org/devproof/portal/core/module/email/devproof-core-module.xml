@@ -11,7 +11,6 @@
     <bean class="org.devproof.portal.core.config.ModuleConfiguration">
     	<property name="name" value="Core: Email"/>
     	<property name="moduleVersion" value="core"/>
-    	<property name="portalVersion" value="core"/>
     	<property name="author" value="devproof - Carsten Hufe"/>
     	<property name="url" value="http://devproof.org"/>	 		
     	

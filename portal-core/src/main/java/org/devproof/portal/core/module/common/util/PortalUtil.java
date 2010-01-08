@@ -192,13 +192,13 @@ public class PortalUtil {
 		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
 				"css/SyntaxHighlighter/shCore.css"));
 		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
-				"css/SyntaxHighlighter/shThemeDefault.css"));
+				"css/SyntaxHighlighter/shThemeEclipse.css"));
 		Map<String, Object> values = new MiniMap<String, Object>(1);
 		values.put("swfPath", RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF));
 		component.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class,
 				"js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
 	}
-	
+
 	public static void addJQuery(Component component) {
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery-1.3.2.min.js"));
 	}

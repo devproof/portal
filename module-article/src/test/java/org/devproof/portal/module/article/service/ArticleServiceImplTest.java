@@ -52,7 +52,7 @@ public class ArticleServiceImplTest extends TestCase {
 	}
 
 	public void testSave() {
-		ArticleEntity e = impl.newArticleEntity();
+		ArticleEntity e = createArticleEntity();
 		e.setId(1);
 		mock.save(e);
 		mockTag.deleteUnusedTags();
@@ -64,7 +64,7 @@ public class ArticleServiceImplTest extends TestCase {
 	}
 
 	public void testDelete() {
-		ArticleEntity e = impl.newArticleEntity();
+		ArticleEntity e = createArticleEntity();
 		e.setId(1);
 		mock.delete(e);
 		mockTag.deleteUnusedTags();
@@ -77,8 +77,8 @@ public class ArticleServiceImplTest extends TestCase {
 
 	public void testFindAll() {
 		List<ArticleEntity> list = new ArrayList<ArticleEntity>();
-		list.add(impl.newArticleEntity());
-		list.add(impl.newArticleEntity());
+		list.add(createArticleEntity());
+		list.add(createArticleEntity());
 		EasyMock.expect(mock.findAll()).andReturn(list);
 		EasyMock.replay(mock);
 		assertEquals(list, impl.findAll());
@@ -86,7 +86,7 @@ public class ArticleServiceImplTest extends TestCase {
 	}
 
 	public void testFindById() {
-		ArticleEntity e = impl.newArticleEntity();
+		ArticleEntity e = createArticleEntity();
 		e.setId(1);
 		EasyMock.expect(mock.findById(1)).andReturn(e);
 		EasyMock.replay(mock);
@@ -95,7 +95,7 @@ public class ArticleServiceImplTest extends TestCase {
 	}
 
 	public void testFindByIdAndPrefetch() {
-		ArticleEntity e = impl.newArticleEntity();
+		ArticleEntity e = createArticleEntity();
 		e.setId(1);
 		EasyMock.expect(mock.findByIdAndPrefetch(1)).andReturn(e);
 		EasyMock.replay(mock);
@@ -108,7 +108,7 @@ public class ArticleServiceImplTest extends TestCase {
 	}
 
 	public void testNewArticlePageEntity() {
-		ArticleEntity a = impl.newArticleEntity();
+		ArticleEntity a = createArticleEntity();
 		a.setId(1);
 		ArticlePageEntity ap = impl.newArticlePageEntity(a, 1);
 		assertNotNull(ap);
@@ -132,11 +132,15 @@ public class ArticleServiceImplTest extends TestCase {
 	public void testFindAllArticlesForRoleOrderedByDateDesc() {
 		RoleEntity role = new RoleEntity();
 		List<ArticleEntity> list = new ArrayList<ArticleEntity>();
-		list.add(impl.newArticleEntity());
-		list.add(impl.newArticleEntity());
+		list.add(createArticleEntity());
+		list.add(createArticleEntity());
 		EasyMock.expect(mock.findAllArticlesForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
 		EasyMock.replay(mock);
 		assertEquals(impl.findAllArticlesForRoleOrderedByDateDesc(role, 0, 2), list);
 		EasyMock.verify(mock);
+	}
+
+	private ArticleEntity createArticleEntity() {
+		return new ArticleEntity();
 	}
 }
