@@ -1,5 +1,4 @@
 - Nice Styles CSS
-- Strip html and add<br>
 - Blame Support
 - Deletion Support (means hiding)
 - Change MetaInfoPanel to a comment own panel
@@ -15,5 +14,7 @@
 - configuration for captcha (enable captcha for guests, reg user)
 - Das registrieren einer Guestrole verhindern
 - Guestrole namen konfigurierbar machen
-- show modified at as creation date in MetaInfopanel
+- show modified at as creation date in MetaInfopanel (make configurable)
 - fix BlogPageTest
+- info message and error message
+- agb link bei user registration hinzufügen (http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register) "terms and rules"

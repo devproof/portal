@@ -24,6 +24,10 @@
     	<property name="pages">
     		<list>
     			<bean class="org.devproof.portal.core.config.PageConfiguration">
+    				<property name="mountPath" value="/admin/comment"/>
+    				<property name="pageClass" value="org.devproof.portal.module.comment.page.CommentPage"/>
+    			</bean>
+    			<bean class="org.devproof.portal.core.config.PageConfiguration">
     				<property name="mountPath" value="/guestbook"/>
     				<property name="pageClass" value="org.devproof.portal.module.comment.page.GuestbookPage"/>
     			</bean>
