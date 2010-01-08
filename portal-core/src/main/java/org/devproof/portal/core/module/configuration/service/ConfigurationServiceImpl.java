@@ -34,9 +34,8 @@ import org.springframework.beans.factory.annotation.Required;
 public class ConfigurationServiceImpl implements ConfigurationService {
 	private ConfigurationRegistry configurationRegistry;
 	private ConfigurationDao configurationDao;
-	private SimpleDateFormat dateFormat;
-	private SimpleDateFormat dateTimeFormat;
-
+	private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	
 	public void init() {
 		refreshGlobalConfiguration();
 	}
@@ -75,7 +74,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 		if (Date.class.getName().equals(c.getType())) {
 			try {
-				return dateFormat.parse(c.getValue());
+				return inputDateFormat.parse(c.getValue());
 			} catch (ParseException e) {
 				throw new NoSuchElementException("Configuration element \"" + key + "\" has not a valid date!");
 			}
@@ -114,14 +113,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
-	public void refreshGlobalConfiguration() {
+	public synchronized void refreshGlobalConfiguration() {
 		List<ConfigurationEntity> list = findAll();
 		for (ConfigurationEntity configuration : list) {
 			configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
 		}
-		// Refresh global date formater
-		dateFormat.applyPattern(findAsString("date_format"));
-		dateTimeFormat.applyPattern(findAsString("date_time_format"));
 	}
 
 	@Override
@@ -158,17 +154,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	public void setConfigurationDao(ConfigurationDao configurationDao) {
 		this.configurationDao = configurationDao;
 	}
-
-	@Required
-	public void setDateFormat(SimpleDateFormat dateFormat) {
-		this.dateFormat = dateFormat;
-	}
-
-	@Required
-	public void setDateTimeFormat(SimpleDateFormat dateTimeFormat) {
-		this.dateTimeFormat = dateTimeFormat;
-	}
-
+	
 	@Required
 	public void setConfigurationRegistry(ConfigurationRegistry configurationRegistry) {
 		this.configurationRegistry = configurationRegistry;

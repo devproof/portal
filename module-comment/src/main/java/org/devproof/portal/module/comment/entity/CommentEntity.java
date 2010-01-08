@@ -36,6 +36,10 @@ final public class CommentEntity extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
+	@Column(name = "guest_name", length = 50)
+	private String guestName;
+	@Column(name = "guest_email", length = 50)
+	private String guestEmail;
 	@Lob
 	@Column(name = "comment")
 	private String comment;
@@ -114,5 +118,21 @@ final public class CommentEntity extends BaseEntity {
 
 	public void setVisible(Boolean visible) {
 		this.visible = visible;
+	}
+
+	public String getGuestName() {
+		return guestName;
+	}
+
+	public void setGuestName(String guestName) {
+		this.guestName = guestName;
+	}
+
+	public String getGuestEmail() {
+		return guestEmail;
+	}
+
+	public void setGuestEmail(String guestEmail) {
+		this.guestEmail = guestEmail;
 	}
 }

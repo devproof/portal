@@ -15,10 +15,13 @@
  */
 package org.devproof.portal.module.comment.config;
 
+import java.io.Serializable;
+
 /**
  * @author Carsten Hufe
  */
-public class CommentConfiguration {
+public class CommentConfiguration implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String moduleName;
 	private String moduleContentId;
 	private String readRight;

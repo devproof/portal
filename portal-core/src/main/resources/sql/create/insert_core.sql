@@ -75,8 +75,8 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('date_time_format','Default date time format','General','java.lang.String','yyyy-MM-dd HH:mm');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('email_validation','Enable email validation for registration','User','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('page_title','Page title','General','java.lang.String','devproof.org');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('copyright_owner','Copyright owner','General','java.lang.String','devproof.org Copyright 2009');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('footer_content','Footer content','General','java.lang.String','&copy; 2009 - www.devproof.org');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('copyright_owner','Copyright owner','General','java.lang.String','devproof.org Copyright 2010');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('footer_content','Footer content','General','java.lang.String','&copy; 2010 - www.devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('from_email_address','From email address','Email','java.lang.String','your@email.com');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('from_email_name','From email name','Email','java.lang.String','devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('page_name','Page name','General','java.lang.String','devproof.org');
@@ -98,7 +98,7 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('box_num_tags','Number of related tags','Tags','java.lang.Integer','10');
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('google_analytics_enabled','Google Analytics enabled','Google Analytics','java.lang.Boolean','false');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('google_webproperty_id','Google Web Property-ID','Google Analytics','java.lang.String','');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('google_webproperty_id','Google Web Property-ID','Google Analytics','java.lang.String','empty');
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('hidden.selected_theme_uuid','Selected theme','hidden','java.lang.String','_default_');
 

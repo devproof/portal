@@ -36,7 +36,7 @@ import org.devproof.portal.core.module.user.service.UserService;
  */
 public class MetaInfoPanel extends Panel {
 	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "dateFormat")
+	@SpringBean(name = "displayDateFormat")
 	private SimpleDateFormat dateFormat;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;

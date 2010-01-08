@@ -45,7 +45,7 @@
 		<property name="configurationService" ref="configurationService"/>
 		<property name="emailTemplateDao" ref="emailTemplateDao"/>
 		<property name="javaMailSender" ref="mailSenderService"/>
-		<property name="dateFormat" ref="dateFormat"/>
+		<property name="dateFormat" ref="displayDateFormat"/>
 	</bean>
 	
 	<!--  DataProvider  -->

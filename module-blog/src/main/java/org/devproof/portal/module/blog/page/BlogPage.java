@@ -44,6 +44,8 @@ import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.devproof.portal.module.blog.panel.BlogSearchBoxPanel;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.devproof.portal.module.blog.service.BlogService;
+import org.devproof.portal.module.comment.config.CommentConfiguration;
+import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 /**
  * @author Carsten Hufe
@@ -144,6 +146,7 @@ public class BlogPage extends BlogBasePage {
 			add(createPrintLink());
 			add(createTagPanel());
 			add(createContentLabel());
+			add(createCommentPanel());
 		}
 
 		private Component createPrintLink() {
@@ -207,6 +210,13 @@ public class BlogPage extends BlogBasePage {
 			return new ExtendedLabel("content", blog.getContent());
 		}
 
+		private Component createCommentPanel() {
+			CommentConfiguration config = new CommentConfiguration();
+			config.setModuleName(BlogPage.class.getSimpleName());
+			config.setModuleContentId(blog.getId().toString());
+			return new ExpandableCommentPanel("comments", config);
+		}
+		
 		private ContentTagPanel<BlogTagEntity> createTagPanel() {
 			return new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blog.getTags()),
 					BlogPage.class, params);

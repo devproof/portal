@@ -39,7 +39,6 @@ public class ExpandableCommentPanel extends Panel {
 		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
 		PortalUtil.addJQuery(this);
 		refreshContainer = new WebMarkupContainer("refreshCommentContainer");
-		refreshContainer.setMarkupId("refreshCommentContainer");
 		refreshContainer.setOutputMarkupId(true);
 		refreshContainer.add(new WebMarkupContainer("comments"));
 		refreshContainer.add(new SimpleAttributeModifier("style", "display:none;"));
@@ -51,7 +50,7 @@ public class ExpandableCommentPanel extends Panel {
 			public void onClick(AjaxRequestTarget target) {
 				refreshContainer.replace(new CommentPanel("comments", configuration));
 				target.addComponent(refreshContainer);
-				target.appendJavascript("$(\"#refreshCommentContainer\").slideDown(\"slow\");");
+				target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"slow\");");
 			}
 
 		});
@@ -61,7 +60,7 @@ public class ExpandableCommentPanel extends Panel {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				// refreshContainer.replace(new WebMarkupContainer("comments"));
-				target.appendJavascript("$(\"#refreshCommentContainer\").slideUp(\"slow\");");
+				target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"slow\");");
 				// target.addComponent(refreshContainer);
 			}
 		});

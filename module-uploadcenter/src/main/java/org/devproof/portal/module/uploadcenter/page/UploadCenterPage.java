@@ -59,7 +59,7 @@ import org.devproof.portal.module.uploadcenter.panel.UploadCenterPanel;
 public class UploadCenterPage extends TemplatePage {
 
 	private static final long serialVersionUID = 3247255196536400455L;
-	@SpringBean(name = "dateTimeFormat")
+	@SpringBean(name = "displayDateTimeFormat")
 	private DateFormat dateFormat;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;

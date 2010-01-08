@@ -22,11 +22,11 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 
 INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2009-01-06 19:27:20.000'},'admin',{ts '2009-01-06 19:27:20.000'},'admin','<p>Welcome to the Devproof Portal,</p>
 <p>this is a sample blog entry. You can use highlighted code:</p>
-<p><textarea cols="50" rows="15" name="code" class="java">add(HeaderContributor.forJavaScript(TooltipLabel.class, "TooltipLabel.js"));
+<p><pre class="brush: java;">add(HeaderContributor.forJavaScript(TooltipLabel.class, "TooltipLabel.js"));
 		add(HeaderContributor.forCss(TooltipLabel.class, "TooltipLabel.css"));
 		tooltip.setMarkupId("tooltip");
 		label.setMarkupId("label");
-		WebMarkupContainer link = new WebMarkupContainer("link");</textarea></p>
+		WebMarkupContainer link = new WebMarkupContainer("link");</pre></p>
 <p>and [string2img size=14]string to image feature [/string2img].</p>
 <p>The default users are:</p>
 <ul>
