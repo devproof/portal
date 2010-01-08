@@ -17,14 +17,18 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.module.comment.CommentConstants;
@@ -62,7 +66,7 @@ public class CommentPanel extends Panel {
 		final CommentEntity comment = new CommentEntity();
 		comment.setModuleName(configuration.getModuleName());
 		comment.setModuleContentId(configuration.getModuleContentId());
-		Form<CommentEntity> form = new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(comment)) {
+		StatelessForm<CommentEntity> form = new StatelessForm<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(comment)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -71,7 +75,13 @@ public class CommentPanel extends Panel {
 				commentService.save(comment);
 			}
 		};
-
+		TextField<String> guestNameField = new RequiredTextField<String>("guestName");
+		guestNameField.add(StringValidator.lengthBetween(3, 50));
+		form.add(guestNameField);
+		TextField<String> guestEmailField = new RequiredTextField<String>("guestEmail");
+		guestEmailField.add(StringValidator.maximumLength(50));
+		guestEmailField.add(EmailAddressValidator.getInstance());
+		form.add(guestEmailField);
 		form.add(new TextArea<String>("comment"));
 		add(form);
 	}

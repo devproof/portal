@@ -3,25 +3,30 @@
 	  xmlns:wicket="http://wicket.apache.org/">
 <body>
 	<wicket:panel>
-		<div><h2>Kommentare</h2></div>
+		<div  style="width: 60%; margin: 0 auto;">
+			<h2>Kommentare</h2>
 		
-		<div wicket:id="listComment"><div wicket:id="commentView"/></div>
-		<br/>
-		<div>
-		<form wicket:id="form">
-		<textarea wicket:id="comment" cols="100" rows="15"></textarea><br/>
-		<input type="submit" wicket:message="value:save" class="button"/>
-		</form>
+			<div wicket:id="listComment" style="padding-top:1.1em;">
+				<div wicket:id="commentView" style="border-top:1px dotted #BBBBBB; padding-top:1.3em; padding-bottom:0.3em; "/></div>
+			<div>
+			<div style="padding-top:1.1em;">
+				<form wicket:id="form">
+				Name: <input type="text" wicket:id="guestName"/><br/>
+				Email: <input type="text" wicket:id="guestEmail"/><br/>
+				<textarea wicket:id="comment" cols="60" rows="8"></textarea><br/><br/>
+				<input type="submit" value="Kommentar hinzufügen" class="button"/>
+				<!--<input type="submit" wicket:message="value:save" class="button"/>
+				--></form>
+			</div>
+			</div>
 		</div>
-		
 		<!-- div wicket:id="paging">paging</div -->	
 		<wicket:fragment wicket:id="commentView">
-			<div class="descr">
+			<div wicket:id="comment" style="color: #666; ">[comment]</div>
+			<div  style="color: #888; font-size: 8pt;padding-top:0.5em;">
 				<span wicket:id="metaInfo">[author name]</span>&nbsp;
 				<!--<span wicket:id="authorButtons"></span>
 			--></div>
-			<div wicket:id="comment">[comment]</div><br/>
-			<hr/>
 		</wicket:fragment>
 	</wicket:panel>
 </body>

@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,19 +42,10 @@ public class ConfigurationServiceImplTest extends TestCase {
 		impl.setConfigurationRegistry(new ConfigurationRegistryImpl());
 		list = new ArrayList<ConfigurationEntity>();
 		ConfigurationEntity c = new ConfigurationEntity();
-		c.setKey("date_format");
+		c.setKey("input_date_format");
 		c.setValue("dd-mm-yyyy");
-		impl.setDateFormat(new SimpleDateFormat(c.getValue()));
 		c.setType(String.class.getName());
 		list.add(c);
-		c = new ConfigurationEntity();
-		c.setKey("date_time_format");
-		c.setValue("dd-mm-yyyy hh:mm");
-		impl.setDateTimeFormat(new SimpleDateFormat(c.getValue()));
-		c.setType(String.class.getName());
-
-		list.add(c);
-
 	}
 
 	public void testSave() {

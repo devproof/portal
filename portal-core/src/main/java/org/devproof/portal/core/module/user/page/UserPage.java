@@ -56,7 +56,7 @@ public class UserPage extends TemplatePage {
 	private QueryDataProvider<UserEntity> userDataProvider;
 	@SpringBean(name = "userService")
 	private UserService userService;
-	@SpringBean(name = "dateFormat")
+	@SpringBean(name = "displayDateFormat")
 	private SimpleDateFormat dateFormat;
 	private PageParameters params;
 	private ModalWindow modalWindow;

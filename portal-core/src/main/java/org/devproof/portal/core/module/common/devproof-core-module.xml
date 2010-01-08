@@ -84,4 +84,15 @@
 		<property name="globalAdminPageRegistry" ref="globalAdminPageRegistry"/>
 		<property name="pageAdminPageRegistry" ref="pageAdminPageRegistry"/>
 	</bean>
+	
+	<!-- Date Formater -->
+	
+	<bean id="dateFormatFactory" class="org.devproof.portal.core.module.common.factory.DateFormatFactoryImpl">
+		<property name="configurationService" ref="configurationService"/>
+	</bean>
+	
+	<bean id="inputDateFormat" factory-bean="dateFormatFactory" factory-method="createInputDateFormat" scope="prototype"/>
+	<bean id="inputDateTimeFormat" factory-bean="dateFormatFactory" factory-method="createInputDateTimeFormat" scope="prototype"/>
+	<bean id="displayDateFormat" factory-bean="dateFormatFactory" factory-method="createDisplayDateFormat" scope="prototype"/>
+	<bean id="displayDateTimeFormat" factory-bean="dateFormatFactory" factory-method="createDisplayDateTimeFormat" scope="prototype"/>
 </beans>

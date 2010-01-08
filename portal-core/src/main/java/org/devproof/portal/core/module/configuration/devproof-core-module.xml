@@ -43,19 +43,9 @@
 	<!--  Service  -->
 	<bean id="configurationService" class="org.devproof.portal.core.module.configuration.service.ConfigurationServiceImpl" init-method="init">
 		<property name="configurationDao" ref="configurationDao"/>
-		<property name="dateFormat" ref="dateFormat"/>
-		<property name="dateTimeFormat" ref="dateTimeFormat"/>
 		<property name="configurationRegistry" ref="configurationRegistry"/>
 	</bean>	
 
 	<!-- Registry -->
 	<bean id="configurationRegistry" class="org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl"/>
-	
-	<!-- Date Formater -->
-	<bean id="dateFormat" class="java.text.SimpleDateFormat">
-		<constructor-arg><value>yyyy-MM-dd</value></constructor-arg>
-	</bean>
-	<bean id="dateTimeFormat" class="java.text.SimpleDateFormat">
-		<constructor-arg><value>yyyy-MM-dd HH:mm</value></constructor-arg>
-	</bean>
 </beans>

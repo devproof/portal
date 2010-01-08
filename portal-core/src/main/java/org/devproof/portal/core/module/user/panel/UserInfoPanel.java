@@ -29,9 +29,9 @@ public class UserInfoPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "dateFormat")
+	@SpringBean(name = "displayDateFormat")
 	private SimpleDateFormat dateFormat;
-	@SpringBean(name = "dateTimeFormat")
+	@SpringBean(name = "displayDateTimeFormat")
 	private SimpleDateFormat dateTimeFormat;
 	private UserEntity user;
 
