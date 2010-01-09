@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.comment;
 
+import org.apache.wicket.ResourceReference;
 
 /**
  * @author Carsten Hufe
@@ -22,4 +23,11 @@ package org.devproof.portal.module.comment;
 public class CommentConstants {
 	private CommentConstants() {
 	}
+
+	public static final String CONF_SHOW_REAL_AUTHOR = "comment_show_real_author";
+
+	public static final ResourceReference REF_COMMENTS_ADD_IMG = new ResourceReference(CommentConstants.class,
+			"img/comments_add.png");
+	public static final ResourceReference REF_COMMENTS_IMG = new ResourceReference(CommentConstants.class,
+			"img/comments.png");
 }

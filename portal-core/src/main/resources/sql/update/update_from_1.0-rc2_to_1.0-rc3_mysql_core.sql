@@ -12,3 +12,6 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('display_date_time_format','Default display date time format','General','java.lang.String','EEEEE, MMMMM dd, yyyy HH:mm');
 update core_configuration set conf_key = 'input_date_format', conf_value = 'yyyy-MM-dd', conf_description = 'Default input date format' where conf_key = 'date_format';
 update core_configuration set conf_key = 'input_date_time_format', conf_value = 'yyyy-MM-dd HH:mm', conf_description = 'Default input date time format' where conf_key = 'date_time_format';
+update core_configuration set conf_description = 'Require birthday for registration' where conf_key = 'registration_required_birthday';
+update core_configuration set conf_description = 'Require first and lastname for registration' where conf_key = 'registration_required_name';
+

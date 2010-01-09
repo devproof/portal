@@ -84,8 +84,8 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('from_email_name','From email name','Email','java.lang.String','devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('page_name','Page name','General','java.lang.String','devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_captcha','Enable captcha for registration','User','java.lang.Boolean','true');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_required_birthday','Required birthday','User','java.lang.Boolean','true');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_required_name','Required first and lastname','User','java.lang.Boolean','true');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_required_birthday','Require birthday for registration','User','java.lang.Boolean','true');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_required_name','Require first and lastname for registration','User','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.fontService.findAllSystemFonts.name.name.string2image','String to image font','General','java.lang.String','Acidic');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateDao.findAll.subject.id.forgotemail','Forgot your password email','Email','java.lang.Integer','2');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateDao.findAll.subject.id.reconfirmemail','Reconfirmation email, when email was changed','Email','java.lang.Integer','5');
