@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.common.panel;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -49,6 +50,7 @@ public class MetaInfoPanel extends Panel {
 	private String modifiedByName;
 	private boolean existsModifiedByUser;
 	private boolean showModifiedBy;
+	private boolean showModifiedAtAsCreatedAt;
 	private boolean showRealAuthor;
 	private boolean equalCreationModificationTime;
 	private boolean sameAuthor;
@@ -56,21 +58,28 @@ public class MetaInfoPanel extends Panel {
 	public MetaInfoPanel(String id, BaseEntity entity) {
 		super(id);
 		this.entity = entity;
+		setShowModifiedByAsCreatedBy();
 		setShowRealAuthorName();
+		setShowModifiedBy();
+		setSameAuthor();
 		setCreatedByUser();
 		setModifiedByUser();
-		setShowModifiedBy();
 		setEqualCreationModificationTime();
-		setSameAuthor();
 		add(createCreatedContainer());
 		add(createModifiedContainer());
 		add(createSameModifierCreatorContainer());
 	}
 
+	private void setShowModifiedByAsCreatedBy() {
+		showModifiedAtAsCreatedAt = configurationService
+				.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_AT_AS_CREATED_AT);
+	}
+
 	private WebMarkupContainer createSameModifierCreatorContainer() {
 		WebMarkupContainer sameModified = new WebMarkupContainer("sameModified");
 		sameModified.add(createModifiedAtLabel());
-		sameModified.setVisible(showModifiedBy && sameAuthor && !equalCreationModificationTime);
+		sameModified.setVisible(showModifiedBy && sameAuthor && !equalCreationModificationTime
+				&& !showModifiedAtAsCreatedAt);
 		return sameModified;
 	}
 
@@ -94,7 +103,8 @@ public class MetaInfoPanel extends Panel {
 		WebMarkupContainer modified = new WebMarkupContainer("modified");
 		modified.add(createModifiedAtLabel());
 		modified.add(createModifiedUsernamePanel());
-		modified.setVisible(showModifiedBy && !sameAuthor && !equalCreationModificationTime);
+		modified.setVisible(showModifiedBy && !sameAuthor && !equalCreationModificationTime
+				&& !showModifiedAtAsCreatedAt);
 		return modified;
 	}
 
@@ -114,7 +124,8 @@ public class MetaInfoPanel extends Panel {
 	}
 
 	private Label createCreatedAtLabel() {
-		return new Label("createdAt", dateFormat.format(entity.getCreatedAt()));
+		Date created = showModifiedAtAsCreatedAt ? entity.getModifiedAt() : entity.getCreatedAt();
+		return new Label("createdAt", dateFormat.format(created));
 	}
 
 	private void setModifiedByUser() {

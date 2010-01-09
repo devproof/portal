@@ -65,4 +65,8 @@
 	<bean class="org.devproof.portal.module.otherpage.factory.FooterLinkFactory">
 		<property name="sharedRegistry" ref="sharedRegistry"/>
 	</bean>
+	<bean class="org.devproof.portal.module.otherpage.factory.TermsOfUseLinkFactory">
+		<property name="sharedRegistry" ref="sharedRegistry"/>
+	</bean>
+	
 </beans>

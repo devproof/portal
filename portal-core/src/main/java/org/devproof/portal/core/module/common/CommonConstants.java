@@ -55,6 +55,8 @@ public class CommonConstants {
 	public static final String SESSION_ID_COOKIE = "dpPortalSessionId";
 	public static final String CONF_SHOW_REAL_AUTHOR = "show_real_author";
 	public static final String CONF_SHOW_MODIFIED_BY = "show_modified_by";
+	public static final String CONF_SHOW_MODIFIED_AT_AS_CREATED_AT = "show_modified_at_as_created_at";
+
 	public static final String CONF_PAGE_TITLE = "page_title";
 	public static final String CONF_COPYRIGHT_OWNER = "copyright_owner";
 
