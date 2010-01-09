@@ -17,6 +17,7 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -29,6 +30,7 @@ import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -41,8 +43,8 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
-import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
@@ -64,13 +66,11 @@ public class CommentPanel extends Panel {
 	@SpringBean(name = "commentService")
 	private CommentService commentService;
 	private CommentQuery query;
-	private Boolean captchaEnabled;
 	private String captchaChallengeCode;
 	private CaptchaImageResource captchaImageResource;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
-		setCaptchaEnabled();
 		setCaptchaChallengeCode();
 		setCaptchaImageResource();
 		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
@@ -89,21 +89,32 @@ public class CommentPanel extends Panel {
 		});
 		// Repeater
 		add(new CommentDataView("listComment"));
+		add(new FeedbackPanel("feedback"));
 		// Form
 		final CommentEntity comment = new CommentEntity();
 		comment.setModuleName(configuration.getModuleName());
 		comment.setModuleContentId(configuration.getModuleContentId());
 		final StatelessForm<CommentEntity> form = new StatelessForm<CommentEntity>("form",
 				new CompoundPropertyModel<CommentEntity>(comment));
+
+		WebMarkupContainer guestNameContainer = new WebMarkupContainer("guestNameContainer");
+		guestNameContainer.setVisible(PortalSession.get().getUser().isGuestRole());
 		TextField<String> guestNameField = new RequiredTextField<String>("guestName");
 		guestNameField.add(StringValidator.lengthBetween(3, 50));
-		form.add(guestNameField);
+		guestNameContainer.add(guestNameField);
+		form.add(guestNameContainer);
+
+		WebMarkupContainer guestEmailContainer = new WebMarkupContainer("guestEmailContainer");
+		guestEmailContainer.setVisible(PortalSession.get().getUser().isGuestRole());
 		TextField<String> guestEmailField = new RequiredTextField<String>("guestEmail");
 		guestEmailField.add(StringValidator.maximumLength(50));
 		guestEmailField.add(EmailAddressValidator.getInstance());
-		form.add(guestEmailField);
+		guestEmailContainer.add(guestEmailField);
+		form.add(guestEmailContainer);
+
 		TextArea<String> commentField = new TextArea<String>("comment");
 		commentField.add(StringValidator.lengthBetween(10, 3000));
+		commentField.setRequired(true);
 		form.add(commentField);
 		form.add(new AjaxButton("addCommentButton") {
 			private static final long serialVersionUID = 1L;
@@ -116,6 +127,7 @@ public class CommentPanel extends Panel {
 				comment.setIpAddress(((PortalSession) getSession()).getIpAddress());
 				form.setVisible(false);
 				commentService.save(comment);
+				info(getString("saved"));
 				target.addComponent(CommentPanel.this);
 			}
 
@@ -125,32 +137,22 @@ public class CommentPanel extends Panel {
 			}
 
 		});
-		form.add(createCaptchaImageContainer());
-		form.add(createCaptchaFieldContainer());
+		form.add(createCaptchaContainer());
 		add(form);
 		setOutputMarkupId(true);
 	}
 
-	private WebMarkupContainer createCaptchaFieldContainer() {
-		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
-		trCaptcha2.add(createCaptchaCodeField());
-		trCaptcha2.setVisible(captchaEnabled);
-		return trCaptcha2;
-	}
-
-	private WebMarkupContainer createCaptchaImageContainer() {
-		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
-		trCaptcha1.add(createCaptchaImage());
-		trCaptcha1.setVisible(captchaEnabled);
-		return trCaptcha1;
+	private WebMarkupContainer createCaptchaContainer() {
+		WebMarkupContainer captcha = new WebMarkupContainer("captcha");
+		captcha.add(createCaptchaCodeField());
+		captcha.add(createCaptchaImage());
+		captcha.setVisible(Boolean.FALSE);
+		return captcha;
 	}
 
 	private FormComponent<String> createCaptchaCodeField() {
 		FormComponent<String> fc = new TextField<String>("captchacode", Model.of(""));
-		if (captchaEnabled) {
-			fc.add(createCaptchaValidator());
-		}
-		fc.setRequired(captchaEnabled);
+		fc.add(createCaptchaValidator());
 		return fc;
 	}
 
@@ -185,10 +187,6 @@ public class CommentPanel extends Panel {
 		};
 	}
 
-	private void setCaptchaEnabled() {
-		captchaEnabled = Boolean.FALSE;// configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
-	}
-
 	private class CommentDataView extends DataView<CommentEntity> {
 		private static final long serialVersionUID = 1L;
 
@@ -214,10 +212,23 @@ public class CommentPanel extends Panel {
 		public CommentView(String id, Item<CommentEntity> item) {
 			super(id, "commentView", CommentPanel.this);
 			comment = item.getModelObject();
-			add(new MetaInfoPanel("metaInfo", comment));
+			add(new CommentInfoPanel("commentInfo", comment));
 			Label commentLabel = new Label("comment", comment.getComment());
 			commentLabel.setEscapeModelStrings(false);
 			add(commentLabel);
+			WebMarkupContainer administrationContainer = new WebMarkupContainer("administration");
+			administrationContainer.add(new Label("ipAddress", comment.getIpAddress()));
+			AjaxLink<Void> deleteLink = new AjaxLink<Void>("deleteLink") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(AjaxRequestTarget target) {
+					info("Deleted (but only hidden ... you can undelete.");
+				}
+			};
+			deleteLink.add(new Image("deleteLinkImage", CommonConstants.REF_DELETE_IMG));
+			administrationContainer.add(deleteLink);
+			add(administrationContainer);
 		}
 	}
 }

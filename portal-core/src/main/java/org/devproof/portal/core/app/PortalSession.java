@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
@@ -277,4 +278,7 @@ public class PortalSession extends WebSession {
 		return rightService;
 	}
 
+	public static PortalSession get() {
+		return (PortalSession) Session.get();
+	}
 }

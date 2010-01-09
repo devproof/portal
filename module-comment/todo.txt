@@ -1,19 +1,22 @@
 - Nice Styles CSS
 - Blame Support
 - Deletion Support (means hiding)
-- Change MetaInfoPanel to a comment own panel
 - Overview for manageing comments (with searchbox: textsearch, moduleName, Blamed, deleted, not reviewed)
+- Suche (Gelöschte Artikel, Blamed, Not Reviewed, Volltextsuche)
 - Paging
 - Configuration for paging
 - ExpandableCommentPanel nicer
 - Tests fÃ¼r Services
 - Tests fÃ¼r Pages
-- Configuration -> disable for each section
-- configuration show pseudonym/real name
-- configuration for captcha (enable captcha for guests, reg user)
-- Das registrieren einer Guestrole verhindern
-- Guestrole namen konfigurierbar machen
+- Configuration -> disable for each section/module -> als recht realisieren
+- configuration for captcha (enable captcha for guests, reg user) als recht
 - show modified at as creation date in MetaInfopanel (make configurable)
 - fix BlogPageTest
-- info message and error message
 - agb link bei user registration hinzufügen (http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register) "terms and rules"
+- Configuration number for blamed article
+- FCKeditor austauschen
+- PageBreak für FCKeditor austauschen 
+- update sql scripts erstellen
+- registration captcha genauso wie bei comments mit rights (und aufräumen mit captcha enabled)
+- contact form captcha genauso wie bei comments mit rights (und aufräumen mit captcha enabled)
+- Index auf visible und reviewed

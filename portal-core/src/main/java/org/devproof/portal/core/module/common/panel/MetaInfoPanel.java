@@ -42,7 +42,7 @@ public class MetaInfoPanel extends Panel {
 	private ConfigurationService configurationService;
 	@SpringBean(name = "userService")
 	private UserService userService;
-	
+
 	private BaseEntity entity;
 	private String createdByName;
 	private boolean existsCreatedByUser;
@@ -52,14 +52,14 @@ public class MetaInfoPanel extends Panel {
 	private boolean showRealAuthor;
 	private boolean equalCreationModificationTime;
 	private boolean sameAuthor;
-	
+
 	public MetaInfoPanel(String id, BaseEntity entity) {
 		super(id);
 		this.entity = entity;
+		setShowRealAuthorName();
 		setCreatedByUser();
 		setModifiedByUser();
-		setShowModifiedBy();		
-		setShowRealAuthorName();
+		setShowModifiedBy();
 		setEqualCreationModificationTime();
 		setSameAuthor();
 		add(createCreatedContainer());
