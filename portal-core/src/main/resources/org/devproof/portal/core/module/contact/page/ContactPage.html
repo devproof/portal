@@ -23,13 +23,12 @@
 				<td><label for="content"><wicket:message key="content"/></label></td>
 				<td><textarea wicket:id="content" cols="100" rows="10"></textarea></td>
 			</tr>	
-			<tr wicket:id="trCaptcha1">
-				<td><label><wicket:message key="captchacodeimage"/></label></td>
-				<td><img wicket:id="captchacodeimage"/></td>
-			</tr>
-			<tr wicket:id="trCaptcha2">
+			<tr wicket:id="captcha">
 				<td><label for="captchacode"><wicket:message key="captchacode"/></label></td>
-				<td><input type="text" wicket:id="captchacode"  class="editContact"/></td>
+				<td>
+					<input type="text" wicket:id="captchacode"  class="editContact"/><br/><br/>
+					<img wicket:id="captchacodeimage"/>
+				</td>
 			</tr>		
 			<tr>
 				<td></td>

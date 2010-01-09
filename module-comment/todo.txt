@@ -10,13 +10,13 @@
 - Tests fÃ¼r Pages
 - Configuration -> disable for each section/module -> als recht realisieren
 - configuration for captcha (enable captcha for guests, reg user) als recht
-- show modified at as creation date in MetaInfopanel (make configurable)
 - fix BlogPageTest
-- agb link bei user registration hinzufügen (http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register) "terms and rules"
 - Configuration number for blamed article
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
-- registration captcha genauso wie bei comments mit rights (und aufräumen mit captcha enabled)
-- contact form captcha genauso wie bei comments mit rights (und aufräumen mit captcha enabled)
 - Index auf visible und reviewed
+- configuration show only reviewed comments
+
+terms of use
+http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

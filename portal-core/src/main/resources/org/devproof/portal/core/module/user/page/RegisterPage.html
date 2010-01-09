@@ -35,14 +35,17 @@
 				<td><label for="password2"><wicket:message key="password2"/></label></td>
 				<td><input type="password" id="password2" wicket:id="password2"/></td>
 			</tr>
-			<tr wicket:id="trCaptcha1">
-				<td><label><wicket:message key="captchacodeimage"/></label></td>
-				<td><img wicket:id="captchacodeimage" alt=""/></td>
-			</tr>
-			<tr wicket:id="trCaptcha2">
+			<tr wicket:id="captcha">
 				<td><label for="captchacode"><wicket:message key="captchacode"/></label></td>
-				<td><input type="text" id="captchacode" wicket:id="captchacode"/></td>
-			</tr>		
+				<td>
+					<input type="text" id="captchacode" wicket:id="captchacode"/><br/><br/>
+					<img wicket:id="captchacodeimage" alt=""/>
+				</td>
+			</tr>	
+			<tr>
+				<td></td>
+				<td><input type="checkbox" id="termsOfUse" wicket:id="termsOfUse"/> <wicket:message key="termsOfUseAccepting"/> [<a target="_blank" wicket:id="termsOfUseLink"><wicket:message key="termsOfUseLink"/></a>]</td>
+			</tr>	
 			<tr>
 				<td></td>
 				<td><input type="submit" wicket:id="registerButton" wicket:message="value:registerButton" class="button"/></td>

@@ -20,8 +20,8 @@ INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,m
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ThemePage','Theme Administration: Manage themes',{ts '2009-01-10 21:21:23.000'},'admin',{ts '2009-01-10 21:21:53.000'},'admin');
 INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('page.ModuleLinkPage',{ts '2009-05-10 00:30:24.000'},'admin',{ts '2009-05-10 00:30:24.000'},'admin','Module Administration: Module Navigation Links');
 INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('page.ModuleOverviewPage',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Module Administration: Module Overview');
-
-
+INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('component.ContactPage.captcha',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Contact Form: Enables contact form captcha');
+INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('component.RegisterPage.captcha',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Registration: Enables registration captcha');
 
 INSERT INTO core_role (id,active,description,created_at,created_by,modified_at,modified_by) VALUES (1,1,'Admin',{ts '2008-12-26 04:03:10.000'},'admin',{ts '2009-01-04 21:47:37.000'},'admin');
 INSERT INTO core_role (id,active,description,created_at,created_by,modified_at,modified_by) VALUES (2,1,'Guest',{ts '2009-01-05 15:36:51.000'},'admin',{ts '2009-01-05 15:36:51.000'},'admin');
@@ -61,6 +61,9 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.RegisterPage
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.ForgotPasswordPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ModuleLinkPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ModuleOverviewPage');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'component.ContactPage.captcha');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'component.RegisterPage.captcha');
+
 
 
 INSERT INTO core_user (id,active,birthday,changed_at,confirm_app_at,confirmation_code,confirm_req_at,confirmed,email,firstname,forgot_code,last_ip,last_login_at,lastname,password,reg_date,session_id,username,role_id,enable_contact_form) VALUES (2,1,{ts '2008-08-09 00:00:00.000'},{ts '2009-01-05 23:18:13.000'},{ts '2008-08-10 16:35:37.000'},'bfda0f177e0b56113118131fe696412',{ts '2008-08-10 16:55:20.000'},1,'your@email.de','admin',null,'62.216.221.209',{ts '2009-01-06 17:21:56.000'},'admin','21232f297a57a5a743894a0e4a801fc3',{ts '2008-07-25 15:25:29.000'},'d4212b818096297975e5c59b738a7a98','admin',1,1);
@@ -69,7 +72,7 @@ INSERT INTO core_user (id,active,birthday,changed_at,confirm_app_at,confirmation
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_real_author','Show real author name','General','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_by','Show modified by','General','java.lang.Boolean','true');
-
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_at_as_created_at','Show modified at as created at','General','java.lang.Boolean','false');
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('input_date_format','Default input date format','General','java.lang.String','yyyy-MM-dd');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('input_date_time_format','Default input date time format','General','java.lang.String','yyyy-MM-dd HH:mm');
@@ -83,7 +86,6 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('from_email_address','From email address','Email','java.lang.String','your@email.com');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('from_email_name','From email name','Email','java.lang.String','devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('page_name','Page name','General','java.lang.String','devproof.org');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_captcha','Enable captcha for registration','User','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_required_birthday','Require birthday for registration','User','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('registration_required_name','Require first and lastname for registration','User','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.fontService.findAllSystemFonts.name.name.string2image','String to image font','General','java.lang.String','Acidic');

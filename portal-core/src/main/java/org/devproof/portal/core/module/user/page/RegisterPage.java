@@ -1,12 +1,15 @@
 package org.devproof.portal.core.module.user.page;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -22,8 +25,10 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.UserConstants;
@@ -44,11 +49,12 @@ public class RegisterPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	@SpringBean(name = "sharedRegistry")
+	private SharedRegistry sharedRegistry;
 	private PageParameters params;
 	private UserEntity user;
 	private PasswordTextField password1;
 	private PasswordTextField password2;
-	private Boolean captchaEnabled;
 	private String captchaChallengeCode;
 	private CaptchaImageResource captchaImageResource;
 
@@ -56,7 +62,6 @@ public class RegisterPage extends TemplatePage {
 		super(params);
 		this.params = params;
 		activateUserIfParamsGiven();
-		setCaptchaEnabled();
 		setCaptchaChallengeCode();
 		setCaptchaImageResource();
 		setUser();
@@ -72,34 +77,60 @@ public class RegisterPage extends TemplatePage {
 		form.add(createEmailField());
 		form.add(createPasswordField1());
 		form.add(createPasswordField2());
-		form.add(createCaptchaImageContainer());
-		form.add(createCaptchaFieldContainer());
+		form.add(createCaptchaContainer());
 		form.add(createRegisterButton());
 		form.add(createEqualPasswordValidator());
+		form.add(createTermsOfUseCheckBox());
+		form.add(createTermsOfUseLink());
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
-	private WebMarkupContainer createCaptchaFieldContainer() {
-		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
-		trCaptcha2.add(createCaptchaCodeField());
-		trCaptcha2.setVisible(captchaEnabled);
-		return trCaptcha2;
+	private Component createTermsOfUseCheckBox() {
+		CheckBox checkBox = new CheckBox("termsOfUse", Model.of(Boolean.FALSE));
+		checkBox.add(createTermsOfUseValidator());
+		return checkBox;
 	}
 
-	private WebMarkupContainer createCaptchaImageContainer() {
-		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
-		trCaptcha1.add(createCaptchaImage());
-		trCaptcha1.setVisible(captchaEnabled);
-		return trCaptcha1;
+	private AbstractValidator<Boolean> createTermsOfUseValidator() {
+		return new AbstractValidator<Boolean>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onValidate(IValidatable<Boolean> ivalidatable) {
+				if (!ivalidatable.getValue()) {
+					error(ivalidatable);
+				}
+			}
+
+			@Override
+			protected String resourceKey() {
+				return "termsOfUse.mustAccepted";
+			}
+		};
+	}
+
+	private Component createTermsOfUseLink() {
+		CommonMarkupContainerFactory factory = sharedRegistry.getResource("termsOfUseLink");
+		MarkupContainer termsOfUseLink;
+		if (factory != null) {
+			termsOfUseLink = factory.newInstance("termsOfUseLink");
+		} else {
+			termsOfUseLink = new WebMarkupContainer("termsOfUseLink");
+		}
+		return termsOfUseLink;
+	}
+
+	private WebMarkupContainer createCaptchaContainer() {
+		WebMarkupContainer captchaContainer = new WebMarkupContainer("captcha");
+		captchaContainer.add(createCaptchaCodeField());
+		captchaContainer.add(createCaptchaImage());
+		return captchaContainer;
 	}
 
 	private FormComponent<String> createCaptchaCodeField() {
-		FormComponent<String> fc = new TextField<String>("captchacode", Model.of(""));
-		if (captchaEnabled) {
-			fc.add(createCaptchaValidator());
-		}
-		fc.setRequired(captchaEnabled);
+		FormComponent<String> fc = new RequiredTextField<String>("captchacode", Model.of(""));
+		fc.add(createCaptchaValidator());
 		return fc;
 	}
 
@@ -132,10 +163,6 @@ public class RegisterPage extends TemplatePage {
 				return "wrong.captchacode";
 			}
 		};
-	}
-
-	private void setCaptchaEnabled() {
-		captchaEnabled = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 	}
 
 	private Button createRegisterButton() {

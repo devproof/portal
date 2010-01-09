@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -47,7 +46,6 @@ import org.devproof.portal.core.module.contact.bean.ContactBean;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.right.entity.RightEntity;
-import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.service.UserService;
 
@@ -69,8 +67,7 @@ public class ContactPage extends TemplatePage {
 	private CaptchaImageResource captchaImageResource;
 	private UserEntity toUser;
 	private ContactBean contactBean;
-	private Boolean captchaEnabled;
-	
+
 	public ContactPage(PageParameters params) {
 		super(params);
 		this.params = params;
@@ -78,7 +75,6 @@ public class ContactPage extends TemplatePage {
 		setContactFormBean();
 		setCaptchaChallengeCode();
 		setCaptchaImageResource();
-		setCaptchaEnabled();
 		validateToUser();
 		add(createCSSHeaderContributor());
 		add(createContactForm());
@@ -90,25 +86,17 @@ public class ContactPage extends TemplatePage {
 		form.add(createFullnameField());
 		form.add(createEmailField());
 		form.add(createContentField());
-		form.add(createCaptchaImageContainer());
-		form.add(createCaptchaFieldContainer());
+		form.add(createCaptchaContainer());
 		form.add(createSendButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
-	private WebMarkupContainer createCaptchaFieldContainer() {
-		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
-		trCaptcha2.add(createCaptchaField());
-		trCaptcha2.setVisible(captchaEnabled);
-		return trCaptcha2;
-	}
-
-	private WebMarkupContainer createCaptchaImageContainer() {
-		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
-		trCaptcha1.setVisible(captchaEnabled);
-		trCaptcha1.add(createCaptchaImage());
-		return trCaptcha1;
+	private WebMarkupContainer createCaptchaContainer() {
+		WebMarkupContainer captchaContainer = new WebMarkupContainer("captcha");
+		captchaContainer.add(createCaptchaField());
+		captchaContainer.add(createCaptchaImage());
+		return captchaContainer;
 	}
 
 	private Image createCaptchaImage() {
@@ -116,18 +104,9 @@ public class ContactPage extends TemplatePage {
 	}
 
 	private FormComponent<String> createCaptchaField() {
-		FormComponent<String> fc;
-		fc = new TextField<String>("captchacode", Model.of(""));
-		fc.setRequired(captchaEnabled);
-
-		if (captchaEnabled) {
-			fc.add(createCaptchaValidator(captchaImageResource));
-		}
+		FormComponent<String> fc = new RequiredTextField<String>("captchacode", Model.of(""));
+		fc.add(createCaptchaValidator(captchaImageResource));
 		return fc;
-	}
-
-	private void setCaptchaEnabled() {
-		captchaEnabled = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 	}
 
 	private void setCaptchaImageResource() {
@@ -139,9 +118,9 @@ public class ContactPage extends TemplatePage {
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String> fc;
-		fc = new TextArea<String>("content");
+		FormComponent<String> fc = new TextArea<String>("content");
 		fc.add(StringValidator.minimumLength(30));
+		fc.setRequired(true);
 		return fc;
 	}
 
