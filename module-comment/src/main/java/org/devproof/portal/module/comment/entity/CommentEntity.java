@@ -43,7 +43,8 @@ final public class CommentEntity extends BaseEntity {
 	@Lob
 	@Column(name = "comment")
 	private String comment;
-	@Column(name = "ip_address", length = 15)
+	// ipv6 length
+	@Column(name = "ip_address", length = 39)
 	private String ipAddress;
 	@Column(name = "number_of_blames")
 	private Integer numberOfBlames = 0;
@@ -51,6 +52,8 @@ final public class CommentEntity extends BaseEntity {
 	private Boolean reviewed = Boolean.FALSE;
 	@Column(name = "visible")
 	private Boolean visible = Boolean.TRUE;
+	@Column(name = "automatic_blocked")
+	private Boolean automaticBlocked = Boolean.FALSE;
 	@Column(name = "module_name", length = 20)
 	private String moduleName;
 	@Column(name = "module_content_id", length = 20)
@@ -134,5 +137,13 @@ final public class CommentEntity extends BaseEntity {
 
 	public void setGuestEmail(String guestEmail) {
 		this.guestEmail = guestEmail;
+	}
+
+	public Boolean getAutomaticBlocked() {
+		return automaticBlocked;
+	}
+
+	public void setAutomaticBlocked(Boolean automaticBlocked) {
+		this.automaticBlocked = automaticBlocked;
 	}
 }

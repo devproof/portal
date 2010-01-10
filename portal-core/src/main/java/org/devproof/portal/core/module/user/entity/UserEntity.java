@@ -70,7 +70,8 @@ final public class UserEntity implements Serializable {
 	private Date registrationDate = PortalUtil.now();
 	@Column(name = "changed_at")
 	private Date changedAt;
-	@Column(name = "last_ip", length = 15)
+	// IPv6 length
+	@Column(name = "last_ip", length = 39)
 	private String lastIp;
 	@Column(name = "last_login_at")
 	private Date lastLoginAt;

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -71,13 +72,16 @@ public class CommentPanel extends Panel {
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
+		PortalUtil.addJQuery(this);
 		setCaptchaChallengeCode();
 		setCaptchaImageResource();
 		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
 		query = new CommentQuery();
 		query.setModuleName(configuration.getModuleName());
 		query.setModuleContentId(configuration.getModuleContentId());
+		// query.setVisible(Boolean.TRUE);
 		commentDataProvider.setQueryObject(query);
+
 		add(new WebMarkupContainer("noCommentsHint") {
 			private static final long serialVersionUID = 1L;
 
@@ -216,18 +220,74 @@ public class CommentPanel extends Panel {
 			Label commentLabel = new Label("comment", comment.getComment());
 			commentLabel.setEscapeModelStrings(false);
 			add(commentLabel);
-			WebMarkupContainer administrationContainer = new WebMarkupContainer("administration");
-			administrationContainer.add(new Label("ipAddress", comment.getIpAddress()));
-			AjaxLink<Void> deleteLink = new AjaxLink<Void>("deleteLink") {
+			final WebMarkupContainer reportViolationCaptchaContainer = new WebMarkupContainer("reportViolationCaptcha");
+			reportViolationCaptchaContainer.setVersioned(false);
+			reportViolationCaptchaContainer.setOutputMarkupId(true);
+			reportViolationCaptchaContainer.add(new SimpleAttributeModifier("style", "display:none; width: 300px;"));
+			add(reportViolationCaptchaContainer);
+			AjaxLink<Void> reportViolationLink = new AjaxLink<Void>("reportViolationLink") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					info("Deleted (but only hidden ... you can undelete.");
+					reportViolationCaptchaContainer.setVisible(true);
+					target.addComponent(reportViolationCaptchaContainer);
+
+					String js = "var p = $(\"#" + getMarkupId() + "\");\n var pos = p.position();";
+					js += "$(\"#"
+							+ reportViolationCaptchaContainer.getMarkupId()
+							+ "\").css( {\"position\": \"absolute\",  \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
+							+ reportViolationCaptchaContainer.getMarkupId() + "\").height() - 3) + \"px\" } );";
+					js += "$(\".captchaPopup\").fadeOut(\"fast\");";
+					js += "$(\"#" + reportViolationCaptchaContainer.getMarkupId() + "\").fadeIn(\"slow\");";
+					target.appendJavascript(js);
 				}
 			};
-			deleteLink.add(new Image("deleteLinkImage", CommonConstants.REF_DELETE_IMG));
-			administrationContainer.add(deleteLink);
+			reportViolationLink.setOutputMarkupId(true);
+			add(reportViolationLink);
+
+			WebMarkupContainer administrationContainer = new WebMarkupContainer("administration");
+			administrationContainer.add(new Label("ipAddress", comment.getIpAddress()));
+			if (comment.getVisible()) {
+				AjaxLink<Void> deleteLink = new AjaxLink<Void>("deleteLink") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						commentService.markCommentDeleted(comment);
+						info("Deleted (but only hidden ... you can undelete.");
+						target.addComponent(CommentPanel.this);
+					}
+				};
+				deleteLink.add(new Image("deleteLinkImage", CommonConstants.REF_DELETE_IMG));
+				administrationContainer.add(deleteLink);
+			} else {
+				AjaxLink<Void> deleteLink = new AjaxLink<Void>("deleteLink") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						commentService.markCommentUndeleted(comment);
+						info("Undeleted");
+						target.addComponent(CommentPanel.this);
+					}
+				};
+				deleteLink.add(new Image("deleteLinkImage", CommonConstants.REF_UNDELETE_IMG));
+				administrationContainer.add(deleteLink);
+			}
+			AjaxLink<Void> reviewedLink = new AjaxLink<Void>("reviewedLink") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(AjaxRequestTarget target) {
+					commentService.markReviewed(comment);
+					info("Marked as reviewed");
+					target.addComponent(CommentPanel.this);
+				}
+			};
+			reviewedLink.add(new Image("reviewedLinkImage", CommentConstants.REF_ACCEPTED_IMG));
+			reviewedLink.setVisible(!comment.getReviewed());
+			administrationContainer.add(reviewedLink);
 			add(administrationContainer);
 		}
 	}

@@ -67,6 +67,8 @@ public class CommonConstants {
 	public static final ResourceReference REF_EDIT_IMG = new ResourceReference(CommonConstants.class, "img/edit.gif");
 	public static final ResourceReference REF_DELETE_IMG = new ResourceReference(CommonConstants.class,
 			"img/delete.gif");
+	public static final ResourceReference REF_UNDELETE_IMG = new ResourceReference(CommonConstants.class,
+			"img/undelete.gif");
 	public static final ResourceReference REF_VIEW_IMG = new ResourceReference(CommonConstants.class, "img/view.gif");
 	public static final ResourceReference REF_DOWN_IMG = new ResourceReference(CommonConstants.class, "img/down.gif");
 	public static final ResourceReference REF_UP_IMG = new ResourceReference(CommonConstants.class, "img/up.gif");

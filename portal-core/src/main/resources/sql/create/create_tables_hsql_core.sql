@@ -78,7 +78,7 @@ CREATE TABLE core_user
    enable_contact_form bit,
    firstname varchar(100),
    forgot_code varchar(255),
-   last_ip varchar(15),
+   last_ip varchar(39),
    last_login_at timestamp,
    lastname varchar(100),
    password varchar(255) NOT NULL,
