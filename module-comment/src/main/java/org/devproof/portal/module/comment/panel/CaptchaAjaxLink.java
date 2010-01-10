@@ -22,16 +22,20 @@ public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
 
 	@Override
 	final public void onClick(AjaxRequestTarget target) {
-		captchaPanel.refreshCaptcha();
-		target.addComponent(captchaPanel);
-		String js = "var p = $(\"#" + getMarkupId() + "\");\n var pos = p.position();";
-		js += "$(\"#" + captchaPanel.getMarkupId()
-				+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
-				+ captchaPanel.getMarkupId() + "\").height() - 3) + \"px\" } );";
+		if (captchaPanel.isRenderAllowed()) {
+			captchaPanel.refreshCaptcha();
+			target.addComponent(captchaPanel);
+			String js = "var p = $(\"#" + getMarkupId() + "\");\n var pos = p.position();";
+			js += "$(\"#" + captchaPanel.getMarkupId()
+					+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
+					+ captchaPanel.getMarkupId() + "\").height() - 3) + \"px\" } );";
 
-		js += "$(\".captchaPopup\").fadeOut(\"fast\");";
-		js += "$(\"#" + captchaPanel.getMarkupId() + "\").fadeIn(\"slow\");";
-		target.appendJavascript(js);
+			js += "$(\".captchaPopup\").fadeOut(\"fast\");";
+			js += "$(\"#" + captchaPanel.getMarkupId() + "\").fadeIn(\"slow\");";
+			target.appendJavascript(js);
+		} else {
+			onClickAndCaptchaValidated(target);
+		}
 	}
 
 	public abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
