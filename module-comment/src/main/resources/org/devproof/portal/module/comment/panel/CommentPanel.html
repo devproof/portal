@@ -22,13 +22,6 @@
 						<td style="vertical-align:text-top;"><label for="guestEmail" style="color: #666;"><wicket:message key="guestEmail"/></label></td>
 						<td><input type="text" id="guestEmail" wicket:id="guestEmail"/></td>
 					</tr>
-					<tr wicket:id="captcha">
-						<td style="vertical-align:text-top;"><label for="captchacode" style="color: #666;"><wicket:message key="captchacode"/></label></td>
-						<td>
-							<input type="text" id="captchacode" wicket:id="captchacode"/><br /><br />
-							<img wicket:id="captchacodeimage" alt=""/>
-						</td>
-					</tr>
 					<tr>
 						<td style="vertical-align:text-top;"><label for="comment" style="color: #666;"><wicket:message key="comment"/></label></td>
 						<td><textarea wicket:id="comment" cols="80" rows="6"></textarea></td>
@@ -38,6 +31,7 @@
 						<td><input type="submit" wicket:message="value:saveButton" class="button" wicket:id="addCommentButton"/></td>
 					</tr>
 				</table>
+				<div wicket:id="captcha"/>
 				</form>
 			</div>
 		</div>
@@ -46,33 +40,9 @@
 			<div wicket:id="comment" style="color: #666; ">[comment]</div>
 			<div  style="color: #888; font-size: 8pt;padding-top:0.5em;">
 				<span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message key="reportViolation"/></a> ]
+				<div wicket:id="captcha"/>
 				<div wicket:id="administration" style="padding-top:10px;"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>]&nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a></div>
-				<div wicket:id="confirmReportViolationContainer"  class="captchaPopup">
-					<div wicket:id="confirmReportViolation"/>
-				</div>
 			</div>
-		</wicket:fragment>
-		
-		
-		<wicket:fragment wicket:id="confirmReportViolation">
-			<div class="sbl2">
-				<div class="sbr2">
-				<div class="stl2">
-				<div class="str2">
-					<h2>Verstoss melden bestaetigen</h2><br/>
-					<form>
-						<div style="height: 62px;"><img wicket:id="captchaImage" style="border: 1px solid black;"/></div>
-						<p>Geben Sie den Bildcode ein:</p>
-						<input type="text"/>
-						<br/>
-						<input type="submit" value="Bestaetigen" class="button"/>		
-						<input type="submit" value="Abbrechen" class="button"/>		
-					</form>						
-				</div>
-				</div>
-				</div>
-			</div>
-			<div class="sb2"></div>
 		</wicket:fragment>
 	</wicket:panel>
 </body>
