@@ -29,7 +29,7 @@ public class UploadCenterConstants {
 	public static final String CONF_UPLOADCENTER_MAXSIZE = "uploadcenter_maxsize";
 
 	public static final ResourceReference REF_GALLERY_IMG = new ResourceReference(UploadCenterConstants.class,
-			"img/gallerylink.gif");
+			"img/gallery.png");
 	public static final ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(UploadCenterConstants.class,
-			"img/download.gif");
+			"img/download.png");
 }

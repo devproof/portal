@@ -30,8 +30,9 @@ public class BookmarkConstants {
 	public static final String USER_AGENT = "devproofPortal";
 	public static final String DELICIOUS_API = "https://api.del.icio.us/v1/posts/all?";
 	public static final String CONF_BOX_NUM_LATEST_BOOKMARKS = "box_num_latest_bookmarks";
-	public static final ResourceReference REF_DELICIOUS = new ResourceReference(BookmarkConstants.class,
+	public static final ResourceReference REF_DELICIOUS_IMG = new ResourceReference(BookmarkConstants.class,
 			"img/delicious.gif");
+	public static final ResourceReference REF_LINK_IMG = new ResourceReference(BookmarkConstants.class, "img/link.png");
 	public static final ResourceReference REF_BOOKMARK_CSS = new ResourceReference(BookmarkConstants.class,
 			"css/bookmark.css");
 	public static final String CONF_BOOKMARK_ENTRIES_IN_FEED = "bookmark_entries_in_feed";

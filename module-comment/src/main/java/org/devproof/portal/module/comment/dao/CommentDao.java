@@ -23,12 +23,10 @@ import org.devproof.portal.module.comment.entity.CommentEntity;
  * @author Carsten Hufe
  */
 public interface CommentDao extends GenericDao<CommentEntity, Integer> {
-	@BulkUpdate("update CommentEntity c set c.visible = false where c = ?")
-	public void markCommentDeleted(CommentEntity comment);
+	@BulkUpdate("update CommentEntity c set c.accepted = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
+	public void acceptComment(CommentEntity comment);
 
-	@BulkUpdate("update CommentEntity c set c.visible = true where c = ?")
-	public void markCommentUndeleted(CommentEntity comment);
+	@BulkUpdate("update CommentEntity c set c.accepted = false, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
+	public void rejectComment(CommentEntity comment);
 
-	@BulkUpdate("update CommentEntity c set c.reviewed = true, c.automaticBlocked = false where c = ?")
-	public void markReviewed(CommentEntity comment);
 }

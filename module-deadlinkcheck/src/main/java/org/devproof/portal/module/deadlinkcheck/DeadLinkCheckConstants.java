@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.deadlinkcheck;
 
-import org.apache.wicket.ResourceReference;
 
 /**
  * @author Carsten Hufe
@@ -24,6 +23,4 @@ public class DeadLinkCheckConstants {
 	private DeadLinkCheckConstants() {
 	}
 
-	public static final ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(DeadLinkCheckConstants.class,
-			"img/download.gif");
 }
