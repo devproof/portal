@@ -33,16 +33,17 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 
-import org.apache.wicket.IResourceListener;
+import org.apache.wicket.Component;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.protocol.http.WebRequest;
@@ -108,12 +109,12 @@ public class KittenCaptchaPanel extends Panel {
 	/**
 	 * The image component
 	 */
-	private final Image image;
+	private Image image;
 
 	/**
 	 * The image resource referenced by the Image component
 	 */
-	private final CaptchaImageResource imageResource;
+	private CaptchaImageResource imageResource;
 
 	/**
 	 * Size of this kitten panel's image
@@ -128,7 +129,6 @@ public class KittenCaptchaPanel extends Panel {
 	 */
 	public KittenCaptchaPanel(final String id, final Dimension imageSize) {
 		super(id);
-
 		// Save image size
 		this.imageSize = imageSize;
 
@@ -137,7 +137,7 @@ public class KittenCaptchaPanel extends Panel {
 
 		// Need to ajax refresh
 		setOutputMarkupId(true);
-
+		imageResource = new CaptchaImageResource(animals);
 		// Show how many animals have been selected
 		animalSelectionLabel = new Label("animalSelectionLabel", new AbstractReadOnlyModel<Object>() {
 			private static final long serialVersionUID = 6792322972316712326L;
@@ -150,62 +150,91 @@ public class KittenCaptchaPanel extends Panel {
 		animalSelectionLabel.setOutputMarkupId(true);
 		add(animalSelectionLabel);
 
-		// Image referencing captcha image resource
-		image = new NonCachingImage("image", imageResource = new CaptchaImageResource(animals));
-		image.add(new AjaxEventBehavior("onclick") {
-			private static final long serialVersionUID = 7480352029955897654L;
+		AjaxLazyLoadPanel imageContainer = new AjaxLazyLoadPanel("imageContainer") {
 
 			@Override
-			protected CharSequence getCallbackScript(boolean onlyTargetActivePage) {
-				// Call-back script shows loading indicator and makes wicket
-				// ajax request passing in mouse co-ordinates
-				return generateCallbackScript("showLoadingIndicator(); wicketAjaxGet('"
-						+ getCallbackUrl(onlyTargetActivePage)
-						+ "&x=' + getEventX(this, event) + '&y=' + getEventY(this, event)");
+			public Component getLazyLoadComponent(String markupId) {
+				final Fragment f = new Fragment(markupId, "imageView", KittenCaptchaPanel.this);
+				f.setOutputMarkupId(true);
+				// Image referencing captcha image resource
+				image = new NonCachingImage("image", imageResource);
+				image.add(new AjaxEventBehavior("onclick") {
+					private static final long serialVersionUID = 7480352029955897654L;
+
+					@Override
+					protected CharSequence getCallbackScript(boolean onlyTargetActivePage) {
+						// Call-back script shows loading indicator and makes
+						// wicket
+						// ajax request passing in mouse co-ordinates
+						return generateCallbackScript("wicketAjaxGet('" + getCallbackUrl(onlyTargetActivePage)
+								+ "&x=' + getEventX(this, event) + '&y=' + getEventY(this, event)");
+					}
+
+					@Override
+					protected void onEvent(final AjaxRequestTarget target) {
+						// Get clicked cursor position
+						final WebRequest request = (WebRequest) RequestCycle.get().getRequest();
+						final Map<String, String[]> parameters = request.getParameterMap();
+						final int x = Integer.parseInt(parameters.get("x")[0]);
+						final int y = Integer.parseInt(parameters.get("y")[0]);
+
+						// Force refresh
+						imageResource.clearData();
+
+						// Find any animal at the clicked location
+						final PlacedAnimal animal = animals.atLocation(new Point(x, y));
+
+						// If the user clicked on an animal
+						if (animal != null) {
+							// Toggle the animal's highlighting
+							animal.isHighlighted = !animal.isHighlighted;
+
+							// Instead of reload entire image just change the
+							// src
+							// attribute, this reduces the flicker
+							// final StringBuilder javascript = new
+							// StringBuilder();
+							// javascript.append("Wicket.$('" +
+							// image.getMarkupId() + "').src = '");
+							// CharSequence url =
+							// image.urlFor(IResourceListener.INTERFACE);
+							// javascript.append(url);
+							// javascript.append((url.toString().indexOf('?') >
+							// -1 ? "&amp;" : "?") + "rand="
+							// + Math.random());
+							// javascript.append("';");
+							target.addComponent(f);
+
+							// try {
+							// Thread.sleep(1000);
+							// } catch (InterruptedException e) {
+							// // TODO Auto-generated catch block
+							// e.printStackTrace();
+							// }
+							// target.appendJavascript(javascript.toString());
+
+						}
+
+						// Update the selection label
+						target.addComponent(animalSelectionLabel);
+					}
+				});
+
+				f.add(image);
+				return f;
 			}
 
-			@Override
-			protected void onEvent(final AjaxRequestTarget target) {
-				// Get clicked cursor position
-				final WebRequest request = (WebRequest) RequestCycle.get().getRequest();
-				final Map<String, String[]> parameters = request.getParameterMap();
-				final int x = Integer.parseInt(parameters.get("x")[0]);
-				final int y = Integer.parseInt(parameters.get("y")[0]);
-
-				// Force refresh
-				imageResource.clearData();
-
-				// Find any animal at the clicked location
-				final PlacedAnimal animal = animals.atLocation(new Point(x, y));
-
-				// If the user clicked on an animal
-				if (animal != null) {
-					// Toggle the animal's highlighting
-					animal.isHighlighted = !animal.isHighlighted;
-
-					// Instead of reload entire image just change the src
-					// attribute, this reduces the flicker
-					final StringBuilder javascript = new StringBuilder();
-					javascript.append("Wicket.$('" + image.getMarkupId() + "').src = '");
-					CharSequence url = image.urlFor(IResourceListener.INTERFACE);
-					javascript.append(url);
-					javascript.append((url.toString().indexOf('?') > -1 ? "&amp;" : "?") + "rand=" + Math.random());
-					javascript.append("'");
-					target.appendJavascript(javascript.toString());
-				} else {
-					// The user didn't click on an animal, so hide the loading
-					// indicator
-					target.appendJavascript(" hideLoadingIndicator();");
-				}
-
-				// Update the selection label
-				target.addComponent(animalSelectionLabel);
-			}
-		});
-		WebMarkupContainer imageContainer = new WebMarkupContainer("imageContainer");
+		};
+		imageContainer.setOutputMarkupId(true);
 		imageContainer.add(new SimpleAttributeModifier("style", "height: " + imageSize.height + "px"));
-		imageContainer.add(image);
 		add(imageContainer);
+
+		// WebMarkupContainer imageContainer = new
+		// WebMarkupContainer("imageContainer");
+		// imageContainer.add(new SimpleAttributeModifier("style", "height: " +
+		// imageSize.height + "px"));
+		// imageContainer.add(image);
+		// add(imageContainer);
 	}
 
 	/**
@@ -375,6 +404,12 @@ public class KittenCaptchaPanel extends Panel {
 		 */
 		@Override
 		protected byte[] getImageData() {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// Handle caching
 			setLastModifiedTime(Time.now());
 			final WebResponse response = (WebResponse) RequestCycle.get().getResponse();

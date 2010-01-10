@@ -12,19 +12,19 @@ public abstract class CaptchaAjaxButton extends AjaxFallbackButton {
 	public CaptchaAjaxButton(String id, CaptchaPanel captchaPanel, Form<?> form) {
 		super(id, form);
 		this.captchaPanel = captchaPanel;
-		captchaPanel.setOnClickCallback(new OnClickCallback() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
-			}
-		});
 	}
 
 	@Override
 	final protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 		if (captchaPanel.isRenderAllowed()) {
+			captchaPanel.setOnClickCallback(new OnClickCallback() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+					CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
+				}
+			});
 			captchaPanel.refreshCaptcha();
 			target.addComponent(captchaPanel);
 			String js = "var p = $(\"#" + getMarkupId() + "\");\n var pos = p.position();";
@@ -34,6 +34,7 @@ public abstract class CaptchaAjaxButton extends AjaxFallbackButton {
 
 			js += "$(\".captchaPopup\").fadeOut(\"fast\");";
 			js += "$(\"#" + captchaPanel.getMarkupId() + "\").fadeIn(\"slow\");";
+			js += "hideLoadingIndicator();";
 			target.appendJavascript(js);
 		} else {
 			onClickAndCaptchaValidated(target);
