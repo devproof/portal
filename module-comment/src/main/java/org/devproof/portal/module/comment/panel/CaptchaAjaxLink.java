@@ -1,10 +1,10 @@
 package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.devproof.portal.module.comment.panel.CaptchaPanel.OnClickCallback;
 
-public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
+public abstract class CaptchaAjaxLink extends AjaxFallbackLink<Void> {
 	private static final long serialVersionUID = 1L;
 	private CaptchaPanel captchaPanel;
 

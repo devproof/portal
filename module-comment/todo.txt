@@ -13,11 +13,13 @@
 - configuration show only reviewed comments
 - notification bei neuen Kommentaren
 - notification bei automatic_blocked kommentaren
+- notification bei not reviewed and blamed
 - fix BlogPageTest
 - Configuration number for blamed article
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
+- captcha im contact form, registration, forgot password austauschen
 
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register
