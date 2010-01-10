@@ -58,7 +58,8 @@ public class CommentPanel extends Panel {
 	@SpringBean(name = "commentService")
 	private CommentService commentService;
 	private CommentQuery query;
-	FeedbackPanel feedback;
+	private FeedbackPanel feedback;
+	private CaptchaPanel captchaPanel;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
@@ -69,6 +70,8 @@ public class CommentPanel extends Panel {
 		query.setModuleContentId(configuration.getModuleContentId());
 		// query.setVisible(Boolean.TRUE);
 		commentDataProvider.setQueryObject(query);
+		captchaPanel = new CaptchaPanel("captcha");
+		add(captchaPanel);
 
 		add(new WebMarkupContainer("noCommentsHint") {
 			private static final long serialVersionUID = 1L;
@@ -109,9 +112,7 @@ public class CommentPanel extends Panel {
 		commentField.add(StringValidator.lengthBetween(10, 3000));
 		commentField.setRequired(true);
 		form.add(commentField);
-		CaptchaPanel captchaBubblePanel = new CaptchaPanel("captcha");
-		form.add(captchaBubblePanel);
-		form.add(new CaptchaAjaxButton("addCommentButton", captchaBubblePanel, form) {
+		form.add(new CaptchaAjaxButton("addCommentButton", captchaPanel, form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

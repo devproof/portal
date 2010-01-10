@@ -39,13 +39,12 @@ public class CaptchaPanel extends Panel {
 
 	public CaptchaPanel(String id) {
 		super(id);
-		// add(new SimpleAttributeModifier("style",
-		// "display:none; width: 420px; margin: 0 auto;"));
 		add(new SimpleAttributeModifier("style", "display:none; width: 450px; "));
 		add(new SimpleAttributeModifier("class", "captchaPopup"));
 		captcha = new WebMarkupContainer("captcha");
 		captcha.add(new WebMarkupContainer("kittenCaptchaImage"));
-		AjaxLink confirmButton = new AjaxLink("confirm") {
+		AjaxLink<Void> confirmButton = new AjaxLink<Void>("confirm") {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
@@ -57,7 +56,8 @@ public class CaptchaPanel extends Panel {
 			}
 		};
 		captcha.add(confirmButton);
-		AjaxLink abortButton = new AjaxLink("abort") {
+		AjaxLink<Void> abortButton = new AjaxLink<Void>("abort") {
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {

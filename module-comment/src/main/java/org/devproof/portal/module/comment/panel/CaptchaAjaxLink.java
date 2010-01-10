@@ -11,20 +11,21 @@ public abstract class CaptchaAjaxLink extends AjaxFallbackLink<Void> {
 	public CaptchaAjaxLink(String id, CaptchaPanel captchaPanel) {
 		super(id);
 		this.captchaPanel = captchaPanel;
-		captchaPanel.setOnClickCallback(new OnClickCallback() {
-			@Override
-			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				CaptchaAjaxLink.this.onClickAndCaptchaValidated(target);
-			}
-		});
 		setOutputMarkupId(true);
 	}
 
 	@Override
 	final public void onClick(AjaxRequestTarget target) {
 		if (captchaPanel.isRenderAllowed()) {
-			captchaPanel.refreshCaptcha();
-			target.addComponent(captchaPanel);
+			captchaPanel.setOnClickCallback(new OnClickCallback() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+					CaptchaAjaxLink.this.onClickAndCaptchaValidated(target);
+				}
+			});
+
 			String js = "var p = $(\"#" + getMarkupId() + "\");\n var pos = p.position();";
 			js += "$(\"#" + captchaPanel.getMarkupId()
 					+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
@@ -33,6 +34,8 @@ public abstract class CaptchaAjaxLink extends AjaxFallbackLink<Void> {
 			js += "$(\".captchaPopup\").fadeOut(\"fast\");";
 			js += "$(\"#" + captchaPanel.getMarkupId() + "\").fadeIn(\"slow\");";
 			target.appendJavascript(js);
+			captchaPanel.refreshCaptcha();
+			target.addComponent(captchaPanel);
 		} else {
 			onClickAndCaptchaValidated(target);
 		}
