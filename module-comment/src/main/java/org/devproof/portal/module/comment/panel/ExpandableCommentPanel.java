@@ -59,9 +59,7 @@ public class ExpandableCommentPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				// refreshContainer.replace(new WebMarkupContainer("comments"));
 				target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"slow\");");
-				// target.addComponent(refreshContainer);
 			}
 		});
 	}
