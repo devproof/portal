@@ -87,7 +87,7 @@ public class BookmarkablePagingPanel extends Panel {
 	}
 
 	private BookmarkablePageLink<String> createBackLink() {
-		BookmarkablePageLink<String> backLink = newBackLink(pageable, parentClazz);
+		backLink = newBackLink(pageable, parentClazz);
 		backLink.setParameter("page", pageable.getCurrentPage());
 		return backLink;
 	}
