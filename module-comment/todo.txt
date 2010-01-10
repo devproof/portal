@@ -11,6 +11,8 @@
 - Configuration -> disable for each section/module -> als recht realisieren
 - configuration for captcha (enable captcha for guests, reg user) als recht
 - configuration show only reviewed comments
+- notification bei neuen Kommentaren
+- notification bei automatic_blocked kommentaren
 - fix BlogPageTest
 - Configuration number for blamed article
 - FCKeditor austauschen

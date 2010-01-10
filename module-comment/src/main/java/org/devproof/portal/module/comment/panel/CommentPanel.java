@@ -212,33 +212,34 @@ public class CommentPanel extends Panel {
 
 		private CommentEntity comment;
 
-		public CommentView(String id, Item<CommentEntity> item) {
+		public CommentView(String id, final Item<CommentEntity> item) {
 			super(id, "commentView", CommentPanel.this);
 			comment = item.getModelObject();
 			add(new CommentInfoPanel("commentInfo", comment));
 			Label commentLabel = new Label("comment", comment.getComment());
 			commentLabel.setEscapeModelStrings(false);
 			add(commentLabel);
-			final WebMarkupContainer reportViolationCaptchaContainer = new WebMarkupContainer("reportViolationCaptcha");
-			reportViolationCaptchaContainer.setVersioned(false);
-			reportViolationCaptchaContainer.setOutputMarkupId(true);
-			reportViolationCaptchaContainer.add(new SimpleAttributeModifier("style", "display:none; width: 300px;"));
-			add(reportViolationCaptchaContainer);
+			final WebMarkupContainer confirmReportViolationContainer = new WebMarkupContainer(
+					"confirmReportViolationContainer");
+			confirmReportViolationContainer.add(new SimpleAttributeModifier("style", "display:none; width: 300px;"));
+			confirmReportViolationContainer.add(new WebMarkupContainer("confirmReportViolation"));
+			confirmReportViolationContainer.setOutputMarkupId(true);
+			add(confirmReportViolationContainer);
 			AjaxLink<Void> reportViolationLink = new AjaxLink<Void>("reportViolationLink") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					reportViolationCaptchaContainer.setVisible(true);
-					target.addComponent(reportViolationCaptchaContainer);
+					confirmReportViolationContainer.replace(new ConfirmReportViolation("confirmReportViolation", item));
+					target.addComponent(confirmReportViolationContainer);
 
 					String js = "var p = $(\"#" + getMarkupId() + "\");\n var pos = p.position();";
 					js += "$(\"#"
-							+ reportViolationCaptchaContainer.getMarkupId()
+							+ confirmReportViolationContainer.getMarkupId()
 							+ "\").css( {\"position\": \"absolute\",  \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
-							+ reportViolationCaptchaContainer.getMarkupId() + "\").height() - 3) + \"px\" } );";
+							+ confirmReportViolationContainer.getMarkupId() + "\").height() - 3) + \"px\" } );";
 					js += "$(\".captchaPopup\").fadeOut(\"fast\");";
-					js += "$(\"#" + reportViolationCaptchaContainer.getMarkupId() + "\").fadeIn(\"slow\");";
+					js += "$(\"#" + confirmReportViolationContainer.getMarkupId() + "\").fadeIn(\"slow\");";
 					target.appendJavascript(js);
 				}
 			};
@@ -275,6 +276,19 @@ public class CommentPanel extends Panel {
 			administrationContainer.add(rejectLink);
 
 			add(administrationContainer);
+		}
+	}
+
+	public class ConfirmReportViolation extends Fragment {
+
+		private static final long serialVersionUID = 1L;
+
+		private CommentEntity comment;
+
+		public ConfirmReportViolation(String id, Item<CommentEntity> item) {
+			super(id, "confirmReportViolation", CommentPanel.this);
+			this.comment = item.getModelObject();
+			add(new Image("captchaImage", captchaImageResource));
 		}
 	}
 }
