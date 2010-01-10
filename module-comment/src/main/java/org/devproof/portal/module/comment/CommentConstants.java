@@ -30,6 +30,7 @@ public class CommentConstants {
 			"img/comments_add.png");
 	public static final ResourceReference REF_COMMENTS_IMG = new ResourceReference(CommentConstants.class,
 			"img/comments.png");
-	public static final ResourceReference REF_ACCEPTED_IMG = new ResourceReference(CommentConstants.class,
+	public static final ResourceReference REF_ACCEPT_IMG = new ResourceReference(CommentConstants.class,
 			"img/accept.png");
+	public static final ResourceReference REF_REJECT_IMG = new ResourceReference(CommentConstants.class, "img/deny.png");
 }

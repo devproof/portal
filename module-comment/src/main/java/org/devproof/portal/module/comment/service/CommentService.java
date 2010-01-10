@@ -32,15 +32,10 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
 	/**
 	 * Marks the comment as deleted (visible = false)
 	 */
-	public void markCommentDeleted(CommentEntity comment);
-
-	/**
-	 * Marks the comment as undeleted (visible = true)
-	 */
-	public void markCommentUndeleted(CommentEntity comment);
+	public void rejectComment(CommentEntity comment);
 
 	/**
 	 * Marks the comment as reviewed
 	 */
-	public void markReviewed(CommentEntity comment);
+	public void acceptComment(CommentEntity comment);
 }

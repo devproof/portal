@@ -27,15 +27,15 @@ public class CommentQuery implements IQuery {
 	private String allTextFields;
 	private String moduleName;
 	private String moduleContentId;
-	private Boolean visible;
+	private Boolean accepted;
 
-	@BeanQuery("e.visible = ?")
-	public Boolean getVisible() {
-		return visible;
+	@BeanQuery("e.accepted = ?")
+	public Boolean getAccepted() {
+		return accepted;
 	}
 
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
 	}
 
 	@BeanQuery("e.moduleName = ?")

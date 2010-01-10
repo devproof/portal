@@ -48,10 +48,8 @@ final public class CommentEntity extends BaseEntity {
 	private String ipAddress;
 	@Column(name = "number_of_blames")
 	private Integer numberOfBlames = 0;
-	@Column(name = "reviewed")
-	private Boolean reviewed = Boolean.FALSE;
-	@Column(name = "visible")
-	private Boolean visible = Boolean.TRUE;
+	@Column(name = "accepted")
+	private Boolean accepted = Boolean.FALSE;
 	@Column(name = "automatic_blocked")
 	private Boolean automaticBlocked = Boolean.FALSE;
 	@Column(name = "module_name", length = 20)
@@ -107,20 +105,12 @@ final public class CommentEntity extends BaseEntity {
 		this.numberOfBlames = numberOfBlames;
 	}
 
-	public Boolean getReviewed() {
-		return reviewed;
+	public Boolean getAccepted() {
+		return accepted;
 	}
 
-	public void setReviewed(Boolean reviewed) {
-		this.reviewed = reviewed;
-	}
-
-	public Boolean getVisible() {
-		return visible;
-	}
-
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
 	}
 
 	public String getGuestName() {

@@ -48,7 +48,6 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.deadlinkcheck.DeadLinkCheckConstants;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
@@ -291,7 +290,7 @@ public class DownloadPage extends DownloadBasePage {
 		}
 
 		private Image createDownloadLinkImage() {
-			return new Image("downloadImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG);
+			return new Image("downloadImage", DownloadConstants.REF_DOWNLOAD_IMG);
 		}
 
 		private Component createRatingPanel() {

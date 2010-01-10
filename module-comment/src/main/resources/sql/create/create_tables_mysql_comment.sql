@@ -9,8 +9,7 @@ CREATE TABLE `comment` (
   `comment` text  not null,
   `ip_address` varchar(39)  not null,
   `number_of_blames` int(11) default 0,
-  `reviewed` bit(1)  not null,
-  `visible` bit(1)  not null,
+  `accepted` bit(1)  not null,
   `automatic_blocked` bit(1) not null,
   `module_name` varchar(20) not null,
   `module_content_id` varchar(20) not null,
@@ -19,6 +18,5 @@ CREATE TABLE `comment` (
 
 CREATE INDEX module_name_idx ON comment (module_name);
 CREATE INDEX module_content_id_idx ON comment (module_content_id);
-CREATE INDEX module_reviewed_idx ON comment (reviewed);
-CREATE INDEX module_visible_idx ON comment (visible);
+CREATE INDEX module_accepted_idx ON comment (accepted);
 CREATE INDEX module_automatic_blocked_idx ON comment (automatic_blocked);

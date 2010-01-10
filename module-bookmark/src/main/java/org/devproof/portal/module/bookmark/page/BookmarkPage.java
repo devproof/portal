@@ -47,7 +47,6 @@ import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 import org.devproof.portal.module.bookmark.panel.BookmarkSearchBoxPanel;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
-import org.devproof.portal.module.deadlinkcheck.DeadLinkCheckConstants;
 
 /**
  * @author Carsten Hufe
@@ -171,7 +170,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private Image createVisitLinkImage() {
-			return new Image("bookmarkImage", DeadLinkCheckConstants.REF_DOWNLOAD_IMG);
+			return new Image("bookmarkImage", BookmarkConstants.REF_LINK_IMG);
 		}
 
 		private Label createVisitLinkLabel() {
@@ -232,7 +231,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		private Component createDeliciousSourceImage() {
 			if (isAuthor() && bookmark.getSource() == Source.DELICIOUS) {
 				// be aware... images are stateful
-				return new Image("delicious", BookmarkConstants.REF_DELICIOUS);
+				return new Image("delicious", BookmarkConstants.REF_DELICIOUS_IMG);
 			} else {
 				Component hiddenImage = new WebMarkupContainer("delicious");
 				hiddenImage.setVisible(false);

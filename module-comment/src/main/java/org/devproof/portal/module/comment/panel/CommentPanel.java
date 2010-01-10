@@ -44,7 +44,6 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
-import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.module.comment.CommentConstants;
@@ -248,46 +247,33 @@ public class CommentPanel extends Panel {
 
 			WebMarkupContainer administrationContainer = new WebMarkupContainer("administration");
 			administrationContainer.add(new Label("ipAddress", comment.getIpAddress()));
-			if (comment.getVisible()) {
-				AjaxLink<Void> deleteLink = new AjaxLink<Void>("deleteLink") {
-					private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						commentService.markCommentDeleted(comment);
-						info("Deleted (but only hidden ... you can undelete.");
-						target.addComponent(CommentPanel.this);
-					}
-				};
-				deleteLink.add(new Image("deleteLinkImage", CommonConstants.REF_DELETE_IMG));
-				administrationContainer.add(deleteLink);
-			} else {
-				AjaxLink<Void> deleteLink = new AjaxLink<Void>("deleteLink") {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						commentService.markCommentUndeleted(comment);
-						info("Undeleted");
-						target.addComponent(CommentPanel.this);
-					}
-				};
-				deleteLink.add(new Image("deleteLinkImage", CommonConstants.REF_UNDELETE_IMG));
-				administrationContainer.add(deleteLink);
-			}
-			AjaxLink<Void> reviewedLink = new AjaxLink<Void>("reviewedLink") {
+			AjaxLink<Void> acceptLink = new AjaxLink<Void>("acceptLink") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					commentService.markReviewed(comment);
-					info("Marked as reviewed");
+					commentService.acceptComment(comment);
+					info("accepted");
 					target.addComponent(CommentPanel.this);
 				}
 			};
-			reviewedLink.add(new Image("reviewedLinkImage", CommentConstants.REF_ACCEPTED_IMG));
-			reviewedLink.setVisible(!comment.getReviewed());
-			administrationContainer.add(reviewedLink);
+			acceptLink.add(new Image("acceptLinkImage", CommentConstants.REF_ACCEPT_IMG));
+			administrationContainer.add(acceptLink);
+
+			AjaxLink<Void> rejectLink = new AjaxLink<Void>("rejectLink") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(AjaxRequestTarget target) {
+					commentService.rejectComment(comment);
+					info("rejected");
+					target.addComponent(CommentPanel.this);
+				}
+			};
+			rejectLink.add(new Image("rejectLinkImage", CommentConstants.REF_REJECT_IMG));
+			administrationContainer.add(rejectLink);
+
 			add(administrationContainer);
 		}
 	}
