@@ -50,6 +50,8 @@ final public class CommentEntity extends BaseEntity {
 	private Integer numberOfBlames = 0;
 	@Column(name = "accepted")
 	private Boolean accepted = Boolean.FALSE;
+	@Column(name = "reviewed")
+	private Boolean reviewed = Boolean.FALSE;
 	@Column(name = "automatic_blocked")
 	private Boolean automaticBlocked = Boolean.FALSE;
 	@Column(name = "module_name", length = 20)
@@ -135,5 +137,13 @@ final public class CommentEntity extends BaseEntity {
 
 	public void setAutomaticBlocked(Boolean automaticBlocked) {
 		this.automaticBlocked = automaticBlocked;
+	}
+
+	public Boolean getReviewed() {
+		return reviewed;
+	}
+
+	public void setReviewed(Boolean reviewed) {
+		this.reviewed = reviewed;
 	}
 }

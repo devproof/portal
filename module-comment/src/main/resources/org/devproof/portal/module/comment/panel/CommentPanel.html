@@ -45,12 +45,34 @@
 		<wicket:fragment wicket:id="commentView">
 			<div wicket:id="comment" style="color: #666; ">[comment]</div>
 			<div  style="color: #888; font-size: 8pt;padding-top:0.5em;">
-				<span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message key="reportViolation"/></a> ]&nbsp;<span wicket:id="administration">(<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>) <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a></span>
-				<div wicket:id="reportViolationCaptcha"  class="captchaPopup">
-					<div class="sbl2"><div class="sbr2"><div class="stl2"><div class="str2">Simply use different background images and change the background colour hex of the .bl rule in order to change the colour of the speech bubble! Please note that the images cannot be tansparent or else they'll simply take on the background colour of the .bl div and the rounded edges will not be visible. Also, feel free to change the width of the speech bubbles by changing the value of the width propery of the .sbl div.</div></div></div></div>
-					<div class="sb2"></div>
+				<span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message key="reportViolation"/></a> ]
+				<div wicket:id="administration" style="padding-top:10px;"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>]&nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a></div>
+				<div wicket:id="confirmReportViolationContainer"  class="captchaPopup">
+					<div wicket:id="confirmReportViolation"/>
 				</div>
 			</div>
+		</wicket:fragment>
+		
+		
+		<wicket:fragment wicket:id="confirmReportViolation">
+			<div class="sbl2">
+				<div class="sbr2">
+				<div class="stl2">
+				<div class="str2">
+					<h2>Verstoss melden bestaetigen</h2><br/>
+					<form>
+						<div style="height: 62px;"><img wicket:id="captchaImage" style="border: 1px solid black;"/></div>
+						<p>Geben Sie den Bildcode ein:</p>
+						<input type="text"/>
+						<br/>
+						<input type="submit" value="Bestaetigen" class="button"/>		
+						<input type="submit" value="Abbrechen" class="button"/>		
+					</form>						
+				</div>
+				</div>
+				</div>
+			</div>
+			<div class="sb2"></div>
 		</wicket:fragment>
 	</wicket:panel>
 </body>
