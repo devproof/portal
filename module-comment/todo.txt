@@ -10,13 +10,12 @@
 - Tests fÃ¼r Pages
 - Configuration -> disable for each section/module -> als recht realisieren
 - configuration for captcha (enable captcha for guests, reg user) als recht
+- configuration show only reviewed comments
 - fix BlogPageTest
 - Configuration number for blamed article
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
-- Index auf visible und reviewed
-- configuration show only reviewed comments
 
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

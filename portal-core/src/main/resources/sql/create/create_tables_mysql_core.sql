@@ -69,7 +69,7 @@ CREATE TABLE `core_user` (
   `enable_contact_form` bit(1) default NULL,
   `firstname` varchar(100) default NULL,
   `forgot_code` varchar(255) default NULL,
-  `last_ip` varchar(15) default NULL,
+  `last_ip` varchar(39) default NULL,
   `last_login_at` datetime default NULL,
   `lastname` varchar(100) default NULL,
   `password` varchar(255) NOT NULL,

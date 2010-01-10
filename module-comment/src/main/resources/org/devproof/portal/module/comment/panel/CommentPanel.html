@@ -45,7 +45,11 @@
 		<wicket:fragment wicket:id="commentView">
 			<div wicket:id="comment" style="color: #666; ">[comment]</div>
 			<div  style="color: #888; font-size: 8pt;padding-top:0.5em;">
-				<span wicket:id="commentInfo">[author name]</span>&nbsp;<span wicket:id="administration">(<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>) <a wicket:id="deleteLink"><img wicket:id="deleteLinkImage"/></a> [ReviewedButton]</span>
+				<span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message key="reportViolation"/></a> ]&nbsp;<span wicket:id="administration">(<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>) <a wicket:id="deleteLink"><img wicket:id="deleteLinkImage" alt="Delete/Undelete"/></a> <a wicket:id="reviewedLink"><img wicket:id="reviewedLinkImage" alt="Reviewed"/></a></span>
+				<div wicket:id="reportViolationCaptcha"  class="captchaPopup">
+					<div class="sbl2"><div class="sbr2"><div class="stl2"><div class="str2">Simply use different background images and change the background colour hex of the .bl rule in order to change the colour of the speech bubble! Please note that the images cannot be tansparent or else they'll simply take on the background colour of the .bl div and the rounded edges will not be visible. Also, feel free to change the width of the speech bubbles by changing the value of the width propery of the .sbl div.</div></div></div></div>
+					<div class="sb2"></div>
+				</div>
 			</div>
 		</wicket:fragment>
 	</wicket:panel>

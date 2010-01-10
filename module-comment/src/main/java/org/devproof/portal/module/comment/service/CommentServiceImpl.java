@@ -52,6 +52,21 @@ public class CommentServiceImpl implements CommentService {
 		commentDao.save(entity);
 	}
 
+	@Override
+	public void markCommentDeleted(CommentEntity comment) {
+		commentDao.markCommentDeleted(comment);
+	}
+
+	@Override
+	public void markCommentUndeleted(CommentEntity comment) {
+		commentDao.markCommentUndeleted(comment);
+	}
+
+	@Override
+	public void markReviewed(CommentEntity comment) {
+		commentDao.markReviewed(comment);
+	}
+
 	@Required
 	public void setCommentDao(CommentDao commentDao) {
 		this.commentDao = commentDao;

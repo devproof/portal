@@ -23,3 +23,6 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'component.Registe
 delete from core_configuration  where conf_key = 'registration_captcha';
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_at_as_created_at','Show modified at as created at','General','java.lang.Boolean','false');
+
+-- IPv6 compatibility
+alter table core_user modify last_ip VARCHAR(39) ; 

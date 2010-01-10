@@ -28,4 +28,19 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
 	 * @return new instance of {@link CommentEntity}
 	 */
 	public CommentEntity newCommentEntity();
+
+	/**
+	 * Marks the comment as deleted (visible = false)
+	 */
+	public void markCommentDeleted(CommentEntity comment);
+
+	/**
+	 * Marks the comment as undeleted (visible = true)
+	 */
+	public void markCommentUndeleted(CommentEntity comment);
+
+	/**
+	 * Marks the comment as reviewed
+	 */
+	public void markReviewed(CommentEntity comment);
 }

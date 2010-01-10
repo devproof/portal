@@ -1,0 +1,6 @@
+.sbl2 { background: url('../img/bl2.gif') bottom left no-repeat #E9E9E9; width: 100%; text-align: center;  min-width: 100px; }
+.sbr2 { background: url('../img/br2.gif') bottom right no-repeat; }
+.stl2 { background: url('../img/tl2.gif') top left no-repeat; }
+.str2 { background: url('../img/tr2.gif') top right no-repeat; padding: 10px; } 
+.sb2 { padding: 2px 0px 10px 50px; background: url('../img/b2.gif') 30px top no-repeat; }
+.captchaPopup {}
