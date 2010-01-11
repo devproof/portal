@@ -7,17 +7,17 @@ import org.devproof.portal.module.comment.panel.CaptchaPanel.OnClickCallback;
 
 public abstract class CaptchaAjaxButton extends AjaxFallbackButton {
 	private static final long serialVersionUID = 1L;
-	private CaptchaPanel captchaPanel;
+	private CaptchaBubblePanel captchaBubblePanel;
 
-	public CaptchaAjaxButton(String id, CaptchaPanel captchaPanel, Form<?> form) {
+	public CaptchaAjaxButton(String id, CaptchaBubblePanel captchaBubblePanel, Form<?> form) {
 		super(id, form);
-		this.captchaPanel = captchaPanel;
+		this.captchaBubblePanel = captchaBubblePanel;
 	}
 
 	@Override
 	final protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-		if (captchaPanel.isRenderAllowed()) {
-			captchaPanel.setOnClickCallback(new OnClickCallback() {
+		if (captchaBubblePanel.isRenderAllowed()) {
+			captchaBubblePanel.setOnClickCallback(new OnClickCallback() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -25,17 +25,22 @@ public abstract class CaptchaAjaxButton extends AjaxFallbackButton {
 					CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
 				}
 			});
-			captchaPanel.refreshCaptcha();
-			target.addComponent(captchaPanel);
-			String js = "var p = $(\"#" + getMarkupId() + "\");\n var pos = p.position();";
-			js += "$(\"#" + captchaPanel.getMarkupId()
-					+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
-					+ captchaPanel.getMarkupId() + "\").height() - 3) + \"px\" } );";
-
-			js += "$(\".captchaPopup\").fadeOut(\"fast\");";
-			js += "$(\"#" + captchaPanel.getMarkupId() + "\").fadeIn(\"slow\");";
-			js += "hideLoadingIndicator();";
-			target.appendJavascript(js);
+			captchaBubblePanel.refreshCaptcha();
+			target.addComponent(captchaBubblePanel);
+			captchaBubblePanel.show(getMarkupId(), target);
+			// String js = "var p = $(\"#" + getMarkupId() +
+			// "\");\n var pos = p.position();";
+			// js += "$(\"#" + captchaBubblePanel.getMarkupId()
+			// +
+			// "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
+			// + captchaBubblePanel.getMarkupId() +
+			// "\").height() - 3) + \"px\" } );";
+			//
+			// js += "$(\".captchaPopup\").fadeOut(\"fast\");";
+			// js += "$(\"#" + captchaBubblePanel.getMarkupId() +
+			// "\").fadeIn(\"slow\");";
+			// js += "hideLoadingIndicator();";
+			// target.appendJavascript(js);
 		} else {
 			onClickAndCaptchaValidated(target);
 		}

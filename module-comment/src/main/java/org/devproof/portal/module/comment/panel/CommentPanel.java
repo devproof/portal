@@ -59,7 +59,7 @@ public class CommentPanel extends Panel {
 	private CommentService commentService;
 	private CommentQuery query;
 	private FeedbackPanel feedback;
-	private CaptchaPanel captchaPanel;
+	private CaptchaBubblePanel captchaBubblePanel;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
@@ -70,8 +70,8 @@ public class CommentPanel extends Panel {
 		query.setModuleContentId(configuration.getModuleContentId());
 		// query.setVisible(Boolean.TRUE);
 		commentDataProvider.setQueryObject(query);
-		captchaPanel = new CaptchaPanel("captcha");
-		add(captchaPanel);
+		captchaBubblePanel = new CaptchaBubblePanel("captcha");
+		add(captchaBubblePanel);
 
 		add(new WebMarkupContainer("noCommentsHint") {
 			private static final long serialVersionUID = 1L;
@@ -112,7 +112,7 @@ public class CommentPanel extends Panel {
 		commentField.add(StringValidator.lengthBetween(10, 3000));
 		commentField.setRequired(true);
 		form.add(commentField);
-		form.add(new CaptchaAjaxButton("addCommentButton", captchaPanel, form) {
+		form.add(new CaptchaAjaxButton("addCommentButton", captchaBubblePanel, form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -166,7 +166,7 @@ public class CommentPanel extends Panel {
 			Label commentLabel = new Label("comment", comment.getComment());
 			commentLabel.setEscapeModelStrings(false);
 			add(commentLabel);
-			final CaptchaPanel captchaBubblePanel = new CaptchaPanel("captcha");
+			final CaptchaBubblePanel captchaBubblePanel = new CaptchaBubblePanel("captcha");
 			add(captchaBubblePanel);
 			CaptchaAjaxLink reportViolationLink = new CaptchaAjaxLink("reportViolationLink", captchaBubblePanel) {
 				private static final long serialVersionUID = 1L;

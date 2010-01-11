@@ -21,8 +21,6 @@ import java.io.Serializable;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
@@ -33,24 +31,21 @@ import org.apache.wicket.markup.html.panel.Panel;
 public class CaptchaPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private WebMarkupContainer captcha;
 	private KittenCaptchaPanel kittenCaptchaImagePanel;
 	private OnClickCallback onClickCallback;
 	private AjaxLink<Void> confirmButton;
 
 	public CaptchaPanel(String id) {
 		super(id);
-		add(new SimpleAttributeModifier("style", "display:none; width: 450px; "));
-		add(new SimpleAttributeModifier("class", "captchaPopup"));
-		captcha = new WebMarkupContainer("captcha");
-		captcha.add(new WebMarkupContainer("kittenCaptchaImage"));
+		add(createKittenCaptchaImagePanel());
 		confirmButton = new AjaxLink<Void>("confirm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (kittenCaptchaImagePanel.allKittensSelected()) {
-					String js = "$(\".captchaPopup\").fadeOut(\"slow\");";
+					// TODO hide method
+					String js = "$(\".bubblePopup\").fadeOut(\"slow\");";
 					target.appendJavascript(js);
 					onClickCallback.onClickAndCaptchaValidated(target);
 				}
@@ -61,19 +56,19 @@ public class CaptchaPanel extends Panel {
 				return kittenCaptchaImagePanel != null && kittenCaptchaImagePanel.allKittensSelected();
 			}
 		};
-		captcha.add(confirmButton);
+		add(confirmButton);
 		AjaxLink<Void> abortButton = new AjaxLink<Void>("cancel") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				String js = "$(\".captchaPopup\").fadeOut(\"slow\");";
+				// TODO hide method
+				String js = "$(\".bubblePopup\").fadeOut(\"slow\");";
 				target.appendJavascript(js);
 			}
 
 		};
-		captcha.add(abortButton);
-		add(captcha);
+		add(abortButton);
 		setOutputMarkupId(true);
 	}
 
@@ -87,10 +82,6 @@ public class CaptchaPanel extends Panel {
 			}
 		};
 		return kittenCaptchaImagePanel;
-	}
-
-	public void refreshCaptcha() {
-		captcha.replace(createKittenCaptchaImagePanel());
 	}
 
 	protected void setOnClickCallback(OnClickCallback onClickCallback) {
