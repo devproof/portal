@@ -16,6 +16,7 @@
 package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -30,9 +31,9 @@ public class BubblePanel extends Panel {
 
 	public BubblePanel(String id) {
 		super(id);
-		add(new SimpleAttributeModifier("style", "display:none; width: 450px; "));
-		add(new SimpleAttributeModifier("class", "captchaPopup"));
-		add(createContent());
+		add(new SimpleAttributeModifier("style", "display:none; width: 450px;"));
+		add(new SimpleAttributeModifier("class", "bubblePopup"));
+		add(createContent(getContentId()));
 		setOutputMarkupId(true);
 	}
 
@@ -40,7 +41,22 @@ public class BubblePanel extends Panel {
 		return "content";
 	}
 
-	public Component createContent() {
-		return new WebMarkupContainer(getContentId());
+	public Component createContent(String id) {
+		return new WebMarkupContainer(id);
+	}
+
+	public void show(String linkId, AjaxRequestTarget target) {
+		String js = "var p = $(\"#" + linkId + "\"); var pos = p.position();";
+		js += "$(\"#" + getMarkupId()
+				+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
+				+ getMarkupId() + "\").height() - 3) + \"px\" } );";
+
+		js += "$(\".bubblePopup\").fadeOut(\"fast\");";
+		js += "$(\"#" + getMarkupId() + "\").fadeIn(\"slow\");";
+		target.appendJavascript(js);
+	}
+
+	public void hide(AjaxRequestTarget target) {
+		target.appendJavascript("$(\".bubblePopup\").fadeOut(\"slow\");");
 	}
 }

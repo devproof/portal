@@ -2,23 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
 	  xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>	 
-<div wicket:id="captcha">
-<div class="st2"></div>
-<div class="sbl2">
-			<div class="sbr2">
-				<div class="stl2">
-				<div class="str2">
-					<h2><wicket:message key="spamProtection"/></h2>
-					<p/>
-					<div wicket:id="kittenCaptchaImage"></div>
-					<p/>
-					<button class="button" wicket:id="confirm"><wicket:message key="confirmButton"/></button>&nbsp;
-					<button class="button" wicket:id="cancel"><wicket:message key="cancelButton"/></button>	
-				</div>
-				</div>
-				</div>
-</div>
-<div class="sb2"></div>
+<div>
+	<h2><wicket:message key="spamProtection"/></h2>
+	<p/>
+	<div wicket:id="kittenCaptchaImage"></div>
+	<p/>
+	<button class="button" wicket:id="confirm"><wicket:message key="confirmButton"/></button>&nbsp;
+	<button class="button" wicket:id="cancel"><wicket:message key="cancelButton"/></button>	
 </div>
 </wicket:panel>
 </html>
