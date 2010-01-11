@@ -117,7 +117,7 @@ public class KittenCaptchaPanel extends Panel {
 	/**
 	 * Size of this kitten panel's image
 	 */
-	private final Dimension imageSize;
+	private Dimension imageSize;
 
 	/**
 	 * @param id
@@ -170,38 +170,26 @@ public class KittenCaptchaPanel extends Panel {
 				final Map<String, String[]> parameters = request.getParameterMap();
 				final int x = Integer.parseInt(parameters.get("x")[0]);
 				final int y = Integer.parseInt(parameters.get("y")[0]);
-
 				// Force refresh
 				imageResource.clearData();
-
 				// Find any animal at the clicked location
-				final PlacedAnimal animal = animals.atLocation(new Point(x, y));
-
+				PlacedAnimal animal = animals.atLocation(new Point(x, y));
 				// If the user clicked on an animal
 				if (animal != null) {
 					// Toggle the animal's highlighting
 					animal.isHighlighted = !animal.isHighlighted;
 					target.addComponent(image);
-
 				}
-
 				// Update the selection label
 				target.addComponent(animalSelectionLabel);
+				KittenCaptchaPanel.this.onClick(target);
 			}
 		});
 
 		imageContainer.add(image);
-		
 		imageContainer.setOutputMarkupId(true);
 		imageContainer.add(new SimpleAttributeModifier("style", "height: " + imageSize.height + "px"));
 		add(imageContainer);
-
-		// WebMarkupContainer imageContainer = new
-		// WebMarkupContainer("imageContainer");
-		// imageContainer.add(new SimpleAttributeModifier("style", "height: " +
-		// imageSize.height + "px"));
-		// imageContainer.add(image);
-		// add(imageContainer);
 	}
 
 	/**
@@ -371,12 +359,6 @@ public class KittenCaptchaPanel extends Panel {
 		 */
 		@Override
 		protected byte[] getImageData() {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			// Handle caching
 			setLastModifiedTime(Time.now());
 			final WebResponse response = (WebResponse) RequestCycle.get().getResponse();
@@ -388,8 +370,6 @@ public class KittenCaptchaPanel extends Panel {
 				final BufferedImage composedImage = animals.createImage();
 				data = new SoftReference<byte[]>(toImageData(composedImage));
 			}
-
-			// Return image data
 			return data.get();
 		}
 
@@ -722,5 +702,9 @@ public class KittenCaptchaPanel extends Panel {
 				return visible;
 			}
 		}
+	}
+
+	protected void onClick(final AjaxRequestTarget target) {
+
 	}
 }

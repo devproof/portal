@@ -36,6 +36,7 @@ public class CaptchaPanel extends Panel {
 	private WebMarkupContainer captcha;
 	private KittenCaptchaPanel kittenCaptchaImagePanel;
 	private OnClickCallback onClickCallback;
+	private AjaxLink<Void> confirmButton;
 
 	public CaptchaPanel(String id) {
 		super(id);
@@ -43,7 +44,7 @@ public class CaptchaPanel extends Panel {
 		add(new SimpleAttributeModifier("class", "captchaPopup"));
 		captcha = new WebMarkupContainer("captcha");
 		captcha.add(new WebMarkupContainer("kittenCaptchaImage"));
-		AjaxLink<Void> confirmButton = new AjaxLink<Void>("confirm") {
+		confirmButton = new AjaxLink<Void>("confirm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -54,9 +55,15 @@ public class CaptchaPanel extends Panel {
 					onClickCallback.onClickAndCaptchaValidated(target);
 				}
 			}
+
+			@Override
+			public boolean isEnabled() {
+				return kittenCaptchaImagePanel != null && kittenCaptchaImagePanel.allKittensSelected();
+			}
 		};
+		confirmButton.setEnabled(false);
 		captcha.add(confirmButton);
-		AjaxLink<Void> abortButton = new AjaxLink<Void>("abort") {
+		AjaxLink<Void> abortButton = new AjaxLink<Void>("cancel") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -67,13 +74,19 @@ public class CaptchaPanel extends Panel {
 
 		};
 		captcha.add(abortButton);
-
 		add(captcha);
 		setOutputMarkupId(true);
 	}
 
 	private Component createKittenCaptchaImagePanel() {
-		kittenCaptchaImagePanel = new KittenCaptchaPanel("kittenCaptchaImage", new Dimension(400, 200));
+		kittenCaptchaImagePanel = new KittenCaptchaPanel("kittenCaptchaImage", new Dimension(400, 200)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onClick(AjaxRequestTarget target) {
+				target.addComponent(confirmButton);
+			}
+		};
 		return kittenCaptchaImagePanel;
 	}
 
