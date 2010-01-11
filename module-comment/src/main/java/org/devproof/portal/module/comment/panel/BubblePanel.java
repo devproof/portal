@@ -32,11 +32,15 @@ public class BubblePanel extends Panel {
 		super(id);
 		add(new SimpleAttributeModifier("style", "display:none; width: 450px; "));
 		add(new SimpleAttributeModifier("class", "captchaPopup"));
-		add(getContent("content"));
+		add(createContent());
 		setOutputMarkupId(true);
 	}
 
-	protected Component getContent(String markupId) {
-		return new WebMarkupContainer(markupId);
+	public String getContentId() {
+		return "content";
+	}
+
+	public Component createContent() {
+		return new WebMarkupContainer(getContentId());
 	}
 }
