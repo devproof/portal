@@ -44,7 +44,7 @@ public class CaptchaPanel extends Panel {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (kittenCaptchaImagePanel.allKittensSelected()) {
-					// TODO hide method
+					// TODO hide method onconfirm
 					String js = "$(\".bubblePopup\").fadeOut(\"slow\");";
 					target.appendJavascript(js);
 					onClickCallback.onClickAndCaptchaValidated(target);
@@ -62,7 +62,7 @@ public class CaptchaPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				// TODO hide method
+				// TODO hide method onAbort
 				String js = "$(\".bubblePopup\").fadeOut(\"slow\");";
 				target.appendJavascript(js);
 			}
