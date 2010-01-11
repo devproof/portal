@@ -61,7 +61,6 @@ public class CaptchaPanel extends Panel {
 				return kittenCaptchaImagePanel != null && kittenCaptchaImagePanel.allKittensSelected();
 			}
 		};
-		confirmButton.setEnabled(false);
 		captcha.add(confirmButton);
 		AjaxLink<Void> abortButton = new AjaxLink<Void>("cancel") {
 			private static final long serialVersionUID = 1L;
