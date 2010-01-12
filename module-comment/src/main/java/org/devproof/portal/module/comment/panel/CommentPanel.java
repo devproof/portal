@@ -171,10 +171,8 @@ public class CommentPanel extends Panel {
 
 				@Override
 				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-					// info("captcha valid");
 					bubblePanel.setMessage("Thank you. The violation was reported.");
 					bubblePanel.show(getMarkupId(), target);
-					// target.addComponent(feedback);
 				}
 			};
 			add(reportViolationLink);
@@ -188,8 +186,8 @@ public class CommentPanel extends Panel {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					commentService.acceptComment(comment);
-					info("accepted");
-					target.addComponent(CommentPanel.this);
+					bubblePanel.setMessage("Comment was accepted!");
+					bubblePanel.show(getMarkupId(), target);
 				}
 			};
 			acceptLink.add(new Image("acceptLinkImage", CommentConstants.REF_ACCEPT_IMG));
@@ -201,8 +199,8 @@ public class CommentPanel extends Panel {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					commentService.rejectComment(comment);
-					info("rejected");
-					target.addComponent(CommentPanel.this);
+					bubblePanel.setMessage("Comment was rejected!");
+					bubblePanel.show(getMarkupId(), target);
 				}
 			};
 			rejectLink.add(new Image("rejectLinkImage", CommentConstants.REF_REJECT_IMG));

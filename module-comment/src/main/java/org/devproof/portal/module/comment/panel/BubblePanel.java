@@ -61,9 +61,10 @@ public class BubblePanel extends Panel {
 	public void show(String linkId, AjaxRequestTarget target) {
 		target.addComponent(this);
 		String js = "var p = $(\"#" + linkId + "\"); var pos = p.position();";
-		js += "$(\"#" + getMarkupId()
-				+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
-				+ getMarkupId() + "\").height() - 3) + \"px\" } );";
+		js += "$(\"#"
+				+ getMarkupId()
+				+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left - 45 + (p.width() / 2)) + \"px\", \"top\":(pos.top - $(\"#"
+				+ getMarkupId() + "\").height() - (p.height() / 2)) + \"px\" } );";
 
 		js += "$(\".bubblePopup\").fadeOut(\"normal\");";
 		js += "$(\"#" + getMarkupId() + "\").fadeIn(\"normal\");";
