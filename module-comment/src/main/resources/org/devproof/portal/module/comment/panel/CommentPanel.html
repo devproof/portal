@@ -3,7 +3,7 @@
 	  xmlns:wicket="http://wicket.apache.org/">
 <body>
 	<wicket:panel>
-		<div wicket:id="captcha"/>
+		<div wicket:id="bubble"/>
 		<div  style="width: 580px; margin: 0 auto; border: 3px dashed #CCC; padding:15px;">
 			<h3 style="color: #666; padding-left:15px;"><wicket:message key="commentsHeadline"/></h3>
 			<div wicket:id="noCommentsHint" style="color: #666; padding:15px 15px 3px 15px;"><wicket:message key="noComments"/></div>
@@ -40,7 +40,6 @@
 			<div wicket:id="comment" style="color: #666; ">[comment]</div>
 			<div  style="color: #888; font-size: 8pt;padding-top:0.5em;">
 				<span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message key="reportViolation"/></a> ]
-				<div wicket:id="captcha"/>
 				<div wicket:id="administration" style="padding-top:10px;"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>]&nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a></div>
 			</div>
 		</wicket:fragment>
