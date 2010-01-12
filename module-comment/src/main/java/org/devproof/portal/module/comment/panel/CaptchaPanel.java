@@ -16,7 +16,6 @@
 package org.devproof.portal.module.comment.panel;
 
 import java.awt.Dimension;
-import java.io.Serializable;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -28,11 +27,10 @@ import org.apache.wicket.markup.html.panel.Panel;
  * 
  * @author Carsten Hufe
  */
-public class CaptchaPanel extends Panel {
+public abstract class CaptchaPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private KittenCaptchaPanel kittenCaptchaImagePanel;
-	private OnClickCallback onClickCallback;
 	private AjaxLink<Void> confirmButton;
 
 	public CaptchaPanel(String id) {
@@ -44,10 +42,7 @@ public class CaptchaPanel extends Panel {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (kittenCaptchaImagePanel.allKittensSelected()) {
-					// TODO hide method onconfirm
-					String js = "$(\".bubblePopup\").fadeOut(\"slow\");";
-					target.appendJavascript(js);
-					onClickCallback.onClickAndCaptchaValidated(target);
+					onClickAndCaptchaValidated(target);
 				}
 			}
 
@@ -57,18 +52,16 @@ public class CaptchaPanel extends Panel {
 			}
 		};
 		add(confirmButton);
-		AjaxLink<Void> abortButton = new AjaxLink<Void>("cancel") {
+		AjaxLink<Void> cancelButton = new AjaxLink<Void>("cancel") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				// TODO hide method onAbort
-				String js = "$(\".bubblePopup\").fadeOut(\"slow\");";
-				target.appendJavascript(js);
+				onCancel(target);
 			}
 
 		};
-		add(abortButton);
+		add(cancelButton);
 		setOutputMarkupId(true);
 	}
 
@@ -84,12 +77,6 @@ public class CaptchaPanel extends Panel {
 		return kittenCaptchaImagePanel;
 	}
 
-	protected void setOnClickCallback(OnClickCallback onClickCallback) {
-		this.onClickCallback = onClickCallback;
-	}
-
-	protected static interface OnClickCallback extends Serializable {
-		public void onClickAndCaptchaValidated(AjaxRequestTarget target);
-	}
-
+	protected abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
+	protected abstract void onCancel(AjaxRequestTarget target);
 }

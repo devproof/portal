@@ -2,29 +2,33 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
-import org.devproof.portal.module.comment.panel.CaptchaPanel.OnClickCallback;
 
 public abstract class CaptchaAjaxLink extends AjaxFallbackLink<Void> {
 	private static final long serialVersionUID = 1L;
-	private CaptchaBubblePanel captchaBubblePanel;
+	private BubblePanel bubblePanel;
 
-	public CaptchaAjaxLink(String id, CaptchaBubblePanel captchaBubblePanel) {
+	public CaptchaAjaxLink(String id, BubblePanel bubblePanel) {
 		super(id);
-		this.captchaBubblePanel = captchaBubblePanel;
+		this.bubblePanel = bubblePanel;
 		setOutputMarkupId(true);
 	}
 
 	@Override
 	final public void onClick(AjaxRequestTarget target) {
-		if (captchaBubblePanel.isRenderAllowed()) {
-			captchaBubblePanel.setOnClickCallback(new OnClickCallback() {
+		if (bubblePanel.isRenderAllowed()) {
+			bubblePanel.replace(new CaptchaPanel(bubblePanel.getContentId()) {
 				private static final long serialVersionUID = 1L;
-
 				@Override
-				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+				protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+					bubblePanel.hide(target);
 					CaptchaAjaxLink.this.onClickAndCaptchaValidated(target);
 				}
+				@Override
+				protected void onCancel(AjaxRequestTarget target) {
+					bubblePanel.hide(target);
+				}
 			});
+		
 
 			// String js = "var p = $(\"#" + getMarkupId() +
 			// "\");\n var pos = p.position();";
@@ -39,8 +43,7 @@ public abstract class CaptchaAjaxLink extends AjaxFallbackLink<Void> {
 			// "\").fadeIn(\"slow\");";
 			// target.appendJavascript(js);
 			// captchaBubblePanel.refreshCaptcha();
-			target.addComponent(captchaBubblePanel);
-			captchaBubblePanel.show(getMarkupId(), target);
+			bubblePanel.show(getMarkupId(), target);
 		} else {
 			onClickAndCaptchaValidated(target);
 		}

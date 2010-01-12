@@ -59,7 +59,7 @@ public class CommentPanel extends Panel {
 	private CommentService commentService;
 	private CommentQuery query;
 	private FeedbackPanel feedback;
-	private CaptchaBubblePanel captchaBubblePanel;
+	private BubblePanel bubblePanel;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
@@ -70,8 +70,8 @@ public class CommentPanel extends Panel {
 		query.setModuleContentId(configuration.getModuleContentId());
 		// query.setVisible(Boolean.TRUE);
 		commentDataProvider.setQueryObject(query);
-		captchaBubblePanel = new CaptchaBubblePanel("captcha");
-		add(captchaBubblePanel);
+		bubblePanel = new BubblePanel("bubble");
+		add(bubblePanel);
 
 		add(new WebMarkupContainer("noCommentsHint") {
 			private static final long serialVersionUID = 1L;
@@ -112,7 +112,7 @@ public class CommentPanel extends Panel {
 		commentField.add(StringValidator.lengthBetween(10, 3000));
 		commentField.setRequired(true);
 		form.add(commentField);
-		form.add(new CaptchaAjaxButton("addCommentButton", captchaBubblePanel, form) {
+		form.add(new CaptchaAjaxButton("addCommentButton", bubblePanel, form) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -166,15 +166,15 @@ public class CommentPanel extends Panel {
 			Label commentLabel = new Label("comment", comment.getComment());
 			commentLabel.setEscapeModelStrings(false);
 			add(commentLabel);
-			final CaptchaBubblePanel captchaBubblePanel = new CaptchaBubblePanel("captcha");
-			add(captchaBubblePanel);
-			CaptchaAjaxLink reportViolationLink = new CaptchaAjaxLink("reportViolationLink", captchaBubblePanel) {
+			CaptchaAjaxLink reportViolationLink = new CaptchaAjaxLink("reportViolationLink", bubblePanel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-					info("captcha valid");
-					target.addComponent(feedback);
+//					info("captcha valid");
+					bubblePanel.replace(new Label(bubblePanel.getContentId(), "Reported"));
+					bubblePanel.show(getMarkupId(), target);
+//					target.addComponent(feedback);
 				}
 			};
 			add(reportViolationLink);

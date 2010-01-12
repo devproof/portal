@@ -3,31 +3,32 @@ package org.devproof.portal.module.comment.panel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.markup.html.form.Form;
-import org.devproof.portal.module.comment.panel.CaptchaPanel.OnClickCallback;
 
 public abstract class CaptchaAjaxButton extends AjaxFallbackButton {
 	private static final long serialVersionUID = 1L;
-	private CaptchaBubblePanel captchaBubblePanel;
+	private BubblePanel bubblePanel;
 
-	public CaptchaAjaxButton(String id, CaptchaBubblePanel captchaBubblePanel, Form<?> form) {
+	public CaptchaAjaxButton(String id, BubblePanel bubblePanel, Form<?> form) {
 		super(id, form);
-		this.captchaBubblePanel = captchaBubblePanel;
+		this.bubblePanel = bubblePanel;
 	}
 
 	@Override
 	final protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-		if (captchaBubblePanel.isRenderAllowed()) {
-			captchaBubblePanel.setOnClickCallback(new OnClickCallback() {
+		if (bubblePanel.isRenderAllowed()) {
+			bubblePanel.replace(new CaptchaPanel(bubblePanel.getContentId()) {
 				private static final long serialVersionUID = 1L;
-
 				@Override
-				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+				protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+					bubblePanel.hide(target);
 					CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
 				}
+				@Override
+				protected void onCancel(AjaxRequestTarget target) {
+					bubblePanel.hide(target);
+				}
 			});
-			captchaBubblePanel.refreshCaptcha();
-			target.addComponent(captchaBubblePanel);
-			captchaBubblePanel.show(getMarkupId(), target);
+			bubblePanel.show(getMarkupId(), target);
 			// String js = "var p = $(\"#" + getMarkupId() +
 			// "\");\n var pos = p.position();";
 			// js += "$(\"#" + captchaBubblePanel.getMarkupId()

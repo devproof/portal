@@ -46,6 +46,7 @@ public class BubblePanel extends Panel {
 	}
 
 	public void show(String linkId, AjaxRequestTarget target) {
+		target.addComponent(this);
 		String js = "var p = $(\"#" + linkId + "\"); var pos = p.position();";
 		js += "$(\"#" + getMarkupId()
 				+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
