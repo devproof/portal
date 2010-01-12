@@ -71,6 +71,8 @@ public class CommonConstants {
 	public static final ResourceReference REF_DOWN_IMG = new ResourceReference(CommonConstants.class,
 			"img/arrow_down.png");
 	public static final ResourceReference REF_UP_IMG = new ResourceReference(CommonConstants.class, "img/arrow_up.png");
+	public static final ResourceReference REF_INFORMATION_IMG = new ResourceReference(CommonConstants.class,
+			"img/information.png");
 	public static final ResourceReference REF_ICONCODE_IMG = new ResourceReference(RichTextArea.class,
 			"img/iconcode.gif");
 	public static final ResourceReference REF_STRING2IMG_IMG = new ResourceReference(RichTextArea.class,

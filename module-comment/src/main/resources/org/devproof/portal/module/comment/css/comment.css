@@ -1,7 +1,7 @@
 .sbl2 { background: url('../img/bl2.gif') bottom left no-repeat #E9E9E9; width: 100%; text-align: center;   }
 .sbr2 { background: url('../img/br2.gif') bottom right no-repeat; }
-.stl2 { background: url('../img/tl2.gif') top left no-repeat; padding-bottom: 15px;}
-.str2 { background: url('../img/tr2.gif') top right no-repeat; padding: 5px 10px 0px 10px; } 
+.stl2 { background: url('../img/tl2.gif') top left no-repeat; padding-bottom: 13px;}
+.str2 { background: url('../img/tr2.gif') top right no-repeat; padding: 15px 15px 0px 15px; } 
 .sb2 { padding: 2px 0px 15px 50px; background: url('../img/b2.gif') 30px top no-repeat; }
 /*.st2 { padding: 10px 0px 10px 50px; background: url('../img/t2.gif') 30px bottom no-repeat; }*/
 .st2 { padding-top: 5px;  }

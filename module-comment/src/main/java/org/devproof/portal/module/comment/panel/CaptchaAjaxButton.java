@@ -15,33 +15,23 @@ public abstract class CaptchaAjaxButton extends AjaxFallbackButton {
 
 	@Override
 	final protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-		if (bubblePanel.isRenderAllowed()) {
-			bubblePanel.replace(new CaptchaPanel(bubblePanel.getContentId()) {
-				private static final long serialVersionUID = 1L;
-				@Override
-				protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-					bubblePanel.hide(target);
-					CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
-				}
-				@Override
-				protected void onCancel(AjaxRequestTarget target) {
-					bubblePanel.hide(target);
-				}
-			});
+		CaptchaPanel captchaPanel = new CaptchaPanel(bubblePanel.getContentId()) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+				bubblePanel.hide(target);
+				CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
+			}
+
+			@Override
+			protected void onCancel(AjaxRequestTarget target) {
+				bubblePanel.hide(target);
+			}
+		};
+		if (captchaPanel.isRenderAllowed()) {
+			bubblePanel.setContent(captchaPanel);
 			bubblePanel.show(getMarkupId(), target);
-			// String js = "var p = $(\"#" + getMarkupId() +
-			// "\");\n var pos = p.position();";
-			// js += "$(\"#" + captchaBubblePanel.getMarkupId()
-			// +
-			// "\").css( {\"position\": \"absolute\", \"left\": (pos.left) + \"px\", \"top\":(pos.top - $(\"#"
-			// + captchaBubblePanel.getMarkupId() +
-			// "\").height() - 3) + \"px\" } );";
-			//
-			// js += "$(\".captchaPopup\").fadeOut(\"fast\");";
-			// js += "$(\"#" + captchaBubblePanel.getMarkupId() +
-			// "\").fadeIn(\"slow\");";
-			// js += "hideLoadingIndicator();";
-			// target.appendJavascript(js);
 		} else {
 			onClickAndCaptchaValidated(target);
 		}

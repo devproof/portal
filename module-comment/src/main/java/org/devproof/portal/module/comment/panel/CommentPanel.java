@@ -171,10 +171,10 @@ public class CommentPanel extends Panel {
 
 				@Override
 				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-//					info("captcha valid");
-					bubblePanel.replace(new Label(bubblePanel.getContentId(), "Reported"));
+					// info("captcha valid");
+					bubblePanel.setMessage("Thank you. The violation was reported.");
 					bubblePanel.show(getMarkupId(), target);
-//					target.addComponent(feedback);
+					// target.addComponent(feedback);
 				}
 			};
 			add(reportViolationLink);

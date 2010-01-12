@@ -50,7 +50,7 @@ public class ExpandableCommentPanel extends Panel {
 			public void onClick(AjaxRequestTarget target) {
 				refreshContainer.replace(new CommentPanel("comments", configuration));
 				target.addComponent(refreshContainer);
-				target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"slow\");");
+				target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
 			}
 
 		});
@@ -59,7 +59,7 @@ public class ExpandableCommentPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"slow\");");
+				target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
 			}
 		});
 	}
