@@ -20,8 +20,8 @@ INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,m
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ThemePage','Theme Administration: Manage themes',{ts '2009-01-10 21:21:23.000'},'admin',{ts '2009-01-10 21:21:53.000'},'admin');
 INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('page.ModuleLinkPage',{ts '2009-05-10 00:30:24.000'},'admin',{ts '2009-05-10 00:30:24.000'},'admin','Module Administration: Module Navigation Links');
 INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('page.ModuleOverviewPage',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Module Administration: Module Overview');
-INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('component.ContactPage.captcha',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Contact Form: Enables contact form captcha');
-INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('component.RegisterPage.captcha',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Registration: Enables registration captcha');
+
+INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('captcha.disabled',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Disables all captchas');
 
 INSERT INTO core_role (id,active,description,created_at,created_by,modified_at,modified_by) VALUES (1,1,'Admin',{ts '2008-12-26 04:03:10.000'},'admin',{ts '2009-01-04 21:47:37.000'},'admin');
 INSERT INTO core_role (id,active,description,created_at,created_by,modified_at,modified_by) VALUES (2,1,'Guest',{ts '2009-01-05 15:36:51.000'},'admin',{ts '2009-01-05 15:36:51.000'},'admin');
@@ -61,8 +61,8 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.RegisterPage
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.ForgotPasswordPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ModuleLinkPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ModuleOverviewPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'component.ContactPage.captcha');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'component.RegisterPage.captcha');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'captcha.disabled');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'captcha.disabled');
 
 
 

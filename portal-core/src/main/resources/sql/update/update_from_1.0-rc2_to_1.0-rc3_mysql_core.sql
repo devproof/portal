@@ -16,12 +16,11 @@ update core_configuration set conf_description = 'Require birthday for registrat
 update core_configuration set conf_description = 'Require first and lastname for registration' where conf_key = 'registration_required_name';
 
 
-INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('component.ContactPage.captcha',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Contact Form: Enables contact form captcha');
-INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('component.RegisterPage.captcha',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Registration: Enables registration captcha');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'component.ContactPage.captcha');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'component.RegisterPage.captcha');
-delete from core_configuration  where conf_key = 'registration_captcha';
+INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('captcha.disabled',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Disables all captchas');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'captcha.disabled');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'captcha.disabled');
 
+delete from core_configuration  where conf_key = 'registration_captcha';
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_at_as_created_at','Show modified at as created at','General','java.lang.Boolean','false');
 
 -- IPv6 compatibility
