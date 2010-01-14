@@ -27,7 +27,6 @@ public class UserConstants {
 	public static final String CONF_RECONFIRMATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.reconfirmemail";
 	public static final String CONF_PASSWORDFORGOT_EMAIL = "spring.emailTemplateDao.findAll.subject.id.forgotemail";
 	public static final String CONF_NOTIFY_USER_REGISTRATION = "spring.emailTemplateDao.findAll.subject.id.registereduser";
-	public static final String CONF_REGISTRATION_CAPTCHA = "registration_captcha";
 	public static final String CONF_EMAIL_VALIDATION = "email_validation";
 	public static final String CONF_REGISTRATION_REQUIRED_NAME = "registration_required_name";
 	public static final String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";

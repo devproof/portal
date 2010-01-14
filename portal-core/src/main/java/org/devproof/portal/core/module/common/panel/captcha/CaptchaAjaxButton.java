@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.common.panel.captcha;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -25,12 +25,12 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 /**
  * @author Carsten Hufe
  */
-public abstract class CaptchaAjaxButton extends AjaxFallbackButton {
+public abstract class CaptchaAjaxButton extends AjaxButton {
 	private static final long serialVersionUID = 1L;
 	private BubblePanel bubblePanel;
 
-	public CaptchaAjaxButton(String id, BubblePanel bubblePanel, Form<?> form) {
-		super(id, form);
+	public CaptchaAjaxButton(String id, BubblePanel bubblePanel) {
+		super(id);
 		this.bubblePanel = bubblePanel;
 		PortalUtil.addJQuery(this);
 		setOutputMarkupId(true);

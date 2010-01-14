@@ -15,30 +15,28 @@
  */
 package org.devproof.portal.core.module.contact.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
+import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.contact.ContactConstants;
@@ -63,21 +61,24 @@ public class ContactPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private PageParameters params;
-	private String captchaChallengeCode;
-	private CaptchaImageResource captchaImageResource;
 	private UserEntity toUser;
 	private ContactBean contactBean;
+	private BubblePanel bubblePanel;
 
 	public ContactPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		setToUser();
 		setContactFormBean();
-		setCaptchaChallengeCode();
-		setCaptchaImageResource();
 		validateToUser();
 		add(createCSSHeaderContributor());
+		add(createBubblePanel());
 		add(createContactForm());
+	}
+
+	private Component createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private Form<ContactBean> createContactForm() {
@@ -86,35 +87,9 @@ public class ContactPage extends TemplatePage {
 		form.add(createFullnameField());
 		form.add(createEmailField());
 		form.add(createContentField());
-		form.add(createCaptchaContainer());
 		form.add(createSendButton());
 		form.setOutputMarkupId(true);
 		return form;
-	}
-
-	private WebMarkupContainer createCaptchaContainer() {
-		WebMarkupContainer captchaContainer = new WebMarkupContainer("captcha");
-		captchaContainer.add(createCaptchaField());
-		captchaContainer.add(createCaptchaImage());
-		return captchaContainer;
-	}
-
-	private Image createCaptchaImage() {
-		return new Image("captchacodeimage", captchaImageResource);
-	}
-
-	private FormComponent<String> createCaptchaField() {
-		FormComponent<String> fc = new RequiredTextField<String>("captchacode", Model.of(""));
-		fc.add(createCaptchaValidator(captchaImageResource));
-		return fc;
-	}
-
-	private void setCaptchaImageResource() {
-		captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
-	}
-
-	private void setCaptchaChallengeCode() {
-		captchaChallengeCode = PortalUtil.randomString(6, 8);
 	}
 
 	private FormComponent<String> createContentField() {
@@ -205,36 +180,22 @@ public class ContactPage extends TemplatePage {
 		return "§$$§";
 	}
 
-	private AbstractValidator<String> createCaptchaValidator(final CaptchaImageResource captchaImageResource) {
-		return new AbstractValidator<String>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (!captchaImageResource.getChallengeId().equalsIgnoreCase(ivalidatable.getValue())) {
-					captchaImageResource.invalidate();
-					error(ivalidatable);
-				}
-			}
-
-			@Override
-			protected String resourceKey() {
-				return "wrong.captchacode";
-			}
-		};
-	}
-
 	private Button createSendButton() {
-		return new Button("sendButton") {
+		return new CaptchaAjaxButton("sendButton", bubblePanel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit() {
+			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 				// send notification
 				Integer templateId = configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
 				EmailPlaceholderBean placeholder = createEmailPlaceholderBean(toUser);
 				emailService.sendEmail(templateId, placeholder);
 				setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
+			}
+
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				target.addComponent(getFeedback());
 			}
 
 			private EmailPlaceholderBean createEmailPlaceholderBean(UserEntity touser) {
@@ -253,9 +214,5 @@ public class ContactPage extends TemplatePage {
 				return ip;
 			}
 		};
-	}
-
-	public String getCaptchaChallengeCode() {
-		return captchaChallengeCode;
 	}
 }

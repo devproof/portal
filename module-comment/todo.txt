@@ -19,9 +19,7 @@
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
-- captcha im contact form, registration, forgot password austauschen
-
-CaptchaBubblePanel ist nicht lazy
+- ausrichtung captcha bei lost password
 
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

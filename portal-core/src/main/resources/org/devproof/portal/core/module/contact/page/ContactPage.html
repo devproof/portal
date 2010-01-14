@@ -3,6 +3,7 @@
 	  xmlns:wicket="http://wicket.apache.org/">
 <body>
 	<wicket:extend>
+		<div wicket:id="bubblePanel"/>
 		<div class="form">
 		<h1><wicket:message key="contentTitle"/></h1>
 		<form wicket:id="form">
@@ -22,13 +23,6 @@
 			<tr>
 				<td><label for="content"><wicket:message key="content"/></label></td>
 				<td><textarea wicket:id="content" cols="100" rows="10"></textarea></td>
-			</tr>	
-			<tr wicket:id="captcha">
-				<td><label for="captchacode"><wicket:message key="captchacode"/></label></td>
-				<td>
-					<input type="text" wicket:id="captchacode"  class="editContact"/><br/><br/>
-					<img wicket:id="captchacodeimage"/>
-				</td>
 			</tr>		
 			<tr>
 				<td></td>

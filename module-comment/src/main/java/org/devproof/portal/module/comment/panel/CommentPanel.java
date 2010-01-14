@@ -115,7 +115,7 @@ public class CommentPanel extends Panel {
 		commentField.add(StringValidator.lengthBetween(10, 3000));
 		commentField.setRequired(true);
 		form.add(commentField);
-		form.add(new CaptchaAjaxButton("addCommentButton", bubblePanel, form) {
+		form.add(new CaptchaAjaxButton("addCommentButton", bubblePanel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -134,7 +134,6 @@ public class CommentPanel extends Panel {
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.addComponent(CommentPanel.this);
 			}
-
 		});
 		add(form);
 		setOutputMarkupId(true);
