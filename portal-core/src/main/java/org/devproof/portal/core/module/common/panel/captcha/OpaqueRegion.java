@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.comment.panel;
+package org.devproof.portal.core.module.common.panel.captcha;
 
 import java.awt.Point;
 import java.awt.Rectangle;

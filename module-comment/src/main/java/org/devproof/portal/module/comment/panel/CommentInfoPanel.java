@@ -30,8 +30,6 @@ import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 
 /**
- * the part in blogs downloads, etc "created by [name] at [date]
- * 
  * @author Carsten Hufe
  */
 public class CommentInfoPanel extends Panel {

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.comment.panel;
+package org.devproof.portal.core.module.common.panel.captcha;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -52,6 +52,7 @@ import org.apache.wicket.util.time.Time;
  * A unique and fun-to-use captcha technique I developed at Thoof.
  * 
  * @author Jonathan Locke
+ * @author Carsten Hufe (modifications)
  */
 public class KittenCaptchaPanel extends Panel {
 	private static final long serialVersionUID = 2711167040323855070L;

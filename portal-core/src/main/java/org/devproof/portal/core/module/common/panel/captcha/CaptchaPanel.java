@@ -13,17 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.comment.panel;
+package org.devproof.portal.core.module.common.panel.captcha;
 
 import java.awt.Dimension;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * the part in blogs downloads, etc "created by [name] at [date]
+ * captcha panel
  * 
  * @author Carsten Hufe
  */
@@ -35,7 +34,24 @@ public abstract class CaptchaPanel extends Panel {
 
 	public CaptchaPanel(String id) {
 		super(id);
-		add(createKittenCaptchaImagePanel());
+		add(createKittenCaptchaPanel());
+		add(createConfirmButton());
+		add(createCancelButton());
+		setOutputMarkupId(true);
+	}
+
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancel") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				onCancel(target);
+			}
+		};
+	}
+
+	private AjaxLink<?> createConfirmButton() {
 		confirmButton = new AjaxLink<Void>("confirm") {
 			private static final long serialVersionUID = 1L;
 
@@ -51,21 +67,10 @@ public abstract class CaptchaPanel extends Panel {
 				return kittenCaptchaImagePanel != null && kittenCaptchaImagePanel.allKittensSelected();
 			}
 		};
-		add(confirmButton);
-		AjaxLink<Void> cancelButton = new AjaxLink<Void>("cancel") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				onCancel(target);
-			}
-
-		};
-		add(cancelButton);
-		setOutputMarkupId(true);
+		return confirmButton;
 	}
 
-	private Component createKittenCaptchaImagePanel() {
+	private KittenCaptchaPanel createKittenCaptchaPanel() {
 		kittenCaptchaImagePanel = new KittenCaptchaPanel("kittenCaptchaImage", new Dimension(400, 200)) {
 			private static final long serialVersionUID = 1L;
 
@@ -78,5 +83,6 @@ public abstract class CaptchaPanel extends Panel {
 	}
 
 	protected abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
+
 	protected abstract void onCancel(AjaxRequestTarget target);
 }

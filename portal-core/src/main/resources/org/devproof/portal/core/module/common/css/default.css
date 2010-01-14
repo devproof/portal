@@ -1,13 +1,77 @@
 body {
-	font: normal 9pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';	
+	font: normal 9pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';
 }
 
-legend { border: 1px solid #cccccc; background-color: #fff; color: #EE7733; padding: 4px; font-weight: bold;}
-fieldset { border: 1px solid #cccccc; padding: 10px; margin-top: 10px;}
-.mfuex { padding:5px;margin:5px;background:#eee; }
-.mfuex .wicket-mfu-container { padding: 5px; margin-top: 3px; background-color: white; border:1px solid black; font-size: xx-small; }
-.mfuex .wicket-mfu-caption { font-weight: bold; }
-.mfuex .wicket-mfu-container input { margin-left: 5px; font-size: xx-small; }
+legend {
+	border: 1px solid #cccccc;
+	background-color: #fff;
+	color: #EE7733;
+	padding: 4px;
+	font-weight: bold;
+}
+
+fieldset {
+	border: 1px solid #cccccc;
+	padding: 10px;
+	margin-top: 10px;
+}
+
+.mfuex {
+	padding: 5px;
+	margin: 5px;
+	background: #eee;
+}
+
+.mfuex .wicket-mfu-container {
+	padding: 5px;
+	margin-top: 3px;
+	background-color: white;
+	border: 1px solid black;
+	font-size: xx-small;
+}
+
+.mfuex .wicket-mfu-caption {
+	font-weight: bold;
+}
+
+.mfuex .wicket-mfu-container input {
+	margin-left: 5px;
+	font-size: xx-small;
+}
+
+.sbl2 {
+	background: url('../img/bl2.gif') bottom left no-repeat #E9E9E9;
+	width: 100%;
+	text-align: center;
+}
+
+.sbr2 {
+	background: url('../img/br2.gif') bottom right no-repeat;
+}
+
+.stl2 {
+	background: url('../img/tl2.gif') top left no-repeat;
+	padding-bottom: 13px;
+}
+
+.str2 {
+	background: url('../img/tr2.gif') top right no-repeat;
+	padding: 15px 15px 0px 15px;
+}
+
+.sb2 {
+	padding: 2px 0px 15px 50px;
+	background: url('../img/b2.gif') 30px top no-repeat;
+}
+
+/*.st2 { padding: 10px 0px 10px 50px; background: url('../img/t2.gif') 30px bottom no-repeat; }*/
+.st2 {
+	padding-top: 5px;
+}
+
+.captchaPopup {
+	
+}
 
 a {
 	color: #F70;
@@ -22,18 +86,29 @@ img {
 }
 
 div.wicket-aa {
-    font-size: 12px;
-    background-color: white;
-    border-width: 1px;
-    border-color: #cccccc;
-    border-style: solid;
-    padding: 0px;
-    margin: 1px 0 0 0;
-    text-align:left;
+	font-size: 12px;
+	background-color: white;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	padding: 0px;
+	margin: 1px 0 0 0;
+	text-align: left;
 }
-div.wicket-aa ul { list-style:none; padding: 2px; margin:0; font-weight: normal;}
-div.wicket-aa ul li.selected { background-color: #C1DEF0; padding: 2px; margin:0; font-weight:bold; }
 
+div.wicket-aa ul {
+	list-style: none;
+	padding: 2px;
+	margin: 0;
+	font-weight: normal;
+}
+
+div.wicket-aa ul li.selected {
+	background-color: #C1DEF0;
+	padding: 2px;
+	margin: 0;
+	font-weight: bold;
+}
 
 .feedbackPanelERROR {
 	color: red;
@@ -91,15 +166,13 @@ table.palette td.buttons button {
 	height: 30px;
 }
 
-
-.boxinput  {
+.boxinput {
 	color: #555;
 	font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
 	border: 3px double #E5E5E5;
 	padding: 2px 3px;
 	width: 148px;
-} 
-
+}
 
 textarea {
 	width: 90%;
@@ -120,24 +193,22 @@ h1 {
 	margin-bottom: 4px;
 }
 
-.form {
-	/* background: url(../img/bgcode.gif); */
+.form { /* background: url(../img/bgcode.gif); */
 	border: 1px dotted #CCC;
-	padding: 5px 10px 10px 10px; 
-	margin: 10px 10px 10px 10px; 
+	padding: 5px 10px 10px 10px;
+	margin: 10px 10px 10px 10px;
 	color: #555;
-	display: block; 
+	display: block;
 }
 
-.modalform {
-	/* background: url(../img/bgcode.gif); */
+.modalform { /* background: url(../img/bgcode.gif); */
 	color: #555;
 	padding-left: 10px;
-	display: block; 
+	display: block;
 }
 
 .form h1 {
-	padding: 10px 10px 10px 10px; 
+	padding: 10px 10px 10px 10px;
 	color: #E73;
 	font-size: 1.5em;
 	height: 20px;
@@ -150,11 +221,11 @@ h1 {
 	height: 20px;
 }
 
-.form td, .modalform td {
+.form td,.modalform td {
 	vertical-align: top;
 }
 
-input, textarea, select {
+input,textarea,select {
 	color: #555;
 	font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
 	border: 1px solid #CCCCCC;
@@ -162,7 +233,7 @@ input, textarea, select {
 }
 
 select {
-	width: 160px;	
+	width: 160px;
 }
 
 .form .button {
@@ -175,7 +246,7 @@ code {
 	border: 1px solid #F0F0F0;
 	border-left: 6px solid #F0F0F0;
 	color: #555;
-/*	display: block; */
+	/*	display: block; */
 	font: normal 1.1em "Lucida Sans Unicode", serif;
 	margin-bottom: 12px;
 	padding: 8px 10px;
@@ -184,7 +255,7 @@ code {
 
 /* when you edit something the subject or title */
 .editTitle {
-	width: 400px;	
+	width: 400px;
 }
 
 cite,blockquote {
@@ -195,11 +266,10 @@ cite,blockquote {
 	padding-left: 28px;
 }
 
-h1,h2,h3, h1 a {
+h1,h2,h3,h1 a {
 	color: #000;
 	padding-top: 6px;
 	text-decoration: none;
-	
 }
 
 /* misc */
@@ -325,10 +395,10 @@ h1,h2,h3, h1 a {
 	list-style: url(../img/li.gif);
 	margin-left: 18px;
 }
+
 .content ol li {
 	margin-left: 18px;
 }
-
 
 /* search form */
 .button {
@@ -393,6 +463,7 @@ table.dataview tr th.wicket_orderUp {
 }
 
 table.dataview tr th.wicket_orderNone {
+	
 }
 
 table.dataview tr th a {
@@ -408,8 +479,7 @@ table.dataview caption {
 	padding-bottom: 2px;
 }
 
-table.dataview input, select {
-	/*width: 100px;*/
+table.dataview input,select { /*width: 100px;*/
 	margin-top: 2px;
 	margin-bottom: 2px;
 }
