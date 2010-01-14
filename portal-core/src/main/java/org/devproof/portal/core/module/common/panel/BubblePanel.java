@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.comment.panel;
+package org.devproof.portal.core.module.common.panel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.module.common.CommonConstants;
 
 /**
- * the part in blogs downloads, etc "created by [name] at [date]
  * 
  * @author Carsten Hufe
  */
@@ -36,10 +35,22 @@ public class BubblePanel extends Panel {
 
 	public BubblePanel(String id) {
 		super(id);
-		add(new SimpleAttributeModifier("style", "display:none;"));
-		add(new SimpleAttributeModifier("class", "bubblePopup"));
-		add(createContent(getContentId()));
+		add(createStyleAttributeModifier());
+		add(createClassAttributeModifier());
+		add(createContent());
 		setOutputMarkupId(true);
+	}
+
+	private SimpleAttributeModifier createStyleAttributeModifier() {
+		return new SimpleAttributeModifier("style", "display:none;");
+	}
+
+	private SimpleAttributeModifier createClassAttributeModifier() {
+		return new SimpleAttributeModifier("class", "bubblePopup");
+	}
+
+	private Component createContent() {
+		return createContent(getContentId());
 	}
 
 	public String getContentId() {
@@ -51,7 +62,11 @@ public class BubblePanel extends Panel {
 	}
 
 	public void setMessage(String message) {
-		setContent(new MessageFragment(getContentId(), message));
+		setContent(createMessageFragment(message));
+	}
+
+	private MessageFragment createMessageFragment(String message) {
+		return new MessageFragment(getContentId(), message);
 	}
 
 	protected Component createContent(String id) {
@@ -78,18 +93,33 @@ public class BubblePanel extends Panel {
 	private class MessageFragment extends Fragment {
 		private static final long serialVersionUID = 1L;
 
+		private String message;
+
 		public MessageFragment(String id, String message) {
 			super(id, "messageFragment", BubblePanel.this);
-			add(new Image("infoImage", CommonConstants.REF_INFORMATION_IMG));
-			add(new Label("message", message));
-			add(new AjaxLink<Void>("okButton") {
+			this.message = message;
+			add(createInfoImage());
+			add(createMessageLabel());
+			add(createOkButton());
+		}
+
+		private Image createInfoImage() {
+			return new Image("infoImage", CommonConstants.REF_INFORMATION_IMG);
+		}
+
+		private Label createMessageLabel() {
+			return new Label("message", message);
+		}
+
+		private AjaxLink<Void> createOkButton() {
+			return new AjaxLink<Void>("okButton") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					hide(target);
 				}
-			});
+			};
 		}
 	}
 }
