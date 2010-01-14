@@ -20,6 +20,8 @@
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
 - ausrichtung captcha bei lost password
+- tests für captcha und bubble panel
+- stylesheets raus aus captcha und bubble panel
 
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register
