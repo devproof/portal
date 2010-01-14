@@ -18,24 +18,19 @@ package org.devproof.portal.core.module.user.page;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.user.UserConstants;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
+import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
 import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
@@ -48,94 +43,41 @@ public class ForgotPasswordPage extends TemplatePage {
 
 	@SpringBean(name = "userService")
 	private UserService userService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private String captchaChallengeCode;
-	private CaptchaImageResource captchaImageResource;
-	private Boolean captchaEnabled;
 	private TextField<String> emailOrUser;
+	private BubblePanel bubblePanel;
 
 	public ForgotPasswordPage(PageParameters params) {
 		super(params);
-		setCaptchaEnabled();
-		setCaptchaChallengeCode();
-		setCaptchaImageResource();
+		add(createBubblePanel());
 		add(createForgotPasswordForm());
+	}
+
+	private Component createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private Form<Serializable> createForgotPasswordForm() {
 		Form<Serializable> form = new Form<Serializable>("form");
 		form.add(createEmailOrUsernameField());
-		form.add(createCaptchaImageContainer());
-		form.add(createCaptchaFieldContainer());
 		form.add(createRequestButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
-	private WebMarkupContainer createCaptchaFieldContainer() {
-		WebMarkupContainer trCaptcha2 = new WebMarkupContainer("trCaptcha2");
-		trCaptcha2.add(createCaptchaCodeField());
-		trCaptcha2.setVisible(captchaEnabled);
-		return trCaptcha2;
-	}
-
-	private WebMarkupContainer createCaptchaImageContainer() {
-		WebMarkupContainer trCaptcha1 = new WebMarkupContainer("trCaptcha1");
-		trCaptcha1.add(createCaptchaImage());
-		trCaptcha1.setVisible(captchaEnabled);
-		return trCaptcha1;
-	}
-
-	private void setCaptchaImageResource() {
-		captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
-	}
-
-	private void setCaptchaChallengeCode() {
-		captchaChallengeCode = PortalUtil.randomString(6, 8);
-	}
-
-	private Image createCaptchaImage() {
-		return new Image("captchacodeimage", captchaImageResource);
-	}
-
-	private FormComponent<String> createCaptchaCodeField() {
-		FormComponent<String> fc;
-		fc = new TextField<String>("captchacode", Model.of(""));
-		fc.setRequired(captchaEnabled);
-		if (captchaEnabled) {
-			fc.add(createCaptchaValidator());
-		}
-		return fc;
-	}
-
-	private AbstractValidator<String> createCaptchaValidator() {
-		return new AbstractValidator<String>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (!captchaChallengeCode.equalsIgnoreCase(ivalidatable.getValue())) {
-					captchaImageResource.invalidate();
-					error(ivalidatable);
-				}
-			}
-
-			@Override
-			protected String resourceKey() {
-				return "wrong.captchacode";
-			}
-		};
-	}
-
 	private Button createRequestButton() {
-		return new Button("requestButton") {
+		return new CaptchaAjaxButton("requestButton", bubblePanel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit() {
+			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 				userService.sendForgotPasswordCode(emailOrUser.getValue(), createForgotPasswordUrlCallback());
 				setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
+			}
+
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				target.addComponent(getFeedback());
 			}
 
 			private UrlCallback createForgotPasswordUrlCallback() {
@@ -159,9 +101,5 @@ public class ForgotPasswordPage extends TemplatePage {
 	private TextField<String> createEmailOrUsernameField() {
 		emailOrUser = new RequiredTextField<String>("emailoruser", Model.of(""));
 		return emailOrUser;
-	}
-
-	private void setCaptchaEnabled() {
-		captchaEnabled = configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_CAPTCHA);
 	}
 }

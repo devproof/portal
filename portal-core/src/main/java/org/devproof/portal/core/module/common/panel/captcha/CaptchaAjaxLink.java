@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.common.panel.captcha;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -24,7 +24,7 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 /**
  * @author Carsten Hufe
  */
-public abstract class CaptchaAjaxLink extends AjaxFallbackLink<Void> {
+public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
 	private static final long serialVersionUID = 1L;
 	private BubblePanel bubblePanel;
 

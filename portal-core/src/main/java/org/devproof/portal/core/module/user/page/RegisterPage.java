@@ -4,11 +4,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.extensions.markup.html.captcha.CaptchaImageResource;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -16,7 +15,6 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -28,8 +26,9 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
+import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
-import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
@@ -55,17 +54,20 @@ public class RegisterPage extends TemplatePage {
 	private UserEntity user;
 	private PasswordTextField password1;
 	private PasswordTextField password2;
-	private String captchaChallengeCode;
-	private CaptchaImageResource captchaImageResource;
+	private BubblePanel bubblePanel;
 
 	public RegisterPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		activateUserIfParamsGiven();
-		setCaptchaChallengeCode();
-		setCaptchaImageResource();
 		setUser();
+		add(createBubblePanel());
 		add(createRegisterForm());
+	}
+
+	private Component createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private Form<UserEntity> createRegisterForm() {
@@ -77,11 +79,10 @@ public class RegisterPage extends TemplatePage {
 		form.add(createEmailField());
 		form.add(createPasswordField1());
 		form.add(createPasswordField2());
-		form.add(createCaptchaContainer());
-		form.add(createRegisterButton());
 		form.add(createEqualPasswordValidator());
 		form.add(createTermsOfUseCheckBox());
 		form.add(createTermsOfUseLink());
+		form.add(createRegisterButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -121,56 +122,12 @@ public class RegisterPage extends TemplatePage {
 		return termsOfUseLink;
 	}
 
-	private WebMarkupContainer createCaptchaContainer() {
-		WebMarkupContainer captchaContainer = new WebMarkupContainer("captcha");
-		captchaContainer.add(createCaptchaCodeField());
-		captchaContainer.add(createCaptchaImage());
-		return captchaContainer;
-	}
-
-	private FormComponent<String> createCaptchaCodeField() {
-		FormComponent<String> fc = new RequiredTextField<String>("captchacode", Model.of(""));
-		fc.add(createCaptchaValidator());
-		return fc;
-	}
-
-	private Image createCaptchaImage() {
-		return new Image("captchacodeimage", captchaImageResource);
-	}
-
-	private void setCaptchaImageResource() {
-		captchaImageResource = new CaptchaImageResource(captchaChallengeCode);
-	}
-
-	private void setCaptchaChallengeCode() {
-		captchaChallengeCode = PortalUtil.randomString(6, 8);
-	}
-
-	private AbstractValidator<String> createCaptchaValidator() {
-		return new AbstractValidator<String>() {
+	private CaptchaAjaxButton createRegisterButton() {
+		return new CaptchaAjaxButton("registerButton", bubblePanel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (!captchaChallengeCode.equalsIgnoreCase(ivalidatable.getValue())) {
-					captchaImageResource.invalidate();
-					error(ivalidatable);
-				}
-			}
-
-			@Override
-			protected String resourceKey() {
-				return "wrong.captchacode";
-			}
-		};
-	}
-
-	private Button createRegisterButton() {
-		return new Button("registerButton") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onSubmit() {
+			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 				String msg = "success";
 				if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 					msg = "confirm.email";
@@ -178,6 +135,11 @@ public class RegisterPage extends TemplatePage {
 				user.setPlainPassword(password1.getValue());
 				userService.registerUser(user, createRegisterUrlCallback());
 				setResponsePage(MessagePage.getMessagePage(getString(msg)));
+			}
+
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				target.addComponent(getFeedback());
 			}
 
 			private UrlCallback createRegisterUrlCallback() {
@@ -220,7 +182,7 @@ public class RegisterPage extends TemplatePage {
 	}
 
 	private DateTextField createBirthdayField() {
-		String dateFormat = configurationService.findAsString("display_date_format");
+		String dateFormat = configurationService.findAsString("input_date_format");
 		DateTextField dateTextField = new DateTextField("birthday", dateFormat);
 		dateTextField.add(new DatePicker());
 		dateTextField

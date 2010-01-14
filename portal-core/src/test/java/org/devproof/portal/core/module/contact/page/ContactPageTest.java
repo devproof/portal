@@ -64,18 +64,11 @@ public class ContactPageTest extends TestCase {
 	}
 
 	private void submitContactForm() throws Exception {
-		String captchaChallengeCode = getCaptchaChallengeCode();
 		FormTester form = tester.newFormTester("form");
 		form.setValue("fullname", "Max Power");
 		form.setValue("email", "max.power@no.domain");
 		form.setValue("content", "testing content more then 30 letters 1234567890");
-		form.setValue("trCaptcha2:captchacode", captchaChallengeCode);
-		form.submit("sendButton");
-	}
-
-	private String getCaptchaChallengeCode() {
-		ContactPage lastRenderedPage = (ContactPage) tester.getLastRenderedPage();
-		return lastRenderedPage.getCaptchaChallengeCode();
+		tester.executeAjaxEvent("form:sendButton", "onclick");
 	}
 
 	private void callContactPage() {
