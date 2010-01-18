@@ -62,6 +62,11 @@ public class CommentServiceImpl implements CommentService {
 		commentDao.acceptComment(comment);
 	}
 
+	@Override
+	public long findNumberOfComments(String moduleName, String moduleContentId) {
+		return commentDao.findNumberOfComments(moduleName, moduleContentId);
+	}
+
 	@Required
 	public void setCommentDao(CommentDao commentDao) {
 		this.commentDao = commentDao;

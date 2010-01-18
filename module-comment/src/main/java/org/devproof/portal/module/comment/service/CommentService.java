@@ -38,4 +38,9 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
 	 * Marks the comment as reviewed
 	 */
 	public void acceptComment(CommentEntity comment);
+
+	/**
+	 * Returns the number of comments for the given module and module content id
+	 */
+	public long findNumberOfComments(String moduleName, String moduleContentId);
 }

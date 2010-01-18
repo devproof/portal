@@ -16,6 +16,7 @@
 package org.devproof.portal.module.comment.dao;
 
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
+import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 
@@ -28,4 +29,7 @@ public interface CommentDao extends GenericDao<CommentEntity, Integer> {
 
 	@BulkUpdate("update CommentEntity c set c.accepted = false, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
 	public void rejectComment(CommentEntity comment);
+
+	@Query("select count(c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ?")
+	public long findNumberOfComments(String moduleName, String moduleContentId);
 }
