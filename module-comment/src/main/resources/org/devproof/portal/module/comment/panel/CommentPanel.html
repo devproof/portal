@@ -4,27 +4,27 @@
 <body>
 	<wicket:panel>
 		<div wicket:id="bubble"/>
-		<div  style="width: 580px; margin: 0 auto; border: 3px dashed #CCC; padding:15px;">
-			<h3 style="color: #666; padding-left:15px;"><wicket:message key="commentsHeadline"/></h3>
-			<div wicket:id="noCommentsHint" style="color: #666; padding:15px 15px 3px 15px;"><wicket:message key="noComments"/></div>
-			<div wicket:id="listComment" style="padding-top:15px;">
-				<div wicket:id="commentView" style="border-top:1px solid #CCC; padding: 15px 15px 3px 15px; "/>
+		<div  class="commentsMain">
+			<h3><wicket:message key="commentsHeadline"/></h3>
+			<div wicket:id="noCommentsHint" class="noCommentsHint"><wicket:message key="noComments"/></div>
+			<div wicket:id="listComment">
+				<div wicket:id="commentView" class="commentsView"/>
 			</div>
 			<div>&nbsp;</div>
-			<div style="padding-top:15px; border-top:1px solid #CCC;">
+			<div class="commentsForm">
 				<div wicket:id="feedback"/>
 				<form wicket:id="form">
 				<table cellspacing="10" style="margin: 0 auto; ">
 					<tr wicket:id="guestNameContainer">
-						<td style="vertical-align:text-top;"><label for="guestName" style="color: #666"><wicket:message key="guestName"/></label></td>
+						<th><label for="guestName"><wicket:message key="guestName"/></label></th>
 						<td><input type="text" id="guestName" wicket:id="guestName"/></td>
 					</tr>
 					<tr wicket:id="guestEmailContainer">
-						<td style="vertical-align:text-top;"><label for="guestEmail" style="color: #666;"><wicket:message key="guestEmail"/></label></td>
+						<th><label for="guestEmail"><wicket:message key="guestEmail"/></label></th>
 						<td><input type="text" id="guestEmail" wicket:id="guestEmail"/></td>
 					</tr>
 					<tr>
-						<td style="vertical-align:text-top;"><label for="comment" style="color: #666;"><wicket:message key="comment"/></label></td>
+						<th><label for="comment"><wicket:message key="comment"/></label></th>
 						<td><textarea wicket:id="comment" cols="80" rows="6"></textarea></td>
 					</tr>
 					<tr>
@@ -37,10 +37,10 @@
 		</div>
 		<!-- div wicket:id="paging">paging</div -->	
 		<wicket:fragment wicket:id="commentView">
-			<div wicket:id="comment" style="color: #666; ">[comment]</div>
-			<div  style="color: #888; font-size: 8pt;padding-top:0.5em;">
+			<div wicket:id="comment" class="comment">[comment]</div>
+			<div  class="commentMetaInfo">
 				<span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message key="reportViolation"/></a> ]
-				<div wicket:id="administration" style="padding-top:10px;"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>]&nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a></div>
+				<div wicket:id="administration" class="commentAdmin"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>]&nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a></div>
 			</div>
 		</wicket:fragment>
 	</wicket:panel>

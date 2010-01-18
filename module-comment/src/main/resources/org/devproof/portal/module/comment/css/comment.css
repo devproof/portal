@@ -1,0 +1,51 @@
+.commentsMain {
+	width: 580px;
+	margin: 0 auto;
+	border: 3px dashed #CCC;
+	padding: 15px;
+}
+
+.commentsMain h3 {
+	color: #666;
+	padding-left: 15px;
+	padding-bottom: 15px;
+}
+
+.noCommentsHint {
+	color: #666;
+	padding: 15px 15px 3px 15px;
+}
+
+.commentsView {
+	border-top: 1px solid #CCC;
+	padding: 15px 15px 15px 15px;
+}
+
+.commentsView {
+	border-top: 1px solid #CCC;
+	padding: 15px 15px 15px 15px;
+}
+
+.comment {
+	color: #666;
+}
+
+.commentMetaInfo {
+	color: #888;
+	font-size: 8pt;
+	padding-top: 0.5em;
+}
+
+.commentAdmin {
+	padding-top: 10px;
+}
+
+.commentsForm {
+	padding-top: 15px;
+	border-top: 1px solid #CCC;
+}
+
+.commentsForm th {
+	color: #666;
+	vertical-align: text-top;
+}
