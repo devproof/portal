@@ -145,7 +145,7 @@ public class CommentPanel extends Panel {
 		public CommentDataView(String id) {
 			super(id, commentDataProvider);
 			// TODO in config
-			// setItemsPerPage(10);
+			setItemsPerPage(10);
 		}
 
 		@Override

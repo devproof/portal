@@ -1,13 +1,12 @@
+- Paging
+- Configuration for paging
 - Blame Support
 - Deletion Support (means hiding)
 - Overview for manageing comments (with searchbox: textsearch, moduleName, Blamed, deleted, not reviewed)
 - Suche (Gelöschte Artikel, Blamed, Not Reviewed, Volltextsuche)
-- Paging
-- Configuration for paging
 - Tests fÃ¼r Services
 - Tests fÃ¼r Pages und Panels
 - Configuration -> disable for each section/module -> als recht realisieren
-- configuration for captcha (enable captcha for guests, reg user) als recht
 - configuration show only reviewed comments
 - notification bei neuen Kommentaren
 - notification bei automatic_blocked kommentaren
@@ -18,6 +17,7 @@
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
 - numberOfComments abfrage mit entsprechender konfiguration (blamed, reviewed) abfragen
+- nach speichern die seite vom kommentar anzeigen
 - lizenzen hinzufügen
 
 terms of use
