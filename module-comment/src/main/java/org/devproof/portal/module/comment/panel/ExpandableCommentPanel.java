@@ -17,11 +17,14 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -39,45 +42,93 @@ public class ExpandableCommentPanel extends Panel {
 	@SpringBean(name = "commentService")
 	private CommentService commentService;
 	private WebMarkupContainer refreshContainer;
-	private AjaxLink<Void> commentLink;
 	private boolean visible = false;
-	private IModel<String> linkLabelText;
+	private CommentConfiguration configuration;
 
-	public ExpandableCommentPanel(String id, final CommentConfiguration configuration) {
+	public ExpandableCommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
-		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
-		PortalUtil.addJQuery(this);
+		this.configuration = configuration;
+		add(createCSSHeaderContributor());
+		addJQuery();
+		add(createRefreshCommentContainer());
+		add(createCommentLink());
+
+	}
+
+	private WebMarkupContainer createRefreshCommentContainer() {
 		refreshContainer = new WebMarkupContainer("refreshCommentContainer");
-		refreshContainer.add(new WebMarkupContainer("comments"));
-		refreshContainer.add(new SimpleAttributeModifier("style", "display:none;"));
+		refreshContainer.add(createEmptyCommentPanel());
+		refreshContainer.add(createDisplayNoneModifier());
 		refreshContainer.setOutputMarkupId(true);
-		add(refreshContainer);
-		long numberOfComments = commentService.findNumberOfComments(configuration.getModuleName(), configuration
-				.getModuleContentId());
-		linkLabelText = Model.of(numberOfComments == 0 ? "{Write comment}" : "{" + numberOfComments + " comments}");
-		add(commentLink = new AjaxLink<Void>("commentsLink") {
+		return refreshContainer;
+	}
+
+	private EmptyPanel createEmptyCommentPanel() {
+		return new EmptyPanel("comments");
+	}
+
+	private SimpleAttributeModifier createDisplayNoneModifier() {
+		return new SimpleAttributeModifier("style", "display:none;");
+	}
+
+	private void addJQuery() {
+		PortalUtil.addJQuery(this);
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
+	}
+
+	private AjaxLink<Void> createCommentLink() {
+		AjaxLink<Void> commentLink = newCommentLink();
+		commentLink.add(createCommentsLinkLabel());
+		commentLink.setOutputMarkupId(true);
+		return commentLink;
+	}
+
+	private Label createCommentsLinkLabel() {
+		return new Label("commentsLinkLabel", createLinkLabelTextModel());
+	}
+
+	private AjaxLink<Void> newCommentLink() {
+		return new AjaxLink<Void>("commentsLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (visible) {
-					long numberOfComments = commentService.findNumberOfComments(configuration.getModuleName(),
-							configuration.getModuleContentId());
-					linkLabelText.setObject(numberOfComments == 0 ? "{Write comment}" : "{" + numberOfComments
-							+ " comments}");
+
 					target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
 				} else {
-					linkLabelText.setObject("{Hide comments}");
-					refreshContainer.replace(new CommentPanel("comments", configuration));
+					refreshContainer.replace(createCommentPanel());
 					target.addComponent(refreshContainer);
 					target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
 				}
-				target.addComponent(commentLink);
+				target.addComponent(this);
 				visible = !visible;
 			}
 
-		});
-		commentLink.add(new Label("commentsLinkLabel", linkLabelText));
-		commentLink.setOutputMarkupId(true);
+			private CommentPanel createCommentPanel() {
+				return new CommentPanel("comments", configuration);
+			}
+		};
+	}
+
+	private IModel<String> createLinkLabelTextModel() {
+		return new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				if (visible) {
+					return getString("hideComments");
+				} else {
+					long numberOfComments = commentService.findNumberOfComments(configuration.getModuleName(),
+							configuration.getModuleContentId());
+					return numberOfComments == 0 ? getString("writeComment") : getString("numberOfComments", Model
+							.of(numberOfComments));
+				}
+			}
+		};
 	}
 }
