@@ -21,14 +21,14 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 /**
  * @author Carsten Hufe
  */
-public class CommentPage extends TemplatePage {
+public class CommentAdminPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
 	// @SpringBean(name = "configurationService")
 	// private ConfigurationService configurationService;
 
-	public CommentPage(PageParameters params) {
+	public CommentAdminPage(PageParameters params) {
 		super(params);
 	}
 }
