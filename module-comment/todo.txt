@@ -5,7 +5,7 @@
 - Paging
 - Configuration for paging
 - Tests für Services
-- Tests für Pages
+- Tests für Pages und Panels
 - Configuration -> disable for each section/module -> als recht realisieren
 - configuration for captcha (enable captcha for guests, reg user) als recht
 - configuration show only reviewed comments
