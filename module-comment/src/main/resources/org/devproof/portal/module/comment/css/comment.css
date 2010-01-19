@@ -1,3 +1,14 @@
+.commentsLink {
+	color: #666;
+	text-decoration: none;
+	font-size: 16px;	
+	font-weight: bold;
+}
+
+.commentsLink:hover {
+	text-decoration: underline;
+}
+
 .commentsMain {
 	width: 580px;
 	margin: 0 auto;
