@@ -1,4 +1,3 @@
-- Paging
 - Configuration for paging
 - Blame Support
 - Deletion Support (means hiding)
@@ -17,8 +16,7 @@
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
 - numberOfComments abfrage mit entsprechender konfiguration (blamed, reviewed) abfragen
-- nach speichern die seite vom kommentar anzeigen
 - lizenzen hinzufügen
-
+- markierung für accepted / declined comments und blamed anzeigen
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

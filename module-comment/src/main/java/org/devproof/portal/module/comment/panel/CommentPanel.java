@@ -64,6 +64,8 @@ public class CommentPanel extends Panel {
 	private FeedbackPanel feedback;
 	private BubblePanel bubblePanel;
 
+	private CommentDataView dataView;
+
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
 		PortalUtil.addJQuery(this);
@@ -86,9 +88,41 @@ public class CommentPanel extends Panel {
 
 		});
 		// Repeater
-		add(new CommentDataView("listComment"));
+		add(dataView = new CommentDataView("listComment"));
 		add(feedback = new FeedbackPanel("feedback"));
 		feedback.setOutputMarkupId(true);
+
+		add(new AjaxLink<Void>("newerLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				dataView.setCurrentPage(dataView.getCurrentPage() - 1);
+				target.addComponent(CommentPanel.this);
+			}
+
+			@Override
+			public boolean isVisible() {
+				return dataView.getCurrentPage() != 0;
+			}
+
+		});
+
+		add(new AjaxLink<Void>("olderLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				dataView.setCurrentPage(dataView.getCurrentPage() + 1);
+				target.addComponent(CommentPanel.this);
+			}
+
+			@Override
+			public boolean isVisible() {
+				return (dataView.getPageCount() - 1) > dataView.getCurrentPage();
+			}
+		});
+
 		// Form
 		final CommentEntity comment = new CommentEntity();
 		comment.setModuleName(configuration.getModuleName());
@@ -123,8 +157,9 @@ public class CommentPanel extends Panel {
 				String commentStr = comment.getComment();
 				commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
 				comment.setComment(commentStr);
-				comment.setIpAddress(((PortalSession) getSession()).getIpAddress());
+				comment.setIpAddress(PortalSession.get().getIpAddress());
 				form.setVisible(false);
+				dataView.setCurrentPage(0);
 				commentService.save(comment);
 				info(getString("saved"));
 				target.addComponent(CommentPanel.this);
