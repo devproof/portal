@@ -28,6 +28,8 @@ public class CommentQuery implements IQuery {
 	private String moduleName;
 	private String moduleContentId;
 	private Boolean accepted;
+	private Boolean reviewed;
+	private Boolean automaticBlocked;
 
 	@BeanQuery("e.accepted = ?")
 	public Boolean getAccepted() {
@@ -36,6 +38,24 @@ public class CommentQuery implements IQuery {
 
 	public void setAccepted(Boolean accepted) {
 		this.accepted = accepted;
+	}
+
+	@BeanQuery("e.reviewed = ?")
+	public Boolean getReviewed() {
+		return reviewed;
+	}
+
+	public void setReviewed(Boolean reviewed) {
+		this.reviewed = reviewed;
+	}
+
+	@BeanQuery("e.automaticBlocked = ?")
+	public Boolean getAutomaticBlocked() {
+		return automaticBlocked;
+	}
+
+	public void setAutomaticBlocked(Boolean automaticBlocked) {
+		this.automaticBlocked = automaticBlocked;
 	}
 
 	@BeanQuery("e.moduleName = ?")

@@ -16,9 +16,12 @@
 package org.devproof.portal.module.comment.page;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
 import org.devproof.portal.module.comment.panel.CommentPanel;
+import org.devproof.portal.module.comment.panel.CommentSearchBoxPanel;
+import org.devproof.portal.module.comment.query.CommentQuery;
 
 /**
  * @author Carsten Hufe
@@ -32,6 +35,15 @@ public class CommentAdminPage extends TemplatePage {
 
 	public CommentAdminPage(PageParameters params) {
 		super(params);
+		CommentQuery query = new CommentQuery();
+		addFilterBox(new CommentSearchBoxPanel("box", query) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target) {
+
+			}
+		});
 		CommentConfiguration configuration = new CommentConfiguration();
 		add(new CommentPanel("comments", configuration));
 	}
