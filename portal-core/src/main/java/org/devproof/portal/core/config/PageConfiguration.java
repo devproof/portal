@@ -172,4 +172,12 @@ public class PageConfiguration {
 	public void setModule(ModuleConfiguration module) {
 		this.module = module;
 	}
+
+	@Override
+	public String toString() {
+		return "PageConfiguration [defaultStartPage=" + defaultStartPage + ", indexMountedPath=" + indexMountedPath
+				+ ", module=" + module + ", mountPath=" + mountPath + ", pageClass=" + pageClass
+				+ ", registerGlobalAdminLink=" + registerGlobalAdminLink + ", registerMainNavigationLink="
+				+ registerMainNavigationLink + ", registerPageAdminLink=" + registerPageAdminLink + "]";
+	}
 }

@@ -17,6 +17,8 @@ package org.devproof.portal.module.comment.page;
 
 import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.module.comment.config.CommentConfiguration;
+import org.devproof.portal.module.comment.panel.CommentPanel;
 
 /**
  * @author Carsten Hufe
@@ -30,5 +32,7 @@ public class CommentAdminPage extends TemplatePage {
 
 	public CommentAdminPage(PageParameters params) {
 		super(params);
+		CommentConfiguration configuration = new CommentConfiguration();
+		add(new CommentPanel("comments", configuration));
 	}
 }
