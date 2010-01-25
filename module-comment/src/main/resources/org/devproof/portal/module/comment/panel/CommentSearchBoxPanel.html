@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<wicket:panel>
+
+	<h1><wicket:message key="boxTitle">[Search]</wicket:message></h1>
+	<form wicket:id="searchForm">
+	<div>
+		<input type="text"  class="boxinput" wicket:id="allTextFields"/><br/>
+		<select wicket:id="reviewed">
+			  <option wicket:id="chooseReviewed"><wicket:message key="chooseReviewed"/></option>
+              <option wicket:id="reviewedTrue"><wicket:message key="reviewedTrue"/></option>
+              <option wicket:id="reviewedFalse"><wicket:message key="reviewedFalse"/></option>
+        </select><br/>
+        <select wicket:id="accepted">
+			  <option wicket:id="chooseAccepted"><wicket:message key="chooseAccepted"/></option>
+              <option wicket:id="acceptedTrue"><wicket:message key="acceptedTrue"/></option>
+              <option wicket:id="acceptedFalse"><wicket:message key="acceptedFalse"/></option>
+        </select><br/>
+        <select wicket:id="automaticBlocked">
+			  <option wicket:id="chooseAutomaticBlocked"><wicket:message key="chooseAutomaticBlocked"/></option>
+              <option wicket:id="automaticBlockedTrue"><wicket:message key="automaticBlockedTrue"/></option>
+              <option wicket:id="automaticBlockedFalse"><wicket:message key="automaticBlockedFalse"/></option>
+        </select><br/> 
+	</div>
+	</form>
+</wicket:panel>
+</html>
