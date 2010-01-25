@@ -164,5 +164,4 @@ public class ModuleConfiguration implements Serializable {
 	public String toString() {
 		return name;
 	}
-
 }

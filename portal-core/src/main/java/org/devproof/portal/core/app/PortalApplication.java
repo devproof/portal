@@ -88,7 +88,7 @@ public class PortalApplication extends WebApplication {
 	}
 
 	private void configureWicket() {
-		productionMode = !"WicketMockServlet".equals(getApplicationKey());
+		productionMode = DEPLOYMENT.equals(getConfigurationType());
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
 		addComponentInstantiationListener(new SpringComponentInjector(this, getSpringContext(), true));
 		getMarkupSettings().setStripWicketTags(true);

@@ -80,4 +80,9 @@ public class BoxConfiguration implements Serializable {
 	public String getKey() {
 		return boxClass.getSimpleName();
 	}
+
+	@Override
+	public String toString() {
+		return "BoxConfiguration [boxClass=" + boxClass + ", name=" + name + "]";
+	}
 }
