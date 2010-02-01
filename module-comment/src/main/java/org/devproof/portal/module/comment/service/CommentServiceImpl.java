@@ -55,11 +55,13 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void rejectComment(CommentEntity comment) {
 		commentDao.rejectComment(comment);
+		commentDao.refresh(comment);
 	}
 
 	@Override
 	public void acceptComment(CommentEntity comment) {
 		commentDao.acceptComment(comment);
+		commentDao.refresh(comment);
 	}
 
 	@Override
