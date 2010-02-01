@@ -17,6 +17,5 @@
 - update sql scripts erstellen
 - numberOfComments abfrage mit entsprechender konfiguration (blamed, reviewed) abfragen
 - lizenzen hinzufügen
-- markierung für accepted / declined comments und blamed anzeigen
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

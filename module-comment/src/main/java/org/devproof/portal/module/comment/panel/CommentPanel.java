@@ -16,6 +16,7 @@
 package org.devproof.portal.module.comment.panel;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -31,7 +32,9 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -198,6 +201,7 @@ public class CommentPanel extends Panel {
 
 		public CommentView(String id, final Item<CommentEntity> item) {
 			super(id, "commentView", CommentPanel.this);
+			item.setOutputMarkupId(true);
 			comment = item.getModelObject();
 			add(new CommentInfoPanel("commentInfo", comment));
 			Label commentLabel = new Label("comment", comment.getComment());
@@ -208,7 +212,9 @@ public class CommentPanel extends Panel {
 
 				@Override
 				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-					bubblePanel.setMessage("Thank you. The violation was reported.");
+					// TODO count blames and block if nessecary
+
+					bubblePanel.setMessage(getString("reported"));
 					bubblePanel.show(getMarkupId(), target);
 				}
 			};
@@ -223,8 +229,9 @@ public class CommentPanel extends Panel {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					commentService.acceptComment(comment);
-					bubblePanel.setMessage("Comment was accepted!");
+					bubblePanel.setMessage(getString("accepted"));
 					bubblePanel.show(getMarkupId(), target);
+					target.addComponent(item);
 				}
 			};
 			acceptLink.add(new Image("acceptLinkImage", CommentConstants.REF_ACCEPT_IMG));
@@ -236,13 +243,48 @@ public class CommentPanel extends Panel {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					commentService.rejectComment(comment);
-					bubblePanel.setMessage("Comment was rejected!");
+					bubblePanel.setMessage(getString("rejected"));
 					bubblePanel.show(getMarkupId(), target);
+					target.addComponent(item);
 				}
 			};
 			rejectLink.add(new Image("rejectLinkImage", CommentConstants.REF_REJECT_IMG));
 			administrationContainer.add(rejectLink);
+			IModel<String> accepted = new AbstractReadOnlyModel<String>() {
+				private static final long serialVersionUID = 1L;
 
+				@Override
+				public String getObject() {
+					if (comment.getAutomaticBlocked()) {
+						return getString("stateBlocked");
+					}
+					return comment.getAccepted() ? getString("stateAccepted") : getString("stateRejected");
+				}
+
+			};
+			Label acceptedLabel = new Label("accepted", accepted) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public boolean isVisible() {
+					return comment.getReviewed() || comment.getAutomaticBlocked();
+				}
+
+			};
+			acceptedLabel.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getObject() {
+					if (comment.getAutomaticBlocked()) {
+						return "commentBlocked";
+					}
+					return comment.getAccepted() ? "commentAccepted" : "commentRejected";
+				}
+			}));
+			administrationContainer.add(acceptedLabel);
+			Label nrOfBlames = new Label("numberOfBlames", String.valueOf(comment.getNumberOfBlames()));
+			administrationContainer.add(nrOfBlames);
 			add(administrationContainer);
 		}
 	}
