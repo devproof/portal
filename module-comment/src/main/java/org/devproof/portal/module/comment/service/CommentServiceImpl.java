@@ -17,6 +17,8 @@ package org.devproof.portal.module.comment.service;
 
 import java.util.List;
 
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.dao.CommentDao;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 import org.springframework.beans.factory.annotation.Required;
@@ -25,6 +27,8 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Carsten Hufe
  */
 public class CommentServiceImpl implements CommentService {
+
+	private ConfigurationService configurationService;
 	private CommentDao commentDao;
 
 	@Override
@@ -66,11 +70,33 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public long findNumberOfComments(String moduleName, String moduleContentId) {
-		return commentDao.findNumberOfComments(moduleName, moduleContentId);
+		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
+		if (showOnlyReviewed) {
+			return commentDao.findNumberOfReviewedComments(moduleName, moduleContentId);
+		} else {
+			return commentDao.findNumberOfComments(moduleName, moduleContentId);
+		}
+	}
+
+	@Override
+	public void reportViolation(CommentEntity comment) {
+		if (!comment.getReviewed()) {
+			int maxNumberOfBlames = configurationService.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD);
+			int blames = comment.getNumberOfBlames() + 1;
+			comment.setNumberOfBlames(blames);
+			comment.setAutomaticBlocked(blames >= maxNumberOfBlames);
+			save(comment);
+			// TODO send notification emails
+		}
 	}
 
 	@Required
 	public void setCommentDao(CommentDao commentDao) {
 		this.commentDao = commentDao;
+	}
+
+	@Required
+	public void setConfigurationService(ConfigurationService configurationService) {
+		this.configurationService = configurationService;
 	}
 }

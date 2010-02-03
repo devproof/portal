@@ -44,6 +44,7 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
 import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxLink;
 import org.devproof.portal.core.module.common.util.PortalUtil;
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
 import org.devproof.portal.module.comment.entity.CommentEntity;
@@ -57,8 +58,8 @@ public class CommentPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	// @SpringBean(name = "configurationService")
-	// private ConfigurationService configurationService;
+	@SpringBean(name = "configurationService")
+	private ConfigurationService configurationService;
 	@SpringBean(name = "commentDataProvider")
 	private QueryDataProvider<CommentEntity> commentDataProvider;
 	@SpringBean(name = "commentService")
@@ -76,6 +77,14 @@ public class CommentPanel extends Panel {
 		query = new CommentQuery();
 		query.setModuleName(configuration.getModuleName());
 		query.setModuleContentId(configuration.getModuleContentId());
+		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
+		if (showOnlyReviewed) {
+			query.setReviewed(Boolean.TRUE);
+			query.setAccepted(Boolean.TRUE);
+		} else {
+			query.setRejected(Boolean.FALSE);
+		}
+		query.setAutomaticBlocked(Boolean.FALSE);
 		// query.setVisible(Boolean.TRUE);
 		commentDataProvider.setQueryObject(query);
 		bubblePanel = new BubblePanel("bubble");
@@ -182,8 +191,7 @@ public class CommentPanel extends Panel {
 
 		public CommentDataView(String id) {
 			super(id, commentDataProvider);
-			// TODO in config
-			setItemsPerPage(10);
+			setItemsPerPage(getNumberOfPages());
 		}
 
 		@Override
@@ -212,8 +220,8 @@ public class CommentPanel extends Panel {
 
 				@Override
 				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-					// TODO count blames and block if nessecary
-
+					CommentEntity comment = item.getModelObject();
+					commentService.reportViolation(comment);
 					bubblePanel.setMessage(getString("reported"));
 					bubblePanel.show(getMarkupId(), target);
 				}
@@ -287,5 +295,9 @@ public class CommentPanel extends Panel {
 			administrationContainer.add(nrOfBlames);
 			add(administrationContainer);
 		}
+	}
+
+	public int getNumberOfPages() {
+		return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE);
 	}
 }

@@ -28,6 +28,7 @@ public class CommentQuery implements IQuery {
 	private String moduleName;
 	private String moduleContentId;
 	private Boolean accepted;
+	private Boolean rejected;
 	private Boolean reviewed;
 	private Boolean automaticBlocked;
 
@@ -38,6 +39,15 @@ public class CommentQuery implements IQuery {
 
 	public void setAccepted(Boolean accepted) {
 		this.accepted = accepted;
+	}
+
+	@BeanQuery("((e.accepted = true and e.reviewed = true) or e.reviewed = false)")
+	public Boolean getRejected() {
+		return rejected;
+	}
+
+	public void setRejected(Boolean rejected) {
+		this.rejected = rejected;
 	}
 
 	@BeanQuery("e.reviewed = ?")

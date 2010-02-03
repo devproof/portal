@@ -33,4 +33,10 @@ public class CommentConstants {
 	public static final ResourceReference REF_ACCEPT_IMG = new ResourceReference(CommentConstants.class,
 			"img/accept.png");
 	public static final ResourceReference REF_REJECT_IMG = new ResourceReference(CommentConstants.class, "img/deny.png");
+
+	public static final String CONF_COMMENT_BLAMED_THRESHOLD = "comment_blamed_threshold";
+	public static final String CONF_COMMENT_SHOW_REAL_AUTHOR = "comment_show_real_author";
+	public static final String CONF_COMMENT_NUMBER_PER_PAGE = "comment_number_per_page";
+	public static final String CONF_COMMENT_NUMBER_PER_PAGE_ADMIN = "comment_number_per_page_admin";
+	public static final String CONF_COMMENT_SHOW_ONLY_REVIEWED = "comment_show_only_reviewed";
 }

@@ -1,21 +1,15 @@
-- Configuration for paging
-- Blame Support
-- Deletion Support (means hiding)
 - Overview for manageing comments (with searchbox: textsearch, moduleName, Blamed, deleted, not reviewed)
 - Suche (Gelöschte Artikel, Blamed, Not Reviewed, Volltextsuche)
 - Tests fÃ¼r Services
 - Tests fÃ¼r Pages und Panels
 - Configuration -> disable for each section/module -> als recht realisieren
-- configuration show only reviewed comments
 - notification bei neuen Kommentaren
 - notification bei automatic_blocked kommentaren
 - notification bei not reviewed and blamed
 - fix BlogPageTest
-- Configuration number for blamed article
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
-- numberOfComments abfrage mit entsprechender konfiguration (blamed, reviewed) abfragen
 - lizenzen hinzufügen
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

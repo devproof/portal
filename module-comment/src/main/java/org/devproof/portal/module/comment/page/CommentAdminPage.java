@@ -17,7 +17,10 @@ package org.devproof.portal.module.comment.page;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
 import org.devproof.portal.module.comment.panel.CommentPanel;
 import org.devproof.portal.module.comment.panel.CommentSearchBoxPanel;
@@ -30,8 +33,8 @@ public class CommentAdminPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
-	// @SpringBean(name = "configurationService")
-	// private ConfigurationService configurationService;
+	@SpringBean(name = "configurationService")
+	private ConfigurationService configurationService;
 
 	public CommentAdminPage(PageParameters params) {
 		super(params);
@@ -45,6 +48,14 @@ public class CommentAdminPage extends TemplatePage {
 			}
 		});
 		CommentConfiguration configuration = new CommentConfiguration();
-		add(new CommentPanel("comments", configuration));
+		add(new CommentPanel("comments", configuration) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public int getNumberOfPages() {
+				return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE_ADMIN);
+			}
+
+		});
 	}
 }
