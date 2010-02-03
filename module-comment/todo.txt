@@ -1,7 +1,6 @@
 - Schutzrecht comment administration page
 - Configuration -> disable for each section/module -> als recht realisieren
 - notification bei neuen Kommentaren
-- notification bei automatic_blocked kommentaren
 - notification bei not reviewed and blamed
 - fix BlogPageTest
 - FCKeditor austauschen
