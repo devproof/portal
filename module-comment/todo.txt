@@ -7,6 +7,6 @@
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
 - update sql scripts erstellen
-
+- refactor comment pages
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register
