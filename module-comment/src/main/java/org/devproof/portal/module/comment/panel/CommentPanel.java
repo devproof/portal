@@ -69,22 +69,14 @@ public class CommentPanel extends Panel {
 	private BubblePanel bubblePanel;
 
 	private CommentDataView dataView;
+	private CommentConfiguration configuration;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
+		this.configuration = configuration;
 		PortalUtil.addJQuery(this);
 		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
-		query = new CommentQuery();
-		query.setModuleName(configuration.getModuleName());
-		query.setModuleContentId(configuration.getModuleContentId());
-		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
-		if (showOnlyReviewed) {
-			query.setReviewed(Boolean.TRUE);
-			query.setAccepted(Boolean.TRUE);
-		} else {
-			query.setRejected(Boolean.FALSE);
-		}
-		query.setAutomaticBlocked(Boolean.FALSE);
+		query = createCommentQuery();
 		// query.setVisible(Boolean.TRUE);
 		commentDataProvider.setQueryObject(query);
 		bubblePanel = new BubblePanel("bubble");
@@ -305,5 +297,20 @@ public class CommentPanel extends Panel {
 
 	public boolean hideInput() {
 		return false;
+	}
+
+	protected CommentQuery createCommentQuery() {
+		CommentQuery query = new CommentQuery();
+		query.setModuleName(configuration.getModuleName());
+		query.setModuleContentId(configuration.getModuleContentId());
+		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
+		if (showOnlyReviewed) {
+			query.setReviewed(Boolean.TRUE);
+			query.setAccepted(Boolean.TRUE);
+		} else {
+			query.setRejected(Boolean.FALSE);
+		}
+		query.setAutomaticBlocked(Boolean.FALSE);
+		return query;
 	}
 }
