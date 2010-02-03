@@ -30,6 +30,9 @@ public interface CommentDao extends GenericDao<CommentEntity, Integer> {
 	@BulkUpdate("update CommentEntity c set c.accepted = false, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
 	public void rejectComment(CommentEntity comment);
 
-	@Query("select count(c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ?")
+	@Query("select count(distinct c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.accepted = true and c.reviewed = true and c.automaticBlocked = false")
+	public long findNumberOfReviewedComments(String moduleName, String moduleContentId);
+
+	@Query("select count(distinct c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.automaticBlocked = false and ((c.accepted = true and c.reviewed = true) or c.reviewed = false)")
 	public long findNumberOfComments(String moduleName, String moduleContentId);
 }

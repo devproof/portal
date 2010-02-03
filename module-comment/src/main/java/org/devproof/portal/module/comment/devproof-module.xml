@@ -46,6 +46,7 @@
 	
 	<!--  Service  -->
 	<bean id="commentService" class="org.devproof.portal.module.comment.service.CommentServiceImpl">
+		<property name="configurationService" ref="configurationService"/>
 		<property name="commentDao" ref="commentDao"/>
 	</bean>
 	
