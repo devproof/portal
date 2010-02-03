@@ -14,7 +14,6 @@ Frameworks for production:
 - Slf4j MIT License (http://en.wikipedia.org/wiki/MIT_License)
 - Apache commons Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - XStream BSD license (http://www.freebsd.org/copyright/license.html)
-- TinyMCE LGPL (http://www.gnu.org/licenses/lgpl-3.0.txt)
 - SyntaxHighlighter LGPLv3 (http://www.gnu.org/licenses/lgpl-3.0.txt)
 - EHCache  Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - Prototype MIT License (http://en.wikipedia.org/wiki/MIT_License)
@@ -22,8 +21,10 @@ Frameworks for production:
 - ROME Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - HSQLDB Own licence (http://hsqldb.org/web/hsqlLicense.html)
 - Apache Tomcat 6 Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
+- CKeditor LGPL (http://www.gnu.org/licenses/lgpl-3.0.txt)
+- JQuery MIT License (http://en.wikipedia.org/wiki/MIT_License)
 
-Frameworks for test (not build in!):
+Frameworks for test (not built in!):
 - JUnit Common Public License 1.0 (http://www.opensource.org/licenses/cpl1.0.php)
 - MySQL Connector GPL (why?!) (http://www.opensource.org/licenses/gpl-2.0.php)
 - Jetty Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
