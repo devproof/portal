@@ -35,20 +35,21 @@ public class CommentAdminPage extends TemplatePage {
 
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+	private CommentPanel commentPanel;
 
 	public CommentAdminPage(PageParameters params) {
 		super(params);
-		CommentQuery query = new CommentQuery();
+		final CommentQuery query = new CommentQuery();
 		addFilterBox(new CommentSearchBoxPanel("box", query) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
-
+				target.addComponent(commentPanel);
 			}
 		});
 		CommentConfiguration configuration = new CommentConfiguration();
-		add(new CommentPanel("comments", configuration) {
+		commentPanel = new CommentPanel("comments", configuration) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -60,6 +61,13 @@ public class CommentAdminPage extends TemplatePage {
 			public boolean hideInput() {
 				return true;
 			}
-		});
+
+			@Override
+			protected CommentQuery createCommentQuery() {
+				return query;
+			}
+		};
+		commentPanel.setOutputMarkupId(true);
+		add(commentPanel);
 	}
 }
