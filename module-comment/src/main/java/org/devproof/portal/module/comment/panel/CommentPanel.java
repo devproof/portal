@@ -141,7 +141,9 @@ public class CommentPanel extends Panel {
 		comment.setModuleContentId(configuration.getModuleContentId());
 		final Form<CommentEntity> form = new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(
 				comment));
-
+		if (hideInput()) {
+			form.setVisible(false);
+		}
 		WebMarkupContainer guestNameContainer = new WebMarkupContainer("guestNameContainer");
 		guestNameContainer.setVisible(PortalSession.get().getUser().isGuestRole());
 		TextField<String> guestNameField = new RequiredTextField<String>("guestName");
@@ -299,5 +301,9 @@ public class CommentPanel extends Panel {
 
 	public int getNumberOfPages() {
 		return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE);
+	}
+
+	public boolean hideInput() {
+		return false;
 	}
 }

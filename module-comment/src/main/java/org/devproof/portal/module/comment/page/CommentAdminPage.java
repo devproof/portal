@@ -56,6 +56,10 @@ public class CommentAdminPage extends TemplatePage {
 				return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE_ADMIN);
 			}
 
+			@Override
+			public boolean hideInput() {
+				return true;
+			}
 		});
 	}
 }
