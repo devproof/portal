@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.comment.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -36,19 +37,34 @@ public class CommentAdminPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private CommentPanel commentPanel;
+	private CommentQuery query;
 
 	public CommentAdminPage(PageParameters params) {
 		super(params);
-		final CommentQuery query = new CommentQuery();
-		addFilterBox(new CommentSearchBoxPanel("box", query) {
+		setCommentQuery();
+		add(createCommentPanel());
+		addFilterBox(createCommentSearchBoxPanel());
+	}
+
+	private CommentSearchBoxPanel createCommentSearchBoxPanel() {
+		return new CommentSearchBoxPanel("box", query) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
 				target.addComponent(commentPanel);
 			}
-		});
-		commentPanel = new CommentPanel("comments", new CommentAdminConfiguration()) {
+		};
+	}
+
+	private Component createCommentPanel() {
+		commentPanel = newCommentPanel();
+		commentPanel.setOutputMarkupId(true);
+		return commentPanel;
+	}
+
+	private CommentPanel newCommentPanel() {
+		return new CommentPanel("comments", new CommentAdminConfiguration()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -66,8 +82,10 @@ public class CommentAdminPage extends TemplatePage {
 				return query;
 			}
 		};
-		commentPanel.setOutputMarkupId(true);
-		add(commentPanel);
+	}
+
+	private void setCommentQuery() {
+		query = new CommentQuery();
 	}
 
 	private static class CommentAdminConfiguration implements CommentConfiguration {

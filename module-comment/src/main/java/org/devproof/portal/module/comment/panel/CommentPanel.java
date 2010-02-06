@@ -17,8 +17,10 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -44,7 +46,6 @@ import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
 import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxLink;
-import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
@@ -72,35 +73,143 @@ public class CommentPanel extends Panel {
 
 	private CommentDataView dataView;
 	private CommentConfiguration configuration;
+	private CommentEntity comment;
 	private boolean isAuthor;
+	private boolean hasSubmitted = false;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
 		this.configuration = configuration;
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page." + CommentAdminPage.class.getSimpleName());
-		PortalUtil.addJQuery(this);
-		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
-		query = createCommentQuery();
-		commentDataProvider.setQueryObject(query);
-		bubblePanel = new BubblePanel("bubble");
-		add(bubblePanel);
+		setAuthorRight();
+		setCommentQuery();
+		setNewCommentForForm();
+		add(createCSSHeaderContributor());
+		add(createBubblePanel());
+		add(createNoCommentsHintContainer());
+		add(createCommentDataView());
+		add(createFeedbackPanel());
+		add(createNewerLink());
+		add(createOlderLink());
+		add(createCommentForm());
+		add(createLoginToWriteCommentMessageContainer());
+		setOutputMarkupId(true);
+	}
 
-		add(new WebMarkupContainer("noCommentsHint") {
+	private Form<CommentEntity> createCommentForm() {
+		Form<CommentEntity> form = newCommentForm();
+		form.add(createGuestNameContainer());
+		form.add(createGuestEmailContainer());
+		form.add(createCommentField());
+		form.add(createAddCommentButton());
+		return form;
+	}
+
+	private WebMarkupContainer createGuestNameContainer() {
+		WebMarkupContainer guestNameContainer = new WebMarkupContainer("guestNameContainer");
+		guestNameContainer.setVisible(PortalSession.get().getUser().isGuestRole());
+		guestNameContainer.add(createGuestNameField());
+		return guestNameContainer;
+	}
+
+	private TextField<String> createGuestNameField() {
+		TextField<String> guestNameField = new RequiredTextField<String>("guestName");
+		guestNameField.add(StringValidator.lengthBetween(3, 50));
+		return guestNameField;
+	}
+
+	private WebMarkupContainer createGuestEmailContainer() {
+		WebMarkupContainer guestEmailContainer = new WebMarkupContainer("guestEmailContainer");
+		guestEmailContainer.setVisible(PortalSession.get().getUser().isGuestRole());
+		guestEmailContainer.add(createGuestEmailField());
+		return guestEmailContainer;
+	}
+
+	private TextField<String> createGuestEmailField() {
+		TextField<String> guestEmailField = new RequiredTextField<String>("guestEmail");
+		guestEmailField.add(StringValidator.maximumLength(50));
+		guestEmailField.add(EmailAddressValidator.getInstance());
+		return guestEmailField;
+	}
+
+	private TextArea<String> createCommentField() {
+		TextArea<String> commentField = new TextArea<String>("comment");
+		commentField.add(StringValidator.lengthBetween(10, 3000));
+		commentField.setRequired(true);
+		return commentField;
+	}
+
+	private CaptchaAjaxButton createAddCommentButton() {
+		return new CaptchaAjaxButton("addCommentButton", bubblePanel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+				hasSubmitted = true;
+				String commentStr = comment.getComment();
+				commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
+				comment.setComment(commentStr);
+				comment.setIpAddress(PortalSession.get().getIpAddress());
+				dataView.setCurrentPage(0);
+				commentService.save(comment);
+				info(getString("saved"));
+				target.addComponent(CommentPanel.this);
+			}
+
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				target.addComponent(CommentPanel.this);
+			}
+		};
+	}
+
+	private WebMarkupContainer createLoginToWriteCommentMessageContainer() {
+		return new WebMarkupContainer("loginToWriteComment") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isVisible() {
-				return commentDataProvider.size() == 0;
+				return !configuration.isAllowedToWrite();
 			}
 
-		});
-		// Repeater
-		add(dataView = new CommentDataView("listComment"));
-		add(feedback = new FeedbackPanel("feedback"));
-		feedback.setOutputMarkupId(true);
+		};
+	}
 
-		add(new AjaxLink<Void>("newerLink") {
+	private Form<CommentEntity> newCommentForm() {
+		return new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(comment)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return !hideInput() && configuration.isAllowedToWrite() && !hasSubmitted;
+			}
+		};
+	}
+
+	private void setNewCommentForForm() {
+		comment = new CommentEntity();
+		comment.setModuleName(configuration.getModuleName());
+		comment.setModuleContentId(configuration.getModuleContentId());
+	}
+
+	private AjaxLink<Void> createOlderLink() {
+		return new AjaxLink<Void>("olderLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				dataView.setCurrentPage(dataView.getCurrentPage() + 1);
+				target.addComponent(CommentPanel.this);
+			}
+
+			@Override
+			public boolean isVisible() {
+				return (dataView.getPageCount() - 1) > dataView.getCurrentPage();
+			}
+		};
+	}
+
+	private AjaxLink<Void> createNewerLink() {
+		return new AjaxLink<Void>("newerLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -114,80 +223,49 @@ public class CommentPanel extends Panel {
 				return dataView.getCurrentPage() != 0;
 			}
 
-		});
+		};
+	}
 
-		add(new AjaxLink<Void>("olderLink") {
+	private FeedbackPanel createFeedbackPanel() {
+		feedback = new FeedbackPanel("feedback");
+		feedback.setOutputMarkupId(true);
+		return feedback;
+	}
+
+	private CommentDataView createCommentDataView() {
+		dataView = new CommentDataView("listComment");
+		return dataView;
+	}
+
+	private WebMarkupContainer createNoCommentsHintContainer() {
+		return new WebMarkupContainer("noCommentsHint") {
 			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				dataView.setCurrentPage(dataView.getCurrentPage() + 1);
-				target.addComponent(CommentPanel.this);
-			}
 
 			@Override
 			public boolean isVisible() {
-				return (dataView.getPageCount() - 1) > dataView.getCurrentPage();
-			}
-		});
-
-		// Form
-		final CommentEntity comment = new CommentEntity();
-		comment.setModuleName(configuration.getModuleName());
-		comment.setModuleContentId(configuration.getModuleContentId());
-		final Form<CommentEntity> form = new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(
-				comment));
-		WebMarkupContainer loginToWriteComment = new WebMarkupContainer("loginToWriteComment");
-		add(loginToWriteComment);
-		if (hideInput()) {
-			form.setVisible(false);
-		} else {
-			boolean allowedToWrite = configuration.isAllowedToWrite();
-			form.setVisible(allowedToWrite);
-			loginToWriteComment.setVisible(!allowedToWrite);
-		}
-		WebMarkupContainer guestNameContainer = new WebMarkupContainer("guestNameContainer");
-		guestNameContainer.setVisible(PortalSession.get().getUser().isGuestRole());
-		TextField<String> guestNameField = new RequiredTextField<String>("guestName");
-		guestNameField.add(StringValidator.lengthBetween(3, 50));
-		guestNameContainer.add(guestNameField);
-		form.add(guestNameContainer);
-
-		WebMarkupContainer guestEmailContainer = new WebMarkupContainer("guestEmailContainer");
-		guestEmailContainer.setVisible(PortalSession.get().getUser().isGuestRole());
-		TextField<String> guestEmailField = new RequiredTextField<String>("guestEmail");
-		guestEmailField.add(StringValidator.maximumLength(50));
-		guestEmailField.add(EmailAddressValidator.getInstance());
-		guestEmailContainer.add(guestEmailField);
-		form.add(guestEmailContainer);
-
-		TextArea<String> commentField = new TextArea<String>("comment");
-		commentField.add(StringValidator.lengthBetween(10, 3000));
-		commentField.setRequired(true);
-		form.add(commentField);
-		form.add(new CaptchaAjaxButton("addCommentButton", bubblePanel) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				String commentStr = comment.getComment();
-				commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
-				comment.setComment(commentStr);
-				comment.setIpAddress(PortalSession.get().getIpAddress());
-				form.setVisible(false);
-				dataView.setCurrentPage(0);
-				commentService.save(comment);
-				info(getString("saved"));
-				target.addComponent(CommentPanel.this);
+				return commentDataProvider.size() == 0;
 			}
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(CommentPanel.this);
-			}
-		});
-		add(form);
-		setOutputMarkupId(true);
+		};
+	}
+
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubble");
+		return bubblePanel;
+	}
+
+	private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
+	}
+
+	private void setCommentQuery() {
+		query = createCommentQuery();
+		commentDataProvider.setQueryObject(query);
+	}
+
+	private void setAuthorRight() {
+		PortalSession session = (PortalSession) getSession();
+		isAuthor = session.hasRight("page." + CommentAdminPage.class.getSimpleName());
 	}
 
 	private class CommentDataView extends DataView<CommentEntity> {
@@ -233,17 +311,19 @@ public class CommentPanel extends Panel {
 	public class CommentView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
+		private Item<CommentEntity> item;
 
-		private CommentEntity comment;
-
-		public CommentView(String id, final Item<CommentEntity> item) {
+		public CommentView(String id, Item<CommentEntity> item) {
 			super(id, "commentView", CommentPanel.this);
+			this.item = item;
+			add(createCommentView());
+			add(createCommentContentLabel());
+			add(createReportViolationLink());
+			add(createAppropriateAuthorPanel());
 			item.setOutputMarkupId(true);
-			comment = item.getModelObject();
-			add(new CommentInfoPanel("commentInfo", comment));
-			Label commentLabel = new Label("comment", comment.getComment());
-			commentLabel.setEscapeModelStrings(false);
-			add(commentLabel);
+		}
+
+		private CaptchaAjaxLink createReportViolationLink() {
 			CaptchaAjaxLink reportViolationLink = new CaptchaAjaxLink("reportViolationLink", bubblePanel) {
 				private static final long serialVersionUID = 1L;
 
@@ -255,11 +335,24 @@ public class CommentPanel extends Panel {
 					bubblePanel.show(getMarkupId(), target);
 				}
 			};
-			add(reportViolationLink);
+			return reportViolationLink;
+		}
+
+		private Label createCommentContentLabel() {
+			Label commentLabel = new Label("comment", item.getModelObject().getComment());
+			commentLabel.setEscapeModelStrings(false);
+			return commentLabel;
+		}
+
+		private CommentInfoPanel createCommentView() {
+			return new CommentInfoPanel("commentInfo", item.getModelObject());
+		}
+
+		private Component createAppropriateAuthorPanel() {
 			if (isAuthor) {
-				add(new CommentAdminView("administration", item));
+				return new CommentAdminView("administration", item);
 			} else {
-				add(new EmptyPanel("administration"));
+				return new EmptyPanel("administration");
 			}
 		}
 	}
@@ -268,45 +361,88 @@ public class CommentPanel extends Panel {
 
 		private static final long serialVersionUID = 1L;
 
-		private CommentEntity comment;
+		private Item<CommentEntity> item;
 
-		public CommentAdminView(String id, final Item<CommentEntity> item) {
+		public CommentAdminView(String id, Item<CommentEntity> item) {
 			super(id, "commentAdminView", CommentPanel.this);
-			comment = item.getModelObject();
-			add(new Label("ipAddress", comment.getIpAddress()));
+			this.item = item;
+			add(createIpAddressLabel());
+			add(createAcceptLink());
+			add(createRejectLink());
+			add(createAcceptedLabel());
+			add(createNumberOfBlamesLabel());
+		}
 
-			AjaxLink<Void> acceptLink = new AjaxLink<Void>("acceptLink") {
+		private AjaxLink<Void> createRejectLink() {
+			AjaxLink<Void> rejectLink = newRejectLink();
+			rejectLink.add(new Image("rejectLinkImage", CommentConstants.REF_REJECT_IMG));
+			return rejectLink;
+		}
+
+		private AjaxLink<Void> newRejectLink() {
+			return new AjaxLink<Void>("rejectLink") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					commentService.acceptComment(comment);
-					bubblePanel.setMessage(getString("accepted"));
-					bubblePanel.show(getMarkupId(), target);
-					target.addComponent(item);
-				}
-			};
-			acceptLink.add(new Image("acceptLinkImage", CommentConstants.REF_ACCEPT_IMG));
-			add(acceptLink);
-
-			AjaxLink<Void> rejectLink = new AjaxLink<Void>("rejectLink") {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					commentService.rejectComment(comment);
+					commentService.rejectComment(item.getModelObject());
 					bubblePanel.setMessage(getString("rejected"));
 					bubblePanel.show(getMarkupId(), target);
 					target.addComponent(item);
 				}
 			};
-			rejectLink.add(new Image("rejectLinkImage", CommentConstants.REF_REJECT_IMG));
-			add(rejectLink);
-			IModel<String> accepted = new AbstractReadOnlyModel<String>() {
+		}
+
+		private AjaxLink<Void> createAcceptLink() {
+			AjaxLink<Void> acceptLink = newAcceptLink();
+			acceptLink.add(new Image("acceptLinkImage", CommentConstants.REF_ACCEPT_IMG));
+			return acceptLink;
+		}
+
+		private AjaxLink<Void> newAcceptLink() {
+			return new AjaxLink<Void>("acceptLink") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onClick(AjaxRequestTarget target) {
+					commentService.acceptComment(item.getModelObject());
+					bubblePanel.setMessage(getString("accepted"));
+					bubblePanel.show(getMarkupId(), target);
+					target.addComponent(item);
+				}
+			};
+		}
+
+		private Label createIpAddressLabel() {
+			return new Label("ipAddress", item.getModelObject().getIpAddress());
+		}
+
+		private Label createAcceptedLabel() {
+			Label acceptedLabel = newAcceptedLabel();
+			acceptedLabel.add(createStyleModifier());
+			return acceptedLabel;
+		}
+
+		private Label newAcceptedLabel() {
+			return new Label("accepted", createAcceptedLabelModel()) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public boolean isVisible() {
+					CommentEntity comment = item.getModelObject();
+					return comment.getReviewed() || comment.getAutomaticBlocked();
+				}
+
+			};
+		}
+
+		private IModel<String> createAcceptedLabelModel() {
+			return new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public String getObject() {
+					CommentEntity comment = item.getModelObject();
 					if (comment.getAutomaticBlocked()) {
 						return getString("stateBlocked");
 					}
@@ -314,16 +450,11 @@ public class CommentPanel extends Panel {
 				}
 
 			};
-			Label acceptedLabel = new Label("accepted", accepted) {
-				private static final long serialVersionUID = 1L;
+		}
 
-				@Override
-				public boolean isVisible() {
-					return comment.getReviewed() || comment.getAutomaticBlocked();
-				}
-
-			};
-			acceptedLabel.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+		private AttributeModifier createStyleModifier() {
+			final CommentEntity comment = item.getModelObject();
+			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -333,10 +464,12 @@ public class CommentPanel extends Panel {
 					}
 					return comment.getAccepted() ? "commentAccepted" : "commentRejected";
 				}
-			}));
-			add(acceptedLabel);
-			Label nrOfBlames = new Label("numberOfBlames", String.valueOf(comment.getNumberOfBlames()));
-			add(nrOfBlames);
+			});
+		}
+
+		private Label createNumberOfBlamesLabel() {
+			CommentEntity comment = item.getModelObject();
+			return new Label("numberOfBlames", String.valueOf(comment.getNumberOfBlames()));
 		}
 	}
 }
