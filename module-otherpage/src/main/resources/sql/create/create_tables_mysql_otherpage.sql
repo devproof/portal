@@ -13,6 +13,6 @@ CREATE TABLE `other_page_right_xref` (
   `right_id` varchar(50) NOT NULL,
   KEY `FKFA33F5DF61F54065` (`other_id`),
   KEY `FKFA33F5DFFEB2F584` (`right_id`),
-  CONSTRAINT `FKFA33F5DFFEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`),
+  CONSTRAINT `FKFA33F5DFFEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`) ON DELETE CASCADE,
   CONSTRAINT `FKFA33F5DF61F54065` FOREIGN KEY (`other_id`) REFERENCES `other_page` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

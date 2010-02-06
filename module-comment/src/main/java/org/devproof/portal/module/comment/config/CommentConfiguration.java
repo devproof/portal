@@ -20,35 +20,24 @@ import java.io.Serializable;
 /**
  * @author Carsten Hufe
  */
-public class CommentConfiguration implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String moduleName;
-	private String moduleContentId;
-	private String readRight;
-	private String writeRight;
-	
-	public String getModuleName() {
-		return moduleName;
-	}
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
-	}
-	public String getModuleContentId() {
-		return moduleContentId;
-	}
-	public void setModuleContentId(String moduleContentId) {
-		this.moduleContentId = moduleContentId;
-	}
-	public String getReadRight() {
-		return readRight;
-	}
-	public void setReadRight(String readRight) {
-		this.readRight = readRight;
-	}
-	public String getWriteRight() {
-		return writeRight;
-	}
-	public void setWriteRight(String writeRight) {
-		this.writeRight = writeRight;
-	}
+public interface CommentConfiguration extends Serializable {
+	/**
+	 * Returns the module name
+	 */
+	public String getModuleName();
+
+	/**
+	 * Returns the module content id
+	 */
+	public String getModuleContentId();
+
+	/**
+	 * returns true if the user is allowed to view the comments
+	 */
+	public boolean isAllowedToView();
+
+	/**
+	 * returns true if the user is allowed to compose comments
+	 */
+	public boolean isAllowedToWrite();
 }

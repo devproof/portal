@@ -69,7 +69,8 @@ public class PortalWebRequestCycle extends WebRequestCycle {
 		if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
 			SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
 					.unbindResource(sessionFactory);
-			if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()) {
+			if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()
+					&& !sessionHolder.getTransaction().wasCommitted()) {
 				sessionHolder.getTransaction().commit();
 			}
 			SessionFactoryUtils.closeSession(sessionHolder.getSession());

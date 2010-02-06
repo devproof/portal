@@ -1,11 +1,8 @@
-- Schutzrecht comment administration page
-- Configuration -> disable for each section/module -> als recht realisieren
+- refactor comment pages
+- in article einbauen
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed
-- fix BlogPageTest
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
-- update sql scripts erstellen
-- refactor comment pages
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

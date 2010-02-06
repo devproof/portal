@@ -39,6 +39,9 @@
 					</tr>
 				</table>
 				</form>
+				<div wicket:id="loginToWriteComment">
+					<wicket:message key="loginToWriteComment"/>
+				</div>
 			</div>
 		</div>
 		<!-- div wicket:id="paging">paging</div -->	
@@ -46,8 +49,12 @@
 			<div wicket:id="comment" class="comment">[comment]</div>
 			<div  class="commentMetaInfo">
 				<span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message key="reportViolation"/></a> ]
-				<div wicket:id="administration" class="commentAdmin"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>] &nbsp;<wicket:message key="numberOfBlames"/><span wicket:id="numberOfBlames">0</span> &nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a> &nbsp;<span wicket:id="accepted">accepted</span> </div>
+				<div wicket:id="administration"/>
 			</div>
+		</wicket:fragment>
+		
+		<wicket:fragment wicket:id="commentAdminView">
+			<div class="commentAdmin"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span wicket:id="ipAddress"/>] &nbsp;<wicket:message key="numberOfBlames"/><span wicket:id="numberOfBlames">0</span> &nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage" alt="Accept"/></a> <a wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a> &nbsp;<span wicket:id="accepted">accepted</span> </div>
 		</wicket:fragment>
 	</wicket:panel>
 </body>

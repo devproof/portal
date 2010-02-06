@@ -49,7 +49,7 @@ public class UsernamePanel extends Panel {
 
 	private WebMarkupContainer newContactPageLink() {
 		PortalSession session = (PortalSession) getSession();
-		if (session.hasRight("page.ContactPage") && exists) {
+		if (session.hasRight("page." + ContactPage.class.getSimpleName()) && exists) {
 			return new BookmarkablePageLink<ContactPage>("userLink", ContactPage.class).setParameter("0", username);
 		} else {
 			return new WebMarkupContainer("userLink");

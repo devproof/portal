@@ -30,6 +30,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.common.dao.DeleteFailedException;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -177,11 +178,15 @@ public class RightPage extends TemplatePage {
 
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
-					rightService.delete(right);
-					rightService.refreshGlobalApplicationRights();
-					target.addComponent(refreshTable);
-					target.addComponent(getFeedback());
-					info(getString("msg.deleted"));
+					try {
+						rightService.delete(right);
+						rightService.refreshGlobalApplicationRights();
+						target.addComponent(refreshTable);
+						target.addComponent(getFeedback());
+						info(getString("msg.deleted"));
+					} catch (DeleteFailedException e) {
+						error(getString("msg.deleteFailed"));
+					}
 				}
 
 				@Override

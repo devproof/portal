@@ -17,6 +17,9 @@ package org.devproof.portal.module.blog.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.Component.IVisitor;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
 
@@ -29,7 +32,7 @@ public class BlogPageTest extends TestCase {
 	@Override
 	public void setUp() throws Exception {
 		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
-				"insert_blog.sql");
+				"insert_blog.sql", "create_tables_hsql_comment.sql", "insert_comment.sql");
 	}
 
 	@Override
@@ -38,10 +41,18 @@ public class BlogPageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		// tester.startPage(BlogPage.class);
-		// // must be stateless to save memory (non-stateless creates
-		// HttpSession)
-		// assertTrue(tester.getLastRenderedPage().isPageStateless());
-		// tester.assertRenderedPage(BlogPage.class);
+		tester.startPage(BlogPage.class);
+		// must be stateless to save memory (non-stateless creates HttpSession)
+		Page page = tester.getLastRenderedPage();
+		page.visitChildren(new IVisitor<Component>() {
+
+			@Override
+			public Object component(Component component) {
+				System.out.println(component.getId() + ": " + component.isStateless());
+				return null;
+			}
+		});
+		assertTrue(tester.getLastRenderedPage().isPageStateless());
+		tester.assertRenderedPage(BlogPage.class);
 	}
 }

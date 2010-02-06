@@ -76,7 +76,7 @@ public class OtherPageBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page.OtherPagePage");
+		isAuthor = session.hasRight("page." + OtherPagePage.class.getSimpleName());
 	}
 
 	public boolean isAuthor() {

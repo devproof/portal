@@ -73,7 +73,7 @@ public abstract class BlogBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page.BlogEditPage");
+		isAuthor = session.hasRight("page." + BlogEditPage.class.getSimpleName());
 	}
 
 	public boolean isAuthor() {
