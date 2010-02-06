@@ -1,4 +1,5 @@
-- staelessajaxlink funks nicht
+- remove statelessform?
+- remove stateless voting zeug?
 - in article einbauen
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed

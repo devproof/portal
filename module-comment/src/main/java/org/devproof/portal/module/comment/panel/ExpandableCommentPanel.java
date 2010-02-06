@@ -17,6 +17,7 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -28,7 +29,6 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.devproof.portal.core.module.common.component.StatelessAjaxLink;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
@@ -96,8 +96,8 @@ public class ExpandableCommentPanel extends Panel {
 		return new Label("commentsLinkLabel", createLinkLabelTextModel());
 	}
 
-	private StatelessAjaxLink<Void> newCommentLink() {
-		return new StatelessAjaxLink<Void>("commentsLink") {
+	private AjaxLink<Void> newCommentLink() {
+		return new AjaxLink<Void>("commentsLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
