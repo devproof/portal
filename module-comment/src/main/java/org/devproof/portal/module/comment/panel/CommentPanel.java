@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -48,6 +49,7 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
 import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.page.CommentAdminPage;
 import org.devproof.portal.module.comment.query.CommentQuery;
 import org.devproof.portal.module.comment.service.CommentService;
 
@@ -70,14 +72,16 @@ public class CommentPanel extends Panel {
 
 	private CommentDataView dataView;
 	private CommentConfiguration configuration;
+	private boolean isAuthor;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
 		this.configuration = configuration;
+		PortalSession session = (PortalSession) getSession();
+		isAuthor = session.hasRight("page." + CommentAdminPage.class.getSimpleName());
 		PortalUtil.addJQuery(this);
 		add(CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css"));
 		query = createCommentQuery();
-		// query.setVisible(Boolean.TRUE);
 		commentDataProvider.setQueryObject(query);
 		bubblePanel = new BubblePanel("bubble");
 		add(bubblePanel);
@@ -133,8 +137,14 @@ public class CommentPanel extends Panel {
 		comment.setModuleContentId(configuration.getModuleContentId());
 		final Form<CommentEntity> form = new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(
 				comment));
+		WebMarkupContainer loginToWriteComment = new WebMarkupContainer("loginToWriteComment");
+		add(loginToWriteComment);
 		if (hideInput()) {
 			form.setVisible(false);
+		} else {
+			boolean allowedToWrite = configuration.isAllowedToWrite();
+			form.setVisible(allowedToWrite);
+			loginToWriteComment.setVisible(!allowedToWrite);
 		}
 		WebMarkupContainer guestNameContainer = new WebMarkupContainer("guestNameContainer");
 		guestNameContainer.setVisible(PortalSession.get().getUser().isGuestRole());
@@ -195,6 +205,31 @@ public class CommentPanel extends Panel {
 		}
 	}
 
+	public int getNumberOfPages() {
+		return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE);
+	}
+
+	public boolean hideInput() {
+		return false;
+	}
+
+	protected CommentQuery createCommentQuery() {
+		CommentQuery query = new CommentQuery();
+		query.setModuleName(configuration.getModuleName());
+		query.setModuleContentId(configuration.getModuleContentId());
+		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
+		if (showOnlyReviewed) {
+			query.setReviewed(Boolean.TRUE);
+			query.setAccepted(Boolean.TRUE);
+		} else {
+			query.setRejected(Boolean.FALSE);
+		}
+		if (!PortalSession.get().hasRight("page." + CommentAdminPage.class.getSimpleName())) {
+			query.setAutomaticBlocked(Boolean.FALSE);
+		}
+		return query;
+	}
+
 	public class CommentView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
@@ -221,9 +256,24 @@ public class CommentPanel extends Panel {
 				}
 			};
 			add(reportViolationLink);
+			if (isAuthor) {
+				add(new CommentAdminView("administration", item));
+			} else {
+				add(new EmptyPanel("administration"));
+			}
+		}
+	}
 
-			WebMarkupContainer administrationContainer = new WebMarkupContainer("administration");
-			administrationContainer.add(new Label("ipAddress", comment.getIpAddress()));
+	public class CommentAdminView extends Fragment {
+
+		private static final long serialVersionUID = 1L;
+
+		private CommentEntity comment;
+
+		public CommentAdminView(String id, final Item<CommentEntity> item) {
+			super(id, "commentAdminView", CommentPanel.this);
+			comment = item.getModelObject();
+			add(new Label("ipAddress", comment.getIpAddress()));
 
 			AjaxLink<Void> acceptLink = new AjaxLink<Void>("acceptLink") {
 				private static final long serialVersionUID = 1L;
@@ -237,7 +287,7 @@ public class CommentPanel extends Panel {
 				}
 			};
 			acceptLink.add(new Image("acceptLinkImage", CommentConstants.REF_ACCEPT_IMG));
-			administrationContainer.add(acceptLink);
+			add(acceptLink);
 
 			AjaxLink<Void> rejectLink = new AjaxLink<Void>("rejectLink") {
 				private static final long serialVersionUID = 1L;
@@ -251,7 +301,7 @@ public class CommentPanel extends Panel {
 				}
 			};
 			rejectLink.add(new Image("rejectLinkImage", CommentConstants.REF_REJECT_IMG));
-			administrationContainer.add(rejectLink);
+			add(rejectLink);
 			IModel<String> accepted = new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
 
@@ -284,33 +334,9 @@ public class CommentPanel extends Panel {
 					return comment.getAccepted() ? "commentAccepted" : "commentRejected";
 				}
 			}));
-			administrationContainer.add(acceptedLabel);
+			add(acceptedLabel);
 			Label nrOfBlames = new Label("numberOfBlames", String.valueOf(comment.getNumberOfBlames()));
-			administrationContainer.add(nrOfBlames);
-			add(administrationContainer);
+			add(nrOfBlames);
 		}
-	}
-
-	public int getNumberOfPages() {
-		return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE);
-	}
-
-	public boolean hideInput() {
-		return false;
-	}
-
-	protected CommentQuery createCommentQuery() {
-		CommentQuery query = new CommentQuery();
-		query.setModuleName(configuration.getModuleName());
-		query.setModuleContentId(configuration.getModuleContentId());
-		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
-		if (showOnlyReviewed) {
-			query.setReviewed(Boolean.TRUE);
-			query.setAccepted(Boolean.TRUE);
-		} else {
-			query.setRejected(Boolean.FALSE);
-		}
-		query.setAutomaticBlocked(Boolean.FALSE);
-		return query;
 	}
 }

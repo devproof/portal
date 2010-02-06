@@ -21,7 +21,7 @@ CREATE TABLE `bookmark_right_xref` (
   `right_id` varchar(50) NOT NULL,
   KEY `FK6B52A007BAE949C5` (`bookmark_id`),
   KEY `FK6B52A007FEB2F584` (`right_id`),
-  CONSTRAINT `FK6B52A007FEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`),
+  CONSTRAINT `FK6B52A007FEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`) ON DELETE CASCADE,
   CONSTRAINT `FK6B52A007BAE949C5` FOREIGN KEY (`bookmark_id`) REFERENCES `bookmark` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 CREATE TABLE `bookmark_tag` (

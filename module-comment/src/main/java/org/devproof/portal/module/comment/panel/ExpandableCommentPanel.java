@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.module.comment.panel;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -28,6 +28,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.common.component.StatelessAjaxLink;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
@@ -55,6 +56,11 @@ public class ExpandableCommentPanel extends Panel {
 
 	}
 
+	@Override
+	public boolean isVisible() {
+		return configuration.isAllowedToView();
+	}
+
 	private WebMarkupContainer createRefreshCommentContainer() {
 		refreshContainer = new WebMarkupContainer("refreshCommentContainer");
 		refreshContainer.add(createEmptyCommentPanel());
@@ -79,8 +85,8 @@ public class ExpandableCommentPanel extends Panel {
 		return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
 	}
 
-	private AjaxLink<Void> createCommentLink() {
-		AjaxLink<Void> commentLink = newCommentLink();
+	private Component createCommentLink() {
+		WebMarkupContainer commentLink = newCommentLink();
 		commentLink.add(createCommentsLinkLabel());
 		commentLink.setOutputMarkupId(true);
 		return commentLink;
@@ -90,14 +96,13 @@ public class ExpandableCommentPanel extends Panel {
 		return new Label("commentsLinkLabel", createLinkLabelTextModel());
 	}
 
-	private AjaxLink<Void> newCommentLink() {
-		return new AjaxLink<Void>("commentsLink") {
+	private StatelessAjaxLink<Void> newCommentLink() {
+		return new StatelessAjaxLink<Void>("commentsLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				if (visible) {
-
 					target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
 				} else {
 					refreshContainer.replace(createCommentPanel());
@@ -125,8 +130,8 @@ public class ExpandableCommentPanel extends Panel {
 				} else {
 					long numberOfComments = commentService.findNumberOfComments(configuration.getModuleName(),
 							configuration.getModuleContentId());
-					return numberOfComments == 0 ? getString("writeComment") : getString("numberOfComments", Model
-							.of(numberOfComments));
+					return numberOfComments == 0 && configuration.isAllowedToWrite() ? getString("writeComment")
+							: getString("numberOfComments", Model.of(numberOfComments));
 				}
 			}
 		};

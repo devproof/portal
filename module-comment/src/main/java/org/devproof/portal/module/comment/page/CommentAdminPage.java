@@ -48,8 +48,7 @@ public class CommentAdminPage extends TemplatePage {
 				target.addComponent(commentPanel);
 			}
 		});
-		CommentConfiguration configuration = new CommentConfiguration();
-		commentPanel = new CommentPanel("comments", configuration) {
+		commentPanel = new CommentPanel("comments", new CommentAdminConfiguration()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -69,5 +68,29 @@ public class CommentAdminPage extends TemplatePage {
 		};
 		commentPanel.setOutputMarkupId(true);
 		add(commentPanel);
+	}
+
+	private static class CommentAdminConfiguration implements CommentConfiguration {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public String getModuleContentId() {
+			return null;
+		}
+
+		@Override
+		public String getModuleName() {
+			return null;
+		}
+
+		@Override
+		public boolean isAllowedToWrite() {
+			return false;
+		}
+
+		@Override
+		public boolean isAllowedToView() {
+			return true;
+		}
 	}
 }

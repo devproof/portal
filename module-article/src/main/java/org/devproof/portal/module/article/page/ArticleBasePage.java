@@ -53,7 +53,7 @@ public class ArticleBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page.ArticleEditPage");
+		isAuthor = session.hasRight("page." + ArticleEditPage.class.getSimpleName());
 	}
 
 	private void addArticleAddLink() {

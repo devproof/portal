@@ -151,7 +151,7 @@ public abstract class DownloadBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page.DownloadEditPage");
+		isAuthor = session.hasRight("page." + DownloadEditPage.class.getSimpleName());
 	}
 
 	public boolean isAuthor() {

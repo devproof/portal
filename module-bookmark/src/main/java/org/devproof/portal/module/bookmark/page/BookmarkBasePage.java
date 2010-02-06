@@ -191,7 +191,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page.BookmarkEditPage");
+		isAuthor = session.hasRight("page." + BookmarkEditPage.class.getSimpleName());
 	}
 
 	public WebMarkupContainer getModalWindow() {

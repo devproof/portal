@@ -97,7 +97,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		getSession().refresh(entity);
 	}
 
-	public void delete(T entity) {
+	public void delete(T entity) throws DeleteFailedException {
 		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
 		if (holder.getTransaction() == null) {
 			LOG.debug("No transaction found, start one.");

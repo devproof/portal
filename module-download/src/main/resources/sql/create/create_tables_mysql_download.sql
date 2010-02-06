@@ -24,7 +24,7 @@ CREATE TABLE `download_right_xref` (
   `right_id` varchar(50) NOT NULL,
   KEY `FK24629575D8DA64D7` (`download_id`),
   KEY `FK24629575FEB2F584` (`right_id`),
-  CONSTRAINT `FK24629575FEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`),
+  CONSTRAINT `FK24629575FEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`) ON DELETE CASCADE,
   CONSTRAINT `FK24629575D8DA64D7` FOREIGN KEY (`download_id`) REFERENCES `download` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 CREATE TABLE `download_tag` (

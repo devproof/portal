@@ -28,10 +28,6 @@
     				<property name="pageClass" value="org.devproof.portal.module.comment.page.CommentAdminPage"/>
     				<property name="registerGlobalAdminLink" value="true"/>
     			</bean>
-    			<bean class="org.devproof.portal.core.config.PageConfiguration">
-    				<property name="mountPath" value="/guestbook"/>
-    				<property name="pageClass" value="org.devproof.portal.module.comment.page.GuestbookPage"/>
-    			</bean>
     		</list>
     	</property>
     </bean>

@@ -61,6 +61,7 @@ public class BlogEditPage extends BlogBasePage {
 		form.add(createContentField());
 		form.add(createTagField());
 		form.add(createViewRightPanel());
+		form.add(createCommentRightPanel());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -83,6 +84,10 @@ public class BlogEditPage extends BlogBasePage {
 
 	private RightGridPanel createViewRightPanel() {
 		return new RightGridPanel("viewright", "blog.view", new ListModel<RightEntity>(blog.getAllRights()));
+	}
+
+	private RightGridPanel createCommentRightPanel() {
+		return new RightGridPanel("commentright", "blog.comment", new ListModel<RightEntity>(blog.getAllRights()));
 	}
 
 	private TagField<BlogTagEntity> createTagField() {

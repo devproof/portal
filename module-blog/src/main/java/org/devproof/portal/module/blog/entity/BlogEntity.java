@@ -103,6 +103,16 @@ final public class BlogEntity extends BaseEntity {
 		return getRightsStartingWith(allRights, "blog.view");
 	}
 
+	@Transient
+	public List<RightEntity> getCommentViewRights() {
+		return getRightsStartingWith(allRights, "blog.comment.view");
+	}
+
+	@Transient
+	public List<RightEntity> getCommentWriteRights() {
+		return getRightsStartingWith(allRights, "blog.comment.write");
+	}
+
 	public List<BlogTagEntity> getTags() {
 		if (tags == null) {
 			tags = new ArrayList<BlogTagEntity>();

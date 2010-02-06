@@ -13,7 +13,7 @@ CREATE TABLE `blog_right_xref` (
   `right_id` varchar(50) NOT NULL,
   KEY `FK21039A1B6C6A8F31` (`blog_id`),
   KEY `FK21039A1BFEB2F584` (`right_id`),
-  CONSTRAINT `FK21039A1BFEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`),
+  CONSTRAINT `FK21039A1BFEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`) ON DELETE CASCADE,
   CONSTRAINT `FK21039A1B6C6A8F31` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 CREATE TABLE `blog_tag` (

@@ -91,5 +91,4 @@ public abstract class BaseEntity implements Serializable {
 		}
 		return back;
 	}
-
 }

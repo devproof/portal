@@ -44,7 +44,7 @@ import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.devproof.portal.module.blog.panel.BlogSearchBoxPanel;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.devproof.portal.module.blog.service.BlogService;
-import org.devproof.portal.module.comment.config.CommentConfiguration;
+import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 /**
@@ -211,10 +211,12 @@ public class BlogPage extends BlogBasePage {
 		}
 
 		private Component createCommentPanel() {
-			CommentConfiguration config = new CommentConfiguration();
-			config.setModuleName(BlogPage.class.getSimpleName());
-			config.setModuleContentId(blog.getId().toString());
-			return new ExpandableCommentPanel("comments", config);
+			DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+			conf.setModuleContentId(blog.getId().toString());
+			conf.setModuleName(BlogPage.class.getSimpleName());
+			conf.setViewRights(blog.getCommentViewRights());
+			conf.setWriteRights(blog.getCommentWriteRights());
+			return new ExpandableCommentPanel("comments", conf);
 		}
 
 		private ContentTagPanel<BlogTagEntity> createTagPanel() {
