@@ -50,19 +50,26 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
 	}
 
 	protected void onRated(int rating, AjaxRequestTarget target, String outputMarkupId) {
-		if (showCaptcha()) {
-			CaptchaPanel captchaPanel = createCaptchaPanel(rating);
-			bubblePanel.setContent(captchaPanel);
-			bubblePanel.show(outputMarkupId, target);
+		if (!hasVoted.getObject()) {
+			if (showCaptcha()) {
+				CaptchaPanel captchaPanel = createCaptchaPanel(rating, outputMarkupId);
+				bubblePanel.setContent(captchaPanel);
+				bubblePanel.show(outputMarkupId, target);
+			} else {
+				onRatedAndCaptchaValidated(rating, target);
+				bubblePanel.setMessage(getString("voteCounted"));
+				bubblePanel.show(outputMarkupId, target);
+				// target.addComponent(CaptchaRatingPanel.this.get("rater"));
+			}
 		} else {
-			onRatedAndCaptchaValidated(rating, target);
-			target.addComponent(CaptchaRatingPanel.this.get("rater"));
+			bubblePanel.setMessage(getString("alreadyVoted"));
+			bubblePanel.show(outputMarkupId, target);
 		}
 	}
 
 	protected abstract void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target);
 
-	private CaptchaPanel createCaptchaPanel(final int rating) {
+	private CaptchaPanel createCaptchaPanel(final int rating, final String outputMarkupId) {
 		return new CaptchaPanel(bubblePanel.getContentId()) {
 			private static final long serialVersionUID = 1L;
 
@@ -70,7 +77,9 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
 			protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 				bubblePanel.hide(target);
 				CaptchaRatingPanel.this.onRatedAndCaptchaValidated(rating, target);
-				target.addComponent(CaptchaRatingPanel.this.get("rater"));
+				bubblePanel.setMessage(CaptchaRatingPanel.this.getString("voteCounted"));
+				bubblePanel.show(outputMarkupId, target);
+				// target.addComponent(CaptchaRatingPanel.this.get("rater"));
 			}
 
 			@Override
@@ -120,7 +129,7 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
 
 				@Override
 				public boolean isEnabled() {
-					return !hasVoted.getObject();
+					return !hasVoted.getObject() && CaptchaRatingPanel.this.isEnabled();
 				}
 			};
 
