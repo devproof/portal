@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
 	  xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>	 
-<div class="st2"></div>
+<!-- div class="st2"></div>
 <div class="sbl2">
 	<div class="sbr2">
 		<div class="stl2">
@@ -12,10 +12,24 @@
 		</div>
 	</div>
 </div>
-<div class="sb2"></div>
+<div class="sb2"></div-->
+
+<div class="dialog type2 drip">
+ <div class="dialogContent">
+  <div class="t"></div>
+  <div class="hd">
+  <div  wicket:id="content"/>
+  </div>
+ </div>
+ <div class="b"><div></div></div>
+</div>
+
+
+
+
 
 <wicket:fragment wicket:id="messageFragment">
-<div>
+<div style="padding: 10px 15px 10px 15px">
 	<p><img wicket:id="infoImage" style="vertical-align:middle;"/>&nbsp;&nbsp;<span  wicket:id="message" style="vertical-align:middle;"/></p>
 	<button class="button" wicket:id="okButton"><wicket:message key="okButton"/></button>&nbsp;
 </div>

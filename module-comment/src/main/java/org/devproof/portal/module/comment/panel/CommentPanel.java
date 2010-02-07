@@ -331,8 +331,7 @@ public class CommentPanel extends Panel {
 				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 					CommentEntity comment = item.getModelObject();
 					commentService.reportViolation(comment);
-					bubblePanel.setMessage(getString("reported"));
-					bubblePanel.show(getMarkupId(), target);
+					bubblePanel.showMessage(getMarkupId(), target, getString("reported"));
 				}
 			};
 			return reportViolationLink;
@@ -386,8 +385,7 @@ public class CommentPanel extends Panel {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					commentService.rejectComment(item.getModelObject());
-					bubblePanel.setMessage(getString("rejected"));
-					bubblePanel.show(getMarkupId(), target);
+					bubblePanel.showMessage(getMarkupId(), target, getString("rejected"));
 					target.addComponent(item);
 				}
 			};
@@ -406,8 +404,7 @@ public class CommentPanel extends Panel {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					commentService.acceptComment(item.getModelObject());
-					bubblePanel.setMessage(getString("accepted"));
-					bubblePanel.show(getMarkupId(), target);
+					bubblePanel.showMessage(getMarkupId(), target, getString("accepted"));
 					target.addComponent(item);
 				}
 			};
