@@ -39,4 +39,8 @@ public class CommentConstants {
 	public static final String CONF_COMMENT_NUMBER_PER_PAGE = "comment_number_per_page";
 	public static final String CONF_COMMENT_NUMBER_PER_PAGE_ADMIN = "comment_number_per_page_admin";
 	public static final String CONF_COMMENT_SHOW_ONLY_REVIEWED = "comment_show_only_reviewed";
+
+	public static final String CONF_NOTIFY_NEW_COMMENT = "spring.emailTemplateDao.findAll.subject.id.newcommentnotification";
+	public static final String CONF_NOTIFY_AUTOBLOCKED = "spring.emailTemplateDao.findAll.subject.id.autoblockednotification";
+	public static final String CONF_NOTIFY_VIOLATION = "spring.emailTemplateDao.findAll.subject.id.violationnotification";
 }

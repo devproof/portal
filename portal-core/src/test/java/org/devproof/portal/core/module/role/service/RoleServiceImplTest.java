@@ -46,7 +46,7 @@ public class RoleServiceImplTest extends TestCase {
 	public void testSave() {
 		RoleEntity e = impl.newRoleEntity();
 		e.setId(1);
-		roleDaoMock.save(e);
+		EasyMock.expect(roleDaoMock.save(e)).andReturn(e);
 		EasyMock.replay(roleDaoMock);
 		impl.save(e);
 		EasyMock.verify(roleDaoMock);

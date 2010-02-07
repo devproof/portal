@@ -61,7 +61,7 @@ public class UserServiceImplTest extends TestCase {
 	public void testSave() {
 		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		userDaoMock.save(e);
+		EasyMock.expect(userDaoMock.save(e)).andReturn(e);
 		EasyMock.replay(userDaoMock);
 		impl.save(e);
 		EasyMock.verify(userDaoMock);
@@ -168,7 +168,7 @@ public class UserServiceImplTest extends TestCase {
 		UserEntity user = createTestUser(false);
 		user.setConfirmationCode("right");
 		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(user).anyTimes();
-		userDaoMock.save(user);
+		EasyMock.expect(userDaoMock.save(user)).andReturn(user);
 		EasyMock.replay(userDaoMock);
 		assertFalse(impl.activateUser("testuser", "wrong"));
 		assertTrue(impl.activateUser("testuser", "right"));
@@ -330,7 +330,7 @@ public class UserServiceImplTest extends TestCase {
 	public void testAuthentificate_withUsername_success() {
 		UserEntity expectedUser = createTestUser(true);
 		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		userDaoMock.save(expectedUser);
+		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
 		EasyMock.replay(userDaoMock);
 		try {
 			UserEntity user = impl.authentificate("testuser", "password", "123.123.123.123");
@@ -421,7 +421,7 @@ public class UserServiceImplTest extends TestCase {
 	public void testAuthentificate_withSessionId_success() {
 		UserEntity expectedUser = createTestUser(true);
 		EasyMock.expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
-		userDaoMock.save(expectedUser);
+		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
 		EasyMock.replay(userDaoMock);
 		UserEntity user = impl.authentificate("sessionId", "123.123.123.123");
 		assertNotNull(user);
@@ -536,7 +536,7 @@ public class UserServiceImplTest extends TestCase {
 	public void testGenerateForgotPasswordCode_withUsername() {
 		UserEntity expectedUser = createTestUser(true);
 		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		userDaoMock.save(expectedUser);
+		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
 		EasyMock.replay(userDaoMock);
 		List<UserEntity> users = impl.generateForgotPasswordCode("testuser");
 		UserEntity user = users.get(0);
@@ -549,7 +549,7 @@ public class UserServiceImplTest extends TestCase {
 		UserEntity expectedUser = createTestUser(true);
 		EasyMock.expect(userDaoMock.findUserByUsername("max.power@no.domain")).andReturn(null);
 		EasyMock.expect(userDaoMock.findUserByEmail("max.power@no.domain")).andReturn(Arrays.asList(expectedUser));
-		userDaoMock.save(expectedUser);
+		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
 		EasyMock.replay(userDaoMock);
 		List<UserEntity> users = impl.generateForgotPasswordCode("max.power@no.domain");
 		UserEntity user = users.get(0);
@@ -582,7 +582,7 @@ public class UserServiceImplTest extends TestCase {
 	public void testSetNewPassword() {
 		UserEntity user = createTestUser(false);
 		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(user);
-		userDaoMock.save(user);
+		EasyMock.expect(userDaoMock.save(user)).andReturn(user);
 		EasyMock.replay(userDaoMock);
 		impl.saveNewPassword("testuser", "12345");
 		assertNull(user.getForgotPasswordCode());

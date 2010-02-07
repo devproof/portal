@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.email.service;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -156,6 +157,10 @@ public class EmailServiceImpl implements EmailService {
 			birthday = dateFormat.format(placeholder.getBirthday());
 		}
 		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_BIRTHDAY, birthday);
+		Map<String, String> additionalPlaceholder = placeholder.getAdditionalPlaceholder();
+		for (String key : additionalPlaceholder.keySet()) {
+			content = content.replace("#" + key + "#", additionalPlaceholder.get(key));
+		}
 		return content;
 	}
 

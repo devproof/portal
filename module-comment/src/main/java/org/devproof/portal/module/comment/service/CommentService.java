@@ -40,6 +40,11 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
 	void acceptComment(CommentEntity comment);
 
 	/**
+	 * Saves a new comment and sends notification emails
+	 */
+	void saveNewComment(CommentEntity comment, UrlCallback urlCallback);
+
+	/**
 	 * Returns the number of comments for the given module and module content id
 	 */
 	long findNumberOfComments(String moduleName, String moduleContentId);
@@ -47,5 +52,5 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
 	/**
 	 * Report a violation
 	 */
-	void reportViolation(CommentEntity comment);
+	void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp);
 }

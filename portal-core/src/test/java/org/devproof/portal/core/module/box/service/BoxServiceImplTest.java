@@ -41,7 +41,7 @@ public class BoxServiceImplTest extends TestCase {
 	public void testSave() {
 		BoxEntity e = impl.newBoxEntity();
 		e.setId(1);
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		EasyMock.replay(mock);
 		impl.save(e);
 		EasyMock.verify(mock);
@@ -116,8 +116,8 @@ public class BoxServiceImplTest extends TestCase {
 		e2.setSort(2);
 		EasyMock.expect(mock.getMaxSortNum()).andReturn(2);
 		EasyMock.expect(mock.findBoxBySort(2)).andReturn(e2);
-		mock.save(e2);
-		mock.save(e1);
+		EasyMock.expect(mock.save(e2)).andReturn(e2);
+		EasyMock.expect(mock.save(e1)).andReturn(e1);
 		EasyMock.replay(mock);
 		impl.moveDown(e1);
 		assertEquals(Integer.valueOf(2), e1.getSort());
@@ -133,8 +133,8 @@ public class BoxServiceImplTest extends TestCase {
 		e2.setId(2);
 		e2.setSort(2);
 		EasyMock.expect(mock.findBoxBySort(1)).andReturn(e1);
-		mock.save(e2);
-		mock.save(e1);
+		EasyMock.expect(mock.save(e2)).andReturn(e2);
+		EasyMock.expect(mock.save(e1)).andReturn(e1);
 		EasyMock.replay(mock);
 		impl.moveUp(e2);
 		assertEquals(Integer.valueOf(2), e1.getSort());

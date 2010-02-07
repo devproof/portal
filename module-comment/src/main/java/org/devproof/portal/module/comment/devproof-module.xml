@@ -44,6 +44,9 @@
 	<bean id="commentService" class="org.devproof.portal.module.comment.service.CommentServiceImpl">
 		<property name="configurationService" ref="configurationService"/>
 		<property name="commentDao" ref="commentDao"/>
+		<property name="emailService" ref="emailService"/>
+		<property name="userService" ref="userService"/>
+		<property name="displayDateTimeFormat" ref="displayDateTimeFormat"/>
 	</bean>
 	
 	<!--  DataProvider  -->

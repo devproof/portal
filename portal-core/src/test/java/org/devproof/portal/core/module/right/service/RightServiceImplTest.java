@@ -41,7 +41,7 @@ public class RightServiceImplTest extends TestCase {
 	public void testSave() {
 		RightEntity e = impl.newRightEntity();
 		e.setRight("right");
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		EasyMock.replay(mock);
 		impl.save(e);
 		EasyMock.verify(mock);

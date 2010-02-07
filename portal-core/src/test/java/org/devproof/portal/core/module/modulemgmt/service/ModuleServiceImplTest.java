@@ -54,7 +54,7 @@ public class ModuleServiceImplTest extends TestCase {
 		ModuleLinkEntity e = new ModuleLinkEntity();
 		e.setPageName("hello");
 		e.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
-		moduleLinkDaoMock.save(e);
+		EasyMock.expect(moduleLinkDaoMock.save(e)).andReturn(e);
 		EasyMock.replay(moduleLinkDaoMock);
 		impl.save(e);
 		EasyMock.verify(moduleLinkDaoMock);
@@ -71,8 +71,8 @@ public class ModuleServiceImplTest extends TestCase {
 		e2.setSort(2);
 		EasyMock.expect(moduleLinkDaoMock.getMaxSortNum(LinkType.GLOBAL_ADMINISTRATION)).andReturn(2);
 		EasyMock.expect(moduleLinkDaoMock.findModuleLinkBySort(LinkType.GLOBAL_ADMINISTRATION, 2)).andReturn(e2);
-		moduleLinkDaoMock.save(e2);
-		moduleLinkDaoMock.save(e1);
+		EasyMock.expect(moduleLinkDaoMock.save(e2)).andReturn(e2);
+		EasyMock.expect(moduleLinkDaoMock.save(e1)).andReturn(e1);
 		EasyMock.replay(moduleLinkDaoMock);
 		impl.moveDown(e1);
 		assertEquals(Integer.valueOf(2), e1.getSort());
@@ -90,8 +90,8 @@ public class ModuleServiceImplTest extends TestCase {
 		e2.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
 		e2.setSort(2);
 		EasyMock.expect(moduleLinkDaoMock.findModuleLinkBySort(LinkType.GLOBAL_ADMINISTRATION, 1)).andReturn(e1);
-		moduleLinkDaoMock.save(e2);
-		moduleLinkDaoMock.save(e1);
+		EasyMock.expect(moduleLinkDaoMock.save(e2)).andReturn(e2);
+		EasyMock.expect(moduleLinkDaoMock.save(e1)).andReturn(e1);
 		EasyMock.replay(moduleLinkDaoMock);
 		impl.moveUp(e2);
 		assertEquals(Integer.valueOf(2), e1.getSort());

@@ -52,7 +52,7 @@ public class ConfigurationServiceImplTest extends TestCase {
 		ConfigurationEntity e = new ConfigurationEntity();
 		e.setKey("foo");
 		e.setValue("bar");
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		EasyMock.replay(mock);
 		impl.save(e);
 		EasyMock.verify(mock);

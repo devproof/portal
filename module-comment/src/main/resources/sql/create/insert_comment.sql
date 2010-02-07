@@ -6,7 +6,12 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.CommentAdminPage','Comment: Administrate comments',null,null,null,null);
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.CommentAdminPage');
-
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.notify.autoblocked','Comment: Automatic blocked notification email',null,null,null,null);
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.notify.autoblocked');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.notify.violation','Comment: Violation notication email',null,null,null,null);
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.notify.violation');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.notify.newcomment','Comment: New comment notification email',null,null,null,null);
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.notify.newcomment');
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateDao.findAll.subject.id.newcommentnotification','Notification email for new comments','Comments','java.lang.Integer','7');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateDao.findAll.subject.id.autoblockednotification','Notification email for automatic blocked comments','Comments','java.lang.Integer','9');
@@ -34,7 +39,7 @@ INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,con
 \n
 <p>by #USERNAME#</p>
 \n
-<p>Reporter IP: {REPORTER_IP} Reporting Time: {REPORTING_TIME}</p>
+<p>Reporter IP: #REPORTER_IP# Reporting Time: #REPORTING_TIME#</p>
 \n
 <p>Goto: #COMMENTURL#</p>
 \n
