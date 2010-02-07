@@ -18,13 +18,14 @@ package org.devproof.portal.core.module.common.component.richtext;
 import java.util.Map;
 
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * @author Carsten Hufe
@@ -40,20 +41,13 @@ public class RichTextArea extends TextArea<String> {
 		super(id, model);
 		add(createCKEditorResource());
 		add(createCKEditorConfiguration());
-		add(createCKEditorAttributeModifier());
 		setOutputMarkupId(true);
 	}
 
-	private SimpleAttributeModifier createCKEditorAttributeModifier() {
-		return new SimpleAttributeModifier("class", "ckeditor");
-	}
-
 	private TextTemplateHeaderContributor createCKEditorConfiguration() {
-		Map<String, Object> variables = new MiniMap<String, Object>(1);
-		// variables.put("iconcodeImg",
-		// PortalUtil.toUrl(CommonConstants.REF_ICONCODE_IMG, getRequest()));
-		// variables.put("string2imgImg",
-		// PortalUtil.toUrl(CommonConstants.REF_STRING2IMG_IMG, getRequest()));
+		Map<String, Object> variables = new MiniMap<String, Object>(2);
+		variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
+		variables.put("markupId", getMarkupId());
 		return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "RichTextArea.js",
 				new MapModel<String, Object>(variables));
 	}
@@ -61,4 +55,19 @@ public class RichTextArea extends TextArea<String> {
 	private HeaderContributor createCKEditorResource() {
 		return JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "ckeditor/ckeditor.js");
 	}
+
+	// @Override
+	// protected void onRender(MarkupStream markupStream) {
+	// super.onRender(markupStream);
+	// Map<String, Object> variables = new MiniMap<String, Object>(2);
+	// variables.put("defaultCss",
+	// PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
+	// variables.put("markupId", getMarkupId());
+	// String javascript =
+	// TextTemplateHeaderContributor.forJavaScript(RichTextArea.class,
+	// "RichTextArea.js",
+	// new MapModel<String, Object>(variables)).toString();
+	// getResponse().write(javascript);
+	//
+	// }
 }
