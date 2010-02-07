@@ -25,7 +25,7 @@ INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,con
 \n
 <p>by #USERNAME#</p>
 \n
-<p>Goto: #COMMENTURL#</p>
+<p>Goto: #COMMENT_URL#</p>
 \n
 <p>Kind regards</p>
 \n
@@ -41,7 +41,7 @@ INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,con
 \n
 <p>Reporter IP: #REPORTER_IP# Reporting Time: #REPORTING_TIME#</p>
 \n
-<p>Goto: #COMMENTURL#</p>
+<p>Goto: #COMMENT_URL#</p>
 \n
 <p>Kind regards</p>
 \n
@@ -55,7 +55,7 @@ INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,con
 \n
 <p>by #USERNAME#</p>
 \n
-<p>Goto: #COMMENTURL#</p>
+<p>Goto: #COMMENT_URL#</p>
 \n
 <p>Kind regards</p>
 \n

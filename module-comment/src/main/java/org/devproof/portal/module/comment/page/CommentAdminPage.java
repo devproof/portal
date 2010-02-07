@@ -39,9 +39,11 @@ public class CommentAdminPage extends TemplatePage {
 	private ConfigurationService configurationService;
 	private CommentPanel commentPanel;
 	private CommentQuery query;
+	private PageParameters params;
 
 	public CommentAdminPage(PageParameters params) {
 		super(params);
+		this.params = params;
 		setCommentQuery();
 		add(createCommentPanel());
 		addFilterBox(createCommentSearchBoxPanel());
@@ -87,6 +89,7 @@ public class CommentAdminPage extends TemplatePage {
 
 	private void setCommentQuery() {
 		query = new CommentQuery();
+		query.setId(params.getAsInteger(PARAM_ID));
 	}
 
 	private static class CommentAdminConfiguration implements CommentConfiguration {
@@ -104,7 +107,7 @@ public class CommentAdminPage extends TemplatePage {
 
 		@Override
 		public boolean isAllowedToWrite() {
-			return false;
+			return true;
 		}
 
 		@Override
