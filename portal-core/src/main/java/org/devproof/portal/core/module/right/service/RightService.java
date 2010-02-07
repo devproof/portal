@@ -31,19 +31,19 @@ public interface RightService extends CrudService<RightEntity, String> {
 	 * 
 	 * @return last refreshed unix time
 	 */
-	public long getDirtyTime();
+	long getDirtyTime();
 
 	/**
 	 * Refreshes the global instanz of all rights
 	 */
-	public void refreshGlobalApplicationRights();
+	void refreshGlobalApplicationRights();
 
 	/**
 	 * Returns all rights from member variable
 	 * 
 	 * @return list with all rights
 	 */
-	public List<RightEntity> getAllRights();
+	List<RightEntity> getAllRights();
 
 	/**
 	 * Returns all rights starting with the given prefix
@@ -52,21 +52,21 @@ public interface RightService extends CrudService<RightEntity, String> {
 	 *            right prefix
 	 * @return list with matching rights
 	 */
-	public List<RightEntity> findRightsStartingWith(String prefix);
+	List<RightEntity> findRightsStartingWith(String prefix);
 
 	/**
 	 * Returns all rights ordered by description
 	 * 
 	 * @return list with rights
 	 */
-	public List<RightEntity> findAllOrderByDescription();
+	List<RightEntity> findAllOrderByDescription();
 
 	/**
 	 * Returns a new instance of RightEntity
 	 * 
 	 * @return new instance of RightEntity
 	 */
-	public RightEntity newRightEntity();
+	RightEntity newRightEntity();
 
 	/**
 	 * Returns a new instance of RightEntity
@@ -75,5 +75,5 @@ public interface RightService extends CrudService<RightEntity, String> {
 	 *            right key
 	 * @return new instance of RightEntity
 	 */
-	public RightEntity newRightEntity(String right);
+	RightEntity newRightEntity(String right);
 }

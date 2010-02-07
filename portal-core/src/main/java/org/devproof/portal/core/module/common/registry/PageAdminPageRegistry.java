@@ -29,21 +29,21 @@ public interface PageAdminPageRegistry {
 	 * Registers a page admin link. The language property file of the page must
 	 * contain a property named "adminLinkLabel" for menu name
 	 */
-	public void registerPageAdminPage(Class<? extends Page> adminPage);
+	void registerPageAdminPage(Class<? extends Page> adminPage);
 
 	/**
 	 * Removes a admin link
 	 */
-	public void removePageAdminPage(Class<? extends Page> adminPage);
+	void removePageAdminPage(Class<? extends Page> adminPage);
 
 	/**
 	 * Returns all registered admin pages
 	 * 
 	 */
-	public List<Class<? extends Page>> getRegisteredPageAdminPages();
+	List<Class<? extends Page>> getRegisteredPageAdminPages();
 
 	/**
 	 * Builds or rebuilds the page administration box from the database
 	 */
-	public void buildNavigation();
+	void buildNavigation();
 }

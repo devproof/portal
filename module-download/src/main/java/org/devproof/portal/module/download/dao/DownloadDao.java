@@ -29,21 +29,22 @@ import org.devproof.portal.module.download.entity.DownloadEntity;
  */
 public interface DownloadDao extends GenericDao<DownloadEntity, Integer> {
 	@Query("select d.allRights from DownloadEntity d where d.modifiedBy = (select max(modifiedBy) from DownloadEntity)")
-	public List<RightEntity> findLastSelectedRights();
-	
+	List<RightEntity> findLastSelectedRights();
+
 	@Query(value = "select distinct(d) from DownloadEntity d join d.allRights ar"
 			+ " where ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%') order by d.modifiedAt desc", limitClause = true)
-	public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+	List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult);
 
 	@BulkUpdate("update DownloadEntity d set d.hits = (d.hits + 1) where d = ?")
-	public void incrementHits(DownloadEntity download);
+	void incrementHits(DownloadEntity download);
 
 	@BulkUpdate("update DownloadEntity d set d.numberOfVotes = (d.numberOfVotes + 1), d.sumOfRating = (d.sumOfRating + ?) where d = ?")
-	public void rateDownload(Integer rating, DownloadEntity download);
+	void rateDownload(Integer rating, DownloadEntity download);
 
 	@BulkUpdate("update DownloadEntity d set d.broken = true where d = ?")
-	public void markBrokenDownload(DownloadEntity download);
+	void markBrokenDownload(DownloadEntity download);
 
 	@BulkUpdate("update DownloadEntity d set d.broken = false where d = ?")
-	public void markValidDownload(DownloadEntity download);
+	void markValidDownload(DownloadEntity download);
 }

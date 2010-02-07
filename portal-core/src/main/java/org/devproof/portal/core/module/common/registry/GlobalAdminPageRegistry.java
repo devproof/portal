@@ -30,21 +30,21 @@ public interface GlobalAdminPageRegistry {
 	 * Registers an admin link The language property file of the page must
 	 * contain a property named "adminLinkLabel" for menu name
 	 */
-	public void registerGlobalAdminPage(Class<? extends Page> adminPage);
+	void registerGlobalAdminPage(Class<? extends Page> adminPage);
 
 	/**
 	 * Removes an admin link
 	 */
-	public void removeGlobalAdminPage(Class<? extends Page> adminPage);
+	void removeGlobalAdminPage(Class<? extends Page> adminPage);
 
 	/**
 	 * Returns all registered global admin pages
 	 * 
 	 */
-	public List<Class<? extends Page>> getRegisteredGlobalAdminPages();
+	List<Class<? extends Page>> getRegisteredGlobalAdminPages();
 
 	/**
 	 * Builds or rebuilds the global administration box from the database
 	 */
-	public void buildNavigation();
+	void buildNavigation();
 }

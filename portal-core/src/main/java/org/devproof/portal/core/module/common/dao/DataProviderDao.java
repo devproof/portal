@@ -42,7 +42,8 @@ public interface DataProviderDao<T> {
 	 *            bean with criterias (use BeanQuery and BeanJoin annonation)
 	 * @return list with results
 	 */
-	public List<T> findAllWithQuery(Class<T> clazz, String sortParam, boolean ascending, int first, int count, Serializable beanQuery, List<String> prefetch);
+	List<T> findAllWithQuery(Class<T> clazz, String sortParam, boolean ascending, int first, int count,
+			Serializable beanQuery, List<String> prefetch);
 
 	/**
 	 * find by Id
@@ -53,7 +54,7 @@ public interface DataProviderDao<T> {
 	 *            id of entity
 	 * @return entity
 	 */
-	public T findById(Class<T> clazz, Serializable id);
+	T findById(Class<T> clazz, Serializable id);
 
 	/**
 	 * finds everything
@@ -62,7 +63,7 @@ public interface DataProviderDao<T> {
 	 *            entity class
 	 * @return list with all entities
 	 */
-	public List<T> findAll(Class<T> clazz);
+	List<T> findAll(Class<T> clazz);
 
 	/**
 	 * find all entities with limits
@@ -75,7 +76,7 @@ public interface DataProviderDao<T> {
 	 *            number of following rows
 	 * @return all entites limitated by first and count
 	 */
-	public List<T> findAll(Class<T> clazz, int first, int count);
+	List<T> findAll(Class<T> clazz, int first, int count);
 
 	/**
 	 * Returns the number of rows
@@ -86,7 +87,7 @@ public interface DataProviderDao<T> {
 	 *            bean with criterias (use BeanQuery and BeanJoin annonation)
 	 * @return number of results
 	 */
-	public int getSize(Class<T> clazz, Serializable beanQuery);
+	int getSize(Class<T> clazz, Serializable beanQuery);
 
 	/**
 	 * Returns the number of rows
@@ -99,5 +100,5 @@ public interface DataProviderDao<T> {
 	 *            specific count query e.g. "count(distinct e.name)"
 	 * @return number of results
 	 */
-	public int getSize(Class<T> clazz, String countQuery, Serializable beanQuery);
+	int getSize(Class<T> clazz, String countQuery, Serializable beanQuery);
 }

@@ -29,33 +29,33 @@ public interface MainNavigationRegistry {
 	 * Registers a main navigation links. The language property file of the page
 	 * must contain a property named "mainNavigationLinkLabel" for menu name
 	 */
-	public void registerPage(Class<? extends Page> page);
+	void registerPage(Class<? extends Page> page);
 
 	/**
 	 * Registers a main navigation links. The language property file of the page
 	 * must contain a property named "mainNavigationLinkLabel" for menu name
 	 */
-	public void registerPages(List<Class<? extends Page>> pages);
+	void registerPages(List<Class<? extends Page>> pages);
 
 	/**
 	 * Clear registry
 	 */
-	public void clearRegistry();
+	void clearRegistry();
 
 	/**
 	 * Removes a link
 	 */
-	public void removePage(Class<? extends Page> page);
+	void removePage(Class<? extends Page> page);
 
 	/**
 	 * Returns all registered pages
 	 * 
 	 */
-	public List<Class<? extends Page>> getRegisteredPages();
+	List<Class<? extends Page>> getRegisteredPages();
 
 	/**
 	 * Builds or rebuilds the main navigation from the database
 	 */
-	public void buildNavigation();
+	void buildNavigation();
 
 }

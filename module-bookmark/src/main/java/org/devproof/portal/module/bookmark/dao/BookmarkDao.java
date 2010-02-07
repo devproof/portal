@@ -30,24 +30,25 @@ import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
  */
 public interface BookmarkDao extends GenericDao<BookmarkEntity, Integer> {
 	@Query("select b.allRights from BookmarkEntity b where b.modifiedBy = (select max(modifiedBy) from BookmarkEntity)")
-	public List<RightEntity> findLastSelectedRights();
-	
+	List<RightEntity> findLastSelectedRights();
+
 	@Query(value = "select distinct(b) from BookmarkEntity b join b.allRights vr"
 			+ " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%') order by b.modifiedAt desc", limitClause = true)
-	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+	List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult);
 
 	@Query("select distinct b from BookmarkEntity b left join fetch b.tags where b.source = ?")
-	public List<BookmarkEntity> findBookmarksBySource(final Source source);
+	List<BookmarkEntity> findBookmarksBySource(final Source source);
 
 	@BulkUpdate("update BookmarkEntity b set b.hits = (b.hits + 1) where b = ?")
-	public void incrementHits(BookmarkEntity bookmark);
+	void incrementHits(BookmarkEntity bookmark);
 
 	@BulkUpdate("update BookmarkEntity b set b.numberOfVotes = (b.numberOfVotes + 1), b.sumOfRating = (b.sumOfRating + ?) where b = ?")
-	public void rateBookmark(Integer rating, BookmarkEntity bookmark);
+	void rateBookmark(Integer rating, BookmarkEntity bookmark);
 
 	@BulkUpdate("update BookmarkEntity b set b.broken = true where b = ?")
-	public void markBrokenBookmark(BookmarkEntity bookmark);
+	void markBrokenBookmark(BookmarkEntity bookmark);
 
 	@BulkUpdate("update BookmarkEntity b set b.broken = false where b = ?")
-	public void markValidBookmark(BookmarkEntity bookmark);
+	void markValidBookmark(BookmarkEntity bookmark);
 }

@@ -29,14 +29,14 @@ public interface BoxService extends CrudService<BoxEntity, Integer> {
 	 * 
 	 * @return new instance of {@link BoxEntity}
 	 */
-	public BoxEntity newBoxEntity();
+	BoxEntity newBoxEntity();
 
 	/**
 	 * Returns the highest sort number
 	 * 
 	 * @return highest sort number
 	 */
-	public Integer getMaxSortNum();
+	Integer getMaxSortNum();
 
 	/**
 	 * Returns the box with the given sort number
@@ -44,12 +44,12 @@ public interface BoxService extends CrudService<BoxEntity, Integer> {
 	 * @param sort
 	 *            order number
 	 */
-	public BoxEntity findBoxBySort(Integer sort);
+	BoxEntity findBoxBySort(Integer sort);
 
 	/**
 	 * Returns all boxes ordered by sort number
 	 */
-	public List<BoxEntity> findAllOrderedBySort();
+	List<BoxEntity> findAllOrderedBySort();
 
 	/**
 	 * Moves the box down
@@ -57,7 +57,7 @@ public interface BoxService extends CrudService<BoxEntity, Integer> {
 	 * @param box
 	 *            box to move
 	 */
-	public void moveDown(BoxEntity box);
+	void moveDown(BoxEntity box);
 
 	/**
 	 * Moves the box up
@@ -65,5 +65,5 @@ public interface BoxService extends CrudService<BoxEntity, Integer> {
 	 * @param box
 	 *            box to move
 	 */
-	public void moveUp(BoxEntity box);
+	void moveUp(BoxEntity box);
 }

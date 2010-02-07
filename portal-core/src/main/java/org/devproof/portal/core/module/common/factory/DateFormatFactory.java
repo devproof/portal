@@ -16,26 +16,31 @@
 package org.devproof.portal.core.module.common.factory;
 
 import java.text.SimpleDateFormat;
+
 /**
- * DateFormatFactory provides application scoped DateFormaters
- * Considers the user session locale
+ * DateFormatFactory provides application scoped DateFormaters Considers the
+ * user session locale
+ * 
  * @author Carsten Hufe
  */
 public interface DateFormatFactory {
 	/**
 	 * Creates an instance of date formater without time for displaying
 	 */
-	public SimpleDateFormat createDisplayDateFormat();
+	SimpleDateFormat createDisplayDateFormat();
+
 	/**
 	 * Creates an instance of date formater with time for displaying
 	 */
-	public SimpleDateFormat createDisplayDateTimeFormat();
+	SimpleDateFormat createDisplayDateTimeFormat();
+
 	/**
 	 * Creates an instance of date formater without time for input
 	 */
-	public SimpleDateFormat createInputDateFormat();
+	SimpleDateFormat createInputDateFormat();
+
 	/**
 	 * Creates an instance of date formater with time for input
 	 */
-	public SimpleDateFormat createInputDateTimeFormat();
+	SimpleDateFormat createInputDateTimeFormat();
 }

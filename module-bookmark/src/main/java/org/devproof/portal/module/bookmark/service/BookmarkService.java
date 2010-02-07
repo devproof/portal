@@ -32,7 +32,7 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 * 
 	 * @return new instance of {@link BookmarkEntity}
 	 */
-	public BookmarkEntity newBookmarkEntity();
+	BookmarkEntity newBookmarkEntity();
 
 	/**
 	 * Returns all bookmarks which are available for the given role
@@ -45,7 +45,7 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 *            maximum result
 	 * @return list with bookmarks
 	 */
-	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+	List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
 			Integer maxResult);
 
 	/**
@@ -55,7 +55,7 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 *            manual/delicious
 	 * @return list with bookmarks
 	 */
-	public List<BookmarkEntity> findBookmarksBySource(Source source);
+	List<BookmarkEntity> findBookmarksBySource(Source source);
 
 	/**
 	 * Increments the hits by 1
@@ -63,7 +63,7 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 * @param bookmark
 	 *            bookmark
 	 */
-	public void incrementHits(BookmarkEntity bookmark);
+	void incrementHits(BookmarkEntity bookmark);
 
 	/**
 	 * Rates a bookmark
@@ -73,7 +73,7 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 * @param bookmark
 	 *            bookmark
 	 */
-	public void rateBookmark(Integer rating, BookmarkEntity bookmark);
+	void rateBookmark(Integer rating, BookmarkEntity bookmark);
 
 	/**
 	 * Marks a the given bookmark as broken
@@ -81,7 +81,7 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 * @param bookmark
 	 *            bookmark
 	 */
-	public void markBrokenBookmark(BookmarkEntity bookmark);
+	void markBrokenBookmark(BookmarkEntity bookmark);
 
 	/**
 	 * Marks a the given bookmark as valid
@@ -89,11 +89,10 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 	 * @param bookmark
 	 *            bookmark
 	 */
-	public void markValidBookmark(BookmarkEntity bookmark);
-	
-	
+	void markValidBookmark(BookmarkEntity bookmark);
+
 	/**
 	 * Returns the rights from the last editited bookmark
 	 */
-	public List<RightEntity> findLastSelectedRights();
+	List<RightEntity> findLastSelectedRights();
 }

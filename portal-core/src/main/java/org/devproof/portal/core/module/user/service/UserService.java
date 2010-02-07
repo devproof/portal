@@ -30,59 +30,59 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	/**
 	 * Returns a new instance of the UserEntity
 	 */
-	public UserEntity newUserEntity();
+	UserEntity newUserEntity();
 
 	/**
 	 * Returns a user entity by the username
 	 */
-	public UserEntity findUserByUsername(String username);
+	UserEntity findUserByUsername(String username);
 
 	/**
 	 * Returns a user entity by the session id
 	 */
-	public UserEntity findUserBySessionId(String sessionId);
+	UserEntity findUserBySessionId(String sessionId);
 
 	/**
 	 * Returns the guest user
 	 */
-	public UserEntity findGuestUser();
+	UserEntity findGuestUser();
 
 	/**
 	 * Returns a list with users by the given email
 	 */
-	public List<UserEntity> findUserByEmail(String email);
+	List<UserEntity> findUserByEmail(String email);
 
 	/**
 	 * Test wether a user exist
 	 */
-	public boolean existsUsername(String username);
+	boolean existsUsername(String username);
 
 	/**
 	 * Returns the number of users for the given role
 	 */
-	public long countUserForRole(RoleEntity role);
+	long countUserForRole(RoleEntity role);
 
 	/**
 	 * Returns all users with the given right
 	 */
-	public List<UserEntity> findUserWithRight(String right);
+	List<UserEntity> findUserWithRight(String right);
 
 	/**
 	 * Register a new user
 	 */
-	public void registerUser(UserEntity user, UrlCallback urlCallback);
+	void registerUser(UserEntity user, UrlCallback urlCallback);
 
 	/**
 	 * Activate user
 	 * 
 	 * @return true, if user was activated
 	 */
-	public boolean activateUser(String username, String activationCode);
+	boolean activateUser(String username, String activationCode);
 
 	/**
 	 * Sets a new password
 	 */
-	public void saveNewPassword(String username, String newPassword);
+	void saveNewPassword(String username, String newPassword);
 
 	/**
 	 * Authentificates a user
@@ -100,8 +100,8 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	 * @throws AuthentificationFailedException
 	 *             thrown when an authentification failed e.g. wrong password
 	 */
-	public UserEntity authentificate(String username, String password, String ipAddress)
-			throws UserNotConfirmedException, AuthentificationFailedException;
+	UserEntity authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException,
+			AuthentificationFailedException;
 
 	/**
 	 * Re-Authentificates a user by tthe session id
@@ -113,7 +113,7 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	 * @return the authentificated UserEntity, if the authentification failes it
 	 *         returns the guest user
 	 */
-	public UserEntity authentificate(String sessionId, String ipAddress);
+	UserEntity authentificate(String sessionId, String ipAddress);
 
 	/**
 	 * Sends the code for the lost password
@@ -123,7 +123,7 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	 * @param urlCallback
 	 *            callback to build the URLs
 	 */
-	public void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback);
+	void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback);
 
 	/**
 	 * Resends the confirmation code
@@ -133,5 +133,5 @@ public interface UserService extends CrudService<UserEntity, Integer> {
 	 * @param urlCallback
 	 *            callback to build the URLs
 	 */
-	public void resendConfirmationCode(UserEntity user, UrlCallback urlCallback);
+	void resendConfirmationCode(UserEntity user, UrlCallback urlCallback);
 }

@@ -21,19 +21,25 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDat
 
 /**
  * A generic data provider with query objects
+ * 
  * @author Carsten Hufe
- *
- * @param <T> Entity type
+ * 
+ * @param <T>
+ *            Entity type
  */
 public interface QueryDataProvider<T> extends ISortableDataProvider<T> {
 	/**
 	 * Set the query object (a bean)
-	 * @param query query object
+	 * 
+	 * @param query
+	 *            query object
 	 */
-	public void setQueryObject(Serializable query);
+	void setQueryObject(Serializable query);
+
 	/**
 	 * Get the query object (a bean)
+	 * 
 	 * @return query object
 	 */
-	public Serializable getQueryObject();	
+	Serializable getQueryObject();
 }

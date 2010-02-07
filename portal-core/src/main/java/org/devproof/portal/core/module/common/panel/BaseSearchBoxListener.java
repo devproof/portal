@@ -27,5 +27,5 @@ public interface BaseSearchBoxListener extends Serializable {
 	/**
 	 * Executed when the search is submited
 	 */
-	public void onSearch();
+	void onSearch();
 }

@@ -29,5 +29,5 @@ public interface BoxLocator {
 	/**
 	 * Returns the box configurations of all modules
 	 */
-	public Collection<BoxConfiguration> getBoxes();
+	Collection<BoxConfiguration> getBoxes();
 }

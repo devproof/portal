@@ -27,20 +27,20 @@ public interface RoleService extends CrudService<RoleEntity, Integer> {
 	/**
 	 * Returns a new instance of role
 	 */
-	public RoleEntity newRoleEntity();
+	RoleEntity newRoleEntity();
 
 	/**
 	 * Returns all roles ordered by description
 	 */
-	public List<RoleEntity> findAllOrderByDescription();
+	List<RoleEntity> findAllOrderByDescription();
 
 	/**
 	 * returns the guest role
 	 */
-	public RoleEntity findGuestRole();
+	RoleEntity findGuestRole();
 
 	/**
 	 * returns the default registration role
 	 */
-	public RoleEntity findDefaultRegistrationRole();
+	RoleEntity findDefaultRegistrationRole();
 }

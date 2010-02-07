@@ -27,5 +27,5 @@ public interface BlogService extends CrudService<BlogEntity, Integer> {
 	 * 
 	 * @return new instance of {@link BlogEntity}
 	 */
-	public BlogEntity newBlogEntity();
+	BlogEntity newBlogEntity();
 }

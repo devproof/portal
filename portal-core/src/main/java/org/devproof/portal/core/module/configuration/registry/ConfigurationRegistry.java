@@ -26,16 +26,15 @@ public interface ConfigurationRegistry {
 	/**
 	 * Returns the configuration by key
 	 */
-	public ConfigurationEntity getConfiguration(String key);
+	ConfigurationEntity getConfiguration(String key);
 
 	/**
 	 * Register a configuration value
 	 */
-	public void registerConfiguration(String key, ConfigurationEntity configurationEntity);
+	void registerConfiguration(String key, ConfigurationEntity configurationEntity);
 
 	/**
 	 * Removes the configuration
 	 */
-	public void removeConfiguration(String key);
-
+	void removeConfiguration(String key);
 }

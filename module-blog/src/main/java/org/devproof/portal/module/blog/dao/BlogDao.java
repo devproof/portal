@@ -27,5 +27,5 @@ import org.devproof.portal.module.blog.entity.BlogEntity;
  */
 public interface BlogDao extends GenericDao<BlogEntity, Integer> {
 	@Query("select b.allRights from BlogEntity b where b.modifiedBy = (select max(modifiedBy) from BlogEntity)")
-	public List<RightEntity> findLastSelectedRights();
+	List<RightEntity> findLastSelectedRights();
 }

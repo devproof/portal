@@ -24,5 +24,5 @@ public interface RegistryService {
 	/**
 	 * Rebuild the registries after making changes in the db
 	 */
-	public void rebuildRegistries(LinkType type);
+	void rebuildRegistries(LinkType type);
 }

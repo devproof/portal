@@ -25,10 +25,10 @@ public interface FinderExecutor {
 	/**
 	 * Execute generic query
 	 */
-	public Object executeFinder(String query, Object[] queryArgs, Class<?> returnType, Integer firstResults, Integer maxResults);
+	Object executeFinder(String query, Object[] queryArgs, Class<?> returnType, Integer firstResults, Integer maxResults);
 
 	/**
 	 * Execute generic bulk update
 	 */
-	public void executeUpdate(String query, Object[] queryArgs);
+	void executeUpdate(String query, Object[] queryArgs);
 }

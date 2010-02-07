@@ -27,20 +27,20 @@ import org.devproof.portal.core.module.user.entity.UserEntity;
  */
 public interface UserDao extends GenericDao<UserEntity, Integer> {
 	@Query("select u from UserEntity u join fetch u.role r join fetch r.rights where u.username like ?")
-	public UserEntity findUserByUsername(String username);
+	UserEntity findUserByUsername(String username);
 
 	@Query("select u from UserEntity u where u.sessionId = ?")
-	public UserEntity findUserBySessionId(String sessionId);
+	UserEntity findUserBySessionId(String sessionId);
 
 	@Query("select distinct u from UserEntity u where u.email like ?")
-	public List<UserEntity> findUserByEmail(String email);
+	List<UserEntity> findUserByEmail(String email);
 
 	@Query("select count(u) from UserEntity u where u.username like ?")
-	public long existsUsername(String username);
+	long existsUsername(String username);
 
 	@Query("select count(u) from UserEntity u where u.role = ?")
-	public Long countUserForRole(RoleEntity role);
+	Long countUserForRole(RoleEntity role);
 
 	@Query(value = "select distinct(u) from UserEntity u join u.role.rights as r where r.right = ?")
-	public List<UserEntity> findUserWithRight(String right);
+	List<UserEntity> findUserWithRight(String right);
 }

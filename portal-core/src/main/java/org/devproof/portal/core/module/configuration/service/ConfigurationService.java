@@ -33,7 +33,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as object
 	 */
-	public Object findAsObject(String key);
+	Object findAsObject(String key);
 
 	/**
 	 * Returns a date from the configuration table
@@ -42,7 +42,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as boolean
 	 */
-	public Boolean findAsBoolean(String key);
+	Boolean findAsBoolean(String key);
 
 	/**
 	 * Returns a date from the configuration table
@@ -51,7 +51,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as date
 	 */
-	public Date findAsDate(String key);
+	Date findAsDate(String key);
 
 	/**
 	 * Returns a integer from the configuration table
@@ -60,7 +60,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as integer
 	 */
-	public Integer findAsInteger(String key);
+	Integer findAsInteger(String key);
 
 	/**
 	 * Returns a string from the configuration table
@@ -69,7 +69,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as string
 	 */
-	public String findAsString(String key);
+	String findAsString(String key);
 
 	/**
 	 * Returns a File from the configuration table
@@ -78,7 +78,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as file
 	 */
-	public File findAsFile(String key);
+	File findAsFile(String key);
 
 	/**
 	 * Returns a double from the configuration table
@@ -87,7 +87,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as double
 	 */
-	public Double findAsDouble(String key);
+	Double findAsDouble(String key);
 
 	/**
 	 * Returns a enum from the configuration table
@@ -96,26 +96,26 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration key
 	 * @return configuration entry as enum
 	 */
-	public Enum<?> findAsEnum(String key);
+	Enum<?> findAsEnum(String key);
 
 	/**
 	 * Returns all configurations
 	 * 
 	 * @return all entries as list
 	 */
-	public List<ConfigurationEntity> findAll();
+	List<ConfigurationEntity> findAll();
 
 	/**
 	 * Refresh the global configuration map / cache
 	 */
-	public void refreshGlobalConfiguration();
+	void refreshGlobalConfiguration();
 
 	/**
 	 * Returns all configuration groups
 	 * 
 	 * @return configuration groups in a list
 	 */
-	public List<String> findConfigurationGroups();
+	List<String> findConfigurationGroups();
 
 	/**
 	 * Finds all {@link ConfigurationEntity} by group
@@ -124,6 +124,6 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
 	 *            configuration group
 	 * @return configuration entries filtered by group
 	 */
-	public List<ConfigurationEntity> findConfigurationsByGroup(String group);
+	List<ConfigurationEntity> findConfigurationsByGroup(String group);
 
 }

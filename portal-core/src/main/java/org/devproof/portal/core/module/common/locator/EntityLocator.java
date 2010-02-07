@@ -27,5 +27,5 @@ public interface EntityLocator {
 	/**
 	 * Returns entities of all modules
 	 */
-	public Collection<?> getEntities();
+	Collection<?> getEntities();
 }

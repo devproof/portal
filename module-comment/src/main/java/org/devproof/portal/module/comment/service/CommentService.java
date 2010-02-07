@@ -27,25 +27,25 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
 	 * 
 	 * @return new instance of {@link CommentEntity}
 	 */
-	public CommentEntity newCommentEntity();
+	CommentEntity newCommentEntity();
 
 	/**
 	 * Marks the comment as deleted (visible = false)
 	 */
-	public void rejectComment(CommentEntity comment);
+	void rejectComment(CommentEntity comment);
 
 	/**
 	 * Marks the comment as reviewed
 	 */
-	public void acceptComment(CommentEntity comment);
+	void acceptComment(CommentEntity comment);
 
 	/**
 	 * Returns the number of comments for the given module and module content id
 	 */
-	public long findNumberOfComments(String moduleName, String moduleContentId);
+	long findNumberOfComments(String moduleName, String moduleContentId);
 
 	/**
 	 * Report a violation
 	 */
-	public void reportViolation(CommentEntity comment);
+	void reportViolation(CommentEntity comment);
 }

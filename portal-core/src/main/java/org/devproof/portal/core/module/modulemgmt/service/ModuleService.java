@@ -29,35 +29,35 @@ public interface ModuleService {
 	/**
 	 * Finds all modules, the list starts with the core modules
 	 */
-	public List<ModuleBean> findModules();
+	List<ModuleBean> findModules();
 
 	/**
 	 * Moves the link down
 	 */
-	public void moveDown(ModuleLinkEntity link);
+	void moveDown(ModuleLinkEntity link);
 
 	/**
 	 * Moves the link up
 	 */
-	public void moveUp(ModuleLinkEntity link);
+	void moveUp(ModuleLinkEntity link);
 
 	/**
 	 * Save the module link
 	 */
-	public void save(ModuleLinkEntity link);
+	void save(ModuleLinkEntity link);
 
 	/**
 	 * @return all visible main/top navigation links
 	 */
-	public List<ModuleLinkEntity> findAllVisibleMainNavigationLinks();
+	List<ModuleLinkEntity> findAllVisibleMainNavigationLinks();
 
 	/**
 	 * @return all visible global administration links
 	 */
-	public List<ModuleLinkEntity> findAllVisibleGlobalAdministrationLinks();
+	List<ModuleLinkEntity> findAllVisibleGlobalAdministrationLinks();
 
 	/**
 	 * @return all visible page administration links
 	 */
-	public List<ModuleLinkEntity> findAllVisiblePageAdministrationLinks();
+	List<ModuleLinkEntity> findAllVisiblePageAdministrationLinks();
 }
