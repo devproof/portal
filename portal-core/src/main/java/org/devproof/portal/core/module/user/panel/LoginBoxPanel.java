@@ -103,7 +103,11 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 						setResponsePage(homePage);
 					}
 				} else {
-					setResponsePage(getPage().getClass(), new PageParameters("0=" + optParam));
+					if (optParam == null) {
+						setResponsePage(getPage().getClass());
+					} else {
+						setResponsePage(getPage().getClass(), new PageParameters("0=" + optParam));
+					}
 				}
 			}
 		};
