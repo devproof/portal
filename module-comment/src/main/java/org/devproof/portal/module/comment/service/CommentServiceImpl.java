@@ -125,7 +125,7 @@ public class CommentServiceImpl implements CommentService {
 			placeholder.setToEmail(notifyUser.getEmail());
 			placeholder.setUsername(comment.getGuestName() != null ? comment.getGuestName() : comment.getCreatedBy());
 			placeholder.put("COMMENT", comment.getComment());
-			placeholder.put("COMMENTURL", urlCallback.getUrl(comment));
+			placeholder.put("COMMENT_URL", urlCallback.getUrl(comment));
 			placeholder.put("REPORTER_IP", reporterIp);
 			placeholder.put("REPORTING_TIME", displayDateTimeFormat.format(new Date()));
 			emailService.sendEmail(templateId, placeholder);
