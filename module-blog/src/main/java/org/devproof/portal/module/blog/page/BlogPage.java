@@ -70,8 +70,8 @@ public class BlogPage extends BlogBasePage {
 		super(params);
 		this.params = params;
 		setBlogQuery();
-		add(createBlogDataView());
 		addFilterBox(createBlogSearchBoxPanel());
+		add(createBlogDataView());
 		add(createPagingPanel());
 		addTagCloudBox();
 	}
