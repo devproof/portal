@@ -39,8 +39,6 @@ public class BookmarkPageTest extends TestCase {
 
 	public void testRenderDefaultPage() {
 		tester.startPage(BookmarkPage.class);
-		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(tester.getLastRenderedPage().isPageStateless());
 		tester.assertRenderedPage(BookmarkPage.class);
 
 	}

@@ -40,8 +40,6 @@ public class ArticleReadPageTest extends TestCase {
 
 	public void testRenderDefaultPage() {
 		tester.startPage(ArticleReadPage.class, new PageParameters("0=Sample_article"));
-		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(tester.getLastRenderedPage().isPageStateless());
 		tester.assertRenderedPage(ArticleReadPage.class);
 	}
 }

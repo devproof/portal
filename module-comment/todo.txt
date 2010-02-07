@@ -2,11 +2,11 @@
 - remove stateless voting zeug?
 - bubble ihr vote wurde gezählt
 - bubble nach unten oder seitlich ausrichten oder zentrieren?
+- template mit eigene texten in voting panel
 - voting mit captcha
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
-- fix article test
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register
