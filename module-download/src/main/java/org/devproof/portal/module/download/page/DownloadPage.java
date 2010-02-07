@@ -39,11 +39,12 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.component.CaptchaRatingPanel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
-import org.devproof.portal.core.module.common.component.StatelessRatingPanel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -73,6 +74,7 @@ public class DownloadPage extends DownloadBasePage {
 	private ConfigurationService configurationService;
 
 	private DownloadDataView dataView;
+	private BubblePanel bubblePanel;
 	private DownloadQuery query;
 	private PageParameters params;
 
@@ -80,11 +82,17 @@ public class DownloadPage extends DownloadBasePage {
 		super(params);
 		this.params = params;
 		setDownloadQuery();
+		add(createBubblePanel());
 		add(createDownloadDataView());
-		addFilterBox(createDownloadSearchBoxPanel());
 		add(createPagingPanel());
+		addFilterBox(createDownloadSearchBoxPanel());
 		addTagCloudBox();
 		redirectToCreateDownloadPage();
+	}
+
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubble");
+		return bubblePanel;
 	}
 
 	private void redirectToCreateDownloadPage() {
@@ -296,15 +304,15 @@ public class DownloadPage extends DownloadBasePage {
 		}
 
 		private Component createRatingPanel() {
-			StatelessRatingPanel ratingPanel = newRatingPanel();
+			CaptchaRatingPanel ratingPanel = newRatingPanel();
 			ratingPanel.setVisible(isVoteEnabled());
 			return ratingPanel;
 		}
 
-		private StatelessRatingPanel newRatingPanel() {
-			StatelessRatingPanel ratingPanel = new StatelessRatingPanel("vote", new PropertyModel<Integer>(download,
+		private CaptchaRatingPanel newRatingPanel() {
+			CaptchaRatingPanel ratingPanel = new CaptchaRatingPanel("vote", new PropertyModel<Integer>(download,
 					"calculatedRating"), Model.of(5), new PropertyModel<Integer>(download, "numberOfVotes"), hasVoted,
-					true, params, download.getId()) {
+					true, bubblePanel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -313,12 +321,14 @@ public class DownloadPage extends DownloadBasePage {
 				}
 
 				@Override
-				protected void onRated(int rating) {
-					if (isAllowedToDownload()) {
-						hasVoted.setObject(Boolean.TRUE);
-						downloadService.rateDownload(rating, download);
-						info(DownloadPage.this.getString("voteCounted"));
-					}
+				protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
+					hasVoted.setObject(Boolean.TRUE);
+					downloadService.rateDownload(rating, download);
+				}
+
+				@Override
+				public boolean isEnabled() {
+					return isAllowedToVote();
 				}
 			};
 			return ratingPanel;

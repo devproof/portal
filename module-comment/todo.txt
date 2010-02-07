@@ -1,9 +1,6 @@
 - remove statelessform?
 - remove stateless voting zeug?
-- bubble ihr vote wurde gezählt
 - bubble nach unten oder seitlich ausrichten oder zentrieren?
-- template mit eigene texten in voting panel
-- voting mit captcha
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed
 - FCKeditor austauschen

@@ -207,11 +207,13 @@ public class BookmarkPage extends BookmarkBasePage {
 
 				@Override
 				protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
-					if (isAllowedToVote()) {
-						hasVoted.setObject(Boolean.TRUE);
-						bookmarkService.rateBookmark(rating, bookmark);
-						info(BookmarkPage.this.getString("voteCounted"));
-					}
+					hasVoted.setObject(Boolean.TRUE);
+					bookmarkService.rateBookmark(rating, bookmark);
+				}
+
+				@Override
+				public boolean isEnabled() {
+					return isAllowedToVote();
 				}
 			};
 		}
