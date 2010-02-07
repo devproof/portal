@@ -1,3 +1,6 @@
+CKEDITOR.config.customConfig = 'config.js';
+CKEDITOR.config.contentsCss = ['/resources/org.devproof.portal.core.module.common.CommonConstants/css/default.css'];
+/*
 tinyMCE.init({
 	mode: "textareas", 
 	editor_selector : "mceRichTextArea",
@@ -34,3 +37,4 @@ tinyMCE.init({
         });
     }
 });
+*/
