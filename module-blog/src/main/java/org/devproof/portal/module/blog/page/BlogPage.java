@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
@@ -114,6 +115,7 @@ public class BlogPage extends BlogBasePage {
 			super(id, blogDataProvider);
 			onlyOneBlogEntryInResult = blogDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
+			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override

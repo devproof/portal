@@ -31,6 +31,7 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -140,6 +141,7 @@ public class DownloadPage extends DownloadBasePage {
 			super(id, downloadDataProvider);
 			onlyOneDownloadInResult = downloadDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOADS_PER_PAGE));
+			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override

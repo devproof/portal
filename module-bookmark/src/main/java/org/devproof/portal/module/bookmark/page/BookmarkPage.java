@@ -18,12 +18,14 @@ package org.devproof.portal.module.bookmark.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.rating.RatingPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -31,11 +33,12 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.component.CaptchaRatingPanel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
-import org.devproof.portal.core.module.common.component.StatelessRatingPanel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
@@ -66,15 +69,22 @@ public class BookmarkPage extends BookmarkBasePage {
 	private BookmarkDataView dataView;
 	private BookmarkQuery query;
 	private PageParameters params;
+	private BubblePanel bubblePanel;
 
 	public BookmarkPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		setBookmarkQuery();
+		add(createBubblePanel());
 		add(createBookmarkDataView());
 		add(createPagingPanel());
 		addFilterBox(createBookmarkSearchBoxPanel());
 		addTagCloudBox();
+	}
+
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubble");
+		return bubblePanel;
 	}
 
 	private void addTagCloudBox() {
@@ -115,6 +125,7 @@ public class BookmarkPage extends BookmarkBasePage {
 			super(id, bookmarkDataProvider);
 			onlyOneBookmarkInResult = bookmarkDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARKS_PER_PAGE));
+			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override
@@ -179,15 +190,14 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private Component createRatingPanel() {
-			StatelessRatingPanel ratingPanel = newRatingPanel();
+			RatingPanel ratingPanel = newRatingPanel();
 			ratingPanel.setVisible(isVoteEnabled());
 			return ratingPanel;
 		}
 
-		private StatelessRatingPanel newRatingPanel() {
-			return new StatelessRatingPanel("vote", new PropertyModel<Integer>(bookmark, "calculatedRating"), Model
-					.of(5), new PropertyModel<Integer>(bookmark, "numberOfVotes"), hasVoted, true, params, bookmark
-					.getId()) {
+		private RatingPanel newRatingPanel() {
+			return new CaptchaRatingPanel("vote", new PropertyModel<Integer>(bookmark, "calculatedRating"),
+					Model.of(5), new PropertyModel<Integer>(bookmark, "numberOfVotes"), hasVoted, true, bubblePanel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -196,7 +206,7 @@ public class BookmarkPage extends BookmarkBasePage {
 				}
 
 				@Override
-				protected void onRated(int rating) {
+				protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
 					if (isAllowedToVote()) {
 						hasVoted.setObject(Boolean.TRUE);
 						bookmarkService.rateBookmark(rating, bookmark);

@@ -40,6 +40,8 @@ import org.devproof.portal.core.module.common.model.EntityId;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * @author Carsten Hufe
@@ -65,10 +67,22 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 	private List<ArticlePageEntity> articlePages;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "article_right_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
+	@Fetch(FetchMode.SUBSELECT)
 	private List<RightEntity> allRights;
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "article_tag_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
 	private List<ArticleTagEntity> tags;
+
+	@Transient
+	public List<RightEntity> getCommentViewRights() {
+		return getRightsStartingWith(allRights, "article.comment.view");
+	}
+
+	@Transient
+	public List<RightEntity> getCommentWriteRights() {
+		return getRightsStartingWith(allRights, "article.comment.write");
+	}
 
 	@Transient
 	public List<RightEntity> getViewRights() {

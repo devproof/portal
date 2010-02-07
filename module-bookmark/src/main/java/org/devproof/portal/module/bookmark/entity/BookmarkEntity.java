@@ -31,6 +31,8 @@ import javax.persistence.Transient;
 
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * @author Carsten Hufe
@@ -53,9 +55,11 @@ final public class BookmarkEntity extends BaseLinkEntity {
 	@Column(name = "sync_hash")
 	private String syncHash;
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "bookmark_right_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
 	private List<RightEntity> allRights;
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "bookmark_tag_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
 	private List<BookmarkTagEntity> tags;
 

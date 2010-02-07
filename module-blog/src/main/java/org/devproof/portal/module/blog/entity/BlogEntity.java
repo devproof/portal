@@ -33,6 +33,8 @@ import javax.persistence.Transient;
 
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * Represents a blog entry
@@ -56,9 +58,11 @@ final public class BlogEntity extends BaseEntity {
 	@Column(name = "content")
 	private String content;
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "blog_right_xref", joinColumns = @JoinColumn(name = "blog_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
 	private List<RightEntity> allRights;
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "blog_tag_xref", joinColumns = @JoinColumn(name = "blog_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
 	private List<BlogTagEntity> tags;
 

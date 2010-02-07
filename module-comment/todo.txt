@@ -1,11 +1,12 @@
 - remove statelessform?
 - remove stateless voting zeug?
+- bubble ihr vote wurde gezählt
+- bubble nach unten oder seitlich ausrichten oder zentrieren?
 - voting mit captcha
-- in article einbauen
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
-- remove public modifier in interface 
+- fix article test
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

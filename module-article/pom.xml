@@ -73,6 +73,11 @@
 			<artifactId>portal-core</artifactId>
 			<version>${devproof.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.devproof.portal</groupId>
+			<artifactId>module-comment</artifactId>
+			<version>${devproof.version}</version>
+		</dependency>
 		<!-- Dependencies comes from portal-build -->
 		<!-- Sorry guys, I'm too lazy to manage to many dependencies -->
 	</dependencies>
