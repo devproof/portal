@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.form.StatelessForm;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -39,7 +39,7 @@ import org.devproof.portal.core.module.common.query.IQuery;
 public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
-	private StatelessForm<IQuery> form;
+	private Form<IQuery> form;
 	private List<BaseSearchBoxListener> listeners = new ArrayList<BaseSearchBoxListener>();
 	private boolean isAuthor;
 	private IQuery query;
@@ -78,14 +78,14 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		isAuthor = session.hasRight(this.authorRightName);
 	}
 
-	private StatelessForm<IQuery> createSearchForm() {
-		form = newStatelessForm();
+	private Form<IQuery> createSearchForm() {
+		form = newForm();
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
-	private StatelessForm<IQuery> newStatelessForm() {
-		return new StatelessForm<IQuery>("searchForm", new CompoundPropertyModel<IQuery>(query)) {
+	private Form<IQuery> newForm() {
+		return new Form<IQuery>("searchForm", new CompoundPropertyModel<IQuery>(query)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -115,7 +115,7 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		};
 	}
 
-	public StatelessForm<IQuery> getForm() {
+	public Form<IQuery> getForm() {
 		return form;
 	}
 

@@ -18,10 +18,10 @@ package org.devproof.portal.core.module.user.panel;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.pages.RedirectPage;
@@ -57,16 +57,16 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 		add(createForgotPasswordLink());
 	}
 
-	private StatelessForm<ValueMap> createLoginForm() {
-		StatelessForm<ValueMap> form = newLoginForm();
+	private Form<ValueMap> createLoginForm() {
+		Form<ValueMap> form = newLoginForm();
 		form.add(createUsernameField());
 		form.add(createPasswordField());
 		form.add(createOptParamHiddenField());
 		return form;
 	}
 
-	private StatelessForm<ValueMap> newLoginForm() {
-		return new StatelessForm<ValueMap>("loginForm", new CompoundPropertyModel<ValueMap>(valueMap)) {
+	private Form<ValueMap> newLoginForm() {
+		return new Form<ValueMap>("loginForm", new CompoundPropertyModel<ValueMap>(valueMap)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

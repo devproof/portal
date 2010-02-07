@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.config;
 
+import java.io.Serializable;
+
 import org.apache.wicket.Page;
 
 /**
@@ -23,7 +25,8 @@ import org.apache.wicket.Page;
  * @author Carsten Hufe
  * 
  */
-public class PageConfiguration {
+public class PageConfiguration implements Serializable {
+	private static final long serialVersionUID = 1L;
 	// if null there is no mount path
 	private String mountPath;
 	private Class<? extends Page> pageClass;
