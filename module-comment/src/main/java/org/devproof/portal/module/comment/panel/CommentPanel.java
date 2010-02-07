@@ -16,8 +16,10 @@
 package org.devproof.portal.module.comment.panel;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
@@ -38,6 +40,7 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -53,6 +56,7 @@ import org.devproof.portal.module.comment.entity.CommentEntity;
 import org.devproof.portal.module.comment.page.CommentAdminPage;
 import org.devproof.portal.module.comment.query.CommentQuery;
 import org.devproof.portal.module.comment.service.CommentService;
+import org.devproof.portal.module.comment.service.UrlCallback;
 
 /**
  * @author Carsten Hufe
@@ -150,7 +154,7 @@ public class CommentPanel extends Panel {
 				comment.setComment(commentStr);
 				comment.setIpAddress(PortalSession.get().getIpAddress());
 				dataView.setCurrentPage(0);
-				commentService.save(comment);
+				commentService.saveNewComment(comment, getUrlCallback());
 				info(getString("saved"));
 				target.addComponent(CommentPanel.this);
 			}
@@ -330,7 +334,7 @@ public class CommentPanel extends Panel {
 				@Override
 				public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 					CommentEntity comment = item.getModelObject();
-					commentService.reportViolation(comment);
+					commentService.reportViolation(comment, getUrlCallback(), PortalSession.get().getIpAddress());
 					bubblePanel.showMessage(getMarkupId(), target, getString("reported"));
 				}
 			};
@@ -468,5 +472,19 @@ public class CommentPanel extends Panel {
 			CommentEntity comment = item.getModelObject();
 			return new Label("numberOfBlames", String.valueOf(comment.getNumberOfBlames()));
 		}
+	}
+
+	protected UrlCallback getUrlCallback() {
+		return new UrlCallback() {
+			@Override
+			public String getUrl(CommentEntity comment) {
+				String requestUrl = getWebRequest().getHttpServletRequest().getRequestURL().toString();
+				PageParameters param = new PageParameters();
+				param.add(CommentAdminPage.PARAM_ID, String.valueOf(comment.getId()));
+				StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
+				url.append(WebRequestCycle.get().urlFor(CommentAdminPage.class, param));
+				return url.toString();
+			}
+		};
 	}
 }

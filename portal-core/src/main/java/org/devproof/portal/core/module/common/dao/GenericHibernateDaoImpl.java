@@ -61,11 +61,12 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		return getSession().createQuery("Select distinct(e) from " + type.getSimpleName() + " e").list();
 	}
 
-	public void save(T entity) {
+	@SuppressWarnings("unchecked")
+	public T save(T entity) {
 		openTransaction();
 		LOG.debug("save " + type);
 		updateModificationData(entity);
-		getSession().merge(entity);
+		return (T) getSession().merge(entity);
 	}
 
 	private void updateModificationData(T entity) {

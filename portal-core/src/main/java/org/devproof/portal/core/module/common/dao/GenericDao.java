@@ -45,7 +45,7 @@ public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
 	 * @param entity
 	 *            entity to save
 	 */
-	void save(T entity);
+	T save(T entity);
 
 	/**
 	 * Deletes an entity

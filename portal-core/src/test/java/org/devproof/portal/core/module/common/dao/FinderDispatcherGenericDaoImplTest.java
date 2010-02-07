@@ -68,7 +68,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
 
 	public void testGetObject_delegateSave() {
 		TestEntity entity = createEntity();
-		genericDao.save(entity);
+		EasyMock.expect(genericDao.save(entity)).andReturn(entity);
 		EasyMock.replay(genericDao);
 		testDao.save(entity);
 		EasyMock.verify(genericDao);

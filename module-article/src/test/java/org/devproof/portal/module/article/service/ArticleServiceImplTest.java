@@ -54,7 +54,7 @@ public class ArticleServiceImplTest extends TestCase {
 	public void testSave() {
 		ArticleEntity e = createArticleEntity();
 		e.setId(1);
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
 		EasyMock.replay(mockTag);

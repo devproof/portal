@@ -47,7 +47,7 @@ public class BlogServiceImplTest extends TestCase {
 
 	public void testSave() {
 		BlogEntity e = createBlogEntity();
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
 		EasyMock.replay(mockTag);
@@ -88,7 +88,6 @@ public class BlogServiceImplTest extends TestCase {
 	public void testNewBlogEntity() {
 		assertNotNull(impl.newBlogEntity());
 	}
-	
 
 	private BlogEntity createBlogEntity() {
 		BlogEntity blog = new BlogEntity();

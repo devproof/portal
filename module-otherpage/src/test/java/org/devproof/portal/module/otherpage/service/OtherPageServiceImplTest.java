@@ -42,7 +42,7 @@ public class OtherPageServiceImplTest extends TestCase {
 
 	public void testSave() {
 		OtherPageEntity e = createOtherPageEntity();
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		EasyMock.replay(mock);
 		impl.save(e);
 		EasyMock.verify(mock);
@@ -85,7 +85,7 @@ public class OtherPageServiceImplTest extends TestCase {
 		assertTrue(impl.existsContentId("contentId"));
 		EasyMock.verify(mock);
 	}
-	
+
 	private OtherPageEntity createOtherPageEntity() {
 		OtherPageEntity e = new OtherPageEntity();
 		e.setId(1);

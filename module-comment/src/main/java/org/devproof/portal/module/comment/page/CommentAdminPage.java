@@ -33,6 +33,7 @@ import org.devproof.portal.module.comment.query.CommentQuery;
 public class CommentAdminPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
+	public static final String PARAM_ID = "id";
 
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;

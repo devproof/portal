@@ -50,7 +50,7 @@ public class DownloadServiceImplTest extends TestCase {
 
 	public void testSave() {
 		DownloadEntity e = createDownloadEntity();
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
 		EasyMock.replay(mockTag);
@@ -136,7 +136,6 @@ public class DownloadServiceImplTest extends TestCase {
 		impl.rateDownload(5, e);
 		EasyMock.verify(mock);
 	}
-	
 
 	private DownloadEntity createDownloadEntity() {
 		DownloadEntity download = new DownloadEntity();

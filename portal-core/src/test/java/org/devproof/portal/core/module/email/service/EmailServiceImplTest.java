@@ -56,7 +56,7 @@ public class EmailServiceImplTest extends TestCase {
 	public void testSave() {
 		EmailTemplateEntity e = impl.newEmailTemplateEntity();
 		e.setId(1);
-		daomock.save(e);
+		EasyMock.expect(daomock.save(e)).andReturn(e);
 		EasyMock.replay(daomock);
 		impl.save(e);
 		EasyMock.verify(daomock);

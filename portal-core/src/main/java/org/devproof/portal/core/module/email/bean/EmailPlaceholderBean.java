@@ -17,6 +17,8 @@ package org.devproof.portal.core.module.email.bean;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The bean holds the values which are replaced in the emails
@@ -25,6 +27,8 @@ import java.util.Date;
  */
 public class EmailPlaceholderBean implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private Map<String, String> additionalPlaceholder = new HashMap<String, String>();
+
 	private String toUsername;
 	private String toFirstname;
 	private String toLastname;
@@ -160,4 +164,13 @@ public class EmailPlaceholderBean implements Serializable {
 	public void setContactIp(String contactIp) {
 		this.contactIp = contactIp;
 	}
+
+	public Map<String, String> getAdditionalPlaceholder() {
+		return additionalPlaceholder;
+	}
+
+	public String put(String key, String value) {
+		return additionalPlaceholder.put(key, value);
+	}
+
 }

@@ -51,7 +51,7 @@ public class BookmarkServiceImplTest extends TestCase {
 	public void testSave() {
 		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		mockTag.deleteUnusedTags();
 		EasyMock.replay(mock);
 		EasyMock.replay(mockTag);
@@ -153,7 +153,7 @@ public class BookmarkServiceImplTest extends TestCase {
 		impl.rateBookmark(5, e);
 		EasyMock.verify(mock);
 	}
-	
+
 	public void testFindLastSelectedRightsk() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
 		EasyMock.expect(mock.findLastSelectedRights()).andReturn(list);
@@ -161,7 +161,7 @@ public class BookmarkServiceImplTest extends TestCase {
 		assertTrue(impl.findLastSelectedRights() == list);
 		EasyMock.verify(mock);
 	}
-	
+
 	private BookmarkEntity createBookmarkEntity() {
 		return new BookmarkEntity();
 	}

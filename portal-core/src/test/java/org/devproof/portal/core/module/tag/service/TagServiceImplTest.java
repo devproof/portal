@@ -44,7 +44,7 @@ public class TagServiceImplTest extends TestCase {
 	public void testSave() {
 		DummyTagEntity e = new DummyTagEntity();
 		e.setTagname("tag");
-		mock.save(e);
+		EasyMock.expect(mock.save(e)).andReturn(e);
 		EasyMock.replay(mock);
 		impl.save(e);
 		EasyMock.verify(mock);
@@ -125,7 +125,7 @@ public class TagServiceImplTest extends TestCase {
 	public void testFindByIdAndCreateIfNotExists() {
 		EasyMock.expect(mock.findById("sampletag")).andReturn(null);
 		EasyMock.expect(mock.getType()).andReturn(DummyTagEntity.class);
-		mock.save((DummyTagEntity) EasyMock.anyObject());
+		EasyMock.expect(mock.save((DummyTagEntity) EasyMock.anyObject())).andReturn(null);
 		EasyMock.replay(mock);
 		DummyTagEntity newTag = impl.findByIdAndCreateIfNotExists("sampletag");
 		assertEquals("sampletag", newTag.getTagname());
