@@ -99,7 +99,7 @@ public class BubblePanel extends Panel {
 		js += "var winH = $(window).height();";
 		js += "var winW = $(window).width();";
 		js += "$(id).css({'top':  winH/2-$(id).height()/2, 'left': winW/2-$(id).width()/2}); ";
-		js += "$(id).fadeIn(1000); ";
+		js += "$(id).center(); $(id).fadeIn(1000); ";
 		target.appendJavascript(js);
 	}
 
