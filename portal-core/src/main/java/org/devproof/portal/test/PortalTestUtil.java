@@ -128,8 +128,8 @@ public class PortalTestUtil {
 	/**
 	 * Returns the wicket tester instance for PortalApplication
 	 */
-	public static WicketTester createWicketTesterWithSpring() {
-		final MockServletContext sandbox = getSandbox();
+	public static WicketTester createWicketTesterWithSpring(String spring) {
+		final MockServletContext sandbox = getSandbox(spring);
 		PortalApplication app = new PortalApplication() {
 			@Override
 			public ServletContext getServletContext() {
@@ -151,7 +151,7 @@ public class PortalTestUtil {
 		return new WicketTester(app);
 	}
 
-	private static MockServletContext getSandbox() {
+	private static MockServletContext getSandbox(String spring) {
 		if (sandbox == null) {
 			sandbox = new MockServletContext("") {
 				// this is for the theme page test
@@ -160,11 +160,17 @@ public class PortalTestUtil {
 					return System.getProperty("java.io.tmpdir");
 				}
 			};
-			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM,
-					"classpath:/devproof-portal-core.xml\nclasspath*:/**/devproof-module.xml");
+			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/devproof-portal-core.xml\n"
+					+ spring);
 			ContextLoader contextLoader = new ContextLoader();
 			contextLoader.initWebApplicationContext(sandbox);
 		}
+		// ((ConfigurableWebApplicationContext)
+		// ContextLoader.getCurrentWebApplicationContext())
+		// .setConfigLocations(new String[] {
+		// "classpath:/devproof-portal-core.xml", spring });
+		// ((ConfigurableWebApplicationContext)
+		// ContextLoader.getCurrentWebApplicationContext()).refresh();
 		return sandbox;
 	}
 
@@ -173,9 +179,14 @@ public class PortalTestUtil {
 	 */
 	public static WicketTester createWicketTesterWithSpringAndDatabase(String... sqlFiles) throws SQLException,
 			IOException {
+		return createWicketTesterWithCustomSpringAndDatabase("classpath*:/**/devproof-module.xml", sqlFiles);
+	}
+
+	public static WicketTester createWicketTesterWithCustomSpringAndDatabase(String spring, String... sqlFiles)
+			throws SQLException, IOException {
 		registerJndiBindings();
 		createDefaultDataStructure(sqlFiles);
-		return createWicketTesterWithSpring();
+		return createWicketTesterWithSpring(spring);
 	}
 
 	/**

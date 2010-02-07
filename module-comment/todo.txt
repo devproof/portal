@@ -1,9 +1,11 @@
 - remove statelessform?
 - remove stateless voting zeug?
+- voting mit captcha
 - in article einbauen
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed
 - FCKeditor austauschen
 - PageBreak für FCKeditor austauschen 
+- remove public modifier in interface 
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

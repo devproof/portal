@@ -32,7 +32,7 @@ public class BlogEditPageTest extends TestCase {
 	@Override
 	public void setUp() throws Exception {
 		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
-				"insert_blog.sql");
+				"insert_blog.sql", "create_tables_hsql_comment.sql", "insert_comment.sql");
 		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
 
