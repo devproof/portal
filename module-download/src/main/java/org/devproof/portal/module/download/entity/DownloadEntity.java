@@ -29,6 +29,8 @@ import javax.persistence.Transient;
 
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * @author Carsten Hufe
@@ -52,9 +54,11 @@ final public class DownloadEntity extends BaseLinkEntity {
 	@Column(name = "price")
 	private String price;
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "download_right_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
 	private List<RightEntity> allRights;
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "download_tag_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
 	private List<DownloadTagEntity> tags;
 

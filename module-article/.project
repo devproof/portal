@@ -2,6 +2,8 @@
   <name>module-article</name>
   <comment>Portal article module</comment>
   <projects>
+    <project>module-comment</project>
+    <project>module-deadlinkcheck</project>
     <project>portal-core</project>
   </projects>
   <buildSpec>

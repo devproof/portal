@@ -70,6 +70,7 @@ public class ArticleEditPage extends ArticleBasePage {
 		form.add(createTagField());
 		form.add(createViewRightPanel());
 		form.add(createReadRightPanel());
+		form.add(createCommentRightPanel());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -80,6 +81,10 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	private RightGridPanel createViewRightPanel() {
 		return new RightGridPanel("viewright", "article.view", new ListModel<RightEntity>(article.getAllRights()));
+	}
+
+	private RightGridPanel createCommentRightPanel() {
+		return new RightGridPanel("commentright", "article.comment", new ListModel<RightEntity>(article.getAllRights()));
 	}
 
 	private TagField<ArticleTagEntity> createTagField() {

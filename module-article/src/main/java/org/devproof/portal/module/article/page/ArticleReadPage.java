@@ -41,6 +41,8 @@ import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.devproof.portal.module.article.service.ArticleService;
+import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
+import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 /**
  * Article overview page
@@ -78,8 +80,19 @@ public class ArticleReadPage extends ArticleBasePage {
 		add(createContentLabel());
 		add(createBackLink());
 		add(createForwardLink());
+		add(createCommentPanel());
 		addTagCloudBox();
 		setPageTitle(displayedPage.getArticle().getTitle());
+	}
+
+	private Component createCommentPanel() {
+		DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+		ArticleEntity article = displayedPage.getArticle();
+		conf.setModuleContentId(article.getId().toString());
+		conf.setModuleName(ArticlePage.class.getSimpleName());
+		conf.setViewRights(article.getCommentViewRights());
+		conf.setWriteRights(article.getCommentWriteRights());
+		return new ExpandableCommentPanel("comments", conf);
 	}
 
 	private void setNumberOfPages() {

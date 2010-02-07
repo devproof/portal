@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -47,6 +48,8 @@ import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.panel.ArticleSearchBoxPanel;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.devproof.portal.module.article.service.ArticleService;
+import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
+import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 /**
  * @author Carsten Hufe
@@ -111,6 +114,7 @@ public class ArticlePage extends ArticleBasePage {
 			super(id, articleDataProvider);
 			onlyOneArticleInResult = articleDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
+			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override
@@ -152,6 +156,16 @@ public class ArticlePage extends ArticleBasePage {
 			add(createTeaserLabel());
 			add(createTagPanel());
 			add(createReadMoreLink());
+			add(createCommentPanel());
+		}
+
+		private Component createCommentPanel() {
+			DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+			conf.setModuleContentId(article.getId().toString());
+			conf.setModuleName(ArticlePage.class.getSimpleName());
+			conf.setViewRights(article.getCommentViewRights());
+			conf.setWriteRights(article.getCommentWriteRights());
+			return new ExpandableCommentPanel("comments", conf);
 		}
 
 		private Component createPrintLink() {
