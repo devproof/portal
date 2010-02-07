@@ -29,5 +29,5 @@ public interface UrlCallback {
 	 *            confirmation code
 	 * @return Full URL
 	 */
-	public String getUrl(String generatedCode);
+	String getUrl(String generatedCode);
 }

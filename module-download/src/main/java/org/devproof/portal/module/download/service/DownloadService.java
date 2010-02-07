@@ -30,7 +30,7 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
 	 * 
 	 * @return new instance of {@link DownloadEntity}
 	 */
-	public DownloadEntity newDownloadEntity();
+	DownloadEntity newDownloadEntity();
 
 	/**
 	 * Finds all downloads filtered by role
@@ -43,7 +43,8 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
 	 *            maximum result
 	 * @return list with downloads
 	 */
-	public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+	List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
+			Integer maxResult);
 
 	/**
 	 * Increments the number of downloads by one
@@ -51,7 +52,7 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
 	 * @param download
 	 *            {@link DownloadEntity}to increment
 	 */
-	public void incrementHits(DownloadEntity download);
+	void incrementHits(DownloadEntity download);
 
 	/**
 	 * Rates a {@link DownloadEntity}
@@ -61,7 +62,7 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
 	 * @param download
 	 *            the download to rate
 	 */
-	public void rateDownload(Integer rating, DownloadEntity download);
+	void rateDownload(Integer rating, DownloadEntity download);
 
 	/**
 	 * Marks a download as broken
@@ -69,7 +70,7 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
 	 * @param download
 	 *            {@link DownloadEntity} to mark
 	 */
-	public void markBrokenDownload(DownloadEntity download);
+	void markBrokenDownload(DownloadEntity download);
 
 	/**
 	 * Marks a download as valid
@@ -77,5 +78,5 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
 	 * @param download
 	 *            {@link DownloadEntity} to mark
 	 */
-	public void markValidDownload(DownloadEntity download);
+	void markValidDownload(DownloadEntity download);
 }

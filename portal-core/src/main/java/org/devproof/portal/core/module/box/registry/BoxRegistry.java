@@ -33,7 +33,7 @@ public interface BoxRegistry {
 	 * @param box
 	 *            box to register
 	 */
-	public void registerBox(BoxConfiguration box);
+	void registerBox(BoxConfiguration box);
 
 	/**
 	 * Removes a box
@@ -41,13 +41,13 @@ public interface BoxRegistry {
 	 * @param box
 	 *            box to remove
 	 */
-	public void removeBox(BoxConfiguration box);
+	void removeBox(BoxConfiguration box);
 
 	/**
 	 * Returns all registered boxes
 	 * 
 	 */
-	public List<BoxConfiguration> getRegisteredBoxes();
+	List<BoxConfiguration> getRegisteredBoxes();
 
 	/**
 	 * Returns true if the box is registered
@@ -55,7 +55,7 @@ public interface BoxRegistry {
 	 * @param clazz
 	 *            Implementation class of the box
 	 */
-	public boolean isBoxClassRegistered(String clazz);
+	boolean isBoxClassRegistered(String clazz);
 
 	/**
 	 * Returns the name of box
@@ -63,7 +63,7 @@ public interface BoxRegistry {
 	 * @param simpleClazz
 	 *            clazz
 	 */
-	public String getNameBySimpleClassName(String simpleClazz);
+	String getNameBySimpleClassName(String simpleClazz);
 
 	/**
 	 * Returns the name of box configuration
@@ -71,7 +71,7 @@ public interface BoxRegistry {
 	 * @param simpleClazz
 	 *            Simple class name
 	 */
-	public BoxConfiguration getBoxConfigurationBySimpleClassName(String simpleClazz);
+	BoxConfiguration getBoxConfigurationBySimpleClassName(String simpleClazz);
 
 	/**
 	 * Returns the class by simple class name
@@ -79,5 +79,5 @@ public interface BoxRegistry {
 	 * @param simpleClazz
 	 *            simple class name
 	 */
-	public Class<? extends Component> getClassBySimpleClassName(String simpleClazz);
+	Class<? extends Component> getClassBySimpleClassName(String simpleClazz);
 }

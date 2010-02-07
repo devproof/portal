@@ -27,11 +27,11 @@ import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
  */
 public interface OtherPageDao extends GenericDao<OtherPageEntity, Integer> {
 	@Query("select op.allRights from OtherPageEntity op where op.modifiedBy = (select max(modifiedBy) from OtherPageEntity)")
-	public List<RightEntity> findLastSelectedRights();
-	
+	List<RightEntity> findLastSelectedRights();
+
 	@Query("select count(op.contentId) from OtherPageEntity op where op.contentId like ?")
-	public long existsContentId(String contentId);
+	long existsContentId(String contentId);
 
 	@Query("select op from OtherPageEntity op where op.contentId like ?")
-	public OtherPageEntity findOtherPageByContentId(String contentId);
+	OtherPageEntity findOtherPageByContentId(String contentId);
 }

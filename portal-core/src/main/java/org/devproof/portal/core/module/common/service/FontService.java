@@ -25,5 +25,5 @@ public interface FontService {
 	/**
 	 * Returns all System fonts
 	 */
-	public List<Font> findAllSystemFonts();
+	List<Font> findAllSystemFonts();
 }

@@ -35,30 +35,30 @@ public interface FeedProviderRegistry {
 	 * @param feedProvider
 	 *            feed provider
 	 */
-	public void registerFeedProvider(String path, FeedProvider feedProvider);
+	void registerFeedProvider(String path, FeedProvider feedProvider);
 
 	/**
 	 * Removes a {@link FeedProvider}
 	 */
-	public void removeFeedProvider(String path);
+	void removeFeedProvider(String path);
 
 	/**
 	 * Returns the {@link FeedProvider} by the path
 	 */
-	public FeedProvider getFeedProviderByPath(String path);
+	FeedProvider getFeedProviderByPath(String path);
 
 	/**
 	 * Returns the path by page class
 	 */
-	public String getPathByPageClass(Class<? extends Page> pageClazz);
+	String getPathByPageClass(Class<? extends Page> pageClazz);
 
 	/**
 	 * Returns true if a class has a feed provider
 	 */
-	public boolean hasFeedSupport(Class<? extends Page> pageClazz);
+	boolean hasFeedSupport(Class<? extends Page> pageClazz);
 
 	/**
 	 * Returns all {@link FeedProvider} in a {@link Map}
 	 */
-	public Map<String, FeedProvider> getAllFeedProvider();
+	Map<String, FeedProvider> getAllFeedProvider();
 }

@@ -29,5 +29,5 @@ public interface FeedProviderLocator {
 	/**
 	 * Returns the feed providers of all modules
 	 */
-	public Collection<FeedProvider> getFeedProviders();
+	Collection<FeedProvider> getFeedProviders();
 }

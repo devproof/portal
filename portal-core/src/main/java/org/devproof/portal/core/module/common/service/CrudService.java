@@ -31,14 +31,14 @@ public interface CrudService<T, PK extends Serializable> {
 	 *            primary key
 	 * @return entity matching the primary key
 	 */
-	public T findById(PK id);
+	T findById(PK id);
 
 	/**
 	 * Find all entites
 	 * 
 	 * @return returns all entities
 	 */
-	public List<T> findAll();
+	List<T> findAll();
 
 	/**
 	 * Stores/updates an entity
@@ -46,7 +46,7 @@ public interface CrudService<T, PK extends Serializable> {
 	 * @param entity
 	 *            Entity to save
 	 */
-	public void save(T entity);
+	void save(T entity);
 
 	/**
 	 * Deletes an entity
@@ -54,5 +54,5 @@ public interface CrudService<T, PK extends Serializable> {
 	 * @param entity
 	 *            Entity to delete
 	 */
-	public void delete(T entity);
+	void delete(T entity);
 }

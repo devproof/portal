@@ -30,14 +30,14 @@ import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkTy
  */
 public interface ModuleLinkDao extends GenericDao<ModuleLinkEntity, Integer> {
 	@Query("select m from ModuleLinkEntity m where m.linkType = ? order by m.sort")
-	public List<ModuleLinkEntity> findModuleLinks(LinkType type);
+	List<ModuleLinkEntity> findModuleLinks(LinkType type);
 
 	@Query("select m from ModuleLinkEntity m where m.linkType = ? and m.visible = true order by m.sort")
-	public List<ModuleLinkEntity> findVisibleModuleLinks(LinkType type);
+	List<ModuleLinkEntity> findVisibleModuleLinks(LinkType type);
 
 	@Query("select max(m.sort) from ModuleLinkEntity m where m.linkType = ?")
-	public Integer getMaxSortNum(LinkType type);
+	Integer getMaxSortNum(LinkType type);
 
 	@Query("select m from ModuleLinkEntity m where m.linkType = ? and m.sort = ?")
-	public ModuleLinkEntity findModuleLinkBySort(LinkType linkType, Integer sort);
+	ModuleLinkEntity findModuleLinkBySort(LinkType linkType, Integer sort);
 }

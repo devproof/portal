@@ -24,20 +24,20 @@ public interface CommentConfiguration extends Serializable {
 	/**
 	 * Returns the module name
 	 */
-	public String getModuleName();
+	String getModuleName();
 
 	/**
 	 * Returns the module content id
 	 */
-	public String getModuleContentId();
+	String getModuleContentId();
 
 	/**
 	 * returns true if the user is allowed to view the comments
 	 */
-	public boolean isAllowedToView();
+	boolean isAllowedToView();
 
 	/**
 	 * returns true if the user is allowed to compose comments
 	 */
-	public boolean isAllowedToWrite();
+	boolean isAllowedToWrite();
 }

@@ -23,7 +23,7 @@ import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
  * @author Carsten Hufe
  */
 public interface ITagQuery<T extends BaseTagEntity<?>> extends Serializable {
-	public T getTag();
+	T getTag();
 
-	public void setTag(T tag);
+	void setTag(T tag);
 }

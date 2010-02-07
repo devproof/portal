@@ -27,15 +27,15 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
  */
 public interface TagDao<T> extends GenericDao<T, String> {
 	@Query("select distinct(t) from $TYPE t where t.tagname like ?||'%'")
-	public List<T> findTagsStartingWith(String prefix);
+	List<T> findTagsStartingWith(String prefix);
 
 	@BulkUpdate("delete from $TYPE t where size(t.referencedObjects) = 0")
-	public void deleteUnusedTags();
+	void deleteUnusedTags();
 
 	@Query(value = "select distinct(t) from $TYPE t order by size(t.referencedObjects) desc", limitClause = true)
-	public List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
+	List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
 
 	@Query(value = "select distinct(t) from $TYPE t join t.referencedObjects ro join ro.allRights ar where "
 			+ "ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like ?||'%') order by size(t.referencedObjects) desc", limitClause = true)
-	public List<T> findMostPopularTags(RoleEntity role, String viewRight, Integer firstResult, Integer maxResult);
+	List<T> findMostPopularTags(RoleEntity role, String viewRight, Integer firstResult, Integer maxResult);
 }

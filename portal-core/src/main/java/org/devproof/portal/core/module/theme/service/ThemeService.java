@@ -31,38 +31,38 @@ public interface ThemeService {
 	/**
 	 * Selects a theme
 	 */
-	public void selectTheme(ThemeBean theme);
+	void selectTheme(ThemeBean theme);
 
 	/**
 	 * Validates a theme
 	 */
-	public ValidationKey validateTheme(File themeArchive);
+	ValidationKey validateTheme(File themeArchive);
 
 	/**
 	 * Installs a theme
 	 */
-	public void install(File themeArchive);
+	void install(File themeArchive);
 
 	/**
 	 * Uninstalls a theme, if the theme is selected the default theme will be
 	 * selected
 	 */
-	public void uninstall(ThemeBean theme);
+	void uninstall(ThemeBean theme);
 
 	/**
 	 * Returns all installed themes
 	 */
-	public List<ThemeBean> findAllThemes();
+	List<ThemeBean> findAllThemes();
 
 	/**
 	 * Creates a zip file with the "small" theme template. That means only
 	 * TemplatePage (Base Page) and the main css files
 	 */
-	public File createSmallDefaultTheme();
+	File createSmallDefaultTheme();
 
 	/**
 	 * Creates a zip file with the "complete" theme template. That means
 	 * everything is exported, excepting tinymce stuff
 	 */
-	public File createCompleteDefaultTheme();
+	File createCompleteDefaultTheme();
 }

@@ -27,7 +27,7 @@ public interface OtherPageService extends CrudService<OtherPageEntity, Integer> 
 	 * 
 	 * @return new instance of {@link OtherPageEntity}
 	 */
-	public OtherPageEntity newOtherPageEntity();
+	OtherPageEntity newOtherPageEntity();
 
 	/**
 	 * Tests if a content id does exist
@@ -35,7 +35,7 @@ public interface OtherPageService extends CrudService<OtherPageEntity, Integer> 
 	 * @param contentId
 	 * @return true if the content-id existss
 	 */
-	public boolean existsContentId(String contentId);
+	boolean existsContentId(String contentId);
 
 	/**
 	 * finds the {@link OtherPageEntity} by the contend id
@@ -44,5 +44,5 @@ public interface OtherPageService extends CrudService<OtherPageEntity, Integer> 
 	 *            content id
 	 * @return other page
 	 */
-	public OtherPageEntity findOtherPageByContentId(String contentId);
+	OtherPageEntity findOtherPageByContentId(String contentId);
 }

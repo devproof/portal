@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public interface IBrokenQuery extends Serializable {
-	public Boolean getBroken();
+	Boolean getBroken();
 
-	public void setBroken(Boolean broken);
+	void setBroken(Boolean broken);
 }

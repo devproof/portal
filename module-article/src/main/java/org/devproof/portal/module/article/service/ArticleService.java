@@ -31,7 +31,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 * 
 	 * @return new instance of {@link ArticleEntity}
 	 */
-	public ArticleEntity newArticleEntity();
+	ArticleEntity newArticleEntity();
 
 	/**
 	 * Returns a new instance of ArticlePageEntity
@@ -42,7 +42,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            page number
 	 * @return new instance of {@link ArticleEntity}
 	 */
-	public ArticlePageEntity newArticlePageEntity(ArticleEntity article, Integer page);
+	ArticlePageEntity newArticlePageEntity(ArticleEntity article, Integer page);
 
 	/**
 	 * Returns a list with all articles allowed for the role
@@ -55,8 +55,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            maximum result number
 	 * @return list with article entities
 	 */
-	public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
-			Integer maxResult);
+	List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
 	/**
 	 * Returns true if a content id exists
@@ -65,7 +64,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            content id
 	 * @return true if content id exists
 	 */
-	public boolean existsContentId(String contentId);
+	boolean existsContentId(String contentId);
 
 	/**
 	 * Number of pages of the article
@@ -74,7 +73,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            content id
 	 * @return number of pages
 	 */
-	public long getPageCount(String contentId);
+	long getPageCount(String contentId);
 
 	/**
 	 * Returns the article page
@@ -85,7 +84,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            page number
 	 * @return {@link ArticlePageEntity}
 	 */
-	public ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page);
+	ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page);
 
 	/**
 	 * Returns the Article by id
@@ -94,7 +93,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            primary key
 	 * @return a prefetched/initialized {@link ArticleEntity}
 	 */
-	public ArticleEntity findByIdAndPrefetch(Integer id);
+	ArticleEntity findByIdAndPrefetch(Integer id);
 
 	/**
 	 * Returns the Article by content id
@@ -103,5 +102,5 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
 	 *            content id
 	 * @return {@link ArticleEntity}
 	 */
-	public ArticleEntity findByContentId(String contentId);
+	ArticleEntity findByContentId(String contentId);
 }

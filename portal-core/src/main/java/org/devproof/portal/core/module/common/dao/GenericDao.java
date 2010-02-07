@@ -30,14 +30,14 @@ public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
 	 * @param id
 	 * @return entity
 	 */
-	public T findById(PK id);
+	T findById(PK id);
 
 	/**
 	 * Find all entites
 	 * 
 	 * @return list of entities
 	 */
-	public List<T> findAll();
+	List<T> findAll();
 
 	/**
 	 * Stores an entity
@@ -45,7 +45,7 @@ public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
 	 * @param entity
 	 *            entity to save
 	 */
-	public void save(T entity);
+	void save(T entity);
 
 	/**
 	 * Deletes an entity
@@ -53,7 +53,7 @@ public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
 	 * @param entity
 	 *            entity to delete
 	 */
-	public void delete(T entity);
+	void delete(T entity);
 
 	/**
 	 * refresh an entity
@@ -61,10 +61,10 @@ public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
 	 * @param entity
 	 *            entity to refresh
 	 */
-	public void refresh(T entity);
+	void refresh(T entity);
 
 	/**
 	 * Returns the represented generic type
 	 */
-	public Class<T> getType();
+	Class<T> getType();
 }

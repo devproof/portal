@@ -33,5 +33,5 @@ public interface CommonMarkupContainerFactory {
 	 *            an object if required
 	 * @return instance
 	 */
-	public MarkupContainer newInstance(String id, Object... obj);
+	MarkupContainer newInstance(String id, Object... obj);
 }

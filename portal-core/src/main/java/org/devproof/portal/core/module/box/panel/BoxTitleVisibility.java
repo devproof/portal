@@ -22,5 +22,5 @@ public interface BoxTitleVisibility {
 	/**
 	 * Sets the visibility of the box title
 	 */
-	public void setTitleVisible(boolean visible);
+	void setTitleVisible(boolean visible);
 }

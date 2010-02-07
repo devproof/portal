@@ -27,35 +27,35 @@ public interface TagService<T> extends CrudService<T, String> {
 	/**
 	 * Returns all tags starting with the given string
 	 */
-	public List<T> findTagsStartingWith(String prefix);
+	List<T> findTagsStartingWith(String prefix);
 
 	/**
 	 * Deletes all unused/unreferenced tags
 	 */
-	public void deleteUnusedTags();
+	void deleteUnusedTags();
 
 	/**
 	 * Returns the most popular blog tags
 	 */
-	public List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
+	List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
 
 	/**
 	 * Returns the most popular blog tags filtered by role
 	 */
-	public List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult);
+	List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult);
 
 	/**
 	 * Returns a new instance of the tag
 	 */
-	public T newTagEntity(String tag);
+	T newTagEntity(String tag);
 
 	/**
 	 * Returns the belonging tag right for the related object type
 	 */
-	public String getRelatedTagRight();
+	String getRelatedTagRight();
 
 	/**
 	 * Returns a tag by id and creates it, if it does exist
 	 */
-	public T findByIdAndCreateIfNotExists(String tagName);
+	T findByIdAndCreateIfNotExists(String tagName);
 }

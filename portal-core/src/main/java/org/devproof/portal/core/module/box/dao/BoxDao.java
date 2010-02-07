@@ -26,11 +26,11 @@ import org.devproof.portal.core.module.common.dao.GenericDao;
  */
 public interface BoxDao extends GenericDao<BoxEntity, Integer> {
 	@Query("select max(b.sort) from BoxEntity b")
-	public Integer getMaxSortNum();
+	Integer getMaxSortNum();
 
 	@Query("select b from BoxEntity b where b.sort = ?")
-	public BoxEntity findBoxBySort(Integer sort);
+	BoxEntity findBoxBySort(Integer sort);
 
 	@Query("select b from BoxEntity b order by b.sort")
-	public List<BoxEntity> findAllOrderedBySort();
+	List<BoxEntity> findAllOrderedBySort();
 }

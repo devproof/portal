@@ -31,7 +31,7 @@ public interface SharedRegistry {
 	 * @param resource
 	 *            resource to register
 	 */
-	public void registerResource(String resourceKey, Object resource);
+	void registerResource(String resourceKey, Object resource);
 
 	/**
 	 * Remove a registered resource
@@ -39,7 +39,7 @@ public interface SharedRegistry {
 	 * @param resourceKey
 	 *            resource key
 	 */
-	public void removeResource(String resourceKey);
+	void removeResource(String resourceKey);
 
 	/**
 	 * Returns a shared resource by the key
@@ -50,7 +50,7 @@ public interface SharedRegistry {
 	 *            resource key
 	 * @return shared resource
 	 */
-	public <T> T getResource(String resourceKey);
+	<T> T getResource(String resourceKey);
 
 	/**
 	 * Returns true if a resource is available
@@ -59,12 +59,12 @@ public interface SharedRegistry {
 	 *            resource key
 	 * @return true if available
 	 */
-	public boolean isResourceAvailable(String resourceKey);
+	boolean isResourceAvailable(String resourceKey);
 
 	/**
 	 * Returns all registered resources
 	 * 
 	 * @return map with registered resources
 	 */
-	public Map<String, ?> getRegisteredResources();
+	Map<String, ?> getRegisteredResources();
 }

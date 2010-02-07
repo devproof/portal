@@ -31,5 +31,5 @@ public interface CommonPageFactory {
 	 *            an object if required in the implementation
 	 * @return instance
 	 */
-	public Page newInstance(Object... obj);
+	Page newInstance(Object... obj);
 }

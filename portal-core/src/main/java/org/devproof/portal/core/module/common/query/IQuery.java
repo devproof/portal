@@ -21,13 +21,13 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public interface IQuery extends Serializable {
-	public String getAllTextFields();
+	String getAllTextFields();
 
-	public void setAllTextFields(String allTextFields);
+	void setAllTextFields(String allTextFields);
 
-	public Integer getId();
+	Integer getId();
 
-	public void setId(Integer id);
+	void setId(Integer id);
 
-	public void clearSelection();
+	void clearSelection();
 }

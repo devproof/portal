@@ -25,5 +25,5 @@ import org.devproof.portal.module.article.entity.ArticlePageId;
  */
 public interface ArticlePageDao extends GenericDao<ArticlePageEntity, ArticlePageId> {
 	@Query("select count(ap.contentId) from ArticlePageEntity ap where ap.contentId like ?")
-	public long getPageCount(String contentId);
+	long getPageCount(String contentId);
 }

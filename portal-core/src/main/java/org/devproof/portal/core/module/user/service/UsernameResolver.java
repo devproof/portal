@@ -22,5 +22,5 @@ public interface UsernameResolver {
 	/**
 	 * Returns the username of the logged in person
 	 */
-	public String getUsername();
+	String getUsername();
 }
