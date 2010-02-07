@@ -17,9 +17,9 @@ package org.devproof.portal.core.module.user.page;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.util.value.ValueMap;
@@ -44,8 +44,8 @@ public class LoginPage extends TemplatePage {
 		add(createForgotPasswordLink());
 	}
 
-	private StatelessForm<ValueMap> createLoginForm() {
-		StatelessForm<ValueMap> form = newLoginForm();
+	private Form<ValueMap> createLoginForm() {
+		Form<ValueMap> form = newLoginForm();
 		form.add(createUsernameField());
 		form.add(createPasswordField());
 		form.setOutputMarkupId(true);
@@ -60,9 +60,8 @@ public class LoginPage extends TemplatePage {
 		return new RequiredTextField<String>("username");
 	}
 
-	private StatelessForm<ValueMap> newLoginForm() {
-		StatelessForm<ValueMap> form = new StatelessForm<ValueMap>("loginForm", new CompoundPropertyModel<ValueMap>(
-				valueMap)) {
+	private Form<ValueMap> newLoginForm() {
+		Form<ValueMap> form = new Form<ValueMap>("loginForm", new CompoundPropertyModel<ValueMap>(valueMap)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

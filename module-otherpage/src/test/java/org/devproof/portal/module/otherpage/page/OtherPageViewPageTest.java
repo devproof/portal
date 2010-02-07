@@ -40,8 +40,6 @@ public class OtherPageViewPageTest extends TestCase {
 
 	public void testRenderDefaultPage() {
 		tester.startPage(OtherPageViewPage.class, new PageParameters("0=about"));
-		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(tester.getLastRenderedPage().isPageStateless());
 		tester.assertRenderedPage(OtherPageViewPage.class);
 	}
 }

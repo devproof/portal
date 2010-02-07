@@ -1,5 +1,3 @@
-- remove statelessform?
-- remove stateless voting zeug?
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed
 - FCKeditor austauschen

@@ -39,8 +39,6 @@ public class DownloadPageTest extends TestCase {
 
 	public void testRenderDefaultPage() {
 		tester.startPage(DownloadPage.class);
-		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(tester.getLastRenderedPage().isPageStateless());
 		tester.assertRenderedPage(DownloadPage.class);
 	}
 }

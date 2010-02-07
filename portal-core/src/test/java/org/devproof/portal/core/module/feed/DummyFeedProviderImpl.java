@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.feed;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,8 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 /**
  * @author Carsten Hufe
  */
-public class DummyFeedProviderImpl implements FeedProvider {
+public class DummyFeedProviderImpl implements FeedProvider, Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
