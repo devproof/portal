@@ -25,40 +25,40 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * @author Carsten Hufe
  */
-public class RichTextArea extends TextArea<String> {
+public class BakRichTextArea extends TextArea<String> {
 	private static final long serialVersionUID = 1L;
 
-	public RichTextArea(String id) {
+	public BakRichTextArea(String id) {
 		this(id, null);
 	}
 
-	public RichTextArea(String id, IModel<String> model) {
+	public BakRichTextArea(String id, IModel<String> model) {
 		super(id, model);
-		add(createCKEditorResource());
-		add(createCKEditorConfiguration());
-		add(createCKEditorAttributeModifier());
-		setOutputMarkupId(true);
+		add(createTinyMCEResource());
+		add(createTinyMCEConfiguration());
+		add(createTinyMCEAtrributeModifier());
 	}
 
-	private SimpleAttributeModifier createCKEditorAttributeModifier() {
-		return new SimpleAttributeModifier("class", "ckeditor");
+	private SimpleAttributeModifier createTinyMCEAtrributeModifier() {
+		return new SimpleAttributeModifier("class", "mceRichTextArea");
 	}
 
-	private TextTemplateHeaderContributor createCKEditorConfiguration() {
-		Map<String, Object> variables = new MiniMap<String, Object>(1);
-		// variables.put("iconcodeImg",
-		// PortalUtil.toUrl(CommonConstants.REF_ICONCODE_IMG, getRequest()));
-		// variables.put("string2imgImg",
-		// PortalUtil.toUrl(CommonConstants.REF_STRING2IMG_IMG, getRequest()));
-		return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "RichTextArea.js",
+	private TextTemplateHeaderContributor createTinyMCEConfiguration() {
+		Map<String, Object> variables = new MiniMap<String, Object>(3);
+		variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
+		variables.put("iconcodeImg", PortalUtil.toUrl(CommonConstants.REF_ICONCODE_IMG, getRequest()));
+		variables.put("string2imgImg", PortalUtil.toUrl(CommonConstants.REF_STRING2IMG_IMG, getRequest()));
+		return TextTemplateHeaderContributor.forJavaScript(BakRichTextArea.class, "RichTextArea.js",
 				new MapModel<String, Object>(variables));
 	}
 
-	private HeaderContributor createCKEditorResource() {
-		return JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "ckeditor/ckeditor.js");
+	private HeaderContributor createTinyMCEResource() {
+		return JavascriptPackageResource.getHeaderContribution(BakRichTextArea.class, "tinymce/tiny_mce.js");
 	}
 }
