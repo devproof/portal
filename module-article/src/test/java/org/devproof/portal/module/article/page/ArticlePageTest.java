@@ -39,8 +39,6 @@ public class ArticlePageTest extends TestCase {
 
 	public void testRenderDefaultPage() {
 		tester.startPage(ArticlePage.class);
-		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(tester.getLastRenderedPage().isPageStateless());
 		tester.assertRenderedPage(ArticlePage.class);
 	}
 }
