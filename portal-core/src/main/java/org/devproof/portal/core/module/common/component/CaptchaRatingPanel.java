@@ -54,16 +54,14 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
 			if (showCaptcha()) {
 				CaptchaPanel captchaPanel = createCaptchaPanel(rating, outputMarkupId);
 				bubblePanel.setContent(captchaPanel);
-				bubblePanel.show(outputMarkupId, target);
+				bubblePanel.showModal(target);
 			} else {
 				onRatedAndCaptchaValidated(rating, target);
-				bubblePanel.setMessage(getString("voteCounted"));
-				bubblePanel.show(outputMarkupId, target);
+				bubblePanel.showMessage(outputMarkupId, target, getString("voteCounted"));
 				// target.addComponent(CaptchaRatingPanel.this.get("rater"));
 			}
 		} else {
-			bubblePanel.setMessage(getString("alreadyVoted"));
-			bubblePanel.show(outputMarkupId, target);
+			bubblePanel.showMessage(outputMarkupId, target, getString("alreadyVoted"));
 		}
 	}
 
@@ -77,8 +75,7 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
 			protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 				bubblePanel.hide(target);
 				CaptchaRatingPanel.this.onRatedAndCaptchaValidated(rating, target);
-				bubblePanel.setMessage(CaptchaRatingPanel.this.getString("voteCounted"));
-				bubblePanel.show(outputMarkupId, target);
+				bubblePanel.showMessage(outputMarkupId, target, CaptchaRatingPanel.this.getString("voteCounted"));
 				// target.addComponent(CaptchaRatingPanel.this.get("rater"));
 			}
 

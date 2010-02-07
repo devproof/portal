@@ -18,7 +18,9 @@ package org.devproof.portal.core.module.common.panel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -35,10 +37,15 @@ public class BubblePanel extends Panel {
 
 	public BubblePanel(String id) {
 		super(id);
+		add(createCssHeaderContributor());
 		add(createStyleAttributeModifier());
 		add(createClassAttributeModifier());
 		add(createContent());
 		setOutputMarkupId(true);
+	}
+
+	private HeaderContributor createCssHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/dialog.css");
 	}
 
 	private SimpleAttributeModifier createStyleAttributeModifier() {
@@ -61,7 +68,7 @@ public class BubblePanel extends Panel {
 		replace(component);
 	}
 
-	public void setMessage(String message) {
+	private void setMessage(String message) {
 		setContent(createMessageFragment(message));
 	}
 
@@ -73,21 +80,37 @@ public class BubblePanel extends Panel {
 		return new WebMarkupContainer(id);
 	}
 
-	public void show(String linkId, AjaxRequestTarget target) {
+	private void show(String linkId, AjaxRequestTarget target) {
 		target.addComponent(this);
-		String js = "var p = $(\"#" + linkId + "\"); var pos = p.position();";
-		js += "$(\"#"
-				+ getMarkupId()
-				+ "\").css( {\"position\": \"absolute\", \"left\": (pos.left - 45 + (p.width() / 2)) + \"px\", \"top\":(pos.top - $(\"#"
-				+ getMarkupId() + "\").height() - (p.height() / 2)) + \"px\" } );";
-
-		js += "$(\".bubblePopup\").fadeOut(\"normal\");";
-		js += "$(\"#" + getMarkupId() + "\").fadeIn(\"normal\");";
+		String js = "var id = '#" + getMarkupId() + "'; var p = $(\"#" + linkId + "\"); var pos = p.position();";
+		js += "$(id).css( {'position': 'absolute', 'left': (pos.left - 45 + (p.width() / 2)) + 'px', 'top':(pos.top - $(id).height() - (p.height() / 2) + 50) + 'px' } );";
+		js += "$('.bubblePopup').fadeOut('normal');";
+		js += "$(id).fadeIn('normal');";
 		target.appendJavascript(js);
 	}
 
+	public void showModal(AjaxRequestTarget target) {
+		target.addComponent(this);
+		String js = "";
+		js = "var maskHeight = $(document).height(); var maskWidth = $(window).width();";
+		js += "$('#modalMask').css({'width':maskWidth,'height':maskHeight});";
+		js += "$('#modalMask').fadeIn('fast'); $('#modalMask').fadeTo('fast',0.3);";
+		js += "var id = '#" + getMarkupId() + "';";
+		js += "var winH = $(window).height();";
+		js += "var winW = $(window).width();";
+		js += "$(id).css({'top':  winH/2-$(id).height()/2, 'left': winW/2-$(id).width()/2}); ";
+		js += "$(id).fadeIn(1000); ";
+		target.appendJavascript(js);
+	}
+
+	public void showMessage(String linkId, AjaxRequestTarget target, String message) {
+		setMessage(message);
+		show(linkId, target);
+	}
+
 	public void hide(AjaxRequestTarget target) {
-		target.appendJavascript("$(\".bubblePopup\").fadeOut(\"slow\");");
+		target.appendJavascript("$('#modalMask').fadeOut('fast'); $('.bubblePopup').fadeOut('slow'); ");
+
 	}
 
 	private class MessageFragment extends Fragment {

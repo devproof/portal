@@ -1,6 +1,5 @@
 - remove statelessform?
 - remove stateless voting zeug?
-- bubble nach unten oder seitlich ausrichten oder zentrieren?
 - notification bei neuen Kommentaren
 - notification bei not reviewed and blamed
 - FCKeditor austauschen

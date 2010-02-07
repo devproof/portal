@@ -41,7 +41,7 @@ public abstract class CaptchaAjaxButton extends AjaxButton {
 		if (showCaptcha()) {
 			CaptchaPanel captchaPanel = createCaptchaPanel();
 			bubblePanel.setContent(captchaPanel);
-			bubblePanel.show(getMarkupId(), target);
+			bubblePanel.showModal(target);
 		} else {
 			onClickAndCaptchaValidated(target);
 		}

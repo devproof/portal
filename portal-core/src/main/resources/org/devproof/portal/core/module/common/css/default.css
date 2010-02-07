@@ -69,12 +69,6 @@ fieldset {
 	padding-top: 5px;
 }
 
-.captchaPopup {
-	
-}
-
-
-
 a {
 	color: #F70;
 }
@@ -512,4 +506,13 @@ a.dataview {
 .footer a:hover {
 	color: #000;
 	text-decoration: underline;
+}
+
+#modalMask {
+  position:absolute;
+  left:0;
+  top:0;
+  z-index:9000;
+  background-color:#000;
+  display:none;
 }
