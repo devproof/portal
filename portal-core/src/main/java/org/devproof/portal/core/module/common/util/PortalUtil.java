@@ -164,6 +164,8 @@ public class PortalUtil {
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
 				"js/SyntaxHighlighter/shBrushSql.js"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
+				"js/SyntaxHighlighter/shBrushBash.js"));
+		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
 				"js/SyntaxHighlighter/shBrushXml.js"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
 				"js/SyntaxHighlighter/shBrushJScript.js"));
