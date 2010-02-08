@@ -27,7 +27,7 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
-import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
+import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
@@ -60,7 +60,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String> fc = new RichTextArea("content");
+		FormComponent<String> fc = new FullRichTextArea("content");
 		fc.setRequired(true);
 		fc.add(StringValidator.minimumLength(10));
 		return fc;

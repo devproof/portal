@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.common;
 
 import org.apache.wicket.ResourceReference;
-import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
+import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.hibernate.dialect.MySQL5Dialect;
 
 /**
@@ -73,9 +73,9 @@ public class CommonConstants {
 	public static final ResourceReference REF_UP_IMG = new ResourceReference(CommonConstants.class, "img/arrow_up.png");
 	public static final ResourceReference REF_INFORMATION_IMG = new ResourceReference(CommonConstants.class,
 			"img/information.png");
-	public static final ResourceReference REF_ICONCODE_IMG = new ResourceReference(RichTextArea.class,
+	public static final ResourceReference REF_ICONCODE_IMG = new ResourceReference(FullRichTextArea.class,
 			"img/iconcode.gif");
-	public static final ResourceReference REF_STRING2IMG_IMG = new ResourceReference(RichTextArea.class,
+	public static final ResourceReference REF_STRING2IMG_IMG = new ResourceReference(FullRichTextArea.class,
 			"img/string2img.gif");
 
 }

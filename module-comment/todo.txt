@@ -1,5 +1,3 @@
-- FCKeditor austauschen (email fehlt)
-- fck löschen
 - PageBreak für FCKeditor austauschen 
 - Konfiguration SyntaxHighlighter style
 terms of use

@@ -32,7 +32,8 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
-import org.devproof.portal.core.module.common.component.richtext.RichTextArea;
+import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
+import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
@@ -111,14 +112,14 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private FormComponent<String> createTeaserField() {
-		FormComponent<String> fc = new RichTextArea("teaser");
+		FormComponent<String> fc = new BasicRichTextArea("teaser", false);
 		fc.add(StringValidator.minimumLength(3));
 		fc.setRequired(true);
 		return fc;
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String> fc = new RichTextArea("fullArticle");
+		FormComponent<String> fc = new FullRichTextArea("fullArticle");
 		fc.add(StringValidator.minimumLength(3));
 		fc.setRequired(true);
 		return fc;
