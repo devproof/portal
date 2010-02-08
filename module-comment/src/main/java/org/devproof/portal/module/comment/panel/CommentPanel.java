@@ -40,7 +40,6 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -482,7 +481,7 @@ public class CommentPanel extends Panel {
 				PageParameters param = new PageParameters();
 				param.add(CommentAdminPage.PARAM_ID, String.valueOf(comment.getId()));
 				StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-				url.append(WebRequestCycle.get().urlFor(CommentAdminPage.class, param));
+				url.append(urlFor(CommentAdminPage.class, param));
 				return url.toString();
 			}
 		};

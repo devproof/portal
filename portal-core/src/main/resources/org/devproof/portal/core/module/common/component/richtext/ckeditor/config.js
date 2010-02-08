@@ -20,6 +20,15 @@ CKEDITOR.config.toolbar_Full =
 	    ['Maximize', 'ShowBlocks'],
 	    ['Code', 'Str2Image'],
 	];
+CKEDITOR.config.toolbar_Basic =
+	[
+	    ['Bold','Italic','Underline','Strike'],
+	    ['NumberedList','BulletedList'],
+	    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+	    ['Link','Unlink','Anchor'],
+	    ['Font','FontSize'],
+	    ['TextColor','BGColor'],
+	];
 
 CKEDITOR.editorConfig = function( config )
 {
