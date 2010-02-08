@@ -32,4 +32,9 @@ public class FontServiceImplTest extends TestCase {
 		assertNotNull(impl.findAllSystemFonts());
 		assertTrue(impl.findAllSystemFonts().size() > 0);
 	}
+
+	public void testFindSyntaxHighlighterThemes() {
+		assertNotNull(impl.findSyntaxHighlighterThemes());
+		assertTrue(impl.findSyntaxHighlighterThemes().size() == 7);
+	}
 }

@@ -292,11 +292,6 @@ public class ConfigurationPage extends TemplatePage {
 			index = typeWithoutPrefix.indexOf('.');
 			String methodName = typeWithoutPrefix.substring(0, index);
 			typeWithoutPrefix = typeWithoutPrefix.substring(index + 1);
-			index = typeWithoutPrefix.indexOf('.');
-			String displayName = typeWithoutPrefix.substring(0, index);
-			typeWithoutPrefix = typeWithoutPrefix.substring(index + 1);
-			index = typeWithoutPrefix.indexOf('.');
-			String primaryKey = typeWithoutPrefix.substring(0, index);
 
 			ApplicationContext context = ((PortalApplication) getApplication()).getSpringContext();
 			Object springBean = context.getBean(springBeanName);
@@ -304,15 +299,30 @@ public class ConfigurationPage extends TemplatePage {
 				Method method = springBean.getClass().getMethod(methodName);
 				List<?> results = (List<?>) method.invoke(springBean);
 				if (results != null && results.size() > 0) {
-					Method primaryKeyMethod = results.get(0).getClass().getMethod(PortalUtil.addGet(primaryKey));
-					Method displayMethod = results.get(0).getClass().getMethod(PortalUtil.addGet(displayName));
-					Method primaryKeyMethodToString = primaryKeyMethod.getReturnType().getMethod("toString");
-					Method displayMethodToString = displayMethod.getReturnType().getMethod("toString");
+					if (typeWithoutPrefix.contains(".")) {
+						index = typeWithoutPrefix.indexOf('.');
+						String displayName = typeWithoutPrefix.substring(0, index);
+						typeWithoutPrefix = typeWithoutPrefix.substring(index + 1);
+						index = typeWithoutPrefix.indexOf('.');
+						String primaryKey = typeWithoutPrefix.substring(0, index);
 
-					for (Object result : results) {
-						ConfigurationEntity c = createConfigurationEntity(primaryKeyMethod, displayMethod,
-								primaryKeyMethodToString, displayMethodToString, result);
-						possibleSelectionValues.add(c);
+						Method primaryKeyMethod = results.get(0).getClass().getMethod(PortalUtil.addGet(primaryKey));
+						Method displayMethod = results.get(0).getClass().getMethod(PortalUtil.addGet(displayName));
+						Method primaryKeyMethodToString = primaryKeyMethod.getReturnType().getMethod("toString");
+						Method displayMethodToString = displayMethod.getReturnType().getMethod("toString");
+
+						for (Object result : results) {
+							ConfigurationEntity c = createConfigurationEntity(primaryKeyMethod, displayMethod,
+									primaryKeyMethodToString, displayMethodToString, result);
+							possibleSelectionValues.add(c);
+						}
+					} else {
+						for (Object result : results) {
+							ConfigurationEntity c = new ConfigurationEntity();
+							c.setDescription((String) result);
+							c.setValue((String) result);
+							possibleSelectionValues.add(c);
+						}
 					}
 				}
 			} catch (Exception e) {

@@ -1,4 +1,2 @@
-- PageBreak für FCKeditor austauschen 
-- Konfiguration SyntaxHighlighter style
 terms of use
 http://www.tr-register.co.uk/forums/index.php?app=core&module=global&section=register

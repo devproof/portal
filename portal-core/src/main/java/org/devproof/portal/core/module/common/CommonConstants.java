@@ -61,6 +61,7 @@ public class CommonConstants {
 	public static final String CONF_COPYRIGHT_OWNER = "copyright_owner";
 
 	public static final String CONF_STRING2IMG_FONT = "spring.fontService.findAllSystemFonts.name.name.string2image";
+	public static final String CONF_SYNTAXHL_THEME = "spring.fontService.findSyntaxHighlighterThemes.theme";
 	public static final String CONF_UNKNOWN_ERROR_EMAIL = "spring.emailTemplateDao.findAll.subject.id.unknownerror";
 	public static final ResourceReference REF_DEFAULT_CSS = new ResourceReference(CommonConstants.class,
 			"css/default.css");

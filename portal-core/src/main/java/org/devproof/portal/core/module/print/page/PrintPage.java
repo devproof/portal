@@ -37,6 +37,7 @@ public abstract class PrintPage extends WebPage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private PageParameters params;
+
 	public PrintPage(PageParameters params) {
 		super(params);
 		this.params = params;
@@ -54,7 +55,8 @@ public abstract class PrintPage extends WebPage {
 	}
 
 	private void addSyntaxHighlighter() {
-		PortalUtil.addSyntaxHightlighter(this);
+		String theme = configurationService.findAsString(CommonConstants.CONF_SYNTAXHL_THEME);
+		PortalUtil.addSyntaxHightlighter(this, theme);
 	}
 
 	private HeaderContributor createPrinterCSSHeaderContributor() {

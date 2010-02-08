@@ -25,3 +25,4 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 
 -- IPv6 compatibility
 alter table core_user modify last_ip VARCHAR(39) ; 
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.fontService.findSyntaxHighlighterThemes.theme','Syntax Highlighter Theme','General','java.lang.String','Eclipse');

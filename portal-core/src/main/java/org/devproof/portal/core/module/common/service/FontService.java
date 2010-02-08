@@ -26,4 +26,9 @@ public interface FontService {
 	 * Returns all System fonts
 	 */
 	List<Font> findAllSystemFonts();
+
+	/**
+	 * Returns syntax highlighter themes
+	 */
+	List<String> findSyntaxHighlighterThemes();
 }
