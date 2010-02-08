@@ -13,12 +13,12 @@ CKEDITOR.config.toolbar_Full =
 	    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
 	    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 	    ['Link','Unlink','Anchor'],
-	    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+	    ['Image','Flash','Table','HorizontalRule','SpecialChar'],
 	    '/',
 	    ['Styles','Format','Font','FontSize'],
 	    ['TextColor','BGColor'],
 	    ['Maximize', 'ShowBlocks'],
-	    ['Code', 'Str2Image'],
+	    ['Code', 'Str2Image','Smiley','PageBreak'],
 	];
 CKEDITOR.config.toolbar_Basic =
 	[
@@ -32,8 +32,7 @@ CKEDITOR.config.toolbar_Basic =
 
 CKEDITOR.editorConfig = function( config )
 {
-//	config.uiColor = "#BCBCA4";
-	config.uiColor = "#F1E8B1"
+	config.uiColor = "#C3BDA8"
 	config.extraPlugins = 'syntaxhighlight,string2image';
 };
 

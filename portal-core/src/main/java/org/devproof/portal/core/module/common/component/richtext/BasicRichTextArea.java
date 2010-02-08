@@ -19,37 +19,47 @@ import java.util.Map;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
+import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * @author Carsten Hufe
  */
-public class EmailRichTextArea extends TextArea<String> {
+public class BasicRichTextArea extends TextArea<String> {
 	private static final long serialVersionUID = 1L;
-	private static final ResourceReference REF_EMAIL_CSS = new ResourceReference(EmailRichTextArea.class,
-			"css/email.css");
+	private static final ResourceReference REF_BASE_CSS = new ResourceReference(BasicRichTextArea.class, "css/base.css");
+	private boolean baseStyle;
 
-	public EmailRichTextArea(String id) {
+	public BasicRichTextArea(String id) {
+		this(id, false);
+	}
+
+	public BasicRichTextArea(String id, boolean baseStyle) {
 		super(id);
+		this.baseStyle = baseStyle;
 		add(createCKEditorResource());
-		add(createCKEditorConfiguration());
 		setOutputMarkupId(true);
 	}
 
-	private TextTemplateHeaderContributor createCKEditorConfiguration() {
-		Map<String, Object> variables = new MiniMap<String, Object>(2);
-		variables.put("emailCss", PortalUtil.toUrl(REF_EMAIL_CSS, getRequest()));
-		variables.put("markupId", getMarkupId());
-		return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "EmailRichTextArea.js",
-				new MapModel<String, Object>(variables));
+	private HeaderContributor createCKEditorResource() {
+		return JavascriptPackageResource.getHeaderContribution(FullRichTextArea.class, "ckeditor/ckeditor.js");
 	}
 
-	private HeaderContributor createCKEditorResource() {
-		return JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "ckeditor/ckeditor.js");
+	@Override
+	protected void onRender(MarkupStream markupStream) {
+		super.onRender(markupStream);
+		Map<String, Object> variables = new MiniMap<String, Object>(2);
+		variables.put("defaultCss", PortalUtil.toUrl(baseStyle ? REF_BASE_CSS : CommonConstants.REF_DEFAULT_CSS,
+				getRequest()));
+		variables.put("markupId", getMarkupId());
+		String javascript = TextTemplateHeaderContributor.forJavaScript(FullRichTextArea.class, "BasicRichTextArea.js",
+				new MapModel<String, Object>(variables)).toString();
+		getResponse().write(javascript);
 	}
 }

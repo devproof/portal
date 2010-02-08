@@ -23,7 +23,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
-import org.devproof.portal.core.module.common.component.richtext.EmailRichTextArea;
+import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.email.service.EmailService;
 
@@ -68,7 +68,7 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 
 	private FormComponent<String> createContentField() {
 		FormComponent<String> fc;
-		fc = new EmailRichTextArea("content");
+		fc = new BasicRichTextArea("content", true);
 		fc.setRequired(true);
 		fc.add(StringValidator.minimumLength(10));
 		return fc;

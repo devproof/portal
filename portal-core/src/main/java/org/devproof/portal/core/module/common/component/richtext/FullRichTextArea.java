@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.common.component.richtext;
 import java.util.Map;
 
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
@@ -30,44 +31,42 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 /**
  * @author Carsten Hufe
  */
-public class RichTextArea extends TextArea<String> {
+public class FullRichTextArea extends TextArea<String> {
 	private static final long serialVersionUID = 1L;
 
-	public RichTextArea(String id) {
+	public FullRichTextArea(String id) {
 		this(id, null);
 	}
 
-	public RichTextArea(String id, IModel<String> model) {
+	public FullRichTextArea(String id, IModel<String> model) {
 		super(id, model);
 		add(createCKEditorResource());
-		add(createCKEditorConfiguration());
+		// add(createCKEditorConfiguration());
 		setOutputMarkupId(true);
 	}
 
-	private TextTemplateHeaderContributor createCKEditorConfiguration() {
-		Map<String, Object> variables = new MiniMap<String, Object>(2);
-		variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
-		variables.put("markupId", getMarkupId());
-		return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "RichTextArea.js",
-				new MapModel<String, Object>(variables));
-	}
-
-	private HeaderContributor createCKEditorResource() {
-		return JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "ckeditor/ckeditor.js");
-	}
-
-	// @Override
-	// protected void onRender(MarkupStream markupStream) {
-	// super.onRender(markupStream);
+	// private TextTemplateHeaderContributor createCKEditorConfiguration() {
 	// Map<String, Object> variables = new MiniMap<String, Object>(2);
 	// variables.put("defaultCss",
 	// PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
 	// variables.put("markupId", getMarkupId());
-	// String javascript =
-	// TextTemplateHeaderContributor.forJavaScript(RichTextArea.class,
+	// return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class,
 	// "RichTextArea.js",
-	// new MapModel<String, Object>(variables)).toString();
-	// getResponse().write(javascript);
-	//
+	// new MapModel<String, Object>(variables));
 	// }
+
+	private HeaderContributor createCKEditorResource() {
+		return JavascriptPackageResource.getHeaderContribution(FullRichTextArea.class, "ckeditor/ckeditor.js");
+	}
+
+	@Override
+	protected void onRender(MarkupStream markupStream) {
+		super.onRender(markupStream);
+		Map<String, Object> variables = new MiniMap<String, Object>(2);
+		variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
+		variables.put("markupId", getMarkupId());
+		String javascript = TextTemplateHeaderContributor.forJavaScript(FullRichTextArea.class, "FullRichTextArea.js",
+				new MapModel<String, Object>(variables)).toString();
+		getResponse().write(javascript);
+	}
 }

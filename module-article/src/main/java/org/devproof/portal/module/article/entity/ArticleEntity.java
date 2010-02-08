@@ -177,8 +177,8 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 
 	@Transient
 	public void setFullArticle(String fullArticle) {
-		String[] splittedPages = getSplittedPages(fullArticle);
-		for (int i = 0; i < splittedPages.length; i++) {
+		List<String> splittedPages = getSplittedPages(fullArticle);
+		for (int i = 0; i < splittedPages.size(); i++) {
 			ArticlePageEntity page = null;
 			boolean isUpdatablePageAvailable = articlePages != null && articlePages.size() > i;
 			if (isUpdatablePageAvailable) {
@@ -186,9 +186,9 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 			} else {
 				page = newArticlePageEntity(i + 1);
 				page.setArticle(this);
+				getArticlePages().add(page);
 			}
-			page.setContent(splittedPages[i]);
-			getArticlePages().add(page);
+			page.setContent(splittedPages.get(i));
 		}
 	}
 
@@ -201,15 +201,37 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 		return e;
 	}
 
-	private String[] getSplittedPages(String pages) {
-		String splittedPages[] = null;
-		if (pages != null) {
-			splittedPages = StringUtils.splitByWholeSeparator(pages, ArticleConstants.PAGEBREAK);
+	private List<String> getSplittedPages(String pages) {
+		String[] splitted = StringUtils.splitByWholeSeparator(pages, "page-break-after");
+		List<String> result = new ArrayList<String>();
+		if (splitted.length > 1) {
+			StringBuilder buf = new StringBuilder();
+			for (int i = 0; i < splitted.length; i++) {
+				String actual = splitted[i];
+				int open = actual.lastIndexOf('<');
+				int close = actual.lastIndexOf('>');
+				if (open < 0 || close > open) {
+					// kein tag
+					buf.append(actual);
+					if (splitted.length - 1 != i)
+						buf.append("page-break-after");
+				} else {
+					// tag
+					buf.append(StringUtils.substringBeforeLast(actual, "<"));
+					result.add(buf.toString());
+					buf = new StringBuilder();
+					String closeTag = StringUtils.substringAfterLast(actual, "<");
+					closeTag = "</" + StringUtils.substringBefore(closeTag, " ") + ">";
+					splitted[i + 1] = StringUtils.substringAfter(splitted[i + 1], closeTag);
+				}
+			}
+			if (buf.length() > 0) {
+				result.add(buf.toString());
+			}
 		} else {
-			splittedPages = new String[1];
-			splittedPages[0] = "";
+			result.add(pages);
 		}
-		return splittedPages;
+		return result;
 	}
 
 	@Override
