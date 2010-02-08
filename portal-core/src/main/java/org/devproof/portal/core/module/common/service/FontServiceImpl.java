@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.common.service;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,4 +37,8 @@ public class FontServiceImpl implements FontService {
 		return fonts;
 	}
 
+	@Override
+	public List<String> findSyntaxHighlighterThemes() {
+		return Arrays.asList("Default", "Django", "Eclipse", "Emacs", "FadeToGrey", "Midnight", "RDark");
+	}
 }

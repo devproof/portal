@@ -156,7 +156,7 @@ public class PortalUtil {
 		return null;
 	}
 
-	public static void addSyntaxHightlighter(Component component) {
+	public static void addSyntaxHightlighter(Component component, String theme) {
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
 				"js/SyntaxHighlighter/shCore.js"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class,
@@ -191,8 +191,8 @@ public class PortalUtil {
 				"js/SyntaxHighlighter/shBrushGroovy.js"));
 		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
 				"css/SyntaxHighlighter/shCore.css"));
-		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class,
-				"css/SyntaxHighlighter/shThemeEclipse.css"));
+		component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shTheme"
+				+ theme + ".css"));
 		Map<String, Object> values = new MiniMap<String, Object>(1);
 		values.put("swfPath", RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF));
 		component.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class,

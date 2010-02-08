@@ -157,3 +157,4 @@ INSERT INTO core_box (created_at,created_by,modified_at,modified_by,box_type,con
 INSERT INTO core_box (created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES ({ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','A little <i>bit</i> content',11,'Other Test Box',0);
 INSERT INTO core_box (created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES ({ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','FeedBoxPanel',null,12,'Feed Box',1);
 
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.fontService.findSyntaxHighlighterThemes.theme','Syntax Highlighter Theme','General','java.lang.String','Eclipse');
