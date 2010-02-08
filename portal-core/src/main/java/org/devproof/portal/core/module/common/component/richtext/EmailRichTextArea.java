@@ -19,13 +19,12 @@ import java.util.Map;
 
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.util.collections.MiniMap;
-import org.apache.wicket.util.string.UrlUtils;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * @author Carsten Hufe
@@ -37,24 +36,20 @@ public class EmailRichTextArea extends TextArea<String> {
 
 	public EmailRichTextArea(String id) {
 		super(id);
-		add(createTinyMCEResource());
-		add(createTinyMCEConfiguration());
-		add(createTinyMCEAttributeModifier());
+		add(createCKEditorResource());
+		add(createCKEditorConfiguration());
+		setOutputMarkupId(true);
 	}
 
-	private SimpleAttributeModifier createTinyMCEAttributeModifier() {
-		return new SimpleAttributeModifier("class", "mceRichTextArea");
-	}
-
-	private TextTemplateHeaderContributor createTinyMCEConfiguration() {
-		Map<String, Object> variables = new MiniMap<String, Object>(1);
-		variables.put("emailCss", UrlUtils.rewriteToContextRelative(
-				"resources/" + REF_EMAIL_CSS.getSharedResourceKey(), getRequest()));
-		return TextTemplateHeaderContributor.forJavaScript(EmailRichTextArea.class, "EmailRichTextArea.js",
+	private TextTemplateHeaderContributor createCKEditorConfiguration() {
+		Map<String, Object> variables = new MiniMap<String, Object>(2);
+		variables.put("emailCss", PortalUtil.toUrl(REF_EMAIL_CSS, getRequest()));
+		variables.put("markupId", getMarkupId());
+		return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class, "EmailRichTextArea.js",
 				new MapModel<String, Object>(variables));
 	}
 
-	private HeaderContributor createTinyMCEResource() {
-		return JavascriptPackageResource.getHeaderContribution(EmailRichTextArea.class, "tinymce/tiny_mce.js");
+	private HeaderContributor createCKEditorResource() {
+		return JavascriptPackageResource.getHeaderContribution(RichTextArea.class, "ckeditor/ckeditor.js");
 	}
 }
