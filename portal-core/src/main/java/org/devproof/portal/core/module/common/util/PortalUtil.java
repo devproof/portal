@@ -202,7 +202,7 @@ public class PortalUtil {
 	}
 
 	public static void addJQuery(Component component) {
-		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery-1.3.2.min.js"));
+		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery-1.4.1.min.js"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery.center.js"));
 	}
 }
