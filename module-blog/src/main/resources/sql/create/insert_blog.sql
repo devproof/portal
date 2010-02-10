@@ -21,16 +21,17 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.BlogPage');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('blog_entries_per_page','Blog entries per page','Blog','java.lang.Integer','5');
 
 INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2009-01-06 19:27:20.000'},'admin',{ts '2009-01-06 19:27:20.000'},'admin','<p>Congratulation. Devproof Portal is running.</p>
-<p>This is a sample blog entry. You can use highlighted code:</p>
-<pre class="brush: java;">DevproofPortal portal = new DevproofPortal();
-portal.show();
-</pre><p/>
-<p>and [string2img size=14]string to image feature [/string2img].</p>
 <p>The default users are:</p>
 <ul>
 <li>admin (password: admin)&nbsp; (admin rights)</li>
 <li>testuser (password: testuser)&nbsp; (registered user rights)</li>
-</ul>','Welcome to Devproof Portal');
+</ul>
+<p>This is a sample blog entry. You can use highlighted code:</p>
+<pre class="brush: java;">DevproofPortal portal = new DevproofPortal();
+portal.release();
+</pre><p/>
+<p>[string2img size=14] and string to image feature [/string2img].</p>
+','Welcome to Devproof Portal');
 
 
 
