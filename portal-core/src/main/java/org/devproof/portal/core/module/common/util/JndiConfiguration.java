@@ -95,6 +95,19 @@ public class JndiConfiguration {
 	}
 
 	/**
+	 * Resolves the email disabled
+	 */
+	public String resolveEmailDisabled() {
+		JndiTemplate jndi = new JndiTemplate();
+		try {
+			String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_EMAIL_DISABLED);
+			return dialect;
+		} catch (NamingException e) {
+			return CommonConstants.EMAIL_DEFAULT_DISABLED;
+		}
+	}
+
+	/**
 	 * Returns all hibernate properties for the spring configuration
 	 */
 	public Properties resolveHibernateProperties() {

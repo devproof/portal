@@ -36,7 +36,9 @@ public class CommonConstants {
 	public static final String JNDI_PROP_HIBERNATE_FORMAT_SQL = "java:comp/env/config/devproof/hibernate_format_sql";
 	public static final String JNDI_PROP_HIBERNATE_HBM2DDL_AUTO = "java:comp/env/config/devproof/hibernate_hbm2ddl_auto";
 	public static final String JNDI_PROP_HIBERNATE_CONNECTION_ISOLATION = "java:comp/env/config/devproof/hibernate_connection_isolation";
+	public static final String JNDI_PROP_EMAIL_DISABLED = "java:comp/env/config/devproof/disable_email";
 
+	public static final String EMAIL_DEFAULT_DISABLED = "false";
 	public static final String HIBERNATE_DEFAULT_DIALECT = MySQL5Dialect.class.getName();
 	public static final String HIBERNATE_DEFAULT_SHOW_SQL = "false";
 	public static final String HIBERNATE_DEFAULT_FORMAT_SQL = "false";
