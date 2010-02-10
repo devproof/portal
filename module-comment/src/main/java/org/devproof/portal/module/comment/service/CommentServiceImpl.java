@@ -96,21 +96,19 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp) {
-		if (!comment.getReviewed()) {
-			int maxNumberOfBlames = configurationService.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD);
-			int blames = comment.getNumberOfBlames() + 1;
-			comment.setNumberOfBlames(blames);
-			boolean automaticBlocked = blames >= maxNumberOfBlames;
+		int maxNumberOfBlames = configurationService.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD);
+		int blames = comment.getNumberOfBlames() + 1;
+		comment.setNumberOfBlames(blames);
+		boolean automaticBlocked = blames >= maxNumberOfBlames;
+		if (automaticBlocked && !comment.getReviewed()) {
 			comment.setAutomaticBlocked(automaticBlocked);
 			save(comment);
-			if (automaticBlocked) {
-				Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED);
-				sendEmailNotificationToAdmins(comment, templateId, "comment.notify.autoblocked", urlCallback,
-						reporterIp);
-			} else {
-				Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION);
-				sendEmailNotificationToAdmins(comment, templateId, "comment.notify.violation", urlCallback, reporterIp);
-			}
+			Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED);
+			sendEmailNotificationToAdmins(comment, templateId, "comment.notify.autoblocked", urlCallback, reporterIp);
+		} else {
+			save(comment);
+			Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION);
+			sendEmailNotificationToAdmins(comment, templateId, "comment.notify.violation", urlCallback, reporterIp);
 		}
 	}
 
