@@ -45,6 +45,7 @@ public class EmailServiceImpl implements EmailService {
 	private ConfigurationService configurationService;
 	private JavaMailSender javaMailSender;
 	private SimpleDateFormat dateFormat;
+	private boolean emailDisabled;
 
 	@Override
 	public EmailTemplateEntity newEmailTemplateEntity() {
@@ -73,6 +74,9 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
+		if (emailDisabled) {
+			return;
+		}
 		// Create email
 		try {
 			MimeMessage msg = javaMailSender.createMimeMessage();
@@ -182,5 +186,10 @@ public class EmailServiceImpl implements EmailService {
 	@Required
 	public void setDateFormat(SimpleDateFormat dateFormat) {
 		this.dateFormat = dateFormat;
+	}
+
+	@Required
+	public void setEmailDisabled(boolean emailDisabled) {
+		this.emailDisabled = emailDisabled;
 	}
 }

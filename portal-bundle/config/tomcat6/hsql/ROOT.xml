@@ -2,6 +2,7 @@
 <!-- The contents of this file will be loaded for each web application -->
 <Context docBase="../../war/devproof-portal-@devproof.version@.war">
     <Environment name="/config/devproof/hibernate_dialect" value="org.hibernate.dialect.HSQLDialect" type="java.lang.String"/>  
+    <Environment name="/config/devproof/disable_email" value="true" type="java.lang.String"/>  
     
     <Resource name="jdbc/devproof/portal" auth="Container" type="javax.sql.DataSource"
         maxActive="100" maxIdle="10" maxWait="10000"

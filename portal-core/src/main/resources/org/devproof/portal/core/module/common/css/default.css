@@ -16,6 +16,11 @@ fieldset {
 	margin-top: 10px;
 }
 
+/* addthis.com */
+#atff {
+  display: none;
+}
+
 .mfuex {
 	padding: 5px;
 	margin: 5px;
@@ -179,7 +184,7 @@ textarea {
 	text-align: right;
 }
 
-p,cite,blockquote,code,ul {
+p,cite,blockquote,ul {
 	font-size: 1.1em;
 	padding-bottom: 1.2em;
 }
@@ -236,7 +241,7 @@ select {
 	border: 1px solid #AAA;
 	padding: 2px 3px;
 }
-
+/*
 code {
 	background: url(../img/bgcode.gif);
 	border: 1px solid #F0F0F0;
@@ -247,7 +252,7 @@ code {
 	margin-bottom: 12px;
 	padding: 8px 10px;
 	white-space: pre;
-}
+}*/
 
 /* when you edit something the subject or title */
 .editTitle {

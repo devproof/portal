@@ -25,13 +25,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
+import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
@@ -52,15 +53,18 @@ public class PortalSession extends WebSession {
 	private static final long serialVersionUID = 1L;
 	private static final Log LOG = LogFactory.getLog(PortalSession.class);
 	private static final int COOKIE_MAX_AGE = 3600 * 24 * 7; // 7 Days
-	private UserService userService = null;
-	private RoleService roleService = null;
-	private ConfigurationService configurationService = null;
-	private RightService rightService = null;
+	@SpringBean(name = "userService")
+	private UserService userService;
+	@SpringBean(name = "roleService")
+	private RoleService roleService;
+	@SpringBean(name = "rightService")
+	private RightService rightService;
 	private long dirtyTime = 0l;
 	private UserEntity user;
 
 	public PortalSession(Request request) {
 		super(request);
+		InjectorHolder.getInjector().inject(this);
 	}
 
 	/**
@@ -75,7 +79,7 @@ public class PortalSession extends WebSession {
 	 */
 	public final String authenticate(String username, String password) throws UserNotConfirmedException {
 		try {
-			user = getUserService().authentificate(username, password, getIpAddress());
+			user = userService.authentificate(username, password, getIpAddress());
 			getSessionStore().getSessionId(RequestCycle.get().getRequest(), true);
 			// Bind because the Login form is stateless...
 			storeCookie();
@@ -119,12 +123,12 @@ public class PortalSession extends WebSession {
 			if (cookie != null) {
 				String sessionId = cookie.getValue();
 				if (sessionId != null) {
-					user = getUserService().authentificate(sessionId, getIpAddress());
+					user = userService.authentificate(sessionId, getIpAddress());
 					storeCookie();
 				}
 			}
 			if (user == null) {
-				user = getUserService().findGuestUser();
+				user = userService.findGuestUser();
 			}
 		}
 		refreshRoleIfUpdated();
@@ -132,10 +136,10 @@ public class PortalSession extends WebSession {
 	}
 
 	private void refreshRoleIfUpdated() {
-		long appDirtyTime = getRightService().getDirtyTime();
+		long appDirtyTime = rightService.getDirtyTime();
 		if (appDirtyTime != dirtyTime) {
 			dirtyTime = appDirtyTime;
-			RoleEntity role = getRoleService().findById(user.getRole().getId());
+			RoleEntity role = roleService.findById(user.getRole().getId());
 			user.setRole(role);
 		}
 	}
@@ -184,7 +188,7 @@ public class PortalSession extends WebSession {
 	 * @return true if he has the right
 	 */
 	public boolean hasRight(String rightName) {
-		RightEntity right = getRightService().newRightEntity(rightName);
+		RightEntity right = rightService.newRightEntity(rightName);
 		return this.hasRight(right);
 	}
 
@@ -232,50 +236,6 @@ public class PortalSession extends WebSession {
 			return true;
 		}
 		return this.hasRight(rights);
-	}
-
-	/**
-	 * Lazy user dao, because deserialization causes null
-	 */
-	public UserService getUserService() {
-		if (userService == null) {
-			userService = (UserService) ((PortalApplication) getApplication()).getSpringContext()
-					.getBean("userService");
-		}
-		return userService;
-	}
-
-	/**
-	 * Lazy role dao, because deserialization causes null
-	 */
-	public RoleService getRoleService() {
-		if (roleService == null) {
-			roleService = (RoleService) ((PortalApplication) getApplication()).getSpringContext()
-					.getBean("roleService");
-		}
-		return roleService;
-	}
-
-	/**
-	 * Lazy configuration service, because deserialization causes null
-	 */
-	public ConfigurationService getConfigurationService() {
-		if (configurationService == null) {
-			configurationService = (ConfigurationService) ((PortalApplication) getApplication()).getSpringContext()
-					.getBean("configurationService");
-		}
-		return configurationService;
-	}
-
-	/**
-	 * Lazy right service, because deserialization causes null
-	 */
-	public RightService getRightService() {
-		if (rightService == null) {
-			rightService = (RightService) ((PortalApplication) getApplication()).getSpringContext().getBean(
-					"rightService");
-		}
-		return rightService;
 	}
 
 	public static PortalSession get() {

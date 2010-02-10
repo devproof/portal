@@ -45,6 +45,7 @@
 		<property name="emailTemplateDao" ref="emailTemplateDao"/>
 		<property name="javaMailSender" ref="mailSenderService"/>
 		<property name="dateFormat" ref="displayDateFormat"/>
+		<property name="emailDisabled"><bean factory-bean="jndiConfig" factory-method="resolveEmailDisabled"/></property>
 	</bean>
 	
 	<!--  DataProvider  -->
