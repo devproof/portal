@@ -71,7 +71,7 @@ public class BlogEditPageTest extends TestCase {
 	private void navigateToBlogEditPage() {
 		tester.startPage(BlogPage.class);
 		tester.assertRenderedPage(BlogPage.class);
-		tester.assertContains("this is a sample blog entry");
+		tester.assertContains("This is a sample blog entry.");
 		tester.clickLink("listBlog:1:blogView:authorButtons:editLink");
 		tester.assertRenderedPage(BlogEditPage.class);
 	}
