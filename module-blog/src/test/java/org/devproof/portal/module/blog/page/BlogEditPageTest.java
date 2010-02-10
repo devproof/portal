@@ -65,7 +65,7 @@ public class BlogEditPageTest extends TestCase {
 		navigateToBlogEditPage();
 		submitBlogForm();
 		assertBlogPage();
-		assertFalse(tester.getServletResponse().getDocument().contains("this is a sample blog entry"));
+		assertFalse(tester.getServletResponse().getDocument().contains("This is a sample blog entry."));
 	}
 
 	private void navigateToBlogEditPage() {
