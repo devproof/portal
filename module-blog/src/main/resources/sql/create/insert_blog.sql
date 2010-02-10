@@ -30,7 +30,7 @@ INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headl
 <pre class="brush: java;">DevproofPortal portal = new DevproofPortal();
 portal.release();
 </pre><p/>
-<p>[string2img size=14] and string to image feature [/string2img].</p>
+<p>[string2img size=14] and the string to image feature [/string2img].</p>
 ','Welcome to Devproof Portal');
 
 
