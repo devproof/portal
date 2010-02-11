@@ -94,12 +94,12 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private RequiredTextField<String> createContentIdField() {
-		RequiredTextField<String> contentId = new RequiredTextField<String>("contentId");
-		contentId.setEnabled(isNewArticle());
-		contentId.add(newContentIdValidator());
-		contentId.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
-		contentIdField = contentId;
-		return contentId;
+		contentIdField = new RequiredTextField<String>("contentId");
+		contentIdField.setEnabled(isNewArticle());
+		contentIdField.add(newContentIdValidator());
+		contentIdField.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
+		contentIdField.setOutputMarkupId(true);
+		return contentIdField;
 	}
 
 	private RequiredTextField<String> createTitleField() {
@@ -114,14 +114,12 @@ public class ArticleEditPage extends ArticleBasePage {
 	private FormComponent<String> createTeaserField() {
 		FormComponent<String> fc = new BasicRichTextArea("teaser", false);
 		fc.add(StringValidator.minimumLength(3));
-		fc.setRequired(true);
 		return fc;
 	}
 
 	private FormComponent<String> createContentField() {
 		FormComponent<String> fc = new FullRichTextArea("fullArticle");
 		fc.add(StringValidator.minimumLength(3));
-		fc.setRequired(true);
 		return fc;
 	}
 
