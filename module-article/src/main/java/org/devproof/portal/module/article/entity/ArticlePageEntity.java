@@ -49,10 +49,6 @@ final public class ArticlePageEntity implements Serializable {
 	@JoinColumn(name = "article_id")
 	private ArticleEntity article;
 
-	// @Version
-	// @Column(name="version")
-	// private Integer version = 1;
-
 	public String getContent() {
 		return content;
 	}
@@ -68,14 +64,6 @@ final public class ArticlePageEntity implements Serializable {
 	public void setArticle(ArticleEntity article) {
 		this.article = article;
 	}
-
-	// public void setVersion(Integer version) {
-	// this.version = version;
-	// }
-	//
-	// public Integer getVersion() {
-	// return this.version;
-	// }
 
 	public String getContentId() {
 		return contentId;

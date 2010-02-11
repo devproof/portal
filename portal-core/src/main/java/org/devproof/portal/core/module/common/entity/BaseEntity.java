@@ -45,10 +45,6 @@ public abstract class BaseEntity implements Serializable {
 	@Column(name = "modified_at")
 	private Date modifiedAt;
 
-	// @Version
-	// @Column(name="version")
-	// private Integer version = 1;
-
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
