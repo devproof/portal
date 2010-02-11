@@ -85,9 +85,6 @@ final public class UserEntity implements Serializable {
 	private Date confirmationRequestedAt;
 	@Column(name = "confirm_app_at")
 	private Date confirmationApprovedAt;
-	// @Version
-	// @Column(name="version")
-	// private Integer version;
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "role_id", nullable = false)
 	private RoleEntity role;
