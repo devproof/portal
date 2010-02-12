@@ -209,6 +209,14 @@ h1 {
 	display: block;
 }
 
+.content .modalform ul li {
+	list-style: circle;
+}
+
+.modalform .feedbackPanelINFO {
+	color:#99FFCC;
+}
+
 .form h1 {
 	padding: 10px 10px 10px 10px;
 	color: #E73;
