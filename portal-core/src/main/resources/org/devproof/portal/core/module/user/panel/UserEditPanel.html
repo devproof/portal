@@ -6,6 +6,7 @@
 	<h1><wicket:message key="contentTitle"/></h1>
 	<div wicket:id="feedbackPanel"></div>
 	<form wicket:id="form">
+	<div style="text-align:left;">
 	<table cellspacing="10">		
 		<tr>
 			<td><label for="username"><wicket:message key="username"/></label></td>
@@ -54,9 +55,10 @@
 		</tr>	
 		<tr>
 			<td></td>
-			<td><input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/></td>
+			<td><input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/> <input type="submit" wicket:id="cancelButton" wicket:message="value:cancel" class="button"/></td>
 		</tr>
 	</table>
+	</div>
 	</form>	
 	</div>
 </wicket:panel>

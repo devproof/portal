@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.common.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -33,13 +32,12 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private T entity;
-	private ModalWindow modalWindow;
+	private BubblePanel modalWindow;
 
-	public ConfirmDeletePanel(String id, T entity, ModalWindow modalWindow) {
+	public ConfirmDeletePanel(String id, T entity, BubblePanel modalWindow) {
 		super(id);
 		this.entity = entity;
 		this.modalWindow = modalWindow;
-		setModalWindowSize();
 		add(createConfirmDeletePanelForm());
 
 	}
@@ -58,7 +56,7 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				modalWindow.close(target);
+				modalWindow.hide(target);
 			}
 		};
 	}
@@ -72,11 +70,6 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 				ConfirmDeletePanel.this.onDelete(target, form);
 			}
 		};
-	}
-
-	private void setModalWindowSize() {
-		modalWindow.setInitialHeight(108);
-		modalWindow.setInitialWidth(300);
 	}
 
 	/**

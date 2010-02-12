@@ -24,7 +24,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
@@ -34,6 +33,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.component.InternalDownloadLink;
 import org.devproof.portal.core.module.common.factory.CommonPageFactory;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.ConfirmDeletePanel;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
@@ -48,12 +48,12 @@ public abstract class UploadCenterPanel extends Panel {
 	@SpringBean(name = "sharedRegistry")
 	private SharedRegistry sharedRegistry;
 	private IModel<File> fileModel;
-	private ModalWindow modalWindow;
+	private BubblePanel bubblePanel;
 
-	public UploadCenterPanel(String id, IModel<File> fileModel, ModalWindow modalWindow, boolean createDownload) {
+	public UploadCenterPanel(String id, IModel<File> fileModel, BubblePanel bubblePanel, boolean createDownload) {
 		super(id, fileModel);
 		this.fileModel = fileModel;
-		this.modalWindow = modalWindow;
+		this.bubblePanel = bubblePanel;
 		add(createCreateDownloadLink(createDownload));
 		add(createDownloadLink());
 		add(createDeleteLink());
@@ -76,8 +76,8 @@ public abstract class UploadCenterPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(modalWindow.getContentId(),
-						file, modalWindow) {
+				ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(bubblePanel.getContentId(),
+						file, bubblePanel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -94,11 +94,11 @@ public abstract class UploadCenterPanel extends Panel {
 							}
 						}
 						UploadCenterPanel.this.onDelete(target);
-						modalWindow.close(target);
+						bubblePanel.hide(target);
 					}
 				};
-				modalWindow.setContent(confirmDeletePanel);
-				modalWindow.show(target);
+				bubblePanel.setContent(confirmDeletePanel);
+				bubblePanel.showModal(target);
 			}
 		};
 	}

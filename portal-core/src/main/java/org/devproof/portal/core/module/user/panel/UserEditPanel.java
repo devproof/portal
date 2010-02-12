@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.user.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
@@ -84,6 +85,7 @@ public abstract class UserEditPanel extends Panel {
 		form.add(createConfirmedCheckBox());
 		form.add(createEqualPasswordValidator());
 		form.add(createSaveButton());
+		form.add(createCancelButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -113,6 +115,17 @@ public abstract class UserEditPanel extends Panel {
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.addComponent(feedback);
+			}
+		};
+	}
+
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancelButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				UserEditPanel.this.onCancel(target);
 			}
 		};
 	}
@@ -199,4 +212,6 @@ public abstract class UserEditPanel extends Panel {
 	}
 
 	public abstract void onSave(AjaxRequestTarget target);
+
+	public abstract void onCancel(AjaxRequestTarget target);
 }

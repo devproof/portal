@@ -22,17 +22,17 @@ fieldset {
 }
 
 .mfuex {
-	padding: 5px;
+	padding: 10px;
 	margin: 5px;
-	background: #eee;
 }
 
 .mfuex .wicket-mfu-container {
 	padding: 5px;
 	margin-top: 3px;
-	background-color: white;
 	border: 1px solid black;
-	font-size: xx-small;
+	font-size: small;
+	text-align: left;
+	width: 300px;
 }
 
 .mfuex .wicket-mfu-caption {
@@ -203,7 +203,7 @@ h1 {
 }
 
 .modalform { /* background: url(../img/bgcode.gif); */
-	color: #555;
+	color: #CCC;
 	padding-left: 10px;
 	display: block;
 }

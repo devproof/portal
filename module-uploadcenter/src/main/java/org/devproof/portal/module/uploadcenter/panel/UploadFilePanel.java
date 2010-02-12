@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.uploadcenter.page;
+package org.devproof.portal.module.uploadcenter.panel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.MultiFileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.CollectionModel;
@@ -43,13 +43,15 @@ import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
 /**
  * @author Carsten Hufe
  */
-public class UploadFilePage extends WebPage {
+public class UploadFilePanel extends Panel {
+	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private File uploadFolder;
-	private IModel<Collection<FileUpload>> uploadModel  = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());;
+	private IModel<Collection<FileUpload>> uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());;
 
-	public UploadFilePage(File uploadFolder) {
+	public UploadFilePanel(String id, File uploadFolder) {
+		super(id);
 		this.uploadFolder = uploadFolder;
 		add(createCSSHeaderContributor());
 		add(createFeedbackPanel());
@@ -95,13 +97,13 @@ public class UploadFilePage extends WebPage {
 				Iterator<FileUpload> it = uploadModel.getObject().iterator();
 				while (it.hasNext()) {
 					FileUpload upload = it.next();
-					File newFile = new File(UploadFilePage.this.getUploadFolder(), upload.getClientFileName());
-					UploadFilePage.this.deleteFile(newFile);
+					File newFile = new File(UploadFilePanel.this.getUploadFolder(), upload.getClientFileName());
+					UploadFilePanel.this.deleteFile(newFile);
 					try {
 						if (newFile.createNewFile()) {
 							upload.writeTo(newFile);
-							UploadFilePage.this.info(new StringResourceModel("msg.uploaded", UploadFilePage.this, null,
-									new Object[] { upload.getClientFileName() }).getString());
+							UploadFilePanel.this.info(new StringResourceModel("msg.uploaded", UploadFilePanel.this,
+									null, new Object[] { upload.getClientFileName() }).getString());
 						} else {
 							throw new IllegalStateException("Unable to write file" + newFile);
 						}
@@ -110,6 +112,7 @@ public class UploadFilePage extends WebPage {
 					}
 				}
 				super.onSubmit();
+				UploadFilePanel.this.onSubmit();
 			}
 		};
 	}
@@ -124,5 +127,9 @@ public class UploadFilePage extends WebPage {
 
 	private Folder getUploadFolder() {
 		return new Folder(uploadFolder.getAbsolutePath());
+	}
+
+	protected void onSubmit() {
+
 	}
 }

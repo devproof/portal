@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * 
@@ -37,6 +38,7 @@ public class BubblePanel extends Panel {
 
 	public BubblePanel(String id) {
 		super(id);
+		PortalUtil.addJQuery(this);
 		add(createCssHeaderContributor());
 		add(createStyleAttributeModifier());
 		add(createClassAttributeModifier());
