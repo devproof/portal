@@ -13,7 +13,7 @@
 
 	<properties>
 		<devproof.version>1.0-rc3-SNAPSHOT</devproof.version>
-		<wicket.version>1.4.5</wicket.version>
+		<wicket.version>1.4.6</wicket.version>
 		<jetty.version>6.1.19</jetty.version>
 	</properties>
 	<modules>
@@ -232,6 +232,12 @@
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.10</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>1.8.0</version>
+			<type>pom</type>
 		</dependency>
 		<!-- Test dependencies -->
 		<dependency>

@@ -39,7 +39,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 @Table(name = "bookmark")
-// @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "aaa")
 final public class BookmarkEntity extends BaseLinkEntity {
 	private static final long serialVersionUID = 1L;
 
