@@ -39,12 +39,12 @@ public abstract class AuthorPanel<T> extends Panel {
 	private T entity;
 	private Class<? extends Page> redirectPageClazz = null;
 	private PageParameters redirectParams = null;
-	private BubblePanel modalWindow;
+	private BubblePanel bubblePanel;
 
 	public AuthorPanel(String id, T entity) {
 		super(id);
 		this.entity = entity;
-		add(createModalWindow());
+		add(createBubblePanel());
 		add(createEditLink());
 		add(createDeleteLink());
 	}
@@ -61,17 +61,17 @@ public abstract class AuthorPanel<T> extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setContent(createConfirmDeletePanel());
-				modalWindow.showModal(target);
+				bubblePanel.setContent(createConfirmDeletePanel());
+				bubblePanel.showModal(target);
 			}
 
 			private ConfirmDeletePanel<T> createConfirmDeletePanel() {
-				return new ConfirmDeletePanel<T>(modalWindow.getContentId(), entity, modalWindow) {
+				return new ConfirmDeletePanel<T>(bubblePanel.getContentId(), entity, bubblePanel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onDelete(AjaxRequestTarget target, Form<?> form) {
-						modalWindow.hide(target);
+						bubblePanel.hide(target);
 						AuthorPanel.this.onDelete(target);
 						if (redirectPageClazz != null) {
 							setResponsePage(AuthorPanel.this.redirectPageClazz, AuthorPanel.this.redirectParams);
@@ -108,9 +108,9 @@ public abstract class AuthorPanel<T> extends Panel {
 		return new Image("editImage", CommonConstants.REF_EDIT_IMG);
 	}
 
-	private BubblePanel createModalWindow() {
-		modalWindow = new BubblePanel("modalWindow");
-		return modalWindow;
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	public T getEntity() {

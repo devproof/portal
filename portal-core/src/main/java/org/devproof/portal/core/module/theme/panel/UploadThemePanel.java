@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.core.module.theme.page;
+package org.devproof.portal.core.module.theme.panel;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,14 +21,16 @@ import java.io.IOException;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.theme.service.ThemeService;
@@ -39,15 +41,17 @@ import org.devproof.portal.core.module.theme.service.ThemeService.ValidationKey;
  * 
  * @author Carsten Hufe
  */
-public class UploadThemePage extends WebPage {
-	private static final Log LOG = LogFactory.getLog(UploadThemePage.class);
+public abstract class UploadThemePanel extends Panel {
+	private static final long serialVersionUID = 1L;
+	private static final Log LOG = LogFactory.getLog(UploadThemePanel.class);
 
 	@SpringBean(name = "themeService")
 	private ThemeService themeService;
 	private Form<FileUpload> uploadForm;
 	private FileUploadField uploadField;
 
-	public UploadThemePage() {
+	public UploadThemePanel(String id) {
+		super(id);
 		add(createCSSHeaderContributor());
 		add(createFeedbackPanel());
 		add(createUploadForm());
@@ -57,6 +61,7 @@ public class UploadThemePage extends WebPage {
 		Form<FileUpload> uploadForm = newUploadForm();
 		uploadForm.add(createUploadField());
 		uploadForm.add(createUploadProgressBar());
+		uploadForm.add(createCancelButton());
 		uploadForm.setMultiPart(true);
 		return uploadForm;
 	}
@@ -113,6 +118,17 @@ public class UploadThemePage extends WebPage {
 		return uploadField;
 	}
 
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancelButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				onCancel(target);
+			}
+		};
+	}
+
 	private FeedbackPanel createFeedbackPanel() {
 		FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
 		return uploadFeedback;
@@ -121,4 +137,6 @@ public class UploadThemePage extends WebPage {
 	private HeaderContributor createCSSHeaderContributor() {
 		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
 	}
+
+	public abstract void onCancel(AjaxRequestTarget target);
 }

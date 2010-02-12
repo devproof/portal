@@ -20,7 +20,6 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -38,6 +37,7 @@ import org.devproof.portal.core.module.box.service.BoxService;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 
 /**
  * @author Carsten Hufe
@@ -52,13 +52,13 @@ public class BoxPage extends TemplatePage {
 	private BoxService boxService;
 	@SpringBean(name = "boxRegistry")
 	private BoxRegistry boxRegistry;
-	private ModalWindow modalWindow;
+	private BubblePanel bubblePanel;
 	private WebMarkupContainer boxDataViewWithRefreshContainer;
 
 	public BoxPage(PageParameters params) {
 		super(params);
 		add(createBoxDataViewWithRefreshContainer());
-		add(createModalWindow());
+		add(createBubblePanel());
 		addPageAdminBoxLink(createCreateBoxLink());
 	}
 
@@ -66,10 +66,9 @@ public class BoxPage extends TemplatePage {
 		return new BoxDataView("tableRow");
 	}
 
-	private ModalWindow createModalWindow() {
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		return modalWindow;
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private AjaxLink<BoxEntity> createCreateBoxLink() {
@@ -89,12 +88,12 @@ public class BoxPage extends TemplatePage {
 			@Override
 			public void onClick(final AjaxRequestTarget target) {
 				BoxEditPanel boxEditPanel = newBoxEditPanel();
-				setBoxEditPanelToModalWindow(target, boxEditPanel);
+				setBoxEditPanelToBubblePanel(target, boxEditPanel);
 			}
 
 			private BoxEditPanel newBoxEditPanel() {
 				IModel<BoxEntity> boxModel = Model.of(boxService.newBoxEntity());
-				return new BoxEditPanel(modalWindow.getContentId(), boxModel) {
+				return new BoxEditPanel(bubblePanel.getContentId(), boxModel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -102,17 +101,19 @@ public class BoxPage extends TemplatePage {
 						target.addComponent(boxDataViewWithRefreshContainer);
 						target.addComponent(BoxPage.this.getFeedback());
 						info(getString("msg.saved"));
-						modalWindow.close(target);
+						bubblePanel.hide(target);
 					}
 
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						bubblePanel.hide(target);
+					}
 				};
 			}
 
-			private void setBoxEditPanelToModalWindow(final AjaxRequestTarget target, BoxEditPanel boxEditPanel) {
-				modalWindow.setInitialHeight(280);
-				modalWindow.setInitialWidth(550);
-				modalWindow.setContent(boxEditPanel);
-				modalWindow.show(target);
+			private void setBoxEditPanelToBubblePanel(final AjaxRequestTarget target, BoxEditPanel boxEditPanel) {
+				bubblePanel.setContent(boxEditPanel);
+				bubblePanel.showModal(target);
 			}
 		};
 	}
@@ -205,29 +206,33 @@ public class BoxPage extends TemplatePage {
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
 					boxService.delete(box);
+					info(getString("msg.deleted"));
 					target.addComponent(boxDataViewWithRefreshContainer);
 					target.addComponent(getFeedback());
-					info(getString("msg.deleted"));
 				}
 
 				@Override
 				public void onEdit(final AjaxRequestTarget target) {
 					IModel<BoxEntity> boxModel = Model.of(box);
-					BoxEditPanel editUserPanel = new BoxEditPanel(modalWindow.getContentId(), boxModel) {
+					BoxEditPanel editUserPanel = new BoxEditPanel(bubblePanel.getContentId(), boxModel) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(AjaxRequestTarget target) {
+							bubblePanel.hide(target);
+							info(getString("msg.saved"));
 							target.addComponent(boxDataViewWithRefreshContainer);
 							target.addComponent(getFeedback());
-							info(getString("msg.saved"));
-							modalWindow.close(target);
 						}
 
+						@Override
+						public void onCancel(AjaxRequestTarget target) {
+							bubblePanel.hide(target);
+						}
 					};
 
-					modalWindow.setContent(editUserPanel);
-					modalWindow.show(target);
+					bubblePanel.setContent(editUserPanel);
+					bubblePanel.showModal(target);
 				}
 
 			};

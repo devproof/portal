@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.palette.Palette;
 import org.apache.wicket.markup.html.basic.Label;
@@ -71,6 +72,7 @@ public abstract class RightEditPanel extends Panel {
 		form.add(createDescriptionField());
 		form.add(createRolesPalette());
 		form.add(createSaveButton());
+		form.add(createCancelButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -88,6 +90,17 @@ public abstract class RightEditPanel extends Panel {
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				target.addComponent(feedback);
+			}
+		};
+	}
+
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancelButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				onCancel(target);
 			}
 		};
 	}
@@ -147,4 +160,6 @@ public abstract class RightEditPanel extends Panel {
 	}
 
 	public abstract void onSave(AjaxRequestTarget target);
+
+	public abstract void onCancel(AjaxRequestTarget target);
 }

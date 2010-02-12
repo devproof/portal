@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.lang.UnhandledException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -66,9 +68,21 @@ public class UploadFilePanel extends Panel {
 		Form<Collection<FileUpload>> uploadForm = newUploadForm();
 		uploadForm.add(createMultiFileUploadField());
 		uploadForm.add(createUploadProgressBar(uploadForm));
+		uploadForm.add(createCancelButton());
 		uploadForm.setMaxSize(getMaxFileSize());
 		uploadForm.setMultiPart(true);
 		return uploadForm;
+	}
+
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancelButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				onCancel(target);
+			}
+		};
 	}
 
 	private UploadProgressBar createUploadProgressBar(Form<Collection<FileUpload>> uploadForm) {
@@ -130,6 +144,10 @@ public class UploadFilePanel extends Panel {
 	}
 
 	protected void onSubmit() {
+
+	}
+
+	protected void onCancel(AjaxRequestTarget target) {
 
 	}
 }

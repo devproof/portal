@@ -46,15 +46,18 @@ public class RightEditPanelTest extends TestCase {
 	}
 
 	public static class TestRightEditPanel extends RightEditPanel {
+		private static final long serialVersionUID = 1L;
+
 		public TestRightEditPanel(String id) {
 			super(id, Model.of(new RightEntity()), true);
 		}
 
-		private static final long serialVersionUID = 1L;
-
 		@Override
 		public void onSave(AjaxRequestTarget target) {
+		}
 
+		@Override
+		public void onCancel(AjaxRequestTarget target) {
 		}
 	}
 }

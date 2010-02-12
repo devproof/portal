@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.box.panel;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -66,6 +67,7 @@ public abstract class BoxEditPanel extends Panel {
 		form.add(createTitleField());
 		form.add(createHideTitleCheckBox());
 		form.add(createAjaxButton());
+		form.add(createCancelButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -115,6 +117,17 @@ public abstract class BoxEditPanel extends Panel {
 		};
 	}
 
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancelButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				BoxEditPanel.this.onCancel(target);
+			}
+		};
+	}
+
 	private TextArea<String> createContentField() {
 		return new TextArea<String>("content");
 	}
@@ -126,4 +139,6 @@ public abstract class BoxEditPanel extends Panel {
 	}
 
 	public abstract void onSave(AjaxRequestTarget target);
+
+	public abstract void onCancel(AjaxRequestTarget target);
 }

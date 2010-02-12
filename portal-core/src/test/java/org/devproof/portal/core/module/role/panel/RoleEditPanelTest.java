@@ -46,14 +46,20 @@ public class RoleEditPanelTest extends TestCase {
 	}
 
 	public static class TestRoleEditPanel extends RoleEditPanel {
+		private static final long serialVersionUID = 1L;
+
 		public TestRoleEditPanel(String id) {
 			super(id, Model.of(new RoleEntity()), true);
 		}
 
-		private static final long serialVersionUID = 1L;
-
 		@Override
 		public void onSave(AjaxRequestTarget target) {
+
+		}
+
+		@Override
+		public void onCancel(AjaxRequestTarget target) {
+			// TODO Auto-generated method stub
 
 		}
 	}

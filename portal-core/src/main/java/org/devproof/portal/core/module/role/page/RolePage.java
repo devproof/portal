@@ -19,10 +19,10 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -35,8 +35,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.ConfirmDeletePanel;
-import org.devproof.portal.core.module.common.panel.InfoMessagePanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.RoleConstants;
@@ -63,10 +63,10 @@ public class RolePage extends TemplatePage {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	@SpringBean(name = "configurationService")
-	private RoleQuery query = new RoleQuery();
 	private ConfigurationService configurationService;
+	private RoleQuery query = new RoleQuery();
 	private WebMarkupContainer refreshTable;
-	private ModalWindow modalWindow;
+	private BubblePanel bubblePanel;
 	private PageParameters params;
 
 	public RolePage(PageParameters params) {
@@ -74,7 +74,7 @@ public class RolePage extends TemplatePage {
 		this.params = params;
 		setQueryToDataProvider();
 		add(createRoleTableRefreshContainer());
-		add(createModalWindow());
+		add(createBubblePanel());
 		addPageAdminBoxLink(createCreateRoleLink());
 		addFilterBox(createSearchBoxPanel());
 	}
@@ -100,10 +100,9 @@ public class RolePage extends TemplatePage {
 		return new RoleDataView("tableRow", roleDataProvider, params);
 	}
 
-	private ModalWindow createModalWindow() {
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		return modalWindow;
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private RoleSearchBoxPanel createSearchBoxPanel() {
@@ -137,26 +136,28 @@ public class RolePage extends TemplatePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setInitialHeight(440);
-				modalWindow.setInitialWidth(620);
-				modalWindow.setContent(createRoleEditPanel());
-				modalWindow.show(target);
+				bubblePanel.setContent(createRoleEditPanel());
+				bubblePanel.showModal(target);
 			}
 
 			private RoleEditPanel createRoleEditPanel() {
 				IModel<RoleEntity> roleModel = Model.of(roleService.newRoleEntity());
-				return new RoleEditPanel(modalWindow.getContentId(), roleModel, true) {
+				return new RoleEditPanel(bubblePanel.getContentId(), roleModel, true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSave(AjaxRequestTarget target) {
 						rightService.refreshGlobalApplicationRights();
+						bubblePanel.hide(target);
+						info(getString("msg.saved"));
 						target.addComponent(refreshTable);
 						target.addComponent(RolePage.this.getFeedback());
-						info(getString("msg.saved"));
-						modalWindow.close(target);
 					}
 
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						bubblePanel.hide(target);
+					}
 				};
 			}
 		};
@@ -194,6 +195,7 @@ public class RolePage extends TemplatePage {
 		private AjaxLink<RoleEntity> createDeleteLink(final Item<RoleEntity> item) {
 			AjaxLink<RoleEntity> deleteLink = newDeleteLink(item);
 			deleteLink.add(createDeleteLinkImage());
+			deleteLink.setOutputMarkupId(true);
 			return deleteLink;
 		}
 
@@ -210,11 +212,11 @@ public class RolePage extends TemplatePage {
 					RoleEntity role = item.getModelObject();
 					String validationMessage = validateRoleForDeletion(role);
 					if (validationMessage != null) {
-						modalWindow.setContent(createInfoMessagePanel(validationMessage));
+						bubblePanel.showMessage(getMarkupId(), target, validationMessage);
 					} else {
-						modalWindow.setContent(createConfirmDeletePanel(role));
+						bubblePanel.setContent(createConfirmDeletePanel(role));
+						bubblePanel.showModal(target);
 					}
-					modalWindow.show(target);
 				}
 
 				private String validateRoleForDeletion(RoleEntity role) {
@@ -240,36 +242,25 @@ public class RolePage extends TemplatePage {
 					return reguserRoleId.equals(role.getId());
 				}
 
-				private InfoMessagePanel createInfoMessagePanel(String msg) {
-					InfoMessagePanel infoMessagePanel = new InfoMessagePanel(modalWindow.getContentId(), msg,
-							modalWindow);
-					return infoMessagePanel;
-				}
-
 				private String getString(String key, Long numUser) {
 					return new StringResourceModel(key, this, null, new Object[] { numUser }).getString();
 				}
 
 				private ConfirmDeletePanel<RoleEntity> createConfirmDeletePanel(final RoleEntity role) {
-					// TODO
-					// return new
-					// ConfirmDeletePanel<RoleEntity>(modalWindow.getContentId(),
-					// role, modalWindow) {
-					// private static final long serialVersionUID = 1L;
-					//
-					// @Override
-					// public void onDelete(AjaxRequestTarget target, Form<?>
-					// form) {
-					// roleService.delete(role);
-					// rightService.refreshGlobalApplicationRights();
-					// target.addComponent(refreshTable);
-					// target.addComponent(getFeedback());
-					// info(getString("msg.deleted"));
-					// modalWindow.close(target);
-					// }
-					//
-					// };
-					return null;
+					return new ConfirmDeletePanel<RoleEntity>(bubblePanel.getContentId(), role, bubblePanel) {
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						public void onDelete(AjaxRequestTarget target, Form<?> form) {
+							roleService.delete(role);
+							rightService.refreshGlobalApplicationRights();
+							bubblePanel.hide(target);
+							info(getString("msg.deleted"));
+							target.addComponent(refreshTable);
+							target.addComponent(getFeedback());
+						}
+
+					};
 				}
 			};
 		}
@@ -291,10 +282,8 @@ public class RolePage extends TemplatePage {
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					modalWindow.setInitialHeight(440);
-					modalWindow.setInitialWidth(620);
-					modalWindow.setContent(createRoleEditPanel(role));
-					modalWindow.show(target);
+					bubblePanel.setContent(createRoleEditPanel(role));
+					bubblePanel.showModal(target);
 				}
 
 				private RoleEditPanel createRoleEditPanel(final RoleEntity role) {
@@ -304,18 +293,22 @@ public class RolePage extends TemplatePage {
 
 				private RoleEditPanel newRoleEditPanel(RoleEntity refreshedRole) {
 					IModel<RoleEntity> roleModel = Model.of(refreshedRole);
-					return new RoleEditPanel(modalWindow.getContentId(), roleModel, false) {
+					return new RoleEditPanel(bubblePanel.getContentId(), roleModel, false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(AjaxRequestTarget target) {
 							rightService.refreshGlobalApplicationRights();
+							bubblePanel.hide(target);
+							info(getString("msg.saved"));
 							target.addComponent(refreshTable);
 							target.addComponent(getFeedback());
-							info(getString("msg.saved"));
-							modalWindow.close(target);
 						}
 
+						@Override
+						public void onCancel(AjaxRequestTarget target) {
+							bubblePanel.hide(target);
+						}
 					};
 				}
 			};

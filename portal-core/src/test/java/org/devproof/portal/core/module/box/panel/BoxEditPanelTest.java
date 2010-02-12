@@ -46,14 +46,18 @@ public class BoxEditPanelTest extends TestCase {
 	}
 
 	public static class TestBoxEditPanel extends BoxEditPanel {
+		private static final long serialVersionUID = 1L;
+
 		public TestBoxEditPanel(String id) {
 			super(id, Model.of(new BoxEntity()));
 		}
 
-		private static final long serialVersionUID = 1L;
-
 		@Override
 		public void onSave(AjaxRequestTarget target) {
+		}
+
+		@Override
+		public void onCancel(AjaxRequestTarget target) {
 		}
 	}
 }

@@ -19,7 +19,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -34,6 +33,7 @@ import org.devproof.portal.core.module.common.dao.DeleteFailedException;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightEditPanel;
 import org.devproof.portal.core.module.right.panel.RightSearchBoxPanel;
@@ -52,7 +52,7 @@ public class RightPage extends TemplatePage {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	private WebMarkupContainer refreshTable;
-	private ModalWindow modalWindow;
+	private BubblePanel bubblePanel;
 	private RightQuery query = new RightQuery();
 	private PageParameters params;
 
@@ -61,7 +61,7 @@ public class RightPage extends TemplatePage {
 		this.params = params;
 		setQueryToDataProvider();
 		add(createRightRefreshTableContainer());
-		add(createModalWindow());
+		add(createBubblePanel());
 		addPageAdminBoxLink(createCreateRightLink());
 		addFilterBox(createRightSearchBoxPanel());
 	}
@@ -98,10 +98,9 @@ public class RightPage extends TemplatePage {
 		return new OrderByBorder("table_right", "right", rightDataProvider);
 	}
 
-	private ModalWindow createModalWindow() {
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		return modalWindow;
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private void setQueryToDataProvider() {
@@ -124,24 +123,27 @@ public class RightPage extends TemplatePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setInitialHeight(440);
-				modalWindow.setInitialWidth(620);
-				modalWindow.setContent(createRightEditPanel());
-				modalWindow.show(target);
+				bubblePanel.setContent(createRightEditPanel());
+				bubblePanel.showModal(target);
 			}
 
 			private RightEditPanel createRightEditPanel() {
 				IModel<RightEntity> rightModel = Model.of(rightService.newRightEntity());
-				return new RightEditPanel(modalWindow.getContentId(), rightModel, true) {
+				return new RightEditPanel(bubblePanel.getContentId(), rightModel, true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onSave(AjaxRequestTarget target) {
+						rightService.refreshGlobalApplicationRights();
+						bubblePanel.hide(target);
+						info(getString("msg.saved"));
 						target.addComponent(refreshTable);
 						target.addComponent(RightPage.this.getFeedback());
-						rightService.refreshGlobalApplicationRights();
-						info(getString("msg.saved"));
-						modalWindow.close(target);
+					}
+
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						bubblePanel.hide(target);
 					}
 				};
 			}
@@ -191,10 +193,8 @@ public class RightPage extends TemplatePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					modalWindow.setInitialHeight(440);
-					modalWindow.setInitialWidth(620);
-					modalWindow.setContent(createRightEditPanel(right));
-					modalWindow.show(target);
+					bubblePanel.setContent(createRightEditPanel(right));
+					bubblePanel.showModal(target);
 				}
 
 				private RightEditPanel createRightEditPanel(final RightEntity right) {
@@ -204,16 +204,21 @@ public class RightPage extends TemplatePage {
 
 				private RightEditPanel newRightEditPanel(RightEntity refreshedRight) {
 					IModel<RightEntity> rightModel = Model.of(refreshedRight);
-					return new RightEditPanel(modalWindow.getContentId(), rightModel, false) {
+					return new RightEditPanel(bubblePanel.getContentId(), rightModel, false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onSave(AjaxRequestTarget target) {
 							rightService.refreshGlobalApplicationRights();
+							bubblePanel.hide(target);
+							info(getString("msg.saved"));
 							target.addComponent(refreshTable);
 							target.addComponent(getFeedback());
-							info(getString("msg.saved"));
-							modalWindow.close(target);
+						}
+
+						@Override
+						public void onCancel(AjaxRequestTarget target) {
+							bubblePanel.hide(target);
 						}
 					};
 				}

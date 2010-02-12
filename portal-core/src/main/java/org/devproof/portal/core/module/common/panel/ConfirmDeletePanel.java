@@ -32,12 +32,12 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private T entity;
-	private BubblePanel modalWindow;
+	private BubblePanel bubblePanel;
 
-	public ConfirmDeletePanel(String id, T entity, BubblePanel modalWindow) {
+	public ConfirmDeletePanel(String id, T entity, BubblePanel bubblePanel) {
 		super(id);
 		this.entity = entity;
-		this.modalWindow = modalWindow;
+		this.bubblePanel = bubblePanel;
 		add(createConfirmDeletePanelForm());
 
 	}
@@ -56,7 +56,7 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				modalWindow.hide(target);
+				bubblePanel.hide(target);
 			}
 		};
 	}
