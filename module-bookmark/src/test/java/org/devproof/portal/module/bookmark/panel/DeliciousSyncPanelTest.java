@@ -17,6 +17,7 @@ package org.devproof.portal.module.bookmark.panel;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
 
@@ -38,7 +39,19 @@ public class DeliciousSyncPanelTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPanel(DeliciousSyncPanel.class);
+		tester.startPanel(TestDeliciousSyncPanel.class);
 		tester.assertComponent("panel", DeliciousSyncPanel.class);
+	}
+
+	public static class TestDeliciousSyncPanel extends DeliciousSyncPanel {
+		private static final long serialVersionUID = 1L;
+
+		public TestDeliciousSyncPanel(String id) {
+			super(id);
+		}
+
+		@Override
+		public void onCancel(AjaxRequestTarget target) {
+		}
 	}
 }

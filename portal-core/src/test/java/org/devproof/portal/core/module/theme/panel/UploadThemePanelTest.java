@@ -17,14 +17,14 @@ package org.devproof.portal.core.module.theme.panel;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.theme.panel.UploadThemePanel;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
  * @author Carsten Hufe
  */
-public class UploadThemePageTest extends TestCase {
+public class UploadThemePanelTest extends TestCase {
 	private WicketTester tester;
 
 	@Override
@@ -39,7 +39,20 @@ public class UploadThemePageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPanel(UploadThemePanel.class);
+		tester.startPanel(TestUploadThemePanel.class);
 		tester.assertComponent("panel", UploadThemePanel.class);
+	}
+
+	public static class TestUploadThemePanel extends UploadThemePanel {
+
+		private static final long serialVersionUID = 1L;
+
+		public TestUploadThemePanel(String id) {
+			super(id);
+		}
+
+		@Override
+		public void onCancel(AjaxRequestTarget target) {
+		}
 	}
 }

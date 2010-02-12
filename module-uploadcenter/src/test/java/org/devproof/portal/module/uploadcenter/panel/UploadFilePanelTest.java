@@ -40,7 +40,7 @@ public class UploadFilePanelTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPanel(UploadFilePanel.class);
+		tester.startPanel(TestUploadCenterPanel.class);
 		tester.assertComponent("panel", UploadFilePanel.class);
 	}
 
@@ -50,6 +50,5 @@ public class UploadFilePanelTest extends TestCase {
 		public TestUploadCenterPanel(String id) {
 			super(id, new File("./"));
 		}
-
 	}
 }
