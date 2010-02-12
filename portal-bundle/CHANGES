@@ -10,6 +10,8 @@ Features
 - Preselected rights from the last entry (for blogs, downloads, etc)
 - Change from TinyMCE to CKeditor
 - Make default code style configurable (SyntaxHighlighter)
+- New KittenCaptcha
+- Nicer style and icons
 Technical
 - A lot of bugfixes
 - Replaced wicket-1.4rc with wicket 1.4.6 final
