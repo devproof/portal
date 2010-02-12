@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -57,6 +58,11 @@ public class DeadLinkCheckPanelTest extends TestCase {
 
 		@Override
 		public void onValid(TestLinkEntity validEntity) {
+		}
+
+		@Override
+		public void onCancel(AjaxRequestTarget target) {
+
 		}
 	}
 

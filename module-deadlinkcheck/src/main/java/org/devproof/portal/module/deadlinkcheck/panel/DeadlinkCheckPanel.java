@@ -27,7 +27,8 @@ import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -58,6 +59,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 	private List<T> listToCheck;
 	private FeedbackPanel feedbackPanel;
 	private ProgressBar progressBar;
+	private volatile boolean threadActive = false;
 
 	public DeadlinkCheckPanel(String id, String section, List<T> listToCheck) {
 		super(id, Model.ofList(listToCheck));
@@ -68,7 +70,6 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 		add(createFeedbackPanel());
 		add(createTitleLabel());
 		add(createDeadlinkCheckForm());
-
 	}
 
 	private Label createTitleLabel() {
@@ -80,6 +81,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 		form.add(createDescriptionLabel());
 		form.add(createProgressBar());
 		form.add(createAjaxButton());
+		form.add(createCancelButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -88,8 +90,8 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 		return new Label("description", getString(section + "Description"));
 	}
 
-	private IndicatingAjaxButton createAjaxButton() {
-		return new IndicatingAjaxButton("startButton") {
+	private AjaxButton createAjaxButton() {
+		return new AjaxButton("startButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -97,17 +99,21 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 				String baseUrl = RequestUtils.toAbsolutePath("");
 				progressBar.start(target);
 				newDeadlinkCheckThread(baseUrl).start();
-				setVisible(false);
+				setEnabled(false);
 			}
 
 			private Thread newDeadlinkCheckThread(final String baseUrl) {
 				return new Thread() {
 					@Override
 					public void run() {
+						threadActive = true;
 						Protocol.registerProtocol("https", new Protocol("https", new EasySSLProtocolSocketFactory(),
 								443));
 
 						for (T link : listToCheck) {
+							if (!threadActive) {
+								return;
+							}
 							String url = link.getUrl();
 							boolean isBroken = false;
 							if (isLocalFile(url)) {
@@ -190,6 +196,18 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 		};
 	}
 
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancelButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				threadActive = false;
+				onCancel(target);
+			}
+		};
+	}
+
 	private ProgressionModel createProgressionModel() {
 		return new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
@@ -241,4 +259,11 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 	 *            valid entity
 	 */
 	public abstract void onValid(T validEntity);
+
+	/**
+	 * called when the cancel button is clicked
+	 * 
+	 * @param target
+	 */
+	public abstract void onCancel(AjaxRequestTarget target);
 }
