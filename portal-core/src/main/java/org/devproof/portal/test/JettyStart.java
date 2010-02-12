@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.test;
 
+import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -22,6 +23,7 @@ import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.management.MBeanServer;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.wicket.protocol.http.WicketFilter;
@@ -33,6 +35,7 @@ import org.mortbay.jetty.bio.SocketConnector;
 import org.mortbay.jetty.plus.naming.Resource;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
+import org.mortbay.management.MBeanContainer;
 import org.springframework.web.context.ContextLoaderListener;
 
 import com.mysql.jdbc.Driver;
@@ -99,10 +102,10 @@ public class JettyStart {
 		new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
 
 		// START JMX SERVER
-		// MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-		// MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
-		// server.getContainer().addEventListener(mBeanContainer);
-		// mBeanContainer.start();
+		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+		MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
+		server.getContainer().addEventListener(mBeanContainer);
+		mBeanContainer.start();
 		try {
 			System.out.println(">>> STARTING DEVPROOF PORTAL, PRESS ANY KEY TO STOP");
 			server.start();
