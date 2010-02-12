@@ -4,18 +4,16 @@
 <head>
 </head>
 <body>
+<wicket:panel>
     <form wicket:id="uploadForm">
-     <fieldset>
-      <legend><wicket:message key="contentTitle"/></legend>
-        <p>
-        <div wicket:id="fileInput" class="mfuex"/>
-        </p>
+      <h2><wicket:message key="contentTitle"/></h2>
+        <div wicket:id="fileInput" class="mfuex"></div>
         <input type="submit" wicket:message="value:uploadButton" class="button"/>
         <span wicket:id="progress">[[ajax upload progressbar]]</span>
-     </fieldset>
     </form>
     <div>
         <span wicket:id="uploadFeedback"/>
      </div>
+</wicket:panel>
 </body>
 </html>

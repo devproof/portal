@@ -22,7 +22,6 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -38,6 +37,7 @@ import org.devproof.portal.core.module.common.component.TooltipLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.panel.UserEditPanel;
 import org.devproof.portal.core.module.user.panel.UserInfoPanel;
@@ -59,7 +59,7 @@ public class UserPage extends TemplatePage {
 	@SpringBean(name = "displayDateFormat")
 	private SimpleDateFormat dateFormat;
 	private PageParameters params;
-	private ModalWindow modalWindow;
+	private BubblePanel bubblePanel;
 	private WebMarkupContainer userRefreshTableContainer;
 	private UserQuery query = new UserQuery();
 	private UserDataView userDataView;
@@ -68,7 +68,7 @@ public class UserPage extends TemplatePage {
 		super(params);
 		this.params = params;
 		setQueryToDataProvider();
-		add(createModalWindow());
+		add(createBubblePanel());
 		add(createUserRefreshContainer());
 		addFilterBox(createUserSearchBoxPanel());
 		addPageAdminBoxLink(createCreateUserLink());
@@ -90,15 +90,13 @@ public class UserPage extends TemplatePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setInitialHeight(440);
-				modalWindow.setInitialWidth(550);
-				modalWindow.setContent(createUserEditPanel());
-				modalWindow.show(target);
+				bubblePanel.setContent(createUserEditPanel());
+				bubblePanel.showModal(target);
 			}
 
 			private UserEditPanel createUserEditPanel() {
 				IModel<UserEntity> userModel = Model.of(userService.newUserEntity());
-				return new UserEditPanel(modalWindow.getContentId(), userModel, true) {
+				return new UserEditPanel(bubblePanel.getContentId(), userModel, true) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -106,7 +104,12 @@ public class UserPage extends TemplatePage {
 						target.addComponent(userRefreshTableContainer);
 						target.addComponent(UserPage.this.getFeedback());
 						info(getString("msg.saved"));
-						modalWindow.close(target);
+						bubblePanel.hide(target);
+					}
+
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						bubblePanel.hide(target);
 					}
 				};
 			}
@@ -114,10 +117,9 @@ public class UserPage extends TemplatePage {
 		return createLink;
 	}
 
-	private ModalWindow createModalWindow() {
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		return modalWindow;
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private WebMarkupContainer createUserRefreshContainer() {
@@ -276,12 +278,12 @@ public class UserPage extends TemplatePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					modalWindow.setContent(createUserEditPanel(item));
-					modalWindow.show(target);
+					bubblePanel.setContent(createUserEditPanel(item));
+					bubblePanel.showModal(target);
 				}
 
 				private UserEditPanel createUserEditPanel(final Item<UserEntity> item) {
-					UserEditPanel editUserPanel = new UserEditPanel(modalWindow.getContentId(), item.getModel(), false) {
+					UserEditPanel editUserPanel = new UserEditPanel(bubblePanel.getContentId(), item.getModel(), false) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
@@ -289,7 +291,12 @@ public class UserPage extends TemplatePage {
 							target.addComponent(userRefreshTableContainer);
 							target.addComponent(getFeedback());
 							info(getString("msg.saved"));
-							modalWindow.close(target);
+							bubblePanel.hide(target);
+						}
+
+						@Override
+						public void onCancel(AjaxRequestTarget target) {
+							bubblePanel.hide(target);
 						}
 					};
 					return editUserPanel;

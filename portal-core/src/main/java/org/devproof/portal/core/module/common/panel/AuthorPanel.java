@@ -20,8 +20,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -41,8 +39,7 @@ public abstract class AuthorPanel<T> extends Panel {
 	private T entity;
 	private Class<? extends Page> redirectPageClazz = null;
 	private PageParameters redirectParams = null;
-	private boolean deleted = false;
-	private ModalWindow modalWindow;
+	private BubblePanel modalWindow;
 
 	public AuthorPanel(String id, T entity) {
 		super(id);
@@ -64,9 +61,8 @@ public abstract class AuthorPanel<T> extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setWindowClosedCallback(createWindowCloseCallback());
 				modalWindow.setContent(createConfirmDeletePanel());
-				modalWindow.show(target);
+				modalWindow.showModal(target);
 			}
 
 			private ConfirmDeletePanel<T> createConfirmDeletePanel() {
@@ -75,24 +71,13 @@ public abstract class AuthorPanel<T> extends Panel {
 
 					@Override
 					public void onDelete(AjaxRequestTarget target, Form<?> form) {
-						AuthorPanel.this.deleted = true;
-						modalWindow.close(target);
+						modalWindow.hide(target);
 						AuthorPanel.this.onDelete(target);
-					}
-
-				};
-			}
-
-			private WindowClosedCallback createWindowCloseCallback() {
-				return new ModalWindow.WindowClosedCallback() {
-					private static final long serialVersionUID = 1L;
-
-					public void onClose(AjaxRequestTarget target) {
-						if (AuthorPanel.this.redirectPageClazz != null && AuthorPanel.this.deleted) {
+						if (redirectPageClazz != null) {
 							setResponsePage(AuthorPanel.this.redirectPageClazz, AuthorPanel.this.redirectParams);
-							AuthorPanel.this.deleted = false;
 						}
 					}
+
 				};
 			}
 		};
@@ -123,9 +108,8 @@ public abstract class AuthorPanel<T> extends Panel {
 		return new Image("editImage", CommonConstants.REF_EDIT_IMG);
 	}
 
-	private ModalWindow createModalWindow() {
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setOutputMarkupId(true);
+	private BubblePanel createModalWindow() {
+		modalWindow = new BubblePanel("modalWindow");
 		return modalWindow;
 	}
 

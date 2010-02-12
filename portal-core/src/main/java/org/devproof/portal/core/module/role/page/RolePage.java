@@ -23,7 +23,6 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -252,20 +251,25 @@ public class RolePage extends TemplatePage {
 				}
 
 				private ConfirmDeletePanel<RoleEntity> createConfirmDeletePanel(final RoleEntity role) {
-					return new ConfirmDeletePanel<RoleEntity>(modalWindow.getContentId(), role, modalWindow) {
-						private static final long serialVersionUID = 1L;
-
-						@Override
-						public void onDelete(AjaxRequestTarget target, Form<?> form) {
-							roleService.delete(role);
-							rightService.refreshGlobalApplicationRights();
-							target.addComponent(refreshTable);
-							target.addComponent(getFeedback());
-							info(getString("msg.deleted"));
-							modalWindow.close(target);
-						}
-
-					};
+					// TODO
+					// return new
+					// ConfirmDeletePanel<RoleEntity>(modalWindow.getContentId(),
+					// role, modalWindow) {
+					// private static final long serialVersionUID = 1L;
+					//
+					// @Override
+					// public void onDelete(AjaxRequestTarget target, Form<?>
+					// form) {
+					// roleService.delete(role);
+					// rightService.refreshGlobalApplicationRights();
+					// target.addComponent(refreshTable);
+					// target.addComponent(getFeedback());
+					// info(getString("msg.deleted"));
+					// modalWindow.close(target);
+					// }
+					//
+					// };
+					return null;
 				}
 			};
 		}

@@ -27,13 +27,9 @@ import javax.swing.tree.TreeNode;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.PageCreator;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.extensions.markup.html.tree.table.ColumnLocation;
 import org.apache.wicket.extensions.markup.html.tree.table.IColumn;
 import org.apache.wicket.extensions.markup.html.tree.table.IRenderable;
@@ -47,11 +43,13 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
 import org.devproof.portal.module.uploadcenter.bean.FileBean;
 import org.devproof.portal.module.uploadcenter.panel.CreateFolderPanel;
 import org.devproof.portal.module.uploadcenter.panel.UploadCenterPanel;
+import org.devproof.portal.module.uploadcenter.panel.UploadFilePanel;
 
 /**
  * @author Carsten Hufe
@@ -68,7 +66,7 @@ public class UploadCenterPage extends TemplatePage {
 	private DefaultMutableTreeNode rootNode;
 	private DefaultMutableTreeNode selectedNode;
 	private boolean hasRightCreateDownload;
-	private ModalWindow modalWindow;
+	private BubblePanel bubblePanel;
 	private TreeTable folderTreeTable;
 
 	public UploadCenterPage(PageParameters params) {
@@ -76,7 +74,7 @@ public class UploadCenterPage extends TemplatePage {
 		setRootFolder();
 		setSelectedFolder();
 		setHasRightToCreate();
-		add(createModalWindow());
+		add(createBubblePanel());
 		add(createFolderTreeTable());
 		addPageAdminBoxLink(createUploadLink());
 		addPageAdminBoxLink(createFolderLink());
@@ -90,8 +88,8 @@ public class UploadCenterPage extends TemplatePage {
 		rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
 	}
 
-	private AjaxLink<ModalWindow> createFolderLink() {
-		AjaxLink<ModalWindow> createFolderLink = newCreateFolderLink();
+	private AjaxLink<BubblePanel> createFolderLink() {
+		AjaxLink<BubblePanel> createFolderLink = newCreateFolderLink();
 		createFolderLink.add(createFolderLinkLabel());
 		return createFolderLink;
 	}
@@ -100,8 +98,8 @@ public class UploadCenterPage extends TemplatePage {
 		return new Label("linkName", getString("createFolderLink"));
 	}
 
-	private AjaxLink<ModalWindow> createUploadLink() {
-		AjaxLink<ModalWindow> uploadLink = newUploadLink(modalWindow);
+	private AjaxLink<BubblePanel> createUploadLink() {
+		AjaxLink<BubblePanel> uploadLink = newUploadLink(bubblePanel);
 		uploadLink.add(createUploadLinkLabel());
 		return uploadLink;
 	}
@@ -119,7 +117,7 @@ public class UploadCenterPage extends TemplatePage {
 				new PropertyRenderableColumn(new ColumnLocation(Alignment.MIDDLE, 4, Unit.PROPORTIONAL), this
 						.getString("tableFiledate"), "userObject.date"),
 				new PropertyLinkedColumn(new ColumnLocation(Alignment.RIGHT, 80, Unit.PX), "", "userObject.file",
-						modalWindow) };
+						bubblePanel) };
 
 		folderTreeTable = newFolderTreeTable(columns);
 		folderTreeTable.getTreeState().collapseAll();
@@ -152,36 +150,33 @@ public class UploadCenterPage extends TemplatePage {
 		};
 	}
 
-	private AjaxLink<ModalWindow> newCreateFolderLink() {
-		return new AjaxLink<ModalWindow>("adminLink") {
+	private AjaxLink<BubblePanel> newCreateFolderLink() {
+		return new AjaxLink<BubblePanel>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setInitialHeight(170);
-				modalWindow.setInitialWidth(400);
-				modalWindow.setContent(createCreateFolderPanel());
-				modalWindow.show(target);
+				bubblePanel.setContent(createCreateFolderPanel());
+				bubblePanel.showModal(target);
 			}
 
 			private CreateFolderPanel createCreateFolderPanel() {
-				return new CreateFolderPanel(modalWindow.getContentId(), selectedFolder) {
+				return new CreateFolderPanel(bubblePanel.getContentId(), selectedFolder) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onCreate(AjaxRequestTarget target) {
 						UploadCenterPage.this.forceRefresh(target);
-						modalWindow.close(target);
+						bubblePanel.hide(target);
 					}
 				};
 			}
 		};
 	}
 
-	private ModalWindow createModalWindow() {
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		return modalWindow;
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
 
 	private void setHasRightToCreate() {
@@ -193,35 +188,23 @@ public class UploadCenterPage extends TemplatePage {
 		return hasRightCreateDownload;
 	}
 
-	private AjaxLink<ModalWindow> newUploadLink(final ModalWindow modalWindow) {
-		return new AjaxLink<ModalWindow>("adminLink") {
+	private AjaxLink<BubblePanel> newUploadLink(final BubblePanel bubblePanel) {
+		return new AjaxLink<BubblePanel>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setInitialHeight(400);
-				modalWindow.setInitialWidth(600);
-				modalWindow.setPageCreator(createPageCreator());
-				modalWindow.setWindowClosedCallback(createWindowCloseCallback());
-				modalWindow.show(target);
+				bubblePanel.setContent(createUploadFilePanel(bubblePanel));
+				bubblePanel.showModal(target);
 			}
 
-			private PageCreator createPageCreator() {
-				return new ModalWindow.PageCreator() {
+			private UploadFilePanel createUploadFilePanel(final BubblePanel bubblePanel) {
+				return new UploadFilePanel(bubblePanel.getContentId(), selectedFolder) {
 					private static final long serialVersionUID = 1L;
 
-					public Page createPage() {
-						return new UploadFilePage(selectedFolder);
-					}
-				};
-			}
-
-			private WindowClosedCallback createWindowCloseCallback() {
-				return new ModalWindow.WindowClosedCallback() {
-					private static final long serialVersionUID = 1L;
-
-					public void onClose(AjaxRequestTarget target) {
-						UploadCenterPage.this.forceRefresh(target);
+					@Override
+					protected void onSubmit() {
+						forceRefresh(null);
 					}
 				};
 			}
@@ -260,18 +243,18 @@ public class UploadCenterPage extends TemplatePage {
 
 	private class PropertyLinkedColumn extends PropertyRenderableColumn {
 		private static final long serialVersionUID = 1L;
-		private ModalWindow modalWindow;
+		private BubblePanel bubblePanel;
 
 		public PropertyLinkedColumn(ColumnLocation location, String header, String propertyExpression,
-				ModalWindow modalWindow) {
+				BubblePanel bubblePanel) {
 			super(location, header, propertyExpression);
-			this.modalWindow = modalWindow;
+			this.bubblePanel = bubblePanel;
 
 		}
 
 		@Override
 		public Component newCell(MarkupContainer parent, String id, final TreeNode node, int level) {
-			return new UploadCenterPanel(id, new PropertyModel<File>(node, getPropertyExpression()), modalWindow,
+			return new UploadCenterPanel(id, new PropertyModel<File>(node, getPropertyExpression()), bubblePanel,
 					hasRightCreateDownload) {
 				private static final long serialVersionUID = 1L;
 

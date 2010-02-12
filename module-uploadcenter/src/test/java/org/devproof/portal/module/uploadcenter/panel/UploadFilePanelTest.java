@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.module.uploadcenter.page;
+package org.devproof.portal.module.uploadcenter.panel;
 
 import java.io.File;
 
@@ -25,7 +25,7 @@ import org.devproof.portal.test.PortalTestUtil;
 /**
  * @author Carsten Hufe
  */
-public class UploadFilePageTest extends TestCase {
+public class UploadFilePanelTest extends TestCase {
 	private WicketTester tester;
 
 	@Override
@@ -40,7 +40,16 @@ public class UploadFilePageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPage(new UploadFilePage(new File("./")));
-		tester.assertRenderedPage(UploadFilePage.class);
+		tester.startPanel(UploadFilePanel.class);
+		tester.assertComponent("panel", UploadFilePanel.class);
+	}
+
+	public static class TestUploadCenterPanel extends UploadFilePanel {
+		private static final long serialVersionUID = 1L;
+
+		public TestUploadCenterPanel(String id) {
+			super(id, new File("./"));
+		}
+
 	}
 }

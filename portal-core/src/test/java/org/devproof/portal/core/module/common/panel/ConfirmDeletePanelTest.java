@@ -18,7 +18,6 @@ package org.devproof.portal.core.module.common.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
@@ -48,7 +47,7 @@ public class ConfirmDeletePanelTest extends TestCase {
 
 	public static class TestConfirmDeletePanel extends ConfirmDeletePanel<ConfigurationEntity> {
 		public TestConfirmDeletePanel(String id) {
-			super(id, new ConfigurationEntity(), new ModalWindow("id"));
+			super(id, new ConfigurationEntity(), new BubblePanel("id"));
 		}
 
 		private static final long serialVersionUID = 1L;

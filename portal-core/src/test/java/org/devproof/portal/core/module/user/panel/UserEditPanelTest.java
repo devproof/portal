@@ -56,5 +56,10 @@ public class UserEditPanelTest extends TestCase {
 		public void onSave(AjaxRequestTarget target) {
 
 		}
+
+		@Override
+		public void onCancel(AjaxRequestTarget target) {
+
+		}
 	}
 }

@@ -20,9 +20,9 @@ import java.io.File;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
@@ -49,7 +49,7 @@ public class UploadCenterPanelTest extends TestCase {
 
 	public static class TestUploadCenterPanel extends UploadCenterPanel {
 		public TestUploadCenterPanel(String id) {
-			super(id, Model.of(new File(".")), new ModalWindow("foobar"), true);
+			super(id, Model.of(new File(".")), new BubblePanel("foobar"), true);
 		}
 
 		private static final long serialVersionUID = 1L;
