@@ -33,6 +33,10 @@ import org.devproof.portal.core.module.common.query.IQuery;
 /**
  * Base panel for search boxes
  * 
+ * Should be refactored ... very ugly.
+ * 
+ * Search engines must be able to index nice urls!
+ * 
  * @author Carsten Hufe
  * 
  */
