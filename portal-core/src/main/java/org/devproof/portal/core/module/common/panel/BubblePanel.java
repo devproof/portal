@@ -96,7 +96,9 @@ public class BubblePanel extends Panel {
 		String js = "";
 		js = "var maskHeight = $(document).height(); var maskWidth = $(window).width();";
 		js += "$('#modalMask').css({'width':maskWidth,'height':maskHeight});";
-		js += "$('#modalMask').fadeIn('fast'); $('#modalMask').fadeTo('fast',0.3);";
+		js += "$('#modalMask').fadeTo('normal',0.3);";
+		// js +=
+		// "$('#modalMask').fadeIn('fast'); $('#modalMask').fadeTo('fast',0.3);";
 		js += "var id = '#" + getMarkupId() + "';";
 		js += "var winH = $(window).height();";
 		js += "var winW = $(window).width();";
