@@ -11,6 +11,7 @@ Features
 - Change from TinyMCE to CKeditor
 - Make default code style configurable (SyntaxHighlighter)
 Technical
+- A lot of bugfixes
 - Replaced wicket-1.4rc with wicket 1.4.6 final
 - Default isolation level changed to READ_COMMITED
 - RightGridPanel looses CheckBox states after validation error
