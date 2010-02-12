@@ -21,7 +21,6 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -31,6 +30,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.module.deadlinkcheck.panel.DeadlinkCheckPanel;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
@@ -44,7 +44,7 @@ public abstract class DownloadBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "downloadService")
 	private DownloadService downloadService;
-	private WebMarkupContainer modalWindow;
+	private WebMarkupContainer bubblePanel;
 	private boolean isAuthor;
 
 	public DownloadBasePage(PageParameters params) {
@@ -53,7 +53,7 @@ public abstract class DownloadBasePage extends TemplatePage {
 		add(createCSSHeaderContributor());
 		addDownloadAddLink();
 		addDeadlinkCheckLink();
-		add(createHiddenModalWindow());
+		add(createHiddenBubbleWindow());
 	}
 
 	private HeaderContributor createCSSHeaderContributor() {
@@ -72,15 +72,15 @@ public abstract class DownloadBasePage extends TemplatePage {
 		}
 	}
 
-	private WebMarkupContainer createHiddenModalWindow() {
+	private WebMarkupContainer createHiddenBubbleWindow() {
 		if (isAuthor()) {
-			modalWindow = new ModalWindow("modalWindow");
+			bubblePanel = new BubblePanel("bubblePanel");
 
 		} else {
-			modalWindow = new WebMarkupContainer("modalWindow");
-			modalWindow.setVisible(false);
+			bubblePanel = new WebMarkupContainer("bubblePanel");
+			bubblePanel.setVisible(false);
 		}
-		return modalWindow;
+		return bubblePanel;
 	}
 
 	private AjaxLink<DownloadEntity> createDeadlinkCheckLink() {
@@ -95,12 +95,10 @@ public abstract class DownloadBasePage extends TemplatePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				ModalWindow modalWindow = (ModalWindow) DownloadBasePage.this.modalWindow;
-				DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = createDeadlinkCheckPanel(modalWindow.getContentId());
-				modalWindow.setInitialHeight(300);
-				modalWindow.setInitialWidth(500);
-				modalWindow.setContent(deadlinkPanel);
-				modalWindow.show(target);
+				BubblePanel panel = (BubblePanel) DownloadBasePage.this.bubblePanel;
+				DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = createDeadlinkCheckPanel(panel.getContentId());
+				panel.setContent(deadlinkPanel);
+				panel.showModal(target);
 			}
 
 			private DeadlinkCheckPanel<DownloadEntity> createDeadlinkCheckPanel(String id) {
@@ -122,6 +120,13 @@ public abstract class DownloadBasePage extends TemplatePage {
 					@Override
 					public void onValid(DownloadEntity validEntity) {
 						downloadService.markValidDownload(validEntity);
+					}
+
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						BubblePanel panel = (BubblePanel) bubblePanel;
+						panel.hide(target);
+						setResponsePage(DownloadPage.class);
 					}
 				};
 				return deadlinkPanel;
@@ -158,7 +163,7 @@ public abstract class DownloadBasePage extends TemplatePage {
 		return isAuthor;
 	}
 
-	public WebMarkupContainer getModalWindow() {
-		return modalWindow;
+	public WebMarkupContainer getBubblePanel() {
+		return bubblePanel;
 	}
 }

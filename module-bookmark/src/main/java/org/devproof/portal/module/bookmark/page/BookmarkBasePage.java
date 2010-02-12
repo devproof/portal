@@ -21,7 +21,6 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -31,6 +30,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.panel.DeliciousSyncPanel;
@@ -46,14 +46,14 @@ public abstract class BookmarkBasePage extends TemplatePage {
 	@SpringBean(name = "bookmarkService")
 	private BookmarkService bookmarkService;
 
-	private WebMarkupContainer modalWindow;
+	private WebMarkupContainer bubblePanel;
 	private boolean isAuthor = false;
 
 	public BookmarkBasePage(final PageParameters params) {
 		super(params);
 		setAuthorRight();
 		add(createCSSHeaderContributor());
-		add(createHiddenModalWindow());
+		add(createHiddenBubblePanel());
 		addBookmarkAddLink();
 		addDeadlinkCheckLink();
 		addDeliciousSyncLink();
@@ -63,14 +63,14 @@ public abstract class BookmarkBasePage extends TemplatePage {
 		return CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS);
 	}
 
-	private WebMarkupContainer createHiddenModalWindow() {
+	private WebMarkupContainer createHiddenBubblePanel() {
 		if (isAuthor()) {
-			modalWindow = new ModalWindow("modalWindow");
+			bubblePanel = new BubblePanel("bubbleWindow");
 		} else {
-			modalWindow = new WebMarkupContainer("modalWindow");
-			modalWindow.setVisible(false);
+			bubblePanel = new WebMarkupContainer("bubbleWindow");
+			bubblePanel.setVisible(false);
 		}
-		return modalWindow;
+		return bubblePanel;
 	}
 
 	private void addDeliciousSyncLink() {
@@ -91,16 +91,23 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
-				DeliciousSyncPanel syncPanel = createDeliciousSyncPanel(modalWindow.getContentId());
-				modalWindow.setInitialHeight(600);
-				modalWindow.setInitialWidth(800);
-				modalWindow.setContent(syncPanel);
-				modalWindow.show(target);
+				BubblePanel panel = (BubblePanel) bubblePanel;
+				DeliciousSyncPanel syncPanel = createDeliciousSyncPanel(panel.getContentId());
+				panel.setContent(syncPanel);
+				panel.showModal(target);
 			}
 
 			private DeliciousSyncPanel createDeliciousSyncPanel(String id) {
-				return new DeliciousSyncPanel(id);
+				return new DeliciousSyncPanel(id) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						BubblePanel panel = (BubblePanel) bubblePanel;
+						panel.hide(target);
+						setResponsePage(BookmarkPage.class);
+					}
+				};
 			}
 		};
 	}
@@ -156,13 +163,10 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				ModalWindow modalWindow = (ModalWindow) BookmarkBasePage.this.modalWindow;
-				DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(modalWindow
-						.getContentId());
-				modalWindow.setInitialHeight(300);
-				modalWindow.setInitialWidth(500);
-				modalWindow.setContent(deadlinkCheckPanel);
-				modalWindow.show(target);
+				BubblePanel panel = (BubblePanel) bubblePanel;
+				DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(panel.getContentId());
+				panel.setContent(deadlinkCheckPanel);
+				panel.showModal(target);
 			}
 
 			private DeadlinkCheckPanel<BookmarkEntity> createDeadlinkCheckPanel(String id) {
@@ -184,6 +188,13 @@ public abstract class BookmarkBasePage extends TemplatePage {
 					public void onValid(BookmarkEntity validEntity) {
 						bookmarkService.markValidBookmark(validEntity);
 					}
+
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						BubblePanel panel = (BubblePanel) bubblePanel;
+						panel.hide(target);
+						setResponsePage(BookmarkPage.class);
+					}
 				};
 			}
 		};
@@ -194,8 +205,8 @@ public abstract class BookmarkBasePage extends TemplatePage {
 		isAuthor = session.hasRight("page." + BookmarkEditPage.class.getSimpleName());
 	}
 
-	public WebMarkupContainer getModalWindow() {
-		return modalWindow;
+	public WebMarkupContainer getBubblePanel() {
+		return bubblePanel;
 	}
 
 	public boolean isAuthor() {

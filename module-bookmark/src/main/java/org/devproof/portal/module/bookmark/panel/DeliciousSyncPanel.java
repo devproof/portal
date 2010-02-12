@@ -22,8 +22,9 @@ import java.util.List;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxButton;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -55,7 +56,7 @@ import org.devproof.portal.module.bookmark.service.SynchronizeService;
 /**
  * @author Carsten Hufe
  */
-public class DeliciousSyncPanel extends Panel {
+public abstract class DeliciousSyncPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -78,6 +79,7 @@ public class DeliciousSyncPanel extends Panel {
 	private ProgressBar progressBar;
 	private DeliciousFormBean deliciousFormBean = new DeliciousFormBean();
 	private FeedbackPanel feedbackPanel;
+	private volatile boolean threadActive = false;
 
 	public DeliciousSyncPanel(String id) {
 		super(id);
@@ -107,6 +109,7 @@ public class DeliciousSyncPanel extends Panel {
 		form.add(createVoteRightPanel());
 		form.add(createProgressBar());
 		form.add(createStartButton());
+		form.add(createCancelButton());
 		form.setOutputMarkupId(true);
 		return form;
 	}
@@ -135,8 +138,8 @@ public class DeliciousSyncPanel extends Panel {
 		return new RequiredTextField<String>("username");
 	}
 
-	private IndicatingAjaxButton createStartButton() {
-		return new IndicatingAjaxButton("startButton") {
+	private AjaxButton createStartButton() {
+		return new AjaxButton("startButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -147,11 +150,12 @@ public class DeliciousSyncPanel extends Panel {
 				new Thread() {
 					@Override
 					public void run() {
+						threadActive = true;
 						fetching = true;
 						DeliciousBean bean = synchronizeService.getDataFromDelicious(deliciousFormBean.username,
 								deliciousFormBean.password, deliciousFormBean.tags);
 						deliciousBean = bean;
-						if (bean.hasError()) {
+						if (bean.hasError() && !threadActive) {
 							return;
 						}
 						Collection<BookmarkEntity> bookmarksToSave = retrieveBookmarks(bean);
@@ -217,7 +221,19 @@ public class DeliciousSyncPanel extends Panel {
 				}.start();
 
 				// disable button
-				setVisible(false);
+				setEnabled(false);
+			}
+		};
+	}
+
+	private AjaxLink<Void> createCancelButton() {
+		return new AjaxLink<Void>("cancelButton") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				threadActive = false;
+				onCancel(target);
 			}
 		};
 	}
@@ -279,4 +295,11 @@ public class DeliciousSyncPanel extends Panel {
 		feedbackPanel.setOutputMarkupId(true);
 		return feedbackPanel;
 	}
+
+	/**
+	 * called when the cancel button is clicked
+	 * 
+	 * @param target
+	 */
+	public abstract void onCancel(AjaxRequestTarget target);
 }
