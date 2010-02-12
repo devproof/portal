@@ -4,6 +4,7 @@
 <wicket:panel>	
 	<div class="modalform">
 	<h1><wicket:message key="contentTitle"/></h1>
+	<div style="text-align: left;">
 	<div wicket:id="feedbackPanel"></div>
 	<form wicket:id="form">
 	<table cellspacing="10">		
@@ -28,10 +29,11 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/></td>
+			<td><input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/> <input type="submit" wicket:id="cancelButton" wicket:message="value:cancel" class="button"/></td>
 		</tr>
 	</table>
 	</form>	
+	</div>
 	</div>
 </wicket:panel>
 </html>

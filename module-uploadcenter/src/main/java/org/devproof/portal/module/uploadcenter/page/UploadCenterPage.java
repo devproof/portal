@@ -206,6 +206,11 @@ public class UploadCenterPage extends TemplatePage {
 					protected void onSubmit() {
 						forceRefresh(null);
 					}
+
+					@Override
+					protected void onCancel(AjaxRequestTarget target) {
+						bubblePanel.hide(target);
+					}
 				};
 			}
 		};

@@ -5,14 +5,16 @@
 </head>
 <body>
 <wicket:panel>
+	<div class="modalform">
     <form wicket:id="uploadForm">
-      <h2><wicket:message key="contentTitle"/></h2>
+      <h1><wicket:message key="contentTitle"/></h1>
         <div wicket:id="fileInput" class="mfuex"></div>
-        <input type="submit" wicket:message="value:uploadButton" class="button"/>
+        <input type="submit" wicket:message="value:uploadButton" class="button"/> <input type="submit" wicket:id="cancelButton" wicket:message="value:cancelButton" class="button"/>
         <span wicket:id="progress">[[ajax upload progressbar]]</span>
     </form>
     <div>
         <span wicket:id="uploadFeedback"/>
+     </div>
      </div>
 </wicket:panel>
 </body>

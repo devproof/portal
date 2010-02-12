@@ -18,13 +18,9 @@ package org.devproof.portal.core.module.theme.page;
 import java.io.File;
 import java.util.List;
 
-import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.PageCreator;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -35,9 +31,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.module.common.component.InternalDownloadLink;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.devproof.portal.core.module.theme.bean.ThemeBean;
+import org.devproof.portal.core.module.theme.panel.UploadThemePanel;
 import org.devproof.portal.core.module.theme.service.ThemeService;
 
 /**
@@ -52,11 +50,11 @@ public class ThemePage extends TemplatePage {
 	private ThemeService themeService;
 
 	private RepeatingView themeRepeater;
-	private ModalWindow modalWindow;
+	private BubblePanel bubblePanel;
 
 	public ThemePage(PageParameters params) {
 		super(params);
-		add(createModalWindow());
+		add(createBubblePanel());
 		add(createThemeRepeater());
 		addPageAdminBoxLink(createUploadLink());
 		addPageAdminBoxLink(createCompleteThemeDownloadLink());
@@ -190,8 +188,8 @@ public class ThemePage extends TemplatePage {
 		};
 	}
 
-	private AjaxLink<ModalWindow> createUploadLink() {
-		AjaxLink<ModalWindow> uploadLink = newUploadLink();
+	private AjaxLink<BubblePanel> createUploadLink() {
+		AjaxLink<BubblePanel> uploadLink = newUploadLink();
 		uploadLink.add(createUploadLinkLabel());
 		return uploadLink;
 	}
@@ -200,81 +198,55 @@ public class ThemePage extends TemplatePage {
 		return new Label("linkName", getString("uploadLink"));
 	}
 
-	private AjaxLink<ModalWindow> newUploadLink() {
-		return new AjaxLink<ModalWindow>("adminLink") {
+	private AjaxLink<BubblePanel> newUploadLink() {
+		return new AjaxLink<BubblePanel>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalWindow.setInitialHeight(250);
-				modalWindow.setInitialWidth(600);
-				modalWindow.setPageCreator(createUploadThemePageCreator());
-				modalWindow.setWindowClosedCallback(createWindowCloseCallback());
-				modalWindow.show(target);
+				// bubblePanel.setPageCreator(createUploadThemePageCreator());
+				// bubblePanel.setWindowClosedCallback(createWindowCloseCallback());
+				bubblePanel.setContent(uploadThemePanel());
+				bubblePanel.showModal(target);
 			}
 
-			private PageCreator createUploadThemePageCreator() {
-				return new ModalWindow.PageCreator() {
+			//
+			// private PageCreator createUploadThemePageCreator() {
+			// return new BubblePanel.PageCreator() {
+			// private static final long serialVersionUID = 1L;
+			//
+			// public Page createPage() {
+			// return new UploadThemePage();
+			// }
+			// };
+			// }
+			//
+			// private WindowClosedCallback createWindowCloseCallback() {
+			// return new BubblePanel.WindowClosedCallback() {
+			// private static final long serialVersionUID = 1L;
+			//
+			// public void onClose(AjaxRequestTarget target) {
+			// reloadThemeRepeater();
+			// target.addComponent(ThemePage.this);
+			// }
+			// };
+			// }
+
+			private UploadThemePanel uploadThemePanel() {
+				return new UploadThemePanel(bubblePanel.getContentId()) {
 					private static final long serialVersionUID = 1L;
 
-					public Page createPage() {
-						return new UploadThemePage();
-					}
-				};
-			}
-
-			private WindowClosedCallback createWindowCloseCallback() {
-				return new ModalWindow.WindowClosedCallback() {
-					private static final long serialVersionUID = 1L;
-
-					public void onClose(AjaxRequestTarget target) {
-						reloadThemeRepeater();
-						target.addComponent(ThemePage.this);
+					@Override
+					public void onCancel(AjaxRequestTarget target) {
+						bubblePanel.hide(target);
 					}
 				};
 			}
 		};
 	}
 
-	private ModalWindow createModalWindow() {
-		modalWindow = new ModalWindow("modalWindow");
-		modalWindow.setTitle("Portal");
-		return modalWindow;
+	private BubblePanel createBubblePanel() {
+		bubblePanel = new BubblePanel("bubblePanel");
+		return bubblePanel;
 	}
-	/*
-	 * public void build() { tableRow = new RepeatingView("tableRow");
-	 * List<ThemeBean> themes = themeService.findAllThemes(); String
-	 * selectedThemeUuid =
-	 * configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID
-	 * ); for (final ThemeBean theme : themes) { boolean selected =
-	 * selectedThemeUuid.equals(theme.getUuid()); String key = selected ?
-	 * "selectedLink" : "selectLink"; WebMarkupContainer row = new
-	 * WebMarkupContainer(tableRow.newChildId()); row.add(new Label("theme",
-	 * theme.getTheme())); row.add(new ExternalLink("authorLink",
-	 * theme.getUrl(), theme.getAuthor())); Link<Void> selectLink = new
-	 * Link<Void>("selectLink") { private static final long serialVersionUID =
-	 * 1L;
-	 * 
-	 * @Override public void onClick() { themeService.selectTheme(theme);
-	 * info(new StringResourceModel("msg.selected", this, null, new Object[] {
-	 * theme.getTheme() }) .getString()); ((PortalApplication)
-	 * getApplication()).setThemeUuid(theme.getUuid()); //
-	 * ThemePage.this.build(); tableRow.renderComponent(); } };
-	 * selectLink.setEnabled(!selected); selectLink.add(new Label("selectLabel",
-	 * getString(key))); row.add(selectLink);
-	 * 
-	 * row.add(new Link<Void>("uninstallLink") { private static final long
-	 * serialVersionUID = 1L;
-	 * 
-	 * @Override public void onClick() { themeService.uninstall(theme); info(new
-	 * StringResourceModel("msg.uninstalled", this, null, new Object[] {
-	 * theme.getTheme() }) .getString()); ((PortalApplication)
-	 * getApplication()).
-	 * setThemeUuid(ThemeConstants.CONF_SELECTED_THEME_DEFAULT); //
-	 * ThemePage.this.build(); tableRow.renderComponent(); }
-	 * }.setVisible(!ThemeConstants
-	 * .CONF_SELECTED_THEME_DEFAULT.equals(theme.getUuid())));
-	 * tableRow.add(row); } // tableRow.renderComponent();
-	 * addOrReplace(tableRow); }
-	 */
 }

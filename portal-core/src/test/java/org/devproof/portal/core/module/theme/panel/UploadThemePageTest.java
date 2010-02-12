@@ -13,20 +13,18 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.core.module.common.panel;
+package org.devproof.portal.core.module.theme.panel;
 
 import junit.framework.TestCase;
 
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.module.theme.panel.UploadThemePanel;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
  * @author Carsten Hufe
  */
-public class InfoMessagePanelTest extends TestCase {
+public class UploadThemePageTest extends TestCase {
 	private WicketTester tester;
 
 	@Override
@@ -41,18 +39,7 @@ public class InfoMessagePanelTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPanel(createInfoMessagePanel());
-		tester.assertComponent("panel", InfoMessagePanel.class);
-	}
-
-	private TestPanelSource createInfoMessagePanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new InfoMessagePanel(panelId, "message", new ModalWindow("id"));
-			}
-		};
+		tester.startPanel(UploadThemePanel.class);
+		tester.assertComponent("panel", UploadThemePanel.class);
 	}
 }
