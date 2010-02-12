@@ -22,6 +22,9 @@ import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
+ * Should be refactored ... very ugly.
+ * Search engines must be able to index nice urls!
+ * 
  * @author Carsten Hufe
  */
 public class BookmarkablePagingPanel extends Panel {
@@ -32,6 +35,7 @@ public class BookmarkablePagingPanel extends Panel {
 	private BookmarkablePageLink<String> forwardLink;
 	private IPageable pageable;
 	private Class<? extends Page> parentClazz;
+
 	private PageParameters params;
 
 	public BookmarkablePagingPanel(String id, IPageable pageable, Class<? extends Page> parentClazz,
@@ -40,9 +44,9 @@ public class BookmarkablePagingPanel extends Panel {
 		this.pageable = pageable;
 		this.parentClazz = parentClazz;
 		this.params = params;
+		handleCurrentPageParameter();
 		add(createBackLink());
 		add(createForwardLink());
-		handleCurrentPageParameter();
 		copySearchParameterToPagingLinks();
 	}
 
