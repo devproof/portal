@@ -36,7 +36,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @IdClass(ArticlePageId.class)
 @Table(name = "article_page")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "entity.content")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entity.content")
 final public class ArticlePageEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id

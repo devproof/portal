@@ -121,7 +121,7 @@ public class JndiConfiguration {
 		props.put("hibernate.connection.isolation", resolveHibernateConnectionIsolation());
 		props.put("hibernate.cache.region.factory_class", SingletonEhCacheRegionFactory.class.getName());
 		props.put("hibernate.cache.use_second_level_cache", "true");
-		// props.put("hibernate.cache.use_query_cache", "true");
+		props.put("hibernate.cache.use_query_cache", "true");
 		props.put("net.sf.ehcache.configurationResourceName", "ehcache.xml");
 		return props;
 	}

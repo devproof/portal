@@ -23,12 +23,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * @author Carsten Hufe
  */
 @Entity
 @Table(name = "article_tag")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entity.content")
 final public class ArticleTagEntity extends BaseTagEntity<ArticleEntity> {
 	private static final long serialVersionUID = 1L;
 

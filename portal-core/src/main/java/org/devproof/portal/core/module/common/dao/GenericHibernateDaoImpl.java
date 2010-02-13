@@ -111,6 +111,8 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 			Integer maxResults) {
 		String hqlQuery = replaceGenericTypeName(query);
 		Query q = getSession().createQuery(hqlQuery);
+		// q.setCacheable(true);
+		// q.setCacheMode(CacheMode.NORMAL);
 		setParameter(queryArgs, q);
 		setResultLimitations(firstResults, maxResults, q);
 		if (Collection.class.isAssignableFrom(returnType)) {
