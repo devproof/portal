@@ -279,11 +279,9 @@ public abstract class TemplatePage extends WebPage {
 			item.add(boxInstance = createLoginBox());
 			item.setVisible(isNotLoginPage());
 		} else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
-			if (tagCloudBox == null) {
-				item.add(tagCloudBox = createEmptyFilterBox());
-				tagCloudBoxHideTitle = box.getHideTitle();
-				boxInstance = tagCloudBox;
-			}
+			item.add(tagCloudBox = createEmptyFilterBox());
+			tagCloudBoxHideTitle = box.getHideTitle();
+			boxInstance = tagCloudBox;
 		} else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
 			item.add(boxInstance = new GlobalAdminBoxPanel("box"));
 		} else if (boxClazz.isAssignableFrom(FeedBoxPanel.class)) {
