@@ -24,6 +24,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
+import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -41,13 +43,16 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<T> findAll(Class<T> clazz) {
-		return getSession().createQuery("Select distinct(e) from " + clazz.getSimpleName() + " e").list();
+		Query q = getSession().createQuery("Select distinct(e) from " + clazz.getSimpleName() + " e");
+		setCacheConfiguration(q, clazz);
+		return q.list();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<T> findAll(Class<T> clazz, int first, int count) {
 		Query q = this.getSession().createQuery("Select distinct(e) from " + clazz.getSimpleName() + " e");
+		setCacheConfiguration(q, clazz);
 		q.setFirstResult(first);
 		q.setMaxResults(count);
 		return q.list();
@@ -157,6 +162,7 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 		Query q = createHibernateQuery("distinct(e)", clazz, sortParam, ascending, beanQuery, prefetch);
 		q.setFirstResult(first);
 		q.setMaxResults(count);
+		setCacheConfiguration(q, clazz);
 		return q.list();
 	}
 
@@ -169,5 +175,22 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 	public int getSize(Class<T> clazz, String countQuery, Serializable beanQuery) {
 		Long count = (Long) createHibernateQuery(countQuery, clazz, null, false, beanQuery, null).uniqueResult();
 		return count.intValue();
+	}
+
+	private void setCacheConfiguration(Query q, Class<?> clazz) {
+		CacheQuery cacheAnnotation = clazz.getAnnotation(CacheQuery.class);
+		if (cacheAnnotation != null) {
+			handleCacheConfiguration(q, cacheAnnotation);
+		}
+	}
+
+	private void handleCacheConfiguration(Query q, CacheQuery cacheAnnotation) {
+		q.setCacheable(true);
+		if (!"".equals(cacheAnnotation.region())) {
+			q.setCacheMode(CacheMode.parse(cacheAnnotation.cacheMode()));
+		}
+		if (!"".equals(cacheAnnotation.region())) {
+			q.setCacheRegion(cacheAnnotation.region());
+		}
 	}
 }
