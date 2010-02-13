@@ -122,15 +122,16 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		CacheQuery cacheAnnotation = method.getAnnotation(CacheQuery.class);
 		if (cacheAnnotation != null) {
 			handleCacheConfiguration(q, cacheAnnotation);
-		}
-		cacheAnnotation = method.getDeclaringClass().getAnnotation(CacheQuery.class);
-		if (cacheAnnotation != null) {
-			handleCacheConfiguration(q, cacheAnnotation);
+		} else {
+			cacheAnnotation = method.getDeclaringClass().getAnnotation(CacheQuery.class);
+			if (cacheAnnotation != null) {
+				handleCacheConfiguration(q, cacheAnnotation);
+			}
 		}
 	}
 
 	private void handleCacheConfiguration(Query q, CacheQuery cacheAnnotation) {
-		q.setCacheable(true);
+		q.setCacheable(cacheAnnotation.enabled());
 		if (!"".equals(cacheAnnotation.region())) {
 			q.setCacheMode(CacheMode.parse(cacheAnnotation.cacheMode()));
 		}
