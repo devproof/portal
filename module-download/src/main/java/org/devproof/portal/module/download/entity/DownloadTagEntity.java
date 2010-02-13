@@ -23,12 +23,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.module.download.DownloadConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * @author Carsten Hufe
  */
 @Entity
 @Table(name = "download_tag")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = DownloadConstants.ENTITY_CACHE_REGION)
 final public class DownloadTagEntity extends BaseTagEntity<DownloadEntity> {
 	private static final long serialVersionUID = 1L;
 

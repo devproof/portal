@@ -20,6 +20,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.IQuery;
@@ -68,6 +69,9 @@ public class DataProviderDaoImplTest extends TestCase {
 	public void testFindAll_byClass() {
 		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
 		EasyMock.expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
+		EasyMock.expect(query.setCacheable(true)).andReturn(query);
+		EasyMock.expect(query.setCacheMode(null)).andReturn(query);
+		EasyMock.expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
 		EasyMock.expect(query.list()).andReturn(expectedTemplates);
 		EasyMock.replay(sessionFactory, session, query);
 		List<EmailTemplateEntity> templates = impl.findAll(EmailTemplateEntity.class);
@@ -78,6 +82,9 @@ public class DataProviderDaoImplTest extends TestCase {
 	public void testFindAll_byClassLimited() {
 		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
 		EasyMock.expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
+		EasyMock.expect(query.setCacheable(true)).andReturn(query);
+		EasyMock.expect(query.setCacheMode(null)).andReturn(query);
+		EasyMock.expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
 		EasyMock.expect(query.setFirstResult(20)).andReturn(query);
 		EasyMock.expect(query.setMaxResults(10)).andReturn(query);
 		EasyMock.expect(query.list()).andReturn(expectedTemplates);
@@ -98,6 +105,9 @@ public class DataProviderDaoImplTest extends TestCase {
 						+ "  where e.headline like ? order by e.subject ASC")).andReturn(query);
 		EasyMock.expect(query.setParameter(0, "foobar")).andReturn(query);
 		EasyMock.expect(query.list()).andReturn(expectedTemplates);
+		EasyMock.expect(query.setCacheable(true)).andReturn(query);
+		EasyMock.expect(query.setCacheMode(null)).andReturn(query);
+		EasyMock.expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
 		EasyMock.expect(query.setFirstResult(20)).andReturn(query);
 		EasyMock.expect(query.setMaxResults(10)).andReturn(query);
 		EasyMock.replay(sessionFactory, session, query);

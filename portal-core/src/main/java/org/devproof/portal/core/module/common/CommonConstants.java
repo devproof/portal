@@ -86,4 +86,7 @@ public class CommonConstants {
 	public static final ResourceReference REF_STRING2IMG_IMG = new ResourceReference(FullRichTextArea.class,
 			"img/string2img.gif");
 
+	public static final String ENTITY_CORE_CACHE_REGION = "entity.core";
+	public static final String QUERY_CORE_CACHE_REGION = "query.core";
+
 }

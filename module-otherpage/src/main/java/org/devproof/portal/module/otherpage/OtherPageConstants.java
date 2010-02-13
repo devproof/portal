@@ -22,4 +22,6 @@ public class OtherPageConstants {
 	private OtherPageConstants() {
 	}
 
+	public static final String ENTITY_CACHE_REGION = "entity.content";
+	public static final String QUERY_CACHE_REGION = "query.content";
 }

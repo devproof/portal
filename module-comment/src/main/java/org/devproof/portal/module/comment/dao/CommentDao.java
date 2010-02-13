@@ -16,13 +16,16 @@
 package org.devproof.portal.module.comment.dao;
 
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 
 /**
  * @author Carsten Hufe
  */
+@CacheQuery(region = CommentConstants.QUERY_CACHE_REGION)
 public interface CommentDao extends GenericDao<CommentEntity, Integer> {
 	@BulkUpdate("update CommentEntity c set c.accepted = true, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
 	void acceptComment(CommentEntity comment);

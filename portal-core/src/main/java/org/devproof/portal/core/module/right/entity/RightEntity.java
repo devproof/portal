@@ -30,15 +30,20 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * @author Carsten Hufe
  */
 @Entity
 @Table(name = "core_right")
-// @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 final public class RightEntity extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;

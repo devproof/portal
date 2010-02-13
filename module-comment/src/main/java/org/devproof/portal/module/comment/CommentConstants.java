@@ -43,4 +43,7 @@ public class CommentConstants {
 	public static final String CONF_NOTIFY_NEW_COMMENT = "spring.emailTemplateDao.findAll.subject.id.newcommentnotification";
 	public static final String CONF_NOTIFY_AUTOBLOCKED = "spring.emailTemplateDao.findAll.subject.id.autoblockednotification";
 	public static final String CONF_NOTIFY_VIOLATION = "spring.emailTemplateDao.findAll.subject.id.violationnotification";
+
+	public static final String ENTITY_CACHE_REGION = "entity.usercontent";
+	public static final String QUERY_CACHE_REGION = "query.usercontent";
 }

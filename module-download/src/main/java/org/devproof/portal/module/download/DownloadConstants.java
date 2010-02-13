@@ -34,4 +34,7 @@ public class DownloadConstants {
 			"img/download.png");
 	public static final String CONF_DOWNLOAD_FEED_TITLE = "download_feed_title";
 	public static final String CONF_DOWNLOAD_ENTRIES_IN_FEED = "download_entries_in_feed";
+
+	public static final String ENTITY_CACHE_REGION = "entity.content";
+	public static final String QUERY_CACHE_REGION = "query.content";
 }

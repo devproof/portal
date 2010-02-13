@@ -29,8 +29,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.user.UserConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
 
 /**
@@ -38,7 +42,8 @@ import org.hibernate.annotations.Index;
  */
 @Entity
 @Table(name = "core_user")
-// @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@CacheQuery(region = UserConstants.QUERY_CACHE_REGION)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = UserConstants.ENTITY_CACHE_REGION)
 final public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;

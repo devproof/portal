@@ -14,10 +14,41 @@
 		overflowToDisk="false" 
 		diskPersistent="false"
 		memoryStoreEvictionPolicy="LFU"/>
-		
-	<!-- 
-	maxElementsOnDisk="50000"
-	 -->
-	
+	<cache name="query.usercontent"
+		maxElementsInMemory="500"
+		eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LFU"/>
+	<cache name="entity.usercontent"
+		maxElementsInMemory="500"
+		eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LFU"/>
+	<cache name="entity.core"
+		maxElementsInMemory="10000"
+		eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LFU"/>
+	<cache name="query.core"
+		maxElementsInMemory="5000"
+		eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LFU"/>
+	<cache name="entity.user"
+		maxElementsInMemory="300"
+		eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LRU"/>
+	<cache name="query.user"
+		maxElementsInMemory="500"
+		eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LRU"/>
 </ehcache>
  

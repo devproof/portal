@@ -17,14 +17,17 @@ package org.devproof.portal.module.otherpage.dao;
 
 import java.util.List;
 
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 
 /**
  * @author Carsten Hufe
  */
+@CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 public interface OtherPageDao extends GenericDao<OtherPageEntity, Integer> {
 	@Query("select op.allRights from OtherPageEntity op where op.modifiedBy = (select max(modifiedBy) from OtherPageEntity)")
 	List<RightEntity> findLastSelectedRights();
