@@ -82,14 +82,41 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService">
+	<!--  JMX stuff -->
+
+	<bean id="hibernateStatisticsMBean" class="org.hibernate.jmx.StatisticsService">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+	  <property name="shared" value="true"/>
+	</bean>
+
+	<bean id="ehCacheMBeanRegistration"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod"
+			value="net.sf.ehcache.management.ManagementService.registerMBeans" />
+		<property name="arguments">
+			<list>
+				<ref bean="cacheManager" />
+				<ref bean="mbeanServer" />
+				<value>true</value>
+				<value>true</value>
+				<value>true</value>
+				<value>true</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+		<property name="locateExistingServerIfPossible" value="true" />
+	</bean>
+
 
 	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
 		<property name="beans">
 			<map>
-				<entry key="bean:name=hibernate" value-ref="hibernateStatistics" />
+				<entry key="bean:name=hibernate" value-ref="hibernateStatisticsMBean" />
 			</map>
 		</property>
 	</bean>
