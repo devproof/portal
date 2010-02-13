@@ -35,7 +35,7 @@ public interface DownloadDao extends GenericDao<DownloadEntity, Integer> {
 	List<DownloadEntity> findAll();
 
 	@CacheQuery(enabled = false)
-	@Query("select d.allRights from DownloadEntity d where d.modifiedBy = (select max(modifiedBy) from DownloadEntity)")
+	@Query("select d.allRights from DownloadEntity d where d.modifiedAt = (select max(modifiedAt) from DownloadEntity)")
 	List<RightEntity> findLastSelectedRights();
 
 	@Query(value = "select distinct(d) from DownloadEntity d join d.allRights ar"
