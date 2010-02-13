@@ -30,5 +30,6 @@ public class UserConstants {
 	public static final String CONF_EMAIL_VALIDATION = "email_validation";
 	public static final String CONF_REGISTRATION_REQUIRED_NAME = "registration_required_name";
 	public static final String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";
-
+	public static final String ENTITY_CACHE_REGION = "entity.user";
+	public static final String QUERY_CACHE_REGION = "query.user";
 }

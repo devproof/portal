@@ -29,4 +29,7 @@ public class TagConstants {
 	public static final String CONF_BOX_NUM_TAGS = "box_num_tags";
 
 	public static final ResourceReference REF_TAG_CSS = new ResourceReference(TagConstants.class, "css/tag.css");
+
+	public static final String ENTITY_CACHE_REGION = "entity.content";
+	public static final String QUERY_CACHE_REGION = "query.content";
 }

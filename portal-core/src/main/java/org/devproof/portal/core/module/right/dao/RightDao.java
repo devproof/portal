@@ -17,6 +17,8 @@ package org.devproof.portal.core.module.right.dao;
 
 import java.util.List;
 
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
@@ -24,6 +26,7 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
 /**
  * @author Carsten Hufe
  */
+@CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface RightDao extends GenericDao<RightEntity, String> {
 	@Query("Select distinct(r) from RightEntity r")
 	List<RightEntity> findAll();

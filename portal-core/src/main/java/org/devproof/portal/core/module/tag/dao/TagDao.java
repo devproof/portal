@@ -18,13 +18,16 @@ package org.devproof.portal.core.module.tag.dao;
 import java.util.List;
 
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.tag.TagConstants;
 
 /**
  * @author Carsten Hufe
  */
+@CacheQuery(region = TagConstants.QUERY_CACHE_REGION)
 public interface TagDao<T> extends GenericDao<T, String> {
 	@Query("select distinct(t) from $TYPE t where t.tagname like ?||'%'")
 	List<T> findTagsStartingWith(String prefix);

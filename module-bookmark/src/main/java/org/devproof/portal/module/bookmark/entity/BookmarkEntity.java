@@ -29,8 +29,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -39,7 +43,8 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 @Table(name = "bookmark")
-// @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "aaa")
+@CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
 final public class BookmarkEntity extends BaseLinkEntity {
 	private static final long serialVersionUID = 1L;
 

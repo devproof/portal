@@ -18,12 +18,15 @@ package org.devproof.portal.core.module.box.dao;
 import java.util.List;
 
 import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 
 /**
  * @author Carsten Hufe
  */
+@CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface BoxDao extends GenericDao<BoxEntity, Integer> {
 	@Query("select max(b.sort) from BoxEntity b")
 	Integer getMaxSortNum();

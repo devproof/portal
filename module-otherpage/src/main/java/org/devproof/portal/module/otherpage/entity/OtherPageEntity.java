@@ -31,15 +31,20 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * @author Carsten Hufe
  */
 @Entity
 @Table(name = "other_page")
-// @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = OtherPageConstants.ENTITY_CACHE_REGION)
 final public class OtherPageEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 	@Id

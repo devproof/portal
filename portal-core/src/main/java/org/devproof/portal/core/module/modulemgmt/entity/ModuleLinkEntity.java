@@ -23,7 +23,11 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * represents one module link (top navigation, page administration, global
@@ -35,7 +39,8 @@ import org.devproof.portal.core.module.common.entity.BaseEntity;
 @Entity
 @Table(name = "core_module_link")
 @IdClass(ModuleLinkId.class)
-// @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 final public class ModuleLinkEntity extends BaseEntity implements Comparable<ModuleLinkEntity> {
 
 	private static final long serialVersionUID = 1L;

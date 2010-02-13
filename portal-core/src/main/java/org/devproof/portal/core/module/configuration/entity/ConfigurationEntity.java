@@ -33,6 +33,7 @@ import org.devproof.portal.core.module.configuration.ConfigurationConstants;
  */
 @Entity
 @Table(name = "core_configuration")
+// selfcached
 final public class ConfigurationEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;

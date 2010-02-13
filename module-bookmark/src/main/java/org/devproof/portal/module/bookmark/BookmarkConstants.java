@@ -37,4 +37,7 @@ public class BookmarkConstants {
 			"css/bookmark.css");
 	public static final String CONF_BOOKMARK_ENTRIES_IN_FEED = "bookmark_entries_in_feed";
 	public static final String CONF_BOOKMARK_FEED_TITLE = "bookmark_feed_title";
+
+	public static final String ENTITY_CACHE_REGION = "entity.content";
+	public static final String QUERY_CACHE_REGION = "query.content";
 }
