@@ -7,13 +7,13 @@
 		eternal="true"
 		overflowToDisk="false" 
 		diskPersistent="false"
-		memoryStoreEvictionPolicy="LRU"/>
+		memoryStoreEvictionPolicy="LFU"/>
 	<cache name="query.content"
-		maxElementsInMemory="3000"
+		maxElementsInMemory="5000"
 		eternal="true"
 		overflowToDisk="false" 
 		diskPersistent="false"
-		memoryStoreEvictionPolicy="LRU"/>
+		memoryStoreEvictionPolicy="LFU"/>
 		
 	<!-- 
 	maxElementsOnDisk="50000"

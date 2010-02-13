@@ -35,6 +35,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.common.model.EntityId;
 import org.devproof.portal.core.module.right.entity.RightEntity;
@@ -50,6 +51,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 @Table(name = "article", uniqueConstraints = @UniqueConstraint(columnNames = { "content_id" }))
+@CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
 final public class ArticleEntity extends BaseEntity implements EntityId {
 	private static final long serialVersionUID = 1L;

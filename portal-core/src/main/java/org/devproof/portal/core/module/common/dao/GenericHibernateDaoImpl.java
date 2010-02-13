@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.devproof.portal.core.module.common.annotation.Cache;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
@@ -57,12 +57,6 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 	public T findById(PK id) {
 		return (T) getSession().get(type, id);
 	}
-
-	// @SuppressWarnings(value = "unchecked")
-	// public List<T> findAll() {
-	// return getSession().createQuery("Select distinct(e) from " +
-	// type.getSimpleName() + " e").list();
-	// }
 
 	@SuppressWarnings("unchecked")
 	public T save(T entity) {
@@ -114,15 +108,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 			Integer maxResults) {
 		String hqlQuery = replaceGenericTypeName(query);
 		Query q = getSession().createQuery(hqlQuery);
-
-		Cache cacheAnnotation = method.getAnnotation(Cache.class);
-		if (cacheAnnotation != null) {
-			handleCacheConfiguration(q, cacheAnnotation);
-		}
-		cacheAnnotation = method.getDeclaringClass().getAnnotation(Cache.class);
-		if (cacheAnnotation != null) {
-			handleCacheConfiguration(q, cacheAnnotation);
-		}
+		setCacheConfiguration(method, q);
 		setParameter(queryArgs, q);
 		setResultLimitations(firstResults, maxResults, q);
 		if (Collection.class.isAssignableFrom(method.getReturnType())) {
@@ -132,7 +118,18 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		}
 	}
 
-	private void handleCacheConfiguration(Query q, Cache cacheAnnotation) {
+	private void setCacheConfiguration(Method method, Query q) {
+		CacheQuery cacheAnnotation = method.getAnnotation(CacheQuery.class);
+		if (cacheAnnotation != null) {
+			handleCacheConfiguration(q, cacheAnnotation);
+		}
+		cacheAnnotation = method.getDeclaringClass().getAnnotation(CacheQuery.class);
+		if (cacheAnnotation != null) {
+			handleCacheConfiguration(q, cacheAnnotation);
+		}
+	}
+
+	private void handleCacheConfiguration(Query q, CacheQuery cacheAnnotation) {
 		q.setCacheable(true);
 		if (!"".equals(cacheAnnotation.region())) {
 			q.setCacheMode(CacheMode.parse(cacheAnnotation.cacheMode()));

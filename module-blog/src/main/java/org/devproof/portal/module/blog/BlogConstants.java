@@ -29,4 +29,7 @@ public class BlogConstants {
 	public static final String CONF_BLOG_FEED_TITLE = "blog_feed_title";
 
 	public static final ResourceReference REF_BLOG_CSS = new ResourceReference(BlogConstants.class, "css/blog.css");
+
+	public static final String ENTITY_CACHE_REGION = "entity.content";
+	public static final String QUERY_CACHE_REGION = "query.content";
 }
