@@ -181,6 +181,7 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 
 	@Transient
 	public void setFullArticle(String fullArticle) {
+		List<ArticlePageEntity> pages = new ArrayList<ArticlePageEntity>();
 		List<String> splittedPages = getSplittedPages(fullArticle);
 		for (int i = 0; i < splittedPages.size(); i++) {
 			ArticlePageEntity page = null;
@@ -190,10 +191,12 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 			} else {
 				page = newArticlePageEntity(i + 1);
 				page.setArticle(this);
-				getArticlePages().add(page);
+				// getArticlePages().add(page);
 			}
 			page.setContent(splittedPages.get(i));
+			pages.add(page);
 		}
+		setArticlePages(pages);
 	}
 
 	@Transient
