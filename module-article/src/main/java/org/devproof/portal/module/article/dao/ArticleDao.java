@@ -30,6 +30,7 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
  */
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 public interface ArticleDao extends GenericDao<ArticleEntity, Integer> {
+	@CacheQuery(enabled = false)
 	@Query("select a.allRights from ArticleEntity a where a.modifiedBy = (select max(modifiedBy) from ArticleEntity)")
 	List<RightEntity> findLastSelectedRights();
 

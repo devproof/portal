@@ -37,4 +37,9 @@ public @interface CacheQuery {
 	 * Cache region
 	 */
 	String region() default "";
+
+	/**
+	 * enables the caching
+	 */
+	boolean enabled() default true;
 }

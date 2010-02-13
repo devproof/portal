@@ -185,7 +185,7 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
 	}
 
 	private void handleCacheConfiguration(Query q, CacheQuery cacheAnnotation) {
-		q.setCacheable(true);
+		q.setCacheable(cacheAnnotation.enabled());
 		if (!"".equals(cacheAnnotation.region())) {
 			q.setCacheMode(CacheMode.parse(cacheAnnotation.cacheMode()));
 		}
