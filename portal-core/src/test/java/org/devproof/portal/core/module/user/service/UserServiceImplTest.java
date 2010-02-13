@@ -76,16 +76,6 @@ public class UserServiceImplTest extends TestCase {
 		EasyMock.verify(userDaoMock);
 	}
 
-	public void testFindAll() {
-		List<UserEntity> list = new ArrayList<UserEntity>();
-		list.add(impl.newUserEntity());
-		list.add(impl.newUserEntity());
-		EasyMock.expect(userDaoMock.findAll()).andReturn(list);
-		EasyMock.replay(userDaoMock);
-		assertEquals(list, impl.findAll());
-		EasyMock.verify(userDaoMock);
-	}
-
 	public void testFindById() {
 		UserEntity e = impl.newUserEntity();
 		e.setId(1);

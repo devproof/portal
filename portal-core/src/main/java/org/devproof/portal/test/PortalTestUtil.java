@@ -165,12 +165,6 @@ public class PortalTestUtil {
 			ContextLoader contextLoader = new ContextLoader();
 			contextLoader.initWebApplicationContext(sandbox);
 		}
-		// ((ConfigurableWebApplicationContext)
-		// ContextLoader.getCurrentWebApplicationContext())
-		// .setConfigLocations(new String[] {
-		// "classpath:/devproof-portal-core.xml", spring });
-		// ((ConfigurableWebApplicationContext)
-		// ContextLoader.getCurrentWebApplicationContext()).refresh();
 		return sandbox;
 	}
 
@@ -201,6 +195,9 @@ public class PortalTestUtil {
 		registerResource(CommonConstants.JNDI_DATASOURCE, datasource);
 		registerResource(CommonConstants.JNDI_MAIL_SESSION, Session.getDefaultInstance(new Properties()));
 		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, "org.hibernate.dialect.HSQLDialect");
+		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE, "false");
+		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_QUERY_CACHE, "false");
+
 	}
 
 	private static void registerResource(String jndiName, Object jndiObj) {
@@ -228,6 +225,16 @@ public class PortalTestUtil {
 
 	public static String[] getMessage(String key, Component component) {
 		return new String[] { new StringResourceModel(key, component, null).getString() };
+	}
+
+	public static String[] getMessage(String key, Class<?> clazz) {
+		Properties prop = new Properties();
+		try {
+			prop.load(clazz.getResourceAsStream(clazz.getSimpleName() + ".properties"));
+		} catch (IOException e) {
+			// do nothing
+		}
+		return new String[] { prop.getProperty(key) };
 	}
 
 	public static void callOnBeginRequest() {

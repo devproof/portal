@@ -93,7 +93,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 		bookmarkDao.save(entity);
 		bookmarkTagService.deleteUnusedTags();
 	}
-	
+
 	@Override
 	public List<RightEntity> findLastSelectedRights() {
 		return bookmarkDao.findLastSelectedRights();

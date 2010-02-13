@@ -97,6 +97,32 @@ public class JndiConfiguration {
 	}
 
 	/**
+	 * Resolves the hibernate hibernate.cache.use_second_level_cache
+	 */
+	public String resolveHibernateUseSecondLevelCache() {
+		JndiTemplate jndi = new JndiTemplate();
+		try {
+			String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE);
+			return dialect;
+		} catch (NamingException e) {
+			return CommonConstants.HIBERNATE_DEFAULT_SECOND_LEVEL_CACHE;
+		}
+	}
+
+	/**
+	 * Resolves the hibernate hibernate.cache.use_query_cache
+	 */
+	public String resolveHibernateUseQueryCache() {
+		JndiTemplate jndi = new JndiTemplate();
+		try {
+			String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_QUERY_CACHE);
+			return dialect;
+		} catch (NamingException e) {
+			return CommonConstants.HIBERNATE_DEFAULT_QUERY_CACHE;
+		}
+	}
+
+	/**
 	 * Resolves the email disabled
 	 */
 	public String resolveEmailDisabled() {
@@ -120,8 +146,8 @@ public class JndiConfiguration {
 		props.put("hibernate.hbm2ddl.auto", resolveHibernateHbm2ddlAuto());
 		props.put("hibernate.connection.isolation", resolveHibernateConnectionIsolation());
 		props.put("hibernate.cache.region.factory_class", SingletonEhCacheRegionFactory.class.getName());
-		props.put("hibernate.cache.use_second_level_cache", "true");
-		props.put("hibernate.cache.use_query_cache", "true");
+		props.put("hibernate.cache.use_second_level_cache", resolveHibernateUseSecondLevelCache());
+		props.put("hibernate.cache.use_query_cache", resolveHibernateUseQueryCache());
 		props.put("net.sf.ehcache.configurationResourceName", "ehcache.xml");
 		return props;
 	}

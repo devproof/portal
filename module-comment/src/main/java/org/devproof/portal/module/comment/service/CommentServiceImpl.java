@@ -51,11 +51,6 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<CommentEntity> findAll() {
-		return commentDao.findAll();
-	}
-
-	@Override
 	public CommentEntity findById(Integer id) {
 		return commentDao.findById(id);
 	}

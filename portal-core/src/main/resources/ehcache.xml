@@ -1,13 +1,23 @@
 <ehcache>
 	<diskStore path="java.io.tmpdir"/>
 	<defaultCache maxElementsInMemory="5000" eternal="true"
-		overflowToDisk="true" />
+		overflowToDisk="false" />
 	<cache name="entity.content"
 		maxElementsInMemory="10000"
-		maxElementsOnDisk="500000"
 		eternal="true"
-		overflowToDisk="true" 
+		overflowToDisk="false" 
 		diskPersistent="false"
 		memoryStoreEvictionPolicy="LRU"/>
+	<cache name="query.content"
+		maxElementsInMemory="3000"
+		eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LRU"/>
+		
+	<!-- 
+	maxElementsOnDisk="50000"
+	 -->
+	
 </ehcache>
  

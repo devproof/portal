@@ -121,11 +121,6 @@ public class TagCloudBoxPanelTest extends TestCase {
 		}
 
 		@Override
-		public List<TestTagEntity> findAll() {
-			return null;
-		}
-
-		@Override
 		public TestTagEntity findById(String id) {
 			return null;
 		}

@@ -15,6 +15,9 @@
  */
 package org.devproof.portal.core.module.email.dao;
 
+import java.util.List;
+
+import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 
@@ -22,5 +25,6 @@ import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
  * @author Carsten Hufe
  */
 public interface EmailTemplateDao extends GenericDao<EmailTemplateEntity, Integer> {
-
+	@Query("Select distinct(e) from EmailTemplateEntity e")
+	List<EmailTemplateEntity> findAll();
 }

@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
 
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -65,16 +62,6 @@ public class BlogServiceImplTest extends TestCase {
 		impl.delete(e);
 		EasyMock.verify(mock);
 		EasyMock.verify(mockTag);
-	}
-
-	public void testFindAll() {
-		List<BlogEntity> list = new ArrayList<BlogEntity>();
-		list.add(createBlogEntity());
-		list.add(createBlogEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
-		assertEquals(list, impl.findAll());
-		EasyMock.verify(mock);
 	}
 
 	public void testFindById() {

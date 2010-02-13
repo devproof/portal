@@ -36,6 +36,9 @@ public class CommonConstants {
 	public static final String JNDI_PROP_HIBERNATE_FORMAT_SQL = "java:comp/env/config/devproof/hibernate_format_sql";
 	public static final String JNDI_PROP_HIBERNATE_HBM2DDL_AUTO = "java:comp/env/config/devproof/hibernate_hbm2ddl_auto";
 	public static final String JNDI_PROP_HIBERNATE_CONNECTION_ISOLATION = "java:comp/env/config/devproof/hibernate_connection_isolation";
+	public static final String JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE = "java:comp/env/config/devproof/hibernate.cache.use_second_level_cache";
+	public static final String JNDI_PROP_HIBERNATE_QUERY_CACHE = "java:comp/env/config/devproof/hibernate.cache.use_query_cache";
+
 	public static final String JNDI_PROP_EMAIL_DISABLED = "java:comp/env/config/devproof/disable_email";
 
 	public static final String EMAIL_DEFAULT_DISABLED = "false";
@@ -44,6 +47,8 @@ public class CommonConstants {
 	public static final String HIBERNATE_DEFAULT_FORMAT_SQL = "false";
 	public static final String HIBERNATE_DEFAULT_HBM2DDL_AUTO = "none";
 	public static final String HIBERNATE_DEFAULT_CONNECTION_ISOLATION = "2";
+	public static final String HIBERNATE_DEFAULT_SECOND_LEVEL_CACHE = "true";
+	public static final String HIBERNATE_DEFAULT_QUERY_CACHE = "true";
 
 	public static final String CONF_GOOGLE_ANALYTICS_ENABLED = "google_analytics_enabled";
 	public static final String CONF_GOOGLE_WEBPROPERTY_ID = "google_webproperty_id";

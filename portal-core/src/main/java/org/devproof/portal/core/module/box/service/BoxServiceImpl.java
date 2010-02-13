@@ -67,11 +67,6 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
-	public List<BoxEntity> findAll() {
-		return boxDao.findAll();
-	}
-
-	@Override
 	public BoxEntity findById(Integer id) {
 		return boxDao.findById(id);
 	}

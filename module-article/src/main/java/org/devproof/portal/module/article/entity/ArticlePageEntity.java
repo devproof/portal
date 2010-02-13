@@ -27,6 +27,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.devproof.portal.module.article.ArticleConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,7 +37,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @IdClass(ArticlePageId.class)
 @Table(name = "article_page")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entity.content")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
 final public class ArticlePageEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id

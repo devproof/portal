@@ -161,11 +161,10 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 					for (int i = 0; i < len; i++) {
 						copy[i] = orginal[i];
 					}
-					return target.executeFinder(query.value(), copy, method.getReturnType(), (Integer) orginal[len],
+					return target.executeFinder(query.value(), copy, method, (Integer) orginal[len],
 							(Integer) orginal[len + 1]);
 				} else {
-					return target.executeFinder(query.value(), invocation.getArguments(), method.getReturnType(), null,
-							null);
+					return target.executeFinder(query.value(), invocation.getArguments(), method, null, null);
 				}
 			}
 

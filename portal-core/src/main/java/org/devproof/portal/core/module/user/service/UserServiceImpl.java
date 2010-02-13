@@ -83,11 +83,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<UserEntity> findAll() {
-		return userDao.findAll();
-	}
-
-	@Override
 	public UserEntity findById(Integer id) {
 		return userDao.findById(id);
 	}

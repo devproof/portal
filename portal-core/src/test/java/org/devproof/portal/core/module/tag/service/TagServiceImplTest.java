@@ -59,16 +59,6 @@ public class TagServiceImplTest extends TestCase {
 		EasyMock.verify(mock);
 	}
 
-	public void testFindAll() {
-		List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
-		list.add(new DummyTagEntity());
-		list.add(new DummyTagEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
-		assertEquals(list, impl.findAll());
-		EasyMock.verify(mock);
-	}
-
 	public void testFindById() {
 		DummyTagEntity e = new DummyTagEntity();
 		e.setTagname("tag");

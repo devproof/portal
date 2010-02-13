@@ -31,4 +31,8 @@ public class ArticleConstants {
 			"css/article.css");
 	public static final String CONF_ARTICLE_ENTRIES_IN_FEED = "article_entries_in_feed";
 	public static final String CONF_ARTICLE_FEED_TITLE = "article_feed_title";
+
+	public static final String ENTITY_CACHE_REGION = "entity.content";
+	public static final String QUERY_CACHE_REGION = "query.content";
+
 }

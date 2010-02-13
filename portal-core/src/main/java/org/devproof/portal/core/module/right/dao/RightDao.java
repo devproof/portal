@@ -25,6 +25,9 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
  * @author Carsten Hufe
  */
 public interface RightDao extends GenericDao<RightEntity, String> {
+	@Query("Select distinct(r) from RightEntity r")
+	List<RightEntity> findAll();
+
 	@Query("select distinct(r) from RightEntity r join fetch r.roles where r.right like ?||'.%'")
 	List<RightEntity> findRightsStartingWith(String prefix);
 

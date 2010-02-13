@@ -15,8 +15,7 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
@@ -99,20 +98,11 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
 		EasyMock.verify(genericDao);
 	}
 
-	public void testGetObject_delegateFindAll() {
-		List<TestEntity> expectedEntities = Arrays.asList(createEntity());
-		EasyMock.expect(genericDao.findAll()).andReturn(expectedEntities);
-		EasyMock.replay(genericDao);
-		List<TestEntity> entities = testDao.findAll();
-		assertEquals(expectedEntities, entities);
-		EasyMock.verify(genericDao);
-	}
-
-	public void testGetObject_queryAnnotation() {
+	public void testGetObject_queryAnnotation() throws Exception {
 		TestEntity expectedEntity = createEntity();
 		EasyMock.expect(
 				genericDao.executeFinder(EasyMock.eq("select t from TestEntity t where t.contentId = ?"),
-						(Object[]) EasyMock.anyObject(), EasyMock.eq(TestEntity.class), (Integer) EasyMock.eq(null),
+						(Object[]) EasyMock.anyObject(), (Method) EasyMock.anyObject(), (Integer) EasyMock.eq(null),
 						(Integer) EasyMock.eq(null))).andReturn(expectedEntity);
 		EasyMock.replay(genericDao);
 		TestEntity entity = testDao.findByContentId("foobar");

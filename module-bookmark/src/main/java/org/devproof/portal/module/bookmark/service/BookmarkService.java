@@ -49,6 +49,12 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
 			Integer maxResult);
 
 	/**
+	 * Returns all bookmarks
+	 * 
+	 */
+	List<BookmarkEntity> findAll();
+
+	/**
 	 * Returns all bookmarks with the given source
 	 * 
 	 * @param source

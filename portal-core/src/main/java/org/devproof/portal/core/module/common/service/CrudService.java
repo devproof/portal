@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.common.service;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Default CRUD methods
@@ -33,12 +32,12 @@ public interface CrudService<T, PK extends Serializable> {
 	 */
 	T findById(PK id);
 
-	/**
-	 * Find all entites
-	 * 
-	 * @return returns all entities
-	 */
-	List<T> findAll();
+	// /**
+	// * Find all entites
+	// *
+	// * @return returns all entities
+	// */
+	// List<T> findAll();
 
 	/**
 	 * Stores/updates an entity
