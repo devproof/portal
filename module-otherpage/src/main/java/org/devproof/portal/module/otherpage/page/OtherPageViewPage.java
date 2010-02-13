@@ -144,6 +144,11 @@ public class OtherPageViewPage extends OtherPageBasePage {
 				IModel<OtherPageEntity> otherPageModel = Model.of(editPage);
 				setResponsePage(new OtherPageEditPage(otherPageModel));
 			}
+
+			@Override
+			public boolean isDeleteButtonVisible() {
+				return otherPage != null;
+			}
 		};
 		return authorButtons;
 	}
