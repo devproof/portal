@@ -92,6 +92,7 @@ public abstract class UploadThemePanel extends Panel {
 				} catch (IOException e) {
 					throw new UnhandledException(e);
 				}
+				UploadThemePanel.this.onSubmit();
 				super.onSubmit();
 			}
 
@@ -137,6 +138,8 @@ public abstract class UploadThemePanel extends Panel {
 	private HeaderContributor createCSSHeaderContributor() {
 		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
 	}
+
+	public abstract void onSubmit();
 
 	public abstract void onCancel(AjaxRequestTarget target);
 }

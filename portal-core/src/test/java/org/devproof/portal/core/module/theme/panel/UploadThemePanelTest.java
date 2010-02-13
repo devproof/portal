@@ -54,5 +54,10 @@ public class UploadThemePanelTest extends TestCase {
 		@Override
 		public void onCancel(AjaxRequestTarget target) {
 		}
+
+		@Override
+		public void onSubmit() {
+
+		}
 	}
 }
