@@ -36,7 +36,7 @@ public interface BookmarkDao extends GenericDao<BookmarkEntity, Integer> {
 	List<BookmarkEntity> findAll();
 
 	@CacheQuery(enabled = false)
-	@Query("select b.allRights from BookmarkEntity b where b.modifiedBy = (select max(modifiedBy) from BookmarkEntity)")
+	@Query("select b.allRights from BookmarkEntity b where b.modifiedAt = (select max(modifiedAt) from BookmarkEntity)")
 	List<RightEntity> findLastSelectedRights();
 
 	@Query(value = "select distinct(b) from BookmarkEntity b join b.allRights vr"

@@ -30,7 +30,7 @@ import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 public interface OtherPageDao extends GenericDao<OtherPageEntity, Integer> {
 	@CacheQuery(enabled = false)
-	@Query("select op.allRights from OtherPageEntity op where op.modifiedBy = (select max(modifiedBy) from OtherPageEntity)")
+	@Query("select op.allRights from OtherPageEntity op where op.modifiedAt = (select max(modifiedAt) from OtherPageEntity)")
 	List<RightEntity> findLastSelectedRights();
 
 	@Query("select count(op.contentId) from OtherPageEntity op where op.contentId like ?")
