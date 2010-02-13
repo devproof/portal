@@ -25,6 +25,11 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
  */
 public interface RoleService extends CrudService<RoleEntity, Integer> {
 	/**
+	 * Returns all roles
+	 */
+	List<RoleEntity> findAll();
+
+	/**
 	 * Returns a new instance of role
 	 */
 	RoleEntity newRoleEntity();

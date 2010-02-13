@@ -25,6 +25,9 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
  * @author Carsten Hufe
  */
 public interface RoleDao extends GenericDao<RoleEntity, Integer> {
+	@Query("Select distinct(r) from RoleEntity r")
+	List<RoleEntity> findAll();
+
 	@Query("select distinct(r) from RoleEntity r order by r.description asc")
 	List<RoleEntity> findAllOrderByDescription();
 }

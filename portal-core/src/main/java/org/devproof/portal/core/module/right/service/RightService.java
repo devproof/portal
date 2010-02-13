@@ -27,6 +27,11 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
  */
 public interface RightService extends CrudService<RightEntity, String> {
 	/**
+	 * Returns all rights
+	 */
+	List<RightEntity> findAll();
+
+	/**
 	 * Returns the dirty time
 	 * 
 	 * @return last refreshed unix time

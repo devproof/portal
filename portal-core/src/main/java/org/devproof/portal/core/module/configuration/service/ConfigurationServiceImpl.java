@@ -35,7 +35,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	private ConfigurationRegistry configurationRegistry;
 	private ConfigurationDao configurationDao;
 	private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	
+
 	public void init() {
 		refreshGlobalConfiguration();
 	}
@@ -154,7 +154,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	public void setConfigurationDao(ConfigurationDao configurationDao) {
 		this.configurationDao = configurationDao;
 	}
-	
+
 	@Required
 	public void setConfigurationRegistry(ConfigurationRegistry configurationRegistry) {
 		this.configurationRegistry = configurationRegistry;

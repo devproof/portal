@@ -75,16 +75,6 @@ public class ArticleServiceImplTest extends TestCase {
 		EasyMock.verify(mockTag);
 	}
 
-	public void testFindAll() {
-		List<ArticleEntity> list = new ArrayList<ArticleEntity>();
-		list.add(createArticleEntity());
-		list.add(createArticleEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
-		assertEquals(list, impl.findAll());
-		EasyMock.verify(mock);
-	}
-
 	public void testFindById() {
 		ArticleEntity e = createArticleEntity();
 		e.setId(1);

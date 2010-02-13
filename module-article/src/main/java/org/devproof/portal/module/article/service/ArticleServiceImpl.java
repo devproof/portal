@@ -65,11 +65,6 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<ArticleEntity> findAll() {
-		return articleDao.findAll();
-	}
-
-	@Override
 	public ArticleEntity findById(Integer id) {
 		return articleDao.findById(id);
 	}

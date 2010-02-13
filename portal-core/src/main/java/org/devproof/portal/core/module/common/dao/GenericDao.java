@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.common.dao;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * GenericDao interface with CRUD methods
@@ -32,12 +31,12 @@ public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
 	 */
 	T findById(PK id);
 
-	/**
-	 * Find all entites
-	 * 
-	 * @return list of entities
-	 */
-	List<T> findAll();
+	// /**
+	// * Find all entites
+	// *
+	// * @return list of entities
+	// */
+	// List<T> findAll();
 
 	/**
 	 * Stores an entity

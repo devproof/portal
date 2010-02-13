@@ -16,14 +16,16 @@
 package org.devproof.portal.core.module.common.dao;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.devproof.portal.core.module.common.annotation.Cache;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
+import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.SessionHolder;
@@ -56,10 +58,11 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		return (T) getSession().get(type, id);
 	}
 
-	@SuppressWarnings(value = "unchecked")
-	public List<T> findAll() {
-		return getSession().createQuery("Select distinct(e) from " + type.getSimpleName() + " e").list();
-	}
+	// @SuppressWarnings(value = "unchecked")
+	// public List<T> findAll() {
+	// return getSession().createQuery("Select distinct(e) from " +
+	// type.getSimpleName() + " e").list();
+	// }
 
 	@SuppressWarnings("unchecked")
 	public T save(T entity) {
@@ -107,18 +110,35 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		getSession().delete(entity);
 	}
 
-	public Object executeFinder(String query, Object[] queryArgs, Class<?> returnType, Integer firstResults,
+	public Object executeFinder(String query, Object[] queryArgs, Method method, Integer firstResults,
 			Integer maxResults) {
 		String hqlQuery = replaceGenericTypeName(query);
 		Query q = getSession().createQuery(hqlQuery);
-		// q.setCacheable(true);
-		// q.setCacheMode(CacheMode.NORMAL);
+
+		Cache cacheAnnotation = method.getAnnotation(Cache.class);
+		if (cacheAnnotation != null) {
+			handleCacheConfiguration(q, cacheAnnotation);
+		}
+		cacheAnnotation = method.getDeclaringClass().getAnnotation(Cache.class);
+		if (cacheAnnotation != null) {
+			handleCacheConfiguration(q, cacheAnnotation);
+		}
 		setParameter(queryArgs, q);
 		setResultLimitations(firstResults, maxResults, q);
-		if (Collection.class.isAssignableFrom(returnType)) {
+		if (Collection.class.isAssignableFrom(method.getReturnType())) {
 			return q.list();
 		} else {
 			return q.uniqueResult();
+		}
+	}
+
+	private void handleCacheConfiguration(Query q, Cache cacheAnnotation) {
+		q.setCacheable(true);
+		if (!"".equals(cacheAnnotation.region())) {
+			q.setCacheMode(CacheMode.parse(cacheAnnotation.cacheMode()));
+		}
+		if (!"".equals(cacheAnnotation.region())) {
+			q.setCacheRegion(cacheAnnotation.region());
 		}
 	}
 

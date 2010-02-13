@@ -75,11 +75,6 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
 	}
 
 	@Override
-	public List<T> findAll() {
-		return tagDao.findAll();
-	}
-
-	@Override
 	public T findById(String id) {
 		return tagDao.findById(id);
 	}

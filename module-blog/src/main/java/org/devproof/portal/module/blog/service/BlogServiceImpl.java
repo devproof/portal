@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
@@ -34,11 +32,6 @@ public class BlogServiceImpl implements BlogService {
 	public void delete(BlogEntity entity) {
 		blogDao.delete(entity);
 		blogTagService.deleteUnusedTags();
-	}
-
-	@Override
-	public List<BlogEntity> findAll() {
-		return blogDao.findAll();
 	}
 
 	@Override

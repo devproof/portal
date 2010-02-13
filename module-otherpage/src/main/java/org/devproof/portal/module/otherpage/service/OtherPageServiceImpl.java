@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
-import java.util.List;
-
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 import org.springframework.beans.factory.annotation.Required;
@@ -47,11 +45,6 @@ public class OtherPageServiceImpl implements OtherPageService {
 	@Override
 	public void delete(OtherPageEntity entity) {
 		otherPageDao.delete(entity);
-	}
-
-	@Override
-	public List<OtherPageEntity> findAll() {
-		return otherPageDao.findAll();
 	}
 
 	@Override

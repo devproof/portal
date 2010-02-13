@@ -25,6 +25,9 @@ import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
  * @author Carsten Hufe
  */
 public interface ConfigurationDao extends GenericDao<ConfigurationEntity, String> {
+	@Query("Select distinct(c) from ConfigurationEntity c")
+	List<ConfigurationEntity> findAll();
+
 	@Query("Select distinct(c.group) from ConfigurationEntity c where c.group not like 'hidden' order by c.group")
 	List<String> findConfigurationGroups();
 

@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
 
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
@@ -54,16 +51,6 @@ public class OtherPageServiceImplTest extends TestCase {
 		mock.delete(e);
 		EasyMock.replay(mock);
 		impl.delete(e);
-		EasyMock.verify(mock);
-	}
-
-	public void testFindAll() {
-		List<OtherPageEntity> list = new ArrayList<OtherPageEntity>();
-		list.add(createOtherPageEntity());
-		list.add(createOtherPageEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
-		assertEquals(list, impl.findAll());
 		EasyMock.verify(mock);
 	}
 

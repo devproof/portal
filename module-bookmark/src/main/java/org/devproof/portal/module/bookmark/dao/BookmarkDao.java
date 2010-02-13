@@ -29,6 +29,9 @@ import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
  * @author Carsten Hufe
  */
 public interface BookmarkDao extends GenericDao<BookmarkEntity, Integer> {
+	@Query("Select distinct(b) from BookmarkEntity b")
+	List<BookmarkEntity> findAll();
+
 	@Query("select b.allRights from BookmarkEntity b where b.modifiedBy = (select max(modifiedBy) from BookmarkEntity)")
 	List<RightEntity> findLastSelectedRights();
 

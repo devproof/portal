@@ -58,16 +58,6 @@ public class BoxServiceImplTest extends TestCase {
 		EasyMock.verify(mock);
 	}
 
-	public void testFindAll() {
-		List<BoxEntity> list = new ArrayList<BoxEntity>();
-		list.add(impl.newBoxEntity());
-		list.add(impl.newBoxEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
-		assertEquals(list, impl.findAll());
-		EasyMock.verify(mock);
-	}
-
 	public void testFindById() {
 		BoxEntity e = impl.newBoxEntity();
 		e.setId(1);

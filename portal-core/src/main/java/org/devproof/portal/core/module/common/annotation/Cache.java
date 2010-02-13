@@ -13,24 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.annotation;
 
-import java.lang.reflect.Method;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Internal interface for generic dao
+ * If annotation is present the query will be cached.
  * 
  * @author Carsten Hufe
- * 
  */
-public interface FinderExecutor {
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.METHOD, ElementType.TYPE })
+public @interface Cache {
 	/**
-	 * Execute generic query
+	 * @see org.hibernate.CacheMode
 	 */
-	Object executeFinder(String query, Object[] queryArgs, Method method, Integer firstResults, Integer maxResults);
+	String cacheMode() default "";
 
 	/**
-	 * Execute generic bulk update
+	 * Cache region
 	 */
-	void executeUpdate(String query, Object[] queryArgs);
+	String region() default "";
 }

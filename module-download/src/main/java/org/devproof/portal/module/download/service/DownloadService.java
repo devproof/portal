@@ -33,6 +33,11 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
 	DownloadEntity newDownloadEntity();
 
 	/**
+	 * Returns all downloads
+	 */
+	List<DownloadEntity> findAll();
+
+	/**
 	 * Finds all downloads filtered by role
 	 * 
 	 * @param role

@@ -28,6 +28,9 @@ import org.devproof.portal.module.download.entity.DownloadEntity;
  * @author Carsten Hufe
  */
 public interface DownloadDao extends GenericDao<DownloadEntity, Integer> {
+	@Query("Select distinct(d) from DownloadEntity d")
+	List<DownloadEntity> findAll();
+
 	@Query("select d.allRights from DownloadEntity d where d.modifiedBy = (select max(modifiedBy) from DownloadEntity)")
 	List<RightEntity> findLastSelectedRights();
 
