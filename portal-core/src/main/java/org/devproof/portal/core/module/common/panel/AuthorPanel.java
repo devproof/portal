@@ -65,6 +65,11 @@ public abstract class AuthorPanel<T> extends Panel {
 				bubblePanel.showModal(target);
 			}
 
+			@Override
+			public boolean isVisible() {
+				return isDeleteButtonVisible();
+			}
+
 			private ConfirmDeletePanel<T> createConfirmDeletePanel() {
 				return new ConfirmDeletePanel<T>(bubblePanel.getContentId(), entity, bubblePanel) {
 					private static final long serialVersionUID = 1L;
@@ -121,6 +126,10 @@ public abstract class AuthorPanel<T> extends Panel {
 		this.redirectPageClazz = redirectPageClazz;
 		this.redirectParams = redirectParams;
 		return this;
+	}
+
+	public boolean isDeleteButtonVisible() {
+		return true;
 	}
 
 	public abstract void onEdit(AjaxRequestTarget target);

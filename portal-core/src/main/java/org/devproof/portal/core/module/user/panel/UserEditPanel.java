@@ -184,6 +184,7 @@ public abstract class UserEditPanel extends Panel {
 		fc.add(StringValidator.lengthBetween(3, 30));
 		fc.add(createExistingUsernameValidator());
 		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+		fc.setEnabled(false);
 		return fc;
 	}
 
