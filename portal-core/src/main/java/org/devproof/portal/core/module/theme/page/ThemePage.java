@@ -204,37 +204,18 @@ public class ThemePage extends TemplatePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				// bubblePanel.setPageCreator(createUploadThemePageCreator());
-				// bubblePanel.setWindowClosedCallback(createWindowCloseCallback());
 				bubblePanel.setContent(uploadThemePanel());
 				bubblePanel.showModal(target);
 			}
 
-			//
-			// private PageCreator createUploadThemePageCreator() {
-			// return new BubblePanel.PageCreator() {
-			// private static final long serialVersionUID = 1L;
-			//
-			// public Page createPage() {
-			// return new UploadThemePage();
-			// }
-			// };
-			// }
-			//
-			// private WindowClosedCallback createWindowCloseCallback() {
-			// return new BubblePanel.WindowClosedCallback() {
-			// private static final long serialVersionUID = 1L;
-			//
-			// public void onClose(AjaxRequestTarget target) {
-			// reloadThemeRepeater();
-			// target.addComponent(ThemePage.this);
-			// }
-			// };
-			// }
-
 			private UploadThemePanel uploadThemePanel() {
 				return new UploadThemePanel(bubblePanel.getContentId()) {
 					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onSubmit() {
+						reloadThemeRepeater();
+					}
 
 					@Override
 					public void onCancel(AjaxRequestTarget target) {
