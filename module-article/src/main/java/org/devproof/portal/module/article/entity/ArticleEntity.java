@@ -50,7 +50,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 @Table(name = "article", uniqueConstraints = @UniqueConstraint(columnNames = { "content_id" }))
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "entity.content")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "entity.content")
 final public class ArticleEntity extends BaseEntity implements EntityId {
 	private static final long serialVersionUID = 1L;
 	@Id

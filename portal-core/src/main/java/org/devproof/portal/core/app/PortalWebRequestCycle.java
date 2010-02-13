@@ -19,7 +19,6 @@ import org.apache.wicket.Response;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebRequestCycle;
-import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
@@ -59,7 +58,6 @@ public class PortalWebRequestCycle extends WebRequestCycle {
 	private void openHibernateSessionInView() {
 		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
 		SessionHolder holder = new SessionHolder(session);
-		session.setFlushMode(FlushMode.AUTO);
 		if (!TransactionSynchronizationManager.hasResource(sessionFactory)) {
 			TransactionSynchronizationManager.bindResource(sessionFactory, holder);
 		}
