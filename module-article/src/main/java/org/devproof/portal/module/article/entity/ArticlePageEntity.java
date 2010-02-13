@@ -27,13 +27,16 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * @author Carsten Hufe
  */
 @Entity
 @IdClass(ArticlePageId.class)
 @Table(name = "article_page")
-// @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "entity.content")
 final public class ArticlePageEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
