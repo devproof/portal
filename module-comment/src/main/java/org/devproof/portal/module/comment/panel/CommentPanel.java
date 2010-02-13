@@ -299,7 +299,7 @@ public class CommentPanel extends Panel {
 		query.setModuleName(configuration.getModuleName());
 		query.setModuleContentId(configuration.getModuleContentId());
 		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
-		if (showOnlyReviewed) {
+		if (showOnlyReviewed && !isAuthor) {
 			query.setReviewed(Boolean.TRUE);
 			query.setAccepted(Boolean.TRUE);
 		} else {
