@@ -175,7 +175,7 @@ public class SettingsPage extends TemplatePage {
 			@Override
 			public void validate(Form<?> form) {
 				if (StringUtils.isNotEmpty(newPassword1.getValue()) && StringUtils.isEmpty(currentPassword.getValue())) {
-					error(currentPassword, "oldPassword.required");
+					error(currentPassword, "currentPassword.required");
 				}
 			}
 		};
