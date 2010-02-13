@@ -91,5 +91,6 @@
 	<!-- Register shared resources for the upload center -->
 	<bean class="org.devproof.portal.module.download.factory.DownloadEditPageFactory">
 		<property name="sharedRegistry" ref="sharedRegistry"/>
+		<property name="downloadService" ref="downloadService"/>
 	</bean>
 </beans>

@@ -23,6 +23,7 @@ import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.page.DownloadEditPage;
 import org.devproof.portal.module.download.service.DownloadService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Shared resource: This factory is required for the upload center to create
@@ -47,10 +48,12 @@ public class DownloadEditPageFactory implements CommonPageFactory, InitializingB
 		sharedRegistry.registerResource("createDownloadPage", this);
 	}
 
+	@Required
 	public void setDownloadService(DownloadService downloadService) {
 		this.downloadService = downloadService;
 	}
 
+	@Required
 	public void setSharedRegistry(SharedRegistry sharedRegistry) {
 		this.sharedRegistry = sharedRegistry;
 	}
