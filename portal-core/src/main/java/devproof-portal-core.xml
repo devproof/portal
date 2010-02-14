@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+
+	<import
+		resource="classpath:/org/devproof/portal/core/module/box/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/common/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/configuration/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/contact/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/email/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/feed/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/modulemgmt/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/print/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/right/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/role/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/tag/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/theme/devproof-core-module.xml" />
+	<import
+		resource="classpath:/org/devproof/portal/core/module/user/devproof-core-module.xml" />
+
+	<bean id="jndiConfig"
+		class="org.devproof.portal.core.module.common.util.JndiConfiguration" />
+
+	<bean id="dataSource" lazy-init="true"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<bean factory-bean="jndiConfig" factory-method="getDataSourceJndiName" />
+		</property>
+	</bean>
+
+	<bean id="mailSenderService" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="session">
+			<bean lazy-init="true" class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="jndiName">
+					<bean factory-bean="jndiConfig" factory-method="getMailSessionJndiName" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		lazy-init="false">
+		<property name="hibernateProperties">
+			<bean factory-bean="jndiConfig" factory-method="resolveHibernateProperties" />
+		</property>
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="annotatedClasses">
+			<bean factory-bean="entityLocator" factory-method="getEntities" />
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="allowCreate" value="false" />
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="hibernateDaoSupport"
+		class="org.springframework.orm.hibernate3.support.HibernateDaoSupport"
+		abstract="true">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!--  JMX stuff -->
+
+	<bean id="hibernateStatisticsMBean" class="org.hibernate.jmx.StatisticsService">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+	  <property name="shared" value="true"/>
+	</bean>
+
+	<bean id="ehCacheMBeanRegistration"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod"
+			value="net.sf.ehcache.management.ManagementService.registerMBeans" />
+		<property name="arguments">
+			<list>
+				<ref bean="cacheManager" />
+				<ref bean="mbeanServer" />
+				<value>true</value>
+				<value>true</value>
+				<value>true</value>
+				<value>true</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+		<property name="locateExistingServerIfPossible" value="true" />
+	</bean>
+
+
+	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+		<property name="beans">
+			<map>
+				<entry key="bean:name=hibernate" value-ref="hibernateStatisticsMBean" />
+			</map>
+		</property>
+	</bean>
+</beans>

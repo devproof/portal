@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<head>
+</head>
+<body>
+<wicket:panel>
+	<div class="modalform">
+    <form wicket:id="uploadForm">
+	<h1><wicket:message key="contentTitle"/></h1><p/>
+        <p>
+        <input wicket:id="fileInput" id="upload" type="file" class="mfuex"/>
+        </p>
+        <input type="submit" wicket:message="value:uploadButton" class="button"/> <input type="submit" wicket:id="cancelButton" wicket:message="value:cancelButton" class="button"/>
+        <span wicket:id="progress">[[ajax upload progressbar]]</span>
+    </form>
+    <div>
+        <span wicket:id="uploadFeedback"/>
+     </div>
+     </div>
+</wicket:panel>
+</body>
+</html>

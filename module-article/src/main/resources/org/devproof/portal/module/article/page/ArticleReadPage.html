@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<body>
+	<wicket:extend>
+	<h1 wicket:id="title">[title]</h1>
+	<div class="descr">
+		<span wicket:id="metaInfo">[meta info panel]</span>&nbsp;
+		<a wicket:id="printLink" target="_blank"><img wicket:id="printImage"/></a>
+		<span wicket:id="authorButtons">[edit / delete buttons]</span>
+	</div>
+	<div wicket:id="tags">tag1 tag2</div><br/>
+	<div wicket:id="content">[content]</div>
+	<table width="100%">
+		<tr>
+			<td align="left"><h2><a wicket:id="backLink"><wicket:message key="back"/></a></h2></td>
+			<td align="right"><h2><a wicket:id="forwardLink"><wicket:message key="forward"/></a></h2></td>
+		</tr>
+	</table>
+	<p/>
+	<div wicket:id="comments" style="text-align: center;">[comments]</div>
+	</wicket:extend>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:extend>
+	<div wicket:id="bubblePanel"/>
+	<h2><wicket:message key="contentTitle">[edit box]</wicket:message></h2><br/>
+	<div wicket:id="refreshTable">
+	<table class="dataview" cellspacing="0">
+		<tr>
+			<th><wicket:message key="table_sort">[sort]</wicket:message></th>
+			<th><wicket:message key="table_type">[type]</wicket:message></th>
+			<th><wicket:message key="table_title">[title]</wicket:message></th>
+			<th colspan="2">&nbsp;</th>
+		</tr>
+		<tr wicket:id="tableRow">
+			<td wicket:id="sort">[sort]</td>
+			<td wicket:id="type">[type]</td>
+			<td wicket:id="title">[title]</td>
+			<td wicket:id="authorButtons">[edit/delete buttons]</td>
+			<td>				
+				<a wicket:id="downLink"><img wicket:id="downImage" alt=""/></a>
+				<a wicket:id="upLink"><img wicket:id="upImage" alt=""/></a>
+			</td>
+		</tr>		
+	</table>
+	</div>
+</wicket:extend>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<projectDescription>
+  <name>module-blog</name>
+  <comment>Portal blog module</comment>
+  <projects>
+    <project>module-comment</project>
+    <project>module-deadlinkcheck</project>
+    <project>portal-core</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.devzuz.q.maven.jdt.core.mavenIncrementalBuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.iam.jdt.core.mavenIncrementalBuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.devzuz.q.maven.jdt.core.mavenNature</nature>
+    <nature>org.eclipse.iam.jdt.core.mavenNature</nature>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>

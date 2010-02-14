@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	  xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:extend>
+	<div wicket:id="bubblePanel"/>
+	<h2><wicket:message key="contentTitle">[manage themes]</wicket:message></h2><br/>
+	<table class="dataview" cellspacing="0">
+		<tr>
+			<th><wicket:message key="table_theme">[theme]</wicket:message></th>
+			<th><wicket:message key="table_author">[author]</wicket:message></th>
+			<th>&nbsp;</th>
+			<th>&nbsp;</th>
+		</tr>
+		<tr wicket:id="tableRow">
+			<td wicket:id="theme">[theme]</td>
+			<td><a wicket:id="authorLink" target="_blank">[author]</a></td>
+			<td><a wicket:id="selectLink"><span wicket:id="selectLabel">[select]</span></a></td>
+			<td><a wicket:id="uninstallLink"><wicket:message key="uninstallLink">[uninstall]</wicket:message></a></td>
+		</tr>		
+	</table>
+</wicket:extend>
+</body>
+</html>

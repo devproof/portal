@@ -1,0 +1,47 @@
+Devproof Portal 1.0-rc3
+-----------------------
+Features
+- robots.txt added
+- addthis.com functionality
+- Comment module with usage in Blog and Articles module
+- Print view for articles
+- RSS feed support
+- Hidable navigation titles
+- Preselected rights from the last entry (for blogs, downloads, etc)
+- Change from TinyMCE to CKeditor
+- Make default code style configurable (SyntaxHighlighter)
+- New KittenCaptcha
+- Nicer style and icons
+Technical
+- A lot of bugfixes
+- Caching added (Hibernate caching)
+- Replaced wicket-1.4rc with wicket 1.4.5 (1.4.6 contains an ajax linking bug)
+- Default isolation level changed to READ_COMMITED
+- RightGridPanel looses CheckBox states after validation error
+- Renamed portal modules to module-$name
+- Defect design when searching
+- Updated all external frameworks to latest version
+- Generate module version from pom into spring context
+- Strong refactoring
+- String2Image Feature in Extended Label causes invalid HTML
+- Rendering test for each Panel
+- All Pages are stateful
+- More testcases
+
+Devproof Portal 1.0-rc2
+-----------------------
+- create an own bundling project
+- update to wicket-1.4-rc5
+- contact form "from email" is the requester email
+- full bundled tomcat + hsql version
+- show last update, when the same author edited
+- google analytics does not work
+- error on calling url: http://www.devproof.org/download/id/3
+- portal tested with findbugs
+- FIXME marked lines are fixed
+- support more database dialects
+- some small bugfixes
+
+Devproof Portal 1.0-rc1
+-----------------------
+- initial release
