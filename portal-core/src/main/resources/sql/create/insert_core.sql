@@ -109,40 +109,35 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 
 
 INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,content,subject) VALUES (1,{ts '2009-01-05 15:32:07.000'},'admin',{ts '2009-01-05 15:32:07.000'},'admin','<p>Hi #FIRSTNAME#,<br /><br />Congratulations! Now you are a member of #PAGENAME#.  Please save this email for your records.<br />Your user name to log into #PAGENAME# is #USERNAME#.<br /><br />Click the following link to confirm the registration: <a href="#CONFIRMATIONLINK#">#CONFIRMATIONLINK#</a></p>
-\n<p>Kind regards<br />Your #PAGENAME# team</p>','Your registration on #PAGENAME#');
+<p>Kind regards<br />Your #PAGENAME# team</p>','Your registration on #PAGENAME#');
 INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,content,subject) VALUES (2,null,null,{ts '2008-07-31 22:35:07.000'},'admin','<p>Hi #FIRSTNAME#,</p>
-\n
 <p>you requested a password reset for your account #USERNAME# on #PAGENAME#.</p>
-\n
 <p>Click the following link to set a new password:</p>
-\n
 <p><a href="#PASSWORDRESETLINK#">#PASSWORDRESETLINK#</a></p>
-\n
 <p>Kind regards</p>
-\n
 <p>Your #PAGENAME# team</p>','Password reset for your account on #PAGENAME#');
 INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,content,subject) VALUES (3,{ts '2009-01-04 17:30:28.000'},'admin',{ts '2009-01-04 17:44:44.000'},'admin','<p>Hi,</p>
-\n<p>there is a new registered user on #PAGENAME#!</p>
-\n<p>User: #USERNAME#<br />Firstname: #FIRSTNAME#<br />Lastname: #LASTNAME#<br />Email: #EMAIL#</p>
-\n<p>Birthday: #BIRTHDAY#</p>
-\n<p>Kind regards</p>
-\n<p>Your #PAGENAME# Team</p>','Admin: New registered user on #PAGENAME#');
+<p>there is a new registered user on #PAGENAME#!</p>
+<p>User: #USERNAME#<br />Firstname: #FIRSTNAME#<br />Lastname: #LASTNAME#<br />Email: #EMAIL#</p>
+<p>Birthday: #BIRTHDAY#</p>
+<p>Kind regards</p>
+<p>Your #PAGENAME# Team</p>','Admin: New registered user on #PAGENAME#');
 INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,content,subject) VALUES (4,{ts '2009-01-04 17:44:48.000'},'admin',{ts '2009-01-04 17:44:48.000'},'admin','<p>Hi,</p>
-\n<p>there occurred an unknown error on #PAGENAME#:</p>
-\n<p>#CONTENT#</p>
-\n<p>Kind regards</p>
-\n<p>Your #PAGENAME# team</p>','Admin: Unknown error on #PAGENAME#');
+<p>there occurred an unknown error on #PAGENAME#:</p>
+<p>#CONTENT#</p>
+<p>Kind regards</p>
+<p>Your #PAGENAME# team</p>','Admin: Unknown error on #PAGENAME#');
 INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,content,subject) VALUES (5,null,null,{ts '2008-08-10 16:31:01.000'},'admin','<p>Hi #FIRSTNAME#,<br /><br />you just changed your email address. <br /><br />Click the following link to confirm the registration: <a href="#CONFIRMATIONLINK#">#CONFIRMATIONLINK#</a></p>
-\n
+
 <p>Kind regards<br />Your #PAGENAME# team</p>','Email reconfirmation for your account on  #PAGENAME#');
 INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,content,subject) VALUES (6,{ts '2009-01-05 22:22:31.000'},'admin',{ts '2009-01-05 22:52:16.000'},'admin','<p>Hi #USERNAME#,</p>
-\n<p>Mr./Mrs #CONTACT_FULLNAME# send you this email from #PAGENAME#. If you do not like too receive emails, you can disable this function on #PAGENAME# under Settings.</p>
-\n<p>Contact email: #CONTACT_EMAIL#</p>
-\n<p>Contact IP: #CONTACT_IP#</p>
-\n<p>#CONTENT#</p>
-\n<p>&nbsp;</p>
-\n<p>Kind regards</p>
-\n<p>Your #PAGENAME# Team</p>','Contact request from #PAGENAME#');
+<p>Mr./Mrs #CONTACT_FULLNAME# send you this email from #PAGENAME#. If you do not like too receive emails, you can disable this function on #PAGENAME# under Settings.</p>
+<p>Contact email: #CONTACT_EMAIL#</p>
+<p>Contact IP: #CONTACT_IP#</p>
+<p>#CONTENT#</p>
+<p>&nbsp;</p>
+<p>Kind regards</p>
+<p>Your #PAGENAME# Team</p>','Contact request from #PAGENAME#');
 
 INSERT INTO core_box (created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES ({ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','<!-- AddThis Button BEGIN -->
 <a class="addthis_button" href="http://www.addthis.com/bookmark.php?v=250&amp"><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
