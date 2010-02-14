@@ -2,6 +2,17 @@
 	<diskStore path="java.io.tmpdir"/>
 	<defaultCache maxElementsInMemory="5000" eternal="true"
 		overflowToDisk="false" />
+	<cache name="org.hibernate.cache.UpdateTimestampsCache"
+		maxElementsInMemory="5000"
+    	eternal="true"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LRU"/>
+	<cache name="org.hibernate.cache.StandardQueryCache"
+		maxElementsInMemory="10"
+		overflowToDisk="false" 
+		diskPersistent="false"
+		memoryStoreEvictionPolicy="LRU"/>	
 	<cache name="entity.content"
 		maxElementsInMemory="10000"
 		eternal="true"
