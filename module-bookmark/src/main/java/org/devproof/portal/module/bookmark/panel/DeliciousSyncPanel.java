@@ -190,6 +190,7 @@ public abstract class DeliciousSyncPanel extends Panel {
 
 							bookmark.setModifiedAt(PortalUtil.now());
 							bookmark.setModifiedBy(user.getUsername());
+							bookmark.setUpdateModificationData(false);
 							List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags()
 									.size());
 							for (BookmarkTagEntity tag : bookmark.getTags()) {

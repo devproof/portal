@@ -44,6 +44,8 @@ public abstract class BaseEntity implements Serializable {
 	private String modifiedBy;
 	@Column(name = "modified_at")
 	private Date modifiedAt;
+	@Transient
+	private boolean updateModificationData = true;
 
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
@@ -75,6 +77,14 @@ public abstract class BaseEntity implements Serializable {
 
 	public String getModifiedBy() {
 		return modifiedBy;
+	}
+
+	public boolean isUpdateModificationData() {
+		return updateModificationData;
+	}
+
+	public void setUpdateModificationData(boolean updateModificationData) {
+		this.updateModificationData = updateModificationData;
 	}
 
 	@Transient
