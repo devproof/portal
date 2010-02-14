@@ -14,8 +14,8 @@ Features
 - Nicer style and icons
 Technical
 - A lot of bugfixes
-- Caching -> faster
-- Replaced wicket-1.4rc with wicket 1.4.6 final
+- Caching added (Hibernate caching)
+- Replaced wicket-1.4rc with wicket 1.4.5 (1.4.6 contains an ajax linking bug)
 - Default isolation level changed to READ_COMMITED
 - RightGridPanel looses CheckBox states after validation error
 - Renamed portal modules to module-$name
@@ -26,7 +26,6 @@ Technical
 - String2Image Feature in Extended Label causes invalid HTML
 - Rendering test for each Panel
 - All Pages are stateful
-- Hibernate caching added
 - More testcases
 
 Devproof Portal 1.0-rc2

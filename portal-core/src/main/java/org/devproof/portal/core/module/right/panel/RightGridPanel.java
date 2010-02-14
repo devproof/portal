@@ -16,16 +16,15 @@
 package org.devproof.portal.core.module.right.panel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.IFormModelUpdateListener;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.IModel;
@@ -45,7 +44,8 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	private String rightPrefix;
-	private Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new HashMap<RightEntity, CheckBox>();
+	// private Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new
+	// HashMap<RightEntity, CheckBox>();
 	private List<RightEntity> allRights;
 	private List<RightEntity> originalRightsListReference;
 	private List<RightEntity> originalSelectedRights;
@@ -67,6 +67,7 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(allRights);
 		GridView<RightEntity> gridView = newRightGridView(ldp);
 		gridView.setColumns(3);
+		gridView.setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		return gridView;
 	}
 
@@ -92,12 +93,7 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 
 			private CheckBox createRightCheckBox(Item<RightEntity> item) {
 				RightEntity right = item.getModelObject();
-				CheckBox checkBox = keepCheckBoxStateAfterValidation.get(right);
-				if (checkBox == null) {
-					checkBox = new CheckBox("right_checkbox", new PropertyModel<Boolean>(right, "selected"));
-					keepCheckBoxStateAfterValidation.put(right, checkBox);
-				}
-				return checkBox;
+				return new CheckBox("right_checkbox", new PropertyModel<Boolean>(right, "selected"));
 			}
 
 			@Override
