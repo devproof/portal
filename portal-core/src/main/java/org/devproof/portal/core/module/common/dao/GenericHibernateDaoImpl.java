@@ -70,16 +70,18 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
 		if (entity instanceof BaseEntity) {
 			BaseEntity base = (BaseEntity) entity;
 			// only works in the request
-			String username = usernameResolver.getUsername();
-			LOG.debug("BaseEntity " + entity + "set creation date and user");
-			if (base.getCreatedAt() == null) {
-				base.setCreatedAt(PortalUtil.now());
+			if (base.isUpdateModificationData()) {
+				String username = usernameResolver.getUsername();
+				LOG.debug("BaseEntity " + entity + "set creation date and user");
+				if (base.getCreatedAt() == null) {
+					base.setCreatedAt(PortalUtil.now());
+				}
+				if (base.getCreatedBy() == null) {
+					base.setCreatedBy(username);
+				}
+				base.setModifiedAt(PortalUtil.now());
+				base.setModifiedBy(username);
 			}
-			if (base.getCreatedBy() == null) {
-				base.setCreatedBy(username);
-			}
-			base.setModifiedAt(PortalUtil.now());
-			base.setModifiedBy(username);
 		}
 	}
 
