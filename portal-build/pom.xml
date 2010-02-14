@@ -12,7 +12,7 @@
 	<version>FIXED</version>
 
 	<properties>
-		<devproof.version>1.0-rc3</devproof.version>
+		<devproof.version>1.0-rc4-SNAPSHOT</devproof.version>
 		<wicket.version>1.4.5</wicket.version>
 		<jetty.version>6.1.19</jetty.version>
 	</properties>
