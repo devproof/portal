@@ -16,7 +16,7 @@ package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.rating.RatingPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -110,7 +110,7 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
 		protected void populateItem(LoopItem item) {
 			// Use an AjaxFallbackLink for rating to make voting work even
 			// without Ajax.
-			AjaxFallbackLink<Void> link = new AjaxFallbackLink<Void>("link") {
+			AjaxLink<Void> link = new AjaxLink<Void>("link") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
