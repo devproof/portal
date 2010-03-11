@@ -16,7 +16,9 @@ public class TestPdf {
 		Tidy tidy = new Tidy();
 		tidy.setXHTML(true);
 		StringWriter str = new StringWriter();
-		tidy.parse(new URL("http://localhost:8888/print/blog/1").openStream(), str);
+		tidy.parse(new URL("http://localhost:8888/print/blog/1").openStream(),
+				str);
+		// test git comment
 		// tidy.parse(new URL("http://localhost:8888/print").openStream(), new
 		// FileOutputStream("d:/firstdoc.html"));
 		// String inputFile = "samples/firstdoc.xhtml";
