@@ -15,6 +15,9 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
 
 import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
@@ -22,7 +25,6 @@ import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
 import org.devproof.portal.core.module.common.service.RegistryServiceImpl;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -35,9 +37,9 @@ public class RegistryServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		mainNavigationRegistryMock = EasyMock.createStrictMock(MainNavigationRegistry.class);
-		globalAdminPageRegistryMock = EasyMock.createStrictMock(GlobalAdminPageRegistry.class);
-		pageAdminPageRegistryMock = EasyMock.createStrictMock(PageAdminPageRegistry.class);
+		mainNavigationRegistryMock = createStrictMock(MainNavigationRegistry.class);
+		globalAdminPageRegistryMock = createStrictMock(GlobalAdminPageRegistry.class);
+		pageAdminPageRegistryMock = createStrictMock(PageAdminPageRegistry.class);
 		impl = new RegistryServiceImpl();
 		impl.setMainNavigationRegistry(mainNavigationRegistryMock);
 		impl.setGlobalAdminPageRegistry(globalAdminPageRegistryMock);
@@ -46,22 +48,22 @@ public class RegistryServiceImplTest extends TestCase {
 
 	public void testRebuildRegistries1() {
 		globalAdminPageRegistryMock.buildNavigation();
-		EasyMock.replay(globalAdminPageRegistryMock);
+		replay(globalAdminPageRegistryMock);
 		impl.rebuildRegistries(LinkType.GLOBAL_ADMINISTRATION);
-		EasyMock.verify(globalAdminPageRegistryMock);
+		verify(globalAdminPageRegistryMock);
 	}
 
 	public void testRebuildRegistries2() {
 		mainNavigationRegistryMock.buildNavigation();
-		EasyMock.replay(mainNavigationRegistryMock);
+		replay(mainNavigationRegistryMock);
 		impl.rebuildRegistries(LinkType.TOP_NAVIGATION);
-		EasyMock.verify(mainNavigationRegistryMock);
+		verify(mainNavigationRegistryMock);
 	}
 
 	public void testRebuildRegistries3() {
 		pageAdminPageRegistryMock.buildNavigation();
-		EasyMock.replay(pageAdminPageRegistryMock);
+		replay(pageAdminPageRegistryMock);
 		impl.rebuildRegistries(LinkType.PAGE_ADMINISTRATION);
-		EasyMock.verify(pageAdminPageRegistryMock);
+		verify(pageAdminPageRegistryMock);
 	}
 }

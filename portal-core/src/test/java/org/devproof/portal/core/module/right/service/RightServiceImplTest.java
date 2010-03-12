@@ -15,6 +15,11 @@
  */
 package org.devproof.portal.core.module.right.service;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +27,6 @@ import junit.framework.TestCase;
 
 import org.devproof.portal.core.module.right.dao.RightDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -33,7 +37,7 @@ public class RightServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(RightDao.class);
+		mock = createStrictMock(RightDao.class);
 		impl = new RightServiceImpl();
 		impl.setRightDao(mock);
 	}
@@ -41,38 +45,38 @@ public class RightServiceImplTest extends TestCase {
 	public void testSave() {
 		RightEntity e = impl.newRightEntity();
 		e.setRight("right");
-		EasyMock.expect(mock.save(e)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.save(e)).andReturn(e);
+		replay(mock);
 		impl.save(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testDelete() {
 		RightEntity e = impl.newRightEntity();
 		e.setRight("right");
 		mock.delete(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.delete(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindAll() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
 		list.add(impl.newRightEntity());
 		list.add(impl.newRightEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findAll()).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findAll());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindById() {
 		RightEntity e = impl.newRightEntity();
 		e.setRight("right");
-		EasyMock.expect(mock.findById("right")).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findById("right")).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findById("right"), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testNewRightEntity() {
@@ -94,30 +98,30 @@ public class RightServiceImplTest extends TestCase {
 		List<RightEntity> list = new ArrayList<RightEntity>();
 		list.add(impl.newRightEntity());
 		list.add(impl.newRightEntity());
-		EasyMock.expect(mock.findAllOrderByDescription()).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findAllOrderByDescription()).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findAllOrderByDescription());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindRightsStartingWith() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
 		list.add(impl.newRightEntity());
 		list.add(impl.newRightEntity());
-		EasyMock.expect(mock.findRightsStartingWith("prefix")).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findRightsStartingWith("prefix")).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findRightsStartingWith("prefix"));
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testGetAllRights() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
 		list.add(impl.newRightEntity());
 		list.add(impl.newRightEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findAll()).andReturn(list);
+		replay(mock);
 		impl.init();
 		assertEquals(impl.getAllRights(), list);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 }

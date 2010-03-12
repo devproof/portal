@@ -15,11 +15,14 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
 
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
-import org.easymock.EasyMock;
 
 /**
  * Checks the delegating functionality of the OtherPageServiceImpl
@@ -32,34 +35,34 @@ public class OtherPageServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(OtherPageDao.class);
+		mock = createStrictMock(OtherPageDao.class);
 		impl = new OtherPageServiceImpl();
 		impl.setOtherPageDao(mock);
 	}
 
 	public void testSave() {
 		OtherPageEntity e = createOtherPageEntity();
-		EasyMock.expect(mock.save(e)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.save(e)).andReturn(e);
+		replay(mock);
 		impl.save(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testDelete() {
 		OtherPageEntity e = createOtherPageEntity();
 		e.setId(1);
 		mock.delete(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.delete(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindById() {
 		OtherPageEntity e = createOtherPageEntity();
-		EasyMock.expect(mock.findById(1)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findById(1)).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testNewOtherPageEntity() {
@@ -67,10 +70,10 @@ public class OtherPageServiceImplTest extends TestCase {
 	}
 
 	public void testExistsContentId() {
-		EasyMock.expect(mock.existsContentId("contentId")).andReturn(1l);
-		EasyMock.replay(mock);
+		expect(mock.existsContentId("contentId")).andReturn(1l);
+		replay(mock);
 		assertTrue(impl.existsContentId("contentId"));
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	private OtherPageEntity createOtherPageEntity() {

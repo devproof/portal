@@ -15,6 +15,12 @@
  */
 package org.devproof.portal.core.module.email.service;
 
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +35,6 @@ import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
-import org.easymock.EasyMock;
 import org.springframework.mail.javamail.JavaMailSender;
 
 /**
@@ -43,9 +48,9 @@ public class EmailServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		daomock = EasyMock.createStrictMock(EmailTemplateDao.class);
-		emailmock = EasyMock.createStrictMock(JavaMailSender.class);
-		confservice = EasyMock.createNiceMock(ConfigurationService.class);
+		daomock = createStrictMock(EmailTemplateDao.class);
+		emailmock = createStrictMock(JavaMailSender.class);
+		confservice = createNiceMock(ConfigurationService.class);
 		impl = new EmailServiceImpl();
 		impl.setEmailTemplateDao(daomock);
 		impl.setConfigurationService(confservice);
@@ -56,38 +61,38 @@ public class EmailServiceImplTest extends TestCase {
 	public void testSave() {
 		EmailTemplateEntity e = impl.newEmailTemplateEntity();
 		e.setId(1);
-		EasyMock.expect(daomock.save(e)).andReturn(e);
-		EasyMock.replay(daomock);
+		expect(daomock.save(e)).andReturn(e);
+		replay(daomock);
 		impl.save(e);
-		EasyMock.verify(daomock);
+		verify(daomock);
 	}
 
 	public void testDelete() {
 		EmailTemplateEntity e = impl.newEmailTemplateEntity();
 		e.setId(1);
 		daomock.delete(e);
-		EasyMock.replay(daomock);
+		replay(daomock);
 		impl.delete(e);
-		EasyMock.verify(daomock);
+		verify(daomock);
 	}
 
 	public void testFindAll() {
 		List<EmailTemplateEntity> list = new ArrayList<EmailTemplateEntity>();
 		list.add(impl.newEmailTemplateEntity());
 		list.add(impl.newEmailTemplateEntity());
-		EasyMock.expect(daomock.findAll()).andReturn(list);
-		EasyMock.replay(daomock);
+		expect(daomock.findAll()).andReturn(list);
+		replay(daomock);
 		assertEquals(list, impl.findAll());
-		EasyMock.verify(daomock);
+		verify(daomock);
 	}
 
 	public void testFindById() {
 		EmailTemplateEntity e = impl.newEmailTemplateEntity();
 		e.setId(1);
-		EasyMock.expect(daomock.findById(1)).andReturn(e);
-		EasyMock.replay(daomock);
+		expect(daomock.findById(1)).andReturn(e);
+		replay(daomock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(daomock);
+		verify(daomock);
 	}
 
 	public void testNewEmailTemplateEntity() {
@@ -101,16 +106,16 @@ public class EmailServiceImplTest extends TestCase {
 		EmailPlaceholderBean b = new EmailPlaceholderBean();
 
 		MimeMessage mm = new MimeMessage((Session) null);
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		EasyMock.expect(emailmock.createMimeMessage()).andReturn(mm);
+		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
+		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
+		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+		expect(emailmock.createMimeMessage()).andReturn(mm);
 		emailmock.send(mm);
-		EasyMock.replay(confservice);
-		EasyMock.replay(emailmock);
+		replay(confservice);
+		replay(emailmock);
 		impl.sendEmail(e, b);
-		EasyMock.verify(emailmock);
+		verify(emailmock);
 	}
 
 	public void testSendEmail2() {
@@ -120,17 +125,17 @@ public class EmailServiceImplTest extends TestCase {
 		EmailPlaceholderBean b = new EmailPlaceholderBean();
 
 		MimeMessage mm = new MimeMessage((Session) null);
-		EasyMock.expect(daomock.findById(1)).andReturn(e);
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		EasyMock.expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		EasyMock.expect(emailmock.createMimeMessage()).andReturn(mm);
+		expect(daomock.findById(1)).andReturn(e);
+		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
+		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
+		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+		expect(emailmock.createMimeMessage()).andReturn(mm);
 		emailmock.send(mm);
-		EasyMock.replay(daomock);
-		EasyMock.replay(confservice);
-		EasyMock.replay(emailmock);
+		replay(daomock);
+		replay(confservice);
+		replay(emailmock);
 		impl.sendEmail(1, b);
-		EasyMock.verify(emailmock);
+		verify(emailmock);
 	}
 }

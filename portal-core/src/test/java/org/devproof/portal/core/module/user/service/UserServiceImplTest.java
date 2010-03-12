@@ -15,6 +15,13 @@
  */
 package org.devproof.portal.core.module.user.service;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -33,7 +40,6 @@ import org.devproof.portal.core.module.user.dao.UserDao;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -47,10 +53,10 @@ public class UserServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		userDaoMock = EasyMock.createStrictMock(UserDao.class);
-		roleServiceMock = EasyMock.createMock(RoleService.class);
-		emailServiceMock = EasyMock.createMock(EmailService.class);
-		configurationServiceMock = EasyMock.createMock(ConfigurationService.class);
+		userDaoMock = createStrictMock(UserDao.class);
+		roleServiceMock = createMock(RoleService.class);
+		emailServiceMock = createMock(EmailService.class);
+		configurationServiceMock = createMock(ConfigurationService.class);
 		impl = new UserServiceImpl();
 		impl.setUserDao(userDaoMock);
 		impl.setRoleService(roleServiceMock);
@@ -61,28 +67,28 @@ public class UserServiceImplTest extends TestCase {
 	public void testSave() {
 		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		EasyMock.expect(userDaoMock.save(e)).andReturn(e);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.save(e)).andReturn(e);
+		replay(userDaoMock);
 		impl.save(e);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testDelete() {
 		UserEntity e = impl.newUserEntity();
 		e.setId(1);
 		userDaoMock.delete(e);
-		EasyMock.replay(userDaoMock);
+		replay(userDaoMock);
 		impl.delete(e);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testFindById() {
 		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		EasyMock.expect(userDaoMock.findById(1)).andReturn(e);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findById(1)).andReturn(e);
+		replay(userDaoMock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testNewUserEntity() {
@@ -91,81 +97,81 @@ public class UserServiceImplTest extends TestCase {
 
 	public void testCountUserForRole() {
 		RoleEntity role = createTestRole();
-		EasyMock.expect(userDaoMock.countUserForRole(role)).andReturn(4l);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.countUserForRole(role)).andReturn(4l);
+		replay(userDaoMock);
 		assertEquals(impl.countUserForRole(role), 4l);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testExistsUsername() {
-		EasyMock.expect(userDaoMock.existsUsername("username")).andReturn(1l);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.existsUsername("username")).andReturn(1l);
+		replay(userDaoMock);
 		assertTrue(impl.existsUsername("username"));
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testFindUserByEmail() {
 		List<UserEntity> list = new ArrayList<UserEntity>();
 		list.add(impl.newUserEntity());
 		list.add(impl.newUserEntity());
-		EasyMock.expect(userDaoMock.findUserByEmail("email@email.org")).andReturn(list);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByEmail("email@email.org")).andReturn(list);
+		replay(userDaoMock);
 		assertEquals(impl.findUserByEmail("email@email.org"), list);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testFindUserBySessionId() {
 		UserEntity e = impl.newUserEntity();
 		e.setId(1);
-		EasyMock.expect(userDaoMock.findUserBySessionId("12345")).andReturn(e);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserBySessionId("12345")).andReturn(e);
+		replay(userDaoMock);
 		assertEquals(impl.findUserBySessionId("12345"), e);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testFindUserByUsername() {
 		UserEntity e = impl.newUserEntity();
 		e.setId(1);
 		e.setUsername("username");
-		EasyMock.expect(userDaoMock.findUserByUsername(e.getUsername())).andReturn(e);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername(e.getUsername())).andReturn(e);
+		replay(userDaoMock);
 		assertEquals(impl.findUserByUsername(e.getUsername()), e);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testFindUserWithRight() {
 		List<UserEntity> list = new ArrayList<UserEntity>();
 		list.add(impl.newUserEntity());
 		list.add(impl.newUserEntity());
-		EasyMock.expect(userDaoMock.findUserWithRight("right")).andReturn(list);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserWithRight("right")).andReturn(list);
+		replay(userDaoMock);
 		assertEquals(impl.findUserWithRight("right"), list);
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testFindGuestUser() {
 		RoleEntity role = createTestRole();
 		role.setDescription("Test Guest");
-		EasyMock.expect(roleServiceMock.findGuestRole()).andReturn(role);
-		EasyMock.replay(userDaoMock);
-		EasyMock.replay(roleServiceMock);
+		expect(roleServiceMock.findGuestRole()).andReturn(role);
+		replay(userDaoMock);
+		replay(roleServiceMock);
 		assertEquals(impl.findGuestUser().getUsername(), "Test Guest");
-		EasyMock.verify(userDaoMock);
-		EasyMock.verify(roleServiceMock);
+		verify(userDaoMock);
+		verify(roleServiceMock);
 	}
 
 	public void testActivateUser() {
 		UserEntity user = createTestUser(false);
 		user.setConfirmationCode("right");
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(user).anyTimes();
-		EasyMock.expect(userDaoMock.save(user)).andReturn(user);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(user).anyTimes();
+		expect(userDaoMock.save(user)).andReturn(user);
+		replay(userDaoMock);
 		assertFalse(impl.activateUser("testuser", "wrong"));
 		assertTrue(impl.activateUser("testuser", "right"));
 		assertTrue(user.getConfirmed());
 		assertNull(user.getConfirmationCode());
 		assertNotNull(user.getConfirmationApprovedAt());
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testRegisterUser() {
@@ -204,13 +210,13 @@ public class UserServiceImplTest extends TestCase {
 			}
 		};
 		impl.setRoleService(roleServiceMock);
-		EasyMock.expect(roleServiceMock.findDefaultRegistrationRole()).andReturn(createTestRole());
-		EasyMock.replay(roleServiceMock);
+		expect(roleServiceMock.findDefaultRegistrationRole()).andReturn(createTestRole());
+		replay(roleServiceMock);
 		// only test the call order
 		UserEntity user = createTestUser(false);
 		impl.registerUser(user, createUrlCallback());
 		assertEquals("123456", callOrder.toString());
-		EasyMock.verify(roleServiceMock);
+		verify(roleServiceMock);
 	}
 
 	private UrlCallback createUrlCallback() {
@@ -234,37 +240,36 @@ public class UserServiceImplTest extends TestCase {
 	}
 
 	public void testIsConfirmationRequired() {
-		EasyMock.expect(configurationServiceMock.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)).andReturn(
-				Boolean.TRUE);
-		EasyMock.replay(configurationServiceMock);
+		expect(configurationServiceMock.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)).andReturn(Boolean.TRUE);
+		replay(configurationServiceMock);
 		assertTrue(impl.isConfirmationRequired());
-		EasyMock.verify(configurationServiceMock);
+		verify(configurationServiceMock);
 	}
 
 	public void testSendConfirmationEmail() {
 		UserEntity user = createTestUser(false);
 		EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForConfirmation(user, createUrlCallback());
-		EasyMock.expect(configurationServiceMock.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL)).andReturn(5);
+		expect(configurationServiceMock.findAsInteger(UserConstants.CONF_REGISTRATION_EMAIL)).andReturn(5);
 		emailServiceMock.sendEmail(5, placeholder);
-		EasyMock.replay(configurationServiceMock);
-		EasyMock.replay(emailServiceMock);
+		replay(configurationServiceMock);
+		replay(emailServiceMock);
 		impl.sendConfirmationEmail(placeholder);
 		assertEquals("http://url", placeholder.getConfirmationLink());
-		EasyMock.verify(configurationServiceMock);
-		EasyMock.verify(emailServiceMock);
+		verify(configurationServiceMock);
+		verify(emailServiceMock);
 	}
 
 	public void testResendConfirmationEmail() {
 		UserEntity user = createTestUser(false);
 		EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForConfirmation(user, createUrlCallback());
-		EasyMock.expect(configurationServiceMock.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL)).andReturn(5);
+		expect(configurationServiceMock.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL)).andReturn(5);
 		emailServiceMock.sendEmail(5, placeholder);
-		EasyMock.replay(configurationServiceMock);
-		EasyMock.replay(emailServiceMock);
+		replay(configurationServiceMock);
+		replay(emailServiceMock);
 		impl.resendConfirmationEmail(placeholder);
 		assertEquals("http://url", placeholder.getConfirmationLink());
-		EasyMock.verify(configurationServiceMock);
-		EasyMock.verify(emailServiceMock);
+		verify(configurationServiceMock);
+		verify(emailServiceMock);
 	}
 
 	public void testResendConfirmationCode() {
@@ -319,9 +324,9 @@ public class UserServiceImplTest extends TestCase {
 
 	public void testAuthentificate_withUsername_success() {
 		UserEntity expectedUser = createTestUser(true);
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
+		expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
+		replay(userDaoMock);
 		try {
 			UserEntity user = impl.authentificate("testuser", "password", "123.123.123.123");
 			assertNotNull(user);
@@ -333,13 +338,13 @@ public class UserServiceImplTest extends TestCase {
 		} catch (AuthentificationFailedException e) {
 			fail("Authentification failed");
 		}
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testAuthentificate_withUsername_notConfirmed() {
 		UserEntity expectedUser = createTestUser(false);
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
+		replay(userDaoMock);
 		try {
 			impl.authentificate("testuser", "password", "123.123.123.123");
 			fail("User is not confirmed, so UserNotConfirmedException must be thrown");
@@ -348,12 +353,12 @@ public class UserServiceImplTest extends TestCase {
 		} catch (AuthentificationFailedException e) {
 			fail("Authentification failed");
 		}
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testAuthentificate_withUsername_wrongUsername() {
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(null);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(null);
+		replay(userDaoMock);
 		try {
 			impl.authentificate("testuser", "wrongpassword", "123.123.123.123");
 			fail("Authentification successful, but failure expected");
@@ -361,13 +366,13 @@ public class UserServiceImplTest extends TestCase {
 			fail("User is confirmed");
 		} catch (AuthentificationFailedException e) {
 		}
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testAuthentificate_withUsername_wrongPassword() {
 		UserEntity expectedUser = createTestUser(true);
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
+		replay(userDaoMock);
 		try {
 			impl.authentificate("testuser", "wrongpassword", "123.123.123.123");
 			fail("Authentification successful, but failure expected");
@@ -375,14 +380,14 @@ public class UserServiceImplTest extends TestCase {
 			fail("User is confirmed");
 		} catch (AuthentificationFailedException e) {
 		}
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testAuthentificate_withUsername_userInactive() {
 		UserEntity expectedUser = createTestUser(true);
 		expectedUser.setActive(Boolean.FALSE);
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
+		replay(userDaoMock);
 		try {
 			impl.authentificate("testuser", "wrongpassword", "123.123.123.123");
 			fail("Authentification successful, but failure expected");
@@ -390,14 +395,14 @@ public class UserServiceImplTest extends TestCase {
 			fail("User is confirmed");
 		} catch (AuthentificationFailedException e) {
 		}
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testAuthentificate_withUsername_roleInactive() {
 		UserEntity expectedUser = createTestUser(true);
 		expectedUser.getRole().setActive(Boolean.FALSE);
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
+		replay(userDaoMock);
 		try {
 			impl.authentificate("testuser", "wrongpassword", "123.123.123.123");
 			fail("Authentification successful, but failure expected");
@@ -405,73 +410,73 @@ public class UserServiceImplTest extends TestCase {
 			fail("User is confirmed");
 		} catch (AuthentificationFailedException e) {
 		}
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testAuthentificate_withSessionId_success() {
 		UserEntity expectedUser = createTestUser(true);
-		EasyMock.expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
-		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
+		expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
+		replay(userDaoMock);
 		UserEntity user = impl.authentificate("sessionId", "123.123.123.123");
 		assertNotNull(user);
 		assertEquals(expectedUser, user);
 		assertEquals("123.123.123.123", user.getLastIp());
 		assertNotSame("sessionId", user.getSessionId());
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testAuthentificate_withSessionId_nonExistingSessionId() {
 		RoleEntity expectedGuestRole = createTestRole();
-		EasyMock.expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(null);
-		EasyMock.expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
-		EasyMock.replay(userDaoMock, roleServiceMock);
+		expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(null);
+		expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
+		replay(userDaoMock, roleServiceMock);
 		UserEntity user = impl.authentificate("sessionId", "123.123.123.123");
 		assertNotNull(user);
 		assertEquals(expectedGuestRole, user.getRole());
 		assertTrue(user.isGuestRole());
-		EasyMock.verify(userDaoMock, roleServiceMock);
+		verify(userDaoMock, roleServiceMock);
 	}
 
 	public void testAuthentificate_withSessionId_userInactive() {
 		UserEntity expectedUser = createTestUser(true);
 		expectedUser.setActive(Boolean.FALSE);
 		RoleEntity expectedGuestRole = createTestRole();
-		EasyMock.expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
-		EasyMock.expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
-		EasyMock.replay(userDaoMock, roleServiceMock);
+		expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
+		expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
+		replay(userDaoMock, roleServiceMock);
 		UserEntity user = impl.authentificate("sessionId", "123.123.123.123");
 		assertNotNull(user);
 		assertEquals(expectedGuestRole, user.getRole());
 		assertTrue(user.isGuestRole());
-		EasyMock.verify(userDaoMock, roleServiceMock);
+		verify(userDaoMock, roleServiceMock);
 	}
 
 	public void testAuthentificate_withSessionId_roleInactive() {
 		UserEntity expectedUser = createTestUser(true);
 		expectedUser.getRole().setActive(Boolean.FALSE);
 		RoleEntity expectedGuestRole = createTestRole();
-		EasyMock.expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
-		EasyMock.expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
-		EasyMock.replay(userDaoMock, roleServiceMock);
+		expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
+		expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
+		replay(userDaoMock, roleServiceMock);
 		UserEntity user = impl.authentificate("sessionId", "123.123.123.123");
 		assertNotNull(user);
 		assertEquals(expectedGuestRole, user.getRole());
 		assertTrue(user.isGuestRole());
-		EasyMock.verify(userDaoMock, roleServiceMock);
+		verify(userDaoMock, roleServiceMock);
 	}
 
 	public void testAuthentificate_withSessionId_notConfirmed() {
 		UserEntity expectedUser = createTestUser(false);
 		RoleEntity expectedGuestRole = createTestRole();
-		EasyMock.expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
-		EasyMock.expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
-		EasyMock.replay(userDaoMock, roleServiceMock);
+		expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
+		expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
+		replay(userDaoMock, roleServiceMock);
 		UserEntity user = impl.authentificate("sessionId", "123.123.123.123");
 		assertNotNull(user);
 		assertEquals(expectedGuestRole, user.getRole());
 		assertTrue(user.isGuestRole());
-		EasyMock.verify(userDaoMock, roleServiceMock);
+		verify(userDaoMock, roleServiceMock);
 	}
 
 	public void testSendForgotPasswordCode() {
@@ -513,39 +518,39 @@ public class UserServiceImplTest extends TestCase {
 	public void testSendForgotPasswordEmail() {
 		UserEntity user = createTestUser(false);
 		EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForLostPassword(user, createUrlCallback());
-		EasyMock.expect(configurationServiceMock.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL)).andReturn(5);
+		expect(configurationServiceMock.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL)).andReturn(5);
 		emailServiceMock.sendEmail(5, placeholder);
-		EasyMock.replay(configurationServiceMock);
-		EasyMock.replay(emailServiceMock);
+		replay(configurationServiceMock);
+		replay(emailServiceMock);
 		impl.sendForgotPasswordEmail(placeholder);
 		assertEquals("http://url", placeholder.getResetPasswordLink());
-		EasyMock.verify(configurationServiceMock);
-		EasyMock.verify(emailServiceMock);
+		verify(configurationServiceMock);
+		verify(emailServiceMock);
 	}
 
 	public void testGenerateForgotPasswordCode_withUsername() {
 		UserEntity expectedUser = createTestUser(true);
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
-		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
+		expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
+		replay(userDaoMock);
 		List<UserEntity> users = impl.generateForgotPasswordCode("testuser");
 		UserEntity user = users.get(0);
 		assertEquals(expectedUser, user);
 		assertNotNull(user.getForgotPasswordCode());
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testGenerateForgotPasswordCode_withEmail() {
 		UserEntity expectedUser = createTestUser(true);
-		EasyMock.expect(userDaoMock.findUserByUsername("max.power@no.domain")).andReturn(null);
-		EasyMock.expect(userDaoMock.findUserByEmail("max.power@no.domain")).andReturn(Arrays.asList(expectedUser));
-		EasyMock.expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("max.power@no.domain")).andReturn(null);
+		expect(userDaoMock.findUserByEmail("max.power@no.domain")).andReturn(Arrays.asList(expectedUser));
+		expect(userDaoMock.save(expectedUser)).andReturn(expectedUser);
+		replay(userDaoMock);
 		List<UserEntity> users = impl.generateForgotPasswordCode("max.power@no.domain");
 		UserEntity user = users.get(0);
 		assertEquals(expectedUser, user);
 		assertNotNull(user.getForgotPasswordCode());
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	public void testSendEmailNotificationToAdmins() {
@@ -553,31 +558,31 @@ public class UserServiceImplTest extends TestCase {
 		List<UserEntity> users = new ArrayList<UserEntity>();
 		users.add(user);
 		EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForConfirmation(user, createUrlCallback());
-		EasyMock.expect(configurationServiceMock.findAsInteger((String) EasyMock.anyObject())).andReturn(5);
-		EasyMock.expect(userDaoMock.findUserWithRight("emailnotification.registered.user")).andReturn(users);
+		expect(configurationServiceMock.findAsInteger((String) anyObject())).andReturn(5);
+		expect(userDaoMock.findUserWithRight("emailnotification.registered.user")).andReturn(users);
 		emailServiceMock.sendEmail(5, placeholder);
-		EasyMock.replay(configurationServiceMock);
-		EasyMock.replay(userDaoMock);
-		EasyMock.replay(emailServiceMock);
+		replay(configurationServiceMock);
+		replay(userDaoMock);
+		replay(emailServiceMock);
 		impl.sendEmailNotificationToAdmins(placeholder);
 		assertEquals(user.getFirstname(), placeholder.getFirstname());
 		assertEquals(user.getLastname(), placeholder.getLastname());
 		assertEquals(user.getEmail(), placeholder.getEmail());
 		assertEquals(user.getUsername(), placeholder.getUsername());
-		EasyMock.verify(configurationServiceMock);
-		EasyMock.verify(userDaoMock);
-		EasyMock.verify(emailServiceMock);
+		verify(configurationServiceMock);
+		verify(userDaoMock);
+		verify(emailServiceMock);
 	}
 
 	public void testSetNewPassword() {
 		UserEntity user = createTestUser(false);
-		EasyMock.expect(userDaoMock.findUserByUsername("testuser")).andReturn(user);
-		EasyMock.expect(userDaoMock.save(user)).andReturn(user);
-		EasyMock.replay(userDaoMock);
+		expect(userDaoMock.findUserByUsername("testuser")).andReturn(user);
+		expect(userDaoMock.save(user)).andReturn(user);
+		replay(userDaoMock);
 		impl.saveNewPassword("testuser", "12345");
 		assertNull(user.getForgotPasswordCode());
 		assertEquals(PortalUtil.generateMd5("12345"), user.getEncryptedPassword());
-		EasyMock.verify(userDaoMock);
+		verify(userDaoMock);
 	}
 
 	private UserEntity createTestUser(boolean confirmed) {

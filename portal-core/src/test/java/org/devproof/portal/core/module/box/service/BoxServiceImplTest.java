@@ -15,6 +15,11 @@
  */
 package org.devproof.portal.core.module.box.service;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +27,6 @@ import junit.framework.TestCase;
 
 import org.devproof.portal.core.module.box.dao.BoxDao;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -33,7 +37,7 @@ public class BoxServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(BoxDao.class);
+		mock = createStrictMock(BoxDao.class);
 		impl = new BoxServiceImpl();
 		impl.setBoxDao(mock);
 	}
@@ -41,30 +45,30 @@ public class BoxServiceImplTest extends TestCase {
 	public void testSave() {
 		BoxEntity e = impl.newBoxEntity();
 		e.setId(1);
-		EasyMock.expect(mock.save(e)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.save(e)).andReturn(e);
+		replay(mock);
 		impl.save(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testDelete() {
 		BoxEntity e = impl.newBoxEntity();
 		e.setId(1);
 		e.setSort(1);
-		EasyMock.expect(mock.getMaxSortNum()).andReturn(1);
+		expect(mock.getMaxSortNum()).andReturn(1);
 		mock.delete(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.delete(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindById() {
 		BoxEntity e = impl.newBoxEntity();
 		e.setId(1);
-		EasyMock.expect(mock.findById(1)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findById(1)).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testNewBoxEntity() {
@@ -75,26 +79,26 @@ public class BoxServiceImplTest extends TestCase {
 		List<BoxEntity> list = new ArrayList<BoxEntity>();
 		list.add(impl.newBoxEntity());
 		list.add(impl.newBoxEntity());
-		EasyMock.expect(mock.findAllOrderedBySort()).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findAllOrderedBySort()).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findAllOrderedBySort());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindBoxBySort() {
 		BoxEntity e = impl.newBoxEntity();
 		e.setId(1);
-		EasyMock.expect(mock.findBoxBySort(5)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findBoxBySort(5)).andReturn(e);
+		replay(mock);
 		assertEquals(e, impl.findBoxBySort(5));
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testGetMaxSortNum() {
-		EasyMock.expect(mock.getMaxSortNum()).andReturn(5);
-		EasyMock.replay(mock);
+		expect(mock.getMaxSortNum()).andReturn(5);
+		replay(mock);
 		assertEquals(Integer.valueOf(6), impl.getMaxSortNum());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testMoveDown() {
@@ -104,15 +108,15 @@ public class BoxServiceImplTest extends TestCase {
 		BoxEntity e2 = impl.newBoxEntity();
 		e2.setId(2);
 		e2.setSort(2);
-		EasyMock.expect(mock.getMaxSortNum()).andReturn(2);
-		EasyMock.expect(mock.findBoxBySort(2)).andReturn(e2);
-		EasyMock.expect(mock.save(e2)).andReturn(e2);
-		EasyMock.expect(mock.save(e1)).andReturn(e1);
-		EasyMock.replay(mock);
+		expect(mock.getMaxSortNum()).andReturn(2);
+		expect(mock.findBoxBySort(2)).andReturn(e2);
+		expect(mock.save(e2)).andReturn(e2);
+		expect(mock.save(e1)).andReturn(e1);
+		replay(mock);
 		impl.moveDown(e1);
 		assertEquals(Integer.valueOf(2), e1.getSort());
 		assertEquals(Integer.valueOf(1), e2.getSort());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testMoveUp() {
@@ -122,13 +126,13 @@ public class BoxServiceImplTest extends TestCase {
 		BoxEntity e2 = impl.newBoxEntity();
 		e2.setId(2);
 		e2.setSort(2);
-		EasyMock.expect(mock.findBoxBySort(1)).andReturn(e1);
-		EasyMock.expect(mock.save(e2)).andReturn(e2);
-		EasyMock.expect(mock.save(e1)).andReturn(e1);
-		EasyMock.replay(mock);
+		expect(mock.findBoxBySort(1)).andReturn(e1);
+		expect(mock.save(e2)).andReturn(e2);
+		expect(mock.save(e1)).andReturn(e1);
+		replay(mock);
 		impl.moveUp(e2);
 		assertEquals(Integer.valueOf(2), e1.getSort());
 		assertEquals(Integer.valueOf(1), e2.getSort());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 }

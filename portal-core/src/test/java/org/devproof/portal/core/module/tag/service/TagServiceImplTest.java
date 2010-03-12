@@ -15,6 +15,12 @@
  */
 package org.devproof.portal.core.module.tag.service;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +29,6 @@ import junit.framework.TestCase;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.dao.TagDao;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -35,7 +40,7 @@ public class TagServiceImplTest extends TestCase {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(TagDao.class);
+		mock = createStrictMock(TagDao.class);
 		impl = new TagServiceImpl<DummyTagEntity>();
 		impl.setTagDao(mock);
 		impl.setRelatedTagRight("testright");
@@ -44,33 +49,33 @@ public class TagServiceImplTest extends TestCase {
 	public void testSave() {
 		DummyTagEntity e = new DummyTagEntity();
 		e.setTagname("tag");
-		EasyMock.expect(mock.save(e)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.save(e)).andReturn(e);
+		replay(mock);
 		impl.save(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testDelete() {
 		DummyTagEntity e = new DummyTagEntity();
 		e.setTagname("tag");
 		mock.delete(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.delete(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindById() {
 		DummyTagEntity e = new DummyTagEntity();
 		e.setTagname("tag");
-		EasyMock.expect(mock.findById("tag")).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findById("tag")).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findById("tag"), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testNewTagEntity() {
-		EasyMock.expect(mock.getType()).andReturn(DummyTagEntity.class);
-		EasyMock.replay(mock);
+		expect(mock.getType()).andReturn(DummyTagEntity.class);
+		replay(mock);
 		assertNotNull(impl.newTagEntity("tag"));
 	}
 
@@ -78,10 +83,10 @@ public class TagServiceImplTest extends TestCase {
 		List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
 		list.add(new DummyTagEntity());
 		list.add(new DummyTagEntity());
-		EasyMock.expect(mock.findMostPopularTags(0, 2)).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findMostPopularTags(0, 2)).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findMostPopularTags(0, 2));
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindMostPopularTags2() {
@@ -89,37 +94,37 @@ public class TagServiceImplTest extends TestCase {
 		list.add(new DummyTagEntity());
 		list.add(new DummyTagEntity());
 		RoleEntity role = new RoleEntity();
-		EasyMock.expect(mock.findMostPopularTags(role, "testright", 0, 2)).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findMostPopularTags(role, "testright", 0, 2)).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findMostPopularTags(role, 0, 2));
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindTagsStartingWith() {
 		List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
 		list.add(new DummyTagEntity());
 		list.add(new DummyTagEntity());
-		EasyMock.expect(mock.findTagsStartingWith("prefix")).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findTagsStartingWith("prefix")).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findTagsStartingWith("prefix"));
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testDeleteUnusedTags() {
 		mock.deleteUnusedTags();
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.deleteUnusedTags();
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindByIdAndCreateIfNotExists() {
-		EasyMock.expect(mock.findById("sampletag")).andReturn(null);
-		EasyMock.expect(mock.getType()).andReturn(DummyTagEntity.class);
-		EasyMock.expect(mock.save((DummyTagEntity) EasyMock.anyObject())).andReturn(null);
-		EasyMock.replay(mock);
+		expect(mock.findById("sampletag")).andReturn(null);
+		expect(mock.getType()).andReturn(DummyTagEntity.class);
+		expect(mock.save((DummyTagEntity) anyObject())).andReturn(null);
+		replay(mock);
 		DummyTagEntity newTag = impl.findByIdAndCreateIfNotExists("sampletag");
 		assertEquals("sampletag", newTag.getTagname());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	private static class DummyTagEntity extends BaseTagEntity<Object> {

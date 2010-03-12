@@ -15,6 +15,12 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -31,7 +37,6 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.page.BookmarkPage;
-import org.easymock.EasyMock;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -48,8 +53,8 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setUp() throws Exception {
-		dataProviderMock = EasyMock.createStrictMock(SortableQueryDataProvider.class);
-		configurationServiceMock = EasyMock.createMock(ConfigurationService.class);
+		dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
+		configurationServiceMock = createMock(ConfigurationService.class);
 		impl = new BookmarkFeedProviderImpl() {
 			@Override
 			protected String getUrl(RequestCycle rc) {
@@ -66,12 +71,12 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 	}
 
 	public void testGetFeedName() {
-		EasyMock.expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
-		EasyMock.expect(configurationServiceMock.findAsString(BookmarkConstants.CONF_BOOKMARK_FEED_TITLE)).andReturn(
-				"feedtitle");
-		EasyMock.replay(configurationServiceMock);
+		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
+		expect(configurationServiceMock.findAsString(BookmarkConstants.CONF_BOOKMARK_FEED_TITLE))
+				.andReturn("feedtitle");
+		replay(configurationServiceMock);
 		assertEquals("pagetitle - feedtitle", impl.getFeedName());
-		EasyMock.verify(configurationServiceMock);
+		verify(configurationServiceMock);
 	}
 
 	public void testSupportedPages() {
@@ -82,28 +87,27 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 	public void testGetBookmarkEntries() {
 		BookmarkEntity bookmark = createBookmark();
 		Iterator it = Arrays.asList(bookmark).iterator();
-		EasyMock.expect(configurationServiceMock.findAsInteger(BookmarkConstants.CONF_BOOKMARK_ENTRIES_IN_FEED))
-				.andReturn(10);
-		EasyMock.expect(dataProviderMock.iterator(0, 10)).andReturn(it);
-		EasyMock.replay(configurationServiceMock);
-		EasyMock.replay(dataProviderMock);
+		expect(configurationServiceMock.findAsInteger(BookmarkConstants.CONF_BOOKMARK_ENTRIES_IN_FEED)).andReturn(10);
+		expect(dataProviderMock.iterator(0, 10)).andReturn(it);
+		replay(configurationServiceMock);
+		replay(dataProviderMock);
 		Iterator<? extends BookmarkEntity> bookmarkEntries = impl.getBookmarkEntries();
 		assertSame(bookmarkEntries, it);
-		EasyMock.verify(configurationServiceMock);
-		EasyMock.verify(dataProviderMock);
+		verify(configurationServiceMock);
+		verify(dataProviderMock);
 	}
 
 	public void testGenerateFeed() {
-		EasyMock.expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle")
+		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle")
 				.anyTimes();
-		EasyMock.expect(configurationServiceMock.findAsString(BookmarkConstants.CONF_BOOKMARK_FEED_TITLE)).andReturn(
-				"feedtitle").anyTimes();
-		EasyMock.replay(configurationServiceMock);
+		expect(configurationServiceMock.findAsString(BookmarkConstants.CONF_BOOKMARK_FEED_TITLE))
+				.andReturn("feedtitle").anyTimes();
+		replay(configurationServiceMock);
 		SyndFeed feed = impl.generateFeed(null);
 		assertEquals("pagetitle - feedtitle", feed.getTitle());
 		assertEquals("pagetitle - feedtitle", feed.getDescription());
 		assertEquals("http://url", feed.getLink());
-		EasyMock.verify(configurationServiceMock);
+		verify(configurationServiceMock);
 	}
 
 	@SuppressWarnings("unchecked")

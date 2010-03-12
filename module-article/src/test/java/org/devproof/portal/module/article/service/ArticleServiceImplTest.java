@@ -15,6 +15,11 @@
  */
 package org.devproof.portal.module.article.service;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +32,6 @@ import org.devproof.portal.module.article.dao.ArticlePageDao;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -40,10 +44,10 @@ public class ArticleServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(ArticleDao.class);
-		mockPage = EasyMock.createStrictMock(ArticlePageDao.class);
+		mock = createStrictMock(ArticleDao.class);
+		mockPage = createStrictMock(ArticlePageDao.class);
 		@SuppressWarnings("unchecked")
-		TagService<ArticleTagEntity> tagService = EasyMock.createStrictMock(TagService.class);
+		TagService<ArticleTagEntity> tagService = createStrictMock(TagService.class);
 		mockTag = tagService;
 		impl = new ArticleServiceImpl();
 		impl.setArticleDao(mock);
@@ -54,13 +58,13 @@ public class ArticleServiceImplTest extends TestCase {
 	public void testSave() {
 		ArticleEntity e = createArticleEntity();
 		e.setId(1);
-		EasyMock.expect(mock.save(e)).andReturn(e);
+		expect(mock.save(e)).andReturn(e);
 		mockTag.deleteUnusedTags();
-		EasyMock.replay(mock);
-		EasyMock.replay(mockTag);
+		replay(mock);
+		replay(mockTag);
 		impl.save(e);
-		EasyMock.verify(mock);
-		EasyMock.verify(mockTag);
+		verify(mock);
+		verify(mockTag);
 	}
 
 	public void testDelete() {
@@ -68,29 +72,29 @@ public class ArticleServiceImplTest extends TestCase {
 		e.setId(1);
 		mock.delete(e);
 		mockTag.deleteUnusedTags();
-		EasyMock.replay(mock);
-		EasyMock.replay(mockTag);
+		replay(mock);
+		replay(mockTag);
 		impl.delete(e);
-		EasyMock.verify(mock);
-		EasyMock.verify(mockTag);
+		verify(mock);
+		verify(mockTag);
 	}
 
 	public void testFindById() {
 		ArticleEntity e = createArticleEntity();
 		e.setId(1);
-		EasyMock.expect(mock.findById(1)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findById(1)).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindByIdAndPrefetch() {
 		ArticleEntity e = createArticleEntity();
 		e.setId(1);
-		EasyMock.expect(mock.findByIdAndPrefetch(1)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findByIdAndPrefetch(1)).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findByIdAndPrefetch(1), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testNewArticleEntity() {
@@ -106,17 +110,17 @@ public class ArticleServiceImplTest extends TestCase {
 	}
 
 	public void testGetPageCount() {
-		EasyMock.expect(mockPage.getPageCount("contentId")).andReturn(4l);
-		EasyMock.replay(mockPage);
+		expect(mockPage.getPageCount("contentId")).andReturn(4l);
+		replay(mockPage);
 		assertEquals(impl.getPageCount("contentId"), 4l);
-		EasyMock.verify(mockPage);
+		verify(mockPage);
 	}
 
 	public void testExistsContentId() {
-		EasyMock.expect(mock.existsContentId("contentId")).andReturn(1l);
-		EasyMock.replay(mock);
+		expect(mock.existsContentId("contentId")).andReturn(1l);
+		replay(mock);
 		assertTrue(impl.existsContentId("contentId"));
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindAllArticlesForRoleOrderedByDateDesc() {
@@ -124,10 +128,10 @@ public class ArticleServiceImplTest extends TestCase {
 		List<ArticleEntity> list = new ArrayList<ArticleEntity>();
 		list.add(createArticleEntity());
 		list.add(createArticleEntity());
-		EasyMock.expect(mock.findAllArticlesForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findAllArticlesForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
+		replay(mock);
 		assertEquals(impl.findAllArticlesForRoleOrderedByDateDesc(role, 0, 2), list);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	private ArticleEntity createArticleEntity() {

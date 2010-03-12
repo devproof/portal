@@ -15,6 +15,11 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +32,6 @@ import org.devproof.portal.module.bookmark.dao.BookmarkDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -39,9 +43,9 @@ public class BookmarkServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(BookmarkDao.class);
+		mock = createStrictMock(BookmarkDao.class);
 		@SuppressWarnings("unchecked")
-		TagService<BookmarkTagEntity> tagService = EasyMock.createStrictMock(TagService.class);
+		TagService<BookmarkTagEntity> tagService = createStrictMock(TagService.class);
 		mockTag = tagService;
 		impl = new BookmarkServiceImpl();
 		impl.setBookmarkDao(mock);
@@ -51,13 +55,13 @@ public class BookmarkServiceImplTest extends TestCase {
 	public void testSave() {
 		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
-		EasyMock.expect(mock.save(e)).andReturn(e);
+		expect(mock.save(e)).andReturn(e);
 		mockTag.deleteUnusedTags();
-		EasyMock.replay(mock);
-		EasyMock.replay(mockTag);
+		replay(mock);
+		replay(mockTag);
 		impl.save(e);
-		EasyMock.verify(mock);
-		EasyMock.verify(mockTag);
+		verify(mock);
+		verify(mockTag);
 	}
 
 	public void testDelete() {
@@ -65,30 +69,30 @@ public class BookmarkServiceImplTest extends TestCase {
 		e.setId(1);
 		mock.delete(e);
 		mockTag.deleteUnusedTags();
-		EasyMock.replay(mock);
-		EasyMock.replay(mockTag);
+		replay(mock);
+		replay(mockTag);
 		impl.delete(e);
-		EasyMock.verify(mock);
-		EasyMock.verify(mockTag);
+		verify(mock);
+		verify(mockTag);
 	}
 
 	public void testFindAll() {
 		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
 		list.add(createBookmarkEntity());
 		list.add(createBookmarkEntity());
-		EasyMock.expect(mock.findAll()).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findAll()).andReturn(list);
+		replay(mock);
 		assertEquals(list, impl.findAll());
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindById() {
 		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
-		EasyMock.expect(mock.findById(1)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findById(1)).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testNewBookmarkEntity() {
@@ -101,47 +105,47 @@ public class BookmarkServiceImplTest extends TestCase {
 		list.add(createBookmarkEntity());
 		RoleEntity role = new RoleEntity();
 		role.setId(1);
-		EasyMock.expect(mock.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
+		replay(mock);
 		impl.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindBookmarksBySource() {
 		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
 		list.add(createBookmarkEntity());
 		list.add(createBookmarkEntity());
-		EasyMock.expect(mock.findBookmarksBySource(Source.DELICIOUS)).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findBookmarksBySource(Source.DELICIOUS)).andReturn(list);
+		replay(mock);
 		impl.findBookmarksBySource(Source.DELICIOUS);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testIncrementHits() {
 		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.incrementHits(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.incrementHits(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testMarkBrokenBookmark() {
 		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.markBrokenBookmark(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.markBrokenBookmark(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testMarkValidBookmark() {
 		BookmarkEntity e = createBookmarkEntity();
 		e.setId(1);
 		mock.markValidBookmark(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.markValidBookmark(e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testRateBookmark() {
@@ -149,17 +153,17 @@ public class BookmarkServiceImplTest extends TestCase {
 		e.setId(1);
 		mock.rateBookmark(5, e);
 		mock.refresh(e);
-		EasyMock.replay(mock);
+		replay(mock);
 		impl.rateBookmark(5, e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testFindLastSelectedRightsk() {
 		List<RightEntity> list = new ArrayList<RightEntity>();
-		EasyMock.expect(mock.findLastSelectedRights()).andReturn(list);
-		EasyMock.replay(mock);
+		expect(mock.findLastSelectedRights()).andReturn(list);
+		replay(mock);
 		assertTrue(impl.findLastSelectedRights() == list);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	private BookmarkEntity createBookmarkEntity() {
