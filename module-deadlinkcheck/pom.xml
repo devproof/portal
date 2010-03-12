@@ -67,7 +67,7 @@
 			<artifactId>portal-core</artifactId>
 			<version>${devproof.version}</version>
 		</dependency>
-		<!-- Dependencies comes from portal-build -->
+		<!-- Dependencies comes from parent pom -->
 		<!-- Sorry guys, I'm too lazy to manage to many dependencies -->
 	</dependencies>
 </project>
