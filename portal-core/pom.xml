@@ -20,7 +20,6 @@
     	<groupId>org.devproof.portal</groupId>
     	<artifactId>portal-build</artifactId>
     	<version>FIXED</version>
-    	<relativePath>../portal-build</relativePath>
   	</parent>
 	<build>
 		<resources>

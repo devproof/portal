@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.devproof.portal</groupId>
 	<artifactId>portal-bundle</artifactId>
-	<packaging>pom</packaging>
 	<name>devproof portal-bundle</name>
 	<version>${devproof.version}</version>
 	<description>Portal bundle</description>
@@ -12,9 +11,7 @@
     	<groupId>org.devproof.portal</groupId>
     	<artifactId>portal-build</artifactId>
     	<version>FIXED</version>
-    	<relativePath>../portal-build</relativePath>
   	</parent>
-	
 	<developers>
 		<developer>
 			<id>Carsten.Hufe</id>
