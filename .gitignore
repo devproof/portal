@@ -1,2 +1,5 @@
 target/
 portal-bundle/true
+.project
+.settings
+.classpath
