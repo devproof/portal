@@ -17,17 +17,17 @@
 		<jetty.version>6.1.19</jetty.version>
 	</properties>
 	<modules>
-		<module>../portal-core</module>
-		<module>../module-comment</module>
-		<module>../module-blog</module>
-		<module>../module-article</module>
-		<module>../module-deadlinkcheck</module>
-		<module>../module-bookmark</module>
-		<module>../module-download</module>
-		<module>../module-otherpage</module>
-		<module>../module-uploadcenter</module>
-		<module>../portal-webapp</module>
-		<module>../portal-bundle</module>
+		<module>portal-core</module>
+		<module>module-comment</module>
+		<module>module-blog</module>
+		<module>module-article</module>
+		<module>module-deadlinkcheck</module>
+		<module>module-bookmark</module>
+		<module>module-download</module>
+		<module>module-otherpage</module>
+		<module>module-uploadcenter</module>
+		<module>portal-webapp</module>
+		<module>portal-bundle</module>
 	</modules>
 	
 	<build>
