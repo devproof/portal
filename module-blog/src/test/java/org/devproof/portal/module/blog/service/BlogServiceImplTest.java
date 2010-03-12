@@ -15,13 +15,16 @@
  */
 package org.devproof.portal.module.blog.service;
 
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
 
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
-import org.easymock.EasyMock;
 
 /**
  * @author Carsten Hufe
@@ -33,9 +36,9 @@ public class BlogServiceImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		mock = EasyMock.createStrictMock(BlogDao.class);
+		mock = createStrictMock(BlogDao.class);
 		@SuppressWarnings("unchecked")
-		TagService<BlogTagEntity> tagService = EasyMock.createStrictMock(TagService.class);
+		TagService<BlogTagEntity> tagService = createStrictMock(TagService.class);
 		mockTag = tagService;
 		impl = new BlogServiceImpl();
 		impl.setBlogDao(mock);
@@ -44,32 +47,32 @@ public class BlogServiceImplTest extends TestCase {
 
 	public void testSave() {
 		BlogEntity e = createBlogEntity();
-		EasyMock.expect(mock.save(e)).andReturn(e);
+		expect(mock.save(e)).andReturn(e);
 		mockTag.deleteUnusedTags();
-		EasyMock.replay(mock);
-		EasyMock.replay(mockTag);
+		replay(mock);
+		replay(mockTag);
 		impl.save(e);
-		EasyMock.verify(mock);
-		EasyMock.verify(mockTag);
+		verify(mock);
+		verify(mockTag);
 	}
 
 	public void testDelete() {
 		BlogEntity e = createBlogEntity();
 		mock.delete(e);
 		mockTag.deleteUnusedTags();
-		EasyMock.replay(mock);
-		EasyMock.replay(mockTag);
+		replay(mock);
+		replay(mockTag);
 		impl.delete(e);
-		EasyMock.verify(mock);
-		EasyMock.verify(mockTag);
+		verify(mock);
+		verify(mockTag);
 	}
 
 	public void testFindById() {
 		BlogEntity e = createBlogEntity();
-		EasyMock.expect(mock.findById(1)).andReturn(e);
-		EasyMock.replay(mock);
+		expect(mock.findById(1)).andReturn(e);
+		replay(mock);
 		assertEquals(impl.findById(1), e);
-		EasyMock.verify(mock);
+		verify(mock);
 	}
 
 	public void testNewBlogEntity() {
