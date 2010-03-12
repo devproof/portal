@@ -36,14 +36,14 @@ public class ExternalImage extends WebComponent {
 		super(id);
 		String url = UrlUtils.rewriteToContextRelative(imageUrl, getRequest());
 		add(new AttributeModifier("src", true, Model.of(url)));
-		setVisible(!(url == null || url.equals("")));
+		setVisible(!(url == null || "".equals(url)));
 	}
 
 	public ExternalImage(String id, ResourceReference imageResource) {
 		super(id);
 		String url = getRequestCycle().urlFor(imageResource).toString();
 		add(new AttributeModifier("src", true, Model.of(url)));
-		setVisible(!(url == null || url.equals("")));
+		setVisible(!(url == null || "".equals(url)));
 	}
 
 	@Override

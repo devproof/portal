@@ -19,10 +19,10 @@ import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
@@ -183,7 +183,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private Component createEmptyAuthorPanel() {
-		return new WebMarkupContainer("authorButtons").setVisible(false);
+		return new EmptyPanel("authorButtons").setVisible(false);
 	}
 
 	private ExtendedLabel createContentLabel() {
@@ -203,8 +203,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private BookmarkablePageLink<String> newForwardLink() {
-		BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink",
-				ArticleReadPage.class) {
+		return new BookmarkablePageLink<String>("forwardLink", ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -213,7 +212,6 @@ public class ArticleReadPage extends ArticleBasePage {
 			}
 
 		};
-		return forwardLink;
 	}
 
 	private BookmarkablePageLink<String> createBackLink() {
@@ -224,7 +222,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private BookmarkablePageLink<String> newBackLink() {
-		BookmarkablePageLink<String> backLink = new BookmarkablePageLink<String>("backLink", ArticleReadPage.class) {
+		return new BookmarkablePageLink<String>("backLink", ArticleReadPage.class) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -232,6 +230,5 @@ public class ArticleReadPage extends ArticleBasePage {
 				return currentPageNumber > 1;
 			}
 		};
-		return backLink;
 	}
 }
