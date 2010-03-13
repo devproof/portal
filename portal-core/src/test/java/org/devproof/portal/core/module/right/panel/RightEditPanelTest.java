@@ -29,8 +29,11 @@ import org.devproof.portal.test.PortalTestUtil;
 public class RightEditPanelTest extends TestCase {
 	private WicketTester tester;
 
+	// private static boolean calledSave = false;
+
 	@Override
 	public void setUp() throws Exception {
+		// calledSave = false;
 		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
 		PortalTestUtil.loginDefaultAdminUser(tester);
 	}
@@ -40,9 +43,26 @@ public class RightEditPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestRightEditPanel.class);
 		tester.assertComponent("panel", TestRightEditPanel.class);
+	}
+
+	/*
+	 * Palette seems to have a bug, so it is not testable with the WicketTester
+	 */
+	public void testSaveRight() {
+		// tester.startPanel(TestRightEditPanel.class);
+		// tester.assertComponent("panel", RightEditPanel.class);
+		// FormTester ft = tester.newFormTester("panel:form");
+		// ft.setValue("right", "myrightname");
+		// ft.setValue("description", "myrightdescription");
+		// tester.clickLink("panel:form:saveButton", true);
+		// tester.assertNoErrorMessage();
+		// assertTrue(calledSave);
+		// tester.startPage(RightPage.class);
+		// tester.assertContains("myrightname");
+		// tester.assertContains("myrightdescription");
 	}
 
 	public static class TestRightEditPanel extends RightEditPanel {
@@ -54,6 +74,7 @@ public class RightEditPanelTest extends TestCase {
 
 		@Override
 		public void onSave(AjaxRequestTarget target) {
+			// calledSave = true;
 		}
 
 		@Override
