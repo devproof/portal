@@ -67,23 +67,19 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	}
 
 	private Component createAppropriateContentLabel() {
-		Component contentLabel;
 		if (otherPage == null) {
-			contentLabel = createNoContentLabel();
+			return createNoContentLabel();
 		} else {
-			contentLabel = createContentLabel();
+			return createContentLabel();
 		}
-		return contentLabel;
 	}
 
 	private Component createAppropriateMetaInfoPanel() {
-		Component metaInfoPanel;
 		if (otherPage == null) {
-			metaInfoPanel = createHiddenMetaInfoPanel();
+			return createHiddenMetaInfoPanel();
 		} else {
-			metaInfoPanel = createMetaInfoPanel();
+			return createMetaInfoPanel();
 		}
-		return metaInfoPanel;
 	}
 
 	private ExtendedLabel createContentLabel() {
@@ -91,8 +87,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	}
 
 	private MetaInfoPanel createMetaInfoPanel() {
-		MetaInfoPanel metaInfo = new MetaInfoPanel("metaInfo", otherPage);
-		return metaInfo;
+		return new MetaInfoPanel("metaInfo", otherPage);
 	}
 
 	private void redirectToErrorPageIfHasNoRights() {
@@ -103,13 +98,11 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	}
 
 	private WebMarkupContainer createAppropriateAuthorPanel() {
-		WebMarkupContainer authorPanel;
 		if (isAuthor()) {
-			authorPanel = createAuthorPanel();
+			return createAuthorPanel();
 		} else {
-			authorPanel = createHiddenAuthorPanel();
+			return createHiddenAuthorPanel();
 		}
-		return authorPanel;
 	}
 
 	private WebMarkupContainer createHiddenAuthorPanel() {
@@ -125,7 +118,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
 	}
 
 	private AuthorPanel<OtherPageEntity> newAuthorPanel() {
-		AuthorPanel<OtherPageEntity> authorButtons = new AuthorPanel<OtherPageEntity>("authorButtons", otherPage) {
+		return new AuthorPanel<OtherPageEntity>("authorButtons", otherPage) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -150,7 +143,6 @@ public class OtherPageViewPage extends OtherPageBasePage {
 				return otherPage != null;
 			}
 		};
-		return authorButtons;
 	}
 
 	private boolean hasRightToViewOtherPage(OtherPageEntity page) {
