@@ -49,11 +49,10 @@ public class ExpandableCommentPanel extends Panel {
 	public ExpandableCommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
 		this.configuration = configuration;
-		add(createCSSHeaderContributor());
 		addJQuery();
+		add(createCSSHeaderContributor());
 		add(createRefreshCommentContainer());
 		add(createCommentLink());
-
 	}
 
 	@Override
