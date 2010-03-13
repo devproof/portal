@@ -18,6 +18,7 @@ package org.devproof.portal.module.comment.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
@@ -26,7 +27,7 @@ import org.devproof.portal.test.PortalTestUtil;
 /**
  * @author Carsten Hufe
  */
-public class ExpandableCommentInfoPanelTest extends TestCase {
+public class CommentPanelTest extends TestCase {
 	private WicketTester tester;
 
 	@Override
@@ -40,40 +41,46 @@ public class ExpandableCommentInfoPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPanel_withRight() {
-		tester.startPanel(createExpandableCommentPanel(true));
-		tester.assertComponent("panel", ExpandableCommentPanel.class);
+	public void testRenderDefaultPanel() {
+		tester.startPanel(createCommentPanel());
+		tester.assertComponent("panel", CommentPanel.class);
 	}
 
-	public void testRenderDefaultPanel_withoutRight() {
-		tester.startPanel(createExpandableCommentPanel(false));
-		tester.assertInvisible("panel");
+	public void testWriteComment() throws Exception {
+		PortalTestUtil.loginDefaultAdminUser(tester);
+		tester.startPanel(createCommentPanel());
+		tester.assertComponent("panel", CommentPanel.class);
+		FormTester ft = tester.newFormTester("panel:form");
+		ft.setValue("comment", "I believe I can fly.");
+		ft.submit();
+		tester.clickLink("panel:form:addCommentButton", true);
+		tester.assertNoErrorMessage();
+		tester.assertInvisible("panel:form");
+		tester.assertContains("I believe I can fly.");
 	}
 
-	private TestPanelSource createExpandableCommentPanel(final boolean allowedToView) {
+	private TestPanelSource createCommentPanel() {
 		return new TestPanelSource() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new ExpandableCommentPanel(panelId, new TestCommentConfiguration(allowedToView));
+				return new CommentPanel(panelId, new TestCommentConfiguration());
 			}
 		};
 	}
 
 	private static class TestCommentConfiguration extends DefaultCommentConfiguration {
 		private static final long serialVersionUID = 1L;
-		private boolean allowedToView;
 
-		public TestCommentConfiguration(boolean allowedToView) {
-			this.allowedToView = allowedToView;
+		public TestCommentConfiguration() {
 			setModuleContentId("contentid");
 			setModuleName("modulename");
 		}
 
 		@Override
 		public boolean isAllowedToView() {
-			return allowedToView;
+			return true;
 		}
 
 		@Override

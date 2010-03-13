@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -65,7 +64,7 @@ public class ForgotPasswordPage extends TemplatePage {
 		return form;
 	}
 
-	private Button createRequestButton() {
+	private Component createRequestButton() {
 		return new CaptchaAjaxButton("requestButton", bubblePanel) {
 			private static final long serialVersionUID = 1L;
 

@@ -71,7 +71,7 @@ public class CommentPanel extends Panel {
 	@SpringBean(name = "commentService")
 	private CommentService commentService;
 	private CommentQuery query;
-	private FeedbackPanel feedback;
+	private FeedbackPanel feedbackPanel;
 	private BubblePanel bubblePanel;
 
 	private CommentDataView dataView;
@@ -230,9 +230,9 @@ public class CommentPanel extends Panel {
 	}
 
 	private FeedbackPanel createFeedbackPanel() {
-		feedback = new FeedbackPanel("feedback");
-		feedback.setOutputMarkupId(true);
-		return feedback;
+		feedbackPanel = new FeedbackPanel("feedback");
+		feedbackPanel.setOutputMarkupId(true);
+		return feedbackPanel;
 	}
 
 	private CommentDataView createCommentDataView() {
@@ -281,8 +281,12 @@ public class CommentPanel extends Panel {
 
 		@Override
 		protected void populateItem(Item<CommentEntity> item) {
+			item.add(createCommentView(item));
 			item.setOutputMarkupId(true);
-			item.add(new CommentView("commentView", item));
+		}
+
+		private CommentView createCommentView(Item<CommentEntity> item) {
+			return new CommentView("commentView", item);
 		}
 	}
 
@@ -327,7 +331,7 @@ public class CommentPanel extends Panel {
 		}
 
 		private CaptchaAjaxLink createReportViolationLink() {
-			CaptchaAjaxLink reportViolationLink = new CaptchaAjaxLink("reportViolationLink", bubblePanel) {
+			return new CaptchaAjaxLink("reportViolationLink", bubblePanel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -337,7 +341,6 @@ public class CommentPanel extends Panel {
 					bubblePanel.showMessage(getMarkupId(), target, getString("reported"));
 				}
 			};
-			return reportViolationLink;
 		}
 
 		private Label createCommentContentLabel() {

@@ -41,7 +41,7 @@ public class DownloadSearchBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createDownloadSearchBoxPanel());
 		tester.assertComponent("panel", DownloadSearchBoxPanel.class);
 	}
