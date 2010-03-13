@@ -197,10 +197,10 @@ public class PortalTestUtil {
 		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, "org.hibernate.dialect.HSQLDialect");
 		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE, "false");
 		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_QUERY_CACHE, "false");
-
+		registerResource(CommonConstants.JNDI_PROP_EMAIL_DISABLED, "true");
 	}
 
-	private static void registerResource(String jndiName, Object jndiObj) {
+	public static void registerResource(String jndiName, Object jndiObj) {
 		try {
 			new org.mortbay.jetty.plus.naming.Resource(jndiName, jndiObj);
 		} catch (NamingException e) {

@@ -100,7 +100,7 @@ public class JettyStart {
 
 		Session mailSession = Session.getDefaultInstance(props, auth);
 		new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
-
+		new Resource(CommonConstants.JNDI_PROP_EMAIL_DISABLED, "true");
 		// START JMX SERVER
 		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 		MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);

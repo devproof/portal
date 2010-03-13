@@ -21,7 +21,6 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -180,7 +179,7 @@ public class ContactPage extends TemplatePage {
 		return "§$$§";
 	}
 
-	private Button createSendButton() {
+	private Component createSendButton() {
 		return new CaptchaAjaxButton("sendButton", bubblePanel) {
 			private static final long serialVersionUID = 1L;
 

@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.common.panel.captcha;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.form.Form;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -25,7 +25,7 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 /**
  * @author Carsten Hufe
  */
-public abstract class CaptchaAjaxButton extends AjaxButton {
+public abstract class CaptchaAjaxButton extends AjaxSubmitLink {
 	private static final long serialVersionUID = 1L;
 	private BubblePanel bubblePanel;
 
