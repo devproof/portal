@@ -56,7 +56,7 @@
 		<mkdir dir="target/hsql/"/>
 		<sql
 		    driver="org.hsqldb.jdbcDriver"
-		    url="jdbc:hsqldb:file:../portal-bundle/target/hsql/devproof_data"
+		    url="jdbc:hsqldb:file:portal-bundle/target/hsql/devproof_data"
 		    userid="sa"
 		    password=""
 		    delimiter="dummy_delimiter_for_one_commit"
