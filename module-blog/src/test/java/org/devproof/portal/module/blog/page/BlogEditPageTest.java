@@ -42,11 +42,11 @@ public class BlogEditPageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPage(getNewBlogEditPage());
+		tester.startPage(createNewBlogEditPage());
 		tester.assertRenderedPage(BlogEditPage.class);
 	}
 
-	private BlogEditPage getNewBlogEditPage() {
+	private BlogEditPage createNewBlogEditPage() {
 		return new BlogEditPage(Model.of(new BlogEntity()));
 	}
 
@@ -57,7 +57,7 @@ public class BlogEditPageTest extends TestCase {
 	}
 
 	private void callBlogEditPage() {
-		tester.startPage(getNewBlogEditPage());
+		tester.startPage(createNewBlogEditPage());
 		tester.assertRenderedPage(BlogEditPage.class);
 	}
 
@@ -77,7 +77,7 @@ public class BlogEditPageTest extends TestCase {
 	}
 
 	private void assertBlogPage() {
-		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewBlogEditPage());
+		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", createNewBlogEditPage());
 		tester.assertRenderedPage(BlogPage.class);
 		tester.assertInfoMessages(expectedMsgs);
 		tester.startPage(BlogPage.class);
