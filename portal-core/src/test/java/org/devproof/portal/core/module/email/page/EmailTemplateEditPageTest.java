@@ -17,7 +17,10 @@ package org.devproof.portal.core.module.email.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
@@ -38,7 +41,38 @@ public class EmailTemplateEditPageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPage(EmailTemplatePage.class);
+		tester.startPage(createEmailTemplateEditPage());
+		tester.assertRenderedPage(EmailTemplateEditPage.class);
+	}
+
+	public void testSaveEmailTemplate() {
+		callEmailTemplateEditPage();
+		submitEmailTemplateForm();
+		assertEmailTemplateEditPage();
+	}
+
+	private void assertEmailTemplateEditPage() {
+		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", createEmailTemplateEditPage());
 		tester.assertRenderedPage(EmailTemplatePage.class);
+		tester.assertNoErrorMessage();
+		tester.assertInfoMessages(expectedMsgs);
+		tester.startPage(EmailTemplatePage.class);
+		tester.assertContains("test subject");
+	}
+
+	private void callEmailTemplateEditPage() {
+		tester.startPage(createEmailTemplateEditPage());
+		tester.assertRenderedPage(EmailTemplateEditPage.class);
+	}
+
+	private void submitEmailTemplateForm() {
+		FormTester form = tester.newFormTester("form");
+		form.setValue("subject", "test subject");
+		form.setValue("content", "testing content");
+		form.submit();
+	}
+
+	private EmailTemplateEditPage createEmailTemplateEditPage() {
+		return new EmailTemplateEditPage(Model.of(new EmailTemplateEntity()));
 	}
 }
