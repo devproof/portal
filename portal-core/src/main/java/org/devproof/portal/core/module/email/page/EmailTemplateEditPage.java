@@ -22,7 +22,6 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.email.service.EmailService;
@@ -67,17 +66,12 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String> fc;
-		fc = new BasicRichTextArea("content", true);
+		FormComponent<String> fc = new BasicRichTextArea("content", true);
 		fc.setRequired(true);
-		fc.add(StringValidator.minimumLength(10));
 		return fc;
 	}
 
 	private FormComponent<String> createSubjectField() {
-		FormComponent<String> fc;
-		fc = new RequiredTextField<String>("subject");
-		fc.add(StringValidator.minimumLength(5));
-		return fc;
+		return new RequiredTextField<String>("subject");
 	}
 }
