@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.configuration.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
 
@@ -40,5 +41,17 @@ public class ConfigurationPageTest extends TestCase {
 	public void testRenderDefaultPage() {
 		tester.startPage(ConfigurationPage.class);
 		tester.assertRenderedPage(ConfigurationPage.class);
+	}
+
+	public void testSaveConfiguration() {
+		tester.startPage(ConfigurationPage.class);
+		tester.assertRenderedPage(ConfigurationPage.class);
+		tester.assertLabel("form:tableRow:4:description", "From email address");
+		FormTester ft = tester.newFormTester("form");
+		ft.setValue("tableRow:4:editor:edit", "hello@world.tld");
+		ft.submit();
+		tester.assertNoErrorMessage();
+		tester.startPage(ConfigurationPage.class);
+		tester.assertContains("hello@world.tld");
 	}
 }
