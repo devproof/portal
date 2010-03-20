@@ -17,7 +17,12 @@ package org.devproof.portal.core.module.user.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.page.MessagePage;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
@@ -39,5 +44,24 @@ public class RegisterPageTest extends TestCase {
 	public void testRenderDefaultPage() {
 		tester.startPage(RegisterPage.class);
 		tester.assertRenderedPage(RegisterPage.class);
+	}
+
+	public void testRegistration() {
+		Page page = tester.startPage(RegisterPage.class);
+		tester.assertRenderedPage(RegisterPage.class);
+		PortalSession.get().getRights().add(new RightEntity("captcha.disabled"));
+		FormTester ft = tester.newFormTester("form");
+		ft.setValue("username", "peterpan");
+		ft.setValue("firstname", "mike");
+		ft.setValue("lastname", "jack");
+		ft.setValue("email", "mike.jack@email.tld");
+		ft.setValue("birthday", "1981-10-13");
+		ft.setValue("password1", "testing");
+		ft.setValue("password2", "testing");
+		ft.setValue("termsOfUse", true);
+		tester.executeAjaxEvent("form:registerButton", "onclick");
+		tester.assertNoErrorMessage();
+		tester.assertRenderedPage(MessagePage.class);
+		tester.assertContains(page.getString("confirm.email"));
 	}
 }
