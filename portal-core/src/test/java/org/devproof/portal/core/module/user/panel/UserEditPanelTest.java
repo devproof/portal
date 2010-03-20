@@ -19,8 +19,10 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.page.UserPage;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
@@ -43,6 +45,23 @@ public class UserEditPanelTest extends TestCase {
 	public void testRenderDefaultPage() {
 		tester.startPanel(TestUserEditPanel.class);
 		tester.assertComponent("panel", TestUserEditPanel.class);
+	}
+
+	public void testSaveUserTestCase() {
+		tester.startPanel(TestUserEditPanel.class);
+		tester.assertComponent("panel", TestUserEditPanel.class);
+		FormTester ft = tester.newFormTester("panel:form");
+		ft.setValue("firstname", "Peter");
+		ft.setValue("lastname", "Pan");
+		ft.setValue("email", "peterpan@email.tld");
+		ft.select("role", 1);
+		ft.setValue("password1", "testing");
+		ft.setValue("password2", "testing");
+		tester.executeAjaxEvent("panel:form:saveButton", "onclick");
+		tester.assertNoErrorMessage();
+		tester.startPage(UserPage.class);
+		tester.assertContains("Peter");
+		tester.assertContains("Pan");
 	}
 
 	public static class TestUserEditPanel extends UserEditPanel {
