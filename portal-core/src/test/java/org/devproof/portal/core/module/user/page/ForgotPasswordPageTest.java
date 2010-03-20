@@ -17,7 +17,12 @@ package org.devproof.portal.core.module.user.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.page.MessagePage;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
@@ -39,5 +44,17 @@ public class ForgotPasswordPageTest extends TestCase {
 	public void testRenderDefaultPage() {
 		tester.startPage(ForgotPasswordPage.class);
 		tester.assertRenderedPage(ForgotPasswordPage.class);
+	}
+
+	public void testRequestEmail() {
+		Page page = tester.startPage(ForgotPasswordPage.class);
+		tester.assertRenderedPage(ForgotPasswordPage.class);
+		PortalSession.get().getRights().add(new RightEntity("captcha.disabled"));
+		FormTester ft = tester.newFormTester("form");
+		ft.setValue("emailoruser", "admin");
+		tester.executeAjaxEvent("form:requestButton", "onclick");
+		tester.assertNoErrorMessage();
+		tester.assertRenderedPage(MessagePage.class);
+		tester.assertContains(page.getString("email.sent"));
 	}
 }
