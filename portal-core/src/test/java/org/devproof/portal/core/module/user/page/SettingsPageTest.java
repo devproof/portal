@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.user.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
 
@@ -40,5 +41,18 @@ public class SettingsPageTest extends TestCase {
 	public void testRenderDefaultPage() {
 		tester.startPage(SettingsPage.class);
 		tester.assertRenderedPage(SettingsPage.class);
+	}
+
+	public void testSaveUserSettings() {
+		tester.startPage(SettingsPage.class);
+		tester.assertRenderedPage(SettingsPage.class);
+		FormTester ft = tester.newFormTester("form");
+		ft.setValue("firstname", "Peter");
+		ft.setValue("lastname", "Pan");
+		ft.submit("saveButton");
+		tester.assertNoErrorMessage();
+		tester.startPage(SettingsPage.class);
+		tester.assertContains("Peter");
+		tester.assertContains("Pan");
 	}
 }
