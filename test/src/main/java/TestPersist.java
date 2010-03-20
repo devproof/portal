@@ -16,6 +16,7 @@ public class TestPersist {
 		// for (ValueRow<User> row : rows) {
 		// System.out.println(row.getValue());
 		// }
+		// ViewResult<Map> listDocuments = db.listDocuments(null, null);
 
 		List<User> users = new ArrayList<User>();
 		for (int i = 0; i < 10000; i++) {
@@ -42,7 +43,7 @@ public class TestPersist {
 		db.createDocument(user);
 		System.out.println(System.currentTimeMillis() - currentTimeMillis);
 		currentTimeMillis = System.currentTimeMillis();
-		db.bulkCreateDocuments(users);
+		// db.bulkCreateDocuments(users);
 		System.out.println(System.currentTimeMillis() - currentTimeMillis);
 	}
 }
