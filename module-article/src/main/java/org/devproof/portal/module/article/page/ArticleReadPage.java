@@ -24,12 +24,12 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
-import org.devproof.portal.core.module.common.model.EntityModel;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
@@ -163,7 +163,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private AuthorPanel<ArticleEntity> newAuthorPanel(final ArticlePageEntity page) {
-		AuthorPanel<ArticleEntity> authorPanel = new AuthorPanel<ArticleEntity>("authorButtons", page.getArticle()) {
+		return new AuthorPanel<ArticleEntity>("authorButtons", page.getArticle()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -175,11 +175,21 @@ public class ArticleReadPage extends ArticleBasePage {
 			public void onEdit(AjaxRequestTarget target) {
 				ArticleEntity article = page.getArticle();
 				article = articleService.findByIdAndPrefetch(article.getId());
-				IModel<ArticleEntity> articleModel = EntityModel.of(article);
+				IModel<ArticleEntity> articleModel = createArticleModel();
 				setResponsePage(new ArticleEditPage(articleModel));
 			}
+
+			private IModel<ArticleEntity> createArticleModel() {
+				return new LoadableDetachableModel<ArticleEntity>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected ArticleEntity load() {
+						return articleService.findByIdAndPrefetch(page.getArticle().getId());
+					}
+				};
+			}
 		};
-		return authorPanel;
 	}
 
 	private Component createEmptyAuthorPanel() {

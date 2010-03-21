@@ -184,7 +184,7 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 		if (fullArticle == null) {
 			fullArticle = " ";
 		}
-		List<ArticlePageEntity> pages = new ArrayList<ArticlePageEntity>();
+		List<ArticlePageEntity> pages = getArticlePages();
 		List<String> splittedPages = getSplittedPages(fullArticle);
 		for (int i = 0; i < splittedPages.size(); i++) {
 			ArticlePageEntity page = null;
@@ -194,12 +194,14 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
 			} else {
 				page = newArticlePageEntity(i + 1);
 				page.setArticle(this);
-				// getArticlePages().add(page);
+				pages.add(page);
 			}
 			page.setContent(splittedPages.get(i));
-			pages.add(page);
+			// pages.add(page);
 		}
-		setArticlePages(pages);
+		for (int i = pages.size() - 1; i >= splittedPages.size(); i--) {
+			pages.remove(i);
+		}
 	}
 
 	@Transient
