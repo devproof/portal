@@ -38,7 +38,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
@@ -143,7 +142,6 @@ public abstract class RoleEditPanel extends Panel {
 
 	private FormComponent<String> createRoleDescriptionField() {
 		FormComponent<String> fc = new RequiredTextField<String>("description");
-		fc.add(StringValidator.minimumLength(5));
 		fc.setEnabled(isRoleEditable);
 		return fc;
 	}
