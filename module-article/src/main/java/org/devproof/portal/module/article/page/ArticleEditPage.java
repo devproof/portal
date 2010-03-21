@@ -31,7 +31,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
@@ -104,7 +103,6 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	private RequiredTextField<String> createTitleField() {
 		RequiredTextField<String> title = new RequiredTextField<String>("title");
-		title.add(StringValidator.minimumLength(3));
 		if (isNewArticle()) {
 			title.add(createContentIdGeneratorBehavior(contentIdField, title));
 		}
@@ -112,15 +110,11 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private FormComponent<String> createTeaserField() {
-		FormComponent<String> fc = new BasicRichTextArea("teaser", false);
-		fc.add(StringValidator.minimumLength(3));
-		return fc;
+		return new BasicRichTextArea("teaser", false);
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String> fc = new FullRichTextArea("fullArticle");
-		fc.add(StringValidator.minimumLength(3));
-		return fc;
+		return new FullRichTextArea("fullArticle");
 	}
 
 	private boolean isNewArticle() {

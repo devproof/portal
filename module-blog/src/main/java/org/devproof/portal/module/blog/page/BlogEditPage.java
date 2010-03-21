@@ -26,7 +26,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
@@ -96,14 +95,10 @@ public class BlogEditPage extends BlogBasePage {
 	}
 
 	private FormComponent<String> createContentField() {
-		FullRichTextArea fc = new FullRichTextArea("content");
-		fc.add(StringValidator.minimumLength(3));
-		return fc;
+		return new FullRichTextArea("content");
 	}
 
 	private FormComponent<String> createHeadlineField() {
-		RequiredTextField<String> fc = new RequiredTextField<String>("headline");
-		fc.add(StringValidator.minimumLength(3));
-		return fc;
+		return new RequiredTextField<String>("headline");
 	}
 }
