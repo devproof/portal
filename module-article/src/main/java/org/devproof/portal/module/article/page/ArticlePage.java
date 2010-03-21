@@ -27,6 +27,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -34,7 +35,6 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
-import org.devproof.portal.core.module.common.model.EntityModel;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
@@ -243,7 +243,6 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private AuthorPanel<ArticleEntity> createAuthorPanel(final Item<ArticleEntity> item) {
-			final ArticleEntity article = item.getModelObject();
 			return new AuthorPanel<ArticleEntity>("authorButtons", article) {
 				private static final long serialVersionUID = 1L;
 
@@ -258,10 +257,19 @@ public class ArticlePage extends ArticleBasePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					// Reload because LazyIntialization occur
-					IModel<ArticleEntity> articleModel = EntityModel.of(articleService.findByIdAndPrefetch(article
-							.getId()));
+					IModel<ArticleEntity> articleModel = createArticleModel();
 					setResponsePage(new ArticleEditPage(articleModel));
+				}
+
+				private IModel<ArticleEntity> createArticleModel() {
+					return new LoadableDetachableModel<ArticleEntity>() {
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						protected ArticleEntity load() {
+							return articleService.findByIdAndPrefetch(article.getId());
+						}
+					};
 				}
 			};
 		}
