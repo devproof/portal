@@ -39,7 +39,6 @@ import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
@@ -137,17 +136,12 @@ public abstract class RightEditPanel extends Panel {
 	}
 
 	private FormComponent<String> createDescriptionField() {
-		FormComponent<String> fc;
-		fc = new TextArea<String>("description");
-		fc.setRequired(true);
-		fc.add(StringValidator.minimumLength(10));
-		return fc;
+		return new TextArea<String>("description");
 	}
 
 	private FormComponent<String> createRightNameField() {
-		FormComponent<String> fc;
-		fc = new RequiredTextField<String>("right");
-		fc.add(StringValidator.minimumLength(5));
+		FormComponent<String> fc = new RequiredTextField<String>("right");
+		// fc.add(StringValidator.minimumLength(5));
 		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
 		fc.setEnabled(isRightEditable);
 		return fc;
