@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
@@ -52,12 +51,12 @@ public class ArticleEditPage extends ArticleBasePage {
 	@SpringBean(name = "articleTagService")
 	private TagService<ArticleTagEntity> articleTagService;
 
-	private ArticleEntity article;
+	private IModel<ArticleEntity> articleModel;
 	private RequiredTextField<String> contentIdField;
 
 	public ArticleEditPage(IModel<ArticleEntity> articleModel) {
 		super(new PageParameters());
-		this.article = articleModel.getObject();
+		this.articleModel = articleModel;
 		add(createArticleEditForm());
 	}
 
@@ -76,37 +75,55 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private RightGridPanel createReadRightPanel() {
-		return new RightGridPanel("readright", "article.read", new ListModel<RightEntity>(article.getAllRights()));
+		IModel<List<RightEntity>> selectedRights = new PropertyModel<List<RightEntity>>(articleModel, "allRights");
+		return new RightGridPanel("readright", "article.read", selectedRights);
 	}
 
 	private RightGridPanel createViewRightPanel() {
-		return new RightGridPanel("viewright", "article.view", new ListModel<RightEntity>(article.getAllRights()));
+		IModel<List<RightEntity>> selectedRights = new PropertyModel<List<RightEntity>>(articleModel, "allRights");
+		return new RightGridPanel("viewright", "article.view", selectedRights);
 	}
 
 	private RightGridPanel createCommentRightPanel() {
-		return new RightGridPanel("commentright", "article.comment", new ListModel<RightEntity>(article.getAllRights()));
+		IModel<List<RightEntity>> selectedRights = new PropertyModel<List<RightEntity>>(articleModel, "allRights");
+		return new RightGridPanel("commentright", "article.comment", selectedRights);
 	}
 
 	private TagField<ArticleTagEntity> createTagField() {
-		IModel<List<ArticleTagEntity>> listModel = new PropertyModel<List<ArticleTagEntity>>(article, "tags");
+		IModel<List<ArticleTagEntity>> listModel = new PropertyModel<List<ArticleTagEntity>>(articleModel, "tags");
 		return new TagField<ArticleTagEntity>("tags", listModel, articleTagService);
 	}
 
 	private RequiredTextField<String> createContentIdField() {
-		contentIdField = new RequiredTextField<String>("contentId");
-		contentIdField.setEnabled(isNewArticle());
-		contentIdField.add(newContentIdValidator());
-		contentIdField.add(new PatternValidator("[A-Za-z0-9\\_\\._\\-]*"));
+		contentIdField = newContentIdField();
+		contentIdField.add(contentIdValidator());
+		contentIdField.add(contentIdPatternValidator());
 		contentIdField.setOutputMarkupId(true);
 		return contentIdField;
 	}
 
+	private PatternValidator contentIdPatternValidator() {
+		return new PatternValidator("[A-Za-z0-9\\_\\._\\-]*");
+	}
+
+	private RequiredTextField<String> newContentIdField() {
+		return new RequiredTextField<String>("contentId") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled() {
+				return isNewArticle();
+			}
+		};
+	}
+
+	private boolean isNewArticle() {
+		return articleModel.getObject().getId() == null;
+	}
+
 	private RequiredTextField<String> createTitleField() {
 		RequiredTextField<String> title = new RequiredTextField<String>("title");
-		// FIXME aeusserst gefährlich!!!!
-		if (isNewArticle()) {
-			title.add(createContentIdGeneratorBehavior(contentIdField, title));
-		}
+		title.add(createContentIdGeneratorBehavior(title));
 		return title;
 	}
 
@@ -118,27 +135,24 @@ public class ArticleEditPage extends ArticleBasePage {
 		return new FullRichTextArea("fullArticle");
 	}
 
-	private boolean isNewArticle() {
-		return article.getId() == null;
-	}
-
-	private OnChangeAjaxBehavior createContentIdGeneratorBehavior(final RequiredTextField<String> contentId,
-			final RequiredTextField<String> title) {
+	private OnChangeAjaxBehavior createContentIdGeneratorBehavior(final RequiredTextField<String> title) {
 		return new OnChangeAjaxBehavior() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onUpdate(final AjaxRequestTarget target) {
-				String id = title.getModelObject();
-				id = id.replace(' ', '_');
-				id = id.replaceAll("[^A-Z^a-z^0-9^\\_^\\.^_\\-]*", "");
-				contentId.setModelObject(id);
-				target.addComponent(contentId);
+			protected void onUpdate(AjaxRequestTarget target) {
+				if (isNewArticle()) {
+					String id = title.getModelObject();
+					id = id.replace(' ', '_');
+					id = id.replaceAll("[^A-Z^a-z^0-9^\\_^\\.^_\\-]*", "");
+					contentIdField.setModelObject(id);
+					target.addComponent(contentIdField);
+				}
 			}
 		};
 	}
 
-	private AbstractValidator<String> newContentIdValidator() {
+	private AbstractValidator<String> contentIdValidator() {
 		return new AbstractValidator<String>() {
 			private static final long serialVersionUID = 1L;
 
@@ -157,11 +171,12 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private Form<ArticleEntity> newArticleEditForm() {
-		return new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(article)) {
+		return new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(articleModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
+				ArticleEntity article = articleModel.getObject();
 				articleService.save(article);
 				setRedirect(false);
 				setResponsePage(ArticleReadPage.class, new PageParameters("0=" + article.getContentId()));
