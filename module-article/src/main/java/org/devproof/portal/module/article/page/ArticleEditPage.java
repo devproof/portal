@@ -103,6 +103,7 @@ public class ArticleEditPage extends ArticleBasePage {
 
 	private RequiredTextField<String> createTitleField() {
 		RequiredTextField<String> title = new RequiredTextField<String>("title");
+		// FIXME aeusserst gefährlich!!!!
 		if (isNewArticle()) {
 			title.add(createContentIdGeneratorBehavior(contentIdField, title));
 		}

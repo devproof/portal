@@ -26,7 +26,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
@@ -60,15 +59,11 @@ public class OtherPageEditPage extends OtherPageBasePage {
 	}
 
 	private FormComponent<String> createContentField() {
-		FormComponent<String> fc = new FullRichTextArea("content");
-		fc.setRequired(true);
-		fc.add(StringValidator.minimumLength(10));
-		return fc;
+		return new FullRichTextArea("content");
 	}
 
 	private FormComponent<String> createContentIdField() {
 		FormComponent<String> fc = new RequiredTextField<String>("contentId");
-		fc.add(StringValidator.minimumLength(5));
 		fc.add(createContentIdPatternValidator());
 		fc.add(createContentIdValidator());
 		return fc;

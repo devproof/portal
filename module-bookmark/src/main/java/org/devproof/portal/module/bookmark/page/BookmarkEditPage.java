@@ -26,7 +26,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
@@ -77,15 +76,11 @@ public class BookmarkEditPage extends BookmarkBasePage {
 	}
 
 	private FormComponent<String> createTitleField() {
-		FormComponent<String> fc = new RequiredTextField<String>("title");
-		fc.add(StringValidator.minimumLength(3));
-		return fc;
+		return new RequiredTextField<String>("title");
 	}
 
 	private FormComponent<String> createDescriptionField() {
-		FormComponent<String> fc = new FullRichTextArea("description");
-		fc.add(StringValidator.minimumLength(3));
-		return fc;
+		return new FullRichTextArea("description");
 	}
 
 	private FormComponent<String> createHitsField() {
