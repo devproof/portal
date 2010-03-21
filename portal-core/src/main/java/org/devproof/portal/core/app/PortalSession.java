@@ -20,8 +20,6 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
@@ -51,19 +49,23 @@ import org.devproof.portal.core.module.user.service.UserService;
 public class PortalSession extends WebSession {
 
 	private static final long serialVersionUID = 1L;
-	private static final Log LOG = LogFactory.getLog(PortalSession.class);
+	// private static final Log LOG = LogFactory.getLog(PortalSession.class);
 	private static final int COOKIE_MAX_AGE = 3600 * 24 * 7; // 7 Days
 	@SpringBean(name = "userService")
-	private UserService userService;
+	protected UserService userService;
 	@SpringBean(name = "roleService")
-	private RoleService roleService;
+	protected RoleService roleService;
 	@SpringBean(name = "rightService")
-	private RightService rightService;
-	private long dirtyTime = 0l;
-	private UserEntity user;
+	protected RightService rightService;
+	protected long dirtyTime = 0l;
+	protected UserEntity user;
 
 	public PortalSession(Request request) {
 		super(request);
+		injectSpringBeans();
+	}
+
+	protected void injectSpringBeans() {
 		InjectorHolder.getInjector().inject(this);
 	}
 
@@ -80,8 +82,6 @@ public class PortalSession extends WebSession {
 	public final String authenticate(String username, String password) throws UserNotConfirmedException {
 		try {
 			user = userService.authentificate(username, password, getIpAddress());
-			getSessionStore().getSessionId(RequestCycle.get().getRequest(), true);
-			// Bind because the Login form is stateless...
 			storeCookie();
 			return null;
 		} catch (AuthentificationFailedException e) {
@@ -107,7 +107,7 @@ public class PortalSession extends WebSession {
 			cookie.setMaxAge(COOKIE_MAX_AGE);
 			cookie.setPath("/");
 			((WebResponse) RequestCycle.get().getResponse()).addCookie(cookie);
-			LOG.debug("Store cookie.");
+			// LOG.debug("Store cookie.");
 		}
 	}
 
@@ -118,14 +118,10 @@ public class PortalSession extends WebSession {
 	 */
 	public UserEntity getUser() {
 		if (user == null) {
-			WebRequest request = (WebRequest) RequestCycle.get().getRequest();
-			Cookie cookie = request.getCookie(CommonConstants.SESSION_ID_COOKIE);
-			if (cookie != null) {
-				String sessionId = cookie.getValue();
-				if (sessionId != null) {
-					user = userService.authentificate(sessionId, getIpAddress());
-					storeCookie();
-				}
+			String sessionId = getSessionIdFromCookie();
+			if (sessionId != null) {
+				user = userService.authentificate(sessionId, getIpAddress());
+				storeCookie();
 			}
 			if (user == null) {
 				user = userService.findGuestUser();
@@ -133,6 +129,19 @@ public class PortalSession extends WebSession {
 		}
 		refreshRoleIfUpdated();
 		return user;
+	}
+
+	protected String getSessionIdFromCookie() {
+		Cookie cookie = getCookie();
+		if (cookie != null) {
+			return cookie.getValue();
+		}
+		return null;
+	}
+
+	protected Cookie getCookie() {
+		WebRequest request = (WebRequest) RequestCycle.get().getRequest();
+		return request.getCookie(CommonConstants.SESSION_ID_COOKIE);
 	}
 
 	private void refreshRoleIfUpdated() {
@@ -153,13 +162,17 @@ public class PortalSession extends WebSession {
 	 * logs the user out
 	 */
 	public void logoutUser() {
-		LOG.debug("Logout user " + user.getUsername());
-		Cookie cookie = ((WebRequest) RequestCycle.get().getRequest()).getCookie(CommonConstants.SESSION_ID_COOKIE);
+		// LOG.debug("Logout user " + user.getUsername());
+		clearCookie();
+		user = null;
+	}
+
+	protected void clearCookie() {
+		Cookie cookie = getCookie();
 		if (cookie != null) {
 			cookie.setPath("/");
 			((WebResponse) RequestCycle.get().getResponse()).clearCookie(cookie);
 		}
-		user = null;
 	}
 
 	/**
@@ -232,10 +245,10 @@ public class PortalSession extends WebSession {
 	 * @return true if he has one right
 	 */
 	public boolean hasRight(String adminRight, Collection<RightEntity> rights) {
-		if (this.hasRight(adminRight)) {
+		if (hasRight(adminRight)) {
 			return true;
 		}
-		return this.hasRight(rights);
+		return hasRight(rights);
 	}
 
 	public static PortalSession get() {
