@@ -137,13 +137,13 @@ public class DownloadFeedProviderImplTest extends TestCase {
 
 			@Override
 			protected Iterator<? extends DownloadEntity> getDownloadEntries() {
-				callOrder.append("3");
+				callOrder.append("2");
 				return null;
 			}
 
 			@Override
 			protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
-				callOrder.append("4");
+				callOrder.append("3");
 				return entries;
 			}
 
@@ -153,7 +153,7 @@ public class DownloadFeedProviderImplTest extends TestCase {
 			}
 		};
 		impl.getFeed(null, new RoleEntity());
-		assertEquals("1234", callOrder.toString());
+		assertEquals("123", callOrder.toString());
 	}
 
 	private DownloadEntity createDownload() {

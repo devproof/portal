@@ -100,10 +100,10 @@ public class CommentPanel extends Panel {
 		setOutputMarkupId(true);
 	}
 
-	protected IModel<CommentQuery> createCommentQueryModel() {
+	private IModel<CommentQuery> createCommentQueryModel() {
 		IModel<CommentQuery> searchQueryModel = commentDataProvider.getSearchQueryModel();
 		CommentQuery query = searchQueryModel.getObject();
-		query.setModuleName(configuration.getModuleName());
+        query.setModuleName(configuration.getModuleName());
 		query.setModuleContentId(configuration.getModuleContentId());
 		return searchQueryModel;
 	}
@@ -479,4 +479,8 @@ public class CommentPanel extends Panel {
 			}
 		};
 	}
+
+    public IModel<CommentQuery> getCommentQueryModel() {
+        return queryModel;
+    }
 }
