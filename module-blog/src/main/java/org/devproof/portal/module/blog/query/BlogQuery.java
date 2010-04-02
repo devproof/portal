@@ -19,14 +19,13 @@ import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.query.TagQuery;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
 
 /**
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
-public class BlogQuery implements SearchQuery, TagQuery<BlogTagEntity> {
+public class BlogQuery implements SearchQuery {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;
@@ -72,4 +71,10 @@ public class BlogQuery implements SearchQuery, TagQuery<BlogTagEntity> {
 	public void clearSelection() {
 		tag = null;
 	}
+
+	// @Override
+	// public PageParameters getPageParameters() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
 }
