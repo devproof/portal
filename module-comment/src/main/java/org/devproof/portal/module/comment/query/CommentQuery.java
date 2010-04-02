@@ -15,14 +15,23 @@
  */
 package org.devproof.portal.module.comment.query;
 
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.module.comment.CommentConstants;
 
 /**
  * @author Carsten Hufe
  */
 public class CommentQuery implements SearchQuery {
 	private static final long serialVersionUID = 1L;
+	@SpringBean(name = "configurationService")
+	private ConfigurationService configurationService;
+
 	private Integer id;
 	private String allTextFields;
 	private String moduleName;
@@ -31,6 +40,33 @@ public class CommentQuery implements SearchQuery {
 	private Boolean rejected;
 	private Boolean reviewed;
 	private Boolean automaticBlocked;
+	private Boolean author;
+
+	public CommentQuery() {
+		InjectorHolder.getInjector().inject(this);
+		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
+		if (showOnlyReviewed && !isAuthor()) {
+			reviewed = Boolean.TRUE;
+			accepted = Boolean.TRUE;
+		} else {
+			rejected = Boolean.FALSE;
+		}
+		if (!isAuthor()) {
+			automaticBlocked = Boolean.FALSE;
+		}
+	}
+
+	public CommentQuery(Integer id) {
+		this.id = id;
+	}
+
+	private boolean isAuthor() {
+		if (author == null) {
+			PortalSession session = PortalSession.get();
+			author = session.hasRight(CommentConstants.AUTHOR_RIGHT);
+		}
+		return author.booleanValue();
+	}
 
 	@BeanQuery("e.accepted = ?")
 	public Boolean getAccepted() {
@@ -86,30 +122,27 @@ public class CommentQuery implements SearchQuery {
 		this.moduleContentId = moduleContentId;
 	}
 
-	@Override
 	@BeanQuery("e.id = ?")
 	public Integer getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	@Override
 	@BeanQuery("e.comment like '%'||?||'%'")
 	public String getAllTextFields() {
 		return allTextFields;
 	}
 
-	@Override
 	public void setAllTextFields(String allTextFields) {
 		this.allTextFields = allTextFields;
 	}
 
 	@Override
-	public void clearSelection() {
-		// nothing todo
+	public PageParameters getPageParameters() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
