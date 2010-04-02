@@ -31,6 +31,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -95,20 +96,11 @@ public class BlogPage extends BlogBasePage {
         return dataView;
     }
 
-/*	private void setBlogQuery() {
-		PortalSession session = (PortalSession) getSession();
-		query = new BlogQuery();
-		if (!session.hasRight("blog.view")) {
-			query.setRole(session.getRole());
-		}
-		blogDataProvider.setQueryObject(query);
-	}*/
-
     private BlogView createBlogView(Item<BlogEntity> item) {
         return new BlogView("blogView", item);
     }
 
-    private class BlogDataView extends DataView<BlogEntity> {
+    private class BlogDataView extends AutoPagingDataView<BlogEntity> {
         private static final long serialVersionUID = 1L;
         private boolean onlyOneBlogEntryInResult;
 
