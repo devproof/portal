@@ -83,6 +83,7 @@ public class BookmarkQuery implements SearchQuery {
 
 	public void setAllTextFields(String allTextFields) {
 		this.allTextFields = allTextFields;
+		this.tagname = null;
 	}
 
 	@BeanQuery("e.broken = ?")
@@ -92,6 +93,7 @@ public class BookmarkQuery implements SearchQuery {
 
 	public void setBroken(Boolean broken) {
 		this.broken = broken;
+		this.tagname = null;
 	}
 
 	@Override
