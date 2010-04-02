@@ -70,7 +70,7 @@ public abstract class BaseSearchBoxPanel<T extends SearchQuery> extends Panel im
 
 			@Override
 			protected void onSubmit() {
-				searchQueryModel.getObject().clearSelection();
+				// searchQueryModel.getObject().clearSelection();
 				// parent.addOrReplace(createPagingPanel());
 				// parent.cleanTagSelection();
 			}

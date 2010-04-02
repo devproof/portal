@@ -17,11 +17,14 @@ package org.devproof.portal.core.module.common.panel;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.test.PortalTestUtil;
 
 /**
@@ -52,7 +55,8 @@ public class BookmarkablePagingPanelTest extends TestCase {
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new BookmarkablePagingPanel(panelId, new TestIPageable(), WebPage.class);
+				return new BookmarkablePagingPanel(panelId, new TestIPageable(), Model.of(new TestSearchQuery()),
+						WebPage.class);
 			}
 		};
 	}
@@ -72,6 +76,15 @@ public class BookmarkablePagingPanelTest extends TestCase {
 
 		@Override
 		public void setCurrentPage(int page) {
+		}
+	}
+
+	private static class TestSearchQuery implements SearchQuery {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public PageParameters getPageParameters() {
+			return new PageParameters();
 		}
 	}
 }

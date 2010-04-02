@@ -15,18 +15,23 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
 import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.easymock.EasyMock;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
@@ -44,54 +49,54 @@ public class DataProviderDaoImplTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		sessionFactory = EasyMock.createMock(SessionFactory.class);
-		session = EasyMock.createMock(Session.class);
+		sessionFactory = createMock(SessionFactory.class);
+		session = createMock(Session.class);
 		impl = new DataProviderDaoImpl<EmailTemplateEntity>();
 		impl.setSessionFactory(sessionFactory);
-		query = EasyMock.createMock(Query.class);
-		EasyMock.expect(session.getSessionFactory()).andReturn(sessionFactory);
-		EasyMock.expect(sessionFactory.openSession()).andReturn(session);
+		query = createMock(Query.class);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(sessionFactory.openSession()).andReturn(session);
 		SessionHolder sessionHolder = new SessionHolder(session);
 		TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
-		EasyMock.expect(session.isOpen()).andReturn(false);
-		EasyMock.expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(session.isOpen()).andReturn(false);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
 	}
 
 	public void testFindById() {
 		EmailTemplateEntity expectedTemplates = newEmailTemplate();
-		EasyMock.expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
-		EasyMock.replay(sessionFactory, session);
+		expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
+		replay(sessionFactory, session);
 		EmailTemplateEntity newTemplate = impl.findById(EmailTemplateEntity.class, 1);
 		assertEquals(expectedTemplates, newTemplate);
-		EasyMock.verify(session, sessionFactory);
+		verify(session, sessionFactory);
 	}
 
 	public void testFindAll_byClass() {
 		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
-		EasyMock.expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
-		EasyMock.expect(query.setCacheable(true)).andReturn(query);
-		EasyMock.expect(query.setCacheMode(null)).andReturn(query);
-		EasyMock.expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
-		EasyMock.expect(query.list()).andReturn(expectedTemplates);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
+		expect(query.setCacheable(true)).andReturn(query);
+		expect(query.setCacheMode(null)).andReturn(query);
+		expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
+		expect(query.list()).andReturn(expectedTemplates);
+		replay(sessionFactory, session, query);
 		List<EmailTemplateEntity> templates = impl.findAll(EmailTemplateEntity.class);
 		assertEquals(expectedTemplates.get(0).getId(), templates.get(0).getId());
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	public void testFindAll_byClassLimited() {
 		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
-		EasyMock.expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
-		EasyMock.expect(query.setCacheable(true)).andReturn(query);
-		EasyMock.expect(query.setCacheMode(null)).andReturn(query);
-		EasyMock.expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
-		EasyMock.expect(query.setFirstResult(20)).andReturn(query);
-		EasyMock.expect(query.setMaxResults(10)).andReturn(query);
-		EasyMock.expect(query.list()).andReturn(expectedTemplates);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
+		expect(query.setCacheable(true)).andReturn(query);
+		expect(query.setCacheMode(null)).andReturn(query);
+		expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
+		expect(query.setFirstResult(20)).andReturn(query);
+		expect(query.setMaxResults(10)).andReturn(query);
+		expect(query.list()).andReturn(expectedTemplates);
+		replay(sessionFactory, session, query);
 		List<EmailTemplateEntity> templates = impl.findAll(EmailTemplateEntity.class, 20, 10);
 		assertEquals(expectedTemplates.get(0).getId(), templates.get(0).getId());
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	public void testFindAllWithQuery() {
@@ -99,52 +104,52 @@ public class DataProviderDaoImplTest extends TestCase {
 		TestQuery testQuery = new TestQuery();
 		testQuery.setAllTextFields("foobar");
 		List<String> prefetch = Arrays.asList("prefetched_field");
-		EasyMock.expect(
+		expect(
 				session.createQuery("Select distinct(e) from EmailTemplateEntity e"
 						+ "  left join fetch e.prefetched_field  left join e.allRights vr left join e.tags t"
 						+ "  where e.headline like ? order by e.subject ASC")).andReturn(query);
-		EasyMock.expect(query.setParameter(0, "foobar")).andReturn(query);
-		EasyMock.expect(query.list()).andReturn(expectedTemplates);
-		EasyMock.expect(query.setCacheable(true)).andReturn(query);
-		EasyMock.expect(query.setCacheMode(null)).andReturn(query);
-		EasyMock.expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
-		EasyMock.expect(query.setFirstResult(20)).andReturn(query);
-		EasyMock.expect(query.setMaxResults(10)).andReturn(query);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(query.setParameter(0, "foobar")).andReturn(query);
+		expect(query.list()).andReturn(expectedTemplates);
+		expect(query.setCacheable(true)).andReturn(query);
+		expect(query.setCacheMode(null)).andReturn(query);
+		expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
+		expect(query.setFirstResult(20)).andReturn(query);
+		expect(query.setMaxResults(10)).andReturn(query);
+		replay(sessionFactory, session, query);
 		List<EmailTemplateEntity> templates = impl.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10,
 				testQuery, prefetch);
 		assertEquals(expectedTemplates.get(0).getId(), templates.get(0).getId());
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	public void testGetSize_byBeanQuery() {
 		TestQuery testQuery = new TestQuery();
 		testQuery.setAllTextFields("foobar");
-		EasyMock.expect(
+		expect(
 				session.createQuery("Select count(distinct e) from EmailTemplateEntity e"
 						+ "  left join e.allRights vr left join e.tags t" + "  where e.headline like ?")).andReturn(
 				query);
-		EasyMock.expect(query.setParameter(0, "foobar")).andReturn(query);
-		EasyMock.expect(query.uniqueResult()).andReturn(2l);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(query.setParameter(0, "foobar")).andReturn(query);
+		expect(query.uniqueResult()).andReturn(2l);
+		replay(sessionFactory, session, query);
 		long size = impl.getSize(EmailTemplateEntity.class, testQuery);
 		assertEquals(2, size);
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	public void testGetSize_withCountQuery() {
 		TestQuery testQuery = new TestQuery();
 		testQuery.setAllTextFields("foobar");
-		EasyMock.expect(
+		expect(
 				session.createQuery("Select count(something) from EmailTemplateEntity e"
 						+ "  left join e.allRights vr left join e.tags t" + "  where e.headline like ?")).andReturn(
 				query);
-		EasyMock.expect(query.setParameter(0, "foobar")).andReturn(query);
-		EasyMock.expect(query.uniqueResult()).andReturn(2l);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(query.setParameter(0, "foobar")).andReturn(query);
+		expect(query.uniqueResult()).andReturn(2l);
+		replay(sessionFactory, session, query);
 		long size = impl.getSize(EmailTemplateEntity.class, "count(something)", testQuery);
 		assertEquals(2, size);
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	private EmailTemplateEntity newEmailTemplate() {
@@ -187,8 +192,9 @@ public class DataProviderDaoImplTest extends TestCase {
 			this.id = id;
 		}
 
-		public void clearSelection() {
+		@Override
+		public PageParameters getPageParameters() {
+			return new PageParameters();
 		}
 	}
-
 }
