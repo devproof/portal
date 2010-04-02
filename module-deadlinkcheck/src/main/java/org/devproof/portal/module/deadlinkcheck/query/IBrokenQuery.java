@@ -20,6 +20,7 @@ import java.io.Serializable;
 /**
  * @author Carsten Hufe
  */
+// TODO remove
 public interface IBrokenQuery extends Serializable {
 	Boolean getBroken();
 

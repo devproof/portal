@@ -37,6 +37,7 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.page.BookmarkPage;
+import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -47,7 +48,7 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  */
 public class BookmarkFeedProviderImplTest extends TestCase {
 	private BookmarkFeedProviderImpl impl;
-	private SortableQueryDataProvider<BookmarkEntity> dataProviderMock;
+	private SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> dataProviderMock;
 	private ConfigurationService configurationServiceMock;
 
 	@Override
@@ -135,19 +136,14 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 			}
 
 			@Override
-			protected void setRoleForDataProviderQuery(RoleEntity role) {
-				callOrder.append("2");
-			}
-
-			@Override
 			protected Iterator<? extends BookmarkEntity> getBookmarkEntries() {
-				callOrder.append("3");
+				callOrder.append("2");
 				return null;
 			}
 
 			@Override
 			protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BookmarkEntity> iterator) {
-				callOrder.append("4");
+				callOrder.append("3");
 				return entries;
 			}
 
@@ -157,7 +153,7 @@ public class BookmarkFeedProviderImplTest extends TestCase {
 			}
 		};
 		impl.getFeed(null, new RoleEntity());
-		assertEquals("1234", callOrder.toString());
+		assertEquals("123", callOrder.toString());
 	}
 
 	private BookmarkEntity createBookmark() {

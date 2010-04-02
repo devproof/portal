@@ -36,11 +36,11 @@ public class ArticleSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
-	private IModel<ArticleQuery> articleQueryModel;
+	private IModel<ArticleQuery> queryModel;
 
-	public ArticleSearchBoxPanel(String id, IModel<ArticleQuery> articleQueryModel) {
-		super(id, articleQueryModel);
-		this.articleQueryModel = articleQueryModel;
+	public ArticleSearchBoxPanel(String id, IModel<ArticleQuery> queryModel) {
+		super(id, queryModel);
+		this.queryModel = queryModel;
 		add(createTitleContainer());
 		add(createSearchForm());
 	}
@@ -52,7 +52,7 @@ public class ArticleSearchBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	private Form<SearchQuery> newSearchForm() {
-		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(articleQueryModel);
+		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
 		return new Form<SearchQuery>("searchForm", formModel);
 	}
 

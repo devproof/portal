@@ -26,13 +26,13 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
-import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.CaptchaRatingPanel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
@@ -60,26 +60,34 @@ public class BookmarkPage extends BookmarkBasePage {
 	@SpringBean(name = "bookmarkService")
 	private BookmarkService bookmarkService;
 	@SpringBean(name = "bookmarkDataProvider")
-	private QueryDataProvider<BookmarkEntity> bookmarkDataProvider;
+	private QueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider;
 	@SpringBean(name = "bookmarkTagService")
 	private TagService<BookmarkTagEntity> bookmarkTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
 	private BookmarkDataView dataView;
-	private BookmarkQuery query;
-	private PageParameters params;
+	private IModel<BookmarkQuery> searchQueryModel;
 	private BubblePanel bubblePanel;
 
 	public BookmarkPage(PageParameters params) {
 		super(params);
-		this.params = params;
-		setBookmarkQuery();
+		setSearchQueryModel();
 		add(createBubblePanel());
 		add(createBookmarkDataView());
 		add(createPagingPanel());
 		addFilterBox(createBookmarkSearchBoxPanel());
 		addTagCloudBox();
+	}
+
+	private void setSearchQueryModel() {
+		// TODO get this nicer?
+		// instance von query von spring erstellen lassen? so kann man auch
+		// injects drin machen
+		searchQueryModel = bookmarkDataProvider.getSearchQueryModel();
+		if (!isAuthor() && configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
+			searchQueryModel.getObject().setBroken(false);
+		}
 	}
 
 	private BubblePanel createBubblePanel() {
@@ -88,16 +96,23 @@ public class BookmarkPage extends BookmarkBasePage {
 	}
 
 	private void addTagCloudBox() {
-		addTagCloudBox(bookmarkTagService, new PropertyModel<BookmarkTagEntity>(query, "tag"), BookmarkPage.class,
-				params);
+		PropertyModel<BookmarkTagEntity> tagModel = new PropertyModel<BookmarkTagEntity>(searchQueryModel, "tag");
+		addTagCloudBox(bookmarkTagService, tagModel, BookmarkPage.class);
 	}
 
 	private BookmarkablePagingPanel createPagingPanel() {
-		return new BookmarkablePagingPanel("paging", dataView, BookmarkPage.class, params);
+		return new BookmarkablePagingPanel("paging", dataView, searchQueryModel, BookmarkPage.class);
 	}
 
 	private BookmarkSearchBoxPanel createBookmarkSearchBoxPanel() {
-		return new BookmarkSearchBoxPanel("box", query, bookmarkDataProvider, this, dataView, params);
+		return new BookmarkSearchBoxPanel("box", searchQueryModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected boolean isAuthor() {
+				return BookmarkPage.this.isAuthor();
+			}
+		};
 	}
 
 	private BookmarkDataView createBookmarkDataView() {
@@ -105,19 +120,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		return dataView;
 	}
 
-	private void setBookmarkQuery() {
-		PortalSession session = (PortalSession) getSession();
-		query = new BookmarkQuery();
-		if (!session.hasRight("bookmark.view")) {
-			query.setRole(session.getRole());
-		}
-		if (!isAuthor() && configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
-			query.setBroken(false);
-		}
-		bookmarkDataProvider.setQueryObject(query);
-	}
-
-	private class BookmarkDataView extends DataView<BookmarkEntity> {
+	private class BookmarkDataView extends AutoPagingDataView<BookmarkEntity> {
 		private static final long serialVersionUID = 1L;
 		private boolean onlyOneBookmarkInResult;
 
@@ -228,8 +231,9 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private ContentTagPanel<BookmarkTagEntity> createTagPanel() {
+			// TODO fix model
 			return new ContentTagPanel<BookmarkTagEntity>("tags", new ListModel<BookmarkTagEntity>(bookmark.getTags()),
-					BookmarkPage.class, params);
+					BookmarkPage.class);
 		}
 
 		private Label createHitsLabel() {

@@ -45,13 +45,12 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  * @author Carsten Hufe
  */
 public class BookmarkFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<BookmarkEntity> bookmarkDataProvider;
+	private SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider;
 	private ConfigurationService configurationService;
 
 	@Override
 	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
-		setRoleForDataProviderQuery(role);
 		Iterator<? extends BookmarkEntity> iterator = getBookmarkEntries();
 		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
 		feed.setEntries(entries);
@@ -105,12 +104,6 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 		return rc.urlFor(BookmarkPage.class, new PageParameters("id=" + BookmarkEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(RoleEntity role) {
-		BookmarkQuery query = new BookmarkQuery();
-		query.setRole(role);
-		bookmarkDataProvider.setQueryObject(query);
-	}
-
 	@Override
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
 		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
@@ -126,7 +119,7 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setBookmarkDataProvider(SortableQueryDataProvider<BookmarkEntity> bookmarkDataProvider) {
+	public void setBookmarkDataProvider(SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider) {
 		this.bookmarkDataProvider = bookmarkDataProvider;
 	}
 
