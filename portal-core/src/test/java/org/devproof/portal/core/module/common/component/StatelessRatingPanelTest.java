@@ -39,7 +39,7 @@ public class StatelessRatingPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestStatelessRatingPanel.class);
 		tester.assertComponent("panel", TestStatelessRatingPanel.class);
 	}

@@ -47,7 +47,7 @@ public class TagCloudBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createTagCloudBoxPanel());
 		// tester.assertComponent("panel", TagCloudBoxPanel.class);
 	}

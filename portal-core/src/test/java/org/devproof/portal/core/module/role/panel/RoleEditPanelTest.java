@@ -40,7 +40,7 @@ public class RoleEditPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestRoleEditPanel.class);
 		tester.assertComponent("panel", TestRoleEditPanel.class);
 	}

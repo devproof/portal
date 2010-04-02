@@ -37,7 +37,7 @@ public class BoxPageTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPage(BoxPage.class);
 		tester.assertRenderedPage(BoxPage.class);
 	}

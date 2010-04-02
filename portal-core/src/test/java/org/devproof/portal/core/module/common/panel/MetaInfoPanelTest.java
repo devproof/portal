@@ -42,7 +42,7 @@ public class MetaInfoPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createMetaInfoPanel());
 		tester.assertComponent("panel", MetaInfoPanel.class);
 	}

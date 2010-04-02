@@ -40,7 +40,7 @@ public class ConfirmDeletePanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestConfirmDeletePanel.class);
 		tester.assertComponent("panel", TestConfirmDeletePanel.class);
 	}

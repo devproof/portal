@@ -154,7 +154,10 @@ public class PortalTestUtil {
 	private static MockServletContext getSandbox(String spring) {
 		if (sandbox == null) {
 			sandbox = new MockServletContext("") {
-				// this is for the theme page test
+                @Override
+                public String getContextPath() {
+                    return null;
+                }// this is for the theme page test
 				@Override
 				public String getRealPath(String arg0) {
 					return System.getProperty("java.io.tmpdir");

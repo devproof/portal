@@ -40,7 +40,7 @@ public class UserInfoPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createUserInfoPanel());
 		tester.assertComponent("panel", UserInfoPanel.class);
 	}
