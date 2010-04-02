@@ -17,7 +17,7 @@ package org.devproof.portal.core.app;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
 
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
@@ -30,6 +30,7 @@ import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
+import org.devproof.portal.test.PortalTestUtil;
 import org.easymock.EasyMock;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -48,7 +49,7 @@ public class PortalSessionTest extends TestCase {
 		cookieStored = false;
 		cookieCleaned = false;
 		cookieSessionId = null;
-		new WicketTester();
+        PortalTestUtil.createWicketTesterWithSpringAndDatabase();
 		MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
 		ServletWebRequest servletWebRequest = new ServletWebRequest(mockHttpServletRequest);
 		portalSession = new PortalSession(servletWebRequest) {
@@ -56,9 +57,9 @@ public class PortalSessionTest extends TestCase {
 
 			@Override
 			protected void injectSpringBeans() {
-				userService = EasyMock.createStrictMock(UserService.class);
-				roleService = EasyMock.createStrictMock(RoleService.class);
-				rightService = EasyMock.createStrictMock(RightService.class);
+				userService = createStrictMock(UserService.class);
+				roleService = createStrictMock(RoleService.class);
+				rightService = createStrictMock(RightService.class);
 			}
 
 			@Override
@@ -85,30 +86,30 @@ public class PortalSessionTest extends TestCase {
 
 	public void testAuthenticate_success() throws Exception {
 		UserEntity user = createUserWithRights();
-		EasyMock.expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123"))
+		expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123"))
 				.andReturn(user);
-		EasyMock.replay(portalSession.userService);
+		replay(portalSession.userService);
 		assertNull(portalSession.authenticate("peter", "secretpasswd"));
 		assertTrue(cookieStored);
-		EasyMock.verify(portalSession.userService);
+		verify(portalSession.userService);
 	}
 
 	public void testAuthenticate_failed() throws Exception {
-		EasyMock.expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andThrow(
+		expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andThrow(
 				new AuthentificationFailedException("wrong password"));
-		EasyMock.replay(portalSession.userService);
+		replay(portalSession.userService);
 		assertEquals("wrong password", portalSession.authenticate("peter", "secretpasswd"));
 		assertFalse(cookieStored);
-		EasyMock.verify(portalSession.userService);
+		verify(portalSession.userService);
 	}
 
 	public void testAuthenticate_userNotConfirmed() {
 		try {
-			EasyMock.expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123"))
+			expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123"))
 					.andThrow(new UserNotConfirmedException());
-			EasyMock.replay(portalSession.userService);
+			replay(portalSession.userService);
 			assertEquals("wrong password", portalSession.authenticate("peter", "secretpasswd"));
-			EasyMock.verify(portalSession.userService);
+			verify(portalSession.userService);
 			fail("Expect UserNotConfirmedException");
 		} catch (UserNotConfirmedException e) {
 			assertFalse(cookieStored);
@@ -140,10 +141,10 @@ public class PortalSessionTest extends TestCase {
 	public void testGetUser_automaticRelogin() {
 		cookieSessionId = "testSessionId";
 		UserEntity user = createUserWithRights();
-		EasyMock.expect(portalSession.userService.authentificate(cookieSessionId, "123.123.123.123")).andReturn(user);
-		EasyMock.replay(portalSession.userService);
+		expect(portalSession.userService.authentificate(cookieSessionId, "123.123.123.123")).andReturn(user);
+		replay(portalSession.userService);
 		assertEquals(user, portalSession.getUser());
-		EasyMock.verify(portalSession.userService);
+		verify(portalSession.userService);
 	}
 
 	public void testGetUser_guest() {
@@ -151,10 +152,10 @@ public class PortalSessionTest extends TestCase {
 		guest.setId(1);
 		guest.setGuestRole(true);
 		guest.setUsername("guest");
-		EasyMock.expect(portalSession.userService.findGuestUser()).andReturn(guest);
-		EasyMock.replay(portalSession.userService);
+		expect(portalSession.userService.findGuestUser()).andReturn(guest);
+		replay(portalSession.userService);
 		assertEquals(guest, portalSession.getUser());
-		EasyMock.verify(portalSession.userService);
+		verify(portalSession.userService);
 	}
 
 	public void testLogoutUser() {
@@ -175,24 +176,24 @@ public class PortalSessionTest extends TestCase {
 	}
 
 	public void testHasRightString_true() {
-		EasyMock.expect(portalSession.rightService.newRightEntity("sample1")).andReturn(new RightEntity("sample1"));
-		EasyMock.expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
-		EasyMock.replay(portalSession.rightService);
+		expect(portalSession.rightService.newRightEntity("sample1")).andReturn(new RightEntity("sample1"));
+		expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
+		replay(portalSession.rightService);
 		UserEntity user = createUserWithRights();
 		portalSession.user = user;
 		assertTrue(portalSession.hasRight("sample1"));
-		EasyMock.verify(portalSession.rightService);
+		verify(portalSession.rightService);
 	}
 
 	public void testHasRightString_false() {
-		EasyMock.expect(portalSession.rightService.newRightEntity("notexisting")).andReturn(
+		expect(portalSession.rightService.newRightEntity("notexisting")).andReturn(
 				new RightEntity("notexisting"));
-		EasyMock.expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
-		EasyMock.replay(portalSession.rightService);
+		expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
+		replay(portalSession.rightService);
 		UserEntity user = createUserWithRights();
 		portalSession.user = user;
 		assertFalse(portalSession.hasRight("notexisting"));
-		EasyMock.verify(portalSession.rightService);
+		verify(portalSession.rightService);
 	}
 
 	public void testHasRightRightEntity_true() {
@@ -226,26 +227,26 @@ public class PortalSessionTest extends TestCase {
 	}
 
 	public void testHasRightStringCollectionOfRightEntity_matchingadminright() {
-		EasyMock.expect(portalSession.rightService.newRightEntity("adminright")).andReturn(
+		expect(portalSession.rightService.newRightEntity("adminright")).andReturn(
 				new RightEntity("adminright"));
-		EasyMock.expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
-		EasyMock.replay(portalSession.rightService);
+		expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
+		replay(portalSession.rightService);
 		UserEntity user = createUserWithRights();
 		user.getRole().add(new RightEntity("adminright"));
 		portalSession.user = user;
 		assertTrue(portalSession.hasRight("adminright", new ArrayList<RightEntity>()));
-		EasyMock.verify(portalSession.rightService);
+		verify(portalSession.rightService);
 	}
 
 	public void testHasRightStringCollectionOfRightEntity_noadminright() {
-		EasyMock.expect(portalSession.rightService.newRightEntity("adminright")).andReturn(
+		expect(portalSession.rightService.newRightEntity("adminright")).andReturn(
 				new RightEntity("adminright"));
-		EasyMock.expect(portalSession.rightService.getDirtyTime()).andReturn(0l).times(2);
-		EasyMock.replay(portalSession.rightService);
+		expect(portalSession.rightService.getDirtyTime()).andReturn(0l).times(2);
+		replay(portalSession.rightService);
 		UserEntity user = createUserWithRights();
 		portalSession.user = user;
 		assertFalse(portalSession.hasRight("adminright", new ArrayList<RightEntity>()));
-		EasyMock.verify(portalSession.rightService);
+		verify(portalSession.rightService);
 	}
 
 	private UserEntity createUserWithRights() {
