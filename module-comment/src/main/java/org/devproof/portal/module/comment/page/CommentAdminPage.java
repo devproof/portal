@@ -40,7 +40,6 @@ public class CommentAdminPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private CommentPanel commentPanel;
-	private IModel<CommentQuery> queryModel;
 	private PageParameters params;
 
 	public CommentAdminPage(PageParameters params) {
@@ -50,8 +49,9 @@ public class CommentAdminPage extends TemplatePage {
 		addFilterBox(createCommentSearchBoxPanel());
 	}
 
-	private CommentSearchBoxPanel createCommentSearchBoxPanel() {
-		return new CommentSearchBoxPanel("box", queryModel) {
+    private CommentSearchBoxPanel createCommentSearchBoxPanel() {
+        IModel<CommentQuery> queryModel = createCommentQueryModel();
+        return new CommentSearchBoxPanel("box", queryModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -61,13 +61,19 @@ public class CommentAdminPage extends TemplatePage {
 		};
 	}
 
-	private Component createCommentPanel() {
+    private IModel<CommentQuery> createCommentQueryModel() {
+        IModel<CommentQuery> queryModel = commentPanel.getCommentQueryModel();
+        queryModel.getObject().setId(params.getAsInteger(PARAM_ID));
+        return queryModel;
+    }
+
+    private Component createCommentPanel() {
 		commentPanel = newCommentPanel();
 		commentPanel.setOutputMarkupId(true);
 		return commentPanel;
 	}
 
-	private CommentPanel newCommentPanel() {
+    private CommentPanel newCommentPanel() {
 		return new CommentPanel("comments", new CommentAdminConfiguration()) {
 			private static final long serialVersionUID = 1L;
 
@@ -80,11 +86,6 @@ public class CommentAdminPage extends TemplatePage {
 			public boolean hideInput() {
 				return true;
 			}
-
-            @Override
-            protected IModel<CommentQuery> createCommentQueryModel() {
-                return Model.of(new CommentQuery(params.getAsInteger(PARAM_ID)));
-            }
         };
 	}
 

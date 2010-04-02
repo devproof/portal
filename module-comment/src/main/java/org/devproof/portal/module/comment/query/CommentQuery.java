@@ -45,12 +45,14 @@ public class CommentQuery implements SearchQuery {
 	public CommentQuery() {
 		InjectorHolder.getInjector().inject(this);
 		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
-		if (showOnlyReviewed && !isAuthor()) {
-			reviewed = Boolean.TRUE;
-			accepted = Boolean.TRUE;
-		} else {
-			rejected = Boolean.FALSE;
-		}
+        if(!isAuthor()) {            
+            if (showOnlyReviewed) {
+                reviewed = Boolean.TRUE;
+                accepted = Boolean.TRUE;
+            } else {
+                rejected = Boolean.FALSE;
+            }
+        }
 		if (!isAuthor()) {
 			automaticBlocked = Boolean.FALSE;
 		}
