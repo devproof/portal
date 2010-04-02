@@ -45,7 +45,7 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  * @author Carsten Hufe
  */
 public class BlogFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<BlogEntity> blogDataProvider;
+	private SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
 	private ConfigurationService configurationService;
 
 	@Override
@@ -124,7 +124,7 @@ public class BlogFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setBlogDataProvider(SortableQueryDataProvider<BlogEntity> blogDataProvider) {
+	public void setBlogDataProvider(SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider) {
 		this.blogDataProvider = blogDataProvider;
 	}
 
