@@ -278,10 +278,6 @@ public class CommentPanel extends Panel {
 		isAuthor = session.hasRight("page." + CommentAdminPage.class.getSimpleName());
 	}
 
-	public void setCommentQuery(CommentQuery query) {
-		queryModel.setObject(query);
-	}
-
 	private class CommentDataView extends DataView<CommentEntity> {
 		private static final long serialVersionUID = 1L;
 
