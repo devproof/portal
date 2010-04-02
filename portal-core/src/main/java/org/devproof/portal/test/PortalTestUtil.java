@@ -129,21 +129,8 @@ public class PortalTestUtil {
 	 * Returns the wicket tester instance for PortalApplication
 	 */
 	public static WicketTester createWicketTesterWithSpring(String spring) {
-		final MockServletContext sandbox = getSandbox(spring);
-		PortalApplication app = new PortalApplication() {
-			@Override
-			public ServletContext getServletContext() {
-				return sandbox;
-			}
-
-			@Override
-			public org.apache.wicket.Session newSession(Request request, Response response) {
-				org.apache.wicket.Session session = super.newSession(request, response);
-				session.setLocale(Locale.ENGLISH);
-				return session;
-			}
-
-		};
+		MockServletContext sandbox = getSandbox(spring);
+		PortalApplication app = new TestPortalApplication(sandbox);
 
 		// Workaround for bug in WicketTester, mounted url does not work
 		// with stateless form
@@ -151,13 +138,16 @@ public class PortalTestUtil {
 		return new WicketTester(app);
 	}
 
+    
+
 	private static MockServletContext getSandbox(String spring) {
 		if (sandbox == null) {
 			sandbox = new MockServletContext("") {
                 @Override
                 public String getContextPath() {
                     return null;
-                }// this is for the theme page test
+                }
+                // this is for the theme page test
 				@Override
 				public String getRealPath(String arg0) {
 					return System.getProperty("java.io.tmpdir");
@@ -256,4 +246,24 @@ public class PortalTestUtil {
 		T back = (T) ContextLoader.getCurrentWebApplicationContext().getBean(beanName);
 		return back;
 	}
+
+    private static class TestPortalApplication extends PortalApplication {
+        private final MockServletContext sandbox;
+
+        public TestPortalApplication(MockServletContext sandbox) {
+            this.sandbox = sandbox;
+        }
+
+        @Override
+        public ServletContext getServletContext() {
+            return sandbox;
+        }
+
+        @Override
+        public org.apache.wicket.Session newSession(Request request, Response response) {
+            org.apache.wicket.Session session = super.newSession(request, response);
+            session.setLocale(Locale.ENGLISH);
+            return session;
+        }
+    }
 }
