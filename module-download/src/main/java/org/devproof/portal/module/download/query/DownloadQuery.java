@@ -15,42 +15,79 @@
  */
 package org.devproof.portal.module.download.query;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
+import org.devproof.portal.core.module.common.util.PortalUtil;
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.query.TagQuery;
-import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
-import org.devproof.portal.module.download.entity.DownloadTagEntity;
+import org.devproof.portal.core.module.tag.TagConstants;
+import org.devproof.portal.module.download.DownloadConstants;
 
 /**
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights ar left join e.tags t")
-public class DownloadQuery implements SearchQuery, TagQuery<DownloadTagEntity>, IBrokenQuery {
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private RoleEntity role;
-	private DownloadTagEntity tag;
-	private String allTextFields;
-	private Boolean broken;
+public class DownloadQuery implements SearchQuery {
+    private static final long serialVersionUID = 1L;
 
-	@BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%')")
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+
+    private static final String SEARCH_PARAM = "search";
+    private static final String BROKEN_PARAM = "broken";
+    private static final String ID_PARAM = "id";
+    private Integer id;
+    private RoleEntity role;
+    private String tagname;
+    private String allTextFields;
+    private Boolean broken;
+    private Boolean author;
+
+    public DownloadQuery() {
+        InjectorHolder.getInjector().inject(this);
+		id = PortalUtil.getParameterAsInteger(ID_PARAM);
+		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+		if (isAuthor()) {
+			broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
+		} else if (configurationService.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_HIDE_BROKEN)) {
+			broken = false;
+		}
+    }
+
+
+	private boolean isAuthor() {
+		if (author == null) {
+			PortalSession session = PortalSession.get();
+			author = session.hasRight(DownloadConstants.AUTHOR_RIGHT);
+		}
+		return author.booleanValue();
+	}
+
+    @BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%')")
 	public RoleEntity getRole() {
+		if (role == null) {
+			PortalSession session = PortalSession.get();
+			if (!session.hasRight("download.view")) {
+				role = session.getRole();
+			}
+		}
 		return role;
 	}
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
+	@BeanQuery("t.tagname = ?")
+	public String getTagname() {
+		return tagname;
 	}
 
-	@BeanQuery("t = ?")
-	public DownloadTagEntity getTag() {
-		return tag;
-	}
-
-	public void setTag(DownloadTagEntity tag) {
-		this.tag = tag;
+	public void setTagname(String tagname) {
+		this.tagname = tagname;
 	}
 
 	@BeanQuery("(e.manufacturer like '%'||?||'%' or e.licence like '%'||?||'%' or e.title like '%'||?||'%'"
@@ -81,7 +118,19 @@ public class DownloadQuery implements SearchQuery, TagQuery<DownloadTagEntity>, 
 		this.id = id;
 	}
 
-	public void clearSelection() {
-		tag = null;
-	}
+
+    @Override
+    public PageParameters getPageParameters() {
+		PageParameters params = new PageParameters();
+		if (StringUtils.isNotBlank(allTextFields)) {
+			params.put(SEARCH_PARAM, allTextFields);
+		}
+		if (StringUtils.isNotBlank(tagname)) {
+			params.put(TagConstants.TAG_PARAM, tagname);
+		}
+		if (broken != null) {
+			params.put(BROKEN_PARAM, broken);
+		}
+		return params;
+    }
 }

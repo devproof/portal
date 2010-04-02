@@ -15,65 +15,51 @@
  */
 package org.devproof.portal.module.download.panel;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOption;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.navigation.paging.IPageable;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
-import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.panel.BaseSearchBoxListener;
-import org.devproof.portal.core.module.common.panel.BaseSearchBoxPanel;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
 import org.devproof.portal.module.download.query.DownloadQuery;
 
 /**
  * @author Carsten Hufe
  */
-public class DownloadSearchBoxPanel extends BaseSearchBoxPanel {
-
+public abstract class DownloadSearchBoxPanel extends Panel implements BoxTitleVisibility {
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
+    private IModel<DownloadQuery> queryModel;
 
-	private PageParameters params;
-	private DownloadQuery query;
-	public DownloadSearchBoxPanel(String id, final DownloadQuery query, QueryDataProvider<?> dataProvider,
-			TemplatePage parent, IPageable dataview, final PageParameters params) {
-		super(id, query, dataProvider, "download.view", parent, dataview, params);
-		this.params = params;
-		this.query = query;
-		add(createTitleContainer());
-		addToForm(createSearchTextField());
-		addToForm(createBrokenDropDown());
-		addListener(createSearchBoxListener());
-		setBrokenParamInQuery();
+    public DownloadSearchBoxPanel(String id, IModel<DownloadQuery> queryModel) {
+		super(id, queryModel);
+        this.queryModel = queryModel;
+        add(createTitleContainer());
+		add(createSearchForm());
 	}
 
-	private void setBrokenParamInQuery() {
-		if (params != null) {
-			if (params.containsKey("broken")) {
-				query.setBroken(params.getAsBoolean("broken"));
-			}
-		}
+	private Component createSearchForm() {
+		Form<SearchQuery> form = newSearchForm();
+		form.add(createSearchTextField());
+		form.add(createBrokenDropDown());
+		return form;
 	}
 
-	private BaseSearchBoxListener createSearchBoxListener() {
-		return new BaseSearchBoxListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onSearch() {
-				IBrokenQuery brokenQuery = query;
-				if (brokenQuery.getBroken() != null && DownloadSearchBoxPanel.this.isAuthor()) {
-					params.put("broken", brokenQuery.getBroken().toString());
-				}
-			}
-		};
+	private Form<SearchQuery> newSearchForm() {
+		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
+		return new Form<SearchQuery>("searchForm", formModel);
 	}
-
+    
 	private Select createBrokenDropDown() {
 		Select selectBroken = new Select("broken");
 		selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
@@ -97,4 +83,6 @@ public class DownloadSearchBoxPanel extends BaseSearchBoxPanel {
 	public void setTitleVisible(boolean visible) {
 		titleContainer.setVisible(visible);
 	}
+
+    protected abstract boolean isAuthor();
 }

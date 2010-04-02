@@ -23,6 +23,7 @@ import java.io.Serializable;
  * @author Carsten Hufe
  * 
  */
+// TODO remove class
 public interface BaseSearchBoxListener extends Serializable {
 	/**
 	 * Executed when the search is submited
