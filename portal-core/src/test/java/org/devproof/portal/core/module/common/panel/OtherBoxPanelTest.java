@@ -41,7 +41,7 @@ public class OtherBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createOtherBoxPanel());
 		tester.assertComponent("panel", OtherBoxPanel.class);
 	}

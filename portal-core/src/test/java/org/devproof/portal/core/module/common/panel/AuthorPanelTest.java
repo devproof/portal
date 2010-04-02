@@ -39,7 +39,7 @@ public class AuthorPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestAuthorPanel.class);
 		tester.assertComponent("panel", TestAuthorPanel.class);
 	}

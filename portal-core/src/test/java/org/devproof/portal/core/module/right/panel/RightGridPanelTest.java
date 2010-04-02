@@ -43,7 +43,7 @@ public class RightGridPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createRightGridPanel());
 		tester.assertComponent("panel", RightGridPanel.class);
 	}

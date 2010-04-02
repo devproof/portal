@@ -39,7 +39,7 @@ public class UsernamePanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createUsernamePanel());
 		tester.assertComponent("panel", UsernamePanel.class);
 	}

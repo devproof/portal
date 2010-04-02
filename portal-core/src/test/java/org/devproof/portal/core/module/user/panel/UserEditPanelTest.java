@@ -42,7 +42,7 @@ public class UserEditPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestUserEditPanel.class);
 		tester.assertComponent("panel", TestUserEditPanel.class);
 	}

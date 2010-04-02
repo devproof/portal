@@ -39,7 +39,7 @@ public class ProgressBarTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createProgressBar());
 		tester.assertComponent("panel", ProgressBar.class);
 	}

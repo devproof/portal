@@ -36,7 +36,7 @@ public class BubblePanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(BubblePanel.class);
 		tester.assertComponent("panel", BubblePanel.class);
 	}

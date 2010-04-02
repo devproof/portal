@@ -46,7 +46,7 @@ public class ContentTagPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createContentTagPanel());
 		tester.assertComponent("panel", ContentTagPanel.class);
 	}
