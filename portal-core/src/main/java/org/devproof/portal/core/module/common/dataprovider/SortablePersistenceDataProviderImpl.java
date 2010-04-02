@@ -25,7 +25,6 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
-import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
  * Generic data provider for wicket data views Only set the type and you will
@@ -36,7 +35,7 @@ import org.devproof.portal.core.module.common.query.SearchQuery;
  * @param <T>
  *            Entity type
  */
-public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ extends SearchQuery> extends
+public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ extends Serializable> extends
 		SortableDataProvider<T> implements SortableQueryDataProvider<T, SQ> {
 	private static final long serialVersionUID = 1L;
 
@@ -50,22 +49,23 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
 	@Override
 	public Iterator<? extends T> iterator(int first, int count) {
 		SortParam sp = getSort();
+		SQ searchQuery = getSearchQueryModel().getObject();
 		List<T> list = dataProviderDao.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count,
-				searchQueryModel.getObject(), prefetch);
+				searchQuery, prefetch);
 		return list.iterator();
 	}
 
 	public IModel<T> model(T obj) {
-		// return new CompoundPropertyModel<T>(obj);
 		return Model.of(obj);
 	}
 
 	@Override
 	public int size() {
+		SQ searchQuery = getSearchQueryModel().getObject();
 		if (countQuery != null) {
-			return dataProviderDao.getSize(entityClass, countQuery, searchQueryModel.getObject());
+			return dataProviderDao.getSize(entityClass, countQuery, searchQuery);
 		} else {
-			return dataProviderDao.getSize(entityClass, searchQueryModel.getObject());
+			return dataProviderDao.getSize(entityClass, searchQuery);
 		}
 	}
 

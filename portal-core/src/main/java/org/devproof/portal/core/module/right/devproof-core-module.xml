@@ -48,6 +48,7 @@
 	<!--  DataProvider  -->
 	<bean id="rightDataProvider" parent="persistenceDataProvider" scope="prototype">
 		<property name="entityClass" value="org.devproof.portal.core.module.right.entity.RightEntity" />
+		<property name="queryClass" value="org.devproof.portal.core.module.right.query.RightQuery"/>
 		<property name="sort">
 			<bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
 				<constructor-arg value="description"/>

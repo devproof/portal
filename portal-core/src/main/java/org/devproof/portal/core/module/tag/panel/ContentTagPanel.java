@@ -17,17 +17,20 @@ package org.devproof.portal.core.module.tag.panel;
 
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
 import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.tag.TagConstants;
+import org.devproof.portal.core.module.tag.TagUtils;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 
 /**
@@ -36,19 +39,17 @@ import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
  * @author Carsten Hufe
  * 
  */
+// TODO rename in TagContentPanel
 public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private IModel<List<T>> tagModel;
 	private Class<? extends Page> page;
-	private String selectedTag;
 
 	public ContentTagPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page) {
 		super(id);
 		this.tagModel = tagModel;
 		this.page = page;
-		// FIXME
-		// setSelectedTag();
 		add(createCSSHeaderContributor());
 		add(createTagRepeater());
 	}
@@ -63,19 +64,33 @@ public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 
 	private WebMarkupContainer createTagItem(String id, T tag) {
 		WebMarkupContainer item = new WebMarkupContainer(id);
-		if (isTagSelected(tag)) {
-			item.add(createClassSelectedModifier());
-		}
+		item.add(createClassSelectedModifier(tag));
 		item.add(createTagLink(tag));
 		return item;
 	}
 
 	private boolean isTagSelected(T tag) {
+		String selectedTag = TagUtils.findSelectedTag();
 		return tag.getTagname().equals(selectedTag);
 	}
 
-	private SimpleAttributeModifier createClassSelectedModifier() {
-		return new SimpleAttributeModifier("class", "tagViewSelected");
+	private AttributeModifier createClassSelectedModifier(T tag) {
+		IModel<String> cssStyle = createClassSelectedModifierModel(tag);
+		return new AttributeModifier("class", true, cssStyle);
+	}
+
+	private IModel<String> createClassSelectedModifierModel(final T tag) {
+		return new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				if (isTagSelected(tag)) {
+					return "tagViewSelected";
+				}
+				return "";
+			}
+		};
 	}
 
 	private BookmarkablePageLink<String> createTagLink(T tag) {
@@ -88,15 +103,8 @@ public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 	}
 
 	private Label createTagLinkLabel(T tag) {
-		return new Label("tagName", tag.getTagname());
+		return new Label("tagName", new PropertyModel<String>(tag, "tagname"));
 	}
-
-	//
-	// private void setSelectedTag() {
-	// if (params != null && params.containsKey("tag")) {
-	// selectedTag = params.getString("tag");
-	// }
-	// }
 
 	private HeaderContributor createCSSHeaderContributor() {
 		return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);

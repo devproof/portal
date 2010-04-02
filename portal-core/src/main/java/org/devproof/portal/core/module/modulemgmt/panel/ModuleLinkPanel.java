@@ -28,6 +28,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -46,7 +47,7 @@ public class ModuleLinkPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "moduleLinkDataProvider")
-	private QueryDataProvider<ModuleLinkEntity> moduleLinkDataProvider;
+	private QueryDataProvider<ModuleLinkEntity, ModuleLinkQuery> moduleLinkDataProvider;
 	@SpringBean(name = "moduleService")
 	private ModuleService moduleService;
 	@SpringBean(name = "registryService")
@@ -55,13 +56,19 @@ public class ModuleLinkPanel extends Panel {
 	private LinkType linkType;
 	private WebMarkupContainer refreshTable;
 	private Form<ModuleLinkEntity> form;
-	
+
 	public ModuleLinkPanel(String id, LinkType linkType) {
 		super(id);
 		this.linkType = linkType;
-		setQueryToDataProvider();
+		setLinkTypeInQuery();
 		add(createLinkTypeTitleLabel());
 		add(createModuleLinkRefreshTable());
+	}
+
+	private void setLinkTypeInQuery() {
+		IModel<ModuleLinkQuery> searchQueryModel = moduleLinkDataProvider.getSearchQueryModel();
+		ModuleLinkQuery query = searchQueryModel.getObject();
+		query.setLinkType(linkType);
 	}
 
 	private Label createLinkTypeTitleLabel() {
@@ -83,12 +90,6 @@ public class ModuleLinkPanel extends Panel {
 
 	private ModuleLinkView createModuleLinkView() {
 		return new ModuleLinkView("tableRow", moduleLinkDataProvider);
-	}
-
-	private void setQueryToDataProvider() {
-		ModuleLinkQuery query = new ModuleLinkQuery();
-		query.setLinkType(linkType);
-		moduleLinkDataProvider.setQueryObject(query);
 	}
 
 	private class ModuleLinkView extends DataView<ModuleLinkEntity> {

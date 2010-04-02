@@ -375,21 +375,21 @@ public abstract class TemplatePage extends WebPage {
 	 */
 	public <T extends BaseTagEntity<?>> void addTagCloudBox(TagService<T> tagService, IModel<T> model,
 			Class<? extends Page> page) {
-		TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, model, page, params);
+		TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, page);
 		newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
 		tagCloudBox.replaceWith(newTagCloudBox);
 		tagCloudBox = newTagCloudBox;
 	}
 
-	/**
-	 * Clean the tag selection
-	 */
-	public void cleanTagSelection() {
-		if (tagCloudBox instanceof TagCloudBoxPanel<?>) {
-			TagCloudBoxPanel<?> box = (TagCloudBoxPanel<?>) tagCloudBox;
-			box.cleanSelection();
-		}
-	}
+	// /**
+	// * Clean the tag selection
+	// */
+	// public void cleanTagSelection() {
+	// if (tagCloudBox instanceof TagCloudBoxPanel<?>) {
+	// TagCloudBoxPanel<?> box = (TagCloudBoxPanel<?>) tagCloudBox;
+	// box.cleanSelection();
+	// }
+	// }
 
 	/**
 	 * Add a link to the page admin panel

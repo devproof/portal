@@ -55,7 +55,7 @@ public class RolePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "roleDataProvider")
-	private QueryDataProvider<RoleEntity> roleDataProvider;
+	private QueryDataProvider<RoleEntity, RoleQuery> roleDataProvider;
 	@SpringBean(name = "roleService")
 	private RoleService roleService;
 	@SpringBean(name = "userService")
@@ -64,7 +64,7 @@ public class RolePage extends TemplatePage {
 	private RightService rightService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private RoleQuery query = new RoleQuery();
+	private IModel<RoleQuery> queryModel;
 	private WebMarkupContainer refreshTable;
 	private BubblePanel bubblePanel;
 	private PageParameters params;
@@ -72,7 +72,7 @@ public class RolePage extends TemplatePage {
 	public RolePage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setQueryToDataProvider();
+		this.queryModel = roleDataProvider.getSearchQueryModel();
 		add(createRoleTableRefreshContainer());
 		add(createBubblePanel());
 		addPageAdminBoxLink(createCreateRoleLink());
@@ -106,7 +106,7 @@ public class RolePage extends TemplatePage {
 	}
 
 	private RoleSearchBoxPanel createSearchBoxPanel() {
-		return new RoleSearchBoxPanel("box", query) {
+		return new RoleSearchBoxPanel("box", queryModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -114,10 +114,6 @@ public class RolePage extends TemplatePage {
 				target.addComponent(refreshTable);
 			}
 		};
-	}
-
-	private void setQueryToDataProvider() {
-		roleDataProvider.setQueryObject(query);
 	}
 
 	private AjaxLink<RoleEntity> createCreateRoleLink() {

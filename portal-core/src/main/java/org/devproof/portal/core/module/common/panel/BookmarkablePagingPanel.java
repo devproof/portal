@@ -21,6 +21,8 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.devproof.portal.core.module.common.query.SearchParameterResolver;
 
 /**
  * Should be refactored ... very ugly. Search engines must be able to index nice
@@ -31,77 +33,81 @@ import org.apache.wicket.markup.html.panel.Panel;
 public class BookmarkablePagingPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
+	private static final String PAGE_PARAM = "page";
 
-	private BookmarkablePageLink<String> backLink;
-	private BookmarkablePageLink<String> forwardLink;
 	private IPageable pageable;
+	private IModel<? extends SearchParameterResolver> pagingParameterResolverModel;
 	private Class<? extends Page> parentClazz;
 
-	public BookmarkablePagingPanel(String id, IPageable pageable, Class<? extends Page> parentClazz) {
+	public BookmarkablePagingPanel(String id, IPageable pageable,
+			IModel<? extends SearchParameterResolver> pagingParameterResolverModel, Class<? extends Page> parentClazz) {
 		super(id);
 		this.pageable = pageable;
+		this.pagingParameterResolverModel = pagingParameterResolverModel;
 		this.parentClazz = parentClazz;
-		// TODO in before render
-		handleCurrentPageParameter();
+		// handleCurrentPageParameter();
 		add(createBackLink());
 		add(createForwardLink());
-		copySearchParameterToPagingLinks();
 	}
 
-	private void copySearchParameterToPagingLinks() {
-		// FIXME
-		PageParameters params = RequestCycle.get().getPageParameters();
-		if (params != null) {
-			for (String key : params.keySet()) {
-				if ("broken".equals(key) || "search".equals(key) || "tag".equals(key)) {
-					String value = params.getString(key);
-					backLink.setParameter(key, value);
-					forwardLink.setParameter(key, value);
-				}
-			}
-		}
-	}
+	//
+	// private void handleCurrentPageParameter() {
+	// // TODO move to Dataview???
+	// PageParameters params = RequestCycle.get().getPageParameters();
+	// if (params != null && params.containsKey(PAGE_PARAM)) {
+	// int page = params.getAsInteger(PAGE_PARAM, 1);
+	// if (page > 0 && page <= pageable.getPageCount()) {
+	// pageable.setCurrentPage(page - 1);
+	// }
+	// }
+	// }
 
-	private void handleCurrentPageParameter() {
-		// FIXME
-
+	@Override
+	protected void onBeforeRender() {
+		// if params is null, its a post search request ... so reset the current
+		// page
 		PageParameters params = RequestCycle.get().getPageParameters();
-		if (params != null && params.containsKey("page")) {
-			int page = params.getAsInteger("page", 1);
+		if (params != null && params.containsKey(PAGE_PARAM)) {
+			int page = params.getAsInteger(PAGE_PARAM, 1);
 			if (page > 0 && page <= pageable.getPageCount()) {
 				pageable.setCurrentPage(page - 1);
 			}
+		} else {
+			pageable.setCurrentPage(0);
 		}
+		super.onBeforeRender();
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {
-		forwardLink = newForwardLink();
-		forwardLink.setParameter("page", pageable.getCurrentPage() + 2);
-		return forwardLink;
-	}
-
-	private BookmarkablePageLink<String> newForwardLink() {
-		BookmarkablePageLink<String> forwardLink = new BookmarkablePageLink<String>("forwardLink", parentClazz) {
+		return new BookmarkablePageLink<String>("forwardLink", parentClazz) {
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public PageParameters getPageParameters() {
+				SearchParameterResolver resolver = pagingParameterResolverModel.getObject();
+				PageParameters pageParameters = resolver.getPageParameters();
+				pageParameters.put(PAGE_PARAM, pageable.getCurrentPage() + 2);
+				return pageParameters;
+			}
 
 			@Override
 			public boolean isVisible() {
 				return (pageable.getPageCount() - 1) > pageable.getCurrentPage();
 			}
-
 		};
-		return forwardLink;
 	}
 
 	private BookmarkablePageLink<String> createBackLink() {
-		backLink = newBackLink(pageable, parentClazz);
-		backLink.setParameter("page", pageable.getCurrentPage());
-		return backLink;
-	}
-
-	private BookmarkablePageLink<String> newBackLink(final IPageable pageable, Class<? extends Page> parentClazz) {
 		return new BookmarkablePageLink<String>("backLink", parentClazz) {
 			private static final long serialVersionUID = 1L;
+
+			@Override
+			public PageParameters getPageParameters() {
+				SearchParameterResolver resolver = pagingParameterResolverModel.getObject();
+				PageParameters pageParameters = resolver.getPageParameters();
+				pageParameters.put(PAGE_PARAM, pageable.getCurrentPage());
+				return pageParameters;
+			}
 
 			@Override
 			public boolean isVisible() {
