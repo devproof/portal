@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -39,7 +38,6 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
-import org.devproof.portal.module.article.query.ArticleQuery;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
@@ -104,8 +102,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private void addTagCloudBox() {
-		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(new ArticleQuery(), "tag"),
-				ArticlePage.class);
+		addTagCloudBox(articleTagService, ArticlePage.class);
 	}
 
 	private void setCurrentPageNumber() {

@@ -72,22 +72,12 @@ public class BookmarkPage extends BookmarkBasePage {
 
 	public BookmarkPage(PageParameters params) {
 		super(params);
-		setSearchQueryModel();
+		searchQueryModel = bookmarkDataProvider.getSearchQueryModel();
 		add(createBubblePanel());
 		add(createBookmarkDataView());
 		add(createPagingPanel());
 		addFilterBox(createBookmarkSearchBoxPanel());
 		addTagCloudBox();
-	}
-
-	private void setSearchQueryModel() {
-		// TODO get this nicer?
-		// instance von query von spring erstellen lassen? so kann man auch
-		// injects drin machen
-		searchQueryModel = bookmarkDataProvider.getSearchQueryModel();
-		if (!isAuthor() && configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
-			searchQueryModel.getObject().setBroken(false);
-		}
 	}
 
 	private BubblePanel createBubblePanel() {
@@ -96,8 +86,7 @@ public class BookmarkPage extends BookmarkBasePage {
 	}
 
 	private void addTagCloudBox() {
-		PropertyModel<BookmarkTagEntity> tagModel = new PropertyModel<BookmarkTagEntity>(searchQueryModel, "tag");
-		addTagCloudBox(bookmarkTagService, tagModel, BookmarkPage.class);
+		addTagCloudBox(bookmarkTagService, BookmarkPage.class);
 	}
 
 	private BookmarkablePagingPanel createPagingPanel() {

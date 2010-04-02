@@ -41,6 +41,7 @@ public class ArticleBasePage extends TemplatePage {
 
 	public ArticleBasePage(PageParameters params) {
 		super(params);
+		// TODO lazy machen
 		setAuthorRight();
 		add(createCSSHeaderContributor());
 		addSyntaxHighlighter();
@@ -53,7 +54,7 @@ public class ArticleBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page." + ArticleEditPage.class.getSimpleName());
+		isAuthor = session.hasRight(ArticleConstants.AUTHOR_RIGHT);
 	}
 
 	private void addArticleAddLink() {

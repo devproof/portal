@@ -27,7 +27,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -79,8 +78,7 @@ public class ArticlePage extends ArticleBasePage {
 	}
 
 	private void addTagCloudBox() {
-		PropertyModel<ArticleTagEntity> tagModel = new PropertyModel<ArticleTagEntity>(searchQueryModel, "tag");
-		addTagCloudBox(articleTagService, tagModel, ArticlePage.class);
+		addTagCloudBox(articleTagService, ArticlePage.class);
 	}
 
 	private ArticleSearchBoxPanel createArticleSearchBoxPanel() {

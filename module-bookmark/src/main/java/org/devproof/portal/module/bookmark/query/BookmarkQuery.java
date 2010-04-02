@@ -17,13 +17,17 @@ package org.devproof.portal.module.bookmark.query;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.TagConstants;
+import org.devproof.portal.module.bookmark.BookmarkConstants;
 
 /**
  * @author Carsten Hufe
@@ -31,6 +35,9 @@ import org.devproof.portal.core.module.tag.TagConstants;
 @BeanJoin("left join e.allRights ar left join e.tags t")
 public class BookmarkQuery implements SearchQuery {
 	private static final long serialVersionUID = 1L;
+	@SpringBean(name = "configurationService")
+	private ConfigurationService configurationService;
+
 	private static final String SEARCH_PARAM = "search";
 	private static final String BROKEN_PARAM = "broken";
 	private static final String ID_PARAM = "id";
@@ -39,12 +46,26 @@ public class BookmarkQuery implements SearchQuery {
 	private String tagname;
 	private String allTextFields;
 	private Boolean broken;
+	private Boolean author;
 
 	public BookmarkQuery() {
+		InjectorHolder.getInjector().inject(this);
 		id = PortalUtil.getParameterAsInteger(ID_PARAM);
 		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
 		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
-		broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
+		if (isAuthor()) {
+			broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
+		} else if (configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
+			broken = false;
+		}
+	}
+
+	private boolean isAuthor() {
+		if (author == null) {
+			PortalSession session = PortalSession.get();
+			author = session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
+		}
+		return author.booleanValue();
 	}
 
 	@BeanQuery("e.id = ?")
