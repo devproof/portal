@@ -22,7 +22,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.devproof.portal.core.module.common.query.SearchParameterResolver;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
  * Should be refactored ... very ugly. Search engines must be able to index nice
@@ -36,14 +36,14 @@ public class BookmarkablePagingPanel extends Panel {
 	private static final String PAGE_PARAM = "page";
 
 	private IPageable pageable;
-	private IModel<? extends SearchParameterResolver> pagingParameterResolverModel;
+	private IModel<? extends SearchQuery> searchQueryModel;
 	private Class<? extends Page> parentClazz;
 
 	public BookmarkablePagingPanel(String id, IPageable pageable,
-			IModel<? extends SearchParameterResolver> pagingParameterResolverModel, Class<? extends Page> parentClazz) {
+			IModel<? extends SearchQuery> searchQueryModel, Class<? extends Page> parentClazz) {
 		super(id);
 		this.pageable = pageable;
-		this.pagingParameterResolverModel = pagingParameterResolverModel;
+		this.searchQueryModel = searchQueryModel;
 		this.parentClazz = parentClazz;
 		// handleCurrentPageParameter();
 		add(createBackLink());
@@ -84,7 +84,7 @@ public class BookmarkablePagingPanel extends Panel {
 
 			@Override
 			public PageParameters getPageParameters() {
-				SearchParameterResolver resolver = pagingParameterResolverModel.getObject();
+				SearchQuery resolver = searchQueryModel.getObject();
 				PageParameters pageParameters = resolver.getPageParameters();
 				pageParameters.put(PAGE_PARAM, pageable.getCurrentPage() + 2);
 				return pageParameters;
@@ -103,7 +103,7 @@ public class BookmarkablePagingPanel extends Panel {
 
 			@Override
 			public PageParameters getPageParameters() {
-				SearchParameterResolver resolver = pagingParameterResolverModel.getObject();
+				SearchQuery resolver = searchQueryModel.getObject();
 				PageParameters pageParameters = resolver.getPageParameters();
 				pageParameters.put(PAGE_PARAM, pageable.getCurrentPage());
 				return pageParameters;

@@ -13,16 +13,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.core.module.common.query;
+package org.devproof.portal.core.module.tag;
 
-import java.io.Serializable;
-
-import org.apache.wicket.PageParameters;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * @author Carsten Hufe
+ * 
  */
-public interface SearchQuery extends Serializable {
-	// TODO comment
-	PageParameters getPageParameters();
+public class TagUtils {
+	private TagUtils() {
+	};
+
+	/**
+	 * Returns the currently selected tag as string
+	 */
+	public static String findSelectedTag() {
+		return PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+	}
+
 }

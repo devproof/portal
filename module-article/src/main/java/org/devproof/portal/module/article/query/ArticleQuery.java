@@ -20,7 +20,7 @@ import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.common.query.SearchParameterResolver;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.TagConstants;
@@ -29,7 +29,7 @@ import org.devproof.portal.core.module.tag.TagConstants;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
-public class ArticleQuery implements SearchParameterResolver {
+public class ArticleQuery implements SearchQuery {
 	private static final long serialVersionUID = 1L;
 	private static final String ID_PARAM = "id";
 	private static final String SEARCH_PARAM = "search";
@@ -71,6 +71,7 @@ public class ArticleQuery implements SearchParameterResolver {
 
 	public void setAllTextFields(String allTextFields) {
 		this.allTextFields = allTextFields;
+		this.tagname = null;
 	}
 
 	@BeanQuery("e.id = ?")

@@ -17,7 +17,6 @@ package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -26,7 +25,6 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
-import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
@@ -34,6 +32,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -97,7 +96,7 @@ public class ArticlePage extends ArticleBasePage {
 		return new BookmarkablePagingPanel("paging", dataView, searchQueryModel, ArticlePage.class);
 	}
 
-	private class ArticleDataView extends DataView<ArticleEntity> {
+	private class ArticleDataView extends AutoPagingDataView<ArticleEntity> {
 		private static final long serialVersionUID = 1L;
 		private boolean onlyOneArticleInResult;
 
@@ -113,23 +112,6 @@ public class ArticlePage extends ArticleBasePage {
 			setArticleTitleAsPageTitle(item);
 			item.setOutputMarkupId(true);
 			item.add(createArticleView(item));
-		}
-
-		// TODO hier lassen? dann auslagen in eigene dataview
-		@Override
-		protected void onBeforeRender() {
-			// if params is null, its a post search request ... so reset the
-			// current page
-			PageParameters params = RequestCycle.get().getPageParameters();
-			if (params != null && params.containsKey("page")) {
-				int page = params.getAsInteger("page", 1);
-				if (page > 0 && page <= getPageCount()) {
-					setCurrentPage(page - 1);
-				}
-			} else {
-				setCurrentPage(0);
-			}
-			super.onBeforeRender();
 		}
 
 		private void setArticleTitleAsPageTitle(Item<ArticleEntity> item) {
