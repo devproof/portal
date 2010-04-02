@@ -17,13 +17,14 @@ package org.devproof.portal.core.module.common.panel;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 
 /**
- * Should be refactored ... very ugly.
- * Search engines must be able to index nice urls!
+ * Should be refactored ... very ugly. Search engines must be able to index nice
+ * urls!
  * 
  * @author Carsten Hufe
  */
@@ -36,14 +37,11 @@ public class BookmarkablePagingPanel extends Panel {
 	private IPageable pageable;
 	private Class<? extends Page> parentClazz;
 
-	private PageParameters params;
-
-	public BookmarkablePagingPanel(String id, IPageable pageable, Class<? extends Page> parentClazz,
-			PageParameters params) {
+	public BookmarkablePagingPanel(String id, IPageable pageable, Class<? extends Page> parentClazz) {
 		super(id);
 		this.pageable = pageable;
 		this.parentClazz = parentClazz;
-		this.params = params;
+		// TODO in before render
 		handleCurrentPageParameter();
 		add(createBackLink());
 		add(createForwardLink());
@@ -51,6 +49,8 @@ public class BookmarkablePagingPanel extends Panel {
 	}
 
 	private void copySearchParameterToPagingLinks() {
+		// FIXME
+		PageParameters params = RequestCycle.get().getPageParameters();
 		if (params != null) {
 			for (String key : params.keySet()) {
 				if ("broken".equals(key) || "search".equals(key) || "tag".equals(key)) {
@@ -63,6 +63,9 @@ public class BookmarkablePagingPanel extends Panel {
 	}
 
 	private void handleCurrentPageParameter() {
+		// FIXME
+
+		PageParameters params = RequestCycle.get().getPageParameters();
 		if (params != null && params.containsKey("page")) {
 			int page = params.getAsInteger("page", 1);
 			if (page > 0 && page <= pageable.getPageCount()) {

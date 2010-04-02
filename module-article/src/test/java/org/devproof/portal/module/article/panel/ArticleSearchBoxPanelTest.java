@@ -17,8 +17,8 @@ package org.devproof.portal.module.article.panel;
 
 import junit.framework.TestCase;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.article.query.ArticleQuery;
@@ -52,7 +52,7 @@ public class ArticleSearchBoxPanelTest extends TestCase {
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new ArticleSearchBoxPanel(panelId, new ArticleQuery(), null, null, null, new PageParameters());
+				return new ArticleSearchBoxPanel(panelId, Model.of(new ArticleQuery()));
 			}
 		};
 	}

@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.user.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.user.query.UserQuery;
 import org.devproof.portal.test.PortalTestUtil;
@@ -48,7 +49,7 @@ public class UserSearchBoxPanelTest extends TestCase {
 		private static final long serialVersionUID = 1L;
 
 		public TestUserSearchBoxPanel(String id) {
-			super(id, new UserQuery());
+			super(id, Model.of(new UserQuery()));
 		}
 
 		@Override

@@ -18,7 +18,6 @@ package org.devproof.portal.core.module.tag.panel;
 import java.util.List;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -40,17 +39,16 @@ import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private PageParameters params;
 	private IModel<List<T>> tagModel;
 	private Class<? extends Page> page;
 	private String selectedTag;
 
-	public ContentTagPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page, PageParameters params) {
+	public ContentTagPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page) {
 		super(id);
 		this.tagModel = tagModel;
 		this.page = page;
-		this.params = params;
-		setSelectedTag();
+		// FIXME
+		// setSelectedTag();
 		add(createCSSHeaderContributor());
 		add(createTagRepeater());
 	}
@@ -93,11 +91,12 @@ public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 		return new Label("tagName", tag.getTagname());
 	}
 
-	private void setSelectedTag() {
-		if (params != null && params.containsKey("tag")) {
-			selectedTag = params.getString("tag");
-		}
-	}
+	//
+	// private void setSelectedTag() {
+	// if (params != null && params.containsKey("tag")) {
+	// selectedTag = params.getString("tag");
+	// }
+	// }
 
 	private HeaderContributor createCSSHeaderContributor() {
 		return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);

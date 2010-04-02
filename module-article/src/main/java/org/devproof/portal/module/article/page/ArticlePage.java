@@ -60,20 +60,18 @@ public class ArticlePage extends ArticleBasePage {
 	@SpringBean(name = "articleService")
 	private ArticleService articleService;
 	@SpringBean(name = "articleDataProvider")
-	private QueryDataProvider<ArticleEntity> articleDataProvider;
+	private QueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
 	@SpringBean(name = "articleTagService")
 	private TagService<ArticleTagEntity> articleTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
 	private ArticleDataView dataView;
-	private ArticleQuery query;
-	private PageParameters params;
+	private IModel<ArticleQuery> searchQueryModel;
 
 	public ArticlePage(PageParameters params) {
 		super(params);
-		this.params = params;
-		setArticleQuery();
+		searchQueryModel = articleDataProvider.getSearchQueryModel();
 		add(createArticleDataView());
 		add(createPagingPanel());
 		addFilterBox(createArticleSearchBoxPanel());
@@ -81,11 +79,12 @@ public class ArticlePage extends ArticleBasePage {
 	}
 
 	private void addTagCloudBox() {
-		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(query, "tag"), ArticlePage.class, params);
+		PropertyModel<ArticleTagEntity> tagModel = new PropertyModel<ArticleTagEntity>(searchQueryModel, "tag");
+		addTagCloudBox(articleTagService, tagModel, ArticlePage.class);
 	}
 
 	private ArticleSearchBoxPanel createArticleSearchBoxPanel() {
-		return new ArticleSearchBoxPanel("box", query, articleDataProvider, this, dataView, params);
+		return new ArticleSearchBoxPanel("box", searchQueryModel);
 	}
 
 	private ArticleDataView createArticleDataView() {
@@ -94,16 +93,7 @@ public class ArticlePage extends ArticleBasePage {
 	}
 
 	private BookmarkablePagingPanel createPagingPanel() {
-		return new BookmarkablePagingPanel("paging", dataView, ArticlePage.class, params);
-	}
-
-	private void setArticleQuery() {
-		query = new ArticleQuery();
-		PortalSession session = (PortalSession) getSession();
-		if (!session.hasRight("article.view")) {
-			query.setRole(session.getRole());
-		}
-		articleDataProvider.setQueryObject(query);
+		return new BookmarkablePagingPanel("paging", dataView, ArticlePage.class);
 	}
 
 	private class ArticleDataView extends DataView<ArticleEntity> {
@@ -208,8 +198,9 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private ContentTagPanel<ArticleTagEntity> createTagPanel() {
+			// FIXME falsches model
 			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(article.getTags()),
-					ArticlePage.class, params);
+					ArticlePage.class);
 		}
 
 		private ExtendedLabel createTeaserLabel() {
@@ -274,5 +265,4 @@ public class ArticlePage extends ArticleBasePage {
 			};
 		}
 	}
-
 }

@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.common.dataprovider;
 import java.io.Serializable;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
+import org.apache.wicket.model.IModel;
 
 /**
  * A generic data provider with query objects
@@ -27,19 +28,12 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDat
  * @param <T>
  *            Entity type
  */
-public interface QueryDataProvider<T> extends ISortableDataProvider<T> {
-	/**
-	 * Set the query object (a bean)
-	 * 
-	 * @param query
-	 *            query object
-	 */
-	void setQueryObject(Serializable query);
+public interface QueryDataProvider<T, SQ extends Serializable> extends ISortableDataProvider<T> {
 
 	/**
 	 * Get the query object (a bean)
 	 * 
 	 * @return query object
 	 */
-	Serializable getQueryObject();
+	IModel<SQ> getSearchQueryModel();
 }

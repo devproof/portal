@@ -15,19 +15,15 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.devproof.portal.core.app.PortalSession;
+import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
-import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
-import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
@@ -40,47 +36,29 @@ import org.devproof.portal.core.module.common.query.SearchQuery;
  * @author Carsten Hufe
  * 
  */
-public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibility {
+public abstract class BaseSearchBoxPanel<T extends SearchQuery> extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	private Form<SearchQuery> form;
-	private List<BaseSearchBoxListener> listeners = new ArrayList<BaseSearchBoxListener>();
-	private boolean isAuthor;
-	private SearchQuery query;
-	private QueryDataProvider<?> dataProvider;
-	private String authorRightName;
-	private TemplatePage parent;
-	private IPageable dataview;
-	private PageParameters params;
+	private IModel<T> searchQueryModel;
 
-	public BaseSearchBoxPanel(String id, SearchQuery query, QueryDataProvider<?> dataProvider, String authorRightName,
-			TemplatePage parent, IPageable dataview, PageParameters params) {
+	public BaseSearchBoxPanel(String id, IModel<T> searchQueryModel) {
 		super(id);
-		this.query = query;
-		this.dataProvider = dataProvider;
-		this.authorRightName = authorRightName;
-		this.parent = parent;
-		this.dataview = dataview;
-		this.params = params;
-
-		setAuthorRight();
+		this.searchQueryModel = searchQueryModel;
 		add(createSearchForm());
-		copyParameterToQuery();
+		// copyParameterToQuery();
 	}
 
-	private void copyParameterToQuery() {
-		if (params != null && params.containsKey("search")) {
-			query.setAllTextFields(params.getString("search"));
-		}
-		if (params != null && params.containsKey("id")) {
-			query.setId(params.getAsInteger("id"));
-		}
-	}
+	// TODO wie vorbelegen mit den werten?
 
-	private void setAuthorRight() {
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight(this.authorRightName);
-	}
+	// private void copyParameterToQuery() {
+	// if (params != null && params.containsKey("search")) {
+	// query.setAllTextFields(params.getString("search"));
+	// }
+	// if (params != null && params.containsKey("id")) {
+	// query.setId(params.getAsInteger("id"));
+	// }
+	// }
 
 	private Form<SearchQuery> createSearchForm() {
 		form = newForm();
@@ -89,33 +67,15 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 	}
 
 	private Form<SearchQuery> newForm() {
-		return new Form<SearchQuery>("searchForm", new CompoundPropertyModel<SearchQuery>(query)) {
+		return new Form<SearchQuery>("searchForm", new CompoundPropertyModel<SearchQuery>(searchQueryModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
-				copyQueryToParameter();
-				for (BaseSearchBoxListener listenener : listeners) {
-					listenener.onSearch();
-				}
-				query.clearSelection();
-				dataProvider.setQueryObject(query);
-				parent.addOrReplace(createPagingPanel());
-				parent.cleanTagSelection();
+				searchQueryModel.getObject().clearSelection();
+				// parent.addOrReplace(createPagingPanel());
+				// parent.cleanTagSelection();
 			}
-
-			private void copyQueryToParameter() {
-				params.clear();
-				if (query.getAllTextFields() != null) {
-					params.put("search", query.getAllTextFields());
-				}
-				params.remove("tag");
-			}
-
-			private BookmarkablePagingPanel createPagingPanel() {
-				return new BookmarkablePagingPanel("paging", dataview, parent.getPageClass(), params);
-			}
-
 		};
 	}
 
@@ -127,11 +87,28 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		form.add(component);
 	}
 
-	public boolean isAuthor() {
-		return isAuthor;
+	/**
+	 * Params for paging
+	 * 
+	 * @return
+	 */
+	public Map<String, String> getParameters() {
+		Map<String, String> params = new HashMap<String, String>();
+		SearchQuery query = searchQueryModel.getObject();
+		if (query.getId() != null) {
+			params.put("id", String.valueOf(query.getId()));
+		}
+		if (query.getAllTextFields() != null) {
+			params.put("search", String.valueOf(query.getAllTextFields()));
+		}
+		return params;
 	}
-
-	public void addListener(BaseSearchBoxListener listener) {
-		this.listeners.add(listener);
-	}
+	//
+	// public boolean isAuthor() {
+	// return false;
+	// }
+	//
+	// public void addListener(BaseSearchBoxListener listener) {
+	// this.listeners.add(listener);
+	// }
 }

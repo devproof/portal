@@ -374,7 +374,7 @@ public abstract class TemplatePage extends WebPage {
 	 * Set the TagCloud Box e.g. search or tags
 	 */
 	public <T extends BaseTagEntity<?>> void addTagCloudBox(TagService<T> tagService, IModel<T> model,
-			Class<? extends Page> page, PageParameters params) {
+			Class<? extends Page> page) {
 		TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, model, page, params);
 		newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
 		tagCloudBox.replaceWith(newTagCloudBox);

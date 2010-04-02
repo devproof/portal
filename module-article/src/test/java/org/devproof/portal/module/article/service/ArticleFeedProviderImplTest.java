@@ -37,6 +37,7 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.page.ArticlePage;
+import org.devproof.portal.module.article.query.ArticleQuery;
 
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -47,7 +48,7 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  */
 public class ArticleFeedProviderImplTest extends TestCase {
 	private ArticleFeedProviderImpl impl;
-	private SortableQueryDataProvider<ArticleEntity> dataProviderMock;
+	private SortableQueryDataProvider<ArticleEntity, ArticleQuery> dataProviderMock;
 	private ConfigurationService configurationServiceMock;
 
 	@Override
@@ -134,20 +135,15 @@ public class ArticleFeedProviderImplTest extends TestCase {
 			}
 
 			@Override
-			protected void setRoleForDataProviderQuery(final RoleEntity role) {
-				callOrder.append("2");
-			}
-
-			@Override
 			protected Iterator<? extends ArticleEntity> getArticleEntries() {
-				callOrder.append("3");
+				callOrder.append("2");
 				return null;
 			}
 
 			@Override
 			protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
 					final Iterator<? extends ArticleEntity> iterator) {
-				callOrder.append("4");
+				callOrder.append("3");
 				return entries;
 			}
 
@@ -157,7 +153,7 @@ public class ArticleFeedProviderImplTest extends TestCase {
 			}
 		};
 		impl.getFeed(null, new RoleEntity());
-		assertEquals("1234", callOrder.toString());
+		assertEquals("123", callOrder.toString());
 	}
 
 	private ArticleEntity createArticle() {

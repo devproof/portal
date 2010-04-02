@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.query;
 
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
@@ -35,11 +36,13 @@ public class ArticleQuery implements SearchQuery, ITagQuery<ArticleTagEntity> {
 
 	@BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
 	public RoleEntity getRole() {
-		return this.role;
-	}
-
-	public void setRole(RoleEntity role) {
-		this.role = role;
+		if (role == null) {
+			PortalSession session = PortalSession.get();
+			if (!session.hasRight("article.view")) {
+				role = session.getRole();
+			}
+		}
+		return role;
 	}
 
 	@BeanQuery("t = ?")

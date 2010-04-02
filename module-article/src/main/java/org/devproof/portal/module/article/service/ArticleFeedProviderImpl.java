@@ -46,13 +46,12 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  * @author Carsten Hufe
  */
 public class ArticleFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<ArticleEntity> articleDataProvider;
+	private SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
 	private ConfigurationService configurationService;
 
 	@Override
 	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
-		setRoleForDataProviderQuery(role);
 		Iterator<? extends ArticleEntity> iterator = getArticleEntries();
 		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
 		feed.setEntries(entries);
@@ -106,12 +105,6 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 		return rc.urlFor(ArticlePage.class, new PageParameters("id=" + ArticleEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(RoleEntity role) {
-		ArticleQuery query = new ArticleQuery();
-		query.setRole(role);
-		articleDataProvider.setQueryObject(query);
-	}
-
 	@Override
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
 		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
@@ -128,7 +121,7 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setArticleDataProvider(SortableQueryDataProvider<ArticleEntity> articleDataProvider) {
+	public void setArticleDataProvider(SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider) {
 		this.articleDataProvider = articleDataProvider;
 	}
 

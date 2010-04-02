@@ -19,11 +19,13 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
  * Generic data provider for wicket data views Only set the type and you will
@@ -34,13 +36,14 @@ import org.devproof.portal.core.module.common.dao.DataProviderDao;
  * @param <T>
  *            Entity type
  */
-public class SortablePersistenceDataProviderImpl<T extends Serializable> extends SortableDataProvider<T> implements
-		SortableQueryDataProvider<T> {
+public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ extends SearchQuery> extends
+		SortableDataProvider<T> implements SortableQueryDataProvider<T, SQ> {
 	private static final long serialVersionUID = 1L;
 
 	private Class<T> entityClass;
+	private Class<T> queryClass;
 	private DataProviderDao<T> dataProviderDao;
-	private Serializable queryObject;
+	private IModel<SQ> searchQueryModel;
 	private List<String> prefetch;
 	private String countQuery;
 
@@ -48,7 +51,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable> extends
 	public Iterator<? extends T> iterator(int first, int count) {
 		SortParam sp = getSort();
 		List<T> list = dataProviderDao.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count,
-				queryObject, prefetch);
+				searchQueryModel.getObject(), prefetch);
 		return list.iterator();
 	}
 
@@ -60,20 +63,29 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable> extends
 	@Override
 	public int size() {
 		if (countQuery != null) {
-			return dataProviderDao.getSize(entityClass, countQuery, queryObject);
+			return dataProviderDao.getSize(entityClass, countQuery, searchQueryModel.getObject());
 		} else {
-			return dataProviderDao.getSize(entityClass, queryObject);
+			return dataProviderDao.getSize(entityClass, searchQueryModel.getObject());
 		}
 	}
 
 	@Override
-	public Serializable getQueryObject() {
-		return queryObject;
-	}
-
-	@Override
-	public void setQueryObject(Serializable queryObject) {
-		this.queryObject = queryObject;
+	public IModel<SQ> getSearchQueryModel() {
+		if (searchQueryModel == null) {
+			searchQueryModel = new Model<SQ>();
+			if (queryClass != null) {
+				try {
+					@SuppressWarnings("unchecked")
+					SQ query = (SQ) queryClass.newInstance();
+					searchQueryModel.setObject(query);
+				} catch (InstantiationException e) {
+					throw new UnhandledException(e);
+				} catch (IllegalAccessException e) {
+					throw new UnhandledException(e);
+				}
+			}
+		}
+		return searchQueryModel;
 	}
 
 	public void setEntityClass(Class<T> entityClass) {
@@ -90,5 +102,9 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable> extends
 
 	public void setCountQuery(String countQuery) {
 		this.countQuery = countQuery;
+	}
+
+	public void setQueryClass(Class<T> queryClass) {
+		this.queryClass = queryClass;
 	}
 }
