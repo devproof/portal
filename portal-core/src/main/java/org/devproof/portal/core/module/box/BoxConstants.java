@@ -13,16 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.devproof.portal.core.module.contact;
+package org.devproof.portal.core.module.box;
 
 import org.apache.wicket.ResourceReference;
+import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
+import org.hibernate.dialect.MySQL5Dialect;
 
 /**
+ * Contains box constants
+ *
  * @author Carsten Hufe
  */
-public interface ContactConstants {
-
-	String CONF_CONTACTFORM_EMAIL = "spring.emailTemplateDao.findAll.subject.id.contactformemail";
-	ResourceReference REF_CONTACT_CSS = new ResourceReference(ContactConstants.class,
-			"css/contact.css");
+public interface BoxConstants {
 }

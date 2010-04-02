@@ -18,7 +18,5 @@ package org.devproof.portal.core.module.modulemgmt;
 /**
  * @author Carsten Hufe
  */
-public class ModuleMgmtConstants {
-	private ModuleMgmtConstants() {
-	}
+public interface ModuleMgmtConstants {
 }

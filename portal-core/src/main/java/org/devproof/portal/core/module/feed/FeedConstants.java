@@ -22,10 +22,7 @@ import org.apache.wicket.ResourceReference;
  * 
  * @author Carsten Hufe
  */
-public class FeedConstants {
-	private FeedConstants() {
-	}
-
-	public static final ResourceReference REF_ATOM1 = new ResourceReference(FeedConstants.class, "img/feed_atom1-0.gif");
-	public static final ResourceReference REF_RSS2 = new ResourceReference(FeedConstants.class, "img/feed_rss2-0.gif");
+public interface FeedConstants {
+	ResourceReference REF_ATOM1 = new ResourceReference(FeedConstants.class, "img/feed_atom1-0.gif");
+	ResourceReference REF_RSS2 = new ResourceReference(FeedConstants.class, "img/feed_rss2-0.gif");
 }

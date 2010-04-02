@@ -18,10 +18,7 @@ package org.devproof.portal.core.module.role;
 /**
  * @author Carsten Hufe
  */
-public class RoleConstants {
-	private RoleConstants() {
-	}
-
-	public static final String CONF_DEFAULT_GUEST_ROLE = "spring.roleDao.findAll.description.id.guestrole";
-	public static final String CONF_DEFAULT_REGUSER_ROLE = "spring.roleDao.findAll.description.id.registerrole";
+public interface RoleConstants {
+	String CONF_DEFAULT_GUEST_ROLE = "spring.roleDao.findAll.description.id.guestrole";
+	String CONF_DEFAULT_REGUSER_ROLE = "spring.roleDao.findAll.description.id.registerrole";
 }
