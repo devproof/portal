@@ -53,7 +53,9 @@
 	</target>
 	<!-- Create HSQL DB for quickstartup -->
 	<target name="generate_hsql">
-		<mkdir dir="target/hsql/"/>
+        <delete dir="target/hsql/"/>
+        <mkdir dir="target/hsql/"/>
+        <!-- Shut down DB if it runs from the tests-->
 		<sql
 		    driver="org.hsqldb.jdbcDriver"
 		    url="jdbc:hsqldb:file:portal-bundle/target/hsql/devproof_data"
@@ -67,8 +69,10 @@
 		</sql>
 	</target>
 	<target name="bundle_war">
-		<mkdir dir="target/devproof-portal-${devproof.version}-war/"/>
-		<mkdir dir="target/tmp/"/>
+		<delete dir="target/devproof-portal-${devproof.version}-war/"/>
+        <mkdir dir="target/devproof-portal-${devproof.version}-war/"/>
+		<delete dir="target/tmp/"/>
+        <mkdir dir="target/tmp/"/>
 		<copy file="../portal-webapp/target/portal-webapp-${devproof.version}.war" 
 			tofile="target/devproof-portal-${devproof.version}-war/war/devproof-portal-${devproof.version}.war"/>
 		<copy file="CHANGES" 
