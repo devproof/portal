@@ -15,12 +15,9 @@
  */
 package org.devproof.portal.module.article.panel;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.navigation.paging.IPageable;
-import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
-import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.common.panel.BaseSearchBoxPanel;
 import org.devproof.portal.module.article.query.ArticleQuery;
 
@@ -30,14 +27,13 @@ import org.devproof.portal.module.article.query.ArticleQuery;
  * @author Carsten Hufe
  * 
  */
-public class ArticleSearchBoxPanel extends BaseSearchBoxPanel {
+public class ArticleSearchBoxPanel extends BaseSearchBoxPanel<ArticleQuery> {
 
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
 
-	public ArticleSearchBoxPanel(String id, ArticleQuery query, QueryDataProvider<?> dataProvider, TemplatePage parent,
-			IPageable dataview, PageParameters params) {
-		super(id, query, dataProvider, "article.view", parent, dataview, params);
+	public ArticleSearchBoxPanel(String id, IModel<ArticleQuery> query) {
+		super(id, query);
 		addToForm(createSearchTextField());
 		add(createTitleContainer());
 	}

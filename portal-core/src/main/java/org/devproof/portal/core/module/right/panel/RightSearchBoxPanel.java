@@ -22,6 +22,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.time.Duration;
 import org.devproof.portal.core.module.right.query.RightQuery;
 
@@ -31,16 +32,16 @@ import org.devproof.portal.core.module.right.query.RightQuery;
 public abstract class RightSearchBoxPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private RightQuery query;
+	private IModel<RightQuery> queryModel;
 
-	public RightSearchBoxPanel(String id, RightQuery query) {
+	public RightSearchBoxPanel(String id, IModel<RightQuery> queryModel) {
 		super(id);
-		this.query = query;
+		this.queryModel = queryModel;
 		add(createRightSearchForm());
 	}
 
 	private Form<RightQuery> createRightSearchForm() {
-		Form<RightQuery> form = new Form<RightQuery>("searchForm", new CompoundPropertyModel<RightQuery>(query));
+		Form<RightQuery> form = new Form<RightQuery>("searchForm", new CompoundPropertyModel<RightQuery>(queryModel));
 		form.add(createSearchTextField());
 		form.setOutputMarkupId(true);
 		return form;

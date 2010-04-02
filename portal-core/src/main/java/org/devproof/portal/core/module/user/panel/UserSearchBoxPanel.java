@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 import org.devproof.portal.core.module.user.query.UserQuery;
@@ -34,17 +35,17 @@ import org.devproof.portal.core.module.user.query.UserQuery;
 public abstract class UserSearchBoxPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private UserQuery query;
+	private IModel<UserQuery> queryModel;
 
-	public UserSearchBoxPanel(String id, UserQuery query) {
+	public UserSearchBoxPanel(String id, IModel<UserQuery> queryModel) {
 		super(id);
-		this.query = query;
+		this.queryModel = queryModel;
 		add(createUserSearchForm());
 
 	}
 
 	private Form<UserQuery> createUserSearchForm() {
-		Form<UserQuery> form = new Form<UserQuery>("searchForm", new CompoundPropertyModel<UserQuery>(query));
+		Form<UserQuery> form = new Form<UserQuery>("searchForm", new CompoundPropertyModel<UserQuery>(queryModel));
 		form.add(createSearchTextField());
 		form.add(createActiveDropDown());
 		form.add(createConfirmedDropDown());

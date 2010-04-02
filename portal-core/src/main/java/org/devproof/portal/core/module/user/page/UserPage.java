@@ -53,7 +53,7 @@ public class UserPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "userDataProvider")
-	private QueryDataProvider<UserEntity> userDataProvider;
+	private QueryDataProvider<UserEntity, UserQuery> userDataProvider;
 	@SpringBean(name = "userService")
 	private UserService userService;
 	@SpringBean(name = "displayDateFormat")
@@ -61,13 +61,13 @@ public class UserPage extends TemplatePage {
 	private PageParameters params;
 	private BubblePanel bubblePanel;
 	private WebMarkupContainer userRefreshTableContainer;
-	private UserQuery query = new UserQuery();
+	private IModel<UserQuery> queryModel;
 	private UserDataView userDataView;
 
 	public UserPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setQueryToDataProvider();
+		this.queryModel = userDataProvider.getSearchQueryModel();
 		add(createBubblePanel());
 		add(createUserRefreshContainer());
 		addFilterBox(createUserSearchBoxPanel());
@@ -175,7 +175,7 @@ public class UserPage extends TemplatePage {
 	}
 
 	private UserSearchBoxPanel createUserSearchBoxPanel() {
-		return new UserSearchBoxPanel("box", query) {
+		return new UserSearchBoxPanel("box", queryModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -183,10 +183,6 @@ public class UserPage extends TemplatePage {
 				target.addComponent(userRefreshTableContainer);
 			}
 		};
-	}
-
-	private void setQueryToDataProvider() {
-		userDataProvider.setQueryObject(query);
 	}
 
 	private class UserDataView extends DataView<UserEntity> {

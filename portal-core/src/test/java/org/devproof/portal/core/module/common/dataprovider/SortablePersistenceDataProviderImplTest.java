@@ -22,6 +22,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
@@ -31,7 +32,7 @@ import org.easymock.EasyMock;
  * @author Carsten Hufe
  */
 public class SortablePersistenceDataProviderImplTest extends TestCase {
-	private SortablePersistenceDataProviderImpl<EmailTemplateEntity> impl;
+	private SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery> impl;
 	private DataProviderDao<EmailTemplateEntity> dataProviderDaoMock;
 	private SearchQuery queryMock;
 
@@ -40,11 +41,17 @@ public class SortablePersistenceDataProviderImplTest extends TestCase {
 	protected void setUp() throws Exception {
 		dataProviderDaoMock = EasyMock.createMock(DataProviderDao.class);
 		queryMock = EasyMock.createMock(SearchQuery.class);
-		impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity>();
+		impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public IModel<SearchQuery> getSearchQueryModel() {
+				return Model.of(queryMock);
+			}
+		};
 		impl.setEntityClass(EmailTemplateEntity.class);
 		impl.setSort("subject", true);
 		impl.setDataProviderDao(dataProviderDaoMock);
-		impl.setQueryObject(queryMock);
 	}
 
 	public void testIterator_WithPrefetch() {

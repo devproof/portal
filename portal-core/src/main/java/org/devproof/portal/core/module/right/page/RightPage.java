@@ -48,18 +48,18 @@ public class RightPage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 
 	@SpringBean(name = "rightDataProvider")
-	private QueryDataProvider<RightEntity> rightDataProvider;
+	private QueryDataProvider<RightEntity, RightQuery> rightDataProvider;
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	private WebMarkupContainer refreshTable;
 	private BubblePanel bubblePanel;
-	private RightQuery query = new RightQuery();
+	private IModel<RightQuery> queryModel;
 	private PageParameters params;
 
 	public RightPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setQueryToDataProvider();
+		this.queryModel = rightDataProvider.getSearchQueryModel();
 		add(createRightRefreshTableContainer());
 		add(createBubblePanel());
 		addPageAdminBoxLink(createCreateRightLink());
@@ -67,7 +67,7 @@ public class RightPage extends TemplatePage {
 	}
 
 	private RightSearchBoxPanel createRightSearchBoxPanel() {
-		return new RightSearchBoxPanel("box", query) {
+		return new RightSearchBoxPanel("box", queryModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -101,10 +101,6 @@ public class RightPage extends TemplatePage {
 	private BubblePanel createBubblePanel() {
 		bubblePanel = new BubblePanel("bubblePanel");
 		return bubblePanel;
-	}
-
-	private void setQueryToDataProvider() {
-		rightDataProvider.setQueryObject(query);
 	}
 
 	private AjaxLink<Void> createCreateRightLink() {

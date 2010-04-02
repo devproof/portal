@@ -105,7 +105,7 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	private void addTagCloudBox() {
 		addTagCloudBox(articleTagService, new PropertyModel<ArticleTagEntity>(new ArticleQuery(), "tag"),
-				ArticlePage.class, params);
+				ArticlePage.class);
 	}
 
 	private void setCurrentPageNumber() {
@@ -201,8 +201,9 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private ContentTagPanel<ArticleTagEntity> createTagPanel(PageParameters params) {
+		// FIXME falsches model, vielleiht nach listmodel suchen
 		return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(displayedPage.getArticle()
-				.getTags()), ArticlePage.class, params);
+				.getTags()), ArticlePage.class);
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {

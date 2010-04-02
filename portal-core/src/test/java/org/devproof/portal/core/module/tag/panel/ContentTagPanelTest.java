@@ -20,7 +20,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.util.ListModel;
@@ -62,8 +61,7 @@ public class ContentTagPanelTest extends TestCase {
 				TestTagEntity tag = new TestTagEntity();
 				tag.setTagname("foobar");
 				tags.add(tag);
-				return new ContentTagPanel<TestTagEntity>(panelId, new ListModel<TestTagEntity>(tags), WebPage.class,
-						new PageParameters());
+				return new ContentTagPanel<TestTagEntity>(panelId, new ListModel<TestTagEntity>(tags), WebPage.class);
 			}
 		};
 	}

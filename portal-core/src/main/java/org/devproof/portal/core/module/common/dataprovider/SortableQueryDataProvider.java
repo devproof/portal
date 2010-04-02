@@ -16,9 +16,11 @@
 package org.devproof.portal.core.module.common.dataprovider;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
  * @author Carsten Hufe
  */
-public interface SortableQueryDataProvider<T> extends ISortableDataProvider<T>, QueryDataProvider<T> {
+public interface SortableQueryDataProvider<T, SQ extends SearchQuery> extends ISortableDataProvider<T>,
+		QueryDataProvider<T, SQ> {
 }
