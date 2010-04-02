@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.query.CommentQuery;
@@ -61,7 +62,7 @@ public class CommentSearchBoxPanelTest extends TestCase {
 		private static final long serialVersionUID = 1L;
 
 		public TestCommentSearchBoxPanel(String id, CommentQuery query) {
-			super(id, query);
+			super(id, Model.of(query));
 		}
 
 		@Override

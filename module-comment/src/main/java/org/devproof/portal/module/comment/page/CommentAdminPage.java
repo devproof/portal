@@ -18,6 +18,7 @@ package org.devproof.portal.module.comment.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -38,19 +39,18 @@ public class CommentAdminPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private CommentPanel commentPanel;
-	private CommentQuery query;
+	private IModel<CommentQuery> queryModel;
 	private PageParameters params;
 
 	public CommentAdminPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setCommentQuery();
 		add(createCommentPanel());
 		addFilterBox(createCommentSearchBoxPanel());
 	}
 
 	private CommentSearchBoxPanel createCommentSearchBoxPanel() {
-		return new CommentSearchBoxPanel("box", query) {
+		return new CommentSearchBoxPanel("box", queryModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -62,6 +62,7 @@ public class CommentAdminPage extends TemplatePage {
 
 	private Component createCommentPanel() {
 		commentPanel = newCommentPanel();
+		commentPanel.setCommentQuery(new CommentQuery(params.getAsInteger(PARAM_ID)));
 		commentPanel.setOutputMarkupId(true);
 		return commentPanel;
 	}
@@ -79,17 +80,7 @@ public class CommentAdminPage extends TemplatePage {
 			public boolean hideInput() {
 				return true;
 			}
-
-			@Override
-			protected CommentQuery createCommentQuery() {
-				return query;
-			}
 		};
-	}
-
-	private void setCommentQuery() {
-		query = new CommentQuery();
-		query.setId(params.getAsInteger(PARAM_ID));
 	}
 
 	private static class CommentAdminConfiguration implements CommentConfiguration {

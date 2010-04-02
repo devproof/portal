@@ -40,6 +40,7 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -67,25 +68,26 @@ public class CommentPanel extends Panel {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	@SpringBean(name = "commentDataProvider")
-	private QueryDataProvider<CommentEntity> commentDataProvider;
+	private QueryDataProvider<CommentEntity, CommentQuery> commentDataProvider;
 	@SpringBean(name = "commentService")
 	private CommentService commentService;
-	private CommentQuery query;
+	private IModel<CommentQuery> queryModel;
 	private FeedbackPanel feedbackPanel;
 	private BubblePanel bubblePanel;
 
 	private CommentDataView dataView;
 	private CommentConfiguration configuration;
-	private CommentEntity comment;
+	private IModel<CommentEntity> commentModel;
 	private boolean isAuthor;
 	private boolean hasSubmitted = false;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
 		super(id);
 		this.configuration = configuration;
+		this.queryModel = createCommentQueryModel();
+		this.commentModel = createNewCommentModelForForm();
+		// TODO Lazy machen
 		setAuthorRight();
-		setCommentQuery();
-		setNewCommentForForm();
 		add(createCSSHeaderContributor());
 		add(createBubblePanel());
 		add(createNoCommentsHintContainer());
@@ -96,6 +98,14 @@ public class CommentPanel extends Panel {
 		add(createCommentForm());
 		add(createLoginToWriteCommentMessageContainer());
 		setOutputMarkupId(true);
+	}
+
+	protected IModel<CommentQuery> createCommentQueryModel() {
+		IModel<CommentQuery> searchQueryModel = commentDataProvider.getSearchQueryModel();
+		CommentQuery query = queryModel.getObject();
+		query.setModuleName(configuration.getModuleName());
+		query.setModuleContentId(configuration.getModuleContentId());
+		return searchQueryModel;
 	}
 
 	private Form<CommentEntity> createCommentForm() {
@@ -148,6 +158,7 @@ public class CommentPanel extends Panel {
 			@Override
 			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 				hasSubmitted = true;
+				CommentEntity comment = commentModel.getObject();
 				String commentStr = comment.getComment();
 				commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
 				comment.setComment(commentStr);
@@ -178,7 +189,8 @@ public class CommentPanel extends Panel {
 	}
 
 	private Form<CommentEntity> newCommentForm() {
-		return new Form<CommentEntity>("form", new CompoundPropertyModel<CommentEntity>(comment)) {
+		CompoundPropertyModel<CommentEntity> compoundModel = new CompoundPropertyModel<CommentEntity>(commentModel);
+		return new Form<CommentEntity>("form", compoundModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -188,10 +200,11 @@ public class CommentPanel extends Panel {
 		};
 	}
 
-	private void setNewCommentForForm() {
-		comment = new CommentEntity();
+	private IModel<CommentEntity> createNewCommentModelForForm() {
+		CommentEntity comment = new CommentEntity();
 		comment.setModuleName(configuration.getModuleName());
 		comment.setModuleContentId(configuration.getModuleContentId());
+		return Model.of(comment);
 	}
 
 	private AjaxLink<Void> createOlderLink() {
@@ -248,7 +261,6 @@ public class CommentPanel extends Panel {
 			public boolean isVisible() {
 				return commentDataProvider.size() == 0;
 			}
-
 		};
 	}
 
@@ -261,14 +273,13 @@ public class CommentPanel extends Panel {
 		return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
 	}
 
-	private void setCommentQuery() {
-		query = createCommentQuery();
-		commentDataProvider.setQueryObject(query);
-	}
-
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
 		isAuthor = session.hasRight("page." + CommentAdminPage.class.getSimpleName());
+	}
+
+	public void setCommentQuery(CommentQuery query) {
+		queryModel.setObject(query);
 	}
 
 	private class CommentDataView extends DataView<CommentEntity> {
@@ -296,23 +307,6 @@ public class CommentPanel extends Panel {
 
 	public boolean hideInput() {
 		return false;
-	}
-
-	protected CommentQuery createCommentQuery() {
-		CommentQuery query = new CommentQuery();
-		query.setModuleName(configuration.getModuleName());
-		query.setModuleContentId(configuration.getModuleContentId());
-		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
-		if (showOnlyReviewed && !isAuthor) {
-			query.setReviewed(Boolean.TRUE);
-			query.setAccepted(Boolean.TRUE);
-		} else {
-			query.setRejected(Boolean.FALSE);
-		}
-		if (!PortalSession.get().hasRight("page." + CommentAdminPage.class.getSimpleName())) {
-			query.setAutomaticBlocked(Boolean.FALSE);
-		}
-		return query;
 	}
 
 	public class CommentView extends Fragment {
