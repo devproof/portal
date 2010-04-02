@@ -19,6 +19,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -62,7 +63,6 @@ public class CommentAdminPage extends TemplatePage {
 
 	private Component createCommentPanel() {
 		commentPanel = newCommentPanel();
-		commentPanel.setCommentQuery(new CommentQuery(params.getAsInteger(PARAM_ID)));
 		commentPanel.setOutputMarkupId(true);
 		return commentPanel;
 	}
@@ -80,7 +80,12 @@ public class CommentAdminPage extends TemplatePage {
 			public boolean hideInput() {
 				return true;
 			}
-		};
+
+            @Override
+            protected IModel<CommentQuery> createCommentQueryModel() {
+                return Model.of(new CommentQuery(params.getAsInteger(PARAM_ID)));
+            }
+        };
 	}
 
 	private static class CommentAdminConfiguration implements CommentConfiguration {
