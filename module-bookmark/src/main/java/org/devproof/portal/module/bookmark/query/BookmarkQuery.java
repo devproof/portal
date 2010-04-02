@@ -19,7 +19,7 @@ import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.query.ITagQuery;
+import org.devproof.portal.core.module.tag.query.TagQuery;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
 
@@ -27,7 +27,7 @@ import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights ar left join e.tags t")
-public class BookmarkQuery implements SearchQuery, ITagQuery<BookmarkTagEntity>, IBrokenQuery {
+public class BookmarkQuery implements SearchQuery, TagQuery<BookmarkTagEntity>, IBrokenQuery {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;

@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 import org.devproof.portal.core.module.role.query.RoleQuery;
@@ -34,16 +35,16 @@ import org.devproof.portal.core.module.role.query.RoleQuery;
 public abstract class RoleSearchBoxPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private RoleQuery query;
+	private IModel<RoleQuery> queryModel;
 
-	public RoleSearchBoxPanel(String id, RoleQuery query) {
+	public RoleSearchBoxPanel(String id, IModel<RoleQuery> queryModel) {
 		super(id);
-		this.query = query;
+		this.queryModel = queryModel;
 		add(createRoleSearchForm());
 	}
 
 	private Form<RoleQuery> createRoleSearchForm() {
-		Form<RoleQuery> form = new Form<RoleQuery>("searchForm", new CompoundPropertyModel<RoleQuery>(query));
+		Form<RoleQuery> form = new Form<RoleQuery>("searchForm", new CompoundPropertyModel<RoleQuery>(queryModel));
 		form.add(createSearchTextField());
 		form.add(createActiveDropDown());
 		form.setOutputMarkupId(true);

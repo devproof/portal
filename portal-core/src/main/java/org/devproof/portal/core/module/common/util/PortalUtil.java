@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.Component;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
@@ -206,5 +207,21 @@ public class PortalUtil {
 	public static void addJQuery(Component component) {
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery-1.4.1.min.js"));
 		component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery.center.js"));
+	}
+
+	public static String getParameterAsString(String key) {
+		PageParameters pageParameters = RequestCycle.get().getPageParameters();
+		if (pageParameters == null) {
+			return null;
+		}
+		return pageParameters.getString(key);
+	}
+
+	public static Integer getParameterAsInteger(String key) {
+		PageParameters pageParameters = RequestCycle.get().getPageParameters();
+		if (pageParameters == null) {
+			return null;
+		}
+		return pageParameters.getAsInteger(key);
 	}
 }

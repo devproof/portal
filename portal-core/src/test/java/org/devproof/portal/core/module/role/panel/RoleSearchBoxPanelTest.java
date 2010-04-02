@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.role.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.role.query.RoleQuery;
 import org.devproof.portal.test.PortalTestUtil;
@@ -48,7 +49,7 @@ public class RoleSearchBoxPanelTest extends TestCase {
 		private static final long serialVersionUID = 1L;
 
 		public TestRoleSearchBoxPanel(String id) {
-			super(id, new RoleQuery());
+			super(id, Model.of(new RoleQuery()));
 		}
 
 		@Override

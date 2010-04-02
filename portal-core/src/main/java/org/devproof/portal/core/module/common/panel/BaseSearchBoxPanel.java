@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -36,6 +33,7 @@ import org.devproof.portal.core.module.common.query.SearchQuery;
  * @author Carsten Hufe
  * 
  */
+// TODO remove class
 public abstract class BaseSearchBoxPanel<T extends SearchQuery> extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
@@ -79,30 +77,26 @@ public abstract class BaseSearchBoxPanel<T extends SearchQuery> extends Panel im
 		};
 	}
 
-	public Form<SearchQuery> getForm() {
-		return form;
-	}
-
 	public void addToForm(Component component) {
 		form.add(component);
 	}
 
-	/**
-	 * Params for paging
-	 * 
-	 * @return
-	 */
-	public Map<String, String> getParameters() {
-		Map<String, String> params = new HashMap<String, String>();
-		SearchQuery query = searchQueryModel.getObject();
-		if (query.getId() != null) {
-			params.put("id", String.valueOf(query.getId()));
-		}
-		if (query.getAllTextFields() != null) {
-			params.put("search", String.valueOf(query.getAllTextFields()));
-		}
-		return params;
-	}
+	// /**
+	// * Params for paging
+	// *
+	// * @return
+	// */
+	// public Map<String, String> getParameters() {
+	// Map<String, String> params = new HashMap<String, String>();
+	// SearchQuery query = searchQueryModel.getObject();
+	// if (query.getId() != null) {
+	// params.put("id", String.valueOf(query.getId()));
+	// }
+	// if (query.getAllTextFields() != null) {
+	// params.put("search", String.valueOf(query.getAllTextFields()));
+	// }
+	// return params;
+	// }
 	//
 	// public boolean isAuthor() {
 	// return false;

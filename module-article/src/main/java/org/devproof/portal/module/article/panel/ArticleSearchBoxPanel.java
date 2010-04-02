@@ -15,10 +15,15 @@
  */
 package org.devproof.portal.module.article.panel;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.devproof.portal.core.module.common.panel.BaseSearchBoxPanel;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.module.article.query.ArticleQuery;
 
 /**
@@ -27,15 +32,28 @@ import org.devproof.portal.module.article.query.ArticleQuery;
  * @author Carsten Hufe
  * 
  */
-public class ArticleSearchBoxPanel extends BaseSearchBoxPanel<ArticleQuery> {
+public class ArticleSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
+	private IModel<ArticleQuery> articleQueryModel;
 
-	public ArticleSearchBoxPanel(String id, IModel<ArticleQuery> query) {
-		super(id, query);
-		addToForm(createSearchTextField());
+	public ArticleSearchBoxPanel(String id, IModel<ArticleQuery> articleQueryModel) {
+		super(id, articleQueryModel);
+		this.articleQueryModel = articleQueryModel;
 		add(createTitleContainer());
+		add(createSearchForm());
+	}
+
+	private Component createSearchForm() {
+		Form<SearchQuery> form = newSearchForm();
+		form.add(createSearchTextField());
+		return form;
+	}
+
+	private Form<SearchQuery> newSearchForm() {
+		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(articleQueryModel);
+		return new Form<SearchQuery>("searchForm", formModel);
 	}
 
 	private TextField<String> createSearchTextField() {

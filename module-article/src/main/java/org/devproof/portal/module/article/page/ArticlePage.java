@@ -17,6 +17,7 @@ package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -93,7 +94,7 @@ public class ArticlePage extends ArticleBasePage {
 	}
 
 	private BookmarkablePagingPanel createPagingPanel() {
-		return new BookmarkablePagingPanel("paging", dataView, ArticlePage.class);
+		return new BookmarkablePagingPanel("paging", dataView, searchQueryModel, ArticlePage.class);
 	}
 
 	private class ArticleDataView extends DataView<ArticleEntity> {
@@ -114,6 +115,23 @@ public class ArticlePage extends ArticleBasePage {
 			item.add(createArticleView(item));
 		}
 
+		// TODO hier lassen? dann auslagen in eigene dataview
+		@Override
+		protected void onBeforeRender() {
+			// if params is null, its a post search request ... so reset the
+			// current page
+			PageParameters params = RequestCycle.get().getPageParameters();
+			if (params != null && params.containsKey("page")) {
+				int page = params.getAsInteger("page", 1);
+				if (page > 0 && page <= getPageCount()) {
+					setCurrentPage(page - 1);
+				}
+			} else {
+				setCurrentPage(0);
+			}
+			super.onBeforeRender();
+		}
+
 		private void setArticleTitleAsPageTitle(Item<ArticleEntity> item) {
 			if (onlyOneArticleInResult) {
 				ArticleEntity article = item.getModelObject();
@@ -124,6 +142,7 @@ public class ArticlePage extends ArticleBasePage {
 		private ArticleView createArticleView(Item<ArticleEntity> item) {
 			return new ArticleView("articleView", item);
 		}
+
 	}
 
 	/**

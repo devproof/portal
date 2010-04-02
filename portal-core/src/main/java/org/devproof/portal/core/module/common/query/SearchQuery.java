@@ -20,6 +20,7 @@ import java.io.Serializable;
 /**
  * @author Carsten Hufe
  */
+// TODO remove class
 public interface SearchQuery extends Serializable {
 	String getAllTextFields();
 

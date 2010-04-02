@@ -21,10 +21,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
@@ -60,8 +58,7 @@ public class TagCloudBoxPanelTest extends TestCase {
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new TagCloudBoxPanel<TestTagEntity>(panelId, new TestTagService(), new Model<TestTagEntity>(),
-						WebPage.class, new PageParameters());
+				return new TagCloudBoxPanel<TestTagEntity>(panelId, new TestTagService(), WebPage.class);
 			}
 		};
 	}

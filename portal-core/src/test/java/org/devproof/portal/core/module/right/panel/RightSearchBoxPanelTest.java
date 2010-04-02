@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.right.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.query.RightQuery;
 import org.devproof.portal.test.PortalTestUtil;
@@ -48,7 +49,7 @@ public class RightSearchBoxPanelTest extends TestCase {
 		private static final long serialVersionUID = 1L;
 
 		public TestRightSearchBoxPanel(String id) {
-			super(id, new RightQuery());
+			super(id, Model.of(new RightQuery()));
 		}
 
 		@Override

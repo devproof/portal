@@ -15,24 +15,34 @@
  */
 package org.devproof.portal.module.article.query;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.common.query.SearchQuery;
+import org.devproof.portal.core.module.common.query.SearchParameterResolver;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.query.ITagQuery;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.devproof.portal.core.module.tag.TagConstants;
 
 /**
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
-public class ArticleQuery implements SearchQuery, ITagQuery<ArticleTagEntity> {
+public class ArticleQuery implements SearchParameterResolver {
 	private static final long serialVersionUID = 1L;
+	private static final String ID_PARAM = "id";
+	private static final String SEARCH_PARAM = "search";
 	private Integer id;
 	private RoleEntity role;
-	private ArticleTagEntity tag;
 	private String allTextFields;
+	private String tagname;
+
+	public ArticleQuery() {
+		id = PortalUtil.getParameterAsInteger(ID_PARAM);
+		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+	}
 
 	@BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
 	public RoleEntity getRole() {
@@ -45,13 +55,13 @@ public class ArticleQuery implements SearchQuery, ITagQuery<ArticleTagEntity> {
 		return role;
 	}
 
-	@BeanQuery("t = ?")
-	public ArticleTagEntity getTag() {
-		return this.tag;
+	@BeanQuery("t.tagname = ?")
+	public String getTagname() {
+		return tagname;
 	}
 
-	public void setTag(ArticleTagEntity tag) {
-		this.tag = tag;
+	public void setTagname(String tagname) {
+		this.tagname = tagname;
 	}
 
 	@BeanQuery("e.title like '%'||?||'%'" + " or e.teaser like '%'||?||'%'")
@@ -72,7 +82,15 @@ public class ArticleQuery implements SearchQuery, ITagQuery<ArticleTagEntity> {
 		this.id = id;
 	}
 
-	public void clearSelection() {
-		this.tag = null;
+	@Override
+	public PageParameters getPageParameters() {
+		PageParameters params = new PageParameters();
+		if (StringUtils.isNotBlank(getAllTextFields())) {
+			params.put(SEARCH_PARAM, allTextFields);
+		}
+		if (StringUtils.isNotBlank(getTagname())) {
+			params.put(TagConstants.TAG_PARAM, tagname);
+		}
+		return params;
 	}
 }
