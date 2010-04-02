@@ -39,7 +39,7 @@ public class UploadFilePanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestUploadCenterPanel.class);
 		tester.assertComponent("panel", UploadFilePanel.class);
 	}

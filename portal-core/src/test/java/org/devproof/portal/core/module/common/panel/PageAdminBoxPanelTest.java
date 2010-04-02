@@ -37,7 +37,7 @@ public class PageAdminBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(PageAdminBoxPanel.class);
 		tester.assertComponent("panel", PageAdminBoxPanel.class);
 	}

@@ -42,7 +42,7 @@ public class BlogSearchBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createBogSearchBoxPanel());
 		tester.assertComponent("panel", BlogSearchBoxPanel.class);
 	}

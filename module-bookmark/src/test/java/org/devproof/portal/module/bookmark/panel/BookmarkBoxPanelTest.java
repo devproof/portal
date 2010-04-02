@@ -37,7 +37,7 @@ public class BookmarkBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(BookmarkBoxPanel.class);
 		tester.assertComponent("panel", BookmarkBoxPanel.class);
 	}

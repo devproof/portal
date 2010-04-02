@@ -37,7 +37,7 @@ public class DownloadBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(DownloadBoxPanel.class);
 		tester.assertComponent("panel", DownloadBoxPanel.class);
 	}

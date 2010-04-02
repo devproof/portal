@@ -40,7 +40,7 @@ public class CaptchaRatingPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestCaptchaRatingPanel.class);
 		tester.assertComponent("panel", TestCaptchaRatingPanel.class);
 	}
