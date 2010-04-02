@@ -54,46 +54,46 @@ import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
  */
 public class BlogPage extends BlogBasePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "blogService")
-	private BlogService blogService;
-	@SpringBean(name = "blogDataProvider")
-	private QueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
-	@SpringBean(name = "blogTagService")
-	private TagService<BlogTagEntity> blogTagService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "blogService")
+    private BlogService blogService;
+    @SpringBean(name = "blogDataProvider")
+    private QueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
+    @SpringBean(name = "blogTagService")
+    private TagService<BlogTagEntity> blogTagService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
 
-	private BlogDataView dataView;
-	private IModel<BlogQuery> queryModel;
-	private PageParameters params;
+    private BlogDataView dataView;
+    private IModel<BlogQuery> queryModel;
+    private PageParameters params;
 
-	public BlogPage(PageParameters params) {
-		super(params);
-		this.params = params;
+    public BlogPage(PageParameters params) {
+        super(params);
+        this.params = params;
         this.queryModel = blogDataProvider.getSearchQueryModel();
-		add(createBlogDataView());
-		add(createPagingPanel());
-		addFilterBox(createBlogSearchBoxPanel());
-		addTagCloudBox();
-	}                    
+        add(createBlogDataView());
+        add(createPagingPanel());
+        addFilterBox(createBlogSearchBoxPanel());
+        addTagCloudBox();
+    }
 
-	private BlogSearchBoxPanel createBlogSearchBoxPanel() {
-		return new BlogSearchBoxPanel("box", queryModel);
-	}
+    private BlogSearchBoxPanel createBlogSearchBoxPanel() {
+        return new BlogSearchBoxPanel("box", queryModel);
+    }
 
-	private BookmarkablePagingPanel createPagingPanel() {
-		return new BookmarkablePagingPanel("paging", dataView, queryModel, BlogPage.class);
-	}
+    private BookmarkablePagingPanel createPagingPanel() {
+        return new BookmarkablePagingPanel("paging", dataView, queryModel, BlogPage.class);
+    }
 
-	private void addTagCloudBox() {
-		addTagCloudBox(blogTagService, BlogPage.class);
-	}
+    private void addTagCloudBox() {
+        addTagCloudBox(blogTagService, BlogPage.class);
+    }
 
-	private BlogDataView createBlogDataView() {
-		dataView = new BlogDataView("listBlog");
-		return dataView;
-	}
+    private BlogDataView createBlogDataView() {
+        dataView = new BlogDataView("listBlog");
+        return dataView;
+    }
 
 /*	private void setBlogQuery() {
 		PortalSession session = (PortalSession) getSession();
@@ -104,128 +104,128 @@ public class BlogPage extends BlogBasePage {
 		blogDataProvider.setQueryObject(query);
 	}*/
 
-	private BlogView createBlogView(Item<BlogEntity> item) {
-		return new BlogView("blogView", item);
-	}
+    private BlogView createBlogView(Item<BlogEntity> item) {
+        return new BlogView("blogView", item);
+    }
 
-	private class BlogDataView extends DataView<BlogEntity> {
-		private static final long serialVersionUID = 1L;
-		private boolean onlyOneBlogEntryInResult;
+    private class BlogDataView extends DataView<BlogEntity> {
+        private static final long serialVersionUID = 1L;
+        private boolean onlyOneBlogEntryInResult;
 
-		public BlogDataView(String id) {
-			super(id, blogDataProvider);
-			onlyOneBlogEntryInResult = blogDataProvider.size() == 1;
-			setItemsPerPage(configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
-			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
-		}
+        public BlogDataView(String id) {
+            super(id, blogDataProvider);
+            onlyOneBlogEntryInResult = blogDataProvider.size() == 1;
+            setItemsPerPage(configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
+            setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
+        }
 
-		@Override
-		protected void populateItem(Item<BlogEntity> item) {
-			setBlogTitleAsPageTitle(item);
-			item.setOutputMarkupId(true);
-			item.add(createBlogView(item));
-		}
+        @Override
+        protected void populateItem(Item<BlogEntity> item) {
+            setBlogTitleAsPageTitle(item);
+            item.setOutputMarkupId(true);
+            item.add(createBlogView(item));
+        }
 
-		private void setBlogTitleAsPageTitle(Item<BlogEntity> item) {
-			if (onlyOneBlogEntryInResult) {
-				BlogEntity blog = item.getModelObject();
-				setPageTitle(blog.getHeadline());
-			}
-		}
-	}
+        private void setBlogTitleAsPageTitle(Item<BlogEntity> item) {
+            if (onlyOneBlogEntryInResult) {
+                BlogEntity blog = item.getModelObject();
+                setPageTitle(blog.getHeadline());
+            }
+        }
+    }
 
-	public class BlogView extends Fragment {
+    public class BlogView extends Fragment {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		private BlogEntity blog;
+        private BlogEntity blog;
 
-		public BlogView(String id, Item<BlogEntity> item) {
-			super(id, "blogView", BlogPage.this);
-			blog = item.getModelObject();
-			add(createAppropriateAuthorPanel(item));
-			add(createHeadline());
-			add(createMetaInfoPanel());
-			add(createPrintLink());
-			add(createTagPanel());
-			add(createContentLabel());
-			add(createCommentPanel());
-		}
+        public BlogView(String id, Item<BlogEntity> item) {
+            super(id, "blogView", BlogPage.this);
+            blog = item.getModelObject();
+            add(createAppropriateAuthorPanel(item));
+            add(createHeadline());
+            add(createMetaInfoPanel());
+            add(createPrintLink());
+            add(createTagPanel());
+            add(createContentLabel());
+            add(createCommentPanel());
+        }
 
-		private Component createPrintLink() {
-			BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink",
-					BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
-			link.add(createPrintImage());
-			return link;
-		}
+        private Component createPrintLink() {
+            BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink",
+                    BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
+            link.add(createPrintImage());
+            return link;
+        }
 
-		private Component createPrintImage() {
-			return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
-		}
+        private Component createPrintImage() {
+            return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
+        }
 
-		private Component createAppropriateAuthorPanel(Item<BlogEntity> item) {
-			if (isAuthor()) {
-				return createAuthorPanel(item);
-			} else {
-				return createEmptyAuthorPanel();
-			}
-		}
+        private Component createAppropriateAuthorPanel(Item<BlogEntity> item) {
+            if (isAuthor()) {
+                return createAuthorPanel(item);
+            } else {
+                return createEmptyAuthorPanel();
+            }
+        }
 
-		private AuthorPanel<BlogEntity> createAuthorPanel(final Item<BlogEntity> item) {
-			return new AuthorPanel<BlogEntity>("authorButtons", blog) {
-				private static final long serialVersionUID = 1L;
+        private AuthorPanel<BlogEntity> createAuthorPanel(final Item<BlogEntity> item) {
+            return new AuthorPanel<BlogEntity>("authorButtons", blog) {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onDelete(AjaxRequestTarget target) {
-					blogService.delete(getEntity());
-					item.setVisible(false);
-					target.addComponent(item);
-					target.addComponent(getFeedback());
-					info(getString("msg.deleted"));
-				}
+                @Override
+                public void onDelete(AjaxRequestTarget target) {
+                    blogService.delete(getEntity());
+                    item.setVisible(false);
+                    target.addComponent(item);
+                    target.addComponent(getFeedback());
+                    info(getString("msg.deleted"));
+                }
 
-				@Override
-				public void onEdit(AjaxRequestTarget target) {
-					setResponsePage(new BlogEditPage(item.getModel()));
-				}
-			};
-		}
+                @Override
+                public void onEdit(AjaxRequestTarget target) {
+                    setResponsePage(new BlogEditPage(item.getModel()));
+                }
+            };
+        }
 
-		private WebMarkupContainer createEmptyAuthorPanel() {
-			return new WebMarkupContainer("authorButtons");
-		}
+        private WebMarkupContainer createEmptyAuthorPanel() {
+            return new WebMarkupContainer("authorButtons");
+        }
 
-		private BookmarkablePageLink<BlogPage> createHeadline() {
-			BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink",
-					BlogPage.class);
-			if (params == null || !params.containsKey("id")) {
-				headlineLink.setParameter("id", blog.getId());
-			}
-			headlineLink.add(new Label("headlineLabel", blog.getHeadline()));
-			return headlineLink;
-		}
+        private BookmarkablePageLink<BlogPage> createHeadline() {
+            BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink",
+                    BlogPage.class);
+            if (params == null || !params.containsKey("id")) {
+                headlineLink.setParameter("id", blog.getId());
+            }
+            headlineLink.add(new Label("headlineLabel", blog.getHeadline()));
+            return headlineLink;
+        }
 
-		private MetaInfoPanel createMetaInfoPanel() {
-			return new MetaInfoPanel("metaInfo", blog);
-		}
+        private MetaInfoPanel createMetaInfoPanel() {
+            return new MetaInfoPanel("metaInfo", blog);
+        }
 
-		private ExtendedLabel createContentLabel() {
-			return new ExtendedLabel("content", blog.getContent());
-		}
+        private ExtendedLabel createContentLabel() {
+            return new ExtendedLabel("content", blog.getContent());
+        }
 
-		private Component createCommentPanel() {
-			DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-			conf.setModuleContentId(blog.getId().toString());
-			conf.setModuleName(BlogPage.class.getSimpleName());
-			conf.setViewRights(blog.getCommentViewRights());
-			conf.setWriteRights(blog.getCommentWriteRights());
-			return new ExpandableCommentPanel("comments", conf);
-		}
+        private Component createCommentPanel() {
+            DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+            conf.setModuleContentId(blog.getId().toString());
+            conf.setModuleName(BlogPage.class.getSimpleName());
+            conf.setViewRights(blog.getCommentViewRights());
+            conf.setWriteRights(blog.getCommentWriteRights());
+            return new ExpandableCommentPanel("comments", conf);
+        }
 
-		private ContentTagPanel<BlogTagEntity> createTagPanel() {
+        private ContentTagPanel<BlogTagEntity> createTagPanel() {
             // TODO fix model
-			return new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blog.getTags()),
-					BlogPage.class);
-		}
-	}
+            return new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blog.getTags()),
+                    BlogPage.class);
+        }
+    }
 }

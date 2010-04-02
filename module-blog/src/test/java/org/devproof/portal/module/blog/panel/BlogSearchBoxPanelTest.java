@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.blog.query.BlogQuery;
@@ -52,7 +53,7 @@ public class BlogSearchBoxPanelTest extends TestCase {
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new BlogSearchBoxPanel(panelId, new BlogQuery(), null, null, null, new PageParameters());
+				return new BlogSearchBoxPanel(panelId, Model.of(new BlogQuery()));
 			}
 		};
 	}
