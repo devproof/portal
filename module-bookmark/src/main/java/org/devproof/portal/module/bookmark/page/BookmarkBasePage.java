@@ -51,6 +51,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	public BookmarkBasePage(final PageParameters params) {
 		super(params);
+		// TODO lazy machen
 		setAuthorRight();
 		add(createCSSHeaderContributor());
 		add(createHiddenBubblePanel());
@@ -202,7 +203,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page." + BookmarkEditPage.class.getSimpleName());
+		isAuthor = session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
 	}
 
 	public WebMarkupContainer getBubblePanel() {

@@ -16,23 +16,19 @@
 package org.devproof.portal.module.article;
 
 import org.apache.wicket.ResourceReference;
+import org.devproof.portal.module.article.page.ArticleEditPage;
 
 /**
  * @author Carsten Hufe
  */
-public class ArticleConstants {
-	private ArticleConstants() {
-	}
-
-	public static final String PAGEBREAK = "<div style=\"page-break-after: always;\">	<span style=\"display: none;\">&nbsp;</span></div>";
-	public static final String CONF_ARTICLES_PER_PAGE = "articles_per_page";
-	public static final String CONF_BOX_NUM_LATEST_ARTICLES = "box_num_latest_articles";
-	public static final ResourceReference REF_ARTICLE_CSS = new ResourceReference(ArticleConstants.class,
-			"css/article.css");
-	public static final String CONF_ARTICLE_ENTRIES_IN_FEED = "article_entries_in_feed";
-	public static final String CONF_ARTICLE_FEED_TITLE = "article_feed_title";
-
-	public static final String ENTITY_CACHE_REGION = "entity.content";
-	public static final String QUERY_CACHE_REGION = "query.content";
-
+public interface ArticleConstants {
+	String PAGEBREAK = "<div style=\"page-break-after: always;\">	<span style=\"display: none;\">&nbsp;</span></div>";
+	String CONF_ARTICLES_PER_PAGE = "articles_per_page";
+	String CONF_BOX_NUM_LATEST_ARTICLES = "box_num_latest_articles";
+	ResourceReference REF_ARTICLE_CSS = new ResourceReference(ArticleConstants.class, "css/article.css");
+	String CONF_ARTICLE_ENTRIES_IN_FEED = "article_entries_in_feed";
+	String CONF_ARTICLE_FEED_TITLE = "article_feed_title";
+	String ENTITY_CACHE_REGION = "entity.content";
+	String QUERY_CACHE_REGION = "query.content";
+	String AUTHOR_RIGHT = "page." + ArticleEditPage.class.getSimpleName();
 }

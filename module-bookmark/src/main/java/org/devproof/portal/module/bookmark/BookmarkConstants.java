@@ -16,28 +16,25 @@
 package org.devproof.portal.module.bookmark;
 
 import org.apache.wicket.ResourceReference;
+import org.devproof.portal.module.bookmark.page.BookmarkEditPage;
 
 /**
  * @author Carsten Hufe
  */
-public class BookmarkConstants {
-	private BookmarkConstants() {
-	}
+public interface BookmarkConstants {
+	String CONF_BOOKMARKS_PER_PAGE = "bookmarks_per_page";
+	String CONF_BOOKMARK_VOTE_ENABLED = "bookmark_vote_enabled";
+	String CONF_BOOKMARK_HIDE_BROKEN = "bookmark_hide_broken";
+	String USER_AGENT = "devproofPortal";
+	String DELICIOUS_API = "https://api.del.icio.us/v1/posts/all?";
+	String CONF_BOX_NUM_LATEST_BOOKMARKS = "box_num_latest_bookmarks";
+	ResourceReference REF_DELICIOUS_IMG = new ResourceReference(BookmarkConstants.class, "img/delicious.gif");
+	ResourceReference REF_LINK_IMG = new ResourceReference(BookmarkConstants.class, "img/link.png");
+	ResourceReference REF_BOOKMARK_CSS = new ResourceReference(BookmarkConstants.class, "css/bookmark.css");
+	String CONF_BOOKMARK_ENTRIES_IN_FEED = "bookmark_entries_in_feed";
+	String CONF_BOOKMARK_FEED_TITLE = "bookmark_feed_title";
 
-	public static final String CONF_BOOKMARKS_PER_PAGE = "bookmarks_per_page";
-	public static final String CONF_BOOKMARK_VOTE_ENABLED = "bookmark_vote_enabled";
-	public static final String CONF_BOOKMARK_HIDE_BROKEN = "bookmark_hide_broken";
-	public static final String USER_AGENT = "devproofPortal";
-	public static final String DELICIOUS_API = "https://api.del.icio.us/v1/posts/all?";
-	public static final String CONF_BOX_NUM_LATEST_BOOKMARKS = "box_num_latest_bookmarks";
-	public static final ResourceReference REF_DELICIOUS_IMG = new ResourceReference(BookmarkConstants.class,
-			"img/delicious.gif");
-	public static final ResourceReference REF_LINK_IMG = new ResourceReference(BookmarkConstants.class, "img/link.png");
-	public static final ResourceReference REF_BOOKMARK_CSS = new ResourceReference(BookmarkConstants.class,
-			"css/bookmark.css");
-	public static final String CONF_BOOKMARK_ENTRIES_IN_FEED = "bookmark_entries_in_feed";
-	public static final String CONF_BOOKMARK_FEED_TITLE = "bookmark_feed_title";
-
-	public static final String ENTITY_CACHE_REGION = "entity.content";
-	public static final String QUERY_CACHE_REGION = "query.content";
+	String ENTITY_CACHE_REGION = "entity.content";
+	String QUERY_CACHE_REGION = "query.content";
+	String AUTHOR_RIGHT = "page." + BookmarkEditPage.class.getSimpleName();
 }
