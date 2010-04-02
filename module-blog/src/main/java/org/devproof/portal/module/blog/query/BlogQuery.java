@@ -17,7 +17,7 @@ package org.devproof.portal.module.blog.query;
 
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.common.query.IQuery;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.query.ITagQuery;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
@@ -26,7 +26,7 @@ import org.devproof.portal.module.blog.entity.BlogTagEntity;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
-public class BlogQuery implements IQuery, ITagQuery<BlogTagEntity> {
+public class BlogQuery implements SearchQuery, ITagQuery<BlogTagEntity> {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;

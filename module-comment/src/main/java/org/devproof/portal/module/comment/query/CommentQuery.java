@@ -16,12 +16,12 @@
 package org.devproof.portal.module.comment.query;
 
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.common.query.IQuery;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
  * @author Carsten Hufe
  */
-public class CommentQuery implements IQuery {
+public class CommentQuery implements SearchQuery {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String allTextFields;

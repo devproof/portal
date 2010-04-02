@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
-import org.devproof.portal.core.module.common.query.IQuery;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.easymock.EasyMock;
 
@@ -33,13 +33,13 @@ import org.easymock.EasyMock;
 public class SortablePersistenceDataProviderImplTest extends TestCase {
 	private SortablePersistenceDataProviderImpl<EmailTemplateEntity> impl;
 	private DataProviderDao<EmailTemplateEntity> dataProviderDaoMock;
-	private IQuery queryMock;
+	private SearchQuery queryMock;
 
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void setUp() throws Exception {
 		dataProviderDaoMock = EasyMock.createMock(DataProviderDao.class);
-		queryMock = EasyMock.createMock(IQuery.class);
+		queryMock = EasyMock.createMock(SearchQuery.class);
 		impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity>();
 		impl.setEntityClass(EmailTemplateEntity.class);
 		impl.setSort("subject", true);
