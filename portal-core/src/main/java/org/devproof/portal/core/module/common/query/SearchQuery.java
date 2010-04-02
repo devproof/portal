@@ -20,7 +20,7 @@ import java.io.Serializable;
 /**
  * @author Carsten Hufe
  */
-public interface IQuery extends Serializable {
+public interface SearchQuery extends Serializable {
 	String getAllTextFields();
 
 	void setAllTextFields(String allTextFields);

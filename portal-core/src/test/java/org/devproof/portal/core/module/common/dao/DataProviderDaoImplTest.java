@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.common.query.IQuery;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.easymock.EasyMock;
@@ -154,7 +154,7 @@ public class DataProviderDaoImplTest extends TestCase {
 	}
 
 	@BeanJoin("left join e.allRights vr left join e.tags t")
-	public class TestQuery implements IQuery {
+	public class TestQuery implements SearchQuery {
 		private static final long serialVersionUID = 1L;
 		private Integer id;
 		private RoleEntity role;

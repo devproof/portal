@@ -17,7 +17,7 @@ package org.devproof.portal.module.download.query;
 
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.common.query.IQuery;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.query.ITagQuery;
 import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
@@ -27,7 +27,7 @@ import org.devproof.portal.module.download.entity.DownloadTagEntity;
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights ar left join e.tags t")
-public class DownloadQuery implements IQuery, ITagQuery<DownloadTagEntity>, IBrokenQuery {
+public class DownloadQuery implements SearchQuery, ITagQuery<DownloadTagEntity>, IBrokenQuery {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private RoleEntity role;

@@ -28,7 +28,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.common.query.IQuery;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
  * Base panel for search boxes
@@ -43,17 +43,17 @@ import org.devproof.portal.core.module.common.query.IQuery;
 public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
-	private Form<IQuery> form;
+	private Form<SearchQuery> form;
 	private List<BaseSearchBoxListener> listeners = new ArrayList<BaseSearchBoxListener>();
 	private boolean isAuthor;
-	private IQuery query;
+	private SearchQuery query;
 	private QueryDataProvider<?> dataProvider;
 	private String authorRightName;
 	private TemplatePage parent;
 	private IPageable dataview;
 	private PageParameters params;
 
-	public BaseSearchBoxPanel(String id, IQuery query, QueryDataProvider<?> dataProvider, String authorRightName,
+	public BaseSearchBoxPanel(String id, SearchQuery query, QueryDataProvider<?> dataProvider, String authorRightName,
 			TemplatePage parent, IPageable dataview, PageParameters params) {
 		super(id);
 		this.query = query;
@@ -82,14 +82,14 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		isAuthor = session.hasRight(this.authorRightName);
 	}
 
-	private Form<IQuery> createSearchForm() {
+	private Form<SearchQuery> createSearchForm() {
 		form = newForm();
 		form.setOutputMarkupId(true);
 		return form;
 	}
 
-	private Form<IQuery> newForm() {
-		return new Form<IQuery>("searchForm", new CompoundPropertyModel<IQuery>(query)) {
+	private Form<SearchQuery> newForm() {
+		return new Form<SearchQuery>("searchForm", new CompoundPropertyModel<SearchQuery>(query)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -119,7 +119,7 @@ public abstract class BaseSearchBoxPanel extends Panel implements BoxTitleVisibi
 		};
 	}
 
-	public Form<IQuery> getForm() {
+	public Form<SearchQuery> getForm() {
 		return form;
 	}
 
