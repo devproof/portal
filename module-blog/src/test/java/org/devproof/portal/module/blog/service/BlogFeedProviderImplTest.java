@@ -41,13 +41,14 @@ import org.devproof.portal.module.blog.page.BlogPage;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
+import org.devproof.portal.module.blog.query.BlogQuery;
 
 /**
  * @author Carsten Hufe
  */
 public class BlogFeedProviderImplTest extends TestCase {
 	private BlogFeedProviderImpl impl;
-	private SortableQueryDataProvider<BlogEntity> dataProviderMock;
+	private SortableQueryDataProvider<BlogEntity, BlogQuery> dataProviderMock;
 	private ConfigurationService configurationServiceMock;
 
 	@Override
@@ -134,19 +135,14 @@ public class BlogFeedProviderImplTest extends TestCase {
 			}
 
 			@Override
-			protected void setRoleForDataProviderQuery(RoleEntity role) {
-				callOrder.append("2");
-			}
-
-			@Override
 			protected Iterator<? extends BlogEntity> getBlogEntries() {
-				callOrder.append("3");
+				callOrder.append("2");
 				return null;
 			}
 
 			@Override
 			protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
-				callOrder.append("4");
+				callOrder.append("3");
 				return entries;
 			}
 
@@ -156,7 +152,7 @@ public class BlogFeedProviderImplTest extends TestCase {
 			}
 		};
 		impl.getFeed(null, new RoleEntity());
-		assertEquals("1234", callOrder.toString());
+		assertEquals("123", callOrder.toString());
 	}
 
 	private BlogEntity createBlog() {
