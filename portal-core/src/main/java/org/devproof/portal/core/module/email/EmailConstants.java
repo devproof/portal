@@ -18,24 +18,21 @@ package org.devproof.portal.core.module.email;
 /**
  * @author Carsten Hufe
  */
-public class EmailConstants {
-	private EmailConstants() {
-	}
+public interface EmailConstants {
+	String EMAIL_PLACEHOLDER_USERNAME = "#USERNAME#";
+	String EMAIL_PLACEHOLDER_FIRSTNAME = "#FIRSTNAME#";
+	String EMAIL_PLACEHOLDER_LASTNAME = "#LASTNAME#";
+	String EMAIL_PLACEHOLDER_PAGENAME = "#PAGENAME#";
+	String EMAIL_PLACEHOLDER_EMAIL = "#EMAIL#";
+	String EMAIL_PLACEHOLDER_BIRTHDAY = "#BIRTHDAY#";
+	String EMAIL_PLACEHOLDER_CONFIRMATIONLINK = "#CONFIRMATIONLINK#";
+	String EMAIL_PLACEHOLDER_PASSWORDRESETLINK = "#PASSWORDRESETLINK#";
+	String EMAIL_PLACEHOLDER_CONTENT = "#CONTENT#";
+	String EMAIL_PLACEHOLDER_CONTACT_FULLNAME = "#CONTACT_FULLNAME#";
+	String EMAIL_PLACEHOLDER_CONTACT_EMAIL = "#CONTACT_EMAIL#";
+	String EMAIL_PLACEHOLDER_CONTACT_IP = "#CONTACT_IP#";
 
-	public static final String EMAIL_PLACEHOLDER_USERNAME = "#USERNAME#";
-	public static final String EMAIL_PLACEHOLDER_FIRSTNAME = "#FIRSTNAME#";
-	public static final String EMAIL_PLACEHOLDER_LASTNAME = "#LASTNAME#";
-	public static final String EMAIL_PLACEHOLDER_PAGENAME = "#PAGENAME#";
-	public static final String EMAIL_PLACEHOLDER_EMAIL = "#EMAIL#";
-	public static final String EMAIL_PLACEHOLDER_BIRTHDAY = "#BIRTHDAY#";
-	public static final String EMAIL_PLACEHOLDER_CONFIRMATIONLINK = "#CONFIRMATIONLINK#";
-	public static final String EMAIL_PLACEHOLDER_PASSWORDRESETLINK = "#PASSWORDRESETLINK#";
-	public static final String EMAIL_PLACEHOLDER_CONTENT = "#CONTENT#";
-	public static final String EMAIL_PLACEHOLDER_CONTACT_FULLNAME = "#CONTACT_FULLNAME#";
-	public static final String EMAIL_PLACEHOLDER_CONTACT_EMAIL = "#CONTACT_EMAIL#";
-	public static final String EMAIL_PLACEHOLDER_CONTACT_IP = "#CONTACT_IP#";
-
-	public static final String CONF_PAGE_NAME = "page_name";
-	public static final String CONF_FROM_EMAIL_ADDRESS = "from_email_address";
-	public static final String CONF_FROM_EMAIL_NAME = "from_email_name";
+	String CONF_PAGE_NAME = "page_name";
+	String CONF_FROM_EMAIL_ADDRESS = "from_email_address";
+	String CONF_FROM_EMAIL_NAME = "from_email_name";
 }

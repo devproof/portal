@@ -20,11 +20,8 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
-public class ConfigurationConstants {
-	private ConfigurationConstants() {
-	}
-
-	public static final String SPRING_CONFIGURATION_PREFIX = "spring.";
-	public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+public interface ConfigurationConstants {
+	String SPRING_CONFIGURATION_PREFIX = "spring.";
+	String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+	SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 }
