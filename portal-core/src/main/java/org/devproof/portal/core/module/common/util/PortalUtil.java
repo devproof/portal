@@ -224,4 +224,13 @@ public class PortalUtil {
 		}
 		return pageParameters.getAsInteger(key);
 	}
+
+	public static Boolean getParameterAsBoolean(String key) {
+		PageParameters pageParameters = RequestCycle.get().getPageParameters();
+		if (pageParameters == null) {
+			return null;
+		}
+		return pageParameters.getAsBoolean(key);
+	}
+
 }

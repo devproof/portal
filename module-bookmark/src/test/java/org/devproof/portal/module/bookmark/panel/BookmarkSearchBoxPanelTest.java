@@ -17,8 +17,8 @@ package org.devproof.portal.module.bookmark.panel;
 
 import junit.framework.TestCase;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
@@ -52,7 +52,14 @@ public class BookmarkSearchBoxPanelTest extends TestCase {
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new BookmarkSearchBoxPanel(panelId, new BookmarkQuery(), null, null, null, new PageParameters());
+				return new BookmarkSearchBoxPanel(panelId, Model.of(new BookmarkQuery())) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected boolean isAuthor() {
+						return true;
+					}
+				};
 			}
 		};
 	}

@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.common.panel;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -25,57 +24,25 @@ import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
- * Should be refactored ... very ugly. Search engines must be able to index nice
- * urls!
- * 
  * @author Carsten Hufe
  */
 public class BookmarkablePagingPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
-	private static final String PAGE_PARAM = "page";
+	public static final String PAGE_PARAM = "page";
 
 	private IPageable pageable;
 	private IModel<? extends SearchQuery> searchQueryModel;
 	private Class<? extends Page> parentClazz;
 
-	public BookmarkablePagingPanel(String id, IPageable pageable,
-			IModel<? extends SearchQuery> searchQueryModel, Class<? extends Page> parentClazz) {
+	public BookmarkablePagingPanel(String id, IPageable pageable, IModel<? extends SearchQuery> searchQueryModel,
+			Class<? extends Page> parentClazz) {
 		super(id);
 		this.pageable = pageable;
 		this.searchQueryModel = searchQueryModel;
 		this.parentClazz = parentClazz;
-		// handleCurrentPageParameter();
 		add(createBackLink());
 		add(createForwardLink());
-	}
-
-	//
-	// private void handleCurrentPageParameter() {
-	// // TODO move to Dataview???
-	// PageParameters params = RequestCycle.get().getPageParameters();
-	// if (params != null && params.containsKey(PAGE_PARAM)) {
-	// int page = params.getAsInteger(PAGE_PARAM, 1);
-	// if (page > 0 && page <= pageable.getPageCount()) {
-	// pageable.setCurrentPage(page - 1);
-	// }
-	// }
-	// }
-
-	@Override
-	protected void onBeforeRender() {
-		// if params is null, its a post search request ... so reset the current
-		// page
-		PageParameters params = RequestCycle.get().getPageParameters();
-		if (params != null && params.containsKey(PAGE_PARAM)) {
-			int page = params.getAsInteger(PAGE_PARAM, 1);
-			if (page > 0 && page <= pageable.getPageCount()) {
-				pageable.setCurrentPage(page - 1);
-			}
-		} else {
-			pageable.setCurrentPage(0);
-		}
-		super.onBeforeRender();
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {

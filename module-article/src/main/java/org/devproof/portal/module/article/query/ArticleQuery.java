@@ -86,10 +86,10 @@ public class ArticleQuery implements SearchQuery {
 	@Override
 	public PageParameters getPageParameters() {
 		PageParameters params = new PageParameters();
-		if (StringUtils.isNotBlank(getAllTextFields())) {
+		if (StringUtils.isNotBlank(allTextFields)) {
 			params.put(SEARCH_PARAM, allTextFields);
 		}
-		if (StringUtils.isNotBlank(getTagname())) {
+		if (StringUtils.isNotBlank(tagname)) {
 			params.put(TagConstants.TAG_PARAM, tagname);
 		}
 		return params;

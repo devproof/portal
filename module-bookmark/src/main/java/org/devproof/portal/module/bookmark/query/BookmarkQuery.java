@@ -15,25 +15,37 @@
  */
 package org.devproof.portal.module.bookmark.query;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.PageParameters;
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.query.TagQuery;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
-import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
+import org.devproof.portal.core.module.tag.TagConstants;
 
 /**
  * @author Carsten Hufe
  */
 @BeanJoin("left join e.allRights ar left join e.tags t")
-public class BookmarkQuery implements SearchQuery, TagQuery<BookmarkTagEntity>, IBrokenQuery {
+public class BookmarkQuery implements SearchQuery {
 	private static final long serialVersionUID = 1L;
+	private static final String SEARCH_PARAM = "search";
+	private static final String BROKEN_PARAM = "broken";
+	private static final String ID_PARAM = "id";
 	private Integer id;
 	private RoleEntity role;
-	private BookmarkTagEntity tag;
+	private String tagname;
 	private String allTextFields;
 	private Boolean broken;
+
+	public BookmarkQuery() {
+		id = PortalUtil.getParameterAsInteger(ID_PARAM);
+		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+		broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
+	}
 
 	@BeanQuery("e.id = ?")
 	public Integer getId() {
@@ -46,20 +58,22 @@ public class BookmarkQuery implements SearchQuery, TagQuery<BookmarkTagEntity>, 
 
 	@BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%')")
 	public RoleEntity getRole() {
+		if (role == null) {
+			PortalSession session = PortalSession.get();
+			if (!session.hasRight("bookmark.view")) {
+				role = session.getRole();
+			}
+		}
 		return role;
 	}
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
+	@BeanQuery("t.tagname = ?")
+	public String getTagname() {
+		return tagname;
 	}
 
-	@BeanQuery("t = ?")
-	public BookmarkTagEntity getTag() {
-		return tag;
-	}
-
-	public void setTag(BookmarkTagEntity tag) {
-		this.tag = tag;
+	public void setTagname(String tagname) {
+		this.tagname = tagname;
 	}
 
 	@BeanQuery("(e.title like '%'||?||'%' or e.description like '%'||?||'%')")
@@ -80,7 +94,18 @@ public class BookmarkQuery implements SearchQuery, TagQuery<BookmarkTagEntity>, 
 		this.broken = broken;
 	}
 
-	public void clearSelection() {
-		tag = null;
+	@Override
+	public PageParameters getPageParameters() {
+		PageParameters params = new PageParameters();
+		if (StringUtils.isNotBlank(allTextFields)) {
+			params.put(SEARCH_PARAM, allTextFields);
+		}
+		if (StringUtils.isNotBlank(tagname)) {
+			params.put(TagConstants.TAG_PARAM, tagname);
+		}
+		if (broken != null) {
+			params.put(BROKEN_PARAM, broken);
+		}
+		return params;
 	}
 }
