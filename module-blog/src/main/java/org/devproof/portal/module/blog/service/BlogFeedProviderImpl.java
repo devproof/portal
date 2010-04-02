@@ -51,7 +51,6 @@ public class BlogFeedProviderImpl implements FeedProvider {
 	@Override
 	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
-		setRoleForDataProviderQuery(role);
 		Iterator<? extends BlogEntity> iterator = getBlogEntries();
 		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
 		feed.setEntries(entries);
@@ -60,8 +59,7 @@ public class BlogFeedProviderImpl implements FeedProvider {
 
 	protected Iterator<? extends BlogEntity> getBlogEntries() {
 		Integer maxNumber = configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED);
-		Iterator<? extends BlogEntity> iterator = blogDataProvider.iterator(0, maxNumber);
-		return iterator;
+        return blogDataProvider.iterator(0, maxNumber);
 	}
 
 	protected SyndFeed generateFeed(RequestCycle rc) {
@@ -102,12 +100,6 @@ public class BlogFeedProviderImpl implements FeedProvider {
 	protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
 		return rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString();
 	}
-
-/*	protected void setRoleForDataProviderQuery(RoleEntity role) {
-		BlogQuery query = new BlogQuery();
-		query.setRole(role);
-		blogDataProvider.setQueryObject(query);
-	}*/
 
 	@Override
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {

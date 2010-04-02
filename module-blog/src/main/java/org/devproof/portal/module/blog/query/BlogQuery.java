@@ -15,10 +15,15 @@
  */
 package org.devproof.portal.module.blog.query;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.PageParameters;
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
 
 /**
@@ -26,55 +31,67 @@ import org.devproof.portal.module.blog.entity.BlogTagEntity;
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
 public class BlogQuery implements SearchQuery {
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private RoleEntity role;
-	private BlogTagEntity tag;
-	private String allTextFields;
+    private static final long serialVersionUID = 1L;
+    private static final String ID_PARAM = "id";
+    private static final String SEARCH_PARAM = "search";
+    private Integer id;
+    private RoleEntity role;
+    private String tagname;
+    private String allTextFields;
 
-	@BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
-	public RoleEntity getRole() {
+    public BlogQuery() {
+        id = PortalUtil.getParameterAsInteger(ID_PARAM);
+		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+    }
+
+    @BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
+    public RoleEntity getRole() {
+		if (role == null) {
+			PortalSession session = PortalSession.get();
+			if (!session.hasRight("blog.view")) {
+				role = session.getRole();
+			}
+		}
 		return role;
-	}
+    }
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
-	}
+    @BeanQuery("t.tagname = ?")
+    public String getTagname() {
+        return tagname;
+    }
 
-	@BeanQuery("t = ?")
-	public BlogTagEntity getTag() {
-		return tag;
-	}
+    public void setTagname(String tag) {
+        this.tagname = tagname;
+    }
 
-	public void setTag(BlogTagEntity tag) {
-		this.tag = tag;
-	}
+    @BeanQuery("e.headline like '%'||?||'%'" + " or e.content like '%'||?||'%'")
+    public String getAllTextFields() {
+        return allTextFields;
+    }
 
-	@BeanQuery("e.headline like '%'||?||'%'" + " or e.content like '%'||?||'%'")
-	public String getAllTextFields() {
-		return allTextFields;
-	}
+    public void setAllTextFields(String allTextFields) {
+        this.allTextFields = allTextFields;
+    }
 
-	public void setAllTextFields(String allTextFields) {
-		this.allTextFields = allTextFields;
-	}
+    @BeanQuery("e.id = ?")
+    public Integer getId() {
+        return id;
+    }
 
-	@BeanQuery("e.id = ?")
-	public Integer getId() {
-		return id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public void clearSelection() {
-		tag = null;
-	}
-
-	// @Override
-	// public PageParameters getPageParameters() {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
+    @Override
+    public PageParameters getPageParameters() {
+        PageParameters params = new PageParameters();
+        if(StringUtils.isNotBlank(tagname)) {
+			params.put(TagConstants.TAG_PARAM, tagname);
+		}
+		if (StringUtils.isNotBlank(allTextFields)) {
+			params.put(SEARCH_PARAM, allTextFields);
+		}
+        return params;
+    }
 }
