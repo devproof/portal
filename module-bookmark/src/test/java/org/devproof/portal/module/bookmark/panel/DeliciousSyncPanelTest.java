@@ -38,7 +38,7 @@ public class DeliciousSyncPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestDeliciousSyncPanel.class);
 		tester.assertComponent("panel", DeliciousSyncPanel.class);
 	}

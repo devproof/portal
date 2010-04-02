@@ -40,7 +40,7 @@ public class DeadLinkCheckPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestDeadLinkCheckPanel.class);
 		tester.assertComponent("panel", TestDeadLinkCheckPanel.class);
 	}

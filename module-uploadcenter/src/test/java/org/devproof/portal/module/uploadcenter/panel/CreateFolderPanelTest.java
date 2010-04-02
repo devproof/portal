@@ -40,7 +40,7 @@ public class CreateFolderPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(TestCreateFolderPanel.class);
 		tester.assertComponent("panel", TestCreateFolderPanel.class);
 	}

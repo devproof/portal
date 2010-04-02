@@ -37,7 +37,7 @@ public class ArticleBoxPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(ArticleBoxPanel.class);
 		tester.assertComponent("panel", ArticleBoxPanel.class);
 	}

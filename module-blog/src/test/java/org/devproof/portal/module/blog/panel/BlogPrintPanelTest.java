@@ -42,7 +42,7 @@ public class BlogPrintPanelTest extends TestCase {
 		PortalTestUtil.destroy(tester);
 	}
 
-	public void testRenderDefaultPage() {
+	public void testRenderDefaultPanel() {
 		tester.startPanel(createBlogPrintPanel());
 		tester.assertComponent("panel", BlogPrintPanel.class);
 	}
