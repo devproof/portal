@@ -19,6 +19,8 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.download.query.DownloadQuery;
@@ -52,8 +54,21 @@ public class DownloadSearchBoxPanelTest extends TestCase {
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new DownloadSearchBoxPanel(panelId, new DownloadQuery(), null, null, null, new PageParameters());
+				return new TestDownloadSearchBoxPanel(panelId, Model.of(new DownloadQuery()));
 			}
 		};
+	}
+
+    private static class TestDownloadSearchBoxPanel extends DownloadSearchBoxPanel {
+		private static final long serialVersionUID = 1L;
+
+		private TestDownloadSearchBoxPanel(String id, IModel<DownloadQuery> queryModel) {
+			super(id, queryModel);
+		}
+
+		@Override
+		protected boolean isAuthor() {
+			return true;
+		}
 	}
 }

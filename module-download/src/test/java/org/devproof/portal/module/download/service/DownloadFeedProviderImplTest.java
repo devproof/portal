@@ -41,13 +41,14 @@ import org.devproof.portal.module.download.page.DownloadPage;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
+import org.devproof.portal.module.download.query.DownloadQuery;
 
 /**
  * @author Carsten Hufe
  */
 public class DownloadFeedProviderImplTest extends TestCase {
 	private DownloadFeedProviderImpl impl;
-	private SortableQueryDataProvider<DownloadEntity> dataProviderMock;
+	private SortableQueryDataProvider<DownloadEntity, DownloadQuery> dataProviderMock;
 	private ConfigurationService configurationServiceMock;
 
 	@Override
@@ -132,11 +133,6 @@ public class DownloadFeedProviderImplTest extends TestCase {
 			protected SyndFeed generateFeed(RequestCycle rc) {
 				callOrder.append("1");
 				return new SyndFeedImpl();
-			}
-
-			@Override
-			protected void setRoleForDataProviderQuery(RoleEntity role) {
-				callOrder.append("2");
 			}
 
 			@Override

@@ -45,13 +45,12 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
  * @author Carsten Hufe
  */
 public class DownloadFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<DownloadEntity> downloadDataProvider;
+	private SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
 	private ConfigurationService configurationService;
 
 	@Override
 	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
 		SyndFeed feed = generateFeed(rc);
-		setRoleForDataProviderQuery(role);
 		Iterator<? extends DownloadEntity> iterator = getDownloadEntries();
 		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
 		feed.setEntries(entries);
@@ -105,12 +104,6 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 		return rc.urlFor(DownloadPage.class, new PageParameters("id=" + DownloadEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(RoleEntity role) {
-		DownloadQuery query = new DownloadQuery();
-		query.setRole(role);
-		downloadDataProvider.setQueryObject(query);
-	}
-
 	@Override
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
 		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
@@ -126,7 +119,7 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 	}
 
 	@Required
-	public void setDownloadDataProvider(SortableQueryDataProvider<DownloadEntity> downloadDataProvider) {
+	public void setDownloadDataProvider(SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider) {
 		this.downloadDataProvider = downloadDataProvider;
 	}
 

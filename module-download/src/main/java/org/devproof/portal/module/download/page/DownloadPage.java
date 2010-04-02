@@ -39,6 +39,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.CaptchaRatingPanel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
@@ -67,21 +68,21 @@ public class DownloadPage extends DownloadBasePage {
 	@SpringBean(name = "downloadService")
 	private DownloadService downloadService;
 	@SpringBean(name = "downloadDataProvider")
-	private QueryDataProvider<DownloadEntity> downloadDataProvider;
+	private QueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
 	@SpringBean(name = "downloadTagService")
 	private TagService<DownloadTagEntity> downloadTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	private DownloadDataView dataView;
-	private BubblePanel bubblePanel;
-	private DownloadQuery query;
-	private PageParameters params;
+    private IModel<DownloadQuery> queryModel;
+    private DownloadDataView dataView;
+    private BubblePanel bubblePanel;
+    private PageParameters params;
 
-	public DownloadPage(PageParameters params) {
+    public DownloadPage(PageParameters params) {
 		super(params);
-		this.params = params;
-		setDownloadQuery();
+        this.params = params;
+        this.queryModel = downloadDataProvider.getSearchQueryModel();
 		add(createBubblePanel());
 		add(createDownloadDataView());
 		add(createPagingPanel());
@@ -110,16 +111,20 @@ public class DownloadPage extends DownloadBasePage {
 	}
 
 	private void addTagCloudBox() {
-		addTagCloudBox(downloadTagService, new PropertyModel<DownloadTagEntity>(query, "tag"), DownloadPage.class,
-				params);
+		addTagCloudBox(downloadTagService, DownloadPage.class);
 	}
 
 	private BookmarkablePagingPanel createPagingPanel() {
-		return new BookmarkablePagingPanel("paging", dataView, DownloadPage.class, params);
+		return new BookmarkablePagingPanel("paging", dataView, queryModel, DownloadPage.class);
 	}
 
 	private DownloadSearchBoxPanel createDownloadSearchBoxPanel() {
-		return new DownloadSearchBoxPanel("box", query, downloadDataProvider, this, dataView, params);
+		return new DownloadSearchBoxPanel("box", queryModel) {
+            @Override
+            protected boolean isAuthor() {
+                return DownloadPage.this.isAuthor();
+            }
+        };
 	}
 
 	private DownloadDataView createDownloadDataView() {
@@ -127,21 +132,7 @@ public class DownloadPage extends DownloadBasePage {
 		return dataView;
 	}
 
-	private DownloadQuery setDownloadQuery() {
-		PortalSession session = (PortalSession) getSession();
-		query = new DownloadQuery();
-
-		if (!session.hasRight("download.view")) {
-			query.setRole(session.getRole());
-		}
-		if (!isAuthor() && configurationService.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_HIDE_BROKEN)) {
-			query.setBroken(false);
-		}
-		downloadDataProvider.setQueryObject(query);
-		return query;
-	}
-
-	private class DownloadDataView extends DataView<DownloadEntity> {
+	private class DownloadDataView extends AutoPagingDataView<DownloadEntity> {
 		private static final long serialVersionUID = 1L;
 		private boolean onlyOneDownloadInResult;
 
@@ -169,7 +160,7 @@ public class DownloadPage extends DownloadBasePage {
 				setPageTitle(download.getTitle());
 			}
 		}
-	};
+	}
 
 	public class DownloadView extends Fragment {
 
@@ -275,8 +266,7 @@ public class DownloadPage extends DownloadBasePage {
 		}
 
 		private ExternalLink createManufacturerLink(String value) {
-			ExternalLink link = new ExternalLink("link", download.getManufacturerHomepage(), value);
-			return link;
+            return new ExternalLink("link", download.getManufacturerHomepage(), value);
 		}
 
 		private boolean isManufacturerHomepage(String fieldName) {
@@ -295,8 +285,7 @@ public class DownloadPage extends DownloadBasePage {
 
 		private Label createDownloadLinkLabel() {
 			String labelKey = isAllowedToDownload() ? "downloadNow" : "loginToDownload";
-			Label downloadLinkLabel = new Label("downloadLinkLabel", DownloadPage.this.getString(labelKey));
-			return downloadLinkLabel;
+            return new Label("downloadLinkLabel", DownloadPage.this.getString(labelKey));
 		}
 
 		private Image createDownloadLinkImage() {
@@ -310,33 +299,32 @@ public class DownloadPage extends DownloadBasePage {
 		}
 
 		private CaptchaRatingPanel newRatingPanel() {
-			CaptchaRatingPanel ratingPanel = new CaptchaRatingPanel("vote", new PropertyModel<Integer>(download,
-					"calculatedRating"), Model.of(5), new PropertyModel<Integer>(download, "numberOfVotes"), hasVoted,
-					true, bubblePanel) {
-				private static final long serialVersionUID = 1L;
+            return new CaptchaRatingPanel("vote", new PropertyModel<Integer>(download,
+                    "calculatedRating"), Model.of(5), new PropertyModel<Integer>(download, "numberOfVotes"), hasVoted,
+                    true, bubblePanel) {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				protected boolean onIsStarActive(int star) {
-					return star < ((int) (download.getCalculatedRating() + 0.5));
-				}
+                @Override
+                protected boolean onIsStarActive(int star) {
+                    return star < ((int) (download.getCalculatedRating() + 0.5));
+                }
 
-				@Override
-				protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
-					hasVoted.setObject(Boolean.TRUE);
-					downloadService.rateDownload(rating, download);
-				}
+                @Override
+                protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
+                    hasVoted.setObject(Boolean.TRUE);
+                    downloadService.rateDownload(rating, download);
+                }
 
-				@Override
-				public boolean isEnabled() {
-					return isAllowedToVote();
-				}
-			};
-			return ratingPanel;
+                @Override
+                public boolean isEnabled() {
+                    return isAllowedToVote();
+                }
+            };
 		}
 
 		private ContentTagPanel<DownloadTagEntity> createTagPanel() {
 			return new ContentTagPanel<DownloadTagEntity>("tags", new ListModel<DownloadTagEntity>(download.getTags()),
-					DownloadPage.class, params);
+					DownloadPage.class);
 		}
 
 		private Label createHitsLabel() {
