@@ -102,7 +102,7 @@ public class CommentPanel extends Panel {
 
 	protected IModel<CommentQuery> createCommentQueryModel() {
 		IModel<CommentQuery> searchQueryModel = commentDataProvider.getSearchQueryModel();
-		CommentQuery query = queryModel.getObject();
+		CommentQuery query = searchQueryModel.getObject();
 		query.setModuleName(configuration.getModuleName());
 		query.setModuleContentId(configuration.getModuleContentId());
 		return searchQueryModel;
