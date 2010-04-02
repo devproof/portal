@@ -15,28 +15,47 @@
  */
 package org.devproof.portal.module.blog.panel;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BaseSearchBoxPanel;
+import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.module.blog.query.BlogQuery;
 
 /**
  * @author Carsten Hufe
  */
-public class BlogSearchBoxPanel extends BaseSearchBoxPanel {
+public class BlogSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 	private WebMarkupContainer titleContainer;
+    private IModel<BlogQuery> queryModel;
 
-	public BlogSearchBoxPanel(String id, BlogQuery query, QueryDataProvider<?> dataProvider, TemplatePage parent,
-			IPageable dataview, PageParameters params) {
-		super(id, query, dataProvider, "blog.view", parent, dataview, params);
-		addToForm(createSearchTextField());
+    public BlogSearchBoxPanel(String id, IModel<BlogQuery> queryModel) {
+		super(id, queryModel);
+        this.queryModel = queryModel;
 		add(createTitleContainer());
+        add(createSearchForm());
+	}
+
+	private Component createSearchForm() {
+		Form<SearchQuery> form = newSearchForm();
+		form.add(createSearchTextField());
+		return form;
+	}
+
+	private Form<SearchQuery> newSearchForm() {
+		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
+		return new Form<SearchQuery>("searchForm", formModel);
 	}
 
 	private TextField<String> createSearchTextField() {

@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -57,36 +58,36 @@ public class BlogPage extends BlogBasePage {
 	@SpringBean(name = "blogService")
 	private BlogService blogService;
 	@SpringBean(name = "blogDataProvider")
-	private QueryDataProvider<BlogEntity> blogDataProvider;
+	private QueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
 	@SpringBean(name = "blogTagService")
 	private TagService<BlogTagEntity> blogTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
 	private BlogDataView dataView;
-	private BlogQuery query;
+	private IModel<BlogQuery> queryModel;
 	private PageParameters params;
 
 	public BlogPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setBlogQuery();
+        this.queryModel = blogDataProvider.getSearchQueryModel();
 		add(createBlogDataView());
 		add(createPagingPanel());
 		addFilterBox(createBlogSearchBoxPanel());
 		addTagCloudBox();
-	}
+	}                    
 
 	private BlogSearchBoxPanel createBlogSearchBoxPanel() {
-		return new BlogSearchBoxPanel("box", query, blogDataProvider, this, dataView, params);
+		return new BlogSearchBoxPanel("box", queryModel);
 	}
 
 	private BookmarkablePagingPanel createPagingPanel() {
-		return new BookmarkablePagingPanel("paging", dataView, BlogPage.class, params);
+		return new BookmarkablePagingPanel("paging", dataView, queryModel, BlogPage.class);
 	}
 
 	private void addTagCloudBox() {
-		addTagCloudBox(blogTagService, new PropertyModel<BlogTagEntity>(query, "tag"), BlogPage.class, params);
+		addTagCloudBox(blogTagService, BlogPage.class);
 	}
 
 	private BlogDataView createBlogDataView() {
@@ -94,14 +95,14 @@ public class BlogPage extends BlogBasePage {
 		return dataView;
 	}
 
-	private void setBlogQuery() {
+/*	private void setBlogQuery() {
 		PortalSession session = (PortalSession) getSession();
 		query = new BlogQuery();
 		if (!session.hasRight("blog.view")) {
 			query.setRole(session.getRole());
 		}
 		blogDataProvider.setQueryObject(query);
-	}
+	}*/
 
 	private BlogView createBlogView(Item<BlogEntity> item) {
 		return new BlogView("blogView", item);
@@ -222,8 +223,9 @@ public class BlogPage extends BlogBasePage {
 		}
 
 		private ContentTagPanel<BlogTagEntity> createTagPanel() {
+            // TODO fix model
 			return new ContentTagPanel<BlogTagEntity>("tags", new ListModel<BlogTagEntity>(blog.getTags()),
-					BlogPage.class, params);
+					BlogPage.class);
 		}
 	}
 }
