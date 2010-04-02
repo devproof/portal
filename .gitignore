@@ -3,3 +3,6 @@ portal-bundle/true
 .project
 .settings/
 .classpath
+*.iml
+*.ipr
+*.iws

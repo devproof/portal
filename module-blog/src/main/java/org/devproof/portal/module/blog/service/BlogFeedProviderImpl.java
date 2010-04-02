@@ -103,11 +103,11 @@ public class BlogFeedProviderImpl implements FeedProvider {
 		return rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString();
 	}
 
-	protected void setRoleForDataProviderQuery(RoleEntity role) {
+/*	protected void setRoleForDataProviderQuery(RoleEntity role) {
 		BlogQuery query = new BlogQuery();
 		query.setRole(role);
 		blogDataProvider.setQueryObject(query);
-	}
+	}*/
 
 	@Override
 	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
