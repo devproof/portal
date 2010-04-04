@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.feed.panel;
 
 import junit.framework.TestCase;
-
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.DummyPanelPage;
 import org.apache.wicket.util.tester.TestPanelSource;

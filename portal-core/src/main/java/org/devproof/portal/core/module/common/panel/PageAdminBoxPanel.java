@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
@@ -34,6 +32,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
+
+import java.util.List;
 
 /**
  * Contains link for upload center and the "add" links

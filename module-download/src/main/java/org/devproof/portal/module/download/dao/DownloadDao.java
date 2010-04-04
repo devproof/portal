@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.download.dao;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -25,6 +23,8 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

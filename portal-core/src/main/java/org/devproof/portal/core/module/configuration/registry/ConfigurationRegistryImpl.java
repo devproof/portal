@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.configuration.registry;
 
+import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 
 /**
  * @author Carsten Hufe

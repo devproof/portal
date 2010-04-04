@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.bookmark.dao;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -26,6 +24,8 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

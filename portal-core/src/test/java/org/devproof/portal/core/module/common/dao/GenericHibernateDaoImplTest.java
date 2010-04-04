@@ -18,7 +18,6 @@ package org.devproof.portal.core.module.common.dao;
 import junit.framework.TestCase;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
-import org.easymock.EasyMock;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;

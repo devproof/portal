@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.common.query;
 
-import java.io.Serializable;
-
 import org.apache.wicket.PageParameters;
+
+import java.io.Serializable;
 
 /**
  * @author Carsten Hufe

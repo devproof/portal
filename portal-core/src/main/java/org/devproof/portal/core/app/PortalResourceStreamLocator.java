@@ -14,16 +14,15 @@
  */
 package org.devproof.portal.core.app;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.servlet.ServletContext;
-
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.UrlResourceStream;
 import org.apache.wicket.util.resource.locator.ResourceStreamLocator;
 import org.devproof.portal.core.module.theme.ThemeConstants;
+
+import javax.servlet.ServletContext;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Resource stream locator, required to managed more then one theme

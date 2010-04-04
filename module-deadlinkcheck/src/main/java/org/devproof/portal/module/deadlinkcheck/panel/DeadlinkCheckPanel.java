@@ -15,12 +15,6 @@
  */
 package org.devproof.portal.module.deadlinkcheck.panel;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
@@ -34,7 +28,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.RequestUtils;
 import org.devproof.portal.core.module.common.component.ProgressBar;
@@ -42,6 +35,12 @@ import org.devproof.portal.core.module.common.component.Progression;
 import org.devproof.portal.core.module.common.component.ProgressionModel;
 import org.devproof.portal.core.module.common.util.httpclient.ssl.EasySSLProtocolSocketFactory;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Panel for checking deadlinks (bookmarks and downloads)

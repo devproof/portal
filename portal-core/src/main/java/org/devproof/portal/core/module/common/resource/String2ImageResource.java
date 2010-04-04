@@ -15,15 +15,12 @@
  */
 package org.devproof.portal.core.module.common.resource;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import org.apache.wicket.markup.html.image.resource.RenderedDynamicImageResource;
+
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
-
-import org.apache.wicket.markup.html.image.resource.RenderedDynamicImageResource;
 
 /**
  * Converts a String into an image

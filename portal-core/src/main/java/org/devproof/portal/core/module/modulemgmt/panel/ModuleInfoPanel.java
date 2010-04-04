@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.modulemgmt.panel;
 
-import javax.persistence.Table;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,6 +23,8 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.config.PageConfiguration;
+
+import javax.persistence.Table;
 
 /**
  * @author Carsten Hufe

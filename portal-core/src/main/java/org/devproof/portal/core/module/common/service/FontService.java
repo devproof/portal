@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.common.service;
 
-import java.awt.Font;
+import java.awt.*;
 import java.util.List;
 
 /**

@@ -15,16 +15,14 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
 import org.devproof.portal.core.module.common.service.RegistryServiceImpl;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

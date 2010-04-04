@@ -15,11 +15,11 @@
  */
 package org.devproof.portal.core.module.configuration.dao;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

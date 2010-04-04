@@ -15,11 +15,6 @@
  */
 package org.devproof.portal.core.module.tag.component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.form.IFormModelUpdateListener;
@@ -29,6 +24,11 @@ import org.apache.wicket.util.string.Strings;
 import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Ajax autocompletion field for tags

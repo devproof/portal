@@ -16,8 +16,6 @@
 package org.devproof.portal.module.download.panel;
 
 import junit.framework.TestCase;
-
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;

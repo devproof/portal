@@ -15,14 +15,14 @@
  */
 package org.devproof.portal.core.module.user.dao;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

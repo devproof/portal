@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.box.locator;
 
-import java.util.Collection;
-
 import org.devproof.portal.core.config.BoxConfiguration;
+
+import java.util.Collection;
 
 /**
  * Locates the boxes of all modules

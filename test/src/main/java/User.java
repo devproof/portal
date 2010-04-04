@@ -1,7 +1,7 @@
+import com.mongodb.ReflectionDBObject;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mongodb.ReflectionDBObject;
 
 public class User extends ReflectionDBObject {
 	private String firstname;

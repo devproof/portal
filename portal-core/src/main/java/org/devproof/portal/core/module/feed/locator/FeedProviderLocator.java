@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.feed.locator;
 
-import java.util.Collection;
-
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
+
+import java.util.Collection;
 
 /**
  * Locates feed providers

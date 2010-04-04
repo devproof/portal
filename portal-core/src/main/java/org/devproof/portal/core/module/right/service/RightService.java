@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.right.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+
+import java.util.List;
 
 /**
  * Manage user rights

@@ -19,7 +19,6 @@ import junit.framework.TestCase;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.module.box.locator.BoxLocator;
-import org.easymock.EasyMock;
 
 import static org.easymock.EasyMock.createStrictMock;
 

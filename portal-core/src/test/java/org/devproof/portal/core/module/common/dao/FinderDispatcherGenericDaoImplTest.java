@@ -15,18 +15,16 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
-import java.lang.reflect.Method;
-
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
-import org.easymock.EasyMock;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.lang.reflect.Method;
 
 import static org.easymock.EasyMock.*;
 

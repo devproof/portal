@@ -15,16 +15,15 @@
  */
 package org.devproof.portal.core.module.common.entity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Base entity class

@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.user.page;
 
 import junit.framework.TestCase;
-
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;

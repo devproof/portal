@@ -15,12 +15,12 @@
  */
 package org.devproof.portal.core.mock;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.email.service.EmailService;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

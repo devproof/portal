@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.bookmark.page;
 
-import java.util.List;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -37,6 +35,8 @@ import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.panel.DeliciousSyncPanel;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 import org.devproof.portal.module.deadlinkcheck.panel.DeadlinkCheckPanel;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

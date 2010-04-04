@@ -15,27 +15,21 @@
  */
 package org.devproof.portal.core.module.email.service;
 
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
-
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

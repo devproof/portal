@@ -15,11 +15,11 @@
  */
 package org.devproof.portal.core.module.email.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+
+import java.util.List;
 
 /**
  * Methods to send emails

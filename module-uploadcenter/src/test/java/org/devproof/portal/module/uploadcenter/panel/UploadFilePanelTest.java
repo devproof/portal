@@ -15,13 +15,12 @@
  */
 package org.devproof.portal.module.uploadcenter.panel;
 
-import java.io.File;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
+
+import java.io.File;
 
 /**
  * @author Carsten Hufe

@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.theme.service;
 
+import org.devproof.portal.core.module.theme.bean.ThemeBean;
+
 import java.io.File;
 import java.util.List;
-
-import org.devproof.portal.core.module.theme.bean.ThemeBean;
 
 /**
  * @author Carsten Hufe

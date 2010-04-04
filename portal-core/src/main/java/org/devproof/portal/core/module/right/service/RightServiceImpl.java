@@ -15,11 +15,11 @@
  */
 package org.devproof.portal.core.module.right.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.right.dao.RightDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

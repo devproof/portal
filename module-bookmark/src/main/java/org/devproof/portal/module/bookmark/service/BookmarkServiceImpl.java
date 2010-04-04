@@ -15,16 +15,16 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.bookmark.dao.BookmarkDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

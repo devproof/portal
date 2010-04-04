@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.module.comment.config;
 
-import java.util.Collection;
-
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+
+import java.util.Collection;
 
 /**
  * @author Carsten Hufe

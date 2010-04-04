@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.article.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.dao.ArticleDao;
@@ -26,6 +24,8 @@ import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

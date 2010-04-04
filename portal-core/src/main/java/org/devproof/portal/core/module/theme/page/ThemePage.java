@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.core.module.theme.page;
 
-import java.io.File;
-import java.util.List;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -40,6 +37,9 @@ import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.devproof.portal.core.module.theme.bean.ThemeBean;
 import org.devproof.portal.core.module.theme.panel.UploadThemePanel;
 import org.devproof.portal.core.module.theme.service.ThemeService;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

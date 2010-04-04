@@ -15,13 +15,8 @@
  */
 package org.devproof.portal.core.app;
 
-import java.util.ArrayList;
-import java.util.List;
-import static org.easymock.EasyMock.*;
 import junit.framework.TestCase;
-
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
@@ -31,8 +26,12 @@ import org.devproof.portal.core.module.user.exception.AuthentificationFailedExce
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.test.PortalTestUtil;
-import org.easymock.EasyMock;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

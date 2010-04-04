@@ -15,13 +15,13 @@
  */
 package org.devproof.portal.core.module.common.factory;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * @author Carsten Hufe

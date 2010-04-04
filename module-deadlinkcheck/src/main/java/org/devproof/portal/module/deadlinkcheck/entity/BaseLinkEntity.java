@@ -15,15 +15,9 @@
  */
 package org.devproof.portal.module.deadlinkcheck.entity;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
 import org.devproof.portal.core.module.common.entity.BaseEntity;
+
+import javax.persistence.*;
 
 /**
  * Base entity for bookmarks and downloads

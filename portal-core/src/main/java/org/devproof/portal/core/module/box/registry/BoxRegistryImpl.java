@@ -15,16 +15,12 @@
  */
 package org.devproof.portal.core.module.box.registry;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.wicket.Component;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.module.box.locator.BoxLocator;
 import org.springframework.beans.factory.InitializingBean;
+
+import java.util.*;
 
 /**
  * @author Carsten Hufe

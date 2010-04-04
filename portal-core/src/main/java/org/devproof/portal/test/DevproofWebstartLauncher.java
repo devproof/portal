@@ -15,15 +15,10 @@
  */
 package org.devproof.portal.test;
 
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class DevproofWebstartLauncher extends JFrame {
 	private static final long serialVersionUID = 1L;

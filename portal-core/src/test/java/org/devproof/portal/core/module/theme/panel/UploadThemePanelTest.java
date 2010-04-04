@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.theme.panel;
 
 import junit.framework.TestCase;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;

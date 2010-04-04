@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.feed.registry;
 
-import java.util.Map;
-
 import org.apache.wicket.Page;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
+
+import java.util.Map;
 
 /**
  * Registry for {@link FeedProvider}

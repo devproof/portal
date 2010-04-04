@@ -1,7 +1,7 @@
+import com.mongodb.ReflectionDBObject;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import com.mongodb.ReflectionDBObject;
 
 public class Role extends ReflectionDBObject {
 	private String rolename;

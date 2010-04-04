@@ -15,13 +15,12 @@
  */
 package org.devproof.portal.core.module.modulemgmt.entity;
 
-import java.io.Serializable;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import java.io.Serializable;
 
 /**
  * @author Carsten Hufe

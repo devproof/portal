@@ -15,11 +15,6 @@
  */
 package org.devproof.portal.core.module.feed.registry;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.wicket.Page;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
@@ -27,6 +22,11 @@ import org.devproof.portal.core.module.feed.locator.FeedProviderLocator;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Carsten Hufe

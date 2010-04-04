@@ -15,14 +15,14 @@
  */
 package org.devproof.portal.core.module.modulemgmt.dao;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+
+import java.util.List;
 
 /**
  * Accessing module links

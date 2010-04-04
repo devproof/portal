@@ -1,7 +1,7 @@
+import org.jcouchdb.db.Database;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jcouchdb.db.Database;
 
 public class TestPersist {
 

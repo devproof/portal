@@ -15,10 +15,6 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
@@ -31,6 +27,10 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.Collection;
 
 /**
  * Implementation of the generic dao

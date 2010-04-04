@@ -15,15 +15,14 @@
  */
 package org.devproof.portal.module.uploadcenter.panel;
 
-import java.io.File;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.test.PortalTestUtil;
+
+import java.io.File;
 
 /**
  * @author Carsten Hufe

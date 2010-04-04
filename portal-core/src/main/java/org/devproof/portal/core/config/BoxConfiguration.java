@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.config;
 
-import java.io.Serializable;
-
 import org.apache.wicket.Component;
+
+import java.io.Serializable;
 
 /**
  * Contains configuration for one box

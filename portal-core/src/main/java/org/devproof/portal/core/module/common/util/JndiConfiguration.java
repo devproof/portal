@@ -15,14 +15,12 @@
  */
 package org.devproof.portal.core.module.common.util;
 
-import java.util.Properties;
-
-import javax.naming.NamingException;
-
 import net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory;
-
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.springframework.jndi.JndiTemplate;
+
+import javax.naming.NamingException;
+import java.util.Properties;
 
 /**
  * @author Carsten Hufe

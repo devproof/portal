@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.app;
 
-import java.util.List;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
@@ -30,6 +28,8 @@ import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
 import org.devproof.portal.core.module.user.panel.UserBoxPanel;
 import org.springframework.context.ApplicationContext;
+
+import java.util.List;
 
 /**
  * The whole role and rights system of the portal

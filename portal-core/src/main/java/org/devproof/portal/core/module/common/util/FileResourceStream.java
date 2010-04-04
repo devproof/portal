@@ -15,16 +15,12 @@
  */
 package org.devproof.portal.core.module.common.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Locale;
-
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.time.Time;
+
+import java.io.*;
+import java.util.Locale;
 
 /**
  * For downloading a file

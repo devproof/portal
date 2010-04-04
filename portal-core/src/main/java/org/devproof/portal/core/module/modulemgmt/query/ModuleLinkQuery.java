@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.modulemgmt.query;
 
-import java.io.Serializable;
-
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+
+import java.io.Serializable;
 
 /**
  * @author Carsten Hufe

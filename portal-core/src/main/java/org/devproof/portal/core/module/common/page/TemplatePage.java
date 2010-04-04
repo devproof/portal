@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.core.module.common.page;
 
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.Component;
@@ -64,6 +61,9 @@ import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.core.module.user.page.LoginPage;
 import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
+
+import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * Base class for all pages.

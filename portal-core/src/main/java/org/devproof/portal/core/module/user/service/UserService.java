@@ -15,13 +15,13 @@
  */
 package org.devproof.portal.core.module.user.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

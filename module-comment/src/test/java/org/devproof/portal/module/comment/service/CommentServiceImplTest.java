@@ -1,16 +1,6 @@
 package org.devproof.portal.module.comment.service;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
@@ -19,6 +9,12 @@ import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.dao.CommentDao;
 import org.devproof.portal.module.comment.entity.CommentEntity;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe
