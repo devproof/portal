@@ -230,6 +230,6 @@ public class RightPage extends TemplatePage {
 				}
 			});
 		}
-	};
+	}
 
 }
