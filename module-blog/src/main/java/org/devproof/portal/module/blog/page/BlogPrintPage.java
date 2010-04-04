@@ -18,6 +18,8 @@ package org.devproof.portal.module.blog.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.MessagePage;
@@ -32,20 +34,38 @@ import org.devproof.portal.module.blog.service.BlogService;
 public class BlogPrintPage extends PrintPage {
 	@SpringBean(name = "blogService")
 	private BlogService blogService;
+    private IModel<BlogEntity> blogModel;
+    private PageParameters params;
 
-	public BlogPrintPage(PageParameters params) {
+    public BlogPrintPage(PageParameters params) {
 		super(params);
+        this.params = params;
+        blogModel = createBlogModel();
 	}
 
-	@Override
+    private LoadableDetachableModel<BlogEntity> createBlogModel() {
+        return new LoadableDetachableModel<BlogEntity>() {
+            @Override
+            protected BlogEntity load() {
+                Integer blogId = getBlogId();
+                return blogService.findById(blogId);
+            }
+        };
+    }
+    
+    @Override
+    protected void onBeforeRender() {
+        validateAccessRights();
+        super.onBeforeRender();
+    }
+
+    @Override
 	protected Component createPrintableComponent(String id, PageParameters params) {
-		Integer blogId = getBlogId(params);
-		BlogEntity blog = blogService.findById(blogId);
-		validateAccessRights(blog);
-		return new BlogPrintPanel(id, blog);
+
+		return new BlogPrintPanel(id, blogModel);
 	}
 
-	private Integer getBlogId(PageParameters params) {
+	private Integer getBlogId() {
 		Integer blogId = params.getAsInteger("0");
 		if (blogId == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage
@@ -54,7 +74,8 @@ public class BlogPrintPage extends PrintPage {
 		return blogId;
 	}
 
-	private void validateAccessRights(BlogEntity blog) {
+	private void validateAccessRights() {
+        BlogEntity blog = blogModel.getObject();
 		if (blog == null || !isAllowedToRead(blog)) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
 		}
