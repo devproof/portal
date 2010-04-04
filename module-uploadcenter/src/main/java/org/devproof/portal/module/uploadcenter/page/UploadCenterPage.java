@@ -160,7 +160,7 @@ public class UploadCenterPage extends TemplatePage {
 
 	private boolean hasRightToCreateDownload() {
 		PortalSession session = (PortalSession) getSession();
-		return session.hasRight("page.DownloadEditPage");
+		return session.hasRight(UploadCenterConstants.DOWNLOAD_AUTHOR_RIGHT);
 	}
 
 	private AjaxLink<BubblePanel> newUploadLink(final BubblePanel bubblePanel) {

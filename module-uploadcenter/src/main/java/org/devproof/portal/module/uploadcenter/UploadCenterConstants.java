@@ -26,4 +26,5 @@ public interface UploadCenterConstants {
 	String CONF_UPLOADCENTER_MAXSIZE = "uploadcenter_maxsize";
 	ResourceReference REF_GALLERY_IMG = new ResourceReference(UploadCenterConstants.class, "img/gallery.png");
 	ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(UploadCenterConstants.class, "img/download.png");
+    String DOWNLOAD_AUTHOR_RIGHT = "page.DownloadEditPage";
 }

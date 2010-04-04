@@ -344,7 +344,7 @@ public class CommentPanel extends Panel {
 
     protected boolean isAuthor() {
         PortalSession session = (PortalSession) getSession();
-		return session.hasRight("page." + CommentAdminPage.class.getSimpleName());
+		return session.hasRight(CommentConstants.AUTHOR_RIGHT);
     }
 	public class CommentAdminView extends Fragment {
 
