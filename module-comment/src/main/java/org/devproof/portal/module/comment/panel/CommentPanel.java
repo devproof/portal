@@ -37,10 +37,7 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -78,7 +75,6 @@ public class CommentPanel extends Panel {
 	private CommentDataView dataView;
 	private CommentConfiguration configuration;
 	private IModel<CommentEntity> commentModel;
-	private boolean isAuthor;
 	private boolean hasSubmitted = false;
 
 	public CommentPanel(String id, CommentConfiguration configuration) {
@@ -86,8 +82,6 @@ public class CommentPanel extends Panel {
 		this.configuration = configuration;
 		this.queryModel = createCommentQueryModel();
 		this.commentModel = createNewCommentModelForForm();
-		// TODO Lazy machen
-		setAuthorRight();
 		add(createCSSHeaderContributor());
 		add(createBubblePanel());
 		add(createNoCommentsHintContainer());
@@ -273,11 +267,6 @@ public class CommentPanel extends Panel {
 		return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
 	}
 
-	private void setAuthorRight() {
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page." + CommentAdminPage.class.getSimpleName());
-	}
-
 	private class CommentDataView extends DataView<CommentEntity> {
 		private static final long serialVersionUID = 1L;
 
@@ -334,17 +323,18 @@ public class CommentPanel extends Panel {
 		}
 
 		private Label createCommentContentLabel() {
-			Label commentLabel = new Label("comment", item.getModelObject().getComment());
+            IModel<String> commentModel = new PropertyModel<String>(item.getModel(), "comment");
+            Label commentLabel = new Label("comment", commentModel);
 			commentLabel.setEscapeModelStrings(false);
 			return commentLabel;
 		}
 
 		private CommentInfoPanel createCommentView() {
-			return new CommentInfoPanel("commentInfo", item.getModelObject());
+			return new CommentInfoPanel("commentInfo", item.getModel());
 		}
 
 		private Component createAppropriateAuthorPanel() {
-			if (isAuthor) {
+			if (isAuthor()) {
 				return new CommentAdminView("administration", item);
 			} else {
 				return new EmptyPanel("administration");
@@ -352,6 +342,10 @@ public class CommentPanel extends Panel {
 		}
 	}
 
+    protected boolean isAuthor() {
+        PortalSession session = (PortalSession) getSession();
+		return session.hasRight("page." + CommentAdminPage.class.getSimpleName());
+    }
 	public class CommentAdminView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
