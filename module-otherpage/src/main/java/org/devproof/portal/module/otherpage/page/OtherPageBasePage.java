@@ -24,6 +24,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
 
@@ -39,7 +40,6 @@ public class OtherPageBasePage extends TemplatePage {
 
 	public OtherPageBasePage(PageParameters params) {
 		super(params);
-		setAuthorRight();
 		addSyntaxHighlighter();
 		addOtherPageAddLink();
 	}
@@ -57,29 +57,24 @@ public class OtherPageBasePage extends TemplatePage {
 	}
 
 	private Link<OtherPageEntity> newOtherPageAddLink() {
-		Link<OtherPageEntity> link = new Link<OtherPageEntity>("adminLink") {
-			private static final long serialVersionUID = 1L;
+        return new Link<OtherPageEntity>("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick() {
-				OtherPageEntity newOtherPage = otherPageService.newOtherPageEntity();
-				IModel<OtherPageEntity> otherPageModel = Model.of(newOtherPage);
-				setResponsePage(new OtherPageEditPage(otherPageModel));
-			}
-		};
-		return link;
+            @Override
+            public void onClick() {
+                OtherPageEntity newOtherPage = otherPageService.newOtherPageEntity();
+                IModel<OtherPageEntity> otherPageModel = Model.of(newOtherPage);
+                setResponsePage(new OtherPageEditPage(otherPageModel));
+            }
+        };
 	}
 
 	private Label createOtherPageAddLinkLabel() {
 		return new Label("linkName", getString("createLink"));
 	}
 
-	private void setAuthorRight() {
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page." + OtherPagePage.class.getSimpleName());
-	}
-
 	public boolean isAuthor() {
-		return isAuthor;
+        PortalSession session = (PortalSession) getSession();
+		return session.hasRight(OtherPageConstants.AUTHOR_RIGHT);
 	}
 }
