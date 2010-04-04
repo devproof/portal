@@ -46,13 +46,13 @@ public class BookmarkEditPage extends BookmarkBasePage {
 	private BookmarkService bookmarkService;
 	@SpringBean(name = "bookmarkTagService")
 	private TagService<BookmarkTagEntity> bookmarkTagService;
+    private IModel<BookmarkEntity> bookmarkModel;
 
-	private BookmarkEntity bookmark;
 
-	public BookmarkEditPage(IModel<BookmarkEntity> bookmarkModel) {
+    public BookmarkEditPage(IModel<BookmarkEntity> bookmarkModel) {
 		super(new PageParameters());
-		this.bookmark = bookmarkModel.getObject();
-		add(createBookmarkEditForm());
+        this.bookmarkModel = bookmarkModel;
+        add(createBookmarkEditForm());
 	}
 
 	private Form<BookmarkEntity> createBookmarkEditForm() {
@@ -96,27 +96,28 @@ public class BookmarkEditPage extends BookmarkBasePage {
 	}
 
 	private RightGridPanel createViewRightPanel() {
-		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
+		IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
 		return new RightGridPanel("viewRights", "bookmark.view", rightsListModel);
 	}
 
 	private RightGridPanel createVisitRightPanel() {
-		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
+		IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
 		return new RightGridPanel("visitRights", "bookmark.visit", rightsListModel);
 	}
 
 	private RightGridPanel createVoteRightPanel() {
-		ListModel<RightEntity> rightsListModel = new ListModel<RightEntity>(bookmark.getAllRights());
+		IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
 		return new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
 	}
 
 	private TagField<BookmarkTagEntity> createTagField() {
-		IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmark, "tags");
+		IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmarkModel, "tags");
 		return new TagField<BookmarkTagEntity>("tags", listModel, bookmarkTagService);
 	}
 
 	private Form<BookmarkEntity> newBookmarkEditForm() {
-		return new Form<BookmarkEntity>("form", new CompoundPropertyModel<BookmarkEntity>(bookmark)) {
+        IModel<BookmarkEntity> compoundModel = new CompoundPropertyModel<BookmarkEntity>(bookmarkModel);
+        return new Form<BookmarkEntity>("form", compoundModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

@@ -33,6 +33,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -74,8 +76,7 @@ public abstract class DeliciousSyncPanel extends Panel {
 	private int modifiedBookmarksCount = 0;
 	private int deletedBookmarksCount = 0;
 	private DeliciousBean deliciousBean;
-	private ListModel<RightEntity> allSelectedRightsModel;
-	private ProgressionModel progressionModel;
+	private IModel<List<RightEntity>> allSelectedRightsModel;
 	private ProgressBar progressBar;
 	private DeliciousFormBean deliciousFormBean = new DeliciousFormBean();
 	private FeedbackPanel feedbackPanel;
@@ -83,15 +84,20 @@ public abstract class DeliciousSyncPanel extends Panel {
 
 	public DeliciousSyncPanel(String id) {
 		super(id);
-		setProgressionModel();
-		setAllSelectedRightsModel();
+		allSelectedRightsModel = createAllSelectedRightsModel();
 		add(createCSSHeaderContributor());
 		add(createFeedbackPanel());
 		add(createDeliciousSyncForm());
 	}
 
-	private void setAllSelectedRightsModel() {
-		allSelectedRightsModel = new ListModel<RightEntity>(bookmarkService.findLastSelectedRights());
+	private IModel<List<RightEntity>> createAllSelectedRightsModel() {
+		return new LoadableDetachableModel<List<RightEntity>>() {
+            private static final long serialVersionUID = -3952424378430843342L;
+            @Override
+            protected List<RightEntity> load() {
+                return bookmarkService.findLastSelectedRights();
+            }
+        };
 	}
 
 	private HeaderContributor createCSSHeaderContributor() {
@@ -240,7 +246,8 @@ public abstract class DeliciousSyncPanel extends Panel {
 	}
 
 	private ProgressBar createProgressBar() {
-		progressBar = new ProgressBar("bar", progressionModel) {
+        ProgressionModel progressionModel = createProgressionModel();
+        progressBar = new ProgressBar("bar", progressionModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -263,8 +270,8 @@ public abstract class DeliciousSyncPanel extends Panel {
 		return progressBar;
 	}
 
-	private ProgressionModel setProgressionModel() {
-		progressionModel = new ProgressionModel() {
+	private ProgressionModel createProgressionModel() {
+		return new ProgressionModel() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -288,7 +295,6 @@ public abstract class DeliciousSyncPanel extends Panel {
 				return new Progression(progressInPercent, descr);
 			}
 		};
-		return progressionModel;
 	}
 
 	private FeedbackPanel createFeedbackPanel() {

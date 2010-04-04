@@ -20,8 +20,13 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
@@ -43,46 +48,54 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
-	private List<BookmarkEntity> latestBookmarks;
+	private IModel<List<BookmarkEntity>> latestBookmarksModel;
 
 	public BookmarkBoxPanel(String id) {
 		super(id);
-		setLatestBookmarks();
-		setVisibility();
+		latestBookmarksModel = createLatestBookmarksModel();
 		add(createTitleContainer());
 		add(createRepeatingViewWithBookmarks());
 	}
 
-	private void setVisibility() {
-		setVisible(isBookmarkAvailable());
+    @Override
+    public boolean isVisible() {
+        List<BookmarkEntity> latestBookmarks = latestBookmarksModel.getObject();
+        return latestBookmarks.size() > 0;
+    }
+    
+	private ListView<BookmarkEntity> createRepeatingViewWithBookmarks() {
+		return new ListView<BookmarkEntity>("repeating") {
+            private static final long serialVersionUID = 6603619378248308439L;
+            @Override
+            protected void populateItem(ListItem<BookmarkEntity> item) {
+                item.add(createLinkToBookmark(item.getModel()));
+            }
+        };
 	}
 
-	private boolean isBookmarkAvailable() {
-		return latestBookmarks.size() > 0;
-	}
-
-	private RepeatingView createRepeatingViewWithBookmarks() {
-		RepeatingView repeating = new RepeatingView("repeating");
-		for (BookmarkEntity bookmark : latestBookmarks) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			item.add(createLinkToBookmark(bookmark));
-			repeating.add(item);
-		}
-		return repeating;
-	}
-
-	private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(BookmarkEntity bookmark) {
+	private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(IModel<BookmarkEntity> bookmarkModel) {
 		BookmarkablePageLink<BookmarkPage> link = new BookmarkablePageLink<BookmarkPage>("link", BookmarkPage.class);
-		link.setParameter("id", bookmark.getId());
-		link.add(new Label("linkName", bookmark.getTitle()));
+        BookmarkEntity bookmark = bookmarkModel.getObject();
+        link.setParameter("id", bookmark.getId());
+		link.add(createLinkNameLabel(bookmarkModel));
 		return link;
 	}
 
-	private List<BookmarkEntity> setLatestBookmarks() {
-		PortalSession session = (PortalSession) getSession();
-		Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
-		latestBookmarks = bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0, num);
-		return latestBookmarks;
+    private Label createLinkNameLabel(IModel<BookmarkEntity> bookmarkModel) {
+        IModel<String> titleModel = new PropertyModel<String>(bookmarkModel, "title");
+        return new Label("linkName", titleModel);
+    }
+
+    private IModel<List<BookmarkEntity>> createLatestBookmarksModel() {
+        return new LoadableDetachableModel<List<BookmarkEntity>>() {
+            private static final long serialVersionUID = 6940753456307593228L;
+            @Override
+            protected List<BookmarkEntity> load() {
+                PortalSession session = (PortalSession) getSession();
+                Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
+                return bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0, num);
+            }
+        };
 	}
 
 	private WebMarkupContainer createTitleContainer() {
