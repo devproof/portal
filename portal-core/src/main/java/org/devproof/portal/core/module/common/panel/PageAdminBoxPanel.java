@@ -23,8 +23,12 @@ import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
@@ -48,8 +52,8 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	public PageAdminBoxPanel(String id) {
 		super(id);
 		add(createTitleContainer());
-		add(createExtendableRepeatingView());
-		add(createFixedRepeatingView());
+		add(createExtendableView());
+		add(createFixedView());
 	}
 
 	private WebMarkupContainer createTitleContainer() {
@@ -57,23 +61,36 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 		return titleContainer;
 	}
 
-	private RepeatingView createFixedRepeatingView() {
-		RepeatingView repeating = new RepeatingView("repeatingNav2");
-		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredPageAdminPages();
-		for (Class<? extends Page> pageClass : registeredAdminPages) {
-			repeating.add(createAdminItem(repeating.newChildId(), pageClass));
-		}
-		return repeating;
+    private ListView createFixedView() {
+        IModel<List<Class<? extends Page>>> registeredPageAdminPagesModel = createRegisteredPageAdminPagesModel();
+        return new ListView<Class<? extends Page>>("repeatingNavFixed", registeredPageAdminPagesModel) {
+            private static final long serialVersionUID = -277523349047078562L;
+            @Override
+            protected void populateItem(ListItem<Class<? extends Page>> item) {
+                Class<? extends Page> pageClass = item.getModelObject();
+                item.add(createAdminLink(pageClass));
+            }
+
+            private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
+                BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
+                link.add(createAdminItemLink(pageClass));
+                return link;
+            }
+        };
 	}
 
-	private WebMarkupContainer createAdminItem(String id, Class<? extends Page> pageClass) {
-		WebMarkupContainer item = new WebMarkupContainer(id);
-		item.add(createAdminItemLink(pageClass));
-		return item;
-	}
+    private IModel<List<Class<? extends Page>>> createRegisteredPageAdminPagesModel() {
+        return new LoadableDetachableModel<List<Class<? extends Page>>>() {
+            private static final long serialVersionUID = 3289204569577932297L;
+            @Override
+            protected List<Class<? extends Page>> load() {
+                return adminPageRegistry.getRegisteredPageAdminPages();
+            }
+        };
+    }
 
-	private RepeatingView createExtendableRepeatingView() {
-		extendableRepeating = new RepeatingView("repeatingNav1");
+	private RepeatingView createExtendableView() {
+		extendableRepeating = new RepeatingView("repeatingNav");
 		return extendableRepeating;
 	}
 

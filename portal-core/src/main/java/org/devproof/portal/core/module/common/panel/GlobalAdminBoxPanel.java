@@ -22,8 +22,13 @@ import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
@@ -44,36 +49,53 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	public GlobalAdminBoxPanel(String id) {
 		super(id);
 		add(createTitleContainer());
-		add(createLinkRepeatingView());
+		add(createLinkView());
 	}
 
-	private RepeatingView createLinkRepeatingView() {
-		RepeatingView repeating = new RepeatingView("repeatingNav");
-		List<Class<? extends Page>> registeredAdminPages = adminPageRegistry.getRegisteredGlobalAdminPages();
-		for (Class<? extends Page> pageClass : registeredAdminPages) {
-			repeating.add(createLinkItem(repeating.newChildId(), pageClass));
-		}
-		return repeating;
+	private ListView createLinkView() {
+        IModel<List<Class<? extends Page>>> registeredAdminPageModel = createRegisteredAdminPageModel();
+        return new ListView<Class<? extends Page>>("repeatingNav", registeredAdminPageModel) {
+            private static final long serialVersionUID = -277523349047078562L;
+            @Override
+            protected void populateItem(ListItem<Class<? extends Page>> item) {
+                Class<? extends Page> pageClass = item.getModelObject();
+                item.add(createAdminLink(pageClass));
+            }
+
+            private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
+                BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
+                link.add(createAdminLinkLabel(pageClass));
+                return link;
+            }
+        };
 	}
 
-	private WebMarkupContainer createLinkItem(String id, Class<? extends Page> pageClass) {
-		WebMarkupContainer item = new WebMarkupContainer(id);
-		item.add(createAdminLink(pageClass));
-		return item;
+    private IModel<List<Class<? extends Page>>> createRegisteredAdminPageModel() {
+        return new LoadableDetachableModel<List<Class<? extends Page>>>() {
+            private static final long serialVersionUID = -4836280928165419121L;
+            @Override
+            protected List<Class<? extends Page>> load() {
+                return adminPageRegistry.getRegisteredGlobalAdminPages();
+            }
+        };
+    }
+
+    private Label createAdminLinkLabel(Class<? extends Page> pageClass) {
+        IModel<String> pageClassModel = createPageClassModel(pageClass);
+        return new Label("adminLinkLabel", pageClassModel);
 	}
 
-	private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
-		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
-		link.add(createAdminLinkLabel(pageClass));
-		return link;
-	}
+    private AbstractReadOnlyModel<String> createPageClassModel(final Class<? extends Page> pageClass) {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = -302528457464799755L;
+            @Override
+            public String getObject() {
+                return getLinkNameByClass(pageClass);
+            }
+        };
+    }
 
-	private Label createAdminLinkLabel(Class<? extends Page> pageClass) {
-		String label = getLinkNameByClass(pageClass);
-		return new Label("adminLinkLabel", label);
-	}
-
-	private String getLinkNameByClass(Class<? extends Page> pageClass) {
+    private String getLinkNameByClass(Class<? extends Page> pageClass) {
 		String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
 				CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
 		if (StringUtils.isEmpty(label)) {

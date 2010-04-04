@@ -26,6 +26,9 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -60,28 +63,33 @@ public class ContactPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private PageParameters params;
-	private UserEntity toUser;
-	private ContactBean contactBean;
+	private IModel<UserEntity> toUserModel;
+	private IModel<ContactBean> contactBeanModel;
 	private BubblePanel bubblePanel;
 
 	public ContactPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setToUser();
-		setContactFormBean();
-		validateToUser();
+		this.toUserModel = createToUserModel();
+		this.contactBeanModel = createContactBeanModel();
 		add(createCSSHeaderContributor());
 		add(createBubblePanel());
 		add(createContactForm());
 	}
 
-	private Component createBubblePanel() {
+    @Override
+    protected void onBeforeRender() {
+        validateToUser();
+        super.onBeforeRender();
+    }
+
+    private Component createBubblePanel() {
 		bubblePanel = new BubblePanel("bubblePanel");
 		return bubblePanel;
 	}
 
 	private Form<ContactBean> createContactForm() {
-		Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBean));
+		Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBeanModel));
 		form.add(createToUserField());
 		form.add(createFullnameField());
 		form.add(createEmailField());
@@ -118,9 +126,9 @@ public class ContactPage extends TemplatePage {
 		return fc;
 	}
 
-	private void setContactFormBean() {
+	private IModel<ContactBean> createContactBeanModel() {
 		PortalSession session = (PortalSession) getSession();
-		contactBean = new ContactBean();
+		ContactBean contactBean = new ContactBean();
 		contactBean.setTouser(getToUsername());
 		if (session.isSignedIn()) {
 			UserEntity user = session.getUser();
@@ -131,6 +139,7 @@ public class ContactPage extends TemplatePage {
 				contactBean.setEmail(user.getEmail());
 			}
 		}
+        return Model.of(contactBean);
 	}
 
 	private boolean isEmailGiven(UserEntity user) {
@@ -142,7 +151,8 @@ public class ContactPage extends TemplatePage {
 	}
 
 	private void validateToUser() {
-		if (toUser == null) {
+        UserEntity toUser = toUserModel.getObject();
+        if (toUser == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
 					.getString("user.doesnotexist")));
 		}
@@ -156,8 +166,15 @@ public class ContactPage extends TemplatePage {
 		}
 	}
 
-	private void setToUser() {
-		toUser = userService.findUserByUsername(getToUsername());
+	private IModel<UserEntity> createToUserModel() {
+        return new LoadableDetachableModel<UserEntity>() {
+            private static final long serialVersionUID = -1538236896675592045L;
+
+            @Override
+            protected UserEntity load() {
+                return userService.findUserByUsername(getToUsername());
+            }
+        };
 	}
 
 	private boolean isRecipientContactFormEnabled(UserEntity touser) {
@@ -187,7 +204,8 @@ public class ContactPage extends TemplatePage {
 			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
 				// send notification
 				Integer templateId = configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
-				EmailPlaceholderBean placeholder = createEmailPlaceholderBean(toUser);
+                UserEntity toUser = toUserModel.getObject();
+                EmailPlaceholderBean placeholder = createEmailPlaceholderBean(toUser);
 				emailService.sendEmail(templateId, placeholder);
 				setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
 			}
@@ -199,7 +217,8 @@ public class ContactPage extends TemplatePage {
 
 			private EmailPlaceholderBean createEmailPlaceholderBean(UserEntity touser) {
 				EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(touser);
-				placeholder.setContactEmail(contactBean.getEmail());
+                ContactBean contactBean = contactBeanModel.getObject();
+                placeholder.setContactEmail(contactBean.getEmail());
 				placeholder.setContactFullname(contactBean.getFullname());
 				placeholder.setContactIp(getIpAddress());
 				placeholder.setContent(contactBean.getContent());
@@ -209,8 +228,7 @@ public class ContactPage extends TemplatePage {
 			private String getIpAddress() {
 				ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo())
 						.getProperties();
-				String ip = prop.getRemoteAddress();
-				return ip;
+                return prop.getRemoteAddress();
 			}
 		};
 	}

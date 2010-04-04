@@ -71,6 +71,7 @@ public class ConfigurationPage extends TemplatePage {
 	}
 
 	private RepeatingView createTableRepeatingView() {
+        // TODO hier models verwenden mit reuse strategy?
 		List<String> groups = configurationService.findConfigurationGroups();
 		RepeatingView table = new RepeatingView("tableRow");
 		for (String group : groups) {

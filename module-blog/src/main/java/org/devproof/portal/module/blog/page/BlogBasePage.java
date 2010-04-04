@@ -54,13 +54,13 @@ public abstract class BlogBasePage extends TemplatePage {
 		// New Blog Link
 		if (isAuthor) {
 			Link<?> addLink = createBlogAddLink();
-			addLink.add(new Label("linkName", getString("createLink")));
+			addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
 			addPageAdminBoxLink(addLink);
 		}
 	}
 
 	private Link<?> createBlogAddLink() {
-		return new Link<Object>("adminLink") {
+		return new Link<Void>(getPageAdminBoxLinkId()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -73,7 +73,7 @@ public abstract class BlogBasePage extends TemplatePage {
 
 	private void setAuthorRight() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight("page." + BlogEditPage.class.getSimpleName());
+		isAuthor = session.hasRight(BlogConstants.AUTHOR_RIGHT);
 	}
 
 	public boolean isAuthor() {

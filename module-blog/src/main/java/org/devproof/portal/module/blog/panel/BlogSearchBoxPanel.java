@@ -16,18 +16,13 @@
 package org.devproof.portal.module.blog.panel;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
-import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
-import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.common.panel.BaseSearchBoxPanel;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.module.blog.query.BlogQuery;
 
