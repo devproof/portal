@@ -16,7 +16,6 @@
 package org.devproof.portal.module.download.panel;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOption;
@@ -28,9 +27,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
-import org.devproof.portal.core.module.common.panel.BaseSearchBoxListener;
 import org.devproof.portal.core.module.common.query.SearchQuery;
-import org.devproof.portal.module.deadlinkcheck.query.IBrokenQuery;
 import org.devproof.portal.module.download.query.DownloadQuery;
 
 /**

@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.common.panel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 
@@ -30,24 +31,26 @@ public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;
 
-	private BoxEntity box;
 	private Label titleLabel;
+    private IModel<BoxEntity> boxModel;
 
-	public OtherBoxPanel(String id, IModel<BoxEntity> model) {
-		super(id, model);
-		this.box = model.getObject();
+    public OtherBoxPanel(String id, IModel<BoxEntity> boxModel) {
+		super(id, boxModel);
+        this.boxModel = boxModel;
 		add(createTitleLabel());
 		add(createContentLabel());
 	}
 
 	private Label createContentLabel() {
-		Label content = new Label("content", box.getContent());
+        IModel<String> contentModel = new PropertyModel<String>(boxModel, "content");
+        Label content = new Label("content", contentModel);
 		content.setEscapeModelStrings(false);
 		return content;
 	}
 
 	private Label createTitleLabel() {
-		titleLabel = new Label("title", box.getTitle());
+        IModel<String> titleModel = new PropertyModel<String>(boxModel, "title");
+        titleLabel = new Label("title", titleModel);
 		return titleLabel;
 	}
 

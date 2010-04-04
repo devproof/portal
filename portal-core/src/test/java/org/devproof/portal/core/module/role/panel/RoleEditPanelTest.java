@@ -59,7 +59,6 @@ public class RoleEditPanelTest extends TestCase {
 
 		@Override
 		public void onCancel(AjaxRequestTarget target) {
-			// TODO Auto-generated method stub
 
 		}
 	}

@@ -89,13 +89,10 @@ public abstract class TemplatePage extends WebPage {
 	private PageAdminBoxPanel pageAdminBox;
 	private boolean filterBoxHideTitle;
 	private boolean tagCloudBoxHideTitle;
-//	private IModel<String> pageTitle;
 	private PageParameters params;
 
 	public TemplatePage(PageParameters params) {
 		this.params = params;
-		handleInfoMessageParams();
-		handleErrorMessageParams();
 		add(createDefaultCSSHeaderContributor());
 		add(createBodyCSSHeaderContributor());
 		add(createRss2LinkReference());
@@ -111,7 +108,14 @@ public abstract class TemplatePage extends WebPage {
 		setOutputMarkupId(true);
 	}
 
-	private WebMarkupContainer createCopyrightLabel() {
+    @Override
+    protected void onBeforeRender() {
+        handleInfoMessageParams();
+		handleErrorMessageParams();
+        super.onBeforeRender();
+    }
+
+    private WebMarkupContainer createCopyrightLabel() {
 		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
 		copyright.add(new SimpleAttributeModifier("content", configurationService
 				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
@@ -125,6 +129,7 @@ public abstract class TemplatePage extends WebPage {
 
     private IModel<String> createPageTitleModel() {
         return new LoadableDetachableModel<String>() {
+            private static final long serialVersionUID = 2389565755564804646L;
             @Override
             protected String load() {
                 String localPageTitle = getPageTitle();
@@ -400,6 +405,14 @@ public abstract class TemplatePage extends WebPage {
 		if (pageAdminBox != null) {
 			pageAdminBox.addLink(link);
 		}
+	}
+
+    public String getPageAdminBoxLinkId() {
+		return "adminLink";
+	}
+
+    public String getPageAdminBoxLinkLabelId() {
+		return "linkName";
 	}
 
     public String getPageTitle() {
