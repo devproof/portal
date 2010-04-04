@@ -41,8 +41,6 @@ public class ArticleBasePage extends TemplatePage {
 
 	public ArticleBasePage(PageParameters params) {
 		super(params);
-		// TODO lazy machen
-		setAuthorRight();
 		add(createCSSHeaderContributor());
 		addSyntaxHighlighter();
 		addArticleAddLink();
@@ -52,20 +50,20 @@ public class ArticleBasePage extends TemplatePage {
 		return CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS);
 	}
 
-	private void setAuthorRight() {
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight(ArticleConstants.AUTHOR_RIGHT);
-	}
-
 	private void addArticleAddLink() {
 		if (isAuthor()) {
-			Link<?> addLink = createArticleAddLink();
-			addLink.add(new Label("linkName", getString("createLink")));
+            Link<?> addLink = createArticleAddLink();
 			addPageAdminBoxLink(addLink);
 		}
 	}
 
-	private Link<?> createArticleAddLink() {
+    private Link<?> createArticleAddLink() {
+        Link<?> addLink = newArticleAddLink();
+        addLink.add(new Label("linkName", getString("createLink")));
+        return addLink;
+    }
+
+    private Link<?> newArticleAddLink() {
 		return new Link<Object>("adminLink") {
 			private static final long serialVersionUID = 1L;
 
@@ -78,6 +76,7 @@ public class ArticleBasePage extends TemplatePage {
 	}
 
 	public boolean isAuthor() {
-		return isAuthor;
+		PortalSession session = (PortalSession) getSession();
+		return session.hasRight(ArticleConstants.AUTHOR_RIGHT);
 	}
 }

@@ -38,6 +38,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -88,7 +89,7 @@ public abstract class TemplatePage extends WebPage {
 	private PageAdminBoxPanel pageAdminBox;
 	private boolean filterBoxHideTitle;
 	private boolean tagCloudBoxHideTitle;
-	private IModel<String> pageTitle;
+//	private IModel<String> pageTitle;
 	private PageParameters params;
 
 	public TemplatePage(PageParameters params) {
@@ -118,15 +119,27 @@ public abstract class TemplatePage extends WebPage {
 	}
 
 	private Label createPageTitleLabel() {
-		String localPageTitle = this.getString("contentTitle", null, "");
-		if (StringUtils.isNotEmpty(localPageTitle)) {
-			localPageTitle += " - ";
-		}
-		pageTitle = Model.of(localPageTitle + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
-		return new Label("pageTitle", pageTitle);
+        IModel<String> pageTitleModel = createPageTitleModel();
+        return new Label("pageTitle", pageTitleModel);
 	}
 
-	private WebComponent createGoogleAnalyticsPart2() {
+    private IModel<String> createPageTitleModel() {
+        return new LoadableDetachableModel<String>() {
+            @Override
+            protected String load() {
+                String localPageTitle = getPageTitle();
+                if(StringUtils.isBlank(localPageTitle)) {
+                    localPageTitle = getString("contentTitle", null, "");
+                }
+                if (StringUtils.isNotEmpty(localPageTitle)) {
+                    localPageTitle += " - ";
+                }
+                return localPageTitle + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+            }
+        };
+    }
+
+    private WebComponent createGoogleAnalyticsPart2() {
 		boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
 		WebComponent googleAnalytics2 = newGoogleAnalyticsPart2();
 		googleAnalytics2.setVisible(googleEnabled);
@@ -389,12 +402,16 @@ public abstract class TemplatePage extends WebPage {
 		}
 	}
 
-	/**
-	 * Change the page title
-	 */
-	public void setPageTitle(String title) {
-		pageTitle.setObject(title + " - " + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
-	}
+    public String getPageTitle() {
+        return "";
+    }
+//
+//	/**
+//	 * Change the page title
+//	 */
+//	public void setPageTitle(IModel<String> title) {
+//		pageTitle.setObject(title + " - " + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
+//	}
 
 	public FeedbackPanel getFeedback() {
 		return feedback;

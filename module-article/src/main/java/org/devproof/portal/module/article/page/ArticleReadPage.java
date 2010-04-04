@@ -71,7 +71,6 @@ public class ArticleReadPage extends ArticleBasePage {
 		setCurrentPageNumber();
 		setNumberOfPages();
 		setDisplayedPage();
-		validateAccessRights();
 		add(createTitleLabel());
 		add(createMetaInfoPanel());
 		add(createPrintLink());
@@ -82,10 +81,20 @@ public class ArticleReadPage extends ArticleBasePage {
 		add(createForwardLink());
 		add(createCommentPanel());
 		addTagCloudBox();
-		setPageTitle(displayedPage.getArticle().getTitle());
 	}
 
-	private Component createCommentPanel() {
+    @Override
+    public String getPageTitle() {
+        return displayedPage.getArticle().getTitle();
+    }
+
+    @Override
+    protected void onBeforeRender() {
+        validateAccessRights();
+        super.onBeforeRender();
+    }
+
+    private Component createCommentPanel() {
 		DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
 		ArticleEntity article = displayedPage.getArticle();
 		conf.setModuleContentId(article.getId().toString());
@@ -149,20 +158,20 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	private Component createAppropriateAuthorPanel() {
 		if (isAuthor()) {
-			return createAuthorPanel(displayedPage);
+			return createAuthorPanel();
 		} else {
 			return createEmptyAuthorPanel();
 		}
 	}
 
-	private Component createAuthorPanel(ArticlePageEntity page) {
-		AuthorPanel<ArticleEntity> authorPanel = newAuthorPanel(page);
+	private Component createAuthorPanel() {
+		AuthorPanel<ArticleEntity> authorPanel = newAuthorPanel();
 		authorPanel.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
 		return authorPanel;
 	}
 
-	private AuthorPanel<ArticleEntity> newAuthorPanel(final ArticlePageEntity page) {
-		return new AuthorPanel<ArticleEntity>("authorButtons", page.getArticle()) {
+	private AuthorPanel<ArticleEntity> newAuthorPanel() {
+		return new AuthorPanel<ArticleEntity>("authorButtons", new PropertyModel<ArticleEntity>(page.getArticle())) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -221,7 +230,6 @@ public class ArticleReadPage extends ArticleBasePage {
 			public boolean isVisible() {
 				return numberOfPages > currentPageNumber;
 			}
-
 		};
 	}
 

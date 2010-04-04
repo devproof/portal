@@ -90,8 +90,8 @@ public class ArticleEditPage extends ArticleBasePage {
 	}
 
 	private TagField<ArticleTagEntity> createTagField() {
-		IModel<List<ArticleTagEntity>> listModel = new PropertyModel<List<ArticleTagEntity>>(articleModel, "tags");
-		return new TagField<ArticleTagEntity>("tags", listModel, articleTagService);
+		IModel<List<ArticleTagEntity>> tagsModel = new PropertyModel<List<ArticleTagEntity>>(articleModel, "tags");
+		return new TagField<ArticleTagEntity>("tags", tagsModel, articleTagService);
 	}
 
 	private RequiredTextField<String> createContentIdField() {

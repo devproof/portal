@@ -20,30 +20,30 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Modal window with confirmation for deleting something
  * 
  * @author Carsten Hufe
- * 
  */
 public abstract class ConfirmDeletePanel<T> extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
-	private T entity;
 	private BubblePanel bubblePanel;
+    private IModel<T> entityModel;
 
-	public ConfirmDeletePanel(String id, T entity, BubblePanel bubblePanel) {
+    public ConfirmDeletePanel(String id, IModel<T> entityModel, BubblePanel bubblePanel) {
 		super(id);
-		this.entity = entity;
+        this.entityModel = entityModel;
 		this.bubblePanel = bubblePanel;
 		add(createConfirmDeletePanelForm());
 
 	}
 
 	private Form<T> createConfirmDeletePanelForm() {
-		Form<T> form = new Form<T>("form", new CompoundPropertyModel<T>(entity));
+		Form<T> form = new Form<T>("form", new CompoundPropertyModel<T>(entityModel));
 		form.add(createYesAjaxButton());
 		form.add(createNoAjaxButton());
 		form.setOutputMarkupId(true);
