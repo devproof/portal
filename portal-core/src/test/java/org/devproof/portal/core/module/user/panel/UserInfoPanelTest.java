@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.user.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.user.entity.UserEntity;
@@ -51,7 +52,7 @@ public class UserInfoPanelTest extends TestCase {
 
 			@Override
 			public Panel getTestPanel(String panelId) {
-				return new UserInfoPanel(panelId, new UserEntity());
+				return new UserInfoPanel(panelId, Model.of(new UserEntity()));
 			}
 		};
 	}

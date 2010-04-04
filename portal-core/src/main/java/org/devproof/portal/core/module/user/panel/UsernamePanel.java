@@ -65,7 +65,7 @@ public class UsernamePanel extends Panel {
 		return link;
 	}
 
-	private BookmarkablePageLink newContactPageLink() {
+	private BookmarkablePageLink<ContactPage> newContactPageLink() {
         return new BookmarkablePageLink<ContactPage>("userLink", ContactPage.class) {
             private static final long serialVersionUID = 8519679858021257340L;
 

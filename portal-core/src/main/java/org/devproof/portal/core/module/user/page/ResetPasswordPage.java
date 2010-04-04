@@ -25,6 +25,8 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -45,7 +47,7 @@ public class ResetPasswordPage extends TemplatePage {
 	@SpringBean(name = "userService")
 	private UserService userService;
 	private PageParameters params;
-	private UserEntity user;
+	private IModel<UserEntity> userModel;
 	private PasswordTextField password1;
 	private PasswordTextField password2;
 
@@ -53,13 +55,12 @@ public class ResetPasswordPage extends TemplatePage {
 		super(params);
 		this.params = params;
 		validateParameter();
-		setUser();
-		validateUserConditions();
+		this.userModel = createUserModel();
 		add(createResetPasswordForm());
 	}
 
 	private Form<UserEntity> createResetPasswordForm() {
-		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
+		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
 		form.add(createUsernameField());
 		form.add(createPasswordField1());
 		form.add(createPasswordField2());
@@ -75,6 +76,7 @@ public class ResetPasswordPage extends TemplatePage {
 
 			@Override
 			public void onSubmit() {
+                UserEntity user = userModel.getObject();
 				if (params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode())) {
 					userService.saveNewPassword(user.getUsername(), password1.getValue());
 					setResponsePage(MessagePage.getMessagePage(getString("changed")));
@@ -111,22 +113,28 @@ public class ResetPasswordPage extends TemplatePage {
 		return fc;
 	}
 
-	private void validateUserConditions() {
-		if (user == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage
-					.getMessagePage(getString("user.notregistered")));
-		} else if (isConfirmationCodeNotCorrect()) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("wrong.key")));
-		}
-	}
+	private IModel<UserEntity> createUserModel() {
+        return new LoadableDetachableModel<UserEntity>() {
+            private static final long serialVersionUID = 4622636378084141707L;
 
-	private boolean isConfirmationCodeNotCorrect() {
-		return StringUtils.isNotEmpty(user.getForgotPasswordCode())
-				&& !params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode());
-	}
+            @Override
+            protected UserEntity load() {
+                UserEntity user = userService.findUserByUsername(params.getString(PARAM_USER));
+                if (user == null) {
+                    throw new RestartResponseAtInterceptPageException(MessagePage
+                            .getMessagePage(getString("user.notregistered")));
+                } else if (isConfirmationCodeNotCorrect(user)) {
+                    throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("wrong.key")));
+                }
+                return user;
+            }
 
-	private void setUser() {
-		user = userService.findUserByUsername(params.getString(PARAM_USER));
+
+            private boolean isConfirmationCodeNotCorrect(UserEntity user) {
+                return StringUtils.isNotEmpty(user.getForgotPasswordCode())
+                        && !params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode());
+            }
+        };
 	}
 
 	private void validateParameter() {

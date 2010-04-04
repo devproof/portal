@@ -29,6 +29,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
@@ -55,21 +57,21 @@ public class SettingsPage extends TemplatePage {
 	private UserService userService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private UserEntity user;
-	private String currentEmail;
+	private IModel<UserEntity> userModel;
+	private IModel<String> currentEmailModel;
 	private PasswordTextField currentPassword;
 	private PasswordTextField newPassword1;
 	private PasswordTextField newPassword2;
 
 	public SettingsPage(PageParameters params) {
 		super(params);
-		setUser();
-		setCurrentEmail();
+		userModel = createUserModel();
+		currentEmailModel = createCurrentEmailModel();
 		add(createSettingsForm());
 	}
 
 	private Form<UserEntity> createSettingsForm() {
-		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
+		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
 		form.add(createUsernameField());
 		form.add(createFirstnameField());
 		form.add(createLastnameField());
@@ -92,6 +94,7 @@ public class SettingsPage extends TemplatePage {
 
 			@Override
 			public void onSubmit() {
+                UserEntity user = userModel.getObject();
 				if (StringUtils.isNotEmpty(newPassword1.getValue())) {
 					user.setPlainPassword(newPassword1.getValue());
 				}
@@ -105,6 +108,8 @@ public class SettingsPage extends TemplatePage {
 			}
 
 			private boolean isReconfirmationRequired() {
+                UserEntity user = userModel.getObject();
+                String currentEmail = currentEmailModel.getObject();
 				return !currentEmail.equals(user.getEmail())
 						&& configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION);
 			}
@@ -113,6 +118,7 @@ public class SettingsPage extends TemplatePage {
 				return new UrlCallback() {
 					@Override
 					public String getUrl(String generatedCode) {
+                        UserEntity user = userModel.getObject();
 						String requestUrl = getRequestURL();
 						PageParameters param = new PageParameters();
 						param.add(RegisterPage.PARAM_USER, user.getUsername());
@@ -156,6 +162,7 @@ public class SettingsPage extends TemplatePage {
 
 			@Override
 			protected void onValidate(IValidatable<String> ivalidatable) {
+                UserEntity user = userModel.getObject();
 				if (StringUtils.isNotEmpty(ivalidatable.getValue()) && !user.equalPassword(ivalidatable.getValue())) {
 					error(ivalidatable, "wrong.currentPassword");
 				}
@@ -221,12 +228,18 @@ public class SettingsPage extends TemplatePage {
 		return fc;
 	}
 
-	private void setCurrentEmail() {
-		currentEmail = user.getEmail();
+	private IModel<String> createCurrentEmailModel() {
+		return Model.of(userModel.getObject().getEmail());
 	}
 
-	private void setUser() {
-		PortalSession session = (PortalSession) getSession();
-		user = userService.findById(session.getUser().getId());
+	private IModel<UserEntity> createUserModel() {
+		return new LoadableDetachableModel<UserEntity>() {
+            private static final long serialVersionUID = -3255916962719155935L;
+            @Override
+            protected UserEntity load() {
+                PortalSession session = (PortalSession) getSession();
+		        return userService.findById(session.getUser().getId());
+            }
+        };
 	}
 }

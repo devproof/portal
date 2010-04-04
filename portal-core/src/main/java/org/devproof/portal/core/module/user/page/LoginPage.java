@@ -22,6 +22,8 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
@@ -35,7 +37,8 @@ public class LoginPage extends TemplatePage {
 
 	private static final long serialVersionUID = 1L;
 
-	private ValueMap valueMap = new ValueMap();
+	private String username = "";
+    private String password = "";
 
 	public LoginPage(PageParameters params) {
 		super(params);
@@ -53,45 +56,44 @@ public class LoginPage extends TemplatePage {
 	}
 
 	private PasswordTextField createPasswordField() {
-		return new PasswordTextField("password");
+        IModel<String> passwordModel = new PropertyModel<String>(this, "password");
+        return new PasswordTextField("password", passwordModel);
 	}
 
 	private RequiredTextField<String> createUsernameField() {
-		return new RequiredTextField<String>("username");
+        IModel<String> usernameModel = new PropertyModel<String>(this, "username");
+		return new RequiredTextField<String>("username", usernameModel);
 	}
 
 	private Form<ValueMap> newLoginForm() {
-		Form<ValueMap> form = new Form<ValueMap>("loginForm", new CompoundPropertyModel<ValueMap>(valueMap)) {
-			private static final long serialVersionUID = 1L;
+        return new Form<ValueMap>("loginForm") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit() {
-				PortalSession session = (PortalSession) getSession();
-				String username = valueMap.getString("username");
-				String password = valueMap.getString("password");
-				try {
-					String message = session.authenticate(username, password);
-					if (message == null) {
-						redirectToPortalHomePage();
-					} else {
-						error(getString(message));
-					}
-				} catch (UserNotConfirmedException e) {
-					setResponsePage(new ReenterEmailPage(username));
-				}
-			}
+            @Override
+            protected void onSubmit() {
+                PortalSession session = (PortalSession) getSession();
+                try {
+                    String message = session.authenticate(username, password);
+                    if (message == null) {
+                        redirectToPortalHomePage();
+                    } else {
+                        error(getString(message));
+                    }
+                } catch (UserNotConfirmedException e) {
+                    setResponsePage(new ReenterEmailPage(username));
+                }
+            }
 
-			private void redirectToPortalHomePage() {
-				boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
-				// production mode check is for unit tests
-				if (productionMode) {
-					@SuppressWarnings("unchecked")
-					Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-					setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
-				}
-			}
-		};
-		return form;
+            private void redirectToPortalHomePage() {
+                boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
+                // production mode check is for unit tests
+                if (productionMode) {
+                    @SuppressWarnings("unchecked")
+                    Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
+                    setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
+                }
+            }
+        };
 	}
 
 	private BookmarkablePageLink<Void> createForgotPasswordLink() {
