@@ -131,15 +131,14 @@ public abstract class UploadThemePanel extends Panel {
 	}
 
 	private FeedbackPanel createFeedbackPanel() {
-		FeedbackPanel uploadFeedback = new FeedbackPanel("uploadFeedback");
-		return uploadFeedback;
+        return new FeedbackPanel("uploadFeedback");
 	}
 
 	private HeaderContributor createCSSHeaderContributor() {
 		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
 	}
 
-	public abstract void onSubmit();
+	protected abstract void onSubmit();
 
-	public abstract void onCancel(AjaxRequestTarget target);
+	protected abstract void onCancel(AjaxRequestTarget target);
 }

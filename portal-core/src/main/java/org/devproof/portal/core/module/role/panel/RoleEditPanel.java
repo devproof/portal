@@ -35,6 +35,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -54,19 +56,17 @@ public abstract class RoleEditPanel extends Panel {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	private FeedbackPanel feedback;
-	private RoleEntity role;
-	private boolean isRoleEditable;
+	private IModel<RoleEntity> roleModel;
 
-	public RoleEditPanel(String id, IModel<RoleEntity> roleModel, boolean isRoleEditable) {
+	public RoleEditPanel(String id, IModel<RoleEntity> roleModel) {
 		super(id, roleModel);
-		this.role = roleModel.getObject();
-		this.isRoleEditable = isRoleEditable;
+		this.roleModel = roleModel;
 		add(createFeedbackPanel());
 		add(createRoleEditForm());
 	}
 
 	private Form<RoleEntity> createRoleEditForm() {
-		Form<RoleEntity> form = new Form<RoleEntity>("form", new CompoundPropertyModel<RoleEntity>(role));
+		Form<RoleEntity> form = new Form<RoleEntity>("form", new CompoundPropertyModel<RoleEntity>(roleModel));
 		form.add(createRoleDescriptionField());
 		form.add(createActiveCheckBox());
 		form.add(createRightPalette());
@@ -78,33 +78,41 @@ public abstract class RoleEditPanel extends Panel {
 
 	private Palette<RightEntity> createRightPalette() {
 		IChoiceRenderer<RightEntity> renderer = new ChoiceRenderer<RightEntity>("description", "right");
-		IModel<Collection<RightEntity>> allRights = new CollectionModel<RightEntity>(rightService
-				.findAllOrderByDescription());
-		IModel<List<RightEntity>> roleRights = new ListModel<RightEntity>(role.getRights());
+        IModel<Collection<RightEntity>> allRights = createAllRightsModel();
+        IModel<List<RightEntity>> roleRights = new PropertyModel<List<RightEntity>>(roleModel, "rights");
 		return newRightsPalette(renderer, allRights, roleRights);
 	}
 
-	private Palette<RightEntity> newRightsPalette(IChoiceRenderer<RightEntity> renderer,
+    private IModel<Collection<RightEntity>> createAllRightsModel() {
+        return new LoadableDetachableModel<Collection<RightEntity>>() {
+            private static final long serialVersionUID = 8162794261959630483L;
+            @Override
+            protected Collection<RightEntity> load() {
+                return rightService.findAllOrderByDescription();
+            }
+        };
+    }
+
+    private Palette<RightEntity> newRightsPalette(IChoiceRenderer<RightEntity> renderer,
 			IModel<Collection<RightEntity>> allRights, IModel<List<RightEntity>> roleRights) {
-		Palette<RightEntity> palette = new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10, false) {
-			private static final long serialVersionUID = 1L;
+        return new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10, false) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected ResourceReference getCSS() {
-				return null;
-			}
+            @Override
+            protected ResourceReference getCSS() {
+                return null;
+            }
 
-			@Override
-			protected Component newAvailableHeader(String componentId) {
-				return new Label(componentId, getString("palette.available"));
-			}
+            @Override
+            protected Component newAvailableHeader(String componentId) {
+                return new Label(componentId, getString("palette.available"));
+            }
 
-			@Override
-			protected Component newSelectedHeader(String componentId) {
-				return new Label(componentId, getString("palette.selected"));
-			}
-		};
-		return palette;
+            @Override
+            protected Component newSelectedHeader(String componentId) {
+                return new Label(componentId, getString("palette.selected"));
+            }
+        };
 	}
 
 	private AjaxLink<Void> createCancelButton() {
@@ -141,9 +149,7 @@ public abstract class RoleEditPanel extends Panel {
 	}
 
 	private FormComponent<String> createRoleDescriptionField() {
-		FormComponent<String> fc = new RequiredTextField<String>("description");
-		fc.setEnabled(isRoleEditable);
-		return fc;
+		return new RequiredTextField<String>("description");
 	}
 
 	private FeedbackPanel createFeedbackPanel() {

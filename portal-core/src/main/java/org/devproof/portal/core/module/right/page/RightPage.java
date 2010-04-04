@@ -54,11 +54,9 @@ public class RightPage extends TemplatePage {
 	private WebMarkupContainer refreshTable;
 	private BubblePanel bubblePanel;
 	private IModel<RightQuery> queryModel;
-	private PageParameters params;
 
 	public RightPage(PageParameters params) {
 		super(params);
-		this.params = params;
 		this.queryModel = rightDataProvider.getSearchQueryModel();
 		add(createRightRefreshTableContainer());
 		add(createBubblePanel());
@@ -87,7 +85,7 @@ public class RightPage extends TemplatePage {
 	}
 
 	private RightDataView createRightDataView() {
-		return new RightDataView("tableRow", rightDataProvider, params);
+		return new RightDataView("tableRow", rightDataProvider);
 	}
 
 	private OrderByBorder createRightDescriptionTableOrder() {
@@ -149,7 +147,7 @@ public class RightPage extends TemplatePage {
 	private class RightDataView extends DataView<RightEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public RightDataView(String id, IDataProvider<RightEntity> dataProvider, PageParameters params) {
+		public RightDataView(String id, IDataProvider<RightEntity> dataProvider) {
 			super(id, dataProvider);
 		}
 
@@ -169,15 +167,15 @@ public class RightPage extends TemplatePage {
 			return new Label("right", item.getModelObject().getRight());
 		}
 
-		private AuthorPanel<RightEntity> createAuthorPanel(Item<RightEntity> item) {
-			final RightEntity right = item.getModelObject();
-			return new AuthorPanel<RightEntity>("authorButtons", right) {
+		private AuthorPanel<RightEntity> createAuthorPanel(final Item<RightEntity> item) {
+			return new AuthorPanel<RightEntity>("authorButtons", item.getModel()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
 					try {
-						rightService.delete(right);
+                        RightEntity right = item.getModelObject();
+                        rightService.delete(right);
 						rightService.refreshGlobalApplicationRights();
 						target.addComponent(refreshTable);
 						target.addComponent(getFeedback());
@@ -189,6 +187,7 @@ public class RightPage extends TemplatePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
+                    RightEntity right = item.getModelObject();
 					bubblePanel.setContent(createRightEditPanel(right));
 					bubblePanel.showModal(target);
 				}

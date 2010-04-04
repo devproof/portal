@@ -67,11 +67,9 @@ public class RolePage extends TemplatePage {
 	private IModel<RoleQuery> queryModel;
 	private WebMarkupContainer refreshTable;
 	private BubblePanel bubblePanel;
-	private PageParameters params;
 
 	public RolePage(PageParameters params) {
 		super(params);
-		this.params = params;
 		this.queryModel = roleDataProvider.getSearchQueryModel();
 		add(createRoleTableRefreshContainer());
 		add(createBubblePanel());
@@ -97,7 +95,7 @@ public class RolePage extends TemplatePage {
 	}
 
 	private RoleDataView createRoleDataView() {
-		return new RoleDataView("tableRow", roleDataProvider, params);
+		return new RoleDataView("tableRow", roleDataProvider);
 	}
 
 	private BubblePanel createBubblePanel() {
@@ -138,7 +136,7 @@ public class RolePage extends TemplatePage {
 
 			private RoleEditPanel createRoleEditPanel() {
 				IModel<RoleEntity> roleModel = Model.of(roleService.newRoleEntity());
-				return new RoleEditPanel(bubblePanel.getContentId(), roleModel, true) {
+				return new RoleEditPanel(bubblePanel.getContentId(), roleModel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -162,7 +160,7 @@ public class RolePage extends TemplatePage {
 	private class RoleDataView extends DataView<RoleEntity> {
 		private static final long serialVersionUID = 1L;
 
-		public RoleDataView(String id, IDataProvider<RoleEntity> dataProvider, PageParameters params) {
+		public RoleDataView(String id, IDataProvider<RoleEntity> dataProvider) {
 			super(id, dataProvider);
 		}
 
@@ -205,17 +203,18 @@ public class RolePage extends TemplatePage {
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					RoleEntity role = item.getModelObject();
-					String validationMessage = validateRoleForDeletion(role);
+					IModel<RoleEntity> roleModel = item.getModel();
+					String validationMessage = validateRoleForDeletion(roleModel);
 					if (validationMessage != null) {
 						bubblePanel.showMessage(getMarkupId(), target, validationMessage);
 					} else {
-						bubblePanel.setContent(createConfirmDeletePanel(role));
+						bubblePanel.setContent(createConfirmDeletePanel(roleModel));
 						bubblePanel.showModal(target);
 					}
 				}
 
-				private String validateRoleForDeletion(RoleEntity role) {
+				private String validateRoleForDeletion(IModel<RoleEntity> roleModel) {
+                    RoleEntity role = roleModel.getObject();
 					long numberOfUserInRole = userService.countUserForRole(role);
 					String msg = null;
 					if (isGuestRole(role)) {
@@ -242,13 +241,14 @@ public class RolePage extends TemplatePage {
 					return new StringResourceModel(key, this, null, new Object[] { numUser }).getString();
 				}
 
-				private ConfirmDeletePanel<RoleEntity> createConfirmDeletePanel(final RoleEntity role) {
-					return new ConfirmDeletePanel<RoleEntity>(bubblePanel.getContentId(), role, bubblePanel) {
+				private ConfirmDeletePanel<RoleEntity> createConfirmDeletePanel(final IModel<RoleEntity> roleModel) {
+					return new ConfirmDeletePanel<RoleEntity>(bubblePanel.getContentId(), roleModel, bubblePanel) {
 						private static final long serialVersionUID = 1L;
 
 						@Override
 						public void onDelete(AjaxRequestTarget target, Form<?> form) {
-							roleService.delete(role);
+                            RoleEntity role = roleModel.getObject();
+                            roleService.delete(role);
 							rightService.refreshGlobalApplicationRights();
 							bubblePanel.hide(target);
 							info(getString("msg.deleted"));
@@ -271,43 +271,36 @@ public class RolePage extends TemplatePage {
 			return new Image("editImage", CommonConstants.REF_EDIT_IMG);
 		}
 
-		private AjaxLink<RoleEntity> newRoleEditLink(Item<RoleEntity> item) {
-			final RoleEntity role = item.getModelObject();
+		private AjaxLink<RoleEntity> newRoleEditLink(final Item<RoleEntity> item) {
 			return new AjaxLink<RoleEntity>("editLink", item.getModel()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					bubblePanel.setContent(createRoleEditPanel(role));
+					bubblePanel.setContent(createRoleEditPanel(item.getModel()));
 					bubblePanel.showModal(target);
 				}
 
-				private RoleEditPanel createRoleEditPanel(final RoleEntity role) {
-					RoleEntity refreshedRole = roleService.findById(role.getId());
-					return newRoleEditPanel(refreshedRole);
-				}
+				private RoleEditPanel createRoleEditPanel(IModel<RoleEntity> roleModel) {
+                    return new RoleEditPanel(bubblePanel.getContentId(), roleModel) {
+                        private static final long serialVersionUID = 6979098758367103659L;
 
-				private RoleEditPanel newRoleEditPanel(RoleEntity refreshedRole) {
-					IModel<RoleEntity> roleModel = Model.of(refreshedRole);
-					return new RoleEditPanel(bubblePanel.getContentId(), roleModel, false) {
-						private static final long serialVersionUID = 1L;
+                        @Override
+                        public void onSave(AjaxRequestTarget target) {
+                            rightService.refreshGlobalApplicationRights();
+                            bubblePanel.hide(target);
+                            info(getString("msg.saved"));
+                            target.addComponent(refreshTable);
+                            target.addComponent(getFeedback());
+                        }
 
-						@Override
-						public void onSave(AjaxRequestTarget target) {
-							rightService.refreshGlobalApplicationRights();
-							bubblePanel.hide(target);
-							info(getString("msg.saved"));
-							target.addComponent(refreshTable);
-							target.addComponent(getFeedback());
-						}
-
-						@Override
-						public void onCancel(AjaxRequestTarget target) {
-							bubblePanel.hide(target);
-						}
-					};
-				}
-			};
+                        @Override
+                        public void onCancel(AjaxRequestTarget target) {
+                            bubblePanel.hide(target);
+                        }
+                    };
+                }
+            };
 		}
 
 		private AttributeModifier createAlternatingModifier(final Item<RoleEntity> item) {
