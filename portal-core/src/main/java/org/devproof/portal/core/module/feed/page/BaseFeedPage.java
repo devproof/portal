@@ -42,18 +42,19 @@ public abstract class BaseFeedPage extends WebPage {
 	@SpringBean(name = "roleService")
 	private RoleService roleService;
 	private PageParameters params;
-	private String path = "";
+	private String path;
 
 	public BaseFeedPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setPath();
+		this.path = getFeedPath();
 	}
 
-	private void setPath() {
+	private String getFeedPath() {
 		if (params.size() > 0) {
-			path = params.getString("0");
+			return params.getString("0");
 		}
+        return "";
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public abstract class BaseFeedPage extends WebPage {
 
 	private SyndFeed createAppropriateFeedProvider() {
 		FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
-		SyndFeed feed = null;
+		final SyndFeed feed;
 		if (feedProvider != null) {
 			// TODO remove role aus signature
 			RoleEntity guestRole = roleService.findGuestRole();

@@ -23,10 +23,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDat
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
@@ -43,7 +40,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 	@SpringBean(name = "emailTemplateDataProvider")
 	private ISortableDataProvider<EmailTemplateEntity> emailTemplateDataProvider;
 
-	public EmailTemplatePage(final PageParameters params) {
+	public EmailTemplatePage(PageParameters params) {
 		super(params);
 		add(createSubjectTableOrder());
 		add(createModifiedTableOrder());
@@ -71,7 +68,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 		@Override
 		protected void populateItem(Item<EmailTemplateEntity> item) {
-			item.add(createSubjectLabel(item));
+            item.add(createSubjectLabel(item));
 			item.add(createModifiedByLabel(item));
 			item.add(createAuthorPanel(item));
 			item.add(createAlternatingCssClassModifier(item));
@@ -79,11 +76,13 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 		}
 
 		private Label createModifiedByLabel(Item<EmailTemplateEntity> item) {
-			return new Label("modifiedBy", item.getModelObject().getModifiedBy());
+            IModel<String> modifiedByModel = new PropertyModel<String>(item.getModel(), "modifiedBy");
+            return new Label("modifiedBy", modifiedByModel);
 		}
 
 		private Label createSubjectLabel(Item<EmailTemplateEntity> item) {
-			return new Label("subject", item.getModelObject().getSubject());
+            IModel<String> subjectModel = new PropertyModel<String>(item.getModel(), "subject");
+            return new Label("subject", subjectModel);
 		}
 
 		private AttributeModifier createAlternatingCssClassModifier(Item<EmailTemplateEntity> item) {

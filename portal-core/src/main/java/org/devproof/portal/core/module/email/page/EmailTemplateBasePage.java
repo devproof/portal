@@ -45,20 +45,19 @@ public class EmailTemplateBasePage extends TemplatePage {
 	}
 
 	private Label createCreateEmailTemplateLinkLabel() {
-		return new Label("linkName", getString("createLink"));
+		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
 	}
 
 	private Link<EmailTemplateEntity> newCreateEmailTemplateLink() {
-		Link<EmailTemplateEntity> adminLink = new Link<EmailTemplateEntity>("adminLink") {
-			private static final long serialVersionUID = 1L;
+        return new Link<EmailTemplateEntity>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick() {
-				EmailTemplateEntity newEmailTemplate = emailService.newEmailTemplateEntity();
-				IModel<EmailTemplateEntity> emailTemplateModel = Model.of(newEmailTemplate);
-				setResponsePage(new EmailTemplateEditPage(emailTemplateModel));
-			}
-		};
-		return adminLink;
+            @Override
+            public void onClick() {
+                EmailTemplateEntity newEmailTemplate = emailService.newEmailTemplateEntity();
+                IModel<EmailTemplateEntity> emailTemplateModel = Model.of(newEmailTemplate);
+                setResponsePage(new EmailTemplateEditPage(emailTemplateModel));
+            }
+        };
 	}
 }

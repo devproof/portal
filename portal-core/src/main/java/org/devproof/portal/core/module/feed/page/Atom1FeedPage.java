@@ -23,8 +23,9 @@ import org.apache.wicket.PageParameters;
  * @author Carsten Hufe
  */
 public class Atom1FeedPage extends BaseFeedPage {
+    private static final long serialVersionUID = -5992008202571741459L;
 
-	public Atom1FeedPage(PageParameters params) {
+    public Atom1FeedPage(PageParameters params) {
 		super(params);
 	}
 

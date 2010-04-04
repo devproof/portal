@@ -86,11 +86,6 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public ArticleEntity findByIdAndPrefetch(Integer id) {
-		return articleDao.findByIdAndPrefetch(id);
-	}
-
-	@Override
 	public ArticleEntity findByContentId(String contentId) {
 		return articleDao.findByContentId(contentId);
 	}

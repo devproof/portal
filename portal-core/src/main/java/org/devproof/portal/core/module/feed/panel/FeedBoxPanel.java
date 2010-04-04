@@ -42,14 +42,18 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 	public FeedBoxPanel(String id, Class<? extends Page> page) {
 		super(id);
 		this.page = page;
-		setVisibility();
-		setLinkParameter();
+        this.linkParameter = createLinkParameter();
 		add(createTitleContainer());
 		add(createAtom1Link());
 		add(createRss2Link());
 	}
 
-	private BookmarkablePageLink<Rss2FeedPage> createRss2Link() {
+    @Override
+    public boolean isVisible() {
+        return feedProviderRegistry.hasFeedSupport(page);
+    }
+
+    private BookmarkablePageLink<Rss2FeedPage> createRss2Link() {
 		BookmarkablePageLink<Rss2FeedPage> rss2FeedLink = new BookmarkablePageLink<Rss2FeedPage>("rssLink",
 				Rss2FeedPage.class, linkParameter);
 		rss2FeedLink.add(createRss2LinkImage());
@@ -71,18 +75,14 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
 		return new Image("atomImage", FeedConstants.REF_ATOM1);
 	}
 
-	private void setLinkParameter() {
+	private PageParameters createLinkParameter() {
 		String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
-		linkParameter = new PageParameters("0=" + pathByPageClass);
+		return new PageParameters("0=" + pathByPageClass);
 	}
 
 	private WebMarkupContainer createTitleContainer() {
 		titleContainer = new WebMarkupContainer("title");
 		return titleContainer;
-	}
-
-	private void setVisibility() {
-		setVisible(feedProviderRegistry.hasFeedSupport(page));
 	}
 
 	@Override

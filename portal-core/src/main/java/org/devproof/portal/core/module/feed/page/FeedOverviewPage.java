@@ -15,57 +15,68 @@
  */
 package org.devproof.portal.core.module.feed.page;
 
-import java.util.Map;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Carsten Hufe
  */
 public class FeedOverviewPage extends TemplatePage {
-	@SpringBean(name = "feedProviderRegistry")
+    private static final long serialVersionUID = 3957452424603515088L;
+    @SpringBean(name = "feedProviderRegistry")
 	private FeedProviderRegistry feedProviderRegistry;
-	private Map<String, FeedProvider> allFeedProvider;
+    private Map<String, FeedProvider> allFeedProvider;
 
-	public FeedOverviewPage(PageParameters params) {
+    public FeedOverviewPage(PageParameters params) {
 		super(params);
-		setAllFeedProvider();
+		allFeedProvider = feedProviderRegistry.getAllFeedProvider();
 		add(createFeedOverviewTable());
 	}
 
-	private void setAllFeedProvider() {
-		allFeedProvider = feedProviderRegistry.getAllFeedProvider();
+	private ListView<String> createFeedOverviewTable() {
+        IModel<List<String>> pathModel = createPathModel();
+        return new ListView<String>("tableRow", pathModel) {
+            private static final long serialVersionUID = 6289409135117578201L;
+            @Override
+            protected void populateItem(ListItem<String> item) {
+                String path = item.getModelObject();                
+                FeedProvider provider = allFeedProvider.get(path);
+                item.add(createFeedNameLabel(provider));
+                item.add(createPathLabel(path));
+                item.add(createSupportedPagesLabel(provider));
+                item.add(createAtom1Link(path));
+                item.add(createRss2Link(path));
+            }
+        };
 	}
 
-	private RepeatingView createFeedOverviewTable() {
-		RepeatingView feedsTable = new RepeatingView("tableRow");
-		for (String path : allFeedProvider.keySet()) {
-			feedsTable.add(createFeedRow(feedsTable.newChildId(), path));
-		}
-		return feedsTable;
-	}
+    private IModel<List<String>> createPathModel() {
+        return new LoadableDetachableModel<List<String>>() {
+            private static final long serialVersionUID = -2147576128407507758L;
+            @Override
+            protected List<String> load() {
+                return new ArrayList<String>(allFeedProvider.keySet());
+            }
+        };
+    }
 
-	private WebMarkupContainer createFeedRow(String id, String path) {
-		FeedProvider provider = allFeedProvider.get(path);
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createFeedNameLabel(provider));
-		row.add(createPathLabel(path));
-		row.add(createSupportedPagesLabel(provider));
-		row.add(createAtom1Link(path));
-		row.add(createRss2Link(path));
-		return row;
-	}
 
-	private BookmarkablePageLink<Rss2FeedPage> createRss2Link(String path) {
+    private BookmarkablePageLink<Rss2FeedPage> createRss2Link(String path) {
 		return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0=" + path));
 	}
 
@@ -85,7 +96,8 @@ public class FeedOverviewPage extends TemplatePage {
 	}
 
 	private Label createFeedNameLabel(FeedProvider provider) {
-		return new Label("feedName", provider.getFeedName());
+        IModel<String> feedNameModel = new PropertyModel<String>(provider, "feedName");
+        return new Label("feedName", feedNameModel);
 	}
 
 	private String getSupportedPagesString(FeedProvider provider) {
