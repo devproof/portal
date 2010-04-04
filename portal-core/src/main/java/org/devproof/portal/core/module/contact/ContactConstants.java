@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.contact;
 
 import org.apache.wicket.ResourceReference;
+import org.devproof.portal.core.module.contact.page.ContactPage;
 
 /**
  * @author Carsten Hufe
@@ -25,4 +26,5 @@ public interface ContactConstants {
 	String CONF_CONTACTFORM_EMAIL = "spring.emailTemplateDao.findAll.subject.id.contactformemail";
 	ResourceReference REF_CONTACT_CSS = new ResourceReference(ContactConstants.class,
 			"css/contact.css");
+    String CONTACT_RIGHT = "page." + ContactPage.class.getSimpleName();
 }

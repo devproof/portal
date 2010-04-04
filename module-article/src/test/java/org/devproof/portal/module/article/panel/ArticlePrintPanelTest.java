@@ -20,6 +20,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.article.entity.ArticleEntity;
@@ -60,7 +61,7 @@ public class ArticlePrintPanelTest extends TestCase {
 				article.setModifiedAt(new Date());
 				article.setCreatedBy("foo");
 				article.setModifiedBy("foo");
-				return new ArticlePrintPanel(panelId, article);
+				return new ArticlePrintPanel(panelId, Model.of(article));
 			}
 		};
 	}

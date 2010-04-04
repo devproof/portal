@@ -20,6 +20,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
@@ -58,7 +59,7 @@ public class MetaInfoPanelTest extends TestCase {
 				entity.setModifiedAt(new Date());
 				entity.setCreatedBy("foo");
 				entity.setModifiedBy("bar");
-				return new MetaInfoPanel(panelId, entity);
+				return new MetaInfoPanel<TestEntity>(panelId, Model.of(entity));
 			}
 		};
 	}

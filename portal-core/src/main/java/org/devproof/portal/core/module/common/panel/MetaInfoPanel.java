@@ -19,9 +19,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
@@ -35,7 +39,7 @@ import org.devproof.portal.core.module.user.service.UserService;
  * 
  * @author Carsten Hufe
  */
-public class MetaInfoPanel extends Panel {
+public class MetaInfoPanel<T extends BaseEntity> extends Panel {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "displayDateFormat")
 	private SimpleDateFormat dateFormat;
@@ -44,115 +48,133 @@ public class MetaInfoPanel extends Panel {
 	@SpringBean(name = "userService")
 	private UserService userService;
 
-	private BaseEntity entity;
-	private String createdByName;
-	private boolean existsCreatedByUser;
-	private String modifiedByName;
-	private boolean existsModifiedByUser;
-	private boolean showModifiedBy;
-	private boolean showModifiedAtAsCreatedAt;
-	private boolean showRealAuthor;
-	private boolean equalCreationModificationTime;
-	private boolean sameAuthor;
+    private IModel<T> entityModel;
 
-	public MetaInfoPanel(String id, BaseEntity entity) {
-		super(id);
-		this.entity = entity;
-		setShowModifiedByAsCreatedBy();
-		setShowRealAuthorName();
-		setShowModifiedBy();
-		setSameAuthor();
-		setCreatedByUser();
-		setModifiedByUser();
-		setEqualCreationModificationTime();
+    public MetaInfoPanel(String id, IModel<T> entityModel) {
+		super(id, entityModel);
+        this.entityModel = entityModel;
 		add(createCreatedContainer());
 		add(createModifiedContainer());
 		add(createSameModifierCreatorContainer());
 	}
 
-	private void setShowModifiedByAsCreatedBy() {
-		showModifiedAtAsCreatedAt = configurationService
-				.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_AT_AS_CREATED_AT);
-	}
-
-	private WebMarkupContainer createSameModifierCreatorContainer() {
-		WebMarkupContainer sameModified = new WebMarkupContainer("sameModified");
-		sameModified.add(createModifiedAtLabel());
-		sameModified.setVisible(showModifiedBy && sameAuthor && !equalCreationModificationTime
-				&& !showModifiedAtAsCreatedAt);
+    private WebMarkupContainer createSameModifierCreatorContainer() {
+        WebMarkupContainer sameModified = newSameModifierCreatorContainer();
+        sameModified.add(createModifiedAtLabel());
 		return sameModified;
 	}
 
-	private void setSameAuthor() {
-		sameAuthor = entity.getCreatedBy().equals(entity.getModifiedBy());
+    private WebMarkupContainer newSameModifierCreatorContainer() {
+        return new WebMarkupContainer("sameModified") {
+            private static final long serialVersionUID = 5672313742753946319L;
+            @Override
+            public boolean isVisible() {
+                return showModifiedBy() && isSameAuthor() && !isEqualCreationModificationTime()
+                            && !showModifiedAtAsCreatedAt();
+            }
+        };
+    }
+
+    private boolean isSameAuthor() {
+        BaseEntity entity = entityModel.getObject();
+        return entity.getCreatedBy().equals(entity.getModifiedBy());
 	}
 
-	private void setEqualCreationModificationTime() {
-		equalCreationModificationTime = entity.getCreatedAt().equals(entity.getModifiedAt());
+    private boolean isEqualCreationModificationTime() {
+        BaseEntity entity = entityModel.getObject();
+		return entity.getCreatedAt().equals(entity.getModifiedAt());
 	}
 
-	private void setShowModifiedBy() {
-		showModifiedBy = configurationService.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_BY);
+    private Label createModifiedAtLabel() {
+        IModel<String> modifiedAtModel = createModifiedAtModel();
+        return new Label("modifiedAt", modifiedAtModel);
 	}
 
-	private Label createModifiedAtLabel() {
-		return new Label("modifiedAt", dateFormat.format(entity.getModifiedAt()));
-	}
 
-	private WebMarkupContainer createModifiedContainer() {
-		WebMarkupContainer modified = new WebMarkupContainer("modified");
-		modified.add(createModifiedAtLabel());
+    private IModel<String> createModifiedAtModel() {
+        return new LoadableDetachableModel<String>() {
+            private static final long serialVersionUID = -1304908710263470243L;
+
+            @Override
+            protected String load() {
+                BaseEntity entity = entityModel.getObject();
+		        return dateFormat.format(entity.getModifiedAt());
+            }
+        };
+    }
+
+    private WebMarkupContainer createModifiedContainer() {
+        WebMarkupContainer modified = newModifiedContainer();
+        modified.add(createModifiedAtLabel());
 		modified.add(createModifiedUsernamePanel());
-		modified.setVisible(showModifiedBy && !sameAuthor && !equalCreationModificationTime
-				&& !showModifiedAtAsCreatedAt);
 		return modified;
 	}
 
-	private UsernamePanel createModifiedUsernamePanel() {
-		return new UsernamePanel("modifiedBy", entity.getModifiedBy(), modifiedByName, existsModifiedByUser);
+    private WebMarkupContainer newModifiedContainer() {
+        return new WebMarkupContainer("modified") {
+            @Override
+            public boolean isVisible() {
+                return showModifiedBy() && !isSameAuthor() && !isEqualCreationModificationTime()
+                                && !showModifiedAtAsCreatedAt();
+            }
+        };
+    }
+
+    private UsernamePanel createModifiedUsernamePanel() {
+        IModel<String> modifiedByModel = new PropertyModel<String>(entityModel, "modifiedBy");
+		return new UsernamePanel("modifiedBy", modifiedByModel) {
+            @Override
+            protected boolean showRealName() {
+                return showRealAuthor();
+            }
+        };
 	}
 
-	private WebMarkupContainer createCreatedContainer() {
+    private WebMarkupContainer createCreatedContainer() {
 		WebMarkupContainer created = new WebMarkupContainer("created");
 		created.add(createCreatedAtLabel());
 		created.add(createCreatedUsernamePanel());
 		return created;
 	}
 
-	private UsernamePanel createCreatedUsernamePanel() {
-		return new UsernamePanel("createdBy", entity.getCreatedBy(), createdByName, existsCreatedByUser);
+    private UsernamePanel createCreatedUsernamePanel() {
+        IModel<String> createdByModel = new PropertyModel<String>(entityModel, "createdBy");
+        return new UsernamePanel("createdBy", createdByModel) {
+            private static final long serialVersionUID = 7238227449225588141L;
+            @Override
+            protected boolean showRealName() {
+                return showRealAuthor();
+            }
+        };
 	}
 
-	private Label createCreatedAtLabel() {
-		Date created = showModifiedAtAsCreatedAt ? entity.getModifiedAt() : entity.getCreatedAt();
-		return new Label("createdAt", dateFormat.format(created));
+    private Label createCreatedAtLabel() {
+		return new Label("createdAt", createCreatedAtModel());
 	}
 
-	private void setModifiedByUser() {
-		modifiedByName = entity.getModifiedBy();
-		UserEntity user = userService.findUserByUsername(modifiedByName);
-		existsModifiedByUser = user != null;
-		if (showModifiedBy && showRealAuthor) {
-			if (user != null && StringUtils.isNotBlank(user.getFirstname())
-					&& StringUtils.isNotBlank(user.getLastname())) {
-				modifiedByName = user.getFirstname() + " " + user.getLastname();
-			}
-		}
-	}
+    private IModel<String> createCreatedAtModel() {
+        return new LoadableDetachableModel<String>() {
+            private static final long serialVersionUID = -1304908710263470243L;
 
-	private void setShowRealAuthorName() {
-		showRealAuthor = configurationService.findAsBoolean(CommonConstants.CONF_SHOW_REAL_AUTHOR);
-	}
+            @Override
+            protected String load() {
+                BaseEntity entity = entityModel.getObject();
+                Date created = showModifiedAtAsCreatedAt() ? entity.getModifiedAt() : entity.getCreatedAt();
+		        return dateFormat.format(created);
+            }
+        };
+    }
 
-	private void setCreatedByUser() {
-		createdByName = entity.getCreatedBy();
-		UserEntity user = userService.findUserByUsername(createdByName);
-		existsCreatedByUser = user != null;
-		if (showRealAuthor) {
-			if (user != null && StringUtils.isNotBlank(user.getFirstname())
-					&& StringUtils.isNotBlank(user.getLastname())) {
-				createdByName = user.getFirstname() + " " + user.getLastname();
-			}
-		}
-	}
+    private Boolean showModifiedBy() {
+        return configurationService.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_BY);
+    }
+
+    private Boolean showRealAuthor() {
+        return configurationService.findAsBoolean(CommonConstants.CONF_SHOW_REAL_AUTHOR);
+    }
+
+    private Boolean showModifiedAtAsCreatedAt() {
+        return configurationService
+                .findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_AT_AS_CREATED_AT);
+    }
 }

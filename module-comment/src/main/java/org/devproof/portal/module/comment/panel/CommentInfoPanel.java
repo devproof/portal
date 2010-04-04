@@ -21,6 +21,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
@@ -43,15 +46,9 @@ public class CommentInfoPanel extends Panel {
 
 	private CommentEntity comment;
 
-	private String createdByName;
-	private boolean existsCreatedByUser = false;
-	private boolean showRealAuthor;
-
 	public CommentInfoPanel(String id, CommentEntity comment) {
 		super(id);
 		this.comment = comment;
-		setShowRealAuthorName();
-		setCreatedByUser();
 		add(createCreatedContainer());
 	}
 
@@ -63,30 +60,33 @@ public class CommentInfoPanel extends Panel {
 	}
 
 	private UsernamePanel createCreatedUsernamePanel() {
-		return new UsernamePanel("createdBy", comment.getCreatedBy(), createdByName, existsCreatedByUser);
+		return new UsernamePanel("createdBy", createCreatedByUserModel()) {
+            private static final long serialVersionUID = -6323896736697531921L;
+            @Override
+            protected boolean showRealName() {
+                return showRealAuthorName();
+            }
+
+            @Override
+            protected boolean contactFormEnabled() {
+                return StringUtils.isBlank(comment.getGuestName());
+            }
+        };
 	}
 
 	private Label createCreatedAtLabel() {
 		return new Label("createdAt", dateFormat.format(comment.getCreatedAt()));
 	}
 
-	private void setShowRealAuthorName() {
-		showRealAuthor = configurationService.findAsBoolean(CommentConstants.CONF_SHOW_REAL_AUTHOR);
+	private boolean showRealAuthorName() {
+		return configurationService.findAsBoolean(CommentConstants.CONF_SHOW_REAL_AUTHOR);
 	}
 
-	private void setCreatedByUser() {
+	private IModel<String> createCreatedByUserModel() {
 		if (StringUtils.isBlank(comment.getGuestName())) {
-			createdByName = comment.getCreatedBy();
-			UserEntity user = userService.findUserByUsername(createdByName);
-			existsCreatedByUser = user != null;
-			if (showRealAuthor) {
-				if (user != null && StringUtils.isNotBlank(user.getFirstname())
-						&& StringUtils.isNotBlank(user.getLastname())) {
-					createdByName = user.getFirstname() + " " + user.getLastname();
-				}
-			}
+            return new PropertyModel<String>(comment, "createdBy");
 		} else {
-			createdByName = getString("guestPrefix") + comment.getGuestName();
+			return Model.of(getString("guestPrefix") + comment.getGuestName());
 		}
 	}
 }
