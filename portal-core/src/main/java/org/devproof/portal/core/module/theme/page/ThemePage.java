@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.theme.page;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -63,7 +64,8 @@ public class ThemePage extends TemplatePage {
     }
 
     private ListView<ThemeBean> createThemeRepeater() {
-        return new ListView<ThemeBean>("tableRow") {
+        IModel<List<ThemeBean>> themeBeansModel = createThemeBeansModel();
+        return new ListView<ThemeBean>("tableRow", themeBeansModel) {
             private static final long serialVersionUID = -3440575235335312961L;
 
             @Override
@@ -73,6 +75,17 @@ public class ThemePage extends TemplatePage {
                 item.add(createThemeAuthorHomepageLink(themeBeanModel));
                 item.add(createSelectionLink(themeBeanModel));
                 item.add(createUninstallLink(themeBeanModel));
+            }
+        };
+    }
+
+    private IModel<List<ThemeBean>> createThemeBeansModel() {
+        return new LoadableDetachableModel<List<ThemeBean>>() {
+            private static final long serialVersionUID = 8637325307470287580L;
+
+            @Override
+            protected List<ThemeBean> load() {
+                return themeService.findAllThemes();
             }
         };
     }
@@ -113,7 +126,7 @@ public class ThemePage extends TemplatePage {
             public boolean isEnabled() {
                 String selectedThemeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
                 ThemeBean theme = themeModel.getObject();
-                return selectedThemeUuid.equals(theme.getUuid());
+                return !selectedThemeUuid.equals(theme.getUuid());
             }
         };
     }
