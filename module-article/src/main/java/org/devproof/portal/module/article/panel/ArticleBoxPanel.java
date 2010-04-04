@@ -21,8 +21,15 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.repeater.data.DataView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
@@ -45,61 +52,60 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 	private WebMarkupContainer titleContainer;
-	private List<ArticleEntity> latestArticles;
-	
+	private IModel<List<ArticleEntity>> latestArticlesModel;
+
 	public ArticleBoxPanel(String id) {
 		super(id);
-		setLatestArticles();
-		setVisibility();
+        latestArticlesModel = createLatestArticlesModel();
 		add(createTitleContainer());
 		add(createRepeatingViewWithArticles());
 	}
 
-	private Component setVisibility() {
-		return setVisible(isArticleAvailable());
-	}
+    @Override
+    public boolean isVisible() {
+        List<ArticleEntity> articles = latestArticlesModel.getObject();
+        return articles.size() > 0;
+    }
 
-	private boolean isArticleAvailable() {
-		return latestArticles.size() > 0;
-	}
-
-	private List<ArticleEntity> setLatestArticles() {
-		latestArticles = getLatestArticles();
-		return latestArticles;
-	}
-
-	private WebMarkupContainer createTitleContainer() {
+    private WebMarkupContainer createTitleContainer() {
 		titleContainer = new WebMarkupContainer("title");
 		return titleContainer;
 	}
 
-	private List<ArticleEntity> getLatestArticles() {
-		Integer numberOfLatestArticles = configurationService
-				.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
-		PortalSession session = (PortalSession) getSession();
-		return articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(),
-				0, numberOfLatestArticles);
+	private IModel<List<ArticleEntity>> createLatestArticlesModel() {
+        return new LoadableDetachableModel<List<ArticleEntity>>() {
+            private static final long serialVersionUID = -8763260134372373780L;
+
+            @Override
+            protected List<ArticleEntity> load() {
+                Integer numberOfLatestArticles = configurationService
+                        .findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
+                PortalSession session = (PortalSession) getSession();
+                return articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(),
+                        0, numberOfLatestArticles);
+            }
+        };
 	}
 
-	private RepeatingView createRepeatingViewWithArticles() {
-		RepeatingView repeating = new RepeatingView("repeating");
-		for (ArticleEntity article : latestArticles) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			repeating.add(item);
-			item.add(createLinkToArticle(article));
-		}
-		return repeating;
+	private ListView<ArticleEntity> createRepeatingViewWithArticles() {
+        return new ListView<ArticleEntity>("repeating", latestArticlesModel) {
+            @Override
+            protected void populateItem(ListItem<ArticleEntity> item) {
+                item.add(createLinkToArticle(item.getModel()));
+            }
+        };
 	}
 
-	private BookmarkablePageLink<ArticlePage> createLinkToArticle(ArticleEntity article) {
-		BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
-		link.setParameter("id", article.getId());
-		link.add(createLinkToArticleLabel(article));
+	private BookmarkablePageLink<ArticlePage> createLinkToArticle(IModel<ArticleEntity> articleModel) {
+        ArticleEntity article = articleModel.getObject();
+        BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
+        link.setParameter("id", article.getId());
+		link.add(createLinkToArticleLabel(articleModel));
 		return link;
 	}
 
-	private Label createLinkToArticleLabel(ArticleEntity article) {
-		return new Label("linkName", article.getTitle());
+	private Label createLinkToArticleLabel(IModel<ArticleEntity> articleModel) {
+		return new Label("linkName", new PropertyModel<String>(articleModel, "title"));
 	}
 
 	@Override
