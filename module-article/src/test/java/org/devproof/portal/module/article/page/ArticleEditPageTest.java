@@ -65,10 +65,9 @@ public class ArticleEditPageTest extends TestCase {
 		tester.startPage(ArticlePage.class);
 		tester.assertRenderedPage(ArticlePage.class);
 		tester.assertContains("This is a sample article and this is the teaser");
-		PortalTestUtil.callOnBeginRequest();
-		tester.clickLink("listArticle:1:articleView:authorButtons:editLink");
-		tester.assertRenderedPage(ArticleEditPage.class);
-	}
+        tester.clickLink("listArticle:1:articleView:authorButtons:editLink");
+        tester.assertRenderedPage(ArticleEditPage.class);
+    }
 
 	private void callArticleEditPage() {
 		tester.startPage(getNewArticleEditPage());
@@ -97,6 +96,7 @@ public class ArticleEditPageTest extends TestCase {
 	}
 
 	private void submitArticleForm() {
+        PortalTestUtil.callOnBeginRequest();
 		FormTester form = tester.newFormTester("form");
 		form.setValue("tags", "these are tags");
 		form.setValue("title", "testing title");
