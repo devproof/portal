@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.page;
 
+import com.sun.syndication.feed.atom.Entry;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -25,10 +26,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -45,12 +43,16 @@ import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.panel.ArticleSearchBoxPanel;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Carsten Hufe
@@ -96,30 +98,31 @@ public class ArticlePage extends ArticleBasePage {
 		return new BookmarkablePagingPanel("paging", dataView, searchQueryModel, ArticlePage.class);
 	}
 
-	private class ArticleDataView extends AutoPagingDataView<ArticleEntity> {
+    @Override
+    public String getPageTitle() {
+        // TODO funktionalitaet testen
+        if(articleDataProvider.size() == 1) {
+            Iterator<? extends ArticleEntity> it = articleDataProvider.iterator(0, 1);
+            ArticleEntity article = it.next();
+            return article.getTitle();
+        }
+        return "";
+    }
+
+    private class ArticleDataView extends AutoPagingDataView<ArticleEntity> {
 		private static final long serialVersionUID = 1L;
-		private boolean onlyOneArticleInResult;
 
 		public ArticleDataView(String id) {
 			super(id, articleDataProvider);
-			onlyOneArticleInResult = articleDataProvider.size() == 1;
 			setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
 			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override
 		protected void populateItem(Item<ArticleEntity> item) {
-			setArticleTitleAsPageTitle(item);
-			item.setOutputMarkupId(true);
 			item.add(createArticleView(item));
-		}
-
-		private void setArticleTitleAsPageTitle(Item<ArticleEntity> item) {
-			if (onlyOneArticleInResult) {
-				ArticleEntity article = item.getModelObject();
-				setPageTitle(article.getTitle());
-			}
-		}
+            item.setOutputMarkupId(true);
+        }
 
 		private ArticleView createArticleView(Item<ArticleEntity> item) {
 			return new ArticleView("articleView", item);
@@ -132,13 +135,13 @@ public class ArticlePage extends ArticleBasePage {
 	private class ArticleView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
-		private ArticleEntity article;
+		private IModel<ArticleEntity> articleModel;
 		private boolean allowedToRead = false;
 
 		public ArticleView(String id, Item<ArticleEntity> item) {
 			super(id, "articleView", ArticlePage.this);
-			article = item.getModelObject();
-			allowedToRead = isAllowedToRead(article);
+			articleModel = item.getModel();
+			allowedToRead = isAllowedToRead(articleModel);
 			add(createAppropriateAuthorPanel(item));
 			add(createTitleLink());
 			add(createMetaInfoPanel());
@@ -150,8 +153,9 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private Component createCommentPanel() {
-			DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-			conf.setModuleContentId(article.getId().toString());
+            ArticleEntity article = articleModel.getObject();
+            DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+            conf.setModuleContentId(article.getId().toString());
 			conf.setModuleName(ArticlePage.class.getSimpleName());
 			conf.setViewRights(article.getCommentViewRights());
 			conf.setWriteRights(article.getCommentWriteRights());
@@ -159,7 +163,8 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private Component createPrintLink() {
-			BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
+            ArticleEntity article = articleModel.getObject();
+            BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
 					ArticlePrintPage.class, new PageParameters("0=" + article.getContentId()));
 			link.add(createPrintImage());
 			link.setVisible(allowedToRead);
@@ -179,11 +184,12 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink() {
-			BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
+            ArticleEntity article = articleModel.getObject();
+            BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
 					"readMoreLink", ArticleReadPage.class);
-			readMoreLink.add(createReadMoreImage());
-			readMoreLink.add(createReadMoreLabel());
-			readMoreLink.setParameter("0", article.getContentId());
+            readMoreLink.add(createReadMoreImage());
+            readMoreLink.add(createReadMoreLabel());
+            readMoreLink.setParameter("0", article.getContentId());
 			readMoreLink.setEnabled(allowedToRead);
 			return readMoreLink;
 		}
@@ -193,54 +199,68 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private Label createReadMoreLabel() {
-			String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
-			return new Label("readMoreLabel", ArticlePage.this.getString(labelKey));
+            AbstractReadOnlyModel<Object> readMoreModel = createReadMoreModel();
+            return new Label("readMoreLabel", readMoreModel);
 		}
 
-		private ContentTagPanel<ArticleTagEntity> createTagPanel() {
-			// FIXME falsches model
-			return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(article.getTags()),
+        private AbstractReadOnlyModel<Object> createReadMoreModel() {
+            AbstractReadOnlyModel<Object> readMoreModel = new AbstractReadOnlyModel<Object>() {
+                @Override
+                public Object getObject() {
+                    String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
+                    return ArticlePage.this.getString(labelKey);
+                }
+            };
+            return readMoreModel;
+        }
+
+        private ContentTagPanel<ArticleTagEntity> createTagPanel() {
+            IModel<List<ArticleTagEntity>> tagModel = new PropertyModel<List<ArticleTagEntity>>(articleModel, "tags");
+            return new ContentTagPanel<ArticleTagEntity>("tags", tagModel, 
 					ArticlePage.class);
 		}
 
 		private ExtendedLabel createTeaserLabel() {
-            PropertyModel<String> teaserModel = new PropertyModel<String>(article, "teaser");
+            IModel<String> teaserModel = new PropertyModel<String>(articleModel, "teaser");
             return new ExtendedLabel("teaser", teaserModel);
 		}
 
 		private MetaInfoPanel createMetaInfoPanel() {
-			return new MetaInfoPanel<ArticleEntity>("metaInfo", Model.of(article));
+			return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
 		}
 
 		private WebMarkupContainer createEmptyAuthorPanel() {
 			return new WebMarkupContainer("authorButtons");
 		}
 
-		private boolean isAllowedToRead(ArticleEntity articleEntity) {
+		private boolean isAllowedToRead(IModel<ArticleEntity> articleModel) {
+            ArticleEntity article = articleModel.getObject();
 			PortalSession session = (PortalSession) getSession();
-			return session.hasRight("article.read") || session.hasRight(articleEntity.getReadRights());
+			return session.hasRight("article.read") || session.hasRight(article.getReadRights());
 		}
 
 		private BookmarkablePageLink<ArticleReadPage> createTitleLink() {
-			BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>("titleLink",
+            ArticleEntity article = articleModel.getObject();
+            BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>("titleLink",
 					ArticleReadPage.class);
-			titleLink.setParameter("0", article.getContentId());
-			titleLink.setEnabled(allowedToRead);
-			titleLink.add(createTitleLabel());
+            titleLink.add(createTitleLabel());
+            titleLink.setParameter("0", article.getContentId());
+            titleLink.setEnabled(allowedToRead);
 			return titleLink;
 		}
 
 		private Label createTitleLabel() {
-			return new Label("titleLabel", article.getTitle());
+            IModel<String> titleModel = new PropertyModel<String>(articleModel, "title");
+            return new Label("titleLabel", titleModel);
 		}
 
 		private AuthorPanel<ArticleEntity> createAuthorPanel(final Item<ArticleEntity> item) {
-			return new AuthorPanel<ArticleEntity>("authorButtons", article) {
+			return new AuthorPanel<ArticleEntity>("authorButtons", articleModel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
-					articleService.delete(getEntity());
+					articleService.delete(getEntityModel().getObject());
 					item.setVisible(false);
 					target.addComponent(item);
 					target.addComponent(getFeedback());
@@ -259,7 +279,8 @@ public class ArticlePage extends ArticleBasePage {
 
 						@Override
 						protected ArticleEntity load() {
-							return articleService.findByIdAndPrefetch(article.getId());
+                            ArticleEntity article = articleModel.getObject();
+                            return articleService.findByIdAndPrefetch(article.getId());
 						}
 					};
 				}

@@ -23,6 +23,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.common.CommonConstants;
 
 /**
@@ -36,14 +37,14 @@ import org.devproof.portal.core.module.common.CommonConstants;
 public abstract class AuthorPanel<T> extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private T entity;
 	private Class<? extends Page> redirectPageClazz = null;
 	private PageParameters redirectParams = null;
 	private BubblePanel bubblePanel;
+    private IModel<T> entityModel;
 
-	public AuthorPanel(String id, T entity) {
+    public AuthorPanel(String id, IModel<T> entityModel) {
 		super(id);
-		this.entity = entity;
+        this.entityModel = entityModel;
 		add(createBubblePanel());
 		add(createEditLink());
 		add(createDeleteLink());
@@ -71,7 +72,7 @@ public abstract class AuthorPanel<T> extends Panel {
 			}
 
 			private ConfirmDeletePanel<T> createConfirmDeletePanel() {
-				return new ConfirmDeletePanel<T>(bubblePanel.getContentId(), entity, bubblePanel) {
+				return new ConfirmDeletePanel<T>(bubblePanel.getContentId(), entityModel, bubblePanel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -118,8 +119,8 @@ public abstract class AuthorPanel<T> extends Panel {
 		return bubblePanel;
 	}
 
-	public T getEntity() {
-		return this.entity;
+	public IModel<T> getEntityModel() {
+		return this.entityModel;
 	}
 
 	public AuthorPanel<T> setRedirectPage(Class<? extends Page> redirectPageClazz, PageParameters redirectParams) {

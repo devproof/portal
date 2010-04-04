@@ -18,6 +18,8 @@ package org.devproof.portal.module.article.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -33,20 +35,37 @@ import org.devproof.portal.module.article.service.ArticleService;
 public class ArticlePrintPage extends PrintPage {
 	@SpringBean(name = "articleService")
 	private ArticleService articleService;
+    private IModel<ArticleEntity> articleModel;
+    private PageParameters params;
 
-	public ArticlePrintPage(PageParameters params) {
+    public ArticlePrintPage(PageParameters params) {
 		super(params);
+        this.params = params;
+        articleModel = createArticleModel();
 	}
 
-	@Override
+    private LoadableDetachableModel<ArticleEntity> createArticleModel() {
+        return new LoadableDetachableModel<ArticleEntity>() {
+            @Override
+            protected ArticleEntity load() {
+                String contentId = getContentId();
+                return articleService.findByContentId(contentId);
+            }
+        };
+    }
+
+    @Override
 	protected Component createPrintableComponent(String id, PageParameters params) {
-		String contentId = getContentId(params);
-		ArticleEntity article = articleService.findByContentId(contentId);
-		validateAccessRights(article);
-		return new ArticlePrintPanel(id, Model.of(article));
+		return new ArticlePrintPanel(id, articleModel);
 	}
 
-	private String getContentId(PageParameters params) {
+    @Override
+    protected void onBeforeRender() {
+        validateAccessRights();
+        super.onBeforeRender();
+    }
+
+    private String getContentId() {
 		String contentId = params.getString("0");
 		if (contentId == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage
@@ -55,8 +74,9 @@ public class ArticlePrintPage extends PrintPage {
 		return contentId;
 	}
 
-	private void validateAccessRights(ArticleEntity article) {
-		if (article == null || !isAllowedToRead(article)) {
+	private void validateAccessRights() {
+        ArticleEntity article = articleModel.getObject();
+        if (article == null || !isAllowedToRead(article)) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
 		}
 	}
