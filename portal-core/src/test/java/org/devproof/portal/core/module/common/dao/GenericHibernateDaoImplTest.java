@@ -15,12 +15,7 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.easymock.EasyMock;
@@ -30,6 +25,11 @@ import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 /**
  * @author Carsten Hufe
  */
@@ -49,31 +49,31 @@ public class GenericHibernateDaoImplTest extends TestCase {
 		impl = new GenericHibernateDaoImpl<EmailTemplateEntity, Integer>(EmailTemplateEntity.class);
 		impl.setSessionFactory(sessionFactory);
 		impl.setUsernameResolver(usernameResolver);
-		EasyMock.expect(session.getSessionFactory()).andReturn(sessionFactory);
-		EasyMock.expect(sessionFactory.openSession()).andReturn(session);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(sessionFactory.openSession()).andReturn(session);
 		SessionHolder sessionHolder = new SessionHolder(session);
 		TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
-		EasyMock.expect(session.isOpen()).andReturn(false);
-		EasyMock.expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(session.isOpen()).andReturn(false);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
 	}
 
 	public void testFindById() {
 		EmailTemplateEntity expectedTemplates = newEmailTemplate();
-		EasyMock.expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
-		EasyMock.replay(sessionFactory, session);
+		expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
+		replay(sessionFactory, session);
 		EmailTemplateEntity newTemplate = impl.findById(1);
 		assertEquals(expectedTemplates, newTemplate);
-		EasyMock.verify(session, sessionFactory);
+		verify(session, sessionFactory);
 	}
 
 	public void testSave() {
 		EmailTemplateEntity template = newEmailTemplate();
-		EasyMock.expect(session.beginTransaction()).andReturn(null);
-		EasyMock.expect(session.merge(template)).andReturn(1);
-		EasyMock.expect(usernameResolver.getUsername()).andReturn("testuser");
-		EasyMock.replay(sessionFactory, session, query, usernameResolver);
+		expect(session.beginTransaction()).andReturn(null);
+		expect(session.merge(template)).andReturn(1);
+		expect(usernameResolver.getUsername()).andReturn("testuser");
+		replay(sessionFactory, session, query, usernameResolver);
 		impl.save(template);
-		EasyMock.verify(session, sessionFactory, query, usernameResolver);
+		verify(session, sessionFactory, query, usernameResolver);
 		assertNotNull(template.getCreatedAt());
 		assertEquals("testuser", template.getCreatedBy());
 		assertNotNull(template.getModifiedAt());
@@ -83,58 +83,58 @@ public class GenericHibernateDaoImplTest extends TestCase {
 	public void testRefresh() {
 		EmailTemplateEntity template = newEmailTemplate();
 		session.refresh(template);
-		EasyMock.replay(sessionFactory, session, query);
+		replay(sessionFactory, session, query);
 		impl.refresh(template);
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	public void testDelete() {
 		EmailTemplateEntity template = newEmailTemplate();
-		EasyMock.expect(session.beginTransaction()).andReturn(null);
+		expect(session.beginTransaction()).andReturn(null);
 		session.delete(template);
-		EasyMock.replay(sessionFactory, session, query);
+		replay(sessionFactory, session, query);
 		impl.delete(template);
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	public void testExecuteFinder_UniqueResult() throws Exception {
 		EmailTemplateEntity expectedTemplate = newEmailTemplate();
-		EasyMock.expect(session.createQuery("Select from FakeEntity where fakeKey = ?")).andReturn(query);
-		EasyMock.expect(query.setParameter(0, "fakeValue")).andReturn(query);
-		EasyMock.expect(query.setFirstResult(0)).andReturn(query);
-		EasyMock.expect(query.setMaxResults(10)).andReturn(query);
-		EasyMock.expect(query.uniqueResult()).andReturn(expectedTemplate);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(session.createQuery("Select from EmailTemplateEntity where id = ?")).andReturn(query);
+		expect(query.setParameter(0, "fakeValue")).andReturn(query);
+		expect(query.setFirstResult(0)).andReturn(query);
+		expect(query.setMaxResults(10)).andReturn(query);
+		expect(query.uniqueResult()).andReturn(expectedTemplate);
+		replay(sessionFactory, session, query);
 		Method method = this.getClass().getMethod("methodObject");
-		Object template = impl.executeFinder("Select from FakeEntity where fakeKey = ?", new Object[] { "fakeValue" },
+		Object template = impl.executeFinder("Select from EmailTemplateEntity where id = ?", new Object[] { "fakeValue" },
 				method, 0, 10);
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 		assertEquals(expectedTemplate, template);
 	}
 
 	public void testExecuteFinder_ResultList() throws Exception {
 		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
-		EasyMock.expect(session.createQuery("Select from EmailTemplateEntity where fakeKey = ?")).andReturn(query);
-		EasyMock.expect(query.setParameter(0, "fakeValue")).andReturn(query);
-		EasyMock.expect(query.setFirstResult(0)).andReturn(query);
-		EasyMock.expect(query.setMaxResults(10)).andReturn(query);
-		EasyMock.expect(query.list()).andReturn(expectedTemplates);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(session.createQuery("Select from EmailTemplateEntity where id = ?")).andReturn(query);
+		expect(query.setParameter(0, "fakeValue")).andReturn(query);
+		expect(query.setFirstResult(0)).andReturn(query);
+		expect(query.setMaxResults(10)).andReturn(query);
+		expect(query.list()).andReturn(expectedTemplates);
+		replay(sessionFactory, session, query);
 		Method method = this.getClass().getMethod("methodList");
 		List<?> templates = (List<?>) impl.executeFinder("Select from $TYPE where fakeKey = ?",
 				new Object[] { "fakeValue" }, method, 0, 10);
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 		assertEquals(expectedTemplates.get(0), templates.get(0));
 	}
 
 	public void testExecuteUpdate() {
-		EasyMock.expect(session.createQuery("update EmailTemplateEntity set someKey = 'someValue' where fakeKey = ?"))
+		expect(session.createQuery("update EmailTemplateEntity set id = 'someValue' where fakeKey = ?"))
 				.andReturn(query);
-		EasyMock.expect(query.setParameter(0, "fakeValue")).andReturn(query);
-		EasyMock.expect(query.executeUpdate()).andReturn(0);
-		EasyMock.replay(sessionFactory, session, query);
+		expect(query.setParameter(0, "fakeValue")).andReturn(query);
+		expect(query.executeUpdate()).andReturn(0);
+		replay(sessionFactory, session, query);
 		impl.executeUpdate("update $TYPE set someKey = 'someValue' where fakeKey = ?", new Object[] { "fakeValue" });
-		EasyMock.verify(session, sessionFactory, query);
+		verify(session, sessionFactory, query);
 	}
 
 	private EmailTemplateEntity newEmailTemplate() {
@@ -143,11 +143,4 @@ public class GenericHibernateDaoImplTest extends TestCase {
 		return expectedConfig;
 	}
 
-	public List<?> methodList() {
-		return null;
-	}
-
-	public EmailTemplateEntity methodObject() {
-		return null;
-	}
 }
