@@ -23,6 +23,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
@@ -80,7 +81,7 @@ public class LoginPage extends TemplatePage {
                         error(getString(message));
                     }
                 } catch (UserNotConfirmedException e) {
-                    setResponsePage(new ReenterEmailPage(username));
+                    setResponsePage(new ReenterEmailPage(Model.of(username)));
                 }
             }
 

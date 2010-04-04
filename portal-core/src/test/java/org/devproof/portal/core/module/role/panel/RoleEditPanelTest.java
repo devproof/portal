@@ -49,7 +49,7 @@ public class RoleEditPanelTest extends TestCase {
 		private static final long serialVersionUID = 1L;
 
 		public TestRoleEditPanel(String id) {
-			super(id, Model.of(new RoleEntity()), true);
+			super(id, Model.of(new RoleEntity()));
 		}
 
 		@Override

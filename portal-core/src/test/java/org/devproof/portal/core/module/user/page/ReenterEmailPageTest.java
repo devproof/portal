@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.user.page;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
 
@@ -37,7 +38,7 @@ public class ReenterEmailPageTest extends TestCase {
 	}
 
 	public void testRenderDefaultPage() {
-		tester.startPage(new ReenterEmailPage("testuser"));
+		tester.startPage(new ReenterEmailPage(Model.of("testuser")));
 		tester.assertRenderedPage(ReenterEmailPage.class);
 	}
 }
