@@ -69,7 +69,7 @@ public abstract class BlogBasePage extends TemplatePage {
 		};
 	}
 
-	private boolean isAuthor() {
+	protected boolean isAuthor() {
 		PortalSession session = (PortalSession) getSession();
 		return session.hasRight(BlogConstants.AUTHOR_RIGHT);
 	}

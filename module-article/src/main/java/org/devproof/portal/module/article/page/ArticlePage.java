@@ -100,7 +100,6 @@ public class ArticlePage extends ArticleBasePage {
 
     @Override
     public String getPageTitle() {
-        // TODO funktionalitaet testen
         if(articleDataProvider.size() == 1) {
             Iterator<? extends ArticleEntity> it = articleDataProvider.iterator(0, 1);
             ArticleEntity article = it.next();
