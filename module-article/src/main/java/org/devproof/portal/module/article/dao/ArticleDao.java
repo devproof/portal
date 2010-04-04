@@ -34,10 +34,6 @@ public interface ArticleDao extends GenericDao<ArticleEntity, Integer> {
 	@Query("select a.allRights from ArticleEntity a where a.modifiedAt = (select max(modifiedAt) from ArticleEntity)")
 	List<RightEntity> findLastSelectedRights();
 
-	@CacheQuery(enabled = false)
-	@Query("select a from ArticleEntity a left join fetch a.articlePages where a.id = ?")
-	ArticleEntity findByIdAndPrefetch(Integer id);
-
 	@Query("select a from ArticleEntity a where a.contentId = ?")
 	ArticleEntity findByContentId(String contentId);
 

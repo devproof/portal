@@ -25,9 +25,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
@@ -44,6 +42,8 @@ import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
+import java.util.List;
+
 /**
  * Article overview page
  * 
@@ -59,23 +59,23 @@ public class ArticleReadPage extends ArticleBasePage {
 	private TagService<ArticleTagEntity> articleTagService;
 
 	private PageParameters params;
-	private ArticlePageEntity displayedPage;
-	private String contentId;
+	private IModel<ArticlePageEntity> displayedPageModel;
 	private int currentPageNumber;
 	private int numberOfPages;
+    private String contentId;
 
 	public ArticleReadPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		setContentId();
-		setCurrentPageNumber();
-		setNumberOfPages();
-		setDisplayedPage();
-		add(createTitleLabel());
+        this.currentPageNumber = getCurrentPageNumber();
+        this.numberOfPages = getPageCount();
+        this.contentId = getContentId();
+        this.displayedPageModel = createDisplayedPageModel();
+        add(createTitleLabel());
 		add(createMetaInfoPanel());
 		add(createPrintLink());
 		add(createAppropriateAuthorPanel());
-		add(createTagPanel(params));
+		add(createTagPanel());
 		add(createContentLabel());
 		add(createBackLink());
 		add(createForwardLink());
@@ -83,8 +83,25 @@ public class ArticleReadPage extends ArticleBasePage {
 		addTagCloudBox();
 	}
 
+    private String getContentId() {
+        String contentId = params.getString("0");
+        if (contentId == null) {
+            contentId = getRequest().getParameter("optparam");
+        }
+        return contentId;
+    }
+
+    private int getPageCount() {
+        return (int) articleService.getPageCount(contentId);
+    }
+
+    private int getCurrentPageNumber() {
+        return this.params.getAsInteger("1", 1);
+    }
+
     @Override
     public String getPageTitle() {
+        ArticlePageEntity displayedPage = displayedPageModel.getObject();
         return displayedPage.getArticle().getTitle();
     }
 
@@ -96,7 +113,7 @@ public class ArticleReadPage extends ArticleBasePage {
 
     private Component createCommentPanel() {
 		DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-		ArticleEntity article = displayedPage.getArticle();
+		ArticleEntity article = displayedPageModel.getObject().getArticle();
 		conf.setModuleContentId(article.getId().toString());
 		conf.setModuleName(ArticlePage.class.getSimpleName());
 		conf.setViewRights(article.getCommentViewRights());
@@ -104,32 +121,24 @@ public class ArticleReadPage extends ArticleBasePage {
 		return new ExpandableCommentPanel("comments", conf);
 	}
 
-	private void setNumberOfPages() {
-		numberOfPages = (int) articleService.getPageCount(contentId);
-	}
-
-	private void setDisplayedPage() {
-		displayedPage = articleService.findArticlePageByContentIdAndPage(contentId, currentPageNumber);
+    private IModel<ArticlePageEntity> createDisplayedPageModel() {
+        return new LoadableDetachableModel<ArticlePageEntity>() {
+            private static final long serialVersionUID = 5844734752344587663L;
+            @Override
+            protected ArticlePageEntity load() {
+                return articleService.findArticlePageByContentIdAndPage(contentId, currentPageNumber);
+            }
+        };
 	}
 
 	private void addTagCloudBox() {
 		addTagCloudBox(articleTagService, ArticlePage.class);
 	}
 
-	private void setCurrentPageNumber() {
-		currentPageNumber = params.getAsInteger("1", 1);
-	}
-
-	private void setContentId() {
-		contentId = params.getString("0");
-		if (contentId == null) {
-			contentId = getRequest().getParameter("optparam");
-		}
-	}
-
-	private void validateAccessRights() {
-		PortalSession session = (PortalSession) getSession();
-		if (displayedPage == null) {
+    private void validateAccessRights() {
+        ArticlePageEntity displayedPage = displayedPageModel.getObject();
+        PortalSession session = (PortalSession) getSession();
+        if (displayedPage == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
 		} else if (!session.hasRight("article.read") && !session.hasRight(displayedPage.getArticle().getReadRights())) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"),
@@ -138,11 +147,13 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private Label createTitleLabel() {
-		return new Label("title", displayedPage.getArticle().getTitle());
+        IModel<String> titleModel = new PropertyModel<String>(displayedPageModel, "article.title");
+        return new Label("title", titleModel);
 	}
 
 	private MetaInfoPanel createMetaInfoPanel() {
-		return new MetaInfoPanel("metaInfo", Model.of(displayedPage.getArticle()));
+        IModel<ArticleEntity> articleModel = new PropertyModel<ArticleEntity>(displayedPageModel, "article");
+        return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
 	}
 
 	private Component createPrintLink() {
@@ -171,18 +182,18 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private AuthorPanel<ArticleEntity> newAuthorPanel() {
-		return new AuthorPanel<ArticleEntity>("authorButtons", new PropertyModel<ArticleEntity>(page.getArticle())) {
+        final IModel<ArticleEntity> articleModel = new PropertyModel<ArticleEntity>(displayedPageModel, "article");
+        return new AuthorPanel<ArticleEntity>("authorButtons", articleModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onDelete(AjaxRequestTarget target) {
-				articleService.delete(page.getArticle());
+                ArticleEntity article = articleModel.getObject();
+                articleService.delete(article);
 			}
 
 			@Override
 			public void onEdit(AjaxRequestTarget target) {
-				ArticleEntity article = page.getArticle();
-				article = articleService.findByIdAndPrefetch(article.getId());
 				IModel<ArticleEntity> articleModel = createArticleModel();
 				setResponsePage(new ArticleEditPage(articleModel));
 			}
@@ -193,7 +204,8 @@ public class ArticleReadPage extends ArticleBasePage {
 
 					@Override
 					protected ArticleEntity load() {
-						return articleService.findByIdAndPrefetch(page.getArticle().getId());
+                        ArticleEntity article = articleModel.getObject();
+						return articleService.findById(article.getId());
 					}
 				};
 			}
@@ -201,18 +213,19 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private Component createEmptyAuthorPanel() {
-		return new EmptyPanel("authorButtons").setVisible(false);
+        EmptyPanel panel = new EmptyPanel("authorButtons");
+        panel.setVisible(false);
+        return panel;
 	}
 
 	private ExtendedLabel createContentLabel() {
-        IModel<String> contentModel = new PropertyModel<String>(displayedPage, "content");
+        IModel<String> contentModel = new PropertyModel<String>(displayedPageModel, "content");
         return new ExtendedLabel("content", contentModel);
 	}
 
-	private ContentTagPanel<ArticleTagEntity> createTagPanel(PageParameters params) {
-		// FIXME falsches model, vielleiht nach listmodel suchen
-		return new ContentTagPanel<ArticleTagEntity>("tags", new ListModel<ArticleTagEntity>(displayedPage.getArticle()
-				.getTags()), ArticlePage.class);
+	private ContentTagPanel<ArticleTagEntity> createTagPanel() {
+        IModel<List<ArticleTagEntity>> tagModel = new PropertyModel<List<ArticleTagEntity>>(displayedPageModel, "article.tags");
+        return new ContentTagPanel<ArticleTagEntity>("tags", tagModel, ArticlePage.class);
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {
