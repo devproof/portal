@@ -79,11 +79,11 @@ public class UserPage extends TemplatePage {
     }
 
     private Label createCreateUserLinkLabel() {
-        return new Label("linkName", getString("createLink"));
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
     }
 
     private AjaxLink<UserEntity> newCreateUserLink() {
-        return new AjaxLink<UserEntity>("adminLink") {
+        return new AjaxLink<UserEntity>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override

@@ -181,11 +181,11 @@ public class ThemePage extends TemplatePage {
     }
 
     private Label createSmallThemeDownloadLinkLabel() {
-        return new Label("linkName", getString("smallThemeLink"));
+        return new Label(getPageAdminBoxLinkLabelId(), getString("smallThemeLink"));
     }
 
     private InternalDownloadLink newSmallThemeDownloadLink() {
-        return new InternalDownloadLink("adminLink") {
+        return new InternalDownloadLink(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -202,11 +202,11 @@ public class ThemePage extends TemplatePage {
     }
 
     private Label createCompleteThemeDownloadLinkLabel() {
-        return new Label("linkName", getString("completeThemeLink"));
+        return new Label(getPageAdminBoxLinkLabelId(), getString("completeThemeLink"));
     }
 
     private InternalDownloadLink newCompleteThemeDownloadLink() {
-        return new InternalDownloadLink("adminLink") {
+        return new InternalDownloadLink(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -223,11 +223,11 @@ public class ThemePage extends TemplatePage {
     }
 
     private Label createUploadLinkLabel() {
-        return new Label("linkName", getString("uploadLink"));
+        return new Label(getPageAdminBoxLinkLabelId(), getString("uploadLink"));
     }
 
     private AjaxLink<BubblePanel> newUploadLink() {
-        return new AjaxLink<BubblePanel>("adminLink") {
+        return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override

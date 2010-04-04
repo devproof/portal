@@ -59,12 +59,12 @@ public class ArticleBasePage extends TemplatePage {
 
     private Link<?> createArticleAddLink() {
         Link<?> addLink = newArticleAddLink();
-        addLink.add(new Label("linkName", getString("createLink")));
+        addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
         return addLink;
     }
 
     private Link<?> newArticleAddLink() {
-		return new Link<Object>("adminLink") {
+		return new Link<Object>(getPageAdminBoxLinkId()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

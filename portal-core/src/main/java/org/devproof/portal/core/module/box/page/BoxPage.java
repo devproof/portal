@@ -76,11 +76,11 @@ public class BoxPage extends TemplatePage {
 	}
 
 	private Label createBoxLinkLabel() {
-		return new Label("linkName", getString("createLink"));
+		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
 	}
 
 	private AjaxLink<BoxEntity> newCreateBoxLink() {
-		return new AjaxLink<BoxEntity>("adminLink") {
+		return new AjaxLink<BoxEntity>(getPageAdminBoxLinkId()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -248,6 +248,8 @@ public class BoxPage extends TemplatePage {
 
         private IModel<String> typeModel() {
             return new LoadableDetachableModel<String>() {
+                private static final long serialVersionUID = 3674902001006638462L;
+
                 @Override
                 protected String load() {
                     BoxEntity box = boxModel.getObject();
@@ -260,5 +262,5 @@ public class BoxPage extends TemplatePage {
             IModel<Integer> sortModel = new PropertyModel<Integer>(boxModel, "title");
 			return new Label("sort", sortModel);
 		}
-	};
+	}
 }
