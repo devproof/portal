@@ -25,6 +25,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -131,7 +133,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private MetaInfoPanel createMetaInfoPanel() {
-		return new MetaInfoPanel("metaInfo", displayedPage.getArticle());
+		return new MetaInfoPanel("metaInfo", Model.of(displayedPage.getArticle()));
 	}
 
 	private Component createPrintLink() {
@@ -194,7 +196,8 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private ExtendedLabel createContentLabel() {
-		return new ExtendedLabel("content", displayedPage.getContent());
+        IModel<String> contentModel = new PropertyModel<String>(displayedPage, "content");
+        return new ExtendedLabel("content", contentModel);
 	}
 
 	private ContentTagPanel<ArticleTagEntity> createTagPanel(PageParameters params) {

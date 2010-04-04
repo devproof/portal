@@ -15,12 +15,19 @@
  */
 package org.devproof.portal.core.module.user.panel;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.contact.ContactConstants;
 import org.devproof.portal.core.module.contact.page.ContactPage;
+import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.service.UserService;
 
 /**
  * Linking a username to its contact page
@@ -29,34 +36,80 @@ import org.devproof.portal.core.module.contact.page.ContactPage;
  */
 public class UsernamePanel extends Panel {
 	private static final long serialVersionUID = 1L;
-	private String username;
-	private String displayName;
-	private boolean exists;
+    @SpringBean(name = "userService")
+	private UserService userService;
+    private IModel<String> usernameModel;
+    private IModel<UserEntity> userModel;
 
-	public UsernamePanel(String id, String username, String displayName, boolean exists) {
+    public UsernamePanel(String id, IModel<String> usernameModel) {
 		super(id);
-		this.username = username;
-		this.displayName = displayName;
-		this.exists = exists;
+        this.usernameModel = usernameModel;
+        this.userModel = createUserModel();
 		add(createContactPageLink());
 	}
 
-	private WebMarkupContainer createContactPageLink() {
-		WebMarkupContainer link = newContactPageLink();
+    private IModel<UserEntity> createUserModel() {
+        return new LoadableDetachableModel<UserEntity>() {
+            private static final long serialVersionUID = 5479671452769963088L;
+            @Override
+            protected UserEntity load() {
+                return userService.findUserByUsername(usernameModel.getObject());
+            }
+        };
+    }
+
+    private WebMarkupContainer createContactPageLink() {
+		BookmarkablePageLink<ContactPage> link = newContactPageLink();
 		link.add(createUsernameLabel());
+        link.setParameter("0", usernameModel.getObject());
 		return link;
 	}
 
-	private WebMarkupContainer newContactPageLink() {
-		PortalSession session = (PortalSession) getSession();
-		if (session.hasRight("page." + ContactPage.class.getSimpleName()) && exists) {
-			return new BookmarkablePageLink<ContactPage>("userLink", ContactPage.class).setParameter("0", username);
-		} else {
-			return new WebMarkupContainer("userLink");
-		}
+	private BookmarkablePageLink newContactPageLink() {
+        return new BookmarkablePageLink<ContactPage>("userLink", ContactPage.class) {
+            private static final long serialVersionUID = 8519679858021257340L;
+
+            @Override
+            public boolean isEnabled() {
+                PortalSession session = (PortalSession) getSession();
+                UserEntity user = userModel.getObject();
+                boolean exists = user != null;
+                return session.hasRight(ContactConstants.CONTACT_RIGHT) && exists && contactFormEnabled();
+            }
+        };
 	}
 
 	private Label createUsernameLabel() {
-		return new Label("username", displayName);
+        IModel<String> usernameDisplayModel = createUsernameDisplayModel();
+        return new Label("username", usernameDisplayModel);
 	}
+
+    private IModel<String> createUsernameDisplayModel() {
+        return new LoadableDetachableModel<String>() {
+            private static final long serialVersionUID = -1304908710263470243L;
+            @Override
+            protected String load() {
+                String username = usernameModel.getObject();
+                UserEntity user = userModel.getObject(); 
+                if (showRealName()) {
+                    if (user != null && StringUtils.isNotBlank(user.getFirstname())
+                            && StringUtils.isNotBlank(user.getLastname())) {
+                        username = user.getFirstname() + " " + user.getLastname();
+                    }
+                }
+                return username;
+            }
+        };
+	}
+
+    /**
+     * Hook method
+     */
+    protected boolean showRealName() {
+        return true;
+    }
+
+    protected boolean contactFormEnabled() {
+        return true;
+    }
 }

@@ -27,6 +27,8 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -122,7 +124,6 @@ public class ArticlePage extends ArticleBasePage {
 		private ArticleView createArticleView(Item<ArticleEntity> item) {
 			return new ArticleView("articleView", item);
 		}
-
 	}
 
 	/**
@@ -203,11 +204,12 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private ExtendedLabel createTeaserLabel() {
-			return new ExtendedLabel("teaser", article.getTeaser());
+            PropertyModel<String> teaserModel = new PropertyModel<String>(article, "teaser");
+            return new ExtendedLabel("teaser", teaserModel);
 		}
 
 		private MetaInfoPanel createMetaInfoPanel() {
-			return new MetaInfoPanel("metaInfo", article);
+			return new MetaInfoPanel<ArticleEntity>("metaInfo", Model.of(article));
 		}
 
 		private WebMarkupContainer createEmptyAuthorPanel() {

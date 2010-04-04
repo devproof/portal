@@ -27,6 +27,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Resource;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -51,26 +53,37 @@ public class ExtendedLabel extends Label {
 
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
+    private IModel<String> contentModel;
 
-	public ExtendedLabel(String id, String content) {
-		super(id);
-		cleanupExpiredImages();
-		String modifiedContent = content;
-		String tagParts[] = StringUtils.substringsBetween(modifiedContent, PRETAG, POSTTAG);
-		if (tagParts != null) {
-			for (String tagPart : tagParts) {
-				String fullTag = PRETAG + tagPart + POSTTAG;
-				String splittedAttribute[] = StringUtils.split(StringUtils.substringBefore(fullTag, CLOSE_SEP), "= ");
-				int fontSize = getFontSize(splittedAttribute);
-				List<String> str2ImgLines = getTextLines(tagPart);
-				Font font = getFont(fontSize);
-				ImgResourceReference imgResource = getImageResourceAndCache(str2ImgLines, font);
-				modifiedContent = replaceTagWithImage(modifiedContent, fullTag, imgResource);
-			}
-		}
-		setDefaultModel(Model.of(modifiedContent));
+    public ExtendedLabel(String id, IModel<String> contentModel) {
+		super(id, contentModel);
+        this.contentModel = contentModel;
+		setDefaultModel(createConvertedContentModel());
 		setEscapeModelStrings(false);
 	}
+
+    private IModel<String> createConvertedContentModel() {
+        return new LoadableDetachableModel<String>() {
+            @Override
+            protected String load() {
+                cleanupExpiredImages();
+                String modifiedContent = contentModel.getObject();
+                String tagParts[] = StringUtils.substringsBetween(modifiedContent, PRETAG, POSTTAG);
+                if (tagParts != null) {
+                    for (String tagPart : tagParts) {
+                        String fullTag = PRETAG + tagPart + POSTTAG;
+                        String splittedAttribute[] = StringUtils.split(StringUtils.substringBefore(fullTag, CLOSE_SEP), "= ");
+                        int fontSize = getFontSize(splittedAttribute);
+                        List<String> str2ImgLines = getTextLines(tagPart);
+                        Font font = getFont(fontSize);
+                        ImgResourceReference imgResource = getImageResourceAndCache(str2ImgLines, font);
+                        modifiedContent = replaceTagWithImage(modifiedContent, fullTag, imgResource);
+                    }
+                }
+                return modifiedContent;
+            }
+        };
+    }
 
 	private ImgResourceReference getImageResourceAndCache(List<String> str2ImgLines, Font font) {
 		String uuid = String.valueOf(str2ImgLines.hashCode());
@@ -97,7 +110,7 @@ public class ExtendedLabel extends Label {
 			ImgResourceReference ref = images.get(key);
 			if (ref.isExpired()) {
 				ref.invalidate();
-				((WebApplication) getApplication()).getSharedResources().remove(key);
+				getApplication().getSharedResources().remove(key);
 				it.remove();
 			}
 		}
@@ -105,8 +118,7 @@ public class ExtendedLabel extends Label {
 
 	private Font getFont(int fontSize) {
 		String fontName = configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
-		Font font = new Font(fontName, Font.PLAIN, fontSize);
-		return font;
+        return new Font(fontName, Font.PLAIN, fontSize);
 	}
 
 	private List<String> getTextLines(String tagPart) {
@@ -153,5 +165,5 @@ public class ExtendedLabel extends Label {
 		public boolean isExpired() {
 			return (time.getTime() + MAX_AGE) < PortalUtil.now().getTime();
 		}
-	};
+	}
 }

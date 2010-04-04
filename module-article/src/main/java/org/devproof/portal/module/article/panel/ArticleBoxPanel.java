@@ -89,6 +89,8 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private ListView<ArticleEntity> createRepeatingViewWithArticles() {
         return new ListView<ArticleEntity>("repeating", latestArticlesModel) {
+            private static final long serialVersionUID = 3388745835706671920L;
+
             @Override
             protected void populateItem(ListItem<ArticleEntity> item) {
                 item.add(createLinkToArticle(item.getModel()));

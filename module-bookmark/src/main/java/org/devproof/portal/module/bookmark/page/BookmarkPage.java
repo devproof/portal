@@ -230,7 +230,8 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private ExtendedLabel createDescriptionLabel() {
-			return new ExtendedLabel("description", bookmark.getDescription());
+            IModel<String> descriptionModel = new PropertyModel<String>(bookmark, "description");
+            return new ExtendedLabel("description", descriptionModel);
 		}
 
 		private Component createDeliciousSourceImage() {
@@ -244,8 +245,8 @@ public class BookmarkPage extends BookmarkBasePage {
 			}
 		}
 
-		private MetaInfoPanel createMetaInfoPanel() {
-			return new MetaInfoPanel("metaInfo", bookmark);
+		private MetaInfoPanel<BookmarkEntity> createMetaInfoPanel() {
+			return new MetaInfoPanel<BookmarkEntity>("metaInfo", Model.of(bookmark));
 		}
 
 		private BookmarkablePageLink<BookmarkRedirectPage> createTitleLink() {

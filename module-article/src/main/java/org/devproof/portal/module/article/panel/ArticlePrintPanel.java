@@ -17,6 +17,9 @@ package org.devproof.portal.module.article.panel;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.module.article.ArticleConstants;
@@ -28,28 +31,39 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
 public class ArticlePrintPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
+    private IModel<ArticleEntity> articleModel;
 
-	private ArticleEntity article;
-
-	public ArticlePrintPanel(String id, ArticleEntity article) {
-		super(id);
-		this.article = article;
-		add(createTitle());
+    public ArticlePrintPanel(String id, IModel<ArticleEntity> articleModel) {
+		super(id, articleModel);
+        this.articleModel = articleModel;
+        add(createTitle());
 		add(createMetaInfoPanel());
 		add(createContentLabel());
 	}
 
 	private Label createTitle() {
-		return new Label("title", article.getTitle());
+        PropertyModel<String> titleModel = new PropertyModel<String>(articleModel, "title");
+        return new Label("title", titleModel);
 	}
 
-	private MetaInfoPanel createMetaInfoPanel() {
-		return new MetaInfoPanel("metaInfo", article);
+	private MetaInfoPanel<ArticleEntity> createMetaInfoPanel() {
+		return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
 	}
 
 	private ExtendedLabel createContentLabel() {
-		String content = article.getFullArticle();
-		content = content.replace(ArticleConstants.PAGEBREAK, "<br/><br/>");
-		return new ExtendedLabel("content", content);
+        IModel<String> contentModel = createContentModel();
+        return new ExtendedLabel("content", contentModel);
 	}
+
+    private IModel<String> createContentModel() {
+        return new AbstractReadOnlyModel<String>() {
+            @Override
+            public String getObject() {
+                ArticleEntity article = articleModel.getObject();
+                String content = article.getFullArticle();
+		        content = content.replace(ArticleConstants.PAGEBREAK, "<br/><br/>");
+                return content;
+            }
+        };
+    }
 }

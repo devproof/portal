@@ -18,6 +18,7 @@ package org.devproof.portal.module.article.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.MessagePage;
@@ -42,7 +43,7 @@ public class ArticlePrintPage extends PrintPage {
 		String contentId = getContentId(params);
 		ArticleEntity article = articleService.findByContentId(contentId);
 		validateAccessRights(article);
-		return new ArticlePrintPanel(id, article);
+		return new ArticlePrintPanel(id, Model.of(article));
 	}
 
 	private String getContentId(PageParameters params) {
