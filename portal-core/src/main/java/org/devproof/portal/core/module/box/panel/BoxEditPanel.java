@@ -50,18 +50,24 @@ public abstract class BoxEditPanel extends Panel {
 	private BoxRegistry boxRegistry;
 	private FeedbackPanel feedback;
 	private IModel<BoxConfiguration> boxSelectionModel;
-	private BoxEntity box;
+	private IModel<BoxEntity> boxModel;
 
 	public BoxEditPanel(String id, IModel<BoxEntity> boxModel) {
 		super(id);
-		this.box = boxModel.getObject();
-		setBoxConfigurationModel();
+		this.boxModel = boxModel;
+        this.boxSelectionModel = createBoxSelectionModel();
 		add(createFeedbackPanel());
 		add(createBoxEditForm());
 	}
 
-	private Form<BoxEntity> createBoxEditForm() {
-		Form<BoxEntity> form = new Form<BoxEntity>("form", new CompoundPropertyModel<BoxEntity>(box));
+    private Model<BoxConfiguration> createBoxSelectionModel() {
+        String boxType = boxModel.getObject().getBoxType();
+        return Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(boxType));
+    }
+
+    private Form<BoxEntity> createBoxEditForm() {
+        CompoundPropertyModel<BoxEntity> formModel = new CompoundPropertyModel<BoxEntity>(boxModel);
+        Form<BoxEntity> form = new Form<BoxEntity>("form", formModel);
 		form.add(createContentField());
 		form.add(createBoxTypeChoice());
 		form.add(createTitleField());
@@ -74,10 +80,6 @@ public abstract class BoxEditPanel extends Panel {
 
 	private CheckBox createHideTitleCheckBox() {
 		return new CheckBox("hideTitle");
-	}
-
-	private void setBoxConfigurationModel() {
-		boxSelectionModel = Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(box.getBoxType()));
 	}
 
 	private DropDownChoice<BoxConfiguration> createBoxTypeChoice() {
@@ -101,6 +103,7 @@ public abstract class BoxEditPanel extends Panel {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                BoxEntity box = boxModel.getObject();
 				if (box.getSort() == null) {
 					Integer sort = boxService.getMaxSortNum();
 					box.setSort(sort);
@@ -138,7 +141,7 @@ public abstract class BoxEditPanel extends Panel {
 		return feedback;
 	}
 
-	public abstract void onSave(AjaxRequestTarget target);
+	protected abstract void onSave(AjaxRequestTarget target);
 
-	public abstract void onCancel(AjaxRequestTarget target);
+	protected abstract void onCancel(AjaxRequestTarget target);
 }

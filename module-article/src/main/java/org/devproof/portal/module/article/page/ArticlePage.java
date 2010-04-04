@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.article.page;
 
-import com.sun.syndication.feed.atom.Entry;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,8 +25,10 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
-import org.apache.wicket.model.*;
-import org.apache.wicket.model.util.ListModel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -43,7 +44,6 @@ import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
-import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.panel.ArticleSearchBoxPanel;
 import org.devproof.portal.module.article.query.ArticleQuery;
@@ -164,8 +164,9 @@ public class ArticlePage extends ArticleBasePage {
 
 		private Component createPrintLink() {
             ArticleEntity article = articleModel.getObject();
+            PageParameters params = new PageParameters("0=" + article.getContentId());
             BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
-					ArticlePrintPage.class, new PageParameters("0=" + article.getContentId()));
+					ArticlePrintPage.class, params);
 			link.add(createPrintImage());
 			link.setVisible(allowedToRead);
 			return link;
@@ -199,19 +200,19 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private Label createReadMoreLabel() {
-            AbstractReadOnlyModel<Object> readMoreModel = createReadMoreModel();
+            IModel<String> readMoreModel = createReadMoreModel();
             return new Label("readMoreLabel", readMoreModel);
 		}
 
-        private AbstractReadOnlyModel<Object> createReadMoreModel() {
-            AbstractReadOnlyModel<Object> readMoreModel = new AbstractReadOnlyModel<Object>() {
+        private AbstractReadOnlyModel<String> createReadMoreModel() {
+            return new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = 118766734564336104L;
                 @Override
-                public Object getObject() {
+                public String getObject() {
                     String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
                     return ArticlePage.this.getString(labelKey);
                 }
             };
-            return readMoreModel;
         }
 
         private ContentTagPanel<ArticleTagEntity> createTagPanel() {
@@ -280,7 +281,7 @@ public class ArticlePage extends ArticleBasePage {
 						@Override
 						protected ArticleEntity load() {
                             ArticleEntity article = articleModel.getObject();
-                            return articleService.findByIdAndPrefetch(article.getId());
+                            return articleService.findById(article.getId());
 						}
 					};
 				}
