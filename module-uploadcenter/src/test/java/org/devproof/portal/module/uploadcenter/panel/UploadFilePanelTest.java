@@ -19,6 +19,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
 
@@ -48,7 +49,7 @@ public class UploadFilePanelTest extends TestCase {
 		private static final long serialVersionUID = 1L;
 
 		public TestUploadCenterPanel(String id) {
-			super(id, new File("./"));
+			super(id, Model.of(new File("./")));
 		}
 	}
 }

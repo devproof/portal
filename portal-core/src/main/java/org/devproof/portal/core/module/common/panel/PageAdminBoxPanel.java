@@ -71,11 +71,19 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
                 item.add(createAdminLink(pageClass));
             }
 
+
             private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
+                String label = getLinkLabelName(pageClass);
                 BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
-                link.add(createAdminItemLink(pageClass));
+                link.add(new Label("adminLinkLabel", label));
                 return link;
             }
+//
+//            private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
+//                BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
+//                link.add(createAdminItemLink(pageClass));
+//                return link;
+//            }
         };
 	}
 
@@ -92,13 +100,6 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	private RepeatingView createExtendableView() {
 		extendableRepeating = new RepeatingView("repeatingNav");
 		return extendableRepeating;
-	}
-
-	private BookmarkablePageLink<Void> createAdminItemLink(Class<? extends Page> pageClass) {
-		String label = getLinkLabelName(pageClass);
-		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
-		link.add(new Label("adminLinkLabel", label));
-		return link;
 	}
 
 	private String getLinkLabelName(Class<? extends Page> pageClass) {

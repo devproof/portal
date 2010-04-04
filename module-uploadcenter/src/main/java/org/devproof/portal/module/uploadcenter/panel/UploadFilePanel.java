@@ -15,11 +15,6 @@
  */
 package org.devproof.portal.module.uploadcenter.panel;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -42,6 +37,10 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * @author Carsten Hufe
  */
@@ -49,13 +48,13 @@ public class UploadFilePanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private File uploadFolder;
-	private IModel<Collection<FileUpload>> uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());;
+	private IModel<Collection<FileUpload>> uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
+    private IModel<File> uploadFolderModel;
 
-	public UploadFilePanel(String id, File uploadFolder) {
+    public UploadFilePanel(String id, IModel<File> uploadFolderModel) {
 		super(id);
-		this.uploadFolder = uploadFolder;
-		add(createCSSHeaderContributor());
+        this.uploadFolderModel = uploadFolderModel;
+        add(createCSSHeaderContributor());
 		add(createFeedbackPanel());
 		add(createUploadForm());
 	}
@@ -108,26 +107,26 @@ public class UploadFilePanel extends Panel {
 
 			@Override
 			protected void onSubmit() {
-				Iterator<FileUpload> it = uploadModel.getObject().iterator();
-				while (it.hasNext()) {
-					FileUpload upload = it.next();
-					File newFile = new File(UploadFilePanel.this.getUploadFolder(), upload.getClientFileName());
-					UploadFilePanel.this.deleteFile(newFile);
-					try {
-						if (newFile.createNewFile()) {
-							upload.writeTo(newFile);
-							UploadFilePanel.this.info(new StringResourceModel("msg.uploaded", UploadFilePanel.this,
-									null, new Object[] { upload.getClientFileName() }).getString());
-						} else {
-							throw new IllegalStateException("Unable to write file" + newFile);
-						}
-					} catch (Exception e) {
-						throw new UnhandledException(e);
-					}
-				}
-				super.onSubmit();
+                Folder uploadFolder = new Folder(uploadFolderModel.getObject().getAbsolutePath());
+                Collection<FileUpload> fileUploads = uploadModel.getObject();
+                for (FileUpload fileUpload : fileUploads) {
+                    File newFile = new File(uploadFolder, fileUpload.getClientFileName());
+                    UploadFilePanel.this.deleteFile(newFile);
+                    try {
+                        if (newFile.createNewFile()) {
+                            fileUpload.writeTo(newFile);
+                            UploadFilePanel.this.info(new StringResourceModel("msg.uploaded", UploadFilePanel.this,
+                                    null, new Object[]{fileUpload.getClientFileName()}).getString());
+                        } else {
+                            throw new IllegalStateException("Unable to write file" + newFile);
+                        }
+                    } catch (Exception e) {
+                        throw new UnhandledException(e);
+                    }
+                }
 				UploadFilePanel.this.onSubmit();
-			}
+                super.onSubmit();
+            }
 		};
 	}
 
@@ -139,14 +138,16 @@ public class UploadFilePanel extends Panel {
 		}
 	}
 
-	private Folder getUploadFolder() {
-		return new Folder(uploadFolder.getAbsolutePath());
-	}
-
+    /**
+     * Hook methods
+     */
 	protected void onSubmit() {
 
 	}
 
+    /**
+     * Hook methods
+     */
 	protected void onCancel(AjaxRequestTarget target) {
 
 	}

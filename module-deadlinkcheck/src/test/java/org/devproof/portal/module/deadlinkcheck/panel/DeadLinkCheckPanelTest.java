@@ -16,10 +16,13 @@
 package org.devproof.portal.module.deadlinkcheck.panel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -47,7 +50,7 @@ public class DeadLinkCheckPanelTest extends TestCase {
 
 	public static class TestDeadLinkCheckPanel extends DeadlinkCheckPanel<TestLinkEntity> {
 		public TestDeadLinkCheckPanel(String id) {
-			super(id, "download", new ArrayList<TestLinkEntity>());
+			super(id, "download", new ListModel<TestLinkEntity>(new ArrayList<TestLinkEntity>()));
 		}
 
 		private static final long serialVersionUID = 1L;
