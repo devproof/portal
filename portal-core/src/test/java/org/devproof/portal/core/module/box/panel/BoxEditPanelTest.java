@@ -53,7 +53,7 @@ public class BoxEditPanelTest extends TestCase {
 		tester.startPanel(TestBoxEditPanel.class);
 		tester.assertComponent("panel", TestBoxEditPanel.class);
 		FormTester ft = tester.newFormTester("panel:form");
-		ft.select("boxType", 1);
+		ft.select("boxType", 7);
 		ft.setValue("title", "mytitle");
 		ft.setValue("content", "mycontent");
 		tester.executeAjaxEvent("panel:form:saveButton", "onclick");
