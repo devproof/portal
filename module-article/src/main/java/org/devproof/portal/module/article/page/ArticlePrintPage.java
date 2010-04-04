@@ -33,19 +33,19 @@ import org.devproof.portal.module.article.service.ArticleService;
  * @author Carsten Hufe
  */
 public class ArticlePrintPage extends PrintPage {
-	@SpringBean(name = "articleService")
+    private static final long serialVersionUID = 3988970146526291830L;
+    @SpringBean(name = "articleService")
 	private ArticleService articleService;
     private IModel<ArticleEntity> articleModel;
     private PageParameters params;
 
     public ArticlePrintPage(PageParameters params) {
 		super(params);
-        this.params = params;
-        articleModel = createArticleModel();
 	}
 
     private LoadableDetachableModel<ArticleEntity> createArticleModel() {
         return new LoadableDetachableModel<ArticleEntity>() {
+            private static final long serialVersionUID = 1826109490689274522L;
             @Override
             protected ArticleEntity load() {
                 String contentId = getContentId();
@@ -54,9 +54,17 @@ public class ArticlePrintPage extends PrintPage {
         };
     }
 
+    private IModel<ArticleEntity> getArticleModel() {
+        if(articleModel == null) {
+            articleModel = createArticleModel();
+        }
+        return articleModel;
+    }
+
     @Override
 	protected Component createPrintableComponent(String id, PageParameters params) {
-		return new ArticlePrintPanel(id, articleModel);
+        this.params = params;
+        return new ArticlePrintPanel(id, getArticleModel());
 	}
 
     @Override
@@ -75,7 +83,7 @@ public class ArticlePrintPage extends PrintPage {
 	}
 
 	private void validateAccessRights() {
-        ArticleEntity article = articleModel.getObject();
+        ArticleEntity article = getArticleModel().getObject();
         if (article == null || !isAllowedToRead(article)) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
 		}

@@ -46,13 +46,12 @@ public class DownloadEditPage extends DownloadBasePage {
 	private DownloadService downloadService;
 	@SpringBean(name = "downloadTagService")
 	private TagService<DownloadTagEntity> downloadTagService;
+    private IModel<DownloadEntity> downloadModel;
 
-	private DownloadEntity download;
-
-	public DownloadEditPage(IModel<DownloadEntity> downloadModel) {
+    public DownloadEditPage(IModel<DownloadEntity> downloadModel) {
 		super(new PageParameters());
-		this.download = downloadModel.getObject();
-		add(createDownloadEditForm());
+        this.downloadModel = downloadModel;
+        add(createDownloadEditForm());
 	}
 
 	private Form<DownloadEntity> createDownloadEditForm() {
@@ -126,18 +125,19 @@ public class DownloadEditPage extends DownloadBasePage {
 	}
 
 	private TagField<DownloadTagEntity> createTagField() {
-		IModel<List<DownloadTagEntity>> downloadListModel = new PropertyModel<List<DownloadTagEntity>>(download, "tags");
+		IModel<List<DownloadTagEntity>> downloadListModel = new PropertyModel<List<DownloadTagEntity>>(downloadModel, "tags");
 		return new TagField<DownloadTagEntity>("tags", downloadListModel, downloadTagService);
 	}
 
 	private Form<DownloadEntity> newDownloadEditForm() {
-		return new Form<DownloadEntity>("form", new CompoundPropertyModel<DownloadEntity>(download)) {
+        IModel<DownloadEntity> compoundModel = new CompoundPropertyModel<DownloadEntity>(downloadModel);
+        return new Form<DownloadEntity>("form", compoundModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
 				DownloadEditPage.this.setVisible(false);
-				DownloadEntity download = getModelObject();
+				DownloadEntity download = downloadModel.getObject();
 				download.setBroken(Boolean.FALSE);
 				downloadService.save(download);
 				setRedirect(false);
@@ -148,17 +148,17 @@ public class DownloadEditPage extends DownloadBasePage {
 	}
 
 	private RightGridPanel createVoteRightPanel() {
-		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
-		return new RightGridPanel("voteRights", "download.vote", rightListModel);
+		IModel<List<RightEntity>> rightsModel = new PropertyModel<List<RightEntity>>(downloadModel, "allRights");
+		return new RightGridPanel("voteRights", "download.vote", rightsModel);
 	}
 
 	private RightGridPanel createDownloadRightPanel() {
-		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
-		return new RightGridPanel("downloadRights", "download.download", rightListModel);
+		IModel<List<RightEntity>> rightsModel = new PropertyModel<List<RightEntity>>(downloadModel, "allRights");
+		return new RightGridPanel("downloadRights", "download.download", rightsModel);
 	}
 
 	private RightGridPanel createViewRightPanel() {
-		ListModel<RightEntity> rightListModel = new ListModel<RightEntity>(download.getAllRights());
-		return new RightGridPanel("viewRights", "download.view", rightListModel);
+		IModel<List<RightEntity>> rightsModel = new PropertyModel<List<RightEntity>>(downloadModel, "allRights");
+		return new RightGridPanel("viewRights", "download.view", rightsModel);
 	}
 }

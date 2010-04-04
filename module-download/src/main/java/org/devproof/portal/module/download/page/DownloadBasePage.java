@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -41,129 +42,123 @@ import org.devproof.portal.module.download.service.DownloadService;
  */
 public abstract class DownloadBasePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "downloadService")
-	private DownloadService downloadService;
-	private WebMarkupContainer bubblePanel;
-	private boolean isAuthor;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "downloadService")
+    private DownloadService downloadService;
+    private WebMarkupContainer bubblePanel;
 
-	public DownloadBasePage(PageParameters params) {
-		super(params);
-		setAuthorRight();
-		add(createCSSHeaderContributor());
-		addDownloadAddLink();
-		addDeadlinkCheckLink();
-		add(createHiddenBubbleWindow());
-	}
+    public DownloadBasePage(PageParameters params) {
+        super(params);
+        add(createCSSHeaderContributor());
+        add(createHiddenBubbleWindow());
+        addDownloadAddLink();
+        addDeadlinkCheckLink();
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS);
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS);
+    }
 
-	private void addDeadlinkCheckLink() {
-		if (isAuthor()) {
-			addPageAdminBoxLink(createDeadlinkCheckLink());
-		}
-	}
+    private void addDeadlinkCheckLink() {
+        if (isAuthor()) {
+            addPageAdminBoxLink(createDeadlinkCheckLink());
+        }
+    }
 
-	private void addDownloadAddLink() {
-		if (isAuthor()) {
-			addPageAdminBoxLink(createDownloadAddLink());
-		}
-	}
+    private void addDownloadAddLink() {
+        if (isAuthor()) {
+            addPageAdminBoxLink(createDownloadAddLink());
+        }
+    }
 
-	private WebMarkupContainer createHiddenBubbleWindow() {
-		if (isAuthor()) {
-			bubblePanel = new BubblePanel("bubblePanel");
+    private WebMarkupContainer createHiddenBubbleWindow() {
+        if (isAuthor()) {
+            bubblePanel = new BubblePanel("bubblePanel");
 
-		} else {
-			bubblePanel = new WebMarkupContainer("bubblePanel");
-			bubblePanel.setVisible(false);
-		}
-		return bubblePanel;
-	}
+        } else {
+            bubblePanel = new WebMarkupContainer("bubblePanel");
+            bubblePanel.setVisible(false);
+        }
+        return bubblePanel;
+    }
 
-	private AjaxLink<DownloadEntity> createDeadlinkCheckLink() {
-		AjaxLink<DownloadEntity> deadlinkCheckLink = newDeadlinkCheckLink();
-		deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
-		return deadlinkCheckLink;
-	}
+    private AjaxLink<DownloadEntity> createDeadlinkCheckLink() {
+        AjaxLink<DownloadEntity> deadlinkCheckLink = newDeadlinkCheckLink();
+        deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
+        return deadlinkCheckLink;
+    }
 
-	private AjaxLink<DownloadEntity> newDeadlinkCheckLink() {
-		AjaxLink<DownloadEntity> deadlinkCheckLink = new AjaxLink<DownloadEntity>("adminLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<DownloadEntity> newDeadlinkCheckLink() {
+        return new AjaxLink<DownloadEntity>("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				BubblePanel panel = (BubblePanel) DownloadBasePage.this.bubblePanel;
-				DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = createDeadlinkCheckPanel(panel.getContentId());
-				panel.setContent(deadlinkPanel);
-				panel.showModal(target);
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                BubblePanel panel = (BubblePanel) DownloadBasePage.this.bubblePanel;
+                DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = createDeadlinkCheckPanel(panel.getContentId());
+                panel.setContent(deadlinkPanel);
+                panel.showModal(target);
+            }
 
-			private DeadlinkCheckPanel<DownloadEntity> createDeadlinkCheckPanel(String id) {
-				List<DownloadEntity> allDownloads = downloadService.findAll();
-				return newDeadlinkCheckPanel(id, allDownloads);
-			}
+            private DeadlinkCheckPanel<DownloadEntity> createDeadlinkCheckPanel(String id) {
+                IModel<List<DownloadEntity>> allDownloadsModel = createAllDownloadsModel();
+                return new DeadlinkCheckPanel<DownloadEntity>(id, "download", allDownloadsModel) {
+                    private static final long serialVersionUID = 1L;
 
-			private DeadlinkCheckPanel<DownloadEntity> newDeadlinkCheckPanel(String id,
-					List<DownloadEntity> allDownloads) {
-				DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = new DeadlinkCheckPanel<DownloadEntity>(id,
-						"download", allDownloads) {
-					private static final long serialVersionUID = 1L;
+                    @Override
+                    public void onBroken(DownloadEntity brokenEntity) {
+                        downloadService.markBrokenDownload(brokenEntity);
+                    }
 
-					@Override
-					public void onBroken(DownloadEntity brokenEntity) {
-						downloadService.markBrokenDownload(brokenEntity);
-					}
+                    @Override
+                    public void onValid(DownloadEntity validEntity) {
+                        downloadService.markValidDownload(validEntity);
+                    }
 
-					@Override
-					public void onValid(DownloadEntity validEntity) {
-						downloadService.markValidDownload(validEntity);
-					}
+                    @Override
+                    public void onCancel(AjaxRequestTarget target) {
+                        BubblePanel panel = (BubblePanel) bubblePanel;
+                        panel.hide(target);
+                        setResponsePage(DownloadPage.class);
+                    }
+                };
+            }
 
-					@Override
-					public void onCancel(AjaxRequestTarget target) {
-						BubblePanel panel = (BubblePanel) bubblePanel;
-						panel.hide(target);
-						setResponsePage(DownloadPage.class);
-					}
-				};
-				return deadlinkPanel;
-			}
-		};
-		return deadlinkCheckLink;
-	}
+        };
+    }
 
-	private Link<?> createDownloadAddLink() {
-		Link<?> addLink = newDownloadAddLink();
-		addLink.add(new Label("linkName", getString("createLink")));
-		return addLink;
-	}
+    private IModel<List<DownloadEntity>> createAllDownloadsModel() {
+        return new LoadableDetachableModel<List<DownloadEntity>>() {
+            private static final long serialVersionUID = -3648230899434788060L;
 
-	private Link<?> newDownloadAddLink() {
-		return new Link<Object>("adminLink") {
-			private static final long serialVersionUID = 1L;
+            @Override
+            protected List<DownloadEntity> load() {
+                return downloadService.findAll();
+            }
+        };
+    }
 
-			@Override
-			public void onClick() {
-				DownloadEntity newDownload = downloadService.newDownloadEntity();
-				IModel<DownloadEntity> downloadModel = Model.of(newDownload);
-				setResponsePage(new DownloadEditPage(downloadModel));
-			}
-		};
-	}
+    private Link<?> createDownloadAddLink() {
+        Link<?> addLink = newDownloadAddLink();
+        addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
+        return addLink;
+    }
 
-	private void setAuthorRight() {
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight(DownloadConstants.AUTHOR_RIGHT);
-	}
+    private Link<?> newDownloadAddLink() {
+        return new Link<Void>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-	public boolean isAuthor() {
-		return isAuthor;
-	}
+            @Override
+            public void onClick() {
+                DownloadEntity newDownload = downloadService.newDownloadEntity();
+                IModel<DownloadEntity> downloadModel = Model.of(newDownload);
+                setResponsePage(new DownloadEditPage(downloadModel));
+            }
+        };
+    }
 
-	public WebMarkupContainer getBubblePanel() {
-		return bubblePanel;
-	}
+    public boolean isAuthor() {
+        PortalSession session = (PortalSession) getSession();
+        return session.hasRight(DownloadConstants.AUTHOR_RIGHT);
+    }
 }

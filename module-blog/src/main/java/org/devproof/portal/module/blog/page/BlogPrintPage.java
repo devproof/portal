@@ -39,8 +39,6 @@ public class BlogPrintPage extends PrintPage {
 
     public BlogPrintPage(PageParameters params) {
 		super(params);
-        this.params = params;
-        blogModel = createBlogModel();
 	}
 
     private LoadableDetachableModel<BlogEntity> createBlogModel() {
@@ -59,10 +57,17 @@ public class BlogPrintPage extends PrintPage {
         super.onBeforeRender();
     }
 
+    private IModel<BlogEntity> getBlogModel() {
+        if(blogModel == null) {
+            blogModel = createBlogModel();
+        }
+        return blogModel;
+    }
+
     @Override
 	protected Component createPrintableComponent(String id, PageParameters params) {
-
-		return new BlogPrintPanel(id, blogModel);
+        this.params = params;
+		return new BlogPrintPanel(id,  getBlogModel());
 	}
 
 	private Integer getBlogId() {
@@ -75,7 +80,7 @@ public class BlogPrintPage extends PrintPage {
 	}
 
 	private void validateAccessRights() {
-        BlogEntity blog = blogModel.getObject();
+        BlogEntity blog = getBlogModel().getObject();
 		if (blog == null || !isAllowedToRead(blog)) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
 		}

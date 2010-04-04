@@ -20,8 +20,13 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
@@ -36,62 +41,72 @@ import org.devproof.portal.module.download.service.DownloadService;
  */
 public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "downloadService")
-	private DownloadService downloadService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private WebMarkupContainer titleContainer;
-	private List<DownloadEntity> latestDownloads;
-	public DownloadBoxPanel(String id) {
-		super(id);
-		setLatestDownloads();
-		setVisibility();
-		add(createRepeatingViewWithDownloads());
-		add(createTitleContainer());
-	}
+    @SpringBean(name = "downloadService")
+    private DownloadService downloadService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private WebMarkupContainer titleContainer;
+    private IModel<List<DownloadEntity>> latestDownloadsModel;
 
-	private void setVisibility() {
-		setVisible(isDownloadAvailable());
-	}
+    public DownloadBoxPanel(String id) {
+        super(id);
+        latestDownloadsModel = createLatestDownloadsModel();
+        add(createRepeatingViewWithDownloads());
+        add(createTitleContainer());
+    }
 
-	private boolean isDownloadAvailable() {
-		return latestDownloads.size() > 0;
-	}
+    @Override
+    public boolean isVisible() {
+        List<DownloadEntity> latestDownloads = latestDownloadsModel.getObject();
+        return latestDownloads.size() > 0;
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
-	private RepeatingView createRepeatingViewWithDownloads() {
-		RepeatingView repeating = new RepeatingView("repeating");
-		for (DownloadEntity download : latestDownloads) {
-			WebMarkupContainer item = new WebMarkupContainer(repeating.newChildId());
-			item.add(createLinkToDownload(download));
-			repeating.add(item);
-		}
-		return repeating;
-	}
+    private ListView<DownloadEntity> createRepeatingViewWithDownloads() {
+        return new ListView<DownloadEntity>("repeating") {
+            private static final long serialVersionUID = -1523488276282233553L;
 
-	private BookmarkablePageLink<DownloadPage> createLinkToDownload(DownloadEntity download) {
-		BookmarkablePageLink<DownloadPage> link = new BookmarkablePageLink<DownloadPage>("link", DownloadPage.class);
-		link.setParameter("id", download.getId());
-		link.add(new Label("linkName", download.getTitle()));
-		return link;
-	}
+            @Override
+            protected void populateItem(ListItem<DownloadEntity> item) {
+                item.add(createLinkToDownload(item.getModel()));
+            }
+        };
+    }
 
-	private List<DownloadEntity> setLatestDownloads() {
-		PortalSession session = (PortalSession) getSession();
-		Integer num = configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
-		latestDownloads = downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0,
-				num);
-		return latestDownloads;
-	}
+    private BookmarkablePageLink<DownloadPage> createLinkToDownload(IModel<DownloadEntity> downloadModel) {
+        DownloadEntity download = downloadModel.getObject();
+        BookmarkablePageLink<DownloadPage> link = new BookmarkablePageLink<DownloadPage>("link", DownloadPage.class);
+        link.setParameter("id", download.getId());
+        link.add(createLinkToDownloadLabel(downloadModel));
+        return link;
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    private Label createLinkToDownloadLabel(IModel<DownloadEntity> downloadModel) {
+        IModel<Object> titleModel = new PropertyModel<Object>(downloadModel, "title");
+        return new Label("linkName", titleModel);
+    }
+
+    private IModel<List<DownloadEntity>> createLatestDownloadsModel() {
+        return new LoadableDetachableModel<List<DownloadEntity>>() {
+            private static final long serialVersionUID = 7003739130115325197L;
+
+            @Override
+            protected List<DownloadEntity> load() {
+                PortalSession session = (PortalSession) getSession();
+                Integer num = configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
+                return downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0, num);
+            }
+        };
+    }
+
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

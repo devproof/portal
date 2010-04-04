@@ -34,52 +34,61 @@ import org.devproof.portal.module.download.query.DownloadQuery;
  * @author Carsten Hufe
  */
 public abstract class DownloadSearchBoxPanel extends Panel implements BoxTitleVisibility {
-	private static final long serialVersionUID = 1L;
-	private WebMarkupContainer titleContainer;
+    private static final long serialVersionUID = 1L;
+    private WebMarkupContainer titleContainer;
     private IModel<DownloadQuery> queryModel;
 
     public DownloadSearchBoxPanel(String id, IModel<DownloadQuery> queryModel) {
-		super(id, queryModel);
+        super(id, queryModel);
         this.queryModel = queryModel;
         add(createTitleContainer());
-		add(createSearchForm());
-	}
+        add(createSearchForm());
+    }
 
-	private Component createSearchForm() {
-		Form<SearchQuery> form = newSearchForm();
-		form.add(createSearchTextField());
-		form.add(createBrokenDropDown());
-		return form;
-	}
+    private Component createSearchForm() {
+        Form<SearchQuery> form = newSearchForm();
+        form.add(createSearchTextField());
+        form.add(createBrokenDropDown());
+        return form;
+    }
 
-	private Form<SearchQuery> newSearchForm() {
-		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
-		return new Form<SearchQuery>("searchForm", formModel);
-	}
-    
-	private Select createBrokenDropDown() {
-		Select selectBroken = new Select("broken");
-		selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
-		selectBroken.add(new SelectOption<Boolean>("brokenTrue", Model.of(Boolean.TRUE)));
-		selectBroken.add(new SelectOption<Boolean>("brokenFalse", Model.of(Boolean.FALSE)));
-		selectBroken.add(new SimpleAttributeModifier("onchange", "submit();"));
-		selectBroken.setVisible(isAuthor());
-		return selectBroken;
-	}
+    private Form<SearchQuery> newSearchForm() {
+        CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
+        return new Form<SearchQuery>("searchForm", formModel);
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private Select createBrokenDropDown() {
+        Select selectBroken = newBrokenDropDown();
+        selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
+        selectBroken.add(new SelectOption<Boolean>("brokenTrue", Model.of(Boolean.TRUE)));
+        selectBroken.add(new SelectOption<Boolean>("brokenFalse", Model.of(Boolean.FALSE)));
+        selectBroken.add(new SimpleAttributeModifier("onchange", "submit();"));
+        return selectBroken;
+    }
 
-	private TextField<String> createSearchTextField() {
-		return new TextField<String>("allTextFields");
-	}
+    private Select newBrokenDropDown() {
+        return new Select("broken") {
+            private static final long serialVersionUID = 1446343627905048235L;
+            @Override
+            public boolean isVisible() {
+                return isAuthor();
+            }
+        };
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
+
+    private TextField<String> createSearchTextField() {
+        return new TextField<String>("allTextFields");
+    }
+
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 
     protected abstract boolean isAuthor();
 }

@@ -44,7 +44,10 @@ public class DownloadRedirectPage extends WebPage {
 	public DownloadRedirectPage(PageParameters params) {
 		super(params);
 		this.params = params;
+	}
 
+    @Override
+    protected void onBeforeRender() {
 		if (hasFirstParameter()) {
 			DownloadEntity download = downloadService.findById(getDownloadIdParam());
 			if (hasDownloadRight(download)) {
@@ -56,9 +59,10 @@ public class DownloadRedirectPage extends WebPage {
 				}
 			}
 		}
-	}
+        super.onBeforeRender();
+    }
 
-	private boolean isLocalFile(DownloadEntity download) {
+    private boolean isLocalFile(DownloadEntity download) {
 		return download.getUrl().startsWith("file:/");
 	}
 
