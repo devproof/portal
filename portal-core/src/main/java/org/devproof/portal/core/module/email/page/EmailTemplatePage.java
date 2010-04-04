@@ -25,6 +25,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -101,12 +102,12 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 		}
 
 		private AuthorPanel<EmailTemplateEntity> createAuthorPanel(final Item<EmailTemplateEntity> item) {
-			return new AuthorPanel<EmailTemplateEntity>("authorButtons", item.getModelObject()) {
+			return new AuthorPanel<EmailTemplateEntity>("authorButtons", item.getModel()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
-					emailService.delete(getEntity());
+					emailService.delete(getEntityModel().getObject());
 					info(EmailTemplatePage.this.getString("msg.deleted"));
 					item.setVisible(false);
 					target.addComponent(item);
@@ -115,12 +116,9 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					// Reload because LazyIntialization occur
-					EmailTemplateEntity templateToEdit = emailService.findById(item.getModelObject().getId());
-					IModel<EmailTemplateEntity> emailTemplateModel = Model.of(templateToEdit);
-					setResponsePage(new EmailTemplateEditPage(emailTemplateModel));
+                    setResponsePage(new EmailTemplateEditPage(item.getModel()));
 				}
 			};
 		}
-	}
+    }
 }

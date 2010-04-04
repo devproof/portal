@@ -38,16 +38,12 @@ public class TooltipLabel extends Panel {
 		super(id);
 		this.label = label;
 		this.tooltip = tooltip;
-		setTooltipMarkupId();
+		this.tooltipMarkupId = generateTooltipMarkupId();
 		modifyMarkupId();
 		add(createJavascriptHeaderContributor());
 		add(createCSSHeaderContributor());
 		add(createTooltipLink());
 		add(tooltip);
-	}
-
-	private void setTooltipMarkupId() {
-		tooltipMarkupId = generateTooltipMarkupId();
 	}
 
 	private String generateTooltipMarkupId() {
