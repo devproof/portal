@@ -16,16 +16,18 @@
 package org.devproof.portal.core.module.theme.page;
 
 import java.io.File;
-import java.util.List;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalApplication;
@@ -43,191 +45,203 @@ import org.devproof.portal.core.module.theme.service.ThemeService;
  */
 public class ThemePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	@SpringBean(name = "themeService")
-	private ThemeService themeService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    @SpringBean(name = "themeService")
+    private ThemeService themeService;
 
-	private RepeatingView themeRepeater;
-	private BubblePanel bubblePanel;
+    private BubblePanel bubblePanel;
 
-	public ThemePage(PageParameters params) {
-		super(params);
-		add(createBubblePanel());
-		add(createThemeRepeater());
-		addPageAdminBoxLink(createUploadLink());
-		addPageAdminBoxLink(createCompleteThemeDownloadLink());
-		addPageAdminBoxLink(createSmallThemeDownloadLink());
-	}
+    public ThemePage(PageParameters params) {
+        super(params);
+        add(createBubblePanel());
+        add(createThemeRepeater());
+        addPageAdminBoxLink(createUploadLink());
+        addPageAdminBoxLink(createCompleteThemeDownloadLink());
+        addPageAdminBoxLink(createSmallThemeDownloadLink());
+    }
 
-	private void reloadThemeRepeater() {
-		ThemePage.this.replace(createThemeRepeater());
-	}
+    private ListView<ThemeBean> createThemeRepeater() {
+        return new ListView<ThemeBean>("tableRow") {
+            private static final long serialVersionUID = -3440575235335312961L;
 
-	private RepeatingView createThemeRepeater() {
-		themeRepeater = new RepeatingView("tableRow");
-		List<ThemeBean> themes = themeService.findAllThemes();
-		for (ThemeBean theme : themes) {
-			themeRepeater.add(createThemeRow(theme));
-		}
-		return themeRepeater;
-	}
+            @Override
+            protected void populateItem(ListItem<ThemeBean> item) {
+                IModel<ThemeBean> themeBeanModel = item.getModel();
+                item.add(createThemeNameLabel(themeBeanModel));
+                item.add(createThemeAuthorHomepageLink(themeBeanModel));
+                item.add(createSelectionLink(themeBeanModel));
+                item.add(createUninstallLink(themeBeanModel));
+            }
+        };
+    }
 
-	private WebMarkupContainer createThemeRow(ThemeBean theme) {
-		WebMarkupContainer row = new WebMarkupContainer(themeRepeater.newChildId());
-		row.add(createThemeNameLabel(theme));
-		row.add(createThemeAuthorHomepageLink(theme));
-		row.add(createSelectionLink(theme));
-		row.add(createUninstallLink(theme));
-		return row;
-	}
+    private ExternalLink createThemeAuthorHomepageLink(IModel<ThemeBean> themeModel) {
+        ThemeBean theme = themeModel.getObject();
+        return new ExternalLink("authorLink", theme.getUrl(), theme.getAuthor());
+    }
 
-	private ExternalLink createThemeAuthorHomepageLink(ThemeBean theme) {
-		return new ExternalLink("authorLink", theme.getUrl(), theme.getAuthor());
-	}
+    private Label createThemeNameLabel(IModel<ThemeBean> themeModel) {
+        IModel<String> themeNameModel = new PropertyModel<String>(themeModel, "theme");
+        return new Label("theme", themeNameModel);
+    }
 
-	private Label createThemeNameLabel(ThemeBean theme) {
-		return new Label("theme", theme.getTheme());
-	}
+    private Link<Void> createSelectionLink(final IModel<ThemeBean> themeModel) {
+        Link<Void> selectLink = newSelectLink(themeModel);
+        selectLink.add(createSelectLinkLabel(themeModel));
+        return selectLink;
+    }
 
-	private Link<Void> createSelectionLink(ThemeBean theme) {
-		String selectedThemeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
-		boolean selected = selectedThemeUuid.equals(theme.getUuid());
-		String key = selected ? "selectedLink" : "selectLink";
-		Link<Void> selectLink = newSelectionTheme(theme);
-		selectLink.setEnabled(!selected);
-		selectLink.add(new Label("selectLabel", getString(key)));
-		return selectLink;
-	}
+    private Link<Void> newSelectLink(final IModel<ThemeBean> themeModel) {
+        return new Link<Void>("selectLink") {
+            private static final long serialVersionUID = -4733497680197408991L;
 
-	private Link<Void> newSelectionTheme(final ThemeBean theme) {
-		return new Link<Void>("selectLink") {
-			private static final long serialVersionUID = 1L;
+            @Override
+            public void onClick() {
+                ThemeBean theme = themeModel.getObject();
+                themeService.selectTheme(theme);
+                info(new StringResourceModel("msg.selected", this, null, new Object[]{theme.getTheme()}).getString());
+                setTheme(theme);
+            }
 
-			@Override
-			public void onClick() {
-				themeService.selectTheme(theme);
-				info(new StringResourceModel("msg.selected", this, null, new Object[] { theme.getTheme() }).getString());
-				setTheme(theme);
-				reloadThemeRepeater();
-			}
+            private void setTheme(ThemeBean theme) {
+                ((PortalApplication) getApplication()).setThemeUuid(theme.getUuid());
+            }
 
-			private void setTheme(ThemeBean theme) {
-				((PortalApplication) getApplication()).setThemeUuid(theme.getUuid());
-			}
-		};
-	}
+            @Override
+            public boolean isEnabled() {
+                String selectedThemeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
+                ThemeBean theme = themeModel.getObject();
+                return selectedThemeUuid.equals(theme.getUuid());
+            }
+        };
+    }
 
-	private Link<Void> createUninstallLink(ThemeBean theme) {
-		Link<Void> uninstallLink = newUninstallLink(theme);
-		uninstallLink.setVisible(!ThemeConstants.CONF_SELECTED_THEME_DEFAULT.equals(theme.getUuid()));
-		return uninstallLink;
-	}
+    private Label createSelectLinkLabel(IModel<ThemeBean> themeModel) {
+        return new Label("selectLabel", createSelectedLinkLabelModel(themeModel));
+    }
 
-	private Link<Void> newUninstallLink(final ThemeBean theme) {
-		Link<Void> uninstallLink = new Link<Void>("uninstallLink") {
-			private static final long serialVersionUID = 1L;
+    private LoadableDetachableModel<String> createSelectedLinkLabelModel(final IModel<ThemeBean> themeModel) {
+        return new LoadableDetachableModel<String>() {
+            private static final long serialVersionUID = -5655831323982352436L;
+            @Override
+            protected String load() {
+                String selectedThemeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
+                ThemeBean theme = themeModel.getObject();
+                boolean selected = selectedThemeUuid.equals(theme.getUuid());
+                return getString(selected ? "selectedLink" : "selectLink");
+            }
+        };
+    }
 
-			@Override
-			public void onClick() {
-				themeService.uninstall(theme);
-				info(new StringResourceModel("msg.uninstalled", this, null, new Object[] { theme.getTheme() })
-						.getString());
-				setDefaultTheme();
-				reloadThemeRepeater();
-			}
+    private Link<Void> createUninstallLink(final IModel<ThemeBean> themeModel) {
+        return new Link<Void>("uninstallLink") {
+            private static final long serialVersionUID = 1L;
 
-			private void setDefaultTheme() {
-				((PortalApplication) getApplication()).setThemeUuid(ThemeConstants.CONF_SELECTED_THEME_DEFAULT);
-			}
-		};
-		return uninstallLink;
-	}
+            @Override
+            public void onClick() {
+                ThemeBean theme = themeModel.getObject();
+                themeService.uninstall(theme);
+                info(new StringResourceModel("msg.uninstalled", this, null, new Object[]{theme.getTheme()})
+                        .getString());
+                setDefaultTheme();
+            }
 
-	private InternalDownloadLink createSmallThemeDownloadLink() {
-		// Download link for small default theme
-		InternalDownloadLink smallTheme = newSmallThemeDownloadLink();
-		smallTheme.add(createSmallThemeDownloadLinkLabel());
-		return smallTheme;
-	}
+            private void setDefaultTheme() {
+                ((PortalApplication) getApplication()).setThemeUuid(ThemeConstants.CONF_SELECTED_THEME_DEFAULT);
+            }
 
-	private Label createSmallThemeDownloadLinkLabel() {
-		return new Label("linkName", getString("smallThemeLink"));
-	}
+            @Override
+            public boolean isVisible() {
+                ThemeBean theme = themeModel.getObject();
+                return !ThemeConstants.CONF_SELECTED_THEME_DEFAULT.equals(theme.getUuid());
+            }
+        };
+    }
 
-	private InternalDownloadLink newSmallThemeDownloadLink() {
-		return new InternalDownloadLink("adminLink") {
-			private static final long serialVersionUID = 1L;
+    private InternalDownloadLink createSmallThemeDownloadLink() {
+        // Download link for small default theme
+        InternalDownloadLink smallTheme = newSmallThemeDownloadLink();
+        smallTheme.add(createSmallThemeDownloadLinkLabel());
+        return smallTheme;
+    }
 
-			@Override
-			protected File getFile() {
-				return themeService.createSmallDefaultTheme();
-			}
-		};
-	}
+    private Label createSmallThemeDownloadLinkLabel() {
+        return new Label("linkName", getString("smallThemeLink"));
+    }
 
-	private InternalDownloadLink createCompleteThemeDownloadLink() {
-		InternalDownloadLink completeTheme = newCompleteThemeDownloadLink();
-		completeTheme.add(createCompleteThemeDownloadLinkLabel());
-		return completeTheme;
-	}
+    private InternalDownloadLink newSmallThemeDownloadLink() {
+        return new InternalDownloadLink("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-	private Label createCompleteThemeDownloadLinkLabel() {
-		return new Label("linkName", getString("completeThemeLink"));
-	}
+            @Override
+            protected File getFile() {
+                return themeService.createSmallDefaultTheme();
+            }
+        };
+    }
 
-	private InternalDownloadLink newCompleteThemeDownloadLink() {
-		return new InternalDownloadLink("adminLink") {
-			private static final long serialVersionUID = 1L;
+    private InternalDownloadLink createCompleteThemeDownloadLink() {
+        InternalDownloadLink completeTheme = newCompleteThemeDownloadLink();
+        completeTheme.add(createCompleteThemeDownloadLinkLabel());
+        return completeTheme;
+    }
 
-			@Override
-			protected File getFile() {
-				return themeService.createCompleteDefaultTheme();
-			}
-		};
-	}
+    private Label createCompleteThemeDownloadLinkLabel() {
+        return new Label("linkName", getString("completeThemeLink"));
+    }
 
-	private AjaxLink<BubblePanel> createUploadLink() {
-		AjaxLink<BubblePanel> uploadLink = newUploadLink();
-		uploadLink.add(createUploadLinkLabel());
-		return uploadLink;
-	}
+    private InternalDownloadLink newCompleteThemeDownloadLink() {
+        return new InternalDownloadLink("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-	private Label createUploadLinkLabel() {
-		return new Label("linkName", getString("uploadLink"));
-	}
+            @Override
+            protected File getFile() {
+                return themeService.createCompleteDefaultTheme();
+            }
+        };
+    }
 
-	private AjaxLink<BubblePanel> newUploadLink() {
-		return new AjaxLink<BubblePanel>("adminLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<BubblePanel> createUploadLink() {
+        AjaxLink<BubblePanel> uploadLink = newUploadLink();
+        uploadLink.add(createUploadLinkLabel());
+        return uploadLink;
+    }
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				bubblePanel.setContent(uploadThemePanel());
-				bubblePanel.showModal(target);
-			}
+    private Label createUploadLinkLabel() {
+        return new Label("linkName", getString("uploadLink"));
+    }
 
-			private UploadThemePanel uploadThemePanel() {
-				return new UploadThemePanel(bubblePanel.getContentId()) {
-					private static final long serialVersionUID = 1L;
+    private AjaxLink<BubblePanel> newUploadLink() {
+        return new AjaxLink<BubblePanel>("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onSubmit() {
-						reloadThemeRepeater();
-					}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bubblePanel.setContent(uploadThemePanel());
+                bubblePanel.showModal(target);
+            }
 
-					@Override
-					public void onCancel(AjaxRequestTarget target) {
-						bubblePanel.hide(target);
-					}
-				};
-			}
-		};
-	}
+            private UploadThemePanel uploadThemePanel() {
+                return new UploadThemePanel(bubblePanel.getContentId()) {
+                    private static final long serialVersionUID = 1L;
 
-	private BubblePanel createBubblePanel() {
-		bubblePanel = new BubblePanel("bubblePanel");
-		return bubblePanel;
-	}
+                    @Override
+                    public void onSubmit() {
+                    }
+
+                    @Override
+                    public void onCancel(AjaxRequestTarget target) {
+                        bubblePanel.hide(target);
+                    }
+                };
+            }
+        };
+    }
+
+    private BubblePanel createBubblePanel() {
+        bubblePanel = new BubblePanel("bubblePanel");
+        return bubblePanel;
+    }
 }

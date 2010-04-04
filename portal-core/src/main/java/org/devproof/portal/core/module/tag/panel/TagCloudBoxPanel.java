@@ -51,8 +51,7 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 	private ConfigurationService configurationService;
 	private TagService<T> tagService;
 	private Class<? extends Page> page;
-	private ListView<T> listView;
-	private WebMarkupContainer titleContainer;
+    private WebMarkupContainer titleContainer;
 	private IModel<List<T>> tagsModel;
 
 	public TagCloudBoxPanel(String id, TagService<T> tagService, Class<? extends Page> page) {
@@ -75,50 +74,49 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 		return titleContainer;
 	}
 
-	private ListView<T> createTagListView() {
-		listView = new ListView<T>("liRow", tagsModel) {
-			private static final long serialVersionUID = 1L;
+    private ListView<T> createTagListView() {
+        return new ListView<T>("liRow", tagsModel) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void populateItem(ListItem<T> item) {
-				item.add(createClassTagSelectionModifier(item.getModelObject()));
-				item.add(createTagLink(item));
-			}
+            @Override
+            protected void populateItem(ListItem<T> item) {
+                item.add(createClassTagSelectionModifier(item.getModelObject()));
+                item.add(createTagLink(item));
+            }
 
-			private AttributeModifier createClassTagSelectionModifier(T tag) {
-				return new AttributeModifier("class", true, createClassSelectedModifierModel(tag));
-			}
+            private AttributeModifier createClassTagSelectionModifier(T tag) {
+                return new AttributeModifier("class", true, createClassSelectedModifierModel(tag));
+            }
 
-			private IModel<String> createClassSelectedModifierModel(final T tag) {
-				return new AbstractReadOnlyModel<String>() {
-					private static final long serialVersionUID = 1L;
+            private IModel<String> createClassSelectedModifierModel(final T tag) {
+                return new AbstractReadOnlyModel<String>() {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					public String getObject() {
-						if (isTagSelected(tag)) {
-							return "selsidenav";
-						}
-						return "";
-					}
-				};
-			}
+                    @Override
+                    public String getObject() {
+                        if (isTagSelected(tag)) {
+                            return "selsidenav";
+                        }
+                        return "";
+                    }
+                };
+            }
 
-			private BookmarkablePageLink<Void> createTagLink(ListItem<T> item) {
-				T tag = item.getModelObject();
-				BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("tagLink", page);
-				link.add(createTagLinkLabel(tag));
-				if (!isTagSelected(item.getModelObject())) {
-					link.setParameter("tag", tag.getTagname());
-				}
-				return link;
-			}
+            private BookmarkablePageLink<Void> createTagLink(ListItem<T> item) {
+                T tag = item.getModelObject();
+                BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("tagLink", page);
+                link.add(createTagLinkLabel(tag));
+                if (!isTagSelected(item.getModelObject())) {
+                    link.setParameter("tag", tag.getTagname());
+                }
+                return link;
+            }
 
-			private Label createTagLinkLabel(T tag) {
-				return new Label("tagLabel", tag.getTagname());
-			}
-		};
-		return listView;
-	}
+            private Label createTagLinkLabel(T tag) {
+                return new Label("tagLabel", tag.getTagname());
+            }
+        };
+    }
 
 	private boolean isTagSelected(T tag) {
 		String selectedTag = TagUtils.findSelectedTag();

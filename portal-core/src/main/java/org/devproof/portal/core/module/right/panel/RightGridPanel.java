@@ -44,26 +44,20 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 	@SpringBean(name = "rightService")
 	private RightService rightService;
 	private String rightPrefix;
-	// private Map<RightEntity, CheckBox> keepCheckBoxStateAfterValidation = new
-	// HashMap<RightEntity, CheckBox>();
-	private List<RightEntity> allRights;
-	private List<RightEntity> originalRightsListReference;
-	private List<RightEntity> originalSelectedRights;
+    private IModel<List<RightEntity>> originalRightsListModel;
+    private List<RightEntity> allRights;
+    private List<RightEntity> originalSelectedRights;
 
 	public RightGridPanel(String id, String rightPrefix, IModel<List<RightEntity>> selectedRights) {
 		super(id);
 		this.rightPrefix = rightPrefix;
-		this.originalRightsListReference = selectedRights.getObject();
-		setOriginalSelectedRights();
-		setAllRights();
-		add(createRightGridView());
+		this.originalRightsListModel = selectedRights;
+		originalSelectedRights = createOriginalSelectedRights();
+        allRights = rightService.findRightsStartingWith(this.rightPrefix);
+        add(createRightGridView());
 	}
 
-	private void setAllRights() {
-		allRights = rightService.findRightsStartingWith(rightPrefix);
-	}
-
-	private GridView<RightEntity> createRightGridView() {
+    private GridView<RightEntity> createRightGridView() {
 		ListDataProvider<RightEntity> ldp = new ListDataProvider<RightEntity>(allRights);
 		GridView<RightEntity> gridView = newRightGridView(ldp);
 		gridView.setColumns(3);
@@ -114,18 +108,20 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 		};
 	}
 
-	private void setOriginalSelectedRights() {
-		originalSelectedRights = new ArrayList<RightEntity>();
-		for (Iterator<? extends RightEntity> it = originalRightsListReference.iterator(); it.hasNext();) {
+	private List<RightEntity> createOriginalSelectedRights() {
+		List<RightEntity> originalSelectedRights = new ArrayList<RightEntity>();
+        List<RightEntity> originalRightsList = originalRightsListModel.getObject();
+		for (Iterator<? extends RightEntity> it = originalRightsList.iterator(); it.hasNext();) {
 			RightEntity right = it.next();
 			if (right.getRight().startsWith(rightPrefix)) {
 				originalSelectedRights.add(right);
 				it.remove();
 			}
 		}
+        return originalSelectedRights;
 	}
 
-	private List<? extends RightEntity> getSelectedRights() {
+	private List<RightEntity> getSelectedRights() {
 		List<RightEntity> newRights = new ArrayList<RightEntity>();
 		for (RightEntity right : allRights) {
 			if (right.isSelected()) {
@@ -137,6 +133,7 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 
 	@Override
 	public void updateModel() {
-		originalRightsListReference.addAll(getSelectedRights());
+        // TODO test ob es mit rights setzen funktioniert
+		originalRightsListModel.setObject(getSelectedRights());
 	}
 }

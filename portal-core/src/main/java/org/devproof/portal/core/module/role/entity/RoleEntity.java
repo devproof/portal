@@ -37,6 +37,8 @@ import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * @author Carsten Hufe
@@ -57,6 +59,7 @@ final public class RoleEntity extends BaseEntity {
 	private String description;
 	@Column(name = "active", nullable = false)
 	private Boolean active;
+    @Fetch(FetchMode.SUBSELECT)
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "core_role_right_xref", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
 	@OrderBy("description asc")
