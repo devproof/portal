@@ -139,10 +139,8 @@ public class BookmarkPage extends BookmarkBasePage {
     }
 
     private class BookmarkView extends Fragment {
-
         private static final long serialVersionUID = 1L;
-
-        private Model<Boolean> hasVoted;
+        private IModel<Boolean> hasVoted;
         private IModel<BookmarkEntity> bookmarkModel;
 
         public BookmarkView(String id, Item<BookmarkEntity> item) {
@@ -202,8 +200,9 @@ public class BookmarkPage extends BookmarkBasePage {
         }
 
         private Component createRatingPanel() {
-            return new CaptchaRatingPanel("vote", new PropertyModel<Integer>(bookmarkModel, "calculatedRating"),
-                    Model.of(5), new PropertyModel<Integer>(bookmarkModel, "numberOfVotes"), hasVoted, true, bubblePanel) {
+            IModel<Integer> calculatedRatingModel = new PropertyModel<Integer>(bookmarkModel, "calculatedRating");
+            IModel<Integer> numberOfVotesModel = new PropertyModel<Integer>(bookmarkModel, "numberOfVotes");
+            return new CaptchaRatingPanel("vote", calculatedRatingModel, Model.of(5), numberOfVotesModel, hasVoted, true, bubblePanel) {
                 private static final long serialVersionUID = 2020860765811355013L;
 
                 @Override

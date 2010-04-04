@@ -20,6 +20,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.entity.CommentEntity;
@@ -56,7 +57,7 @@ public class CommentInfoPanelTest extends TestCase {
 				CommentEntity comment = new CommentEntity();
 				comment.setCreatedAt(new Date());
 				comment.setModifiedAt(new Date());
-				return new CommentInfoPanel(panelId, comment);
+				return new CommentInfoPanel(panelId, Model.of(comment));
 			}
 		};
 	}

@@ -20,6 +20,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.blog.entity.BlogEntity;
@@ -58,7 +59,7 @@ public class BlogPrintPanelTest extends TestCase {
 				blog.setModifiedAt(new Date());
 				blog.setCreatedBy("foo");
 				blog.setModifiedBy("bar");
-				return new BlogPrintPanel(panelId, blog);
+				return new BlogPrintPanel(panelId, Model.of(blog));
 			}
 		};
 	}
