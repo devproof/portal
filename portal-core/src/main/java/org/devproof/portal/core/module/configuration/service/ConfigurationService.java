@@ -15,12 +15,12 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
+import org.devproof.portal.core.module.common.service.CrudService;
+import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+
 import java.io.File;
 import java.util.Date;
 import java.util.List;
-
-import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 
 /**
  * @author Carsten Hufe Methods to load the configuration values

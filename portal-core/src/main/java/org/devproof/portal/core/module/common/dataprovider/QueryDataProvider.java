@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
-import java.io.Serializable;
-
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.model.IModel;
+
+import java.io.Serializable;
 
 /**
  * A generic data provider with query objects

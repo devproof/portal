@@ -15,11 +15,6 @@
  */
 package org.devproof.portal.core.app;
 
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
@@ -39,6 +34,10 @@ import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
+
+import javax.servlet.http.Cookie;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Global portal session

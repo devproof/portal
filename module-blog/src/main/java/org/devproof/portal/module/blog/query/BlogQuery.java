@@ -24,7 +24,6 @@ import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.TagConstants;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
 
 /**
  * @author Carsten Hufe

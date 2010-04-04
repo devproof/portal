@@ -15,11 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.datetime.markup.html.basic.DateLabel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -30,9 +25,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.panel.UsernamePanel;
 import org.devproof.portal.core.module.user.service.UserService;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * the part in blogs downloads, etc "created by [name] at [date]

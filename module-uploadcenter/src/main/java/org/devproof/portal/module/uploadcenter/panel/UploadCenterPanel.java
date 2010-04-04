@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.module.uploadcenter.panel;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.logging.Log;
@@ -37,6 +34,9 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.ConfirmDeletePanel;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Carsten Hufe

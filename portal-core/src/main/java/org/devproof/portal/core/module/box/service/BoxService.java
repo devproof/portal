@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.box.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.common.service.CrudService;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

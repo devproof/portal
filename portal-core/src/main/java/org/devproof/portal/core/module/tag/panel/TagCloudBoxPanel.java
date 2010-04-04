@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.tag.panel;
 
-import java.util.List;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
@@ -40,6 +38,8 @@ import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.core.module.tag.TagUtils;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

@@ -15,20 +15,15 @@
  */
 package org.devproof.portal.core.module.tag.service;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import junit.framework.TestCase;
+import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.tag.dao.TagDao;
+import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.dao.TagDao;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

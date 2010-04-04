@@ -15,18 +15,16 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
-import org.easymock.EasyMock;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.easymock.EasyMock.*;
 

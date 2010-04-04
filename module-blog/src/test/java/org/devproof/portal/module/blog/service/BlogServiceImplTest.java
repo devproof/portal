@@ -15,16 +15,13 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

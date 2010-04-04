@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.common.registry;
 
-import java.util.List;
-
 import org.apache.wicket.Page;
+
+import java.util.List;
 
 /**
  * Registry for page administration links

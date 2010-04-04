@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.article.page;
 
-import java.util.List;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -39,6 +37,8 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.service.ArticleService;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

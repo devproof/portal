@@ -15,6 +15,14 @@
  */
 package org.devproof.portal.core.app;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
+import org.springframework.web.context.ServletContextAware;
+
+import javax.servlet.ServletContext;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -22,15 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import javax.servlet.ServletContext;
-
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.web.context.ConfigurableWebApplicationContext;
-import org.springframework.web.context.ServletContextAware;
 
 /**
  * @author Carsten Hufe

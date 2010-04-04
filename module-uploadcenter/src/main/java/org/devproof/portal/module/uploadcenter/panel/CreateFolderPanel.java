@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.module.uploadcenter.panel;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -26,11 +23,13 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.apache.wicket.validation.validator.PatternValidator;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Carsten Hufe

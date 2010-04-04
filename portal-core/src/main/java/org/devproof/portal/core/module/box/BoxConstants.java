@@ -15,10 +15,6 @@
  */
 package org.devproof.portal.core.module.box;
 
-import org.apache.wicket.ResourceReference;
-import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
-import org.hibernate.dialect.MySQL5Dialect;
-
 /**
  * Contains box constants
  *

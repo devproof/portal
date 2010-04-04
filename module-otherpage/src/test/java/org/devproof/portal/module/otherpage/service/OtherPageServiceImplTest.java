@@ -15,14 +15,11 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import junit.framework.TestCase;
-
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * Checks the delegating functionality of the OtherPageServiceImpl

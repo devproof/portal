@@ -15,17 +15,14 @@
  */
 package org.devproof.portal.module.deadlinkcheck.panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
 import org.devproof.portal.test.PortalTestUtil;
+
+import java.util.ArrayList;
 
 /**
  * @author Carsten Hufe

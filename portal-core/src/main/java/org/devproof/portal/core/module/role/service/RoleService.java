@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.role.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

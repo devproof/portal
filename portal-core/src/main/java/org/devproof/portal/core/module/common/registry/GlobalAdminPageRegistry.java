@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.common.registry;
 
-import java.util.List;
-
 import org.apache.wicket.Page;
 import org.devproof.portal.core.module.common.panel.GlobalAdminBoxPanel;
+
+import java.util.List;
 
 /**
  * Registry for {@link GlobalAdminBoxPanel} links

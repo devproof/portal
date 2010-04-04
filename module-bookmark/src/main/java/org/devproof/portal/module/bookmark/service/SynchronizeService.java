@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
-import java.util.List;
-
 import org.devproof.portal.module.bookmark.bean.DeliciousBean;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
+
+import java.util.List;
 
 /**
  * Methods to access and sync data from external

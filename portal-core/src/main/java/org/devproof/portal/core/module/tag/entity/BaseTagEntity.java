@@ -15,13 +15,12 @@
  */
 package org.devproof.portal.core.module.tag.entity;
 
-import java.util.List;
+import org.devproof.portal.core.module.common.entity.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import java.util.List;
 
 /**
  * Base class for tags

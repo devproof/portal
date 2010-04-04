@@ -15,19 +15,15 @@
  */
 package org.devproof.portal.core.module.common.component;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Locale;
-
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.time.Time;
+
+import java.io.*;
+import java.util.Locale;
 
 /**
  * Internal download link with file parameter

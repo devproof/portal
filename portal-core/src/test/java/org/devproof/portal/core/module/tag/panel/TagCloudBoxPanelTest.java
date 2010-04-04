@@ -15,12 +15,7 @@
  */
 package org.devproof.portal.core.module.tag.panel;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
@@ -30,6 +25,10 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.test.PortalTestUtil;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

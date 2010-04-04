@@ -29,9 +29,6 @@ import javax.swing.tree.TreePath;
 import java.io.File;
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Carsten Hufe

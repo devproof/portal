@@ -15,14 +15,14 @@
  */
 package org.devproof.portal.core.module.tag.dao;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.TagConstants;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

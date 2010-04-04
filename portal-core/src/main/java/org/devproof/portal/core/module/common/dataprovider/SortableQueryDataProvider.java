@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
-import java.io.Serializable;
-
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
+
+import java.io.Serializable;
 
 /**
  * @author Carsten Hufe

@@ -15,6 +15,11 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
+import org.devproof.portal.core.module.configuration.dao.ConfigurationDao;
+import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistry;
+import org.springframework.beans.factory.annotation.Required;
+
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.ParseException;
@@ -22,11 +27,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.devproof.portal.core.module.configuration.dao.ConfigurationDao;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
-import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistry;
-import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Carsten Hufe

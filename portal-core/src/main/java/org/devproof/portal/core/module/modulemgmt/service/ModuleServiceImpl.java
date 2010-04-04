@@ -15,14 +15,6 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.apache.commons.lang.StringUtils;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.ModuleConfiguration;
@@ -37,6 +29,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author Carsten Hufe

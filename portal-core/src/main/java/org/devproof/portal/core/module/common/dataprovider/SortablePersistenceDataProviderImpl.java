@@ -15,16 +15,16 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
-import java.io.Serializable;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
+
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Generic data provider for wicket data views Only set the type and you will

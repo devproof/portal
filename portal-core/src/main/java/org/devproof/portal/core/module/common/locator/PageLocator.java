@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.common.locator;
 
-import java.util.Collection;
-
 import org.devproof.portal.core.config.PageConfiguration;
+
+import java.util.Collection;
 
 /**
  * Locates the pages of all modules

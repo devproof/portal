@@ -15,16 +15,7 @@
  */
 package org.devproof.portal.test;
 
-import java.lang.management.ManagementFactory;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.management.MBeanServer;
-
+import com.mysql.jdbc.Driver;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.devproof.portal.core.app.PortalApplication;
@@ -38,7 +29,14 @@ import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.management.MBeanContainer;
 import org.springframework.web.context.ContextLoaderListener;
 
-import com.mysql.jdbc.Driver;
+import javax.mail.Authenticator;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.management.MBeanServer;
+import java.lang.management.ManagementFactory;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Test jetty start class for development

@@ -15,11 +15,11 @@
  */
 package org.devproof.portal.core.module.box.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.box.dao.BoxDao;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.blog.page;
 
-import java.util.List;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -24,7 +22,6 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
@@ -34,6 +31,8 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.devproof.portal.module.blog.service.BlogService;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

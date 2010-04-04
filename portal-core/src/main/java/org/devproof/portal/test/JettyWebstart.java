@@ -15,16 +15,6 @@
  */
 package org.devproof.portal.test;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.mail.Session;
-import javax.naming.NamingException;
-
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.protocol.http.WicketFilter;
 import org.devproof.portal.core.app.PortalApplication;
@@ -38,6 +28,15 @@ import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.web.context.ContextLoaderListener;
+
+import javax.mail.Session;
+import javax.naming.NamingException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Test jetty start class for Java Webstart

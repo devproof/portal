@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.common.panel;
 
 import junit.framework.TestCase;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;

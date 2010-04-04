@@ -15,17 +15,16 @@
  */
 package org.devproof.portal.module.download.entity;
 
-import java.util.List;
+import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.module.download.DownloadConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
-import org.devproof.portal.module.download.DownloadConstants;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

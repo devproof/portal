@@ -16,14 +16,13 @@
  */
 package org.devproof.portal.core.module.common.panel.captcha;
 
-import java.awt.Point;
-import java.awt.Rectangle;
+import org.apache.wicket.util.string.StringList;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.wicket.util.string.StringList;
 
 /**
  * Processes a buffered image with alpha transparency by scan-lines, creating a

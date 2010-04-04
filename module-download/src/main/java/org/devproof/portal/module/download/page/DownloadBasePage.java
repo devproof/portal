@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.download.page;
 
-import java.util.List;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -36,6 +34,8 @@ import org.devproof.portal.module.deadlinkcheck.panel.DeadlinkCheckPanel;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.service.DownloadService;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

@@ -15,18 +15,14 @@
  */
 package org.devproof.portal.core.module.right.service;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import junit.framework.TestCase;
+import org.devproof.portal.core.module.right.dao.RightDao;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.devproof.portal.core.module.right.dao.RightDao;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

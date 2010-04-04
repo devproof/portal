@@ -15,12 +15,12 @@
  */
 package org.devproof.portal.module.article.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

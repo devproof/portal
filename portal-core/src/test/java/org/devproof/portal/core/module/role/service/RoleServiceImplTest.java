@@ -15,20 +15,16 @@
  */
 package org.devproof.portal.core.module.role.service;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.role.RoleConstants;
 import org.devproof.portal.core.module.role.dao.RoleDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

@@ -15,13 +15,13 @@
  */
 package org.devproof.portal.core.module.box.dao;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

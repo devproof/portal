@@ -15,16 +15,7 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
@@ -37,6 +28,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

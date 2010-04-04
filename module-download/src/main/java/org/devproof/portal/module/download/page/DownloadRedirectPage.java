@@ -15,11 +15,6 @@
  */
 package org.devproof.portal.module.download.page;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
@@ -29,6 +24,11 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.util.FileResourceStream;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.service.DownloadService;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * @author Carsten Hufe

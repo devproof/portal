@@ -15,16 +15,15 @@
  */
 package org.devproof.portal.module.comment.panel;
 
-import java.util.Date;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 import org.devproof.portal.test.PortalTestUtil;
+
+import java.util.Date;
 
 /**
  * @author Carsten Hufe

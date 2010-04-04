@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.modulemgmt.page;
 
-import java.util.List;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,6 +26,8 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.modulemgmt.bean.ModuleBean;
 import org.devproof.portal.core.module.modulemgmt.panel.ModuleInfoPanel;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

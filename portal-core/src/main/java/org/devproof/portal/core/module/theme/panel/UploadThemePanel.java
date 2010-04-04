@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.core.module.theme.panel;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +32,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.theme.service.ThemeService;
 import org.devproof.portal.core.module.theme.service.ThemeService.ValidationKey;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Upload form for themes

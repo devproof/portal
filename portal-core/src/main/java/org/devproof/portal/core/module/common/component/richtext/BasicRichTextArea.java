@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.common.component.richtext;
 
-import java.util.Map;
-
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.MarkupStream;
@@ -27,6 +25,8 @@ import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.util.PortalUtil;
+
+import java.util.Map;
 
 /**
  * @author Carsten Hufe

@@ -15,23 +15,19 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.bookmark.dao.BookmarkDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe

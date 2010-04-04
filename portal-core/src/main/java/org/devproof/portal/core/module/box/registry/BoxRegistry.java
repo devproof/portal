@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.box.registry;
 
-import java.util.List;
-
 import org.apache.wicket.Component;
 import org.devproof.portal.core.config.BoxConfiguration;
+
+import java.util.List;
 
 /**
  * Registry for boxes

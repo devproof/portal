@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.user.panel;
 
-import java.text.SimpleDateFormat;
-
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -24,6 +22,8 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+
+import java.text.SimpleDateFormat;
 
 /**
  * @author Carsten Hufe

@@ -15,9 +15,8 @@
  */
 package org.devproof.portal.module.article.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
+import java.io.Serializable;
 
 /**
  * Primary key for article page

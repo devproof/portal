@@ -15,16 +15,15 @@
  */
 package org.devproof.portal.core.module.right.panel;
 
-import java.util.ArrayList;
-
 import junit.framework.TestCase;
-
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.test.PortalTestUtil;
+
+import java.util.ArrayList;
 
 /**
  * @author Carsten Hufe

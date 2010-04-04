@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.modulemgmt.bean.ModuleBean;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
+
+import java.util.List;
 
 /**
  * Provides methodes to retrieve module information

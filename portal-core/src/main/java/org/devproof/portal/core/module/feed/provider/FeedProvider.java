@@ -15,13 +15,12 @@
  */
 package org.devproof.portal.core.module.feed.provider;
 
-import java.util.List;
-
+import com.sun.syndication.feed.synd.SyndFeed;
 import org.apache.wicket.RequestCycle;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 
-import com.sun.syndication.feed.synd.SyndFeed;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

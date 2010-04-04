@@ -16,7 +16,6 @@
 package org.devproof.portal.module.blog.page;
 
 import junit.framework.TestCase;
-
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;

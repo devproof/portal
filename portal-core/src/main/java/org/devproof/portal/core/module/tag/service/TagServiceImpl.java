@@ -15,13 +15,13 @@
  */
 package org.devproof.portal.core.module.tag.service;
 
-import java.util.List;
-
 import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.dao.TagDao;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

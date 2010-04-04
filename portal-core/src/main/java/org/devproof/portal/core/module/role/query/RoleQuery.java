@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.role.query;
 
-import java.io.Serializable;
-
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
+
+import java.io.Serializable;
 
 /**
  * @author Carsten Hufe

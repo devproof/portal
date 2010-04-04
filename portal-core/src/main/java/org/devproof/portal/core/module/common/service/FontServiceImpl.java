@@ -15,8 +15,7 @@
  */
 package org.devproof.portal.core.module.common.service;
 
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
