@@ -28,6 +28,8 @@ import org.hibernate.classic.Session;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import static org.easymock.EasyMock.*;
+
 /**
  * @author Carsten Hufe
  */
@@ -41,9 +43,9 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setUp() throws Exception {
-		sessionFactory = EasyMock.createMock(SessionFactory.class);
-		session = EasyMock.createMock(Session.class);
-		genericDao = EasyMock.createMock(GenericDao.class);
+		sessionFactory = createMock(SessionFactory.class);
+		session = createMock(Session.class);
+		genericDao = createMock(GenericDao.class);
 		impl = new FinderDispatcherGenericDaoImpl<TestEntity, Integer>() {
 			private static final long serialVersionUID = 1L;
 
@@ -57,74 +59,74 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
 		impl.setEntityClass(TestEntity.class);
 		impl.setSessionFactory(sessionFactory);
 		testDao = (TestDao) impl.getObject();
-		EasyMock.expect(session.getSessionFactory()).andReturn(sessionFactory);
-		EasyMock.expect(sessionFactory.openSession()).andReturn(session);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(sessionFactory.openSession()).andReturn(session);
 		SessionHolder sessionHolder = new SessionHolder(session);
 		TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
-		EasyMock.expect(session.isOpen()).andReturn(false);
-		EasyMock.expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(session.isOpen()).andReturn(false);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
 	}
 
 	public void testGetObject_delegateSave() {
 		TestEntity entity = createEntity();
-		EasyMock.expect(genericDao.save(entity)).andReturn(entity);
-		EasyMock.replay(genericDao);
+		expect(genericDao.save(entity)).andReturn(entity);
+		replay(genericDao);
 		testDao.save(entity);
-		EasyMock.verify(genericDao);
+		verify(genericDao);
 	}
 
 	public void testGetObject_delegateDelete() {
 		TestEntity entity = createEntity();
 		genericDao.delete(entity);
-		EasyMock.replay(genericDao);
+		replay(genericDao);
 		testDao.delete(entity);
-		EasyMock.verify(genericDao);
+		verify(genericDao);
 	}
 
 	public void testGetObject_delegateRefresh() {
 		TestEntity entity = createEntity();
 		genericDao.refresh(entity);
-		EasyMock.replay(genericDao);
+		replay(genericDao);
 		testDao.refresh(entity);
-		EasyMock.verify(genericDao);
+		verify(genericDao);
 	}
 
 	public void testGetObject_delegateFindById() {
 		TestEntity expectedEntity = createEntity();
-		EasyMock.expect(genericDao.findById(1)).andReturn(expectedEntity);
-		EasyMock.replay(genericDao);
+		expect(genericDao.findById(1)).andReturn(expectedEntity);
+		replay(genericDao);
 		TestEntity entity = testDao.findById(1);
 		assertEquals(expectedEntity, entity);
-		EasyMock.verify(genericDao);
+		verify(genericDao);
 	}
 
 	public void testGetObject_queryAnnotation() throws Exception {
 		TestEntity expectedEntity = createEntity();
-		EasyMock.expect(
-				genericDao.executeFinder(EasyMock.eq("select t from TestEntity t where t.contentId = ?"),
-						(Object[]) EasyMock.anyObject(), (Method) EasyMock.anyObject(), (Integer) EasyMock.eq(null),
-						(Integer) EasyMock.eq(null))).andReturn(expectedEntity);
-		EasyMock.replay(genericDao);
+		expect(
+				genericDao.executeFinder(eq("select t from TestEntity t where t.contentId = ?"),
+						(Object[]) anyObject(), (Method) anyObject(), (Integer) eq(null),
+						(Integer) eq(null))).andReturn(expectedEntity);
+		replay(genericDao);
 		TestEntity entity = testDao.findByContentId("foobar");
 		assertEquals(expectedEntity, entity);
-		EasyMock.verify(genericDao);
+		verify(genericDao);
 	}
 
 	public void testGetObject_bulkUpdate() {
-		genericDao.executeUpdate(EasyMock.eq("update TestEntity with something where contentId = ?"),
-				(Object[]) EasyMock.anyObject());
-		EasyMock.replay(genericDao);
+		genericDao.executeUpdate(eq("update TestEntity with something where contentId = ?"),
+				(Object[]) anyObject());
+		replay(genericDao);
 		testDao.updateWithSomething("foobar");
-		EasyMock.verify(genericDao);
+		verify(genericDao);
 	}
 
 	public void testGetObject_delegateToImplMethod() {
-		TestDao serviceImpl = EasyMock.createMock(TestDao.class);
+		TestDao serviceImpl = createMock(TestDao.class);
 		impl.setServicesImpl(serviceImpl);
 		serviceImpl.delegateToImpl();
-		EasyMock.replay(genericDao, serviceImpl);
+		replay(genericDao, serviceImpl);
 		testDao.delegateToImpl();
-		EasyMock.verify(genericDao, serviceImpl);
+		verify(genericDao, serviceImpl);
 	}
 
 	private TestEntity createEntity() {

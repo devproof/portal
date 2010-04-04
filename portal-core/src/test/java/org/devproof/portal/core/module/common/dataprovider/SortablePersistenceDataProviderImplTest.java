@@ -28,6 +28,8 @@ import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.easymock.EasyMock;
 
+import static org.easymock.EasyMock.*;
+
 /**
  * @author Carsten Hufe
  */
@@ -39,8 +41,8 @@ public class SortablePersistenceDataProviderImplTest extends TestCase {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void setUp() throws Exception {
-		dataProviderDaoMock = EasyMock.createMock(DataProviderDao.class);
-		queryMock = EasyMock.createMock(SearchQuery.class);
+		dataProviderDaoMock = createMock(DataProviderDao.class);
+		queryMock = createMock(SearchQuery.class);
 		impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery>() {
 			private static final long serialVersionUID = 1L;
 
@@ -60,26 +62,26 @@ public class SortablePersistenceDataProviderImplTest extends TestCase {
 		EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
 		expectedTemplate.setId(5);
 		List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-		EasyMock.expect(
+		expect(
 				dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock,
 						prefetch)).andReturn(templates);
-		EasyMock.replay(dataProviderDaoMock, queryMock);
+		replay(dataProviderDaoMock, queryMock);
 		Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
 		assertEquals(expectedTemplate.getId(), iterator.next().getId());
-		EasyMock.verify(dataProviderDaoMock, queryMock);
+		verify(dataProviderDaoMock, queryMock);
 	}
 
 	public void testIterator_WithoutPrefetch() {
 		EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
 		expectedTemplate.setId(5);
 		List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-		EasyMock.expect(
+		expect(
 				dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock,
 						null)).andReturn(templates);
-		EasyMock.replay(dataProviderDaoMock, queryMock);
+		replay(dataProviderDaoMock, queryMock);
 		Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
 		assertEquals(expectedTemplate.getId(), iterator.next().getId());
-		EasyMock.verify(dataProviderDaoMock, queryMock);
+		verify(dataProviderDaoMock, queryMock);
 	}
 
 	public void testModel() {
@@ -89,18 +91,18 @@ public class SortablePersistenceDataProviderImplTest extends TestCase {
 	}
 
 	public void testSize_WithCountQuery() {
-		EasyMock.expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, "count(something)", queryMock))
+		expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, "count(something)", queryMock))
 				.andReturn(4);
-		EasyMock.replay(dataProviderDaoMock, queryMock);
+		replay(dataProviderDaoMock, queryMock);
 		impl.setCountQuery("count(something)");
 		assertEquals(4, impl.size());
-		EasyMock.verify(dataProviderDaoMock, queryMock);
+		verify(dataProviderDaoMock, queryMock);
 	}
 
 	public void testSize_WithoutCountQuery() {
-		EasyMock.expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, queryMock)).andReturn(4);
-		EasyMock.replay(dataProviderDaoMock, queryMock);
+		expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, queryMock)).andReturn(4);
+		replay(dataProviderDaoMock, queryMock);
 		assertEquals(4, impl.size());
-		EasyMock.verify(dataProviderDaoMock, queryMock);
+		verify(dataProviderDaoMock, queryMock);
 	}
 }
