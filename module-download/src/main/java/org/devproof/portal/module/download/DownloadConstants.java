@@ -22,18 +22,16 @@ import org.devproof.portal.module.download.page.DownloadEditPage;
  * @author Carsten Hufe
  */
 public interface DownloadConstants {
-    public static final String CONF_DOWNLOADS_PER_PAGE = "downloads_per_page";
-    public static final String CONF_DOWNLOAD_VOTE_ENABLED = "download_vote_enabled";
-    public static final String CONF_DOWNLOAD_HIDE_BROKEN = "download_hide_broken";
-    public static final String CONF_BOX_NUM_LATEST_DOWNLOADS = "box_num_latest_downloads";
-    public static final ResourceReference REF_DOWNLOAD_CSS = new ResourceReference(DownloadConstants.class,
-			"css/download.css");
-    public static final ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(DownloadConstants.class,
-			"img/download.png");
-    public static final String CONF_DOWNLOAD_FEED_TITLE = "download_feed_title";
-    public static final String CONF_DOWNLOAD_ENTRIES_IN_FEED = "download_entries_in_feed";
-    public static final String ENTITY_CACHE_REGION = "entity.content";
+    String CONF_DOWNLOADS_PER_PAGE = "downloads_per_page";
+    String CONF_DOWNLOAD_VOTE_ENABLED = "download_vote_enabled";
+    String CONF_DOWNLOAD_HIDE_BROKEN = "download_hide_broken";
+    String CONF_BOX_NUM_LATEST_DOWNLOADS = "box_num_latest_downloads";
+    ResourceReference REF_DOWNLOAD_CSS = new ResourceReference(DownloadConstants.class,	"css/download.css");
+    ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(DownloadConstants.class,	"img/download.png");
+    String CONF_DOWNLOAD_FEED_TITLE = "download_feed_title";
+    String CONF_DOWNLOAD_ENTRIES_IN_FEED = "download_entries_in_feed";
+    String ENTITY_CACHE_REGION = "entity.content";
 
-    public static final String QUERY_CACHE_REGION = "query.content";
-    public static final String AUTHOR_RIGHT = "page." + DownloadEditPage.class.getSimpleName();;
+    String QUERY_CACHE_REGION = "query.content";
+    String AUTHOR_RIGHT = "page." + DownloadEditPage.class.getSimpleName();
 }
