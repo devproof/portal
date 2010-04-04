@@ -18,19 +18,15 @@ package org.devproof.portal.core.module.theme;
 /**
  * @author Carsten Hufe
  */
-public class ThemeConstants {
-	private ThemeConstants() {
-	}
-
-	public static final String SMALL_THEME_PATHS[] = { "theme", "org/devproof/portal/core/module/common/page/",
+public interface ThemeConstants {
+	String SMALL_THEME_PATHS[] = { "theme", "org/devproof/portal/core/module/common/page/",
 			"org/devproof/portal/core/module/common/css/", "org/devproof/portal/core/module/common/img/",
 			"org/devproof/portal/core/module/common/page/" };
-	public static final String COMPLETE_THEME_PATHS[] = { "/" }; // everything
-	public static final String ALLOWED_THEME_EXT[] = { ".html", ".css", ".gif", ".jpg", ".png", ".properties" };
-	public static final String FILTER_PATHS[] = { "META-INF", "log4j.properties",
-			"org/devproof/portal/core/module/common/component/richtext" };
+	String COMPLETE_THEME_PATHS[] = { "/" }; // everything
+	String ALLOWED_THEME_EXT[] = { ".html", ".css", ".gif", ".jpg", ".png", ".properties" };
+	String FILTER_PATHS[] = { "META-INF", "log4j.properties", "org/devproof/portal/core/module/common/component/richtext" };
 
-	public static final String CONF_SELECTED_THEME_UUID = "hidden.selected_theme_uuid";
-	public static final String CONF_SELECTED_THEME_DEFAULT = "_default_";
-	// public static final String PORTAL_THEME_VERSION = "${devproof.version}";
+	String CONF_SELECTED_THEME_UUID = "hidden.selected_theme_uuid";
+	String CONF_SELECTED_THEME_DEFAULT = "_default_";
+	// String PORTAL_THEME_VERSION = "${devproof.version}";
 }
