@@ -33,6 +33,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.RequestUtils;
@@ -56,18 +57,16 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 	private int maxItem = 0;
 	private int brokenFound = 0;
 	private String section;
-	private List<T> listToCheck;
-	private FeedbackPanel feedbackPanel;
+    private IModel<List<T>> listToCheckModel;
+    private FeedbackPanel feedbackPanel;
 	private ProgressBar progressBar;
 	private volatile boolean threadActive = false;
 
-	public DeadlinkCheckPanel(String id, String section, List<T> listToCheck) {
-		super(id, Model.ofList(listToCheck));
+	public DeadlinkCheckPanel(String id, String section, IModel<List<T>> listToCheckModel) {
+		super(id, listToCheckModel);
 		this.section = section;
-		this.listToCheck = listToCheck;
-		this.maxItem = listToCheck.size();
-
-		add(createFeedbackPanel());
+        this.listToCheckModel = listToCheckModel;
+        add(createFeedbackPanel());
 		add(createTitleLabel());
 		add(createDeadlinkCheckForm());
 	}
@@ -109,13 +108,13 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 						threadActive = true;
 						Protocol.registerProtocol("https", new Protocol("https", new EasySSLProtocolSocketFactory(),
 								443));
-
-						for (T link : listToCheck) {
+                        List<T> listToCheck = listToCheckModel.getObject();
+                        for (T link : listToCheck) {
 							if (!threadActive) {
 								return;
 							}
 							String url = link.getUrl();
-							boolean isBroken = false;
+							boolean isBroken;
 							if (isLocalFile(url)) {
 								try {
 									URI uri = new URI(url);
@@ -148,7 +147,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
 					private boolean isHttpCallBroken(String url) {
 						HttpClient client = new HttpClient();
 						HttpMethod method = new GetMethod(url);
-						boolean isBroken = false;
+						boolean isBroken;
 						try {
 							int httpCode = client.executeMethod(method);
 							isBroken = (httpCode / 100) != 2;

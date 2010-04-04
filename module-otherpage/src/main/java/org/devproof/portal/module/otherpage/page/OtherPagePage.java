@@ -25,9 +25,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
@@ -73,17 +71,18 @@ public class OtherPagePage extends OtherPageBasePage {
 
 		@Override
 		protected void populateItem(Item<OtherPageEntity> item) {
-			OtherPageEntity otherPage = item.getModelObject();
-			item.add(createContentIdLabel(otherPage));
-			item.add(createModifiedByLabel(otherPage));
-			item.add(createViewLink(otherPage));
+			IModel<OtherPageEntity> otherPageModel = item.getModel();
+			item.add(createContentIdLabel(otherPageModel));
+			item.add(createModifiedByLabel(otherPageModel));
+			item.add(createViewLink(otherPageModel));
 			item.add(createAuthorPanel(item));
 			item.add(createEvenOddModifier(item));
 			item.setOutputMarkupId(true);
 		}
 
-		private BookmarkablePageLink<OtherPageViewPage> createViewLink(OtherPageEntity otherPage) {
-			BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink",
+		private BookmarkablePageLink<OtherPageViewPage> createViewLink(IModel<OtherPageEntity> otherPageModel) {
+			OtherPageEntity otherPage = otherPageModel.getObject();
+            BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink",
 					OtherPageViewPage.class);
 			viewLink.add(createViewLinkImage());
 			viewLink.setParameter("0", otherPage.getContentId());
@@ -108,12 +107,13 @@ public class OtherPagePage extends OtherPageBasePage {
 		}
 
 		private AuthorPanel<OtherPageEntity> createAuthorPanel(final Item<OtherPageEntity> item) {
-			return new AuthorPanel<OtherPageEntity>("authorButtons", item.getModelObject()) {
+            final IModel<OtherPageEntity> otherPageModel = item.getModel();
+			return new AuthorPanel<OtherPageEntity>("authorButtons", otherPageModel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
-					otherPageService.delete(getEntity());
+					otherPageService.delete(otherPageModel.getObject());
 					item.setVisible(false);
 					target.addComponent(item);
 					target.addComponent(getFeedback());
@@ -122,19 +122,19 @@ public class OtherPagePage extends OtherPageBasePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					OtherPageEntity otherPage = otherPageService.findById(getEntity().getId());
-					IModel<OtherPageEntity> otherPageModel = Model.of(otherPage);
 					setResponsePage(new OtherPageEditPage(otherPageModel));
 				}
 			};
 		}
 
-		private Label createModifiedByLabel(OtherPageEntity otherPage) {
-			return new Label("modifiedBy", otherPage.getModifiedBy());
+		private Label createModifiedByLabel(IModel<OtherPageEntity> otherPageModel) {
+            IModel<String> modifiedByModel = new PropertyModel<String>(otherPageModel, "modifiedBy");
+            return new Label("modifiedBy", modifiedByModel);
 		}
 
-		private Label createContentIdLabel(OtherPageEntity otherPage) {
-			return new Label("contentId", otherPage.getContentId());
+		private Label createContentIdLabel(IModel<OtherPageEntity> otherPageModel) {
+            IModel<String> contentIdModel = new PropertyModel<String>(otherPageModel, "contentId");
+			return new Label("contentId", contentIdModel);
 		}
 	}
 }
