@@ -45,13 +45,12 @@ public class BlogEditPage extends BlogBasePage {
 	private BlogService blogService;
 	@SpringBean(name = "blogTagService")
 	private TagService<BlogTagEntity> blogTagService;
+    private IModel<BlogEntity> blogModel;
 
-	private BlogEntity blog;
-
-	public BlogEditPage(IModel<BlogEntity> blogModel) {
+    public BlogEditPage(IModel<BlogEntity> blogModel) {
 		super(new PageParameters());
-		this.blog = blogModel.getObject();
-		add(createBlogEditForm());
+        this.blogModel = blogModel;
+        add(createBlogEditForm());
 	}
 
 	private Form<BlogEntity> createBlogEditForm() {
@@ -66,7 +65,7 @@ public class BlogEditPage extends BlogBasePage {
 	}
 
 	private Form<BlogEntity> newBlogEditForm() {
-		return new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blog)) {
+		return new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blogModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -82,15 +81,17 @@ public class BlogEditPage extends BlogBasePage {
 	}
 
 	private RightGridPanel createViewRightPanel() {
-		return new RightGridPanel("viewright", "blog.view", new ListModel<RightEntity>(blog.getAllRights()));
+        IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(blogModel, "allRights");
+        return new RightGridPanel("viewright", "blog.view", allRightsModel);
 	}
 
 	private RightGridPanel createCommentRightPanel() {
-		return new RightGridPanel("commentright", "blog.comment", new ListModel<RightEntity>(blog.getAllRights()));
+        IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(blogModel, "allRights");
+		return new RightGridPanel("commentright", "blog.comment", allRightsModel);
 	}
 
 	private TagField<BlogTagEntity> createTagField() {
-		IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blog, "tags");
+		IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blogModel, "tags");
 		return new TagField<BlogTagEntity>("tags", blogListModel, blogTagService);
 	}
 

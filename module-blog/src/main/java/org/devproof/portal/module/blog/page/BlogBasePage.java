@@ -36,11 +36,9 @@ public abstract class BlogBasePage extends TemplatePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "blogService")
 	private BlogService blogService;
-	private boolean isAuthor = false;
 
 	public BlogBasePage(PageParameters params) {
 		super(params);
-		setAuthorRight();
 		add(createCSSHeaderContributor());
 		addSyntaxHighlighter();
 		addBlogAddLink();
@@ -52,7 +50,7 @@ public abstract class BlogBasePage extends TemplatePage {
 
 	private void addBlogAddLink() {
 		// New Blog Link
-		if (isAuthor) {
+		if (isAuthor()) {
 			Link<?> addLink = createBlogAddLink();
 			addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
 			addPageAdminBoxLink(addLink);
@@ -71,12 +69,8 @@ public abstract class BlogBasePage extends TemplatePage {
 		};
 	}
 
-	private void setAuthorRight() {
+	private boolean isAuthor() {
 		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight(BlogConstants.AUTHOR_RIGHT);
-	}
-
-	public boolean isAuthor() {
-		return isAuthor;
+		return session.hasRight(BlogConstants.AUTHOR_RIGHT);
 	}
 }
