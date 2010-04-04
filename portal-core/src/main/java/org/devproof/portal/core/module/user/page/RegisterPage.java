@@ -16,6 +16,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
@@ -51,7 +52,7 @@ public class RegisterPage extends TemplatePage {
 	@SpringBean(name = "sharedRegistry")
 	private SharedRegistry sharedRegistry;
 	private PageParameters params;
-	private UserEntity user;
+	private IModel<UserEntity> userModel;
 	private PasswordTextField password1;
 	private PasswordTextField password2;
 	private BubblePanel bubblePanel;
@@ -59,19 +60,19 @@ public class RegisterPage extends TemplatePage {
 	public RegisterPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		activateUserIfParamsGiven();
-		setUser();
+		this.userModel = createUserModel();
+        activateUserIfParamsGiven();
 		add(createBubblePanel());
 		add(createRegisterForm());
 	}
 
-	private Component createBubblePanel() {
+    private Component createBubblePanel() {
 		bubblePanel = new BubblePanel("bubblePanel");
 		return bubblePanel;
 	}
 
 	private Form<UserEntity> createRegisterForm() {
-		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
+		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
 		form.add(createUsernameField());
 		form.add(createFirstnameField());
 		form.add(createLastnameField());
@@ -128,6 +129,7 @@ public class RegisterPage extends TemplatePage {
 
 			@Override
 			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+                UserEntity user = userModel.getObject();
 				String msg = "success";
 				if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
 					msg = "confirm.email";
@@ -146,6 +148,7 @@ public class RegisterPage extends TemplatePage {
 				return new UrlCallback() {
 					@Override
 					public String getUrl(String generatedCode) {
+                        UserEntity user = userModel.getObject();
 						String requestUrl = getRequestURL();
 						PageParameters param = new PageParameters();
 						param.add(PARAM_USER, user.getUsername());
@@ -237,8 +240,8 @@ public class RegisterPage extends TemplatePage {
 		};
 	}
 
-	private void setUser() {
-		user = userService.newUserEntity();
+	private IModel<UserEntity> createUserModel() {
+		return Model.of(userService.newUserEntity());
 	}
 
 	private void activateUserIfParamsGiven() {

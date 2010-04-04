@@ -19,6 +19,9 @@ import java.text.SimpleDateFormat;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 
@@ -33,12 +36,12 @@ public class UserInfoPanel extends Panel {
 	private SimpleDateFormat dateFormat;
 	@SpringBean(name = "displayDateTimeFormat")
 	private SimpleDateFormat dateTimeFormat;
-	private UserEntity user;
+    private IModel<UserEntity> userModel;
 
-	public UserInfoPanel(String id, UserEntity user) {
-		super(id);
-		this.user = user;
-		add(createUsernameLabel());
+    public UserInfoPanel(String id, IModel<UserEntity> userModel) {
+		super(id, new CompoundPropertyModel<UserEntity>(userModel));
+        this.userModel = userModel;
+        add(createUsernameLabel());
 		add(createFirstnameLabel());
 		add(createLastnameLabel());
 		add(createBirthdayLabel());
@@ -51,45 +54,102 @@ public class UserInfoPanel extends Panel {
 	}
 
 	private Label createLastIpLabel() {
-		return new Label("lastIp", user.getLastIp());
+		return new Label("lastIp");
 	}
 
 	private Label createLastLoginTimeLabel() {
-		return new Label("lastLoginAt", user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt())
-				: "");
+        IModel<String> lastLoginAtModel = createLastLoginAtModel();
+        return new Label("lastLoginAt", lastLoginAtModel);
 	}
 
-	private Label createRegistrationDateLabel() {
-		return new Label("registeredAt", user.getRegistrationDate() != null ? dateTimeFormat.format(user
-				.getRegistrationDate()) : "");
+    private IModel<String> createLastLoginAtModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 205970170080353722L;
+
+            @Override
+            public String getObject() {
+                UserEntity user = userModel.getObject();
+                return user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt())	: "";
+            }
+        };
+    }
+
+    private Label createRegistrationDateLabel() {
+		return new Label("registeredAt", createRegistrationDateModel());
 	}
+
+    private IModel<String> createRegistrationDateModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = -3479899287276996424L;
+
+            @Override
+            public String getObject() {
+                UserEntity user = userModel.getObject();
+                return user.getRegistrationDate() != null ? dateTimeFormat.format(user.getRegistrationDate()) : "";
+            }
+        };
+    }
 
 	private Label createConfirmedLabel() {
-		return new Label("confirmed", user.getConfirmed() != null ? getString("confirmed."
-				+ user.getConfirmed().toString()) : "");
+		return new Label("confirmed", createConfirmedModel());
 	}
+
+    private IModel<String> createConfirmedModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = -5826310794583978729L;
+
+            @Override
+            public String getObject() {
+                UserEntity user = userModel.getObject();
+                return user.getConfirmed() != null ? getString("confirmed." + user.getConfirmed().toString()) : "";
+            }
+        };
+    }
 
 	private Label createActiveLabel() {
-		return new Label("active", user.getActive() != null ? getString("active." + user.getActive().toString()) : "");
+		return new Label("active", createActiveModel());
 	}
 
+    private IModel<String> createActiveModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = -8308295898891386393L;
+
+            @Override
+            public String getObject() {
+                UserEntity user = userModel.getObject();
+                return  user.getActive() != null ? getString("active." + user.getActive().toString()) : "";
+            }
+        };
+    }
+
 	private Label createEmailLabel() {
-		return new Label("email", user.getEmail());
+		return new Label("email");
 	}
 
 	private Label createBirthdayLabel() {
-		return new Label("birthday", user.getBirthday() != null ? dateFormat.format(user.getBirthday()) : "");
+		return new Label("birthday", createBirthdayModel());
 	}
 
+    private IModel<String> createBirthdayModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = -1935766462928249555L;
+            @Override
+            public String getObject() {
+                UserEntity user = userModel.getObject();
+                return user.getBirthday() != null ? dateFormat.format(user.getBirthday()) : "";
+            }
+        };
+    }
+
 	private Label createLastnameLabel() {
-		return new Label("lastname", user.getLastname());
+		return new Label("lastname");
 	}
 
 	private Label createFirstnameLabel() {
-		return new Label("firstname", user.getFirstname());
+		return new Label("firstname");
 	}
 
 	private Label createUsernameLabel() {
-		return new Label("username", user.getUsername());
+		return new Label("username");
 	}
 }

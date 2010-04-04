@@ -32,10 +32,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
@@ -47,6 +44,8 @@ import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.service.UserService;
 
+import java.util.List;
+
 /**
  * @author Carsten Hufe
  */
@@ -57,22 +56,22 @@ public abstract class UserEditPanel extends Panel {
 	private RoleService roleService;
 	@SpringBean(name = "userService")
 	private UserService userService;
-	private UserEntity user;
-	private boolean isCreate;
+	private IModel<UserEntity> userModel;
+	private boolean creation;
 	private FeedbackPanel feedback;
 	private PasswordTextField password1;
 	private PasswordTextField password2;
 
-	public UserEditPanel(String id, IModel<UserEntity> userModel, boolean isCreate) {
+	public UserEditPanel(String id, IModel<UserEntity> userModel, boolean creation) {
 		super(id, userModel);
-		this.user = userModel.getObject();
-		this.isCreate = isCreate;
+		this.userModel = userModel;
+		this.creation = creation;
 		add(createFeedbackPanel());
 		add(createUserEditForm());
 	}
 
 	private Form<UserEntity> createUserEditForm() {
-		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(user));
+		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
 		form.add(createUsernameField());
 		form.add(createFirstnameField());
 		form.add(createLastnameField());
@@ -136,25 +135,37 @@ public abstract class UserEditPanel extends Panel {
 
 	private PasswordTextField createPasswordField1() {
 		password1 = new PasswordTextField("password1", new Model<String>());
-		password1.setRequired(isCreate);
+		password1.setRequired(creation);
 		return password1;
 	}
 
 	private PasswordTextField createPasswordField2() {
 		password2 = new PasswordTextField("password2", new Model<String>());
-		password2.setRequired(isCreate);
+		password2.setRequired(creation);
 		return password2;
 	}
 
 	private DropDownChoice<?> createRoleDropDown() {
 		IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
-		DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", new PropertyModel<RoleEntity>(user, "role"),
-				roleService.findAll(), renderer);
+        IModel<RoleEntity> roleModel = new PropertyModel<RoleEntity>(userModel, "role");
+        IModel<List<RoleEntity>> availableRolesModel = createAvailableRolesModel();
+        DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", roleModel,
+                availableRolesModel, renderer);
 		role.setRequired(true);
 		return role;
 	}
 
-	private FormComponent<String> createEmailField() {
+    private IModel<List<RoleEntity>> createAvailableRolesModel() {
+        return new LoadableDetachableModel<List<RoleEntity>>() {
+            private static final long serialVersionUID = 6780212125058885884L;
+            @Override
+            protected List<RoleEntity> load() {
+                return roleService.findAll();
+            }
+        };
+    }
+
+    private FormComponent<String> createEmailField() {
 		FormComponent<String> fc = new RequiredTextField<String>("email");
 		fc.add(EmailAddressValidator.getInstance());
 		fc.add(StringValidator.maximumLength(100));
@@ -194,7 +205,7 @@ public abstract class UserEditPanel extends Panel {
 
 			@Override
 			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (userService.existsUsername(ivalidatable.getValue()) && isCreate) {
+				if (userService.existsUsername(ivalidatable.getValue()) && creation) {
 					error(ivalidatable);
 				}
 			}

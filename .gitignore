@@ -6,3 +6,4 @@ portal-bundle/true
 *.iml
 *.ipr
 *.iws
+*.ids

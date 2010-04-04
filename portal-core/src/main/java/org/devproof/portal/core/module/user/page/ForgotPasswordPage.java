@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -42,8 +43,8 @@ public class ForgotPasswordPage extends TemplatePage {
 
 	@SpringBean(name = "userService")
 	private UserService userService;
-	private TextField<String> emailOrUser;
 	private BubblePanel bubblePanel;
+    private String emailOrUser = "";
 
 	public ForgotPasswordPage(PageParameters params) {
 		super(params);
@@ -70,7 +71,7 @@ public class ForgotPasswordPage extends TemplatePage {
 
 			@Override
 			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				userService.sendForgotPasswordCode(emailOrUser.getValue(), createForgotPasswordUrlCallback());
+				userService.sendForgotPasswordCode(emailOrUser, createForgotPasswordUrlCallback());
 				setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
 			}
 
@@ -85,7 +86,7 @@ public class ForgotPasswordPage extends TemplatePage {
 					public String getUrl(String generatedCode) {
 						String requestUrl = getRequestURL();
 						PageParameters param = new PageParameters();
-						param.add(ResetPasswordPage.PARAM_USER, emailOrUser.getValue());
+						param.add(ResetPasswordPage.PARAM_USER, emailOrUser);
 						param.add(ResetPasswordPage.PARAM_CONFIRMATION_CODE, generatedCode);
 						StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/"))
 								.append("/");
@@ -98,7 +99,6 @@ public class ForgotPasswordPage extends TemplatePage {
 	}
 
 	private TextField<String> createEmailOrUsernameField() {
-		emailOrUser = new RequiredTextField<String>("emailoruser", Model.of(""));
-		return emailOrUser;
+		return new RequiredTextField<String>("emailoruser", new PropertyModel<String>(this, "emailOrUser"));
 	}
 }
