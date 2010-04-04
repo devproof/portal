@@ -17,6 +17,8 @@ package org.devproof.portal.module.blog.panel;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.module.blog.entity.BlogEntity;
@@ -27,26 +29,28 @@ import org.devproof.portal.module.blog.entity.BlogEntity;
 public class BlogPrintPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
+    private IModel<BlogEntity> blogModel;
 
-	private BlogEntity blog;
 
-	public BlogPrintPanel(String id, BlogEntity blog) {
+    public BlogPrintPanel(String id, IModel<BlogEntity> blogModel) {
 		super(id);
-		this.blog = blog;
-		add(createHeadline());
+        this.blogModel = blogModel;
+        add(createHeadline());
 		add(createMetaInfoPanel());
 		add(createContentLabel());
 	}
 
 	private Label createHeadline() {
-		return new Label("headline", blog.getHeadline());
+        IModel<String> headlineModel = new PropertyModel<String>(blogModel, "headline");
+        return new Label("headline", headlineModel);
 	}
 
 	private MetaInfoPanel createMetaInfoPanel() {
-		return new MetaInfoPanel("metaInfo", blog);
+		return new MetaInfoPanel("metaInfo", blogModel);
 	}
 
 	private ExtendedLabel createContentLabel() {
-		return new ExtendedLabel("content", blog.getContent());
+        IModel<String> contentModel = new PropertyModel<String>(blogModel, "content");
+        return new ExtendedLabel("content", contentModel);
 	}
 }

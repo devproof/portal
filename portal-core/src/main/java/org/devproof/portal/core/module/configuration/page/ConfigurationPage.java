@@ -270,7 +270,7 @@ public class ConfigurationPage extends TemplatePage {
 		public SpringBeanEditor(String id, ConfigurationEntity configuration) {
 			super(id, "springBeanEditor", ConfigurationPage.this);
 			this.configuration = configuration;
-			setPossibleSelectionValues();
+			this.possibleSelectionValues = createPossibleSelectionValues();
 			add(createSpringDropDownChoice());
 		}
 
@@ -283,8 +283,8 @@ public class ConfigurationPage extends TemplatePage {
 			return ddc;
 		}
 
-		private void setPossibleSelectionValues() {
-			possibleSelectionValues = new ArrayList<ConfigurationEntity>();
+		private List<ConfigurationEntity> createPossibleSelectionValues() {
+			List<ConfigurationEntity> possibleSelectionValues = new ArrayList<ConfigurationEntity>();
 			String typeWithoutPrefix = configuration.getKey().substring(
 					ConfigurationConstants.SPRING_CONFIGURATION_PREFIX.length());
 			int index = typeWithoutPrefix.indexOf('.');
@@ -326,8 +326,9 @@ public class ConfigurationPage extends TemplatePage {
 						}
 					}
 				}
+                return possibleSelectionValues;
 			} catch (Exception e) {
-				throw new RuntimeException("Invalid spring configuration key!", e);
+				throw new UnhandledException("Invalid spring configuration key!", e);
 			}
 		}
 

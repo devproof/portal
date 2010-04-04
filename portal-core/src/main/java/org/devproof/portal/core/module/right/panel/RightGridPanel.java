@@ -52,8 +52,8 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 		super(id);
 		this.rightPrefix = rightPrefix;
 		this.originalRightsListModel = selectedRights;
-		originalSelectedRights = createOriginalSelectedRights();
-        allRights = rightService.findRightsStartingWith(this.rightPrefix);
+		this.originalSelectedRights = createOriginalSelectedRights();
+        this.allRights = rightService.findRightsStartingWith(this.rightPrefix);
         add(createRightGridView());
 	}
 
@@ -134,6 +134,6 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 	@Override
 	public void updateModel() {
         // TODO test ob es mit rights setzen funktioniert
-		originalRightsListModel.setObject(getSelectedRights());
+		originalRightsListModel.getObject().addAll(getSelectedRights());
 	}
 }
