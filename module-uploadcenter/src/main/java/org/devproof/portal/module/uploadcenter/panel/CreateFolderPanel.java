@@ -27,6 +27,8 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.apache.wicket.validation.validator.PatternValidator;
 
@@ -36,19 +38,19 @@ import org.apache.wicket.validation.validator.PatternValidator;
 public abstract class CreateFolderPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	private File actualFolder;
 	private FeedbackPanel feedbackPanel;
-	private ValueMap values = new ValueMap();
+    private IModel<File> actualFolderModel;
+    private String foldername = "";
 
-	public CreateFolderPanel(String id, File actualFolder) {
+    public CreateFolderPanel(String id, IModel<File> actualFolderModel) {
 		super(id);
-		this.actualFolder = actualFolder;
-		add(feedbackPanel = createFeedbackPanel());
+        this.actualFolderModel = actualFolderModel;
+        add(feedbackPanel = createFeedbackPanel());
 		add(createCreateFolderForm());
 	}
 
 	private Form<ValueMap> createCreateFolderForm() {
-		Form<ValueMap> form = new Form<ValueMap>("form", new CompoundPropertyModel<ValueMap>(values));
+		Form<ValueMap> form = new Form<ValueMap>("form");
 		form.add(createFoldernameField());
 		form.add(createCreateFolderButton());
 		form.setOutputMarkupId(true);
@@ -61,9 +63,10 @@ public abstract class CreateFolderPanel extends Panel {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				try {
+                File actualFolder = actualFolderModel.getObject();
+                try {
 					FileUtils.forceMkdir(new File(actualFolder.getAbsolutePath() + File.separator
-							+ values.getString("foldername")));
+							+ foldername));
 				} catch (IOException e) {
 					throw new UnhandledException(e);
 				}
@@ -84,7 +87,8 @@ public abstract class CreateFolderPanel extends Panel {
 	}
 
 	private RequiredTextField<String> createFoldernameField() {
-		RequiredTextField<String> foldername = new RequiredTextField<String>("foldername");
+        IModel<String> foldernameModel = new PropertyModel<String>(this, "foldername");
+        RequiredTextField<String> foldername = new RequiredTextField<String>("foldername", foldernameModel);
 		foldername.add(new PatternValidator("[A-Za-z0-9\\.]*"));
 		return foldername;
 	}

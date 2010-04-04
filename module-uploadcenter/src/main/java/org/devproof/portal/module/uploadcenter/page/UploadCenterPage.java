@@ -15,30 +15,17 @@
  */
 package org.devproof.portal.module.uploadcenter.page;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreeNode;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.extensions.markup.html.tree.table.ColumnLocation;
-import org.apache.wicket.extensions.markup.html.tree.table.IColumn;
-import org.apache.wicket.extensions.markup.html.tree.table.IRenderable;
-import org.apache.wicket.extensions.markup.html.tree.table.PropertyRenderableColumn;
-import org.apache.wicket.extensions.markup.html.tree.table.PropertyTreeColumn;
-import org.apache.wicket.extensions.markup.html.tree.table.TreeTable;
+import org.apache.wicket.extensions.markup.html.tree.table.*;
 import org.apache.wicket.extensions.markup.html.tree.table.ColumnLocation.Alignment;
 import org.apache.wicket.extensions.markup.html.tree.table.ColumnLocation.Unit;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -47,9 +34,14 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
 import org.devproof.portal.module.uploadcenter.bean.FileBean;
+import org.devproof.portal.module.uploadcenter.model.FileTreeModel;
 import org.devproof.portal.module.uploadcenter.panel.CreateFolderPanel;
 import org.devproof.portal.module.uploadcenter.panel.UploadCenterPanel;
 import org.devproof.portal.module.uploadcenter.panel.UploadFilePanel;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.io.File;
 
 /**
  * @author Carsten Hufe
@@ -57,38 +49,29 @@ import org.devproof.portal.module.uploadcenter.panel.UploadFilePanel;
 public class UploadCenterPage extends TemplatePage {
 
 	private static final long serialVersionUID = 3247255196536400455L;
-	@SpringBean(name = "displayDateTimeFormat")
-	private DateFormat dateFormat;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private File rootFolder;
-	private File selectedFolder;
-	private DefaultMutableTreeNode rootNode;
-	private DefaultMutableTreeNode selectedNode;
-	private boolean hasRightCreateDownload;
-	private BubblePanel bubblePanel;
-	private TreeTable folderTreeTable;
 
-	public UploadCenterPage(PageParameters params) {
+//	private DefaultMutableTreeNode rootNode;
+//	private DefaultMutableTreeNode selectedNode;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private File rootFolder;
+    private IModel<File> selectedFolderModel;
+    private BubblePanel bubblePanel;
+    private TreeTable folderTreeTable;
+    private FileTreeModel fileTreeModel;
+
+    public UploadCenterPage(PageParameters params) {
 		super(params);
-		setRootFolder();
-		setSelectedFolder();
-		setHasRightToCreate();
+        this.rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
+        this.selectedFolderModel = Model.of(rootFolder);
+        this.fileTreeModel = createTreeModel();
 		add(createBubblePanel());
 		add(createFolderTreeTable());
 		addPageAdminBoxLink(createUploadLink());
 		addPageAdminBoxLink(createFolderLink());
 	}
 
-	private void setSelectedFolder() {
-		selectedFolder = rootFolder;
-	}
-
-	private void setRootFolder() {
-		rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
-	}
-
-	private AjaxLink<BubblePanel> createFolderLink() {
+    private AjaxLink<BubblePanel> createFolderLink() {
 		AjaxLink<BubblePanel> createFolderLink = newCreateFolderLink();
 		createFolderLink.add(createFolderLinkLabel());
 		return createFolderLink;
@@ -126,7 +109,7 @@ public class UploadCenterPage extends TemplatePage {
 	}
 
 	private TreeTable newFolderTreeTable(IColumn[] columns) {
-		return new TreeTable("treeTable", createTreeModel(), columns) {
+        return new TreeTable("treeTable", fileTreeModel, columns) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -134,17 +117,13 @@ public class UploadCenterPage extends TemplatePage {
 				if (getTreeState().isNodeSelected(node)) {
 					DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
 					FileBean fileBean = (FileBean) n.getUserObject();
-
 					if (fileBean.getFile().isDirectory()) {
-						selectedFolder = fileBean.getFile();
-						selectedNode = (DefaultMutableTreeNode) node;
+						selectedFolderModel.setObject(fileBean.getFile());
 					} else {
-						selectedFolder = fileBean.getFile().getParentFile();
-						selectedNode = (DefaultMutableTreeNode) node.getParent();
+						selectedFolderModel.setObject(fileBean.getFile().getParentFile());
 					}
 				} else {
-					setSelectedFolder();
-					selectedNode = rootNode;
+                    selectedFolderModel.setObject(rootFolder);
 				}
 			}
 		};
@@ -161,7 +140,7 @@ public class UploadCenterPage extends TemplatePage {
 			}
 
 			private CreateFolderPanel createCreateFolderPanel() {
-				return new CreateFolderPanel(bubblePanel.getContentId(), selectedFolder) {
+				return new CreateFolderPanel(bubblePanel.getContentId(), selectedFolderModel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -179,13 +158,9 @@ public class UploadCenterPage extends TemplatePage {
 		return bubblePanel;
 	}
 
-	private void setHasRightToCreate() {
+	private boolean hasRightToCreateDownload() {
 		PortalSession session = (PortalSession) getSession();
-		hasRightCreateDownload = session.hasRight("page.DownloadEditPage");
-	}
-
-	public boolean hasRightCreateDownload() {
-		return hasRightCreateDownload;
+		return session.hasRight("page.DownloadEditPage");
 	}
 
 	private AjaxLink<BubblePanel> newUploadLink(final BubblePanel bubblePanel) {
@@ -199,7 +174,7 @@ public class UploadCenterPage extends TemplatePage {
 			}
 
 			private UploadFilePanel createUploadFilePanel(final BubblePanel bubblePanel) {
-				return new UploadFilePanel(bubblePanel.getContentId(), selectedFolder) {
+				return new UploadFilePanel(bubblePanel.getContentId(), selectedFolderModel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -216,34 +191,9 @@ public class UploadCenterPage extends TemplatePage {
 		};
 	}
 
-	private TreeModel createTreeModel() {
-		rootNode = new DefaultMutableTreeNode(new FileBean(rootFolder, dateFormat));
-		selectedNode = rootNode;
-		TreeModel model = new DefaultTreeModel(rootNode);
-		add(rootNode, rootFolder);
-		return model;
+	private FileTreeModel createTreeModel() {
+        return new FileTreeModel();
 
-	}
-
-	private void add(DefaultMutableTreeNode parent, File folder) {
-		List<File> files = new ArrayList<File>();
-		if (folder != null) {
-			File tmpFiles[] = folder.listFiles();
-			if (tmpFiles != null) {
-				for (File file : tmpFiles) {
-					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new FileBean(file, dateFormat));
-					if (file.isDirectory()) {
-						parent.add(child);
-						add(child, file);
-					} else {
-						files.add(file);
-					}
-				}
-			}
-		}
-		for (File file : files) {
-			parent.add(new DefaultMutableTreeNode(new FileBean(file, dateFormat)));
-		}
 	}
 
 	private class PropertyLinkedColumn extends PropertyRenderableColumn {
@@ -259,22 +209,19 @@ public class UploadCenterPage extends TemplatePage {
 
 		@Override
 		public Component newCell(MarkupContainer parent, String id, final TreeNode node, int level) {
-			return new UploadCenterPanel(id, new PropertyModel<File>(node, getPropertyExpression()), bubblePanel,
-					hasRightCreateDownload) {
+			return new UploadCenterPanel(id, new PropertyModel<File>(node, getPropertyExpression()), bubblePanel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
-					DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
-					n.removeFromParent();
-					TreeModel model = new DefaultTreeModel(rootNode);
-					folderTreeTable.setModelObject(model);
-					folderTreeTable.modelChanged();
-					folderTreeTable.updateTree(target);
-					selectedFolder = rootFolder;
-					selectedNode = rootNode;
+					forceRefresh(target);
 				}
-			};
+
+                @Override
+                protected boolean isAllowedToCreateDownload() {
+                    return hasRightToCreateDownload();
+                }
+            };
 		}
 
 		@Override
@@ -284,11 +231,13 @@ public class UploadCenterPage extends TemplatePage {
 	}
 
 	private void forceRefresh(AjaxRequestTarget target) {
-		selectedNode.removeAllChildren();
-		add(selectedNode, selectedFolder);
-		TreeModel model = new DefaultTreeModel(rootNode);
-		folderTreeTable.setModelObject(model);
-		folderTreeTable.modelChanged();
-		folderTreeTable.updateTree(target);
+//        // no refresh works?
+        setResponsePage(UploadCenterPage.class);
+//        folderTreeTable.markNodeDirty(fileTreeModel.getRoot());
+//        folderTreeTable.modelChanged();
+//        selectedFolderModel.setObject(rootFolder);
+//        fileTreeModel.forceReload();
+//		folderTreeTable.updateTree(target);
+//        target.addComponent(this);
 	}
 }

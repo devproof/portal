@@ -50,11 +50,11 @@ public abstract class UploadCenterPanel extends Panel {
 	private IModel<File> fileModel;
 	private BubblePanel bubblePanel;
 
-	public UploadCenterPanel(String id, IModel<File> fileModel, BubblePanel bubblePanel, boolean createDownload) {
+	public UploadCenterPanel(String id, IModel<File> fileModel, BubblePanel bubblePanel) {
 		super(id, fileModel);
 		this.fileModel = fileModel;
 		this.bubblePanel = bubblePanel;
-		add(createCreateDownloadLink(createDownload));
+		add(createCreateDownloadLink());
 		add(createDownloadLink());
 		add(createDeleteLink());
 	}
@@ -65,23 +65,27 @@ public abstract class UploadCenterPanel extends Panel {
 		return ajaxLink;
 	}
 
+    protected boolean isAllowedToCreateDownload() {
+        return true;
+    }
+
 	private Image createDeleteLinkImage() {
 		return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
 	}
 
 	private AjaxLink<File> newDeleteLink() {
-		final File file = fileModel.getObject();
 		return new AjaxLink<File>("deleteLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(bubblePanel.getContentId(),
-						file, bubblePanel) {
+						fileModel, bubblePanel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onDelete(AjaxRequestTarget target, Form<?> form) {
+                        File file = fileModel.getObject();
 						if (file.isDirectory()) {
 							try {
 								FileUtils.deleteDirectory(file);
@@ -104,30 +108,30 @@ public abstract class UploadCenterPanel extends Panel {
 	}
 
 	private InternalDownloadLink createDownloadLink() {
-		File file = fileModel.getObject();
 		InternalDownloadLink downloadLink = newDownloadLink();
 		downloadLink.add(new Image("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
-		downloadLink.setVisible(file == null || file.isFile());
 		return downloadLink;
 	}
 
 	private InternalDownloadLink newDownloadLink() {
-		final File file = fileModel.getObject();
 		return new InternalDownloadLink("downloadLink") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected File getFile() {
-				return file;
+                return fileModel.getObject();
 			}
-		};
+
+            @Override
+            public boolean isVisible() {
+                File file = fileModel.getObject();
+                return file == null || file.isFile();
+            }
+        };
 	}
 
-	private Link<File> createCreateDownloadLink(boolean createDownload) {
-		File file = fileModel.getObject();
+	private Link<File> createCreateDownloadLink() {
 		Link<File> createDownloadLink = newCreateDownloadLink();
-		createDownloadLink.setVisible((file == null || file.isFile()) && createDownload
-				&& sharedRegistry.isResourceAvailable("createDownloadPage"));
 		createDownloadLink.add(new Image("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
 		return createDownloadLink;
 	}
@@ -141,8 +145,15 @@ public abstract class UploadCenterPanel extends Panel {
 				CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
 				setResponsePage(createDownloadPage.newInstance(fileModel.getObject().toURI().toString()));
 			}
-		};
+
+            @Override
+            public boolean isVisible() {
+                File file = fileModel.getObject();
+                return (file == null || file.isFile()) && isAllowedToCreateDownload()
+				    && sharedRegistry.isResourceAvailable("createDownloadPage");
+            }
+        };
 	}
 
-	public abstract void onDelete(AjaxRequestTarget target);
+	protected abstract void onDelete(AjaxRequestTarget target);
 }
