@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.common.panel;
 import junit.framework.TestCase;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.test.PortalTestUtil;
@@ -46,7 +47,7 @@ public class AuthorPanelTest extends TestCase {
 
 	public static class TestAuthorPanel extends AuthorPanel<ConfigurationEntity> {
 		public TestAuthorPanel(String id) {
-			super(id, new ConfigurationEntity());
+			super(id, Model.of(new ConfigurationEntity()));
 		}
 
 		private static final long serialVersionUID = 1L;

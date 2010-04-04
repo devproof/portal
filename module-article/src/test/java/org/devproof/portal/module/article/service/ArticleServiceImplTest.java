@@ -88,15 +88,6 @@ public class ArticleServiceImplTest extends TestCase {
 		verify(mock);
 	}
 
-	public void testFindByIdAndPrefetch() {
-		ArticleEntity e = createArticleEntity();
-		e.setId(1);
-		expect(mock.findByIdAndPrefetch(1)).andReturn(e);
-		replay(mock);
-		assertEquals(impl.findByIdAndPrefetch(1), e);
-		verify(mock);
-	}
-
 	public void testNewArticleEntity() {
 		assertNotNull(impl.newArticleEntity());
 	}

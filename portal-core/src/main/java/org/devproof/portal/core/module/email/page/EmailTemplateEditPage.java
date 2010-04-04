@@ -34,12 +34,11 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "emailService")
 	private EmailService emailService;
-
-	private EmailTemplateEntity emailTemplate;
+	private IModel<EmailTemplateEntity> emailTemplateModel;
 
 	public EmailTemplateEditPage(IModel<EmailTemplateEntity> emailTemplateModel) {
 		super(new PageParameters());
-		this.emailTemplate = emailTemplateModel.getObject();
+		this.emailTemplateModel = emailTemplateModel;
 		add(createEditEmailTemplateForm());
 	}
 
@@ -52,12 +51,12 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
 	}
 
 	private Form<EmailTemplateEntity> newEditEmailTemplateForm() {
-		return new Form<EmailTemplateEntity>("form", new CompoundPropertyModel<EmailTemplateEntity>(emailTemplate)) {
+		return new Form<EmailTemplateEntity>("form", new CompoundPropertyModel<EmailTemplateEntity>(emailTemplateModel)) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onSubmit() {
-				emailService.save(emailTemplate);
+				emailService.save(emailTemplateModel.getObject());
 				setRedirect(false);
 				info(EmailTemplateEditPage.this.getString("msg.saved"));
 				setResponsePage(EmailTemplatePage.class);

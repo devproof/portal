@@ -23,8 +23,9 @@ import org.apache.wicket.PageParameters;
  * @author Carsten Hufe
  */
 public class Rss2FeedPage extends BaseFeedPage {
+    private static final long serialVersionUID = -7224994016332605429L;
 
-	public Rss2FeedPage(PageParameters params) {
+    public Rss2FeedPage(PageParameters params) {
 		super(params);
 	}
 
