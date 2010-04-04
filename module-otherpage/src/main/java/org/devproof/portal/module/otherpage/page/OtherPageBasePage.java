@@ -51,13 +51,13 @@ public class OtherPageBasePage extends TemplatePage {
 	}
 
 	private MarkupContainer createOtherPageAddLink() {
-		Link<OtherPageEntity> link = newOtherPageAddLink();
+		Link<?> link = newOtherPageAddLink();
 		link.add(createOtherPageAddLinkLabel());
 		return link;
 	}
 
-	private Link<OtherPageEntity> newOtherPageAddLink() {
-        return new Link<OtherPageEntity>("adminLink") {
+	private Link<?> newOtherPageAddLink() {
+        return new Link<Void>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -70,7 +70,7 @@ public class OtherPageBasePage extends TemplatePage {
 	}
 
 	private Label createOtherPageAddLinkLabel() {
-		return new Label("linkName", getString("createLink"));
+		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
 	}
 
 	public boolean isAuthor() {

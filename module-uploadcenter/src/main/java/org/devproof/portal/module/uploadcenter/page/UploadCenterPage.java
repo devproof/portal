@@ -78,7 +78,7 @@ public class UploadCenterPage extends TemplatePage {
 	}
 
 	private Label createFolderLinkLabel() {
-		return new Label("linkName", getString("createFolderLink"));
+		return new Label(getPageAdminBoxLinkLabelId(), getString("createFolderLink"));
 	}
 
 	private AjaxLink<BubblePanel> createUploadLink() {
@@ -88,7 +88,7 @@ public class UploadCenterPage extends TemplatePage {
 	}
 
 	private Label createUploadLinkLabel() {
-		return new Label("linkName", getString("uploadLink"));
+		return new Label(getPageAdminBoxLinkLabelId(), getString("uploadLink"));
 	}
 
 	private TreeTable createFolderTreeTable() {
@@ -130,7 +130,7 @@ public class UploadCenterPage extends TemplatePage {
 	}
 
 	private AjaxLink<BubblePanel> newCreateFolderLink() {
-		return new AjaxLink<BubblePanel>("adminLink") {
+		return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -164,7 +164,7 @@ public class UploadCenterPage extends TemplatePage {
 	}
 
 	private AjaxLink<BubblePanel> newUploadLink(final BubblePanel bubblePanel) {
-		return new AjaxLink<BubblePanel>("adminLink") {
+		return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

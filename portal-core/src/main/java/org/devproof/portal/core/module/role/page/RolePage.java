@@ -121,11 +121,11 @@ public class RolePage extends TemplatePage {
 	}
 
 	private Label createCreateRoleLinkLabel() {
-		return new Label("linkName", getString("createLink"));
+		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
 	}
 
 	private AjaxLink<RoleEntity> newCreateRoleLink() {
-		return new AjaxLink<RoleEntity>("adminLink") {
+		return new AjaxLink<RoleEntity>(getPageAdminBoxLinkId()) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

@@ -108,11 +108,11 @@ public class RightPage extends TemplatePage {
     }
 
     private Label createRightLinkLabel() {
-        return new Label("linkName", getString("createLink"));
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
     }
 
     private AjaxLink<Void> newCreateRightLink() {
-        return new AjaxLink<Void>("adminLink") {
+        return new AjaxLink<Void>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override

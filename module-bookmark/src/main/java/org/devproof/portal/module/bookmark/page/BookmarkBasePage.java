@@ -80,12 +80,12 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
     private AjaxLink<BookmarkEntity> createDeliciousSyncLink() {
         AjaxLink<BookmarkEntity> syncLink = newDeliciousSyncLink();
-        syncLink.add(new Label("linkName", getString("syncLink")));
+        syncLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("syncLink")));
         return syncLink;
     }
 
     private AjaxLink<BookmarkEntity> newDeliciousSyncLink() {
-        return new AjaxLink<BookmarkEntity>("adminLink") {
+        return new AjaxLink<BookmarkEntity>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -130,11 +130,11 @@ public abstract class BookmarkBasePage extends TemplatePage {
     }
 
     private Label createAddLinkLabel() {
-        return new Label("linkName", getString("createLink"));
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
     }
 
     private Link<?> newBookmarkAddLink() {
-        return new Link<Object>("adminLink") {
+        return new Link<Void>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -153,11 +153,11 @@ public abstract class BookmarkBasePage extends TemplatePage {
     }
 
     private Label createDeadlinkCheckLabel() {
-        return new Label("linkName", getString("deadlinkCheckLink"));
+        return new Label(getPageAdminBoxLinkLabelId(), getString("deadlinkCheckLink"));
     }
 
     private AjaxLink<BookmarkEntity> newDeadlinkCheckLink() {
-        return new AjaxLink<BookmarkEntity>("adminLink") {
+        return new AjaxLink<BookmarkEntity>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override

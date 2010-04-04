@@ -84,12 +84,12 @@ public abstract class DownloadBasePage extends TemplatePage {
 
     private AjaxLink<DownloadEntity> createDeadlinkCheckLink() {
         AjaxLink<DownloadEntity> deadlinkCheckLink = newDeadlinkCheckLink();
-        deadlinkCheckLink.add(new Label("linkName", getString("deadlinkCheckLink")));
+        deadlinkCheckLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("deadlinkCheckLink")));
         return deadlinkCheckLink;
     }
 
     private AjaxLink<DownloadEntity> newDeadlinkCheckLink() {
-        return new AjaxLink<DownloadEntity>("adminLink") {
+        return new AjaxLink<DownloadEntity>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
