@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.pages.RedirectPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
@@ -84,7 +85,7 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 						error(getString(message));
 					}
 				} catch (UserNotConfirmedException e) {
-					setResponsePage(new ReenterEmailPage(valueMap.getString("username")));
+					setResponsePage(new ReenterEmailPage(Model.of(valueMap.getString("username"))));
 				}
 			}
 
