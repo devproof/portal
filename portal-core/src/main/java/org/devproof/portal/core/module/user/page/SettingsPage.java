@@ -229,6 +229,7 @@ public class SettingsPage extends TemplatePage {
 	}
 
 	private IModel<String> createCurrentEmailModel() {
+        // this model is ok, want a copy
 		return Model.of(userModel.getObject().getEmail());
 	}
 

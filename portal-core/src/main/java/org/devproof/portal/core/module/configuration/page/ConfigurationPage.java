@@ -190,7 +190,7 @@ public class ConfigurationPage extends TemplatePage {
 		}
 
 		private RequiredTextField<Integer> createIntegerField() {
-			IModel<String> label = Model.of(configuration.getKey());
+			IModel<String> label = new PropertyModel(configuration, "key") ;
 			RequiredTextField<Integer> textField = new RequiredTextField<Integer>("edit", new PropertyModel<Integer>(
 					configuration, "integerValue"));
 			textField.setLabel(label);
@@ -198,7 +198,7 @@ public class ConfigurationPage extends TemplatePage {
 		}
 
 		private RequiredTextField<Double> createDoubleField() {
-			IModel<String> label = Model.of(configuration.getKey());
+			IModel<String> label = new PropertyModel(configuration, "key") ;
 			RequiredTextField<Double> textField = new RequiredTextField<Double>("edit", new PropertyModel<Double>(
 					configuration, "doubleValue"));
 			textField.setLabel(label);
@@ -206,7 +206,7 @@ public class ConfigurationPage extends TemplatePage {
 		}
 
 		private RequiredTextField<String> createStringField() {
-			IModel<String> label = Model.of(configuration.getKey());
+			IModel<String> label = new PropertyModel(configuration, "key") ;
 			RequiredTextField<String> textField = new RequiredTextField<String>("edit", new PropertyModel<String>(
 					configuration, "value"));
 			textField.setLabel(label);
@@ -226,7 +226,7 @@ public class ConfigurationPage extends TemplatePage {
 
 		private FormComponent<Boolean> createCheckBox() {
 			CheckBox checkBox = new CheckBox("edit", new PropertyModel<Boolean>(configuration, "booleanValue"));
-			checkBox.setLabel(Model.of(configuration.getKey()));
+			checkBox.setLabel(new PropertyModel(configuration, "key"));
 			return checkBox;
 		}
 	}
@@ -245,7 +245,7 @@ public class ConfigurationPage extends TemplatePage {
 			List<String> enumChoices = getEnumChoices();
 			DropDownChoice<String> ddc = new DropDownChoice<String>("edit", new PropertyModel<String>(configuration,
 					"value"), enumChoices);
-			ddc.setLabel(Model.of(configuration.getDescription()));
+			ddc.setLabel(new PropertyModel(configuration, "key"));
 			ddc.setRequired(true);
 			return ddc;
 		}
@@ -278,7 +278,7 @@ public class ConfigurationPage extends TemplatePage {
 			DropDownChoice<ConfigurationEntity> ddc = new DropDownChoice<ConfigurationEntity>("edit",
 					possibleSelectionValues, new ChoiceRenderer<ConfigurationEntity>("description", "value"));
 			ddc.setModel(newConfigurationModel());
-			ddc.setLabel(Model.of(configuration.getDescription()));
+			ddc.setLabel(new PropertyModel(configuration, "key"));
 			ddc.setRequired(true);
 			return ddc;
 		}
@@ -374,7 +374,7 @@ public class ConfigurationPage extends TemplatePage {
 		private DateTextField createDateField() {
 			DateTextField dateTextField = new DateTextField("edit", new PropertyModel<Date>(configuration, "dateValue"));
 			dateTextField.add(new DatePicker());
-			dateTextField.setLabel(Model.of(configuration.getKey()));
+			dateTextField.setLabel(new PropertyModel(configuration, "key"));
 			dateTextField.setRequired(true);
 			return dateTextField;
 		}

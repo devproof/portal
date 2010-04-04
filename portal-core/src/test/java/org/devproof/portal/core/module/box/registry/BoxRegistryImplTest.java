@@ -16,11 +16,12 @@
 package org.devproof.portal.core.module.box.registry;
 
 import junit.framework.TestCase;
-
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.module.box.locator.BoxLocator;
 import org.easymock.EasyMock;
+
+import static org.easymock.EasyMock.createStrictMock;
 
 /**
  * @author Carsten Hufe
@@ -31,7 +32,7 @@ public class BoxRegistryImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		boxLocatorMock = EasyMock.createStrictMock(BoxLocator.class);
+		boxLocatorMock = createStrictMock(BoxLocator.class);
 		impl = new BoxRegistryImpl();
 		impl.setBoxLocator(boxLocatorMock);
 	}

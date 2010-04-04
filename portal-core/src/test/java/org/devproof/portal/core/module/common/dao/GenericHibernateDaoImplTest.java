@@ -42,10 +42,10 @@ public class GenericHibernateDaoImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		sessionFactory = EasyMock.createMock(SessionFactory.class);
-		session = EasyMock.createMock(Session.class);
-		query = EasyMock.createMock(Query.class);
-		usernameResolver = EasyMock.createMock(UsernameResolver.class);
+		sessionFactory = createMock(SessionFactory.class);
+		session = createMock(Session.class);
+		query = createMock(Query.class);
+		usernameResolver = createMock(UsernameResolver.class);
 		impl = new GenericHibernateDaoImpl<EmailTemplateEntity, Integer>(EmailTemplateEntity.class);
 		impl.setSessionFactory(sessionFactory);
 		impl.setUsernameResolver(usernameResolver);

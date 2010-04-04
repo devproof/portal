@@ -41,14 +41,9 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
 	private TagService<T> tagService;
 	private IModel<List<T>> originalTagsModel = null;
 
-	private TagField(String id, String tags, TagService<T> tagService) {
-		super(id, Model.of(tags));
-		add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
-		this.tagService = tagService;
-	}
-
 	public TagField(String id, IModel<List<T>> tags, TagService<T> tagService) {
 		super(id, Model.of(createModelString(tags.getObject())));
+        add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
 		originalTagsModel = tags;
 		this.tagService = tagService;
 	}

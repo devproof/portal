@@ -29,6 +29,8 @@ import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.devproof.portal.core.module.user.page.LoginPage;
 import org.easymock.EasyMock;
 
+import static org.easymock.EasyMock.*;
+
 /**
  * @author Carsten Hufe
  */
@@ -39,8 +41,8 @@ public class MainNavigationRegistryImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
-		moduleServiceMock = EasyMock.createStrictMock(ModuleService.class);
+		pageLocatorMock = createStrictMock(PageLocator.class);
+		moduleServiceMock = createStrictMock(ModuleService.class);
 		impl = new MainNavigationRegistryImpl();
 		impl.setModuleService(moduleServiceMock);
 		impl.setPageLocator(pageLocatorMock);
@@ -56,15 +58,15 @@ public class MainNavigationRegistryImplTest extends TestCase {
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(LoginPage.class);
 		confs.add(conf);
-		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(LoginPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
+		replay(pageLocatorMock, moduleServiceMock);
 		impl.buildNavigation();
-		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		verify(pageLocatorMock, moduleServiceMock);
 		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
 	}
 
@@ -73,15 +75,15 @@ public class MainNavigationRegistryImplTest extends TestCase {
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(LoginPage.class);
 		confs.add(conf);
-		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(LoginPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
+		replay(pageLocatorMock, moduleServiceMock);
 		impl.afterPropertiesSet();
-		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		verify(pageLocatorMock, moduleServiceMock);
 		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
 	}
 

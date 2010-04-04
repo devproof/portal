@@ -28,6 +28,8 @@ import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.devproof.portal.core.module.right.page.RightPage;
 import org.easymock.EasyMock;
 
+import static org.easymock.EasyMock.*;
+
 /**
  * @author Carsten Hufe
  */
@@ -38,8 +40,8 @@ public class GlobalAdminPageRegistryImplTest extends TestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		pageLocatorMock = EasyMock.createStrictMock(PageLocator.class);
-		moduleServiceMock = EasyMock.createStrictMock(ModuleService.class);
+		pageLocatorMock = createStrictMock(PageLocator.class);
+		moduleServiceMock = createStrictMock(ModuleService.class);
 		impl = new GlobalAdminPageRegistryImpl();
 		impl.setModuleService(moduleServiceMock);
 		impl.setPageLocator(pageLocatorMock);
@@ -55,32 +57,34 @@ public class GlobalAdminPageRegistryImplTest extends TestCase {
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(RightPage.class);
 		confs.add(conf);
-		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(RightPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
-		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
+		replay(pageLocatorMock, moduleServiceMock);
 		impl.buildNavigation();
-		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		verify(pageLocatorMock, moduleServiceMock);
 		assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
 	}
 
-	public void testAfterPropertiesSet() throws Exception {
+
+
+    public void testAfterPropertiesSet() throws Exception {
 		Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
 		PageConfiguration conf = new PageConfiguration();
 		conf.setPageClass(RightPage.class);
 		confs.add(conf);
-		EasyMock.expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
 		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
 		ModuleLinkEntity link = new ModuleLinkEntity();
 		link.setPageName(RightPage.class.getSimpleName());
 		links.add(link);
-		EasyMock.expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
-		EasyMock.replay(pageLocatorMock, moduleServiceMock);
+		expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
+		replay(pageLocatorMock, moduleServiceMock);
 		impl.afterPropertiesSet();
-		EasyMock.verify(pageLocatorMock, moduleServiceMock);
+		verify(pageLocatorMock, moduleServiceMock);
 		assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
 	}
 
