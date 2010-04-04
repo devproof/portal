@@ -37,16 +37,21 @@ public class BookmarkRedirectPage extends WebPage {
 	public BookmarkRedirectPage(PageParameters params) {
 		super(params);
 		this.params = params;
-		if (hasFirstParameter()) {
+	}
+
+    @Override
+    protected void onBeforeRender() {
+        if (hasFirstParameter()) {
 			BookmarkEntity bookmark = bookmarkService.findById(getBookmarkIdParam());
 			if (hasVisitRight(bookmark)) {
 				bookmarkService.incrementHits(bookmark);
 				redirectTo(bookmark);
 			}
 		}
-	}
+        super.onBeforeRender();
+    }
 
-	private int getBookmarkIdParam() {
+    private int getBookmarkIdParam() {
 		return params.getAsInteger("0", 0);
 	}
 

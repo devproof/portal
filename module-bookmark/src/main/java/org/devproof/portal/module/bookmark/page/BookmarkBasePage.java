@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -42,175 +43,168 @@ import org.devproof.portal.module.deadlinkcheck.panel.DeadlinkCheckPanel;
  */
 public abstract class BookmarkBasePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "bookmarkService")
-	private BookmarkService bookmarkService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "bookmarkService")
+    private BookmarkService bookmarkService;
 
-	private WebMarkupContainer bubblePanel;
-	private boolean isAuthor = false;
+    private WebMarkupContainer bubblePanel;
 
-	public BookmarkBasePage(final PageParameters params) {
-		super(params);
-		// TODO lazy machen
-		setAuthorRight();
-		add(createCSSHeaderContributor());
-		add(createHiddenBubblePanel());
-		addBookmarkAddLink();
-		addDeadlinkCheckLink();
-		addDeliciousSyncLink();
-	}
+    public BookmarkBasePage(final PageParameters params) {
+        super(params);
+        add(createCSSHeaderContributor());
+        add(createHiddenBubblePanel());
+        addBookmarkAddLink();
+        addDeadlinkCheckLink();
+        addDeliciousSyncLink();
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS);
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS);
+    }
 
-	private WebMarkupContainer createHiddenBubblePanel() {
-		if (isAuthor()) {
-			bubblePanel = new BubblePanel("bubbleWindow");
-		} else {
-			bubblePanel = new WebMarkupContainer("bubbleWindow");
-			bubblePanel.setVisible(false);
-		}
-		return bubblePanel;
-	}
+    private WebMarkupContainer createHiddenBubblePanel() {
+        if (isAuthor()) {
+            bubblePanel = new BubblePanel("bubbleWindow");
+        } else {
+            bubblePanel = new WebMarkupContainer("bubbleWindow");
+            bubblePanel.setVisible(false);
+        }
+        return bubblePanel;
+    }
 
-	private void addDeliciousSyncLink() {
-		if (isAuthor()) {
-			addPageAdminBoxLink(createDeliciousSyncLink());
-		}
-	}
+    private void addDeliciousSyncLink() {
+        if (isAuthor()) {
+            addPageAdminBoxLink(createDeliciousSyncLink());
+        }
+    }
 
-	private AjaxLink<BookmarkEntity> createDeliciousSyncLink() {
-		AjaxLink<BookmarkEntity> syncLink = newDeliciousSyncLink();
-		syncLink.add(new Label("linkName", getString("syncLink")));
-		return syncLink;
-	}
+    private AjaxLink<BookmarkEntity> createDeliciousSyncLink() {
+        AjaxLink<BookmarkEntity> syncLink = newDeliciousSyncLink();
+        syncLink.add(new Label("linkName", getString("syncLink")));
+        return syncLink;
+    }
 
-	private AjaxLink<BookmarkEntity> newDeliciousSyncLink() {
-		return new AjaxLink<BookmarkEntity>("adminLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<BookmarkEntity> newDeliciousSyncLink() {
+        return new AjaxLink<BookmarkEntity>("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				BubblePanel panel = (BubblePanel) bubblePanel;
-				DeliciousSyncPanel syncPanel = createDeliciousSyncPanel(panel.getContentId());
-				panel.setContent(syncPanel);
-				panel.showModal(target);
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                BubblePanel panel = (BubblePanel) bubblePanel;
+                DeliciousSyncPanel syncPanel = createDeliciousSyncPanel(panel.getContentId());
+                panel.setContent(syncPanel);
+                panel.showModal(target);
+            }
 
-			private DeliciousSyncPanel createDeliciousSyncPanel(String id) {
-				return new DeliciousSyncPanel(id) {
-					private static final long serialVersionUID = 1L;
+            private DeliciousSyncPanel createDeliciousSyncPanel(String id) {
+                return new DeliciousSyncPanel(id) {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onCancel(AjaxRequestTarget target) {
-						BubblePanel panel = (BubblePanel) bubblePanel;
-						panel.hide(target);
-						setResponsePage(BookmarkPage.class);
-					}
-				};
-			}
-		};
-	}
+                    @Override
+                    public void onCancel(AjaxRequestTarget target) {
+                        BubblePanel panel = (BubblePanel) bubblePanel;
+                        panel.hide(target);
+                        setResponsePage(BookmarkPage.class);
+                    }
+                };
+            }
+        };
+    }
 
-	private void addDeadlinkCheckLink() {
-		if (isAuthor()) {
-			addPageAdminBoxLink(createDeadlinkCheckLink());
-		}
-	}
+    private void addDeadlinkCheckLink() {
+        if (isAuthor()) {
+            addPageAdminBoxLink(createDeadlinkCheckLink());
+        }
+    }
 
-	private void addBookmarkAddLink() {
-		if (isAuthor()) {
-			addPageAdminBoxLink(createBookmarkAddLink());
-		}
-	}
+    private void addBookmarkAddLink() {
+        if (isAuthor()) {
+            addPageAdminBoxLink(createBookmarkAddLink());
+        }
+    }
 
-	private Link<?> createBookmarkAddLink() {
-		Link<?> addLink = newBookmarkAddLink();
-		addLink.add(createAddLinkLabel());
-		return addLink;
-	}
+    private Link<?> createBookmarkAddLink() {
+        Link<?> addLink = newBookmarkAddLink();
+        addLink.add(createAddLinkLabel());
+        return addLink;
+    }
 
-	private Label createAddLinkLabel() {
-		return new Label("linkName", getString("createLink"));
-	}
+    private Label createAddLinkLabel() {
+        return new Label("linkName", getString("createLink"));
+    }
 
-	private Link<?> newBookmarkAddLink() {
-		return new Link<Object>("adminLink") {
-			private static final long serialVersionUID = 1L;
+    private Link<?> newBookmarkAddLink() {
+        return new Link<Object>("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick() {
-				BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
-				IModel<BookmarkEntity> bookmarkModel = Model.of(newBookmark);
-				setResponsePage(new BookmarkEditPage(bookmarkModel));
-			}
-		};
-	}
+            @Override
+            public void onClick() {
+                BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
+                IModel<BookmarkEntity> bookmarkModel = Model.of(newBookmark);
+                setResponsePage(new BookmarkEditPage(bookmarkModel));
+            }
+        };
+    }
 
-	private AjaxLink<BookmarkEntity> createDeadlinkCheckLink() {
-		AjaxLink<BookmarkEntity> deadlinkCheckLink = newDeadlinkCheckLink();
-		deadlinkCheckLink.add(createDeadlinkCheckLabel());
-		return deadlinkCheckLink;
-	}
+    private AjaxLink<BookmarkEntity> createDeadlinkCheckLink() {
+        AjaxLink<BookmarkEntity> deadlinkCheckLink = newDeadlinkCheckLink();
+        deadlinkCheckLink.add(createDeadlinkCheckLabel());
+        return deadlinkCheckLink;
+    }
 
-	private Label createDeadlinkCheckLabel() {
-		return new Label("linkName", getString("deadlinkCheckLink"));
-	}
+    private Label createDeadlinkCheckLabel() {
+        return new Label("linkName", getString("deadlinkCheckLink"));
+    }
 
-	private AjaxLink<BookmarkEntity> newDeadlinkCheckLink() {
-		return new AjaxLink<BookmarkEntity>("adminLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<BookmarkEntity> newDeadlinkCheckLink() {
+        return new AjaxLink<BookmarkEntity>("adminLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				BubblePanel panel = (BubblePanel) bubblePanel;
-				DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(panel.getContentId());
-				panel.setContent(deadlinkCheckPanel);
-				panel.showModal(target);
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                BubblePanel panel = (BubblePanel) bubblePanel;
+                DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(panel.getContentId());
+                panel.setContent(deadlinkCheckPanel);
+                panel.showModal(target);
+            }
 
-			private DeadlinkCheckPanel<BookmarkEntity> createDeadlinkCheckPanel(String id) {
-				List<BookmarkEntity> allBookmarks = bookmarkService.findAll();
-				return newDeadlinkCheckPanel(id, allBookmarks);
-			}
+            private DeadlinkCheckPanel<BookmarkEntity> createDeadlinkCheckPanel(String id) {
+                IModel<List<BookmarkEntity>> allBookmarksModel = createAllBookmarksModel();
+                return new DeadlinkCheckPanel<BookmarkEntity>(id, "bookmark", allBookmarksModel) {
+                    private static final long serialVersionUID = 1L;
 
-			private DeadlinkCheckPanel<BookmarkEntity> newDeadlinkCheckPanel(String id,
-					List<BookmarkEntity> allBookmarks) {
-				return new DeadlinkCheckPanel<BookmarkEntity>(id, "bookmark", allBookmarks) {
-					private static final long serialVersionUID = 1L;
+                    @Override
+                    public void onBroken(BookmarkEntity brokenEntity) {
+                        bookmarkService.markBrokenBookmark(brokenEntity);
+                    }
 
-					@Override
-					public void onBroken(BookmarkEntity brokenEntity) {
-						bookmarkService.markBrokenBookmark(brokenEntity);
-					}
+                    @Override
+                    public void onValid(BookmarkEntity validEntity) {
+                        bookmarkService.markValidBookmark(validEntity);
+                    }
 
-					@Override
-					public void onValid(BookmarkEntity validEntity) {
-						bookmarkService.markValidBookmark(validEntity);
-					}
+                    @Override
+                    public void onCancel(AjaxRequestTarget target) {
+                        BubblePanel panel = (BubblePanel) bubblePanel;
+                        panel.hide(target);
+                        setResponsePage(BookmarkPage.class);
+                    }
+                };
+            }
+        };
+    }
 
-					@Override
-					public void onCancel(AjaxRequestTarget target) {
-						BubblePanel panel = (BubblePanel) bubblePanel;
-						panel.hide(target);
-						setResponsePage(BookmarkPage.class);
-					}
-				};
-			}
-		};
-	}
+    private IModel<List<BookmarkEntity>> createAllBookmarksModel() {
+        return new LoadableDetachableModel<List<BookmarkEntity>>() {
+            @Override
+            protected List<BookmarkEntity> load() {
+                return bookmarkService.findAll();
+            }
+        };
+    }
 
-	private void setAuthorRight() {
-		PortalSession session = (PortalSession) getSession();
-		isAuthor = session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
-	}
-
-	public WebMarkupContainer getBubblePanel() {
-		return bubblePanel;
-	}
-
-	public boolean isAuthor() {
-		return isAuthor;
-	}
+    public boolean isAuthor() {
+        PortalSession session = (PortalSession) getSession();
+        return session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
+    }
 }
