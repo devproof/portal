@@ -27,20 +27,26 @@ import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.page.ArticlePage;
 import org.devproof.portal.module.article.query.ArticleQuery;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.*;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Carsten Hufe
  */
-public class ArticleFeedProviderImplTest extends TestCase {
+public class ArticleFeedProviderImplTest {
     private ArticleFeedProviderImpl impl;
     private SortableQueryDataProvider<ArticleEntity, ArticleQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
@@ -60,6 +66,7 @@ public class ArticleFeedProviderImplTest extends TestCase {
         impl.setArticleDataProvider(dataProviderMock);
     }
 
+    @Test
     public void testGetFeedName() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
         expect(configurationServiceMock.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE)).andReturn("feedtitle");
@@ -68,10 +75,12 @@ public class ArticleFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testSupportedPages() {
         assertEquals(ArticlePage.class, impl.getSupportedFeedPages().get(0));
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetArticleEntries() {
         ArticleEntity article = createArticle();
@@ -86,6 +95,7 @@ public class ArticleFeedProviderImplTest extends TestCase {
         verify(dataProviderMock);
     }
 
+    @Test
     public void testGenerateFeed() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle").anyTimes();
         expect(configurationServiceMock.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE)).andReturn("feedtitle").anyTimes();
@@ -97,6 +107,7 @@ public class ArticleFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
         ArticleEntity bookmark = createArticle();
@@ -111,6 +122,7 @@ public class ArticleFeedProviderImplTest extends TestCase {
         assertNotNull(entry.getPublishedDate());
     }
 
+    @Test
     public void testGetFeed() {
         final List<SyndEntry> entries = new ArrayList<SyndEntry>();
         final StringBuilder callOrder = new StringBuilder();
