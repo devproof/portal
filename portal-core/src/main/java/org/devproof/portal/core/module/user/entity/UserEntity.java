@@ -34,7 +34,7 @@ import java.util.Date;
 @Table(name = "core_user")
 @CacheQuery(region = UserConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = UserConstants.ENTITY_CACHE_REGION)
-final public class UserEntity implements Serializable {
+public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -52,8 +52,7 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
 
     protected Iterator<? extends BookmarkEntity> getBookmarkEntries() {
         Integer maxNumber = configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARK_ENTRIES_IN_FEED);
-        Iterator<? extends BookmarkEntity> iterator = bookmarkDataProvider.iterator(0, maxNumber);
-        return iterator;
+        return bookmarkDataProvider.iterator(0, maxNumber);
     }
 
     protected SyndFeed generateFeed(RequestCycle rc) {

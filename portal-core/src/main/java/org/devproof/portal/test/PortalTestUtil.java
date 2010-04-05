@@ -203,7 +203,7 @@ public class PortalTestUtil {
     /**
      * Login the default admin user
      */
-    public static void loginDefaultAdminUser(WicketTester tester) throws UserNotConfirmedException {
+    public static void loginDefaultAdminUser(WicketTester tester) {
         tester.startPage(LoginPage.class);
         FormTester form = tester.newFormTester("loginForm");
         form.setValue("username", "admin");
@@ -236,9 +236,9 @@ public class PortalTestUtil {
 
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T getBean(String beanName) {
-        @SuppressWarnings("unchecked") T back = (T) ContextLoader.getCurrentWebApplicationContext().getBean(beanName);
-        return back;
+        return (T) ContextLoader.getCurrentWebApplicationContext().getBean(beanName);
     }
 
     private static class TestPortalApplication extends PortalApplication {

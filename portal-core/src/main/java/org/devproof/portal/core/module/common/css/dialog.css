@@ -1,31 +1,30 @@
 .dialog {
     position: relative;
-    margin: 0px auto;
+    margin: 0px auto 0.5em 12px;
     min-width: 8em;
     max-width: 760px; /* based on image dimensions - not quite consistent with drip styles yet */
     color: #fff;
-    z-index: 1;
-    margin-left: 12px; /* default, width of left corner */
-    margin-bottom: 0.5em; /* spacing under dialog */
+    z-index: 1; /* default, width of left corner */
+/* spacing under dialog */
 }
 
 .dialog .dialogContent, .dialog .t, .dialog .b, .dialog .b div {
-    background: transparent url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/dialog2-blue-800x1600.png) no-repeat top right;
-    _background-image: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/dialog2-blue.gif);
+    background: transparent url(../img/dialog2-blue-800x1600.png) no-repeat top right;
+    _background-image: url(../img/dialog2-blue.gif);
 }
 
 .dialog .dialogContent {
     position: relative;
     zoom: 1;
     _overflow-y: hidden;
-    padding: 0px 12px 0px 0px;
+    padding: 0 12px 0 0;
 }
 
 .dialog .t {
 /* top+left vertical slice */
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     width: 12px; /* top slice width */
     margin-left: -12px;
     height: 100%;
@@ -68,18 +67,18 @@
 }
 
 .dialog h1, .dialog p, .dialog h2 {
-    margin: 0px; /* margins will blow out backgrounds, leaving whitespace. */
-    padding: 0.8em 0px 0.5em 0px;
+    margin: 0; /* margins will blow out backgrounds, leaving whitespace. */
+    padding: 0.8em 0 0.5em 0;
     color: #FFF;
 }
 
 .dialog h1, .dialog h2 {
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 .dialog.type2 .dialogContent, .dialog.type2 .t, .dialog.type2 .b, .dialog.type2 .b div {
-    background-image: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/dialog2-dark-800x1200-alpha-drip.png);
-    _background-image: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/dialog2-dark-alpha-drip.gif);
+    background-image: url(../img/dialog2-dark-800x1200-alpha-drip.png);
+    _background-image: url(../img/dialog2-dark-alpha-drip.gif);
 }
 
 /* "drip" variant */
@@ -101,13 +100,13 @@
 }
 
 .dialog .wrapper .hd, .dialog .wrapper .bd, .dialog .wrapper .ft {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .dialog.drip .hd, .dialog.drip .bd, .dialog.drip .ft {
     zoom: 1;
     width: auto;
-    padding: 0px 2px 0px 12px;
+    padding: 0 2px 0 12px;
 }
 
 .bubblePopup {

@@ -137,7 +137,6 @@ public class ProgressBar extends Panel {
      * <p/>
      * This could be overridden for a custom label
      *
-     * @param model the ProgressionModel
      * @return A model for the bar label
      */
     protected AbstractReadOnlyModel<String> createProgressPercentageModel() {
@@ -157,7 +156,6 @@ public class ProgressBar extends Panel {
      * <p/>
      * This could be overridden for a custom message label
      *
-     * @param model the ProgressionModel
      * @return A model for the bar message label
      */
     protected IModel<String> createProgressMessageModel() {

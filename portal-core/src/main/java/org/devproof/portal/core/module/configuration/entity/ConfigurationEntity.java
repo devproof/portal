@@ -29,7 +29,7 @@ import java.util.Date;
 @Entity
 @Table(name = "core_configuration")
 // selfcached
-final public class ConfigurationEntity implements Serializable {
+public class ConfigurationEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

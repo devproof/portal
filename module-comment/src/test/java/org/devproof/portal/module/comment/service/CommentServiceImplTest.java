@@ -229,8 +229,7 @@ public class CommentServiceImplTest extends TestCase {
         user.setLastname("Pan");
         user.setEmail("test@email.tld");
         user.setUsername("peterpan");
-        List<UserEntity> users = Arrays.asList(user);
-        return users;
+        return Arrays.asList(user);
     }
 
     private UrlCallback createUrlCallback() {

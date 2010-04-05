@@ -35,7 +35,7 @@ import javax.persistence.*;
 @IdClass(ModuleLinkId.class)
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
-final public class ModuleLinkEntity extends BaseEntity implements Comparable<ModuleLinkEntity> {
+public class ModuleLinkEntity extends BaseEntity implements Comparable<ModuleLinkEntity> {
 
     private static final long serialVersionUID = 1L;
 

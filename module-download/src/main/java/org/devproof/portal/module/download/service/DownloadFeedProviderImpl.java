@@ -52,8 +52,7 @@ public class DownloadFeedProviderImpl implements FeedProvider {
 
     protected Iterator<? extends DownloadEntity> getDownloadEntries() {
         Integer maxNumber = configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED);
-        Iterator<? extends DownloadEntity> iterator = downloadDataProvider.iterator(0, maxNumber);
-        return iterator;
+        return downloadDataProvider.iterator(0, maxNumber);
     }
 
     protected SyndFeed generateFeed(RequestCycle rc) {

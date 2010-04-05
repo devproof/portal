@@ -65,7 +65,7 @@ public class BookmarkQuery implements SearchQuery {
             PortalSession session = PortalSession.get();
             author = session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
         }
-        return author.booleanValue();
+        return author;
     }
 
     @BeanQuery("e.id = ?")

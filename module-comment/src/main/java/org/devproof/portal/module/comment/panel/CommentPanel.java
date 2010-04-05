@@ -69,10 +69,9 @@ public class CommentPanel extends Panel {
     @SpringBean(name = "commentService")
     private CommentService commentService;
     private IModel<CommentQuery> queryModel;
-    private FeedbackPanel feedbackPanel;
     private BubblePanel bubblePanel;
 
-    private CommentDataView dataView;
+    private CommentDataView repeatingComments;
     private CommentConfiguration configuration;
     private IModel<CommentEntity> commentModel;
     private boolean hasSubmitted = false;
@@ -157,7 +156,7 @@ public class CommentPanel extends Panel {
                 commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
                 comment.setComment(commentStr);
                 comment.setIpAddress(PortalSession.get().getIpAddress());
-                dataView.setCurrentPage(0);
+                repeatingComments.setCurrentPage(0);
                 commentService.saveNewComment(comment, getUrlCallback());
                 info(getString("saved"));
                 target.addComponent(CommentPanel.this);
@@ -207,13 +206,13 @@ public class CommentPanel extends Panel {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
-                dataView.setCurrentPage(dataView.getCurrentPage() + 1);
+                repeatingComments.setCurrentPage(repeatingComments.getCurrentPage() + 1);
                 target.addComponent(CommentPanel.this);
             }
 
             @Override
             public boolean isVisible() {
-                return (dataView.getPageCount() - 1) > dataView.getCurrentPage();
+                return (repeatingComments.getPageCount() - 1) > repeatingComments.getCurrentPage();
             }
         };
     }
@@ -224,27 +223,27 @@ public class CommentPanel extends Panel {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
-                dataView.setCurrentPage(dataView.getCurrentPage() - 1);
+                repeatingComments.setCurrentPage(repeatingComments.getCurrentPage() - 1);
                 target.addComponent(CommentPanel.this);
             }
 
             @Override
             public boolean isVisible() {
-                return dataView.getCurrentPage() != 0;
+                return repeatingComments.getCurrentPage() != 0;
             }
 
         };
     }
 
     private FeedbackPanel createFeedbackPanel() {
-        feedbackPanel = new FeedbackPanel("feedback");
+        FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         feedbackPanel.setOutputMarkupId(true);
         return feedbackPanel;
     }
 
     private CommentDataView createRepeatingComments() {
-        dataView = new CommentDataView("repeatingComments");
-        return dataView;
+        repeatingComments = new CommentDataView("repeatingComments");
+        return repeatingComments;
     }
 
     private WebMarkupContainer createNoCommentsHintContainer() {

@@ -56,6 +56,4 @@ public class CaptchaPanelTest extends TestCase {
         protected void onCancel(AjaxRequestTarget target) {
         }
     }
-
-    ;
 }

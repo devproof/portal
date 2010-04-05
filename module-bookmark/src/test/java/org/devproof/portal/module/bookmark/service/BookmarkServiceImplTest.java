@@ -38,10 +38,10 @@ public class BookmarkServiceImplTest extends TestCase {
     private TagService<BookmarkTagEntity> mockTag;
 
     @Override
+    @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(BookmarkDao.class);
-        @SuppressWarnings("unchecked") TagService<BookmarkTagEntity> tagService = createStrictMock(TagService.class);
-        mockTag = tagService;
+        mockTag = (TagService<BookmarkTagEntity>) createStrictMock(TagService.class);
         impl = new BookmarkServiceImpl();
         impl.setBookmarkDao(mock);
         impl.setBookmarkTagService(mockTag);

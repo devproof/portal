@@ -175,8 +175,7 @@ public class PortalSessionTest extends TestCase {
         expect(portalSession.rightService.newRightEntity("sample1")).andReturn(new RightEntity("sample1"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
         replay(portalSession.rightService);
-        UserEntity user = createUserWithRights();
-        portalSession.user = user;
+        portalSession.user = createUserWithRights();
         assertTrue(portalSession.hasRight("sample1"));
         verify(portalSession.rightService);
     }
@@ -185,22 +184,19 @@ public class PortalSessionTest extends TestCase {
         expect(portalSession.rightService.newRightEntity("notexisting")).andReturn(new RightEntity("notexisting"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
         replay(portalSession.rightService);
-        UserEntity user = createUserWithRights();
-        portalSession.user = user;
+        portalSession.user = createUserWithRights();
         assertFalse(portalSession.hasRight("notexisting"));
         verify(portalSession.rightService);
     }
 
     public void testHasRightRightEntity_true() {
-        UserEntity user = createUserWithRights();
-        portalSession.user = user;
+        portalSession.user = createUserWithRights();
         RightEntity right = new RightEntity("sample1");
         assertTrue(portalSession.hasRight(right));
     }
 
     public void testHasRightRightEntity_false() {
-        UserEntity user = createUserWithRights();
-        portalSession.user = user;
+        portalSession.user = createUserWithRights();
         RightEntity right = new RightEntity("notexisting");
         assertFalse(portalSession.hasRight(right));
     }
@@ -214,8 +210,7 @@ public class PortalSessionTest extends TestCase {
     }
 
     public void testHasRightCollectionOfRightEntity_false() {
-        UserEntity user = createUserWithRights();
-        portalSession.user = user;
+        portalSession.user = createUserWithRights();
         List<RightEntity> rights = new ArrayList<RightEntity>();
         rights.add(new RightEntity("notexisting"));
         assertFalse(portalSession.hasRight(rights));
@@ -236,8 +231,7 @@ public class PortalSessionTest extends TestCase {
         expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new RightEntity("adminright"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l).times(2);
         replay(portalSession.rightService);
-        UserEntity user = createUserWithRights();
-        portalSession.user = user;
+        portalSession.user = createUserWithRights();
         assertFalse(portalSession.hasRight("adminright", new ArrayList<RightEntity>()));
         verify(portalSession.rightService);
     }

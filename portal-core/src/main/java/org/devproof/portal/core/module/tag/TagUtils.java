@@ -24,8 +24,6 @@ public class TagUtils {
     private TagUtils() {
     }
 
-    ;
-
     /**
      * Returns the currently selected tag as string
      */

@@ -61,7 +61,6 @@ public class DateFormatFactoryImpl implements DateFormatFactory {
             locale = Session.get().getLocale();
         }
         String format = configurationService.findAsString(formatKey);
-        SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
-        return sdf;
+        return new SimpleDateFormat(format, locale);
     }
 }

@@ -78,8 +78,7 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
     }
 
     private String getLeadingTags(String input, String lastWord) {
-        String prefix = input.substring(0, input.length() - lastWord.length());
-        return prefix;
+        return input.substring(0, input.length() - lastWord.length());
     }
 
     private boolean isSearchable(String input, String lastWord) {

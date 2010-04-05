@@ -81,6 +81,7 @@ public class BoxServiceImpl implements BoxService {
         int maxSort = boxDao.getMaxSortNum();
         boolean isNotLowestBox = box.getSort() < maxSort;
         if (isNotLowestBox) {
+            @SuppressWarnings({"UnnecessaryLocalVariable"})
             BoxEntity moveDown = box;
             BoxEntity moveUp = boxDao.findBoxBySort(box.getSort() + 1);
             moveUp.setSort(moveUp.getSort() - 1);
@@ -94,6 +95,7 @@ public class BoxServiceImpl implements BoxService {
     public void moveUp(BoxEntity box) {
         boolean isNotHighestBox = box.getSort() > 1;
         if (isNotHighestBox) {
+            @SuppressWarnings({"UnnecessaryLocalVariable"})
             BoxEntity moveUp = box;
             BoxEntity moveDown = boxDao.findBoxBySort(box.getSort() - 1);
             moveUp.setSort(moveUp.getSort() - 1);

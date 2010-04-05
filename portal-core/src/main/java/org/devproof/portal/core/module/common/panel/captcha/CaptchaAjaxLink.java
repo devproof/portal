@@ -47,7 +47,7 @@ public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
     }
 
     private CaptchaPanel createCaptchaPanel() {
-        CaptchaPanel captchaPanel = new CaptchaPanel(bubblePanel.getContentId()) {
+        return new CaptchaPanel(bubblePanel.getContentId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -61,7 +61,6 @@ public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
                 bubblePanel.hide(target);
             }
         };
-        return captchaPanel;
     }
 
     private boolean showCaptcha() {

@@ -53,8 +53,7 @@ public class ArticleFeedProviderImpl implements FeedProvider {
 
     protected Iterator<? extends ArticleEntity> getArticleEntries() {
         Integer maxNumber = configurationService.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED);
-        Iterator<? extends ArticleEntity> iterator = articleDataProvider.iterator(0, maxNumber);
-        return iterator;
+        return articleDataProvider.iterator(0, maxNumber);
     }
 
     protected SyndFeed generateFeed(RequestCycle rc) {

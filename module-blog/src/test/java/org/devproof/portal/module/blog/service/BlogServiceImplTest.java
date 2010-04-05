@@ -34,8 +34,7 @@ public class BlogServiceImplTest extends TestCase {
     @Override
     public void setUp() throws Exception {
         mock = createStrictMock(BlogDao.class);
-        @SuppressWarnings("unchecked") TagService<BlogTagEntity> tagService = createStrictMock(TagService.class);
-        mockTag = tagService;
+        mockTag = (TagService<BlogTagEntity>) createStrictMock(TagService.class);
         impl = new BlogServiceImpl();
         impl.setBlogDao(mock);
         impl.setBlogTagService(mockTag);

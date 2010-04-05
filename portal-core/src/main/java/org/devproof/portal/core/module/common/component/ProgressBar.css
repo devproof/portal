@@ -27,8 +27,6 @@ div.wicketstuff-progressbar span.bar {
     display: block;
     height: 100%;
     position: absolute;
-    background-image: url("gfx/blue-stripes.png");
-    background-color: #00BAFF;
-    background-position: top right;
+    background: #00BAFF url("gfx/blue-stripes.png") top right;
     border-right: 1px solid #00BAFF;
 }
