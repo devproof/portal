@@ -19,26 +19,30 @@ import junit.framework.TestCase;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 
 /**
  * @author Carsten Hufe
  */
-public class UploadFilePanelTest extends TestCase {
+public class UploadFilePanelTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPanel() {
         tester.startPanel(TestUploadCenterPanel.class);
         tester.assertComponent("panel", UploadFilePanel.class);

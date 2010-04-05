@@ -18,25 +18,31 @@ package org.devproof.portal.module.otherpage.service;
 import junit.framework.TestCase;
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Checks the delegating functionality of the OtherPageServiceImpl
  *
  * @author Carsten Hufe
  */
-public class OtherPageServiceImplTest extends TestCase {
+public class OtherPageServiceImplTest {
     private OtherPageServiceImpl impl;
     private OtherPageDao mock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         mock = createStrictMock(OtherPageDao.class);
         impl = new OtherPageServiceImpl();
         impl.setOtherPageDao(mock);
     }
 
+    @Test
     public void testSave() {
         OtherPageEntity e = createOtherPageEntity();
         expect(mock.save(e)).andReturn(e);
@@ -45,6 +51,7 @@ public class OtherPageServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testDelete() {
         OtherPageEntity e = createOtherPageEntity();
         e.setId(1);
@@ -54,6 +61,7 @@ public class OtherPageServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindById() {
         OtherPageEntity e = createOtherPageEntity();
         expect(mock.findById(1)).andReturn(e);
@@ -62,10 +70,12 @@ public class OtherPageServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewOtherPageEntity() {
-        assertNotNull(impl.newOtherPageEntity());
+        Assert.assertNotNull(impl.newOtherPageEntity());
     }
 
+    @Test
     public void testExistsContentId() {
         expect(mock.existsContentId("contentId")).andReturn(1l);
         replay(mock);
