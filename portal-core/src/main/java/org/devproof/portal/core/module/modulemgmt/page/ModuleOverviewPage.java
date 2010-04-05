@@ -40,12 +40,12 @@ public class ModuleOverviewPage extends TemplatePage {
 
 	public ModuleOverviewPage(PageParameters params) {
 		super(params);
-		add(createModuleOverviewTable());
+		add(createRepeatingModuleOverview());
 	}
 
-	private RepeatingView createModuleOverviewTable() {
+	private RepeatingView createRepeatingModuleOverview() {
 		List<ModuleBean> modules = moduleService.findModules();
-		RepeatingView table = new RepeatingView("tableRow");
+		RepeatingView table = new RepeatingView("repeatingModuleOverview");
 		for (ModuleBean module : modules) {
 			table.add(createModuleRow(table.newChildId(), module));
 		}
