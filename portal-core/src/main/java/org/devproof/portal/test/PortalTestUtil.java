@@ -26,7 +26,6 @@ import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.page.LoginPage;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;

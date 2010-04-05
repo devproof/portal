@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.core.module.configuration.registry;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -18,7 +18,6 @@ package org.devproof.portal.module.download.service;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
-import junit.framework.TestCase;
 import org.apache.wicket.RequestCycle;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
@@ -27,16 +26,13 @@ import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.page.DownloadPage;
 import org.devproof.portal.module.download.query.DownloadQuery;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.*;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 /**
  * @author Carsten Hufe

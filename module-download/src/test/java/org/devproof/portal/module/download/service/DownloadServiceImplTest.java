@@ -15,13 +15,11 @@
  */
 package org.devproof.portal.module.download.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.download.dao.DownloadDao;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

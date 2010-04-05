@@ -15,14 +15,12 @@
  */
 package org.devproof.portal.core.module.feed.registry;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.DummyFeedProviderImpl;
 import org.devproof.portal.core.module.feed.DummyPage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

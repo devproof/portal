@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.bookmark.page;
 
-import junit.framework.TestCase;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;

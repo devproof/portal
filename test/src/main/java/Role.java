@@ -16,8 +16,6 @@
 
 import com.mongodb.ReflectionDBObject;
 
-import java.lang.Object;
-import java.lang.Override;
 import java.util.HashSet;
 import java.util.Set;
 

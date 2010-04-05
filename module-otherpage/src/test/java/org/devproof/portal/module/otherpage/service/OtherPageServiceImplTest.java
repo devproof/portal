@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 import org.junit.Assert;

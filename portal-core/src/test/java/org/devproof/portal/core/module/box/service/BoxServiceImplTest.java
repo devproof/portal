@@ -15,10 +15,8 @@
  */
 package org.devproof.portal.core.module.box.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.box.dao.BoxDao;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.uploadcenter.panel;
 
-import junit.framework.TestCase;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;

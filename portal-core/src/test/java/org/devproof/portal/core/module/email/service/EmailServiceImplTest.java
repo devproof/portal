@@ -15,13 +15,11 @@
  */
 package org.devproof.portal.core.module.email.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mail.javamail.JavaMailSender;

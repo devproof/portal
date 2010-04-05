@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;

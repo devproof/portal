@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.right.panel;
 
-import junit.framework.TestCase;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.TestPanelSource;

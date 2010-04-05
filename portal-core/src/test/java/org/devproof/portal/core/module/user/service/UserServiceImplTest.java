@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.user.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
@@ -27,7 +26,6 @@ import org.devproof.portal.core.module.user.dao.UserDao;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

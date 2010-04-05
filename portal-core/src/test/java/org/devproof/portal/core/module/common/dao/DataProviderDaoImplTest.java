@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
-import junit.framework.TestCase;
 import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
@@ -26,7 +25,6 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.orm.hibernate3.SessionHolder;

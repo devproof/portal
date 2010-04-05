@@ -15,13 +15,11 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
-import junit.framework.TestCase;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
