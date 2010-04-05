@@ -54,7 +54,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 		super(id);
         latestArticlesModel = createLatestArticlesModel();
 		add(createTitleContainer());
-		add(createRepeatingViewWithArticles());
+		add(createRepeatingArticles());
 	}
 
     @Override
@@ -83,8 +83,8 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
         };
 	}
 
-	private ListView<ArticleEntity> createRepeatingViewWithArticles() {
-        return new ListView<ArticleEntity>("repeating", latestArticlesModel) {
+	private ListView<ArticleEntity> createRepeatingArticles() {
+        return new ListView<ArticleEntity>("repeatingArticles", latestArticlesModel) {
             private static final long serialVersionUID = 3388745835706671920L;
 
             @Override

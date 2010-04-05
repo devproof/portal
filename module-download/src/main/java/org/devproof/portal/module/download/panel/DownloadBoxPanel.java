@@ -52,7 +52,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
     public DownloadBoxPanel(String id) {
         super(id);
         latestDownloadsModel = createLatestDownloadsModel();
-        add(createRepeatingViewWithDownloads());
+        add(createRepeatingDownloads());
         add(createTitleContainer());
     }
 
@@ -67,8 +67,8 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
         return titleContainer;
     }
 
-    private ListView<DownloadEntity> createRepeatingViewWithDownloads() {
-        return new ListView<DownloadEntity>("repeating") {
+    private ListView<DownloadEntity> createRepeatingDownloads() {
+        return new ListView<DownloadEntity>("repeatingDownloads") {
             private static final long serialVersionUID = -1523488276282233553L;
 
             @Override

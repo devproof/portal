@@ -52,8 +52,8 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	public PageAdminBoxPanel(String id) {
 		super(id);
 		add(createTitleContainer());
-		add(createExtendableView());
-		add(createFixedView());
+		add(createRepeatingNavExtendable());
+		add(createRepeatingNavFixed());
 	}
 
 	private WebMarkupContainer createTitleContainer() {
@@ -61,7 +61,7 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 		return titleContainer;
 	}
 
-    private ListView createFixedView() {
+    private ListView createRepeatingNavFixed() {
         IModel<List<Class<? extends Page>>> registeredPageAdminPagesModel = createRegisteredPageAdminPagesModel();
         return new ListView<Class<? extends Page>>("repeatingNavFixed", registeredPageAdminPagesModel) {
             private static final long serialVersionUID = -277523349047078562L;
@@ -97,8 +97,8 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
         };
     }
 
-	private RepeatingView createExtendableView() {
-		extendableRepeating = new RepeatingView("repeatingNav");
+	private RepeatingView createRepeatingNavExtendable() {
+		extendableRepeating = new RepeatingView("repeatingNavExtendable");
 		return extendableRepeating;
 	}
 
