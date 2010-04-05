@@ -18,23 +18,27 @@ package org.devproof.portal.module.bookmark.panel;
 import junit.framework.TestCase;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class BookmarkBoxPanelTest extends TestCase {
+public class BookmarkBoxPanelTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql", "insert_bookmark.sql");
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPanel() {
         tester.startPanel(BookmarkBoxPanel.class);
         tester.assertComponent("panel", BookmarkBoxPanel.class);

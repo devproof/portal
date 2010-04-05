@@ -21,41 +21,48 @@ import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class BookmarkEditPageTest extends TestCase {
+public class BookmarkEditPageTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql", "insert_bookmark.sql");
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPage() {
         tester.startPage(getNewBookmarkEditPage());
         tester.assertRenderedPage(BookmarkEditPage.class);
 
     }
 
+    @Test
     public void testSaveBookmark() {
         callBookmarkEditPage();
         submitBookmarkForm();
         assertBookmarkPage();
     }
 
+    @Test
     public void testEditBookmark() {
         navigateToBookmarkEditPage();
         submitBookmarkForm();
         assertBookmarkPage();
-        assertFalse(tester.getServletResponse().getDocument().contains("This a sample bookmark and refers to devproof.org"));
+        Assert.assertFalse(tester.getServletResponse().getDocument().contains("This a sample bookmark and refers to devproof.org"));
     }
 
     private void callBookmarkEditPage() {
