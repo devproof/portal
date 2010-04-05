@@ -75,7 +75,7 @@ public class ArticlePage extends ArticleBasePage {
 	public ArticlePage(PageParameters params) {
 		super(params);
 		searchQueryModel = articleDataProvider.getSearchQueryModel();
-		add(createArticleDataView());
+		add(createRepeatingArticles());
 		add(createPagingPanel());
 		addFilterBox(createArticleSearchBoxPanel());
 		addTagCloudBox();
@@ -89,8 +89,8 @@ public class ArticlePage extends ArticleBasePage {
 		return new ArticleSearchBoxPanel("box", searchQueryModel);
 	}
 
-	private ArticleDataView createArticleDataView() {
-		dataView = new ArticleDataView("listArticle");
+	private ArticleDataView createRepeatingArticles() {
+		dataView = new ArticleDataView("repeatingArticles");
 		return dataView;
 	}
 

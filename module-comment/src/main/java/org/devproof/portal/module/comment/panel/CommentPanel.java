@@ -85,7 +85,7 @@ public class CommentPanel extends Panel {
 		add(createCSSHeaderContributor());
 		add(createBubblePanel());
 		add(createNoCommentsHintContainer());
-		add(createCommentDataView());
+		add(createRepeatingComments());
 		add(createFeedbackPanel());
 		add(createNewerLink());
 		add(createOlderLink());
@@ -242,8 +242,8 @@ public class CommentPanel extends Panel {
 		return feedbackPanel;
 	}
 
-	private CommentDataView createCommentDataView() {
-		dataView = new CommentDataView("listComment");
+	private CommentDataView createRepeatingComments() {
+		dataView = new CommentDataView("repeatingComments");
 		return dataView;
 	}
 
@@ -267,7 +267,7 @@ public class CommentPanel extends Panel {
 		return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
 	}
 
-	private class CommentDataView extends DataView<CommentEntity> {
+    private class CommentDataView extends DataView<CommentEntity> {
 		private static final long serialVersionUID = 1L;
 
 		public CommentDataView(String id) {

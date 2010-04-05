@@ -73,7 +73,7 @@ public class BlogPage extends BlogBasePage {
         super(params);
         this.params = params;
         this.queryModel = blogDataProvider.getSearchQueryModel();
-        add(createBlogDataView());
+        add(createRepeatingBlogEntries());
         add(createPagingPanel());
         addFilterBox(createBlogSearchBoxPanel());
         addTagCloudBox();
@@ -91,8 +91,8 @@ public class BlogPage extends BlogBasePage {
         addTagCloudBox(blogTagService, BlogPage.class);
     }
 
-    private BlogDataView createBlogDataView() {
-        dataView = new BlogDataView("listBlog");
+    private BlogDataView createRepeatingBlogEntries() {
+        dataView = new BlogDataView("repeatingBlogEntries");
         return dataView;
     }
 

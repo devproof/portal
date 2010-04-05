@@ -127,7 +127,7 @@ public class UserPage extends TemplatePage {
         userRefreshTableContainer.add(createRoleTableOrder());
         userRefreshTableContainer.add(createRegistrationDateTableOrder());
         userRefreshTableContainer.add(createActiveTableOrder());
-        userRefreshTableContainer.add(createUserDataView());
+        userRefreshTableContainer.add(createRepeatingUsers());
         userRefreshTableContainer.add(createPageNavigatorTop());
         userRefreshTableContainer.add(createPageNavigatorBottom());
         userRefreshTableContainer.setOutputMarkupId(true);
@@ -142,8 +142,8 @@ public class UserPage extends TemplatePage {
         return new PagingNavigator("navigatorTop", userDataView);
     }
 
-    private UserDataView createUserDataView() {
-        userDataView = new UserDataView("tableRow", userDataProvider);
+    private UserDataView createRepeatingUsers() {
+        userDataView = new UserDataView("repeatingUsers", userDataProvider);
         return userDataView;
     }
 

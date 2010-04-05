@@ -82,7 +82,7 @@ public class DownloadPage extends DownloadBasePage {
         this.params = params;
         this.queryModel = downloadDataProvider.getSearchQueryModel();
         add(createBubblePanel());
-        add(createDownloadDataView());
+        add(createRepeatingDownloads());
         add(createPagingPanel());
         addFilterBox(createDownloadSearchBoxPanel());
         addTagCloudBox();
@@ -142,8 +142,8 @@ public class DownloadPage extends DownloadBasePage {
         return "";
     }
 
-    private DownloadDataView createDownloadDataView() {
-        dataView = new DownloadDataView("listDownload");
+    private DownloadDataView createRepeatingDownloads() {
+        dataView = new DownloadDataView("repeatingDownloads");
         return dataView;
     }
 
