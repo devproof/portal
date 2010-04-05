@@ -60,7 +60,7 @@ public class BlogQuery implements SearchQuery {
         return tagname;
     }
 
-    public void setTagname(String tag) {
+    public void setTagname(String tagname) {
         this.tagname = tagname;
     }
 
