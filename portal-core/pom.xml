@@ -24,11 +24,19 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>src/main/java</directory>
 				<includes>
 					<include>**/theme.properties</include>
+                    <include>**/*.xml</include>
 				</includes>
 				<filtering>true</filtering>
+			</resource>
+            <resource>
+				<directory>src/main/java</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>**</include>
+				</includes>
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -36,16 +44,6 @@
 					<include>**</include>
 				</includes>
 				<filtering>false</filtering>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**</include>
-				</includes>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
 			</resource>
 		</resources>
 		<testResources>
