@@ -70,7 +70,7 @@ public class BlogEditPageTest extends TestCase {
         tester.startPage(BlogPage.class);
         tester.assertRenderedPage(BlogPage.class);
         tester.assertContains("This is a sample blog entry.");
-        tester.clickLink("listBlog:1:blogView:authorButtons:editLink");
+        tester.clickLink("repeatingBlogEntries:1:blogView:authorButtons:editLink");
         tester.assertRenderedPage(BlogEditPage.class);
     }
 
