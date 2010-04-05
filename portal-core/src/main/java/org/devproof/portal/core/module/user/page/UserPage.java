@@ -172,7 +172,7 @@ public class UserPage extends TemplatePage {
     }
 
     private UserSearchBoxPanel createUserSearchBoxPanel() {
-        return new UserSearchBoxPanel("box", queryModel) {
+        return new UserSearchBoxPanel(getBoxId(), queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

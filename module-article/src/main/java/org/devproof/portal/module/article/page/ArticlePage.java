@@ -86,7 +86,7 @@ public class ArticlePage extends ArticleBasePage {
     }
 
     private ArticleSearchBoxPanel createArticleSearchBoxPanel() {
-        return new ArticleSearchBoxPanel("box", searchQueryModel);
+        return new ArticleSearchBoxPanel(getBoxId(), searchQueryModel);
     }
 
     private ArticleDataView createRepeatingArticles() {

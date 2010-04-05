@@ -196,6 +196,8 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
     private IModel<List<BookmarkEntity>> createAllBookmarksModel() {
         return new LoadableDetachableModel<List<BookmarkEntity>>() {
+            private static final long serialVersionUID = 4970818389582121112L;
+
             @Override
             protected List<BookmarkEntity> load() {
                 return bookmarkService.findAll();

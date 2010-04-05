@@ -65,7 +65,7 @@ public class RightPage extends TemplatePage {
     }
 
     private RightSearchBoxPanel createRightSearchBoxPanel() {
-        return new RightSearchBoxPanel("box", queryModel) {
+        return new RightSearchBoxPanel(getBoxId(), queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

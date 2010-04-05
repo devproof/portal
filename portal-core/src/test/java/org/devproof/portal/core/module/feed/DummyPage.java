@@ -22,6 +22,7 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
  * @author Carsten Hufe
  */
 public class DummyPage extends TemplatePage {
+    private static final long serialVersionUID = -2027276283999719729L;
 
     public DummyPage(PageParameters params) {
         super(params);

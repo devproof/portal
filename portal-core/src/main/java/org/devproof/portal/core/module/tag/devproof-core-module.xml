@@ -34,7 +34,6 @@
 
     <!--  Service  -->
     <bean id="baseTagService" class="org.devproof.portal.core.module.tag.service.TagServiceImpl" abstract="true">
-        <property name="tagDao" ref="tagDao"/>
     </bean>
 
 </beans>

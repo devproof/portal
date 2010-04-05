@@ -104,7 +104,7 @@ public class RolePage extends TemplatePage {
     }
 
     private RoleSearchBoxPanel createSearchBoxPanel() {
-        return new RoleSearchBoxPanel("box", queryModel) {
+        return new RoleSearchBoxPanel(getBoxId(), queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

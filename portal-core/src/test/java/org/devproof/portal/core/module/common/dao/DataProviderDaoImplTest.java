@@ -145,7 +145,7 @@ public class DataProviderDaoImplTest extends TestCase {
     }
 
     @BeanJoin("left join e.allRights vr left join e.tags t")
-    public class TestQuery implements SearchQuery {
+    public static class TestQuery implements SearchQuery {
         private static final long serialVersionUID = 1L;
         private Integer id;
         private RoleEntity role;

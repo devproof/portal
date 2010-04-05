@@ -100,7 +100,7 @@ public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataP
     }
 
     private Object invokeGetter(Serializable beanQuery, Method method) {
-        Object value = null;
+        final Object value;
         try {
             value = method.invoke(beanQuery);
 

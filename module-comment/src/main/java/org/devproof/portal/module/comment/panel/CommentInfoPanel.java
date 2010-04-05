@@ -80,6 +80,8 @@ public class CommentInfoPanel extends Panel {
 
     private AbstractReadOnlyModel<Object> createCreatedAtModel() {
         return new AbstractReadOnlyModel<Object>() {
+            private static final long serialVersionUID = 3325298161009039240L;
+
             @Override
             public Object getObject() {
                 CommentEntity comment = commentModel.getObject();
@@ -94,6 +96,8 @@ public class CommentInfoPanel extends Panel {
 
     private IModel<String> createCreatedByUserModel() {
         return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 2143000810085055343L;
+
             @Override
             public String getObject() {
                 CommentEntity comment = commentModel.getObject();

@@ -171,7 +171,7 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
         List<ArticlePageEntity> pages = getArticlePages();
         List<String> splittedPages = getSplittedPages(fullArticle);
         for (int i = 0; i < splittedPages.size(); i++) {
-            ArticlePageEntity page = null;
+            final ArticlePageEntity page;
             boolean isUpdatablePageAvailable = articlePages != null && articlePages.size() > i;
             if (isUpdatablePageAvailable) {
                 page = articlePages.get(i);
