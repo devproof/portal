@@ -81,7 +81,7 @@ public class RolePage extends TemplatePage {
 		refreshTable = new WebMarkupContainer("refreshTable");
 		refreshTable.add(createRoleDescriptionTableOrder());
 		refreshTable.add(createRoleActiveTableOrder());
-		refreshTable.add(createRoleDataView());
+		refreshTable.add(createRepeatingRoles());
 		refreshTable.setOutputMarkupId(true);
 		return refreshTable;
 	}
@@ -94,8 +94,8 @@ public class RolePage extends TemplatePage {
 		return new OrderByBorder("tableActive", "active", roleDataProvider);
 	}
 
-	private RoleDataView createRoleDataView() {
-		return new RoleDataView("tableRow", roleDataProvider);
+	private RoleDataView createRepeatingRoles() {
+		return new RoleDataView("repeatingRoles", roleDataProvider);
 	}
 
 	private BubblePanel createBubblePanel() {
@@ -157,7 +157,7 @@ public class RolePage extends TemplatePage {
 		};
 	}
 
-	private class RoleDataView extends DataView<RoleEntity> {
+    private class RoleDataView extends DataView<RoleEntity> {
 		private static final long serialVersionUID = 1L;
 
 		public RoleDataView(String id, IDataProvider<RoleEntity> dataProvider) {

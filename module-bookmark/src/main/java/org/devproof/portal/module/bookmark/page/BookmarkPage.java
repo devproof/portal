@@ -73,7 +73,7 @@ public class BookmarkPage extends BookmarkBasePage {
         super(params);
         searchQueryModel = bookmarkDataProvider.getSearchQueryModel();
         add(createBubblePanel());
-        add(createBookmarkDataView());
+        add(createRepeatingBookmarks());
         add(createPagingPanel());
         addFilterBox(createBookmarkSearchBoxPanel());
         addTagCloudBox();
@@ -113,8 +113,8 @@ public class BookmarkPage extends BookmarkBasePage {
         return "";
     }
 
-    private BookmarkDataView createBookmarkDataView() {
-        dataView = new BookmarkDataView("listBookmark");
+    private BookmarkDataView createRepeatingBookmarks() {
+        dataView = new BookmarkDataView("repeatingBookmarks");
         return dataView;
     }
 

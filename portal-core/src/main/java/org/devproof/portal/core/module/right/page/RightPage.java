@@ -79,13 +79,13 @@ public class RightPage extends TemplatePage {
         refreshTable = new WebMarkupContainer("refreshTable");
         refreshTable.add(createRightNameTableOrder());
         refreshTable.add(createRightDescriptionTableOrder());
-        refreshTable.add(createRightDataView());
+        refreshTable.add(createRepeatingRights());
         refreshTable.setOutputMarkupId(true);
         return refreshTable;
     }
 
-    private RightDataView createRightDataView() {
-        return new RightDataView("tableRow", rightDataProvider);
+    private RightDataView createRepeatingRights() {
+        return new RightDataView("repeatingRights", rightDataProvider);
     }
 
     private OrderByBorder createRightDescriptionTableOrder() {

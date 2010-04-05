@@ -46,7 +46,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 		super(params);
 		add(createSubjectTableOrder());
 		add(createModifiedTableOrder());
-		add(createEmailTemplateDataView());
+		add(createRepeatingEmailTemplates());
 	}
 
 	private OrderByBorder createModifiedTableOrder() {
@@ -57,11 +57,11 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
 		return new OrderByBorder("table_subject", "subject", emailTemplateDataProvider);
 	}
 
-	private EmailTemplateDataView createEmailTemplateDataView() {
-		return new EmailTemplateDataView("tableRow");
+	private EmailTemplateDataView createRepeatingEmailTemplates() {
+		return new EmailTemplateDataView("repeatingEmailTemplates");
 	}
 
-	private class EmailTemplateDataView extends DataView<EmailTemplateEntity> {
+    private class EmailTemplateDataView extends DataView<EmailTemplateEntity> {
 		private static final long serialVersionUID = 1L;
 
 		public EmailTemplateDataView(final String id) {

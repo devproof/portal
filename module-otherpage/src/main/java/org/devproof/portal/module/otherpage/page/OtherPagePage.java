@@ -49,7 +49,7 @@ public class OtherPagePage extends OtherPageBasePage {
 		super(params);
 		add(createContentIdOrderHeader());
 		add(createModifiedByOrderHeader());
-		add(createOtherPageDataView());
+		add(createRepeatingOtherPages());
 	}
 
 	private OrderByBorder createContentIdOrderHeader() {
@@ -60,11 +60,11 @@ public class OtherPagePage extends OtherPageBasePage {
 		return new OrderByBorder("table_modified_by", "modifiedBy", otherPageDataProvider);
 	}
 
-	private OtherPageDataView createOtherPageDataView() {
-		return new OtherPageDataView("tableRow");
+	private OtherPageDataView createRepeatingOtherPages() {
+		return new OtherPageDataView("repeatingOtherPages");
 	}
 
-	private class OtherPageDataView extends DataView<OtherPageEntity> {
+    private class OtherPageDataView extends DataView<OtherPageEntity> {
 		private static final long serialVersionUID = 1L;
 
 		public OtherPageDataView(String id) {

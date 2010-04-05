@@ -51,17 +51,17 @@ public class BoxPage extends TemplatePage {
 	@SpringBean(name = "boxRegistry")
 	private BoxRegistry boxRegistry;
 	private BubblePanel bubblePanel;
-	private WebMarkupContainer boxDataViewWithRefreshContainer;
+	private WebMarkupContainer repeatingBoxesInRefreshContainer;
 
-	public BoxPage(PageParameters params) {
+    public BoxPage(PageParameters params) {
 		super(params);
-		add(createBoxDataViewWithRefreshContainer());
+		add(createRepeatingBoxesWithRefreshContainer());
 		add(createBubblePanel());
 		addPageAdminBoxLink(createCreateBoxLink());
 	}
 
-	private BoxDataView createBoxDataView() {
-		return new BoxDataView("tableRow");
+	private BoxDataView createRepeatingBoxes() {
+		return new BoxDataView("repeatingBoxes");
 	}
 
 	private BubblePanel createBubblePanel() {
@@ -96,7 +96,7 @@ public class BoxPage extends TemplatePage {
 
 					@Override
 					public void onSave(AjaxRequestTarget target) {
-						target.addComponent(boxDataViewWithRefreshContainer);
+						target.addComponent(repeatingBoxesInRefreshContainer);
 						target.addComponent(BoxPage.this.getFeedback());
 						info(getString("msg.saved"));
 						bubblePanel.hide(target);
@@ -116,14 +116,14 @@ public class BoxPage extends TemplatePage {
 		};
 	}
 
-	private WebMarkupContainer createBoxDataViewWithRefreshContainer() {
-		boxDataViewWithRefreshContainer = new WebMarkupContainer("refreshTable");
-		boxDataViewWithRefreshContainer.add(createBoxDataView());
-		boxDataViewWithRefreshContainer.setOutputMarkupId(true);
-		return boxDataViewWithRefreshContainer;
+	private WebMarkupContainer createRepeatingBoxesWithRefreshContainer() {
+		repeatingBoxesInRefreshContainer = new WebMarkupContainer("refreshTable");
+		repeatingBoxesInRefreshContainer.add(createRepeatingBoxes());
+		repeatingBoxesInRefreshContainer.setOutputMarkupId(true);
+		return repeatingBoxesInRefreshContainer;
 	}
 
-	private class BoxDataView extends DataView<BoxEntity> {
+    private class BoxDataView extends DataView<BoxEntity> {
 		private static final long serialVersionUID = 1L;
         private IModel<BoxEntity> boxModel;
 
@@ -171,7 +171,7 @@ public class BoxPage extends TemplatePage {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					boxService.moveDown(boxModel.getObject());
-					target.addComponent(boxDataViewWithRefreshContainer);
+					target.addComponent(repeatingBoxesInRefreshContainer);
 				}
 			};
 		}
@@ -193,7 +193,7 @@ public class BoxPage extends TemplatePage {
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					boxService.moveUp(boxModel.getObject());
-					target.addComponent(boxDataViewWithRefreshContainer);
+					target.addComponent(repeatingBoxesInRefreshContainer);
 				}
 			};
 		}
@@ -206,7 +206,7 @@ public class BoxPage extends TemplatePage {
 				public void onDelete(AjaxRequestTarget target) {
 					boxService.delete(boxModel.getObject());
 					info(getString("msg.deleted"));
-					target.addComponent(boxDataViewWithRefreshContainer);
+					target.addComponent(repeatingBoxesInRefreshContainer);
 					target.addComponent(getFeedback());
 				}
 
@@ -219,7 +219,7 @@ public class BoxPage extends TemplatePage {
 						public void onSave(AjaxRequestTarget target) {
 							bubblePanel.hide(target);
 							info(getString("msg.saved"));
-							target.addComponent(boxDataViewWithRefreshContainer);
+							target.addComponent(repeatingBoxesInRefreshContainer);
 							target.addComponent(getFeedback());
 						}
 
