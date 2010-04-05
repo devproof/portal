@@ -109,6 +109,8 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
 
     private WebMarkupContainer newModifiedContainer() {
         return new WebMarkupContainer("modified") {
+            private static final long serialVersionUID = -8887727811649841092L;
+
             @Override
             public boolean isVisible() {
                 return showModifiedBy() && !isSameAuthor() && isNotEqualCreationModificationTime() && !showModifiedAtAsCreatedAt();
@@ -119,6 +121,8 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
     private UsernamePanel createModifiedUsernamePanel() {
         IModel<String> modifiedByModel = new PropertyModel<String>(entityModel, "modifiedBy");
         return new UsernamePanel("modifiedBy", modifiedByModel) {
+            private static final long serialVersionUID = 7238227449225588141L;
+
             @Override
             protected boolean showRealName() {
                 return showRealAuthor();

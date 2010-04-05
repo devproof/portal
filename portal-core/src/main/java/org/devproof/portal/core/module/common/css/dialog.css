@@ -1,6 +1,6 @@
 .dialog {
     position: relative;
-    margin: 0px auto 0.5em 12px;
+    margin: 0 auto 0.5em 12px;
     min-width: 8em;
     max-width: 760px; /* based on image dimensions - not quite consistent with drip styles yet */
     color: #fff;

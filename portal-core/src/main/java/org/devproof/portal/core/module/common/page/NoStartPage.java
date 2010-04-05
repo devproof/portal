@@ -21,6 +21,7 @@ import org.apache.wicket.PageParameters;
  * @author Carsten Hufe
  */
 public class NoStartPage extends MessagePage {
+    private static final long serialVersionUID = -4034173163477304612L;
 
     public NoStartPage() {
         super(new PageParameters("message=page.nostartpage"));

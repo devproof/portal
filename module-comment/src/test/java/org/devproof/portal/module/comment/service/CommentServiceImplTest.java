@@ -134,8 +134,15 @@ public class CommentServiceImplTest extends TestCase {
         expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(Boolean.TRUE);
         expect(commentDaoMock.findNumberOfReviewedComments("moduleName", "contentId")).andReturn(3l);
         replay(commentDaoMock, configurationServiceMock);
-        impl.findNumberOfComments("moduleName", "contentId");
+        assertEquals(3l, impl.findNumberOfComments("moduleName", "contentId"));
         verify(commentDaoMock, configurationServiceMock);
+    }
+
+    public void testFindAllModuleNames() {
+        expect(commentDaoMock.findAllModuleNames()).andReturn(Arrays.asList("aaa", "bbb"));
+        replay(commentDaoMock);
+        assertNotNull(impl.findAllModuleNames());
+        verify(commentDaoMock);
     }
 
     public void testReportViolation_thresholdReached() {

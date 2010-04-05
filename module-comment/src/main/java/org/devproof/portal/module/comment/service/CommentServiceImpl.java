@@ -124,6 +124,11 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Override
+    public List<String> findAllModuleNames() {
+        return commentDao.findAllModuleNames();
+    }
+
     @Required
     public void setCommentDao(CommentDao commentDao) {
         this.commentDao = commentDao;

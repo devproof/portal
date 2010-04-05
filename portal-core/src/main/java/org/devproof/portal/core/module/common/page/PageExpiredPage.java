@@ -21,6 +21,7 @@ import org.apache.wicket.PageParameters;
  * @author Carsten Hufe
  */
 public class PageExpiredPage extends MessagePage {
+    private static final long serialVersionUID = 4033906380851022098L;
 
     public PageExpiredPage() {
         super(new PageParameters("message=page.expired"));
