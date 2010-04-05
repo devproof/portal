@@ -63,7 +63,7 @@ public class ArticleEditPageTest extends TestCase {
         tester.startPage(ArticlePage.class);
         tester.assertRenderedPage(ArticlePage.class);
         tester.assertContains("This is a sample article and this is the teaser");
-        tester.clickLink("listArticle:1:articleView:authorButtons:editLink");
+        tester.clickLink("repeatingArticles:1:articleView:authorButtons:editLink");
         tester.assertRenderedPage(ArticleEditPage.class);
     }
 
