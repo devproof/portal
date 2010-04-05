@@ -31,11 +31,11 @@ public class ModuleLinkPage extends TemplatePage {
 
 	public ModuleLinkPage(PageParameters params) {
 		super(params);
-		add(createModuleLinkTables());
+		add(createRepeatingModulesLinks());
 	}
 
-	private RepeatingView createModuleLinkTables() {
-		RepeatingView repeater = new RepeatingView("repeater");
+	private RepeatingView createRepeatingModulesLinks() {
+		RepeatingView repeater = new RepeatingView("repeatingModulesLinks");
 		for (LinkType linkType : LinkType.values()) {
 			repeater.add(createModuleLinkTableForLinkType(repeater.newChildId(), linkType));
 		}

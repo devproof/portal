@@ -44,15 +44,15 @@ public class ModuleInfoPanel extends Panel {
 	}
 
 	private RepeatingView createRepeatingEntities() {
-		RepeatingView tableRow = new RepeatingView("repeatingEntities");
+		RepeatingView view = new RepeatingView("repeatingEntities");
 		if (module.getEntities().isEmpty()) {
-			tableRow.add(createEmptyEntitiesRow(tableRow.newChildId()));
+			view.add(createEmptyEntitiesRow(view.newChildId()));
 		} else {
 			for (Class<?> entity : module.getEntities()) {
-				tableRow.add(createEntityRow(tableRow.newChildId(), entity));
+				view.add(createEntityRow(view.newChildId(), entity));
 			}
 		}
-		return tableRow;
+		return view;
 	}
 
 	private WebMarkupContainer createEntityRow(String id, Class<?> entity) {
@@ -96,15 +96,15 @@ public class ModuleInfoPanel extends Panel {
 	}
 
 	private RepeatingView createRepeatingBoxes() {
-		RepeatingView tableRow = new RepeatingView("repeatingBoxes");
+		RepeatingView view = new RepeatingView("repeatingBoxes");
 		if (module.getBoxes().isEmpty()) {
-			tableRow.add(createNoBoxesRow(tableRow.newChildId()));
+			view.add(createNoBoxesRow(view.newChildId()));
 		} else {
 			for (BoxConfiguration box : module.getBoxes()) {
-				tableRow.add(createBoxRow(tableRow.newChildId(), box));
+				view.add(createBoxRow(view.newChildId(), box));
 			}
 		}
-		return tableRow;
+		return view;
 	}
 
 	private WebMarkupContainer createBoxRow(String id, BoxConfiguration box) {
@@ -138,15 +138,15 @@ public class ModuleInfoPanel extends Panel {
 	}
 
 	private RepeatingView createRepeatingPages() {
-		RepeatingView tableRow = new RepeatingView("repeatingPages");
+		RepeatingView view = new RepeatingView("repeatingPages");
 		if (module.getPages().isEmpty()) {
-			tableRow.add(createNoPagesRow(tableRow.newChildId()));
+			view.add(createNoPagesRow(view.newChildId()));
 		} else {
 			for (PageConfiguration page : module.getPages()) {
-				tableRow.add(createPageRow(tableRow.newChildId(), page));
+				view.add(createPageRow(view.newChildId(), page));
 			}
 		}
-		return tableRow;
+		return view;
 	}
 
 	private WebMarkupContainer createPageRow(String id, PageConfiguration page) {

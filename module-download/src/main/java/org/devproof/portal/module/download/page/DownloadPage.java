@@ -234,7 +234,7 @@ public class DownloadPage extends DownloadBasePage {
 
         private RepeatingView createOptionalInfoLabels() {
             String[] infoFields = new String[]{"softwareVersion", "downloadSize", "manufacturer", "licence", "price"};
-            RepeatingView repeating = new RepeatingView("infoFieldsRepeating");
+            RepeatingView repeating = new RepeatingView("repeatingInfoFields");
             DownloadEntity download = downloadModel.getObject();
             for (String fieldName : infoFields) {
                 try {

@@ -60,14 +60,13 @@ public class ConfigurationPage extends TemplatePage {
 
 	private Form<List<ConfigurationEntity>> createConfigurationForm() {
 		Form<List<ConfigurationEntity>> form = newConfigurationForm();
-		form.add(createTableRepeatingView());
+		form.add(createRepeatingConfiguration());
 		return form;
 	}
 
-	private RepeatingView createTableRepeatingView() {
-        // TODO hier models verwenden mit reuse strategy?
+	private RepeatingView createRepeatingConfiguration() {
 		List<String> groups = configurationService.findConfigurationGroups();
-		RepeatingView table = new RepeatingView("tableRow");
+		RepeatingView table = new RepeatingView("repeatingConfiguration");
 		for (String group : groups) {
 			table.add(createGroupHeaderRowContainer(table.newChildId(), group));
 			List<ConfigurationEntity> configurations = configurationService.findConfigurationsByGroup(group);
@@ -160,7 +159,7 @@ public class ConfigurationPage extends TemplatePage {
 		}
 	}
 
-	private class ValueEditor extends Fragment {
+    private class ValueEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
 		private ConfigurationEntity configuration;
 
