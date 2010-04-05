@@ -22,6 +22,8 @@ import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 
+import java.util.List;
+
 /**
  * @author Carsten Hufe
  */
@@ -38,4 +40,7 @@ public interface CommentDao extends GenericDao<CommentEntity, Integer> {
 
     @Query("select count(distinct c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.automaticBlocked = false and ((c.accepted = true and c.reviewed = true) or c.reviewed = false)")
     long findNumberOfComments(String moduleName, String moduleContentId);
+
+    @Query("select distinct(c.moduleName) from CommentEntity c")
+    List<String> findAllModuleNames();
 }

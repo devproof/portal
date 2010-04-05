@@ -55,6 +55,8 @@ public class MessagePage extends TemplatePage {
     public static MessagePage getMessagePage(String message, final String redirectUrl) {
         PageParameters params = new PageParameters();
         return new MessagePage(params, message) {
+            private static final long serialVersionUID = -2564907074560241906L;
+
             @Override
             public String getRedirectURLAfterLogin() {
                 return redirectUrl;

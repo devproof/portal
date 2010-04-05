@@ -18,6 +18,8 @@ package org.devproof.portal.module.comment.service;
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 
+import java.util.List;
+
 /**
  * @author Carsten Hufe
  */
@@ -53,4 +55,9 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
      * Report a violation
      */
     void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp);
+
+    /**
+     * Finds all available module names 
+     */
+    List<String> findAllModuleNames();
 }

@@ -193,7 +193,7 @@ public class RightPage extends TemplatePage {
 
                 private RightEditPanel createRightEditPanel(final IModel<RightEntity> rightModel) {
                     return new RightEditPanel(bubblePanel.getContentId(), rightModel, false) {
-                        private static final long serialVersionUID1 = 1L;
+                        private static final long serialVersionUID = 1L;
 
                         @Override
                         public void onSave(AjaxRequestTarget target) {

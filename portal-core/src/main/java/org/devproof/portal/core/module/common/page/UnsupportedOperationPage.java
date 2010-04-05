@@ -21,6 +21,7 @@ import org.apache.wicket.PageParameters;
  * @author Carsten Hufe
  */
 public class UnsupportedOperationPage extends MessagePage {
+    private static final long serialVersionUID = 7297455365125624369L;
 
     public UnsupportedOperationPage() {
         super(new PageParameters("message=unsupported.operation"));

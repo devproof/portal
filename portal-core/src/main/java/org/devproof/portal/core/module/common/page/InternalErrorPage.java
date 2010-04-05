@@ -21,7 +21,7 @@ import org.apache.wicket.PageParameters;
  * @author Carsten Hufe
  */
 public class InternalErrorPage extends MessagePage {
-
+    private static final long serialVersionUID = 662031794883283585L;
     public InternalErrorPage() {
         super(new PageParameters("message=internal.error"));
     }
