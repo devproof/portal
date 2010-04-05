@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.box.panel;
 
-import junit.framework.TestCase;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
@@ -24,7 +23,6 @@ import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.page.BoxPage;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

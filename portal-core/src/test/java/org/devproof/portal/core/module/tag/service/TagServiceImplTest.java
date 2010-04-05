@@ -15,11 +15,9 @@
  */
 package org.devproof.portal.core.module.tag.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.dao.TagDao;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

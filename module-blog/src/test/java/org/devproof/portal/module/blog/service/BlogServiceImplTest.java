@@ -15,12 +15,10 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

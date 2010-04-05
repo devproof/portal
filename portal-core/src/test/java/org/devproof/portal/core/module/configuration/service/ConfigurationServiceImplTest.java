@@ -15,11 +15,9 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.configuration.dao.ConfigurationDao;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,9 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Carsten Hufe

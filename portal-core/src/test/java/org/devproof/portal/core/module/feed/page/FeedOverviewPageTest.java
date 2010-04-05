@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.feed.page;
 
-import junit.framework.TestCase;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.feed.DummyFeedProviderImpl;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;

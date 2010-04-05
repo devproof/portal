@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.comment.panel;
 
-import junit.framework.TestCase;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;

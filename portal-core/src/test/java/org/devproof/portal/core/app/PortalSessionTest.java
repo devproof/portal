@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.app;
 
-import junit.framework.TestCase;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.service.RightService;
@@ -26,7 +25,6 @@ import org.devproof.portal.core.module.user.exception.AuthentificationFailedExce
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.test.PortalTestUtil;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;

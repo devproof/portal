@@ -15,18 +15,14 @@
  */
 package org.devproof.portal.core.module.box.registry;
 
-import junit.framework.TestCase;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.module.box.locator.BoxLocator;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.createStrictMock;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Carsten Hufe

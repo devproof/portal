@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.deadlinkcheck.panel;
 
-import junit.framework.TestCase;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.WicketTester;

@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import junit.framework.TestCase;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;

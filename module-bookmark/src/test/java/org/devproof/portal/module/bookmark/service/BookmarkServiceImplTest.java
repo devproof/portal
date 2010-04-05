@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -23,7 +22,6 @@ import org.devproof.portal.module.bookmark.dao.BookmarkDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,9 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Carsten Hufe

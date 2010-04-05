@@ -15,13 +15,11 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.orm.hibernate3.SessionHolder;

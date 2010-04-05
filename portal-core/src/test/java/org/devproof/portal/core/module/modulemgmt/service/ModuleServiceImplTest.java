@@ -15,13 +15,11 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkDao;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

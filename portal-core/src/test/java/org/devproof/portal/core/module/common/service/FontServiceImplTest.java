@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.common.service;
 
-import junit.framework.TestCase;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

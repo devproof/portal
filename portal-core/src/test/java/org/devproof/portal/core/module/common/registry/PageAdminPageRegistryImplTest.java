@@ -15,13 +15,11 @@
  */
 package org.devproof.portal.core.module.common.registry;
 
-import junit.framework.TestCase;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.devproof.portal.core.module.right.page.RightPage;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

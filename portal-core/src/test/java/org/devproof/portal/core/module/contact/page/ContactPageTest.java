@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.contact.page;
 
-import junit.framework.TestCase;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
@@ -24,7 +23,6 @@ import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

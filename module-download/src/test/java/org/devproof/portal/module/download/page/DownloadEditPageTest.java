@@ -15,14 +15,12 @@
  */
 package org.devproof.portal.module.download.page;
 
-import junit.framework.TestCase;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

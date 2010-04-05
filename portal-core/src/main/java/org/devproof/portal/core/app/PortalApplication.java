@@ -20,7 +20,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.*;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;

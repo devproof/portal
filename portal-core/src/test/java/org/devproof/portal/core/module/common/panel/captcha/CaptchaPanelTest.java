@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel.captcha;
 
-import junit.framework.TestCase;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
