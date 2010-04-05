@@ -60,7 +60,7 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 		this.page = page;
 		this.tagsModel = createTagsModel();
 		add(createCSSHeaderContributor());
-		add(createTagListView());
+		add(createRepeatingTags());
 		add(createTitleContainer());
 	}
 
@@ -74,8 +74,8 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
 		return titleContainer;
 	}
 
-    private ListView<T> createTagListView() {
-        return new ListView<T>("liRow", tagsModel) {
+    private ListView<T> createRepeatingTags() {
+        return new ListView<T>("repeatingTags", tagsModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

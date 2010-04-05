@@ -45,12 +45,12 @@ public class FeedOverviewPage extends TemplatePage {
     public FeedOverviewPage(PageParameters params) {
 		super(params);
 		allFeedProvider = feedProviderRegistry.getAllFeedProvider();
-		add(createFeedOverviewTable());
+		add(createRepeatingFeeds());
 	}
 
-	private ListView<String> createFeedOverviewTable() {
+	private ListView<String> createRepeatingFeeds() {
         IModel<List<String>> pathModel = createPathModel();
-        return new ListView<String>("tableRow", pathModel) {
+        return new ListView<String>("repeatingFeeds", pathModel) {
             private static final long serialVersionUID = 6289409135117578201L;
             @Override
             protected void populateItem(ListItem<String> item) {

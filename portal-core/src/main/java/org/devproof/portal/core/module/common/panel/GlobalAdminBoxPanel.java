@@ -48,10 +48,10 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	public GlobalAdminBoxPanel(String id) {
 		super(id);
 		add(createTitleContainer());
-		add(createLinkView());
+		add(createRepeatingNav());
 	}
 
-	private ListView createLinkView() {
+	private ListView createRepeatingNav() {
         IModel<List<Class<? extends Page>>> registeredAdminPageModel = createRegisteredAdminPageModel();
         return new ListView<Class<? extends Page>>("repeatingNav", registeredAdminPageModel) {
             private static final long serialVersionUID = -277523349047078562L;
