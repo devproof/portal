@@ -27,20 +27,26 @@ import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.page.DownloadPage;
 import org.devproof.portal.module.download.query.DownloadQuery;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.*;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Carsten Hufe
  */
-public class DownloadFeedProviderImplTest extends TestCase {
+public class DownloadFeedProviderImplTest {
     private DownloadFeedProviderImpl impl;
     private SortableQueryDataProvider<DownloadEntity, DownloadQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
@@ -60,6 +66,7 @@ public class DownloadFeedProviderImplTest extends TestCase {
         impl.setDownloadDataProvider(dataProviderMock);
     }
 
+    @Test
     public void testGetFeedName() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
         expect(configurationServiceMock.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE)).andReturn("feedtitle");
@@ -68,10 +75,12 @@ public class DownloadFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testSupportedPages() {
         assertEquals(DownloadPage.class, impl.getSupportedFeedPages().get(0));
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetDownloadEntries() {
         DownloadEntity download = createDownload();
@@ -86,6 +95,7 @@ public class DownloadFeedProviderImplTest extends TestCase {
         verify(dataProviderMock);
     }
 
+    @Test
     public void testGenerateFeed() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle").anyTimes();
         expect(configurationServiceMock.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE)).andReturn("feedtitle").anyTimes();
@@ -97,6 +107,7 @@ public class DownloadFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
         DownloadEntity bookmark = createDownload();
@@ -111,6 +122,7 @@ public class DownloadFeedProviderImplTest extends TestCase {
         assertNotNull(entry.getPublishedDate());
     }
 
+    @Test
     public void testGetFeed() {
         final List<SyndEntry> entries = new ArrayList<SyndEntry>();
         final StringBuilder callOrder = new StringBuilder();

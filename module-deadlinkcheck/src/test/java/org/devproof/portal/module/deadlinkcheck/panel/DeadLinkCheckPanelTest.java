@@ -21,25 +21,29 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
 /**
  * @author Carsten Hufe
  */
-public class DeadLinkCheckPanelTest extends TestCase {
+public class DeadLinkCheckPanelTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPanel() {
         tester.startPanel(TestDeadLinkCheckPanel.class);
         tester.assertComponent("panel", TestDeadLinkCheckPanel.class);

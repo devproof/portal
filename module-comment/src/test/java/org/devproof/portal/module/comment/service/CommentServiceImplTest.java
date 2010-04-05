@@ -25,24 +25,29 @@ import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.dao.CommentDao;
 import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class CommentServiceImplTest extends TestCase {
+public class CommentServiceImplTest {
     private CommentServiceImpl impl;
     private CommentDao commentDaoMock;
     private ConfigurationService configurationServiceMock;
     private UserService userServiceMock;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         commentDaoMock = createStrictMock(CommentDao.class);
         configurationServiceMock = createStrictMock(ConfigurationService.class);
         userServiceMock = createStrictMock(UserService.class);
@@ -53,10 +58,12 @@ public class CommentServiceImplTest extends TestCase {
         impl.setDisplayDateTimeFormat(new SimpleDateFormat());
     }
 
+    @Test
     public void testNewCommentEntity() {
         assertNotNull(impl.newCommentEntity());
     }
 
+    @Test
     public void testDelete() {
         CommentEntity e = new CommentEntity();
         commentDaoMock.delete(e);
@@ -65,6 +72,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock);
     }
 
+    @Test
     public void testFindById() {
         CommentEntity e = createCommentEntity();
         expect(commentDaoMock.findById(1)).andReturn(e);
@@ -73,6 +81,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock);
     }
 
+    @Test
     public void testSave() {
         CommentEntity e = createCommentEntity();
         expect(commentDaoMock.save(e)).andReturn(e);
@@ -81,6 +90,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock);
     }
 
+    @Test
     public void testSaveNewComment() {
         final StringBuilder called = new StringBuilder();
         final CommentEntity e = createCommentEntity();
@@ -104,6 +114,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock, configurationServiceMock);
     }
 
+    @Test
     public void testRejectComment() {
         CommentEntity e = createCommentEntity();
         commentDaoMock.rejectComment(e);
@@ -113,6 +124,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock);
     }
 
+    @Test
     public void testAcceptComment() {
         CommentEntity e = createCommentEntity();
         commentDaoMock.acceptComment(e);
@@ -122,6 +134,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock);
     }
 
+    @Test
     public void testFindNumberOfComments_showAll() {
         expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(Boolean.FALSE);
         expect(commentDaoMock.findNumberOfComments("moduleName", "contentId")).andReturn(3l);
@@ -130,6 +143,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock, configurationServiceMock);
     }
 
+    @Test
     public void testFindNumberOfComments_reviewed() {
         expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(Boolean.TRUE);
         expect(commentDaoMock.findNumberOfReviewedComments("moduleName", "contentId")).andReturn(3l);
@@ -138,6 +152,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock, configurationServiceMock);
     }
 
+    @Test
     public void testFindAllModuleNames() {
         expect(commentDaoMock.findAllModuleNames()).andReturn(Arrays.asList("aaa", "bbb"));
         replay(commentDaoMock);
@@ -145,6 +160,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock);
     }
 
+    @Test
     public void testReportViolation_thresholdReached() {
         final StringBuilder called = new StringBuilder();
         final CommentEntity e = createCommentEntity();
@@ -172,6 +188,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock, configurationServiceMock);
     }
 
+    @Test
     public void testReportViolation_thresholdNotReached() {
         final StringBuilder called = new StringBuilder();
         final CommentEntity e = createCommentEntity();
@@ -199,6 +216,7 @@ public class CommentServiceImplTest extends TestCase {
         verify(commentDaoMock, configurationServiceMock);
     }
 
+    @Test
     public void testSendEmailNotificationToAdmins() {
         final StringBuilder called = new StringBuilder();
         EmailService emailServiceMock = new EmailServiceMock() {
