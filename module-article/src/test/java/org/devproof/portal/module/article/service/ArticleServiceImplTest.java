@@ -23,22 +23,29 @@ import org.devproof.portal.module.article.dao.ArticlePageDao;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.Assert.assertTrue;
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class ArticleServiceImplTest extends TestCase {
+public class ArticleServiceImplTest {
     private ArticleServiceImpl impl;
     private ArticleDao mock;
     private ArticlePageDao mockPage;
     private TagService<ArticleTagEntity> mockTag;
 
-    @Override
+    @Before
+    @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(ArticleDao.class);
         mockPage = createStrictMock(ArticlePageDao.class);
@@ -49,6 +56,7 @@ public class ArticleServiceImplTest extends TestCase {
         impl.setArticleTagService(mockTag);
     }
 
+    @Test
     public void testSave() {
         ArticleEntity e = createArticleEntity();
         e.setId(1);
@@ -61,6 +69,7 @@ public class ArticleServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testDelete() {
         ArticleEntity e = createArticleEntity();
         e.setId(1);
@@ -73,6 +82,7 @@ public class ArticleServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testFindById() {
         ArticleEntity e = createArticleEntity();
         e.setId(1);
@@ -82,10 +92,12 @@ public class ArticleServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewArticleEntity() {
         assertNotNull(impl.newArticleEntity());
     }
 
+    @Test
     public void testNewArticlePageEntity() {
         ArticleEntity a = createArticleEntity();
         a.setId(1);
@@ -94,6 +106,7 @@ public class ArticleServiceImplTest extends TestCase {
         assertEquals(a, ap.getArticle());
     }
 
+    @Test
     public void testGetPageCount() {
         expect(mockPage.getPageCount("contentId")).andReturn(4l);
         replay(mockPage);
@@ -101,6 +114,7 @@ public class ArticleServiceImplTest extends TestCase {
         verify(mockPage);
     }
 
+    @Test
     public void testExistsContentId() {
         expect(mock.existsContentId("contentId")).andReturn(1l);
         replay(mock);
@@ -108,6 +122,7 @@ public class ArticleServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAllArticlesForRoleOrderedByDateDesc() {
         RoleEntity role = new RoleEntity();
         List<ArticleEntity> list = new ArrayList<ArticleEntity>();
