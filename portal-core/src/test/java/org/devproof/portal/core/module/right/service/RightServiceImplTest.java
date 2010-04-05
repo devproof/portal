@@ -18,26 +18,33 @@ package org.devproof.portal.core.module.right.service;
 import junit.framework.TestCase;
 import org.devproof.portal.core.module.right.dao.RightDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
-public class RightServiceImplTest extends TestCase {
+public class RightServiceImplTest {
     private RightServiceImpl impl;
     private RightDao mock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         mock = createStrictMock(RightDao.class);
         impl = new RightServiceImpl();
         impl.setRightDao(mock);
     }
 
+    @Test
     public void testSave() {
         RightEntity e = impl.newRightEntity();
         e.setRight("right");
@@ -47,6 +54,7 @@ public class RightServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testDelete() {
         RightEntity e = impl.newRightEntity();
         e.setRight("right");
@@ -56,6 +64,7 @@ public class RightServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAll() {
         List<RightEntity> list = new ArrayList<RightEntity>();
         list.add(impl.newRightEntity());
@@ -66,6 +75,7 @@ public class RightServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindById() {
         RightEntity e = impl.newRightEntity();
         e.setRight("right");
@@ -75,21 +85,25 @@ public class RightServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewRightEntity() {
         assertNotNull(impl.newRightEntity());
     }
 
+    @Test
     public void testNewRightEntityParam() {
         RightEntity r = impl.newRightEntity("hello");
         assertNotNull(r);
         assertNotNull(r.getRight());
     }
 
+    @Test
     public void testGetDirtyTime() {
         impl.refreshGlobalApplicationRights();
         assertTrue(impl.getDirtyTime() > 0);
     }
 
+    @Test
     public void testFindAllOrderByDescription() {
         List<RightEntity> list = new ArrayList<RightEntity>();
         list.add(impl.newRightEntity());
@@ -100,6 +114,7 @@ public class RightServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindRightsStartingWith() {
         List<RightEntity> list = new ArrayList<RightEntity>();
         list.add(impl.newRightEntity());
@@ -110,6 +125,7 @@ public class RightServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testGetAllRights() {
         List<RightEntity> list = new ArrayList<RightEntity>();
         list.add(impl.newRightEntity());

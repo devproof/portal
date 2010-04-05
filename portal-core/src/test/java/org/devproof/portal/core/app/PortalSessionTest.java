@@ -26,25 +26,29 @@ import org.devproof.portal.core.module.user.exception.AuthentificationFailedExce
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Carsten Hufe
  */
-public class PortalSessionTest extends TestCase {
+public class PortalSessionTest {
 
     private PortalSession portalSession;
     private boolean cookieStored;
     private boolean cookieCleaned;
     private String cookieSessionId;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         cookieStored = false;
         cookieCleaned = false;
         cookieSessionId = null;
@@ -83,6 +87,7 @@ public class PortalSessionTest extends TestCase {
         };
     }
 
+    @Test
     public void testAuthenticate_success() throws Exception {
         UserEntity user = createUserWithRights();
         expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andReturn(user);
@@ -92,6 +97,7 @@ public class PortalSessionTest extends TestCase {
         verify(portalSession.userService);
     }
 
+    @Test
     public void testAuthenticate_failed() throws Exception {
         //noinspection ThrowableInstanceNeverThrown
         expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andThrow(new AuthentificationFailedException("wrong password"));
@@ -101,6 +107,7 @@ public class PortalSessionTest extends TestCase {
         verify(portalSession.userService);
     }
 
+    @Test
     public void testAuthenticate_userNotConfirmed() {
         try {
             //noinspection ThrowableInstanceNeverThrown
@@ -118,24 +125,28 @@ public class PortalSessionTest extends TestCase {
 
     }
 
+    @Test
     public void testIsSignedIn_true() {
         portalSession.user = new UserEntity();
         portalSession.user.setGuestRole(false);
         assertTrue(portalSession.isSignedIn());
     }
 
+    @Test
     public void testIsSignedIn_false() {
         portalSession.user = new UserEntity();
         portalSession.user.setGuestRole(true);
         assertFalse(portalSession.isSignedIn());
     }
 
+    @Test
     public void testGetUser_loggedInUser() {
         UserEntity user = createUserWithRights();
         portalSession.user = user;
         assertEquals(user, portalSession.getUser());
     }
 
+    @Test
     public void testGetUser_automaticRelogin() {
         cookieSessionId = "testSessionId";
         UserEntity user = createUserWithRights();
@@ -145,6 +156,7 @@ public class PortalSessionTest extends TestCase {
         verify(portalSession.userService);
     }
 
+    @Test
     public void testGetUser_guest() {
         UserEntity guest = new UserEntity();
         guest.setId(1);
@@ -156,23 +168,27 @@ public class PortalSessionTest extends TestCase {
         verify(portalSession.userService);
     }
 
+    @Test
     public void testLogoutUser() {
         portalSession.logoutUser();
         assertTrue(cookieCleaned);
     }
 
+    @Test
     public void testGetRole() {
         UserEntity user = createUserWithRights();
         portalSession.user = user;
         assertEquals(user.getRole(), portalSession.getRole());
     }
 
+    @Test
     public void testGetRights() {
         UserEntity user = createUserWithRights();
         portalSession.user = user;
         assertEquals(user.getRole().getRights(), portalSession.getRights());
     }
 
+    @Test
     public void testHasRightString_true() {
         expect(portalSession.rightService.newRightEntity("sample1")).andReturn(new RightEntity("sample1"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
@@ -182,6 +198,7 @@ public class PortalSessionTest extends TestCase {
         verify(portalSession.rightService);
     }
 
+    @Test
     public void testHasRightString_false() {
         expect(portalSession.rightService.newRightEntity("notexisting")).andReturn(new RightEntity("notexisting"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
@@ -191,18 +208,21 @@ public class PortalSessionTest extends TestCase {
         verify(portalSession.rightService);
     }
 
+    @Test
     public void testHasRightRightEntity_true() {
         portalSession.user = createUserWithRights();
         RightEntity right = new RightEntity("sample1");
         assertTrue(portalSession.hasRight(right));
     }
 
+    @Test
     public void testHasRightRightEntity_false() {
         portalSession.user = createUserWithRights();
         RightEntity right = new RightEntity("notexisting");
         assertFalse(portalSession.hasRight(right));
     }
 
+    @Test
     public void testHasRightCollectionOfRightEntity_true() {
         UserEntity user = createUserWithRights();
         portalSession.user = user;
@@ -211,6 +231,7 @@ public class PortalSessionTest extends TestCase {
         assertTrue(portalSession.hasRight(rights));
     }
 
+    @Test
     public void testHasRightCollectionOfRightEntity_false() {
         portalSession.user = createUserWithRights();
         List<RightEntity> rights = new ArrayList<RightEntity>();
@@ -218,6 +239,7 @@ public class PortalSessionTest extends TestCase {
         assertFalse(portalSession.hasRight(rights));
     }
 
+    @Test
     public void testHasRightStringCollectionOfRightEntity_matchingadminright() {
         expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new RightEntity("adminright"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
@@ -229,6 +251,7 @@ public class PortalSessionTest extends TestCase {
         verify(portalSession.rightService);
     }
 
+    @Test
     public void testHasRightStringCollectionOfRightEntity_noadminright() {
         expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new RightEntity("adminright"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l).times(2);

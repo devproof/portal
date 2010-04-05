@@ -19,23 +19,29 @@ import junit.framework.TestCase;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.module.box.locator.BoxLocator;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.easymock.EasyMock.createStrictMock;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
-public class BoxRegistryImplTest extends TestCase {
+public class BoxRegistryImplTest {
     private BoxRegistryImpl impl;
-    private BoxLocator boxLocatorMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        boxLocatorMock = createStrictMock(BoxLocator.class);
+        BoxLocator boxLocatorMock = createStrictMock(BoxLocator.class);
         impl = new BoxRegistryImpl();
         impl.setBoxLocator(boxLocatorMock);
     }
 
+    @Test
     public void testGetRegisteredGlobalAdminPages() {
         BoxConfiguration box = new BoxConfiguration();
         box.setBoxClass(Panel.class);
@@ -43,6 +49,7 @@ public class BoxRegistryImplTest extends TestCase {
         assertEquals(box, impl.getRegisteredBoxes().get(0));
     }
 
+    @Test
     public void testRegisterBox() {
         BoxConfiguration box = new BoxConfiguration();
         box.setBoxClass(Panel.class);
@@ -50,6 +57,7 @@ public class BoxRegistryImplTest extends TestCase {
         assertEquals(box, impl.getRegisteredBoxes().get(0));
     }
 
+    @Test
     public void testRemoveBox() {
         BoxConfiguration box = new BoxConfiguration();
         box.setBoxClass(Panel.class);
@@ -60,6 +68,7 @@ public class BoxRegistryImplTest extends TestCase {
 
     }
 
+    @Test
     public void testGetBoxConfigurationBySimpleClassName() {
         BoxConfiguration box = new BoxConfiguration();
         box.setBoxClass(Panel.class);
@@ -68,6 +77,7 @@ public class BoxRegistryImplTest extends TestCase {
         assertEquals(config.getBoxClass(), Panel.class);
     }
 
+    @Test
     public void testGetClassBySimpleClassName() {
         BoxConfiguration box = new BoxConfiguration();
         box.setBoxClass(Panel.class);
@@ -76,6 +86,7 @@ public class BoxRegistryImplTest extends TestCase {
         assertEquals(clazz, Panel.class);
     }
 
+    @Test
     public void testGetNameBySimpleClassName() {
         BoxConfiguration box = new BoxConfiguration();
         box.setBoxClass(Panel.class);
@@ -85,6 +96,7 @@ public class BoxRegistryImplTest extends TestCase {
         assertEquals(name, "foobar");
     }
 
+    @Test
     public void testIsBoxClassRegistered() {
         BoxConfiguration box = new BoxConfiguration();
         box.setBoxClass(Panel.class);

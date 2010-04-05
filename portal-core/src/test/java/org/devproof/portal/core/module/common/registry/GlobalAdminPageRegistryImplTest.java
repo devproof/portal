@@ -21,22 +21,26 @@ import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.devproof.portal.core.module.right.page.RightPage;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class GlobalAdminPageRegistryImplTest extends TestCase {
+public class GlobalAdminPageRegistryImplTest {
     private GlobalAdminPageRegistryImpl impl;
     private PageLocator pageLocatorMock;
     private ModuleService moduleServiceMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         pageLocatorMock = createStrictMock(PageLocator.class);
         moduleServiceMock = createStrictMock(ModuleService.class);
@@ -45,11 +49,13 @@ public class GlobalAdminPageRegistryImplTest extends TestCase {
         impl.setPageLocator(pageLocatorMock);
     }
 
+    @Test
     public void testGetRegisteredGlobalAdminPages() {
         impl.registerGlobalAdminPage(RightPage.class);
         assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
     }
 
+    @Test
     public void testBuildNavigation() {
         Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
         PageConfiguration conf = new PageConfiguration();
@@ -68,6 +74,7 @@ public class GlobalAdminPageRegistryImplTest extends TestCase {
     }
 
 
+    @Test
     public void testAfterPropertiesSet() throws Exception {
         Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
         PageConfiguration conf = new PageConfiguration();
@@ -85,11 +92,13 @@ public class GlobalAdminPageRegistryImplTest extends TestCase {
         assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
     }
 
+    @Test
     public void testRegisterGlobalAdminPage() {
         impl.registerGlobalAdminPage(RightPage.class);
         assertEquals(impl.getRegisteredGlobalAdminPages().get(0), RightPage.class);
     }
 
+    @Test
     public void testRemoveGlobalAdminPage() {
         impl.registerGlobalAdminPage(RightPage.class);
         assertEquals(1, impl.getRegisteredGlobalAdminPages().size());

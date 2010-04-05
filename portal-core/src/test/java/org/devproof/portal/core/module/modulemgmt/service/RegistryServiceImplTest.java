@@ -21,19 +21,21 @@ import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
 import org.devproof.portal.core.module.common.service.RegistryServiceImpl;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
 
 /**
  * @author Carsten Hufe
  */
-public class RegistryServiceImplTest extends TestCase {
+public class RegistryServiceImplTest {
     private RegistryServiceImpl impl;
     private MainNavigationRegistry mainNavigationRegistryMock;
     private GlobalAdminPageRegistry globalAdminPageRegistryMock;
     private PageAdminPageRegistry pageAdminPageRegistryMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         mainNavigationRegistryMock = createStrictMock(MainNavigationRegistry.class);
         globalAdminPageRegistryMock = createStrictMock(GlobalAdminPageRegistry.class);
@@ -44,6 +46,7 @@ public class RegistryServiceImplTest extends TestCase {
         impl.setPageAdminPageRegistry(pageAdminPageRegistryMock);
     }
 
+    @Test
     public void testRebuildRegistries1() {
         globalAdminPageRegistryMock.buildNavigation();
         replay(globalAdminPageRegistryMock);
@@ -51,6 +54,7 @@ public class RegistryServiceImplTest extends TestCase {
         verify(globalAdminPageRegistryMock);
     }
 
+    @Test
     public void testRebuildRegistries2() {
         mainNavigationRegistryMock.buildNavigation();
         replay(mainNavigationRegistryMock);
@@ -58,6 +62,7 @@ public class RegistryServiceImplTest extends TestCase {
         verify(mainNavigationRegistryMock);
     }
 
+    @Test
     public void testRebuildRegistries3() {
         pageAdminPageRegistryMock.buildNavigation();
         replay(pageAdminPageRegistryMock);

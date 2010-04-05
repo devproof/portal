@@ -21,24 +21,28 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class CaptchaRatingPanelTest extends TestCase {
+public class CaptchaRatingPanelTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPanel() {
         tester.startPanel(TestCaptchaRatingPanel.class);
         tester.assertComponent("panel", TestCaptchaRatingPanel.class);

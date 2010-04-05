@@ -21,27 +21,31 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class RightEditPanelTest extends TestCase {
+public class RightEditPanelTest {
     private WicketTester tester;
 
     // private static boolean calledSave = false;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         // calledSave = false;
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPanel() {
         tester.startPanel(TestRightEditPanel.class);
         tester.assertComponent("panel", TestRightEditPanel.class);
@@ -51,6 +55,7 @@ public class RightEditPanelTest extends TestCase {
       * Palette seems to have a bug, so it is not testable with the WicketTester
       */
 
+    @Test
     public void testSaveRight() {
         // tester.startPanel(TestRightEditPanel.class);
         // tester.assertComponent("panel", RightEditPanel.class);

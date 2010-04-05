@@ -21,6 +21,9 @@ import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkDao;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
@@ -29,20 +32,20 @@ import java.util.List;
 import java.util.Map;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class ModuleServiceImplTest extends TestCase {
+public class ModuleServiceImplTest {
     private ModuleServiceImpl impl;
     private ModuleLinkDao moduleLinkDaoMock;
-    private PageLocator pageLocatorMock;
     private ApplicationContext applicationContextMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         moduleLinkDaoMock = createStrictMock(ModuleLinkDao.class);
-        pageLocatorMock = createStrictMock(PageLocator.class);
+        PageLocator pageLocatorMock = createStrictMock(PageLocator.class);
         applicationContextMock = createStrictMock(ApplicationContext.class);
         impl = new ModuleServiceImpl();
         impl.setModuleLinkDao(moduleLinkDaoMock);
@@ -50,6 +53,7 @@ public class ModuleServiceImplTest extends TestCase {
         impl.setApplicationContext(applicationContextMock);
     }
 
+    @Test
     public void testSave() {
         ModuleLinkEntity e = new ModuleLinkEntity();
         e.setPageName("hello");
@@ -60,6 +64,7 @@ public class ModuleServiceImplTest extends TestCase {
         verify(moduleLinkDaoMock);
     }
 
+    @Test
     public void testMoveDown() {
         ModuleLinkEntity e1 = new ModuleLinkEntity();
         e1.setPageName("hello1");
@@ -80,6 +85,7 @@ public class ModuleServiceImplTest extends TestCase {
         verify(moduleLinkDaoMock);
     }
 
+    @Test
     public void testMoveUp() {
         ModuleLinkEntity e1 = new ModuleLinkEntity();
         e1.setPageName("hello1");
@@ -99,10 +105,12 @@ public class ModuleServiceImplTest extends TestCase {
         verify(moduleLinkDaoMock);
     }
 
+    @Test
     public void testRebuildModuleLinks() {
         // TODO impl.rebuildModuleLinks(); who wanna write it?
     }
 
+    @Test
     public void testFindAllVisibleGlobalAdministrationLinks() {
         List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
         links.add(new ModuleLinkEntity());
@@ -112,6 +120,7 @@ public class ModuleServiceImplTest extends TestCase {
         verify(moduleLinkDaoMock);
     }
 
+    @Test
     public void testFindAllVisibleMainNavigationLinks() {
         List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
         links.add(new ModuleLinkEntity());
@@ -121,6 +130,7 @@ public class ModuleServiceImplTest extends TestCase {
         verify(moduleLinkDaoMock);
     }
 
+    @Test
     public void testFindAllVisiblePageAdministrationLinks() {
         List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
         links.add(new ModuleLinkEntity());
@@ -130,6 +140,7 @@ public class ModuleServiceImplTest extends TestCase {
         verify(moduleLinkDaoMock);
     }
 
+    @Test
     public void testFindModules() {
         Map<String, ModuleConfiguration> beans = new HashMap<String, ModuleConfiguration>();
         beans.put("bean", new ModuleConfiguration());

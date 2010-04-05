@@ -19,22 +19,28 @@ import junit.framework.TestCase;
 import org.devproof.portal.core.module.configuration.dao.ConfigurationDao;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
-public class ConfigurationServiceImplTest extends TestCase {
+public class ConfigurationServiceImplTest {
     private ConfigurationServiceImpl impl;
     private ConfigurationDao mock;
     private List<ConfigurationEntity> list;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         mock = createStrictMock(ConfigurationDao.class);
         impl = new ConfigurationServiceImpl();
@@ -48,6 +54,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         list.add(c);
     }
 
+    @Test
     public void testSave() {
         ConfigurationEntity e = new ConfigurationEntity();
         e.setKey("foo");
@@ -58,6 +65,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testDelete() {
         ConfigurationEntity e = new ConfigurationEntity();
         e.setKey("foo");
@@ -68,6 +76,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindById() {
         ConfigurationEntity e = new ConfigurationEntity();
         e.setKey("foo");
@@ -78,6 +87,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAll() {
         List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
         list.add(new ConfigurationEntity());
@@ -88,6 +98,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindConfigurationGroups() {
         List<String> list = new ArrayList<String>();
         list.add("group1");
@@ -98,6 +109,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindConfigurationsByGroup() {
         List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
         list.add(new ConfigurationEntity());
@@ -108,6 +120,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAsObject() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");
@@ -121,6 +134,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAsBoolean() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");
@@ -134,6 +148,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAsDate() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");
@@ -147,6 +162,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAsDouble() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");
@@ -161,6 +177,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAsInteger() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");
@@ -174,6 +191,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAsString() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");
@@ -187,6 +205,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindAsFile() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");
@@ -204,6 +223,7 @@ public class ConfigurationServiceImplTest extends TestCase {
         TEST1, TEST2
     }
 
+    @Test
     public void testFindAsEnum() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");

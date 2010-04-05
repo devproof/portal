@@ -16,23 +16,31 @@
 package org.devproof.portal.core.module.common.service;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
-public class FontServiceImplTest extends TestCase {
+public class FontServiceImplTest {
     private FontServiceImpl impl;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         impl = new FontServiceImpl();
     }
 
+    @Test
     public void testFindAllSystemFonts() {
         assertNotNull(impl.findAllSystemFonts());
         assertTrue(impl.findAllSystemFonts().size() > 0);
     }
 
+    @Test
     public void testFindSyntaxHighlighterThemes() {
         assertNotNull(impl.findSyntaxHighlighterThemes());
         assertTrue(impl.findSyntaxHighlighterThemes().size() == 7);

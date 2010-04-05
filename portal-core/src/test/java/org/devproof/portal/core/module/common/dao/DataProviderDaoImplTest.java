@@ -26,6 +26,9 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -33,18 +36,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class DataProviderDaoImplTest extends TestCase {
+public class DataProviderDaoImplTest {
     private DataProviderDaoImpl<EmailTemplateEntity> impl;
     private SessionFactory sessionFactory;
     private Session session;
     private Query query;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         sessionFactory = createMock(SessionFactory.class);
         session = createMock(Session.class);
         impl = new DataProviderDaoImpl<EmailTemplateEntity>();
@@ -58,6 +62,7 @@ public class DataProviderDaoImplTest extends TestCase {
         expect(session.getSessionFactory()).andReturn(sessionFactory);
     }
 
+    @Test
     public void testFindById() {
         EmailTemplateEntity expectedTemplates = newEmailTemplate();
         expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
@@ -67,6 +72,7 @@ public class DataProviderDaoImplTest extends TestCase {
         verify(session, sessionFactory);
     }
 
+    @Test
     public void testFindAll_byClass() {
         List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
         expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
@@ -80,6 +86,7 @@ public class DataProviderDaoImplTest extends TestCase {
         verify(session, sessionFactory, query);
     }
 
+    @Test
     public void testFindAll_byClassLimited() {
         List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
         expect(session.createQuery("Select distinct(e) from EmailTemplateEntity e")).andReturn(query);
@@ -95,6 +102,7 @@ public class DataProviderDaoImplTest extends TestCase {
         verify(session, sessionFactory, query);
     }
 
+    @Test
     public void testFindAllWithQuery() {
         List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
         TestQuery testQuery = new TestQuery();
@@ -114,6 +122,7 @@ public class DataProviderDaoImplTest extends TestCase {
         verify(session, sessionFactory, query);
     }
 
+    @Test
     public void testGetSize_byBeanQuery() {
         TestQuery testQuery = new TestQuery();
         testQuery.setAllTextFields("foobar");
@@ -126,6 +135,7 @@ public class DataProviderDaoImplTest extends TestCase {
         verify(session, sessionFactory, query);
     }
 
+    @Test
     public void testGetSize_withCountQuery() {
         TestQuery testQuery = new TestQuery();
         testQuery.setAllTextFields("foobar");

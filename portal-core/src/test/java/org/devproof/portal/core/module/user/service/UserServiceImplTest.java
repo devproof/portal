@@ -27,6 +27,9 @@ import org.devproof.portal.core.module.user.dao.UserDao;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,18 +37,19 @@ import java.util.Date;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 /**
  * @author Carsten Hufe
  */
-public class UserServiceImplTest extends TestCase {
+public class UserServiceImplTest {
     private UserServiceImpl impl;
     private UserDao userDaoMock;
     private RoleService roleServiceMock;
     private EmailService emailServiceMock;
     private ConfigurationService configurationServiceMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         userDaoMock = createStrictMock(UserDao.class);
         roleServiceMock = createMock(RoleService.class);
@@ -58,6 +62,7 @@ public class UserServiceImplTest extends TestCase {
         impl.setConfigurationService(configurationServiceMock);
     }
 
+    @Test
     public void testSave() {
         UserEntity e = impl.newUserEntity();
         e.setId(1);
@@ -67,6 +72,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testDelete() {
         UserEntity e = impl.newUserEntity();
         e.setId(1);
@@ -76,6 +82,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testFindById() {
         UserEntity e = impl.newUserEntity();
         e.setId(1);
@@ -85,10 +92,12 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testNewUserEntity() {
         assertNotNull(impl.newUserEntity());
     }
 
+    @Test
     public void testCountUserForRole() {
         RoleEntity role = createTestRole();
         expect(userDaoMock.countUserForRole(role)).andReturn(4l);
@@ -97,6 +106,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testExistsUsername() {
         expect(userDaoMock.existsUsername("username")).andReturn(1l);
         replay(userDaoMock);
@@ -104,6 +114,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testFindUserByEmail() {
         List<UserEntity> list = new ArrayList<UserEntity>();
         list.add(impl.newUserEntity());
@@ -114,6 +125,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testFindUserBySessionId() {
         UserEntity e = impl.newUserEntity();
         e.setId(1);
@@ -123,6 +135,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testFindUserByUsername() {
         UserEntity e = impl.newUserEntity();
         e.setId(1);
@@ -133,6 +146,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testFindUserWithRight() {
         List<UserEntity> list = new ArrayList<UserEntity>();
         list.add(impl.newUserEntity());
@@ -143,6 +157,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testFindGuestUser() {
         RoleEntity role = createTestRole();
         role.setDescription("Test Guest");
@@ -154,6 +169,7 @@ public class UserServiceImplTest extends TestCase {
         verify(roleServiceMock);
     }
 
+    @Test
     public void testActivateUser() {
         UserEntity user = createTestUser(false);
         user.setConfirmationCode("right");
@@ -168,6 +184,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testRegisterUser() {
         final StringBuilder callOrder = new StringBuilder();
         impl = new UserServiceImpl() {
@@ -222,6 +239,7 @@ public class UserServiceImplTest extends TestCase {
         };
     }
 
+    @Test
     public void testGenerateEmailPlaceholderForConfirmation() {
         UserEntity user = createTestUser(false);
         EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForConfirmation(user, createUrlCallback());
@@ -233,6 +251,7 @@ public class UserServiceImplTest extends TestCase {
         assertNotNull(placeholder.getBirthday());
     }
 
+    @Test
     public void testIsConfirmationRequired() {
         expect(configurationServiceMock.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)).andReturn(Boolean.TRUE);
         replay(configurationServiceMock);
@@ -240,6 +259,7 @@ public class UserServiceImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testSendConfirmationEmail() {
         UserEntity user = createTestUser(false);
         EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForConfirmation(user, createUrlCallback());
@@ -253,6 +273,7 @@ public class UserServiceImplTest extends TestCase {
         verify(emailServiceMock);
     }
 
+    @Test
     public void testResendConfirmationEmail() {
         UserEntity user = createTestUser(false);
         EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForConfirmation(user, createUrlCallback());
@@ -266,6 +287,7 @@ public class UserServiceImplTest extends TestCase {
         verify(emailServiceMock);
     }
 
+    @Test
     public void testResendConfirmationCode() {
         final StringBuilder callOrder = new StringBuilder();
         impl = new UserServiceImpl() {
@@ -296,6 +318,7 @@ public class UserServiceImplTest extends TestCase {
         assertEquals("1234", callOrder.toString());
     }
 
+    @Test
     public void testGenerateConfirmationCode() {
         impl = new UserServiceImpl() {
             @Override
@@ -311,10 +334,12 @@ public class UserServiceImplTest extends TestCase {
         assertNotNull(user.getConfirmationRequestedAt());
     }
 
+    @Test
     public void testGenerateCode() {
         assertNotNull(impl.generateCode());
     }
 
+    @Test
     public void testAuthentificate_withUsername_success() {
         UserEntity expectedUser = createTestUser(true);
         expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
@@ -334,6 +359,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testAuthentificate_withUsername_notConfirmed() {
         UserEntity expectedUser = createTestUser(false);
         expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
@@ -349,6 +375,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testAuthentificate_withUsername_wrongUsername() {
         expect(userDaoMock.findUserByUsername("testuser")).andReturn(null);
         replay(userDaoMock);
@@ -362,6 +389,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testAuthentificate_withUsername_wrongPassword() {
         UserEntity expectedUser = createTestUser(true);
         expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
@@ -376,6 +404,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testAuthentificate_withUsername_userInactive() {
         UserEntity expectedUser = createTestUser(true);
         expectedUser.setActive(Boolean.FALSE);
@@ -391,6 +420,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testAuthentificate_withUsername_roleInactive() {
         UserEntity expectedUser = createTestUser(true);
         expectedUser.getRole().setActive(Boolean.FALSE);
@@ -406,6 +436,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testAuthentificate_withSessionId_success() {
         UserEntity expectedUser = createTestUser(true);
         expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
@@ -419,6 +450,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testAuthentificate_withSessionId_nonExistingSessionId() {
         RoleEntity expectedGuestRole = createTestRole();
         expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(null);
@@ -431,6 +463,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock, roleServiceMock);
     }
 
+    @Test
     public void testAuthentificate_withSessionId_userInactive() {
         UserEntity expectedUser = createTestUser(true);
         expectedUser.setActive(Boolean.FALSE);
@@ -445,6 +478,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock, roleServiceMock);
     }
 
+    @Test
     public void testAuthentificate_withSessionId_roleInactive() {
         UserEntity expectedUser = createTestUser(true);
         expectedUser.getRole().setActive(Boolean.FALSE);
@@ -459,6 +493,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock, roleServiceMock);
     }
 
+    @Test
     public void testAuthentificate_withSessionId_notConfirmed() {
         UserEntity expectedUser = createTestUser(false);
         RoleEntity expectedGuestRole = createTestRole();
@@ -472,6 +507,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock, roleServiceMock);
     }
 
+    @Test
     public void testSendForgotPasswordCode() {
         final StringBuilder callOrder = new StringBuilder();
         impl = new UserServiceImpl() {
@@ -496,6 +532,7 @@ public class UserServiceImplTest extends TestCase {
         assertEquals("123", callOrder.toString());
     }
 
+    @Test
     public void testGenerateEmailPlaceholderForLostPassword() {
         UserEntity user = createTestUser(false);
         EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForLostPassword(user, createUrlCallback());
@@ -507,6 +544,7 @@ public class UserServiceImplTest extends TestCase {
         assertNotNull(placeholder.getBirthday());
     }
 
+    @Test
     public void testSendForgotPasswordEmail() {
         UserEntity user = createTestUser(false);
         EmailPlaceholderBean placeholder = impl.generateEmailPlaceholderForLostPassword(user, createUrlCallback());
@@ -520,6 +558,7 @@ public class UserServiceImplTest extends TestCase {
         verify(emailServiceMock);
     }
 
+    @Test
     public void testGenerateForgotPasswordCode_withUsername() {
         UserEntity expectedUser = createTestUser(true);
         expect(userDaoMock.findUserByUsername("testuser")).andReturn(expectedUser);
@@ -532,6 +571,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testGenerateForgotPasswordCode_withEmail() {
         UserEntity expectedUser = createTestUser(true);
         expect(userDaoMock.findUserByUsername("max.power@no.domain")).andReturn(null);
@@ -545,6 +585,7 @@ public class UserServiceImplTest extends TestCase {
         verify(userDaoMock);
     }
 
+    @Test
     public void testSendEmailNotificationToAdmins() {
         UserEntity user = createTestUser(false);
         List<UserEntity> users = new ArrayList<UserEntity>();
@@ -566,6 +607,7 @@ public class UserServiceImplTest extends TestCase {
         verify(emailServiceMock);
     }
 
+    @Test
     public void testSetNewPassword() {
         UserEntity user = createTestUser(false);
         expect(userDaoMock.findUserByUsername("testuser")).andReturn(user);

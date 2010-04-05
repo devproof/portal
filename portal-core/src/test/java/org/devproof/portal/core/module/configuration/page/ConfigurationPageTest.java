@@ -19,29 +19,34 @@ import junit.framework.TestCase;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class ConfigurationPageTest extends TestCase {
+public class ConfigurationPageTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPage() {
         tester.startPage(ConfigurationPage.class);
         tester.assertRenderedPage(ConfigurationPage.class);
     }
 
+    @Test
     public void testSaveConfiguration() {
         tester.startPage(ConfigurationPage.class);
         tester.assertRenderedPage(ConfigurationPage.class);

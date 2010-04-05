@@ -23,28 +23,33 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class ForgotPasswordPageTest extends TestCase {
+public class ForgotPasswordPageTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPage() {
         tester.startPage(ForgotPasswordPage.class);
         tester.assertRenderedPage(ForgotPasswordPage.class);
     }
 
+    @Test
     public void testRequestEmail() {
         Page page = tester.startPage(ForgotPasswordPage.class);
         tester.assertRenderedPage(ForgotPasswordPage.class);

@@ -22,26 +22,30 @@ import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Date;
 
 /**
  * @author Carsten Hufe
  */
-public class MetaInfoPanelTest extends TestCase {
+public class MetaInfoPanelTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPanel() {
         tester.startPanel(createMetaInfoPanel());
         tester.assertComponent("panel", MetaInfoPanel.class);

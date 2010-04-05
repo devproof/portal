@@ -17,26 +17,31 @@ package org.devproof.portal.core.module.common.factory;
 
 import junit.framework.TestCase;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class DateFormatFactoryImplTest extends TestCase {
+public class DateFormatFactoryImplTest {
     private DateFormatFactoryImpl impl;
     private ConfigurationService configurationServiceMock;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         configurationServiceMock = createMock(ConfigurationService.class);
         impl = new DateFormatFactoryImpl();
         impl.setConfigurationService(configurationServiceMock);
     }
 
+    @Test
     public void testCreateDisplayDateFormat() {
         String pattern = "dd.MM.yyyy";
         SimpleDateFormat exptectedSdf = new SimpleDateFormat(pattern);
@@ -48,6 +53,7 @@ public class DateFormatFactoryImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testCreateDisplayDateTimeFormat() {
         String pattern = "dd.MM.yyyy HH:mm";
         SimpleDateFormat exptectedSdf = new SimpleDateFormat(pattern);
@@ -59,6 +65,7 @@ public class DateFormatFactoryImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testCreateInputDateFormat() {
         String pattern = "dd-MM-yyyy";
         SimpleDateFormat exptectedSdf = new SimpleDateFormat(pattern);
@@ -70,6 +77,7 @@ public class DateFormatFactoryImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testCreateInputDateTimeFormat() {
         String pattern = "dd-MM-yyyy HH:mm";
         SimpleDateFormat exptectedSdf = new SimpleDateFormat(pattern);
