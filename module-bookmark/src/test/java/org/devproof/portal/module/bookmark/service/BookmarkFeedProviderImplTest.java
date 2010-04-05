@@ -27,20 +27,26 @@ import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.page.BookmarkPage;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.*;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Carsten Hufe
  */
-public class BookmarkFeedProviderImplTest extends TestCase {
+public class BookmarkFeedProviderImplTest {
     private BookmarkFeedProviderImpl impl;
     private SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
@@ -60,6 +66,7 @@ public class BookmarkFeedProviderImplTest extends TestCase {
         impl.setBookmarkDataProvider(dataProviderMock);
     }
 
+    @Test
     public void testGetFeedName() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
         expect(configurationServiceMock.findAsString(BookmarkConstants.CONF_BOOKMARK_FEED_TITLE)).andReturn("feedtitle");
@@ -68,10 +75,12 @@ public class BookmarkFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testSupportedPages() {
         assertEquals(BookmarkPage.class, impl.getSupportedFeedPages().get(0));
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetBookmarkEntries() {
         BookmarkEntity bookmark = createBookmark();
@@ -86,6 +95,7 @@ public class BookmarkFeedProviderImplTest extends TestCase {
         verify(dataProviderMock);
     }
 
+    @Test
     public void testGenerateFeed() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle").anyTimes();
         expect(configurationServiceMock.findAsString(BookmarkConstants.CONF_BOOKMARK_FEED_TITLE)).andReturn("feedtitle").anyTimes();
@@ -97,6 +107,7 @@ public class BookmarkFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
         BookmarkEntity bookmark = createBookmark();
@@ -111,6 +122,7 @@ public class BookmarkFeedProviderImplTest extends TestCase {
         assertNotNull(entry.getPublishedDate());
     }
 
+    @Test
     public void testGetFeed() {
         final List<SyndEntry> entries = new ArrayList<SyndEntry>();
         final StringBuilder callOrder = new StringBuilder();

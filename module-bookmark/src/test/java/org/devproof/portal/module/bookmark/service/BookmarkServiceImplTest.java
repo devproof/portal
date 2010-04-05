@@ -23,21 +23,27 @@ import org.devproof.portal.module.bookmark.dao.BookmarkDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
-public class BookmarkServiceImplTest extends TestCase {
+public class BookmarkServiceImplTest {
     private BookmarkServiceImpl impl;
     private BookmarkDao mock;
     private TagService<BookmarkTagEntity> mockTag;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(BookmarkDao.class);
@@ -47,6 +53,7 @@ public class BookmarkServiceImplTest extends TestCase {
         impl.setBookmarkTagService(mockTag);
     }
 
+    @Test
     public void testSave() {
         BookmarkEntity e = createBookmarkEntity();
         e.setId(1);
@@ -59,6 +66,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testDelete() {
         BookmarkEntity e = createBookmarkEntity();
         e.setId(1);
@@ -71,6 +79,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testFindAll() {
         List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
         list.add(createBookmarkEntity());
@@ -81,6 +90,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindById() {
         BookmarkEntity e = createBookmarkEntity();
         e.setId(1);
@@ -90,10 +100,12 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewBookmarkEntity() {
         assertNotNull(impl.newBookmarkEntity());
     }
 
+    @Test
     public void testFindAllBookmarksForRoleOrderedByDateDesc() {
         List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
         list.add(createBookmarkEntity());
@@ -106,6 +118,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindBookmarksBySource() {
         List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
         list.add(createBookmarkEntity());
@@ -116,6 +129,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testIncrementHits() {
         BookmarkEntity e = createBookmarkEntity();
         e.setId(1);
@@ -125,6 +139,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testMarkBrokenBookmark() {
         BookmarkEntity e = createBookmarkEntity();
         e.setId(1);
@@ -134,6 +149,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testMarkValidBookmark() {
         BookmarkEntity e = createBookmarkEntity();
         e.setId(1);
@@ -143,6 +159,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testRateBookmark() {
         BookmarkEntity e = createBookmarkEntity();
         e.setId(1);
@@ -153,6 +170,7 @@ public class BookmarkServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindLastSelectedRightsk() {
         List<RightEntity> list = new ArrayList<RightEntity>();
         expect(mock.findLastSelectedRights()).andReturn(list);
