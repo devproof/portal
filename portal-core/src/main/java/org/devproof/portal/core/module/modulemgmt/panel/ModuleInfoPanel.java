@@ -38,13 +38,13 @@ public class ModuleInfoPanel extends Panel {
 	public ModuleInfoPanel(String id, ModuleConfiguration module) {
 		super(id);
 		this.module = module;
-		add(createListPagesRepeater());
-		add(createListBoxesRepeater());
-		add(createListEntitiesRepeater());
+		add(createRepeatingPages());
+		add(createRepeatingBoxes());
+		add(createRepeatingEntities());
 	}
 
-	private RepeatingView createListEntitiesRepeater() {
-		RepeatingView tableRow = new RepeatingView("entityRow");
+	private RepeatingView createRepeatingEntities() {
+		RepeatingView tableRow = new RepeatingView("repeatingEntities");
 		if (module.getEntities().isEmpty()) {
 			tableRow.add(createEmptyEntitiesRow(tableRow.newChildId()));
 		} else {
@@ -95,8 +95,8 @@ public class ModuleInfoPanel extends Panel {
 		return new Label("entity", getString("noentities"));
 	}
 
-	private RepeatingView createListBoxesRepeater() {
-		RepeatingView tableRow = new RepeatingView("boxRow");
+	private RepeatingView createRepeatingBoxes() {
+		RepeatingView tableRow = new RepeatingView("repeatingBoxes");
 		if (module.getBoxes().isEmpty()) {
 			tableRow.add(createNoBoxesRow(tableRow.newChildId()));
 		} else {
@@ -137,8 +137,8 @@ public class ModuleInfoPanel extends Panel {
 		return new Label("box", getString("noboxes"));
 	}
 
-	private RepeatingView createListPagesRepeater() {
-		RepeatingView tableRow = new RepeatingView("pageRow");
+	private RepeatingView createRepeatingPages() {
+		RepeatingView tableRow = new RepeatingView("repeatingPages");
 		if (module.getPages().isEmpty()) {
 			tableRow.add(createNoPagesRow(tableRow.newChildId()));
 		} else {
