@@ -51,11 +51,11 @@ public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 		this.tagModel = tagModel;
 		this.page = page;
 		add(createCSSHeaderContributor());
-		add(createTagRepeater());
+		add(createRepeatingTags());
 	}
 
-	private RepeatingView createTagRepeater() {
-		RepeatingView repeating = new RepeatingView("repeating");
+	private RepeatingView createRepeatingTags() {
+		RepeatingView repeating = new RepeatingView("repeatingTags");
 		for (T tag : tagModel.getObject()) {
 			repeating.add(createTagItem(repeating.newChildId(), tag));
 		}

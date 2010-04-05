@@ -57,15 +57,15 @@ public class ThemePage extends TemplatePage {
     public ThemePage(PageParameters params) {
         super(params);
         add(createBubblePanel());
-        add(createThemeRepeater());
+        add(createRepeatingThemes());
         addPageAdminBoxLink(createUploadLink());
         addPageAdminBoxLink(createCompleteThemeDownloadLink());
         addPageAdminBoxLink(createSmallThemeDownloadLink());
     }
 
-    private ListView<ThemeBean> createThemeRepeater() {
+    private ListView<ThemeBean> createRepeatingThemes() {
         IModel<List<ThemeBean>> themeBeansModel = createThemeBeansModel();
-        return new ListView<ThemeBean>("tableRow", themeBeansModel) {
+        return new ListView<ThemeBean>("repeatingThemes", themeBeansModel) {
             private static final long serialVersionUID = -3440575235335312961L;
 
             @Override
