@@ -23,30 +23,38 @@ import org.devproof.portal.core.mock.EmailServiceMock;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.lang.reflect.Field;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class ContactPageTest extends TestCase {
+public class ContactPageTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPage() {
         callContactPage();
     }
 
+    @Test
     public void testSendContactForm() throws Exception {
         EmailServiceMock emailServiceMock = createEmailServiceMock();
         callContactPage();

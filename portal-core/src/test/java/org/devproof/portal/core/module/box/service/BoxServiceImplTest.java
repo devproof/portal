@@ -18,26 +18,32 @@ package org.devproof.portal.core.module.box.service;
 import junit.framework.TestCase;
 import org.devproof.portal.core.module.box.dao.BoxDao;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class BoxServiceImplTest extends TestCase {
+public class BoxServiceImplTest {
     private BoxServiceImpl impl;
     private BoxDao mock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         mock = createStrictMock(BoxDao.class);
         impl = new BoxServiceImpl();
         impl.setBoxDao(mock);
     }
 
+    @Test
     public void testSave() {
         BoxEntity e = impl.newBoxEntity();
         e.setId(1);
@@ -47,6 +53,7 @@ public class BoxServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testDelete() {
         BoxEntity e = impl.newBoxEntity();
         e.setId(1);
@@ -58,6 +65,7 @@ public class BoxServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindById() {
         BoxEntity e = impl.newBoxEntity();
         e.setId(1);
@@ -67,10 +75,12 @@ public class BoxServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewBoxEntity() {
         assertNotNull(impl.newBoxEntity());
     }
 
+    @Test
     public void testFindAllOrderedBySort() {
         List<BoxEntity> list = new ArrayList<BoxEntity>();
         list.add(impl.newBoxEntity());
@@ -81,6 +91,7 @@ public class BoxServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindBoxBySort() {
         BoxEntity e = impl.newBoxEntity();
         e.setId(1);
@@ -90,6 +101,7 @@ public class BoxServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testGetMaxSortNum() {
         expect(mock.getMaxSortNum()).andReturn(5);
         replay(mock);
@@ -97,6 +109,7 @@ public class BoxServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testMoveDown() {
         BoxEntity e1 = impl.newBoxEntity();
         e1.setId(1);
@@ -115,6 +128,7 @@ public class BoxServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testMoveUp() {
         BoxEntity e1 = impl.newBoxEntity();
         e1.setId(1);

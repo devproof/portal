@@ -21,6 +21,9 @@ import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -29,18 +32,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class GenericHibernateDaoImplTest extends TestCase {
+public class GenericHibernateDaoImplTest {
     private GenericHibernateDaoImpl<EmailTemplateEntity, Integer> impl;
     private SessionFactory sessionFactory;
     private Session session;
     private Query query;
     private UsernameResolver usernameResolver;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         sessionFactory = createMock(SessionFactory.class);
         session = createMock(Session.class);
@@ -57,6 +62,7 @@ public class GenericHibernateDaoImplTest extends TestCase {
         expect(session.getSessionFactory()).andReturn(sessionFactory);
     }
 
+    @Test
     public void testFindById() {
         EmailTemplateEntity expectedTemplates = newEmailTemplate();
         expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
@@ -66,6 +72,7 @@ public class GenericHibernateDaoImplTest extends TestCase {
         verify(session, sessionFactory);
     }
 
+    @Test
     public void testSave() {
         EmailTemplateEntity template = newEmailTemplate();
         expect(session.beginTransaction()).andReturn(null);
@@ -80,6 +87,7 @@ public class GenericHibernateDaoImplTest extends TestCase {
         assertEquals("testuser", template.getModifiedBy());
     }
 
+    @Test
     public void testRefresh() {
         EmailTemplateEntity template = newEmailTemplate();
         session.refresh(template);
@@ -88,6 +96,7 @@ public class GenericHibernateDaoImplTest extends TestCase {
         verify(session, sessionFactory, query);
     }
 
+    @Test
     public void testDelete() {
         EmailTemplateEntity template = newEmailTemplate();
         expect(session.beginTransaction()).andReturn(null);
@@ -97,6 +106,7 @@ public class GenericHibernateDaoImplTest extends TestCase {
         verify(session, sessionFactory, query);
     }
 
+    @Test
     public void testExecuteFinder_UniqueResult() throws Exception {
         EmailTemplateEntity expectedTemplate = newEmailTemplate();
         expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
@@ -111,6 +121,7 @@ public class GenericHibernateDaoImplTest extends TestCase {
         assertEquals(expectedTemplate, template);
     }
 
+    @Test
     public void testExecuteFinder_ResultList() throws Exception {
         List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
         expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
@@ -125,6 +136,7 @@ public class GenericHibernateDaoImplTest extends TestCase {
         assertEquals(expectedTemplates.get(0), templates.get(0));
     }
 
+    @Test
     public void testExecuteUpdate() {
         expect(session.createQuery("update EmailTemplateEntity set id = 'someValue' where id = ?")).andReturn(query);
         expect(query.setParameter(0, "fakeValue")).andReturn(query);
@@ -141,10 +153,12 @@ public class GenericHibernateDaoImplTest extends TestCase {
     }
 
 
+    @SuppressWarnings({"UnusedDeclaration"})
     public List<?> methodList() {
         return null;
     }
 
+    @SuppressWarnings({"UnusedDeclaration"})
     public EmailTemplateEntity methodObject() {
         return null;
     }

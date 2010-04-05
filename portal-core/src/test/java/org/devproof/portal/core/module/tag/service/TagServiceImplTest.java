@@ -19,20 +19,25 @@ import junit.framework.TestCase;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.dao.TagDao;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class TagServiceImplTest extends TestCase {
+public class TagServiceImplTest {
     private TagServiceImpl<DummyTagEntity> impl;
     private TagDao<DummyTagEntity> mock;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(TagDao.class);
@@ -41,6 +46,7 @@ public class TagServiceImplTest extends TestCase {
         impl.setRelatedTagRight("testright");
     }
 
+    @Test
     public void testSave() {
         DummyTagEntity e = new DummyTagEntity();
         e.setTagname("tag");
@@ -50,6 +56,7 @@ public class TagServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testDelete() {
         DummyTagEntity e = new DummyTagEntity();
         e.setTagname("tag");
@@ -59,6 +66,7 @@ public class TagServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindById() {
         DummyTagEntity e = new DummyTagEntity();
         e.setTagname("tag");
@@ -68,12 +76,14 @@ public class TagServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewTagEntity() {
         expect(mock.getType()).andReturn(DummyTagEntity.class);
         replay(mock);
         assertNotNull(impl.newTagEntity("tag"));
     }
 
+    @Test
     public void testFindMostPopularTags1() {
         List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
         list.add(new DummyTagEntity());
@@ -84,6 +94,7 @@ public class TagServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindMostPopularTags2() {
         List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
         list.add(new DummyTagEntity());
@@ -95,6 +106,7 @@ public class TagServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindTagsStartingWith() {
         List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
         list.add(new DummyTagEntity());
@@ -105,6 +117,7 @@ public class TagServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testDeleteUnusedTags() {
         mock.deleteUnusedTags();
         replay(mock);
@@ -112,6 +125,7 @@ public class TagServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindByIdAndCreateIfNotExists() {
         expect(mock.findById("sampletag")).andReturn(null);
         expect(mock.getType()).andReturn(DummyTagEntity.class);

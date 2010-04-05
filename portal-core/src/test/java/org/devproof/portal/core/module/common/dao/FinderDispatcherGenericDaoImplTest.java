@@ -21,28 +21,30 @@ import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.lang.reflect.Method;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class FinderDispatcherGenericDaoImplTest extends TestCase {
+public class FinderDispatcherGenericDaoImplTest {
     private FinderDispatcherGenericDaoImpl<TestEntity, Integer> impl;
     private TestDao testDao;
     private GenericDao<TestEntity, Integer> genericDao;
-    private SessionFactory sessionFactory;
-    private Session session;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        sessionFactory = createMock(SessionFactory.class);
-        session = createMock(Session.class);
+        SessionFactory sessionFactory = createMock(SessionFactory.class);
+        Session session = createMock(Session.class);
         genericDao = createMock(GenericDao.class);
         impl = new FinderDispatcherGenericDaoImpl<TestEntity, Integer>() {
             private static final long serialVersionUID = 1L;
@@ -65,6 +67,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
         expect(session.getSessionFactory()).andReturn(sessionFactory);
     }
 
+    @Test
     public void testGetObject_delegateSave() {
         TestEntity entity = createEntity();
         expect(genericDao.save(entity)).andReturn(entity);
@@ -73,6 +76,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
         verify(genericDao);
     }
 
+    @Test
     public void testGetObject_delegateDelete() {
         TestEntity entity = createEntity();
         genericDao.delete(entity);
@@ -81,6 +85,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
         verify(genericDao);
     }
 
+    @Test
     public void testGetObject_delegateRefresh() {
         TestEntity entity = createEntity();
         genericDao.refresh(entity);
@@ -89,6 +94,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
         verify(genericDao);
     }
 
+    @Test
     public void testGetObject_delegateFindById() {
         TestEntity expectedEntity = createEntity();
         expect(genericDao.findById(1)).andReturn(expectedEntity);
@@ -98,6 +104,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
         verify(genericDao);
     }
 
+    @Test
     public void testGetObject_queryAnnotation() throws Exception {
         TestEntity expectedEntity = createEntity();
         expect(genericDao.executeFinder(eq("select t from TestEntity t where t.contentId = ?"), (Object[]) anyObject(), (Method) anyObject(), (Integer) eq(null), (Integer) eq(null))).andReturn(expectedEntity);
@@ -107,6 +114,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
         verify(genericDao);
     }
 
+    @Test
     public void testGetObject_bulkUpdate() {
         genericDao.executeUpdate(eq("update TestEntity with something where contentId = ?"), (Object[]) anyObject());
         replay(genericDao);
@@ -114,6 +122,7 @@ public class FinderDispatcherGenericDaoImplTest extends TestCase {
         verify(genericDao);
     }
 
+    @Test
     public void testGetObject_delegateToImplMethod() {
         TestDao serviceImpl = createMock(TestDao.class);
         impl.setServicesImpl(serviceImpl);

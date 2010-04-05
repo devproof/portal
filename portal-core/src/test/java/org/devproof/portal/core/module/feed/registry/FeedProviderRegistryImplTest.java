@@ -22,18 +22,23 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.DummyFeedProviderImpl;
 import org.devproof.portal.core.module.feed.DummyPage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+import static org.junit.Assert.*;
+
 /**
  * @author Carsten Hufe
  */
-public class FeedProviderRegistryImplTest extends TestCase {
+public class FeedProviderRegistryImplTest {
     private FeedProviderRegistryImpl impl;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         impl = new FeedProviderRegistryImpl();
         impl.setPageLocator(new PageLocator() {
@@ -48,6 +53,7 @@ public class FeedProviderRegistryImplTest extends TestCase {
         impl.registerFeedProvider("dummy", new DummyFeedProviderImpl());
     }
 
+    @Test
     public void testGetAllFeedProvider() {
         Map<String, FeedProvider> allFeedProvider = impl.getAllFeedProvider();
         assertNotNull(allFeedProvider);
@@ -55,10 +61,12 @@ public class FeedProviderRegistryImplTest extends TestCase {
         assertNotNull(allFeedProvider.get("dummy"));
     }
 
+    @Test
     public void testGetFeedProviderByPath() {
         assertTrue(impl.getFeedProviderByPath("dummy") instanceof DummyFeedProviderImpl);
     }
 
+    @Test
     public void testRegisterFeedProvider() {
         assertEquals(1, impl.getAllFeedProvider().size());
         impl.registerFeedProvider("dummy2", new DummyFeedProviderImpl());
@@ -66,15 +74,18 @@ public class FeedProviderRegistryImplTest extends TestCase {
         assertNotNull(impl.getFeedProviderByPath("dummy2"));
     }
 
+    @Test
     public void testRemoveFeedProvider() {
         impl.removeFeedProvider("dummy");
         assertEquals(0, impl.getAllFeedProvider().size());
     }
 
+    @Test
     public void testGetPathByPageClass() {
         assertEquals("dummy", impl.getPathByPageClass(DummyPage.class));
     }
 
+    @Test
     public void testHasFeedSupport() {
         assertTrue(impl.hasFeedSupport(DummyPage.class));
         assertFalse(impl.hasFeedSupport(TemplatePage.class));

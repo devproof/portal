@@ -23,31 +23,39 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.page.BoxPage;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
-public class BoxEditPanelTest extends TestCase {
+public class BoxEditPanelTest {
     private WicketTester tester;
     private static boolean calledSave = false;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         calledSave = false;
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPanel() {
         tester.startPanel(TestBoxEditPanel.class);
         tester.assertComponent("panel", TestBoxEditPanel.class);
     }
 
+    @Test
     public void testSaveBox() {
         tester.startPanel(TestBoxEditPanel.class);
         tester.assertComponent("panel", TestBoxEditPanel.class);

@@ -20,14 +20,17 @@ import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.feed.DummyFeedProviderImpl;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class FeedOverviewPageTest extends TestCase {
+public class FeedOverviewPageTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         FeedProviderRegistry registry = PortalTestUtil.getBean("feedProviderRegistry");
@@ -35,11 +38,12 @@ public class FeedOverviewPageTest extends TestCase {
         registry.registerFeedProvider("dummy", new DummyFeedProviderImpl());
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPage() {
         tester.startPage(FeedOverviewPage.class);
         tester.assertRenderedPage(FeedOverviewPage.class);

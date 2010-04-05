@@ -16,40 +16,52 @@
 package org.devproof.portal.core.module.common.registry;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
-public class SharedRegistryImplTest extends TestCase {
+public class SharedRegistryImplTest {
     private SharedRegistryImpl impl;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         impl = new SharedRegistryImpl();
     }
 
+    @Test
     public void testGetResource() {
         impl.registerResource("key", "value");
         assertEquals("value", impl.getResource("key"));
     }
 
+    @Test
     public void testGetRegisteredResources() {
         impl.registerResource("key", "value");
         assertEquals(impl.getRegisteredResources().get("key"), "value");
     }
 
+    @Test
     public void testIsResourceAvailable() {
         impl.registerResource("key", "value");
         assertTrue(impl.isResourceAvailable("key"));
         assertFalse(impl.isResourceAvailable("key2"));
     }
 
+    @Test
     public void testRegisterResource() {
         assertEquals(0, impl.getRegisteredResources().size());
         impl.registerResource("key", "value");
         assertEquals(1, impl.getRegisteredResources().size());
     }
 
+    @Test
     public void testRemoveResource() {
         impl.registerResource("key", "value");
         assertEquals(1, impl.getRegisteredResources().size());

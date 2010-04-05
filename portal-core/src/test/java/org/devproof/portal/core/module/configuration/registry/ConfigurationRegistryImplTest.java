@@ -17,18 +17,25 @@ package org.devproof.portal.core.module.configuration.registry;
 
 import junit.framework.TestCase;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Carsten Hufe
  */
-public class ConfigurationRegistryImplTest extends TestCase {
+public class ConfigurationRegistryImplTest {
     private ConfigurationRegistryImpl impl;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         impl = new ConfigurationRegistryImpl();
     }
 
+    @Test
     public void testGetConfiguration() {
         ConfigurationEntity conf = new ConfigurationEntity();
         conf.setKey("foo");
@@ -38,6 +45,7 @@ public class ConfigurationRegistryImplTest extends TestCase {
         assertEquals(conf, impl.getConfiguration("foo"));
     }
 
+    @Test
     public void testRegisterConfiguration() {
         ConfigurationEntity conf = new ConfigurationEntity();
         conf.setKey("foo");
@@ -47,6 +55,7 @@ public class ConfigurationRegistryImplTest extends TestCase {
         assertEquals(conf, impl.getConfiguration("foo"));
     }
 
+    @Test
     public void testRemoveConfiguration() {
         ConfigurationEntity conf = new ConfigurationEntity();
         conf.setKey("foo");

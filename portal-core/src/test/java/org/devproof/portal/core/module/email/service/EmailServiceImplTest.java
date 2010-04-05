@@ -21,6 +21,9 @@ import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.mail.Session;
@@ -30,17 +33,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class EmailServiceImplTest extends TestCase {
+public class EmailServiceImplTest {
     private EmailServiceImpl impl;
     private EmailTemplateDao daomock;
     private JavaMailSender emailmock;
     private ConfigurationService confservice;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         daomock = createStrictMock(EmailTemplateDao.class);
         emailmock = createStrictMock(JavaMailSender.class);
@@ -52,6 +57,7 @@ public class EmailServiceImplTest extends TestCase {
         impl.setDateFormat(new SimpleDateFormat("dd-mm-yyyy"));
     }
 
+    @Test
     public void testSave() {
         EmailTemplateEntity e = impl.newEmailTemplateEntity();
         e.setId(1);
@@ -61,6 +67,7 @@ public class EmailServiceImplTest extends TestCase {
         verify(daomock);
     }
 
+    @Test
     public void testDelete() {
         EmailTemplateEntity e = impl.newEmailTemplateEntity();
         e.setId(1);
@@ -70,6 +77,7 @@ public class EmailServiceImplTest extends TestCase {
         verify(daomock);
     }
 
+    @Test
     public void testFindAll() {
         List<EmailTemplateEntity> list = new ArrayList<EmailTemplateEntity>();
         list.add(impl.newEmailTemplateEntity());
@@ -80,6 +88,7 @@ public class EmailServiceImplTest extends TestCase {
         verify(daomock);
     }
 
+    @Test
     public void testFindById() {
         EmailTemplateEntity e = impl.newEmailTemplateEntity();
         e.setId(1);
@@ -89,10 +98,12 @@ public class EmailServiceImplTest extends TestCase {
         verify(daomock);
     }
 
+    @Test
     public void testNewEmailTemplateEntity() {
         assertNotNull(impl.newEmailTemplateEntity());
     }
 
+    @Test
     public void testSendEmail1() {
         EmailTemplateEntity e = impl.newEmailTemplateEntity();
         e.setSubject("hello");
@@ -112,6 +123,7 @@ public class EmailServiceImplTest extends TestCase {
         verify(emailmock);
     }
 
+    @Test
     public void testSendEmail2() {
         EmailTemplateEntity e = impl.newEmailTemplateEntity();
         e.setSubject("hello");

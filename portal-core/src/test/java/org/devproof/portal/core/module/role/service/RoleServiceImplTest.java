@@ -20,21 +20,26 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.role.RoleConstants;
 import org.devproof.portal.core.module.role.dao.RoleDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class RoleServiceImplTest extends TestCase {
+public class RoleServiceImplTest {
     private RoleServiceImpl impl;
     private RoleDao roleDaoMock;
     private ConfigurationService configurationServiceMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         roleDaoMock = createStrictMock(RoleDao.class);
         configurationServiceMock = createStrictMock(ConfigurationService.class);
@@ -43,6 +48,7 @@ public class RoleServiceImplTest extends TestCase {
         impl.setConfigurationService(configurationServiceMock);
     }
 
+    @Test
     public void testSave() {
         RoleEntity e = impl.newRoleEntity();
         e.setId(1);
@@ -52,6 +58,7 @@ public class RoleServiceImplTest extends TestCase {
         verify(roleDaoMock);
     }
 
+    @Test
     public void testDelete() {
         RoleEntity e = impl.newRoleEntity();
         e.setId(1);
@@ -61,6 +68,7 @@ public class RoleServiceImplTest extends TestCase {
         verify(roleDaoMock);
     }
 
+    @Test
     public void testFindAll() {
         List<RoleEntity> list = new ArrayList<RoleEntity>();
         list.add(impl.newRoleEntity());
@@ -71,6 +79,7 @@ public class RoleServiceImplTest extends TestCase {
         verify(roleDaoMock);
     }
 
+    @Test
     public void testFindById() {
         RoleEntity e = impl.newRoleEntity();
         e.setId(1);
@@ -80,10 +89,12 @@ public class RoleServiceImplTest extends TestCase {
         verify(roleDaoMock);
     }
 
+    @Test
     public void testNewRoleEntity() {
         assertNotNull(impl.newRoleEntity());
     }
 
+    @Test
     public void testGetDefaultRegistrationRole() {
         RoleEntity e = impl.newRoleEntity();
         e.setId(1);
@@ -98,6 +109,7 @@ public class RoleServiceImplTest extends TestCase {
         verify(roleDaoMock);
     }
 
+    @Test
     public void testFindAllOrderByDescription() {
         List<RoleEntity> list = new ArrayList<RoleEntity>();
         list.add(impl.newRoleEntity());
@@ -108,6 +120,7 @@ public class RoleServiceImplTest extends TestCase {
         verify(roleDaoMock);
     }
 
+    @Test
     public void testFindGuestRole() {
         RoleEntity role = impl.newRoleEntity();
         expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE)).andReturn(1);

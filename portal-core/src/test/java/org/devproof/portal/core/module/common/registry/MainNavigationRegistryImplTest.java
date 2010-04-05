@@ -22,22 +22,26 @@ import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.devproof.portal.core.module.user.page.LoginPage;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class MainNavigationRegistryImplTest extends TestCase {
+public class MainNavigationRegistryImplTest {
     private MainNavigationRegistryImpl impl;
     private PageLocator pageLocatorMock;
     private ModuleService moduleServiceMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         pageLocatorMock = createStrictMock(PageLocator.class);
         moduleServiceMock = createStrictMock(ModuleService.class);
@@ -46,11 +50,13 @@ public class MainNavigationRegistryImplTest extends TestCase {
         impl.setPageLocator(pageLocatorMock);
     }
 
+    @Test
     public void testGetRegisteredPages() {
         impl.registerPage(LoginPage.class);
         assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
     }
 
+    @Test
     public void testBuildNavigation() {
         Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
         PageConfiguration conf = new PageConfiguration();
@@ -68,6 +74,7 @@ public class MainNavigationRegistryImplTest extends TestCase {
         assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
     }
 
+    @Test
     public void testAfterPropertiesSet() throws Exception {
         Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
         PageConfiguration conf = new PageConfiguration();
@@ -85,11 +92,13 @@ public class MainNavigationRegistryImplTest extends TestCase {
         assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
     }
 
+    @Test
     public void testRegisterPage() {
         impl.registerPage(LoginPage.class);
         assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
     }
 
+    @Test
     public void testRegisterPages() {
         List<Class<? extends Page>> pages = new ArrayList<Class<? extends Page>>();
         pages.add(LoginPage.class);
@@ -97,6 +106,7 @@ public class MainNavigationRegistryImplTest extends TestCase {
         assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
     }
 
+    @Test
     public void testRemovePage() {
         impl.registerPage(LoginPage.class);
         assertEquals(1, impl.getRegisteredPages().size());
@@ -104,6 +114,7 @@ public class MainNavigationRegistryImplTest extends TestCase {
         assertEquals(0, impl.getRegisteredPages().size());
     }
 
+    @Test
     public void testClearRegistry() {
         impl.registerPage(LoginPage.class);
         impl.clearRegistry();

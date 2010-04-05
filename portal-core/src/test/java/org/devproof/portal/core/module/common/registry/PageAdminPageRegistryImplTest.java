@@ -21,22 +21,26 @@ import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.devproof.portal.core.module.right.page.RightPage;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
  */
-public class PageAdminPageRegistryImplTest extends TestCase {
+public class PageAdminPageRegistryImplTest {
     private PageAdminPageRegistryImpl impl;
     private PageLocator pageLocatorMock;
     private ModuleService moduleServiceMock;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         pageLocatorMock = createStrictMock(PageLocator.class);
         moduleServiceMock = createStrictMock(ModuleService.class);
@@ -45,11 +49,13 @@ public class PageAdminPageRegistryImplTest extends TestCase {
         impl.setPageLocator(pageLocatorMock);
     }
 
+    @Test
     public void testGetRegisteredPages() {
         impl.registerPageAdminPage(RightPage.class);
         assertEquals(RightPage.class, impl.getRegisteredPageAdminPages().get(0));
     }
 
+    @Test
     public void testBuildNavigation() {
         Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
         PageConfiguration conf = new PageConfiguration();
@@ -67,6 +73,7 @@ public class PageAdminPageRegistryImplTest extends TestCase {
         assertEquals(RightPage.class, impl.getRegisteredPageAdminPages().get(0));
     }
 
+    @Test
     public void testAfterPropertiesSet() throws Exception {
         Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
         PageConfiguration conf = new PageConfiguration();
@@ -84,11 +91,13 @@ public class PageAdminPageRegistryImplTest extends TestCase {
         assertEquals(RightPage.class, impl.getRegisteredPageAdminPages().get(0));
     }
 
+    @Test
     public void testRegisterPage() {
         impl.registerPageAdminPage(RightPage.class);
         assertEquals(impl.getRegisteredPageAdminPages().get(0), RightPage.class);
     }
 
+    @Test
     public void testRemovePage() {
         impl.registerPageAdminPage(RightPage.class);
         assertEquals(1, impl.getRegisteredPageAdminPages().size());
