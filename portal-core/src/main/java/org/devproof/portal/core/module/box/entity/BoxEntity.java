@@ -30,7 +30,7 @@ import javax.persistence.*;
 @Table(name = "core_box")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
-final public class BoxEntity extends BaseEntity {
+public class BoxEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -67,6 +67,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
     public void moveDown(ModuleLinkEntity link) {
         int maxSort = moduleLinkDao.getMaxSortNum(link.getLinkType());
         if (link.getSort() < maxSort) {
+            @SuppressWarnings({"UnnecessaryLocalVariable"})
             ModuleLinkEntity moveDown = link;
             ModuleLinkEntity moveUp = moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() + 1);
             moveUp.setSort(moveUp.getSort() - 1);
@@ -79,6 +80,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
     @Override
     public void moveUp(ModuleLinkEntity link) {
         if (link.getSort() > 1) {
+            @SuppressWarnings({"UnnecessaryLocalVariable"})
             ModuleLinkEntity moveUp = link;
             ModuleLinkEntity moveDown = moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() - 1);
             moveUp.setSort(moveUp.getSort() - 1);

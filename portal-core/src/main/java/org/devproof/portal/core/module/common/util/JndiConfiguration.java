@@ -34,8 +34,7 @@ public class JndiConfiguration {
     public String resolveHibernateConnectionIsolation() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_CONNECTION_ISOLATION);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_CONNECTION_ISOLATION);
         } catch (NamingException e) {
             return CommonConstants.HIBERNATE_DEFAULT_CONNECTION_ISOLATION;
         }
@@ -48,8 +47,7 @@ public class JndiConfiguration {
     public String resolveHibernateDialect() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT);
         } catch (NamingException e) {
             return CommonConstants.HIBERNATE_DEFAULT_DIALECT;
         }
@@ -61,8 +59,7 @@ public class JndiConfiguration {
     public String resolveHibernateShowSql() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_SHOW_SQL);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_SHOW_SQL);
         } catch (NamingException e) {
             return CommonConstants.HIBERNATE_DEFAULT_SHOW_SQL;
         }
@@ -74,8 +71,7 @@ public class JndiConfiguration {
     public String resolveHibernateFormatSql() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_FORMAT_SQL);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_FORMAT_SQL);
         } catch (NamingException e) {
             return CommonConstants.HIBERNATE_DEFAULT_FORMAT_SQL;
         }
@@ -87,8 +83,7 @@ public class JndiConfiguration {
     public String resolveHibernateHbm2ddlAuto() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_HBM2DDL_AUTO);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_HBM2DDL_AUTO);
         } catch (NamingException e) {
             return CommonConstants.HIBERNATE_DEFAULT_HBM2DDL_AUTO;
         }
@@ -100,8 +95,7 @@ public class JndiConfiguration {
     public String resolveHibernateUseSecondLevelCache() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE);
         } catch (NamingException e) {
             return CommonConstants.HIBERNATE_DEFAULT_SECOND_LEVEL_CACHE;
         }
@@ -113,8 +107,7 @@ public class JndiConfiguration {
     public String resolveHibernateUseQueryCache() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_QUERY_CACHE);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_HIBERNATE_QUERY_CACHE);
         } catch (NamingException e) {
             return CommonConstants.HIBERNATE_DEFAULT_QUERY_CACHE;
         }
@@ -126,8 +119,7 @@ public class JndiConfiguration {
     public String resolveEmailDisabled() {
         JndiTemplate jndi = new JndiTemplate();
         try {
-            String dialect = (String) jndi.lookup(CommonConstants.JNDI_PROP_EMAIL_DISABLED);
-            return dialect;
+            return (String) jndi.lookup(CommonConstants.JNDI_PROP_EMAIL_DISABLED);
         } catch (NamingException e) {
             return CommonConstants.EMAIL_DEFAULT_DISABLED;
         }

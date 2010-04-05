@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:panel>
-    <div wicket:id="bubble"/>
+    <div wicket:id="bubble"></div>
     <div class="commentsMain">
         <h3><wicket:message key="commentsHeadline"/></h3>
 
         <div wicket:id="noCommentsHint" class="noCommentsHint"><wicket:message key="noComments"/></div>
         <div wicket:id="repeatingComments">
-            <div wicket:id="commentView" class="commentsView"/>
+            <div wicket:id="commentView" class="commentsView"></div>
         </div>
         <table width="100%">
             <tr>
@@ -20,7 +20,7 @@
         </table>
         <div>&nbsp;</div>
         <div class="commentsForm">
-            <div wicket:id="feedback"/>
+            <div wicket:id="feedback"></div>
             <form wicket:id="form">
                 <table cellspacing="10" style="margin: 0 auto; ">
                     <tr wicket:id="guestNameContainer">
@@ -53,13 +53,13 @@
         <div class="commentMetaInfo">
             <span wicket:id="commentInfo">[author name]</span> [ <a wicket:id="reportViolationLink"><wicket:message
                 key="reportViolation"/></a> ]
-            <div wicket:id="administration"/>
+            <div wicket:id="administration"></div>
         </div>
     </wicket:fragment>
 
     <wicket:fragment wicket:id="commentAdminView">
         <div class="commentAdmin"><wicket:message key="administration"/>: [<wicket:message key="ipAddress"/> <span
-                wicket:id="ipAddress"/>] &nbsp;<wicket:message key="numberOfBlames"/><span
+                wicket:id="ipAddress"></span>] &nbsp;<wicket:message key="numberOfBlames"/><span
                 wicket:id="numberOfBlames">0</span> &nbsp; <a wicket:id="acceptLink"><img wicket:id="acceptLinkImage"
                                                                                           alt="Accept"/></a> <a
                 wicket:id="rejectLink"><img wicket:id="rejectLinkImage" alt="reject"/></a> &nbsp;<span

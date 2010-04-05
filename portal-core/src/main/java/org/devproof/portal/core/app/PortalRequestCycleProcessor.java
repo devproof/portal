@@ -50,7 +50,7 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
     private UserService userService;
     private EmailService emailService;
 
-    public PortalRequestCycleProcessor(ApplicationContext context, boolean production) {
+    public PortalRequestCycleProcessor(ApplicationContext context) {
         sessionFactory = (SessionFactory) context.getBean("sessionFactory");
         configurationService = (ConfigurationService) context.getBean("configurationService");
         userService = (UserService) context.getBean("userService");

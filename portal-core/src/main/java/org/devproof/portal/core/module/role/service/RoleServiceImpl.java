@@ -63,8 +63,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleEntity findGuestRole() {
         Integer roleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
-        RoleEntity role = findById(roleId);
-        return role;
+        return findById(roleId);
     }
 
     @Override

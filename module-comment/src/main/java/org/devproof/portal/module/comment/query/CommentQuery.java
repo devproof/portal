@@ -67,7 +67,7 @@ public class CommentQuery implements SearchQuery {
             PortalSession session = PortalSession.get();
             author = session.hasRight(CommentConstants.AUTHOR_RIGHT);
         }
-        return author.booleanValue();
+        return author;
     }
 
     @BeanQuery("e.accepted = ?")

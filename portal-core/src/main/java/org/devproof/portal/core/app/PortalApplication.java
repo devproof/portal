@@ -114,7 +114,7 @@ public class PortalApplication extends WebApplication {
      */
     @Override
     protected IRequestCycleProcessor newRequestCycleProcessor() {
-        return new PortalRequestCycleProcessor(getSpringContext(), isProductionMode());
+        return new PortalRequestCycleProcessor(getSpringContext());
     }
 
     @Override
@@ -127,9 +127,9 @@ public class PortalApplication extends WebApplication {
         return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T getSpringBean(String id) {
-        @SuppressWarnings("unchecked") T back = (T) getSpringContext().getBean(id);
-        return back;
+        return (T) getSpringContext().getBean(id);
     }
 
     @Override

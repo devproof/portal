@@ -54,8 +54,7 @@ public abstract class BaseFeedLink extends BookmarkablePageLink<BaseFeedLink> {
     private SimpleAttributeModifier createTitleAttributeModifier() {
         String title = getFeedPageTitle();
         String feedName = new StringResourceModel("feedName", this, null, new String[]{title}).getString();
-        SimpleAttributeModifier titleModifier = new SimpleAttributeModifier("title", feedName);
-        return titleModifier;
+        return new SimpleAttributeModifier("title", feedName);
     }
 
     private String getFeedPageTitle() {

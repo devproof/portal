@@ -32,8 +32,7 @@ public class SharedRegistryImpl implements SharedRegistry {
 
     @Override
     public <T> T getResource(String resourceKey) {
-        @SuppressWarnings("unchecked") T back = (T) resources.get(resourceKey);
-        return back;
+        return (T) resources.get(resourceKey);
     }
 
     @Override

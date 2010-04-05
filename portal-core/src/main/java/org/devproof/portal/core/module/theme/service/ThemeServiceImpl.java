@@ -289,7 +289,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
         return null;
     }
 
-    private ThemeBean getBeanFromInputStream(String uuid, InputStream fis) throws FileNotFoundException, IOException {
+    private ThemeBean getBeanFromInputStream(String uuid, InputStream fis) throws IOException {
         Properties prop = new Properties();
         prop.load(fis);
         ThemeBean bean = new ThemeBean();

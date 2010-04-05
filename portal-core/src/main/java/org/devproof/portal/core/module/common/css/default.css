@@ -44,36 +44,6 @@ fieldset {
     font-size: xx-small;
 }
 
-.sbl2 {
-    background: url('../img/bl2.gif') bottom left no-repeat #E9E9E9;
-    width: 100%;
-    text-align: center;
-}
-
-.sbr2 {
-    background: url('../img/br2.gif') bottom right no-repeat;
-}
-
-.stl2 {
-    background: url('../img/tl2.gif') top left no-repeat;
-    padding-bottom: 13px;
-}
-
-.str2 {
-    background: url('../img/tr2.gif') top right no-repeat;
-    padding: 15px 15px 0px 15px;
-}
-
-.sb2 {
-    padding: 2px 0px 15px 50px;
-    background: url('../img/b2.gif') 30px top no-repeat;
-}
-
-/*.st2 { padding: 10px 0px 10px 50px; background: url('../img/t2.gif') 30px bottom no-repeat; }*/
-.st2 {
-    padding-top: 5px;
-}
-
 a {
     color: #F70;
 }
@@ -89,10 +59,8 @@ img {
 div.wicket-aa {
     font-size: 12px;
     background-color: white;
-    border-width: 1px;
-    border-color: #cccccc;
-    border-style: solid;
-    padding: 0px;
+    border: 1px solid #cccccc;
+    padding: 0;
     margin: 1px 0 0 0;
     text-align: left;
 }
@@ -116,7 +84,7 @@ div.wicket-aa ul li.selected {
     list-style: none;
     font-weight: bold;
     font-size: 8pt;
-    padding: 2px 0px;
+    padding: 2px 0;
 }
 
 .feedbackPanelINFO {
@@ -124,7 +92,7 @@ div.wicket-aa ul li.selected {
     list-style: none;
     font-weight: bold;
     font-size: 8pt;
-    padding: 2px 0px;
+    padding: 2px 0;
 }
 
 table.palette {
@@ -133,10 +101,7 @@ table.palette {
 
 table.palette td.header {
     color: #E73;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 8px;
-    padding-right: 30px;
+    padding: 3px 30px 3px 8px;
     background-color: #FFF;
     border: 1px solid #CCC;
     text-align: left;
@@ -195,7 +160,6 @@ h1 {
 }
 
 .form {
-/* background: url(../img/bgcode.gif); */
     border: 1px dotted #CCC;
     padding: 5px 10px 10px 10px;
     margin: 10px 10px 10px 10px;
@@ -272,7 +236,7 @@ code {
 }
 
 cite, blockquote {
-    background: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/quote.gif) no-repeat;
+    background: url(../img/quote.gif) no-repeat;
     color: #666;
     display: block;
     font: normal 1.3em "Lucida Sans Unicode", serif;
@@ -292,7 +256,7 @@ h1, h2, h3, h1 a {
 
 /* structure */
 .container {
-    background: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/topleft2.jpg) no-repeat;
+    background: url(../img/topleft2.jpg) no-repeat;
 }
 
 .header {
@@ -339,7 +303,7 @@ h1, h2, h3, h1 a {
 
 /* main */
 .main {
-    background: #FFF url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/bgmain.gif) no-repeat;
+    background: #FFF url(../img/bgmain.gif) no-repeat;
     clear: both;
     padding: 12px 12px 0 52px;
 }
@@ -384,12 +348,11 @@ h1, h2, h3, h1 a {
 
 .sidenav li a:hover {
     color: #111;
-    background: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/nav_li.gif) no-repeat;
+    background: url(../img/nav_li.gif) no-repeat;
 }
 
 .selsidenav a {
-    background: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/nav_li_reverse.gif) no-repeat;
-    background-color: #D4D0C8;
+    background: #D4D0C8 url(../img/nav_li_reverse.gif) no-repeat;
 }
 
 /* content */
@@ -405,7 +368,7 @@ h1, h2, h3, h1 a {
 }
 
 .content ul li {
-    list-style: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/li.gif);
+    list-style: url(../img/li.gif);
     margin-left: 18px;
 }
 
@@ -442,29 +405,23 @@ table.dataview tr.even {
 
 table.dataview tr.odd {
 /*	background-color: #fff; */
-    background: url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/bgcode.gif);
+    background: url(../img/bgcode.gif);
 }
 
 table.dataview tr td {
-    padding-left: 8px;
-    padding-right: 30px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px 30px 5px 8px;
+
 }
 
 table.dataview tr th {
     color: #E73;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 8px;
-    padding-right: 30px;
-    background-color: #FFF;
+    padding: 3px 30px 3px 8px;
+    background: #FFF no-repeat right;
     border-bottom: 1px solid #CCC;
     text-align: left;
     white-space: nowrap;
     vertical-align: middle;
-    background-position: right;
-    background-repeat: no-repeat;
+
 }
 
 table.dataview tr th.wicket_orderDown {
@@ -509,7 +466,7 @@ a.dataview {
 
 /* footer */
 .footer {
-    background: #FF6B29 url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/bgfooter.gif) repeat-x;
+    background: #FF6B29 url(../img/bgfooter.gif) repeat-x;
     color: #000000;
     font-size: 1.1em;
     line-height: 40px;

@@ -49,7 +49,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         try {
             Class<?> clazz = Class.forName(c.getType());
             if (clazz.isEnum()) {
-                @SuppressWarnings("unchecked") Enum<?> e = Enum.valueOf((Class) clazz, c.getValue());
+                @SuppressWarnings({"unchecked", "UnnecessaryLocalVariable"})
+                Enum<?> e = Enum.valueOf((Class) clazz, c.getValue());
                 return e;
             } else {
                 Constructor<?> constructor = clazz.getConstructor(String.class);

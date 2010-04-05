@@ -42,8 +42,7 @@ public class ArticleServiceImplTest extends TestCase {
     public void setUp() throws Exception {
         mock = createStrictMock(ArticleDao.class);
         mockPage = createStrictMock(ArticlePageDao.class);
-        @SuppressWarnings("unchecked") TagService<ArticleTagEntity> tagService = createStrictMock(TagService.class);
-        mockTag = tagService;
+        mockTag = (TagService<ArticleTagEntity>) createStrictMock(TagService.class);
         impl = new ArticleServiceImpl();
         impl.setArticleDao(mock);
         impl.setArticlePageDao(mockPage);

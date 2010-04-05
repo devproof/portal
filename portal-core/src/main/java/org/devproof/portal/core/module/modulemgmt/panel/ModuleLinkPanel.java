@@ -55,7 +55,6 @@ public class ModuleLinkPanel extends Panel {
 
     private LinkType linkType;
     private WebMarkupContainer refreshTable;
-    private Form<ModuleLinkEntity> form;
 
     public ModuleLinkPanel(String id, LinkType linkType) {
         super(id);
@@ -83,7 +82,7 @@ public class ModuleLinkPanel extends Panel {
     }
 
     private Form<ModuleLinkEntity> createModuleLinkForm() {
-        form = new Form<ModuleLinkEntity>("form");
+        Form<ModuleLinkEntity> form = new Form<ModuleLinkEntity>("form");
         form.add(createModuleLinkView());
         return form;
     }
@@ -144,7 +143,7 @@ public class ModuleLinkPanel extends Panel {
         }
 
         private AjaxLink<ModuleLinkEntity> newDownLink(final Item<ModuleLinkEntity> item) {
-            AjaxLink<ModuleLinkEntity> downLink = new AjaxLink<ModuleLinkEntity>("downLink") {
+            return new AjaxLink<ModuleLinkEntity>("downLink") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -154,7 +153,6 @@ public class ModuleLinkPanel extends Panel {
                     target.addComponent(refreshTable);
                 }
             };
-            return downLink;
         }
 
         private Label createSortLabel(Item<ModuleLinkEntity> item) {
@@ -207,6 +205,4 @@ public class ModuleLinkPanel extends Panel {
             });
         }
     }
-
-    ;
 }

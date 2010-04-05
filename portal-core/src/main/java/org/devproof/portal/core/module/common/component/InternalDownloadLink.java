@@ -59,7 +59,7 @@ public abstract class InternalDownloadLink extends StatelessLink {
     }
 
     private IResourceStream createFileResourceStream(final File file, final FileInputStream fis) {
-        IResourceStream resourceStream = new IResourceStream() {
+        return new IResourceStream() {
             private static final long serialVersionUID = 1L;
 
             public void close() throws IOException {
@@ -89,7 +89,6 @@ public abstract class InternalDownloadLink extends StatelessLink {
                 return Time.milliseconds(file.lastModified());
             }
         };
-        return resourceStream;
     }
 
     /**

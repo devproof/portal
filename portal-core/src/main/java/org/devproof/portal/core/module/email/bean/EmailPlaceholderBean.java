@@ -169,8 +169,8 @@ public class EmailPlaceholderBean implements Serializable {
         return additionalPlaceholder;
     }
 
-    public String put(String key, String value) {
-        return additionalPlaceholder.put(key, value);
+    public void put(String key, String value) {
+        additionalPlaceholder.put(key, value);
     }
 
 }

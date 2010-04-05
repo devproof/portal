@@ -204,8 +204,6 @@ public class ConfigurationServiceImplTest extends TestCase {
         TEST1, TEST2
     }
 
-    ;
-
     public void testFindAsEnum() {
         ConfigurationEntity c = new ConfigurationEntity();
         c.setKey("key");

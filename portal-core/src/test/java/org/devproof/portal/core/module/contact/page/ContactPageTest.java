@@ -62,7 +62,7 @@ public class ContactPageTest extends TestCase {
         assertEquals("testing content more then 30 letters 1234567890", emailPlaceholderBean.getContent());
     }
 
-    private void submitContactForm() throws Exception {
+    private void submitContactForm() {
         FormTester form = tester.newFormTester("form");
         form.setValue("fullname", "Max Power");
         form.setValue("email", "max.power@no.domain");

@@ -67,7 +67,7 @@ public class DownloadQuery implements SearchQuery {
             PortalSession session = PortalSession.get();
             author = session.hasRight(DownloadConstants.AUTHOR_RIGHT);
         }
-        return author.booleanValue();
+        return author;
     }
 
     @BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%')")

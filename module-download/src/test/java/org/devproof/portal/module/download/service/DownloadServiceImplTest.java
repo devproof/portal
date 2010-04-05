@@ -38,10 +38,10 @@ public class DownloadServiceImplTest extends TestCase {
     private TagService<DownloadTagEntity> mockTag;
 
     @Override
+    @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(DownloadDao.class);
-        @SuppressWarnings("unchecked") TagService<DownloadTagEntity> tagService = createStrictMock(TagService.class);
-        mockTag = tagService;
+        mockTag = (TagService<DownloadTagEntity>) createStrictMock(TagService.class);
         impl = new DownloadServiceImpl();
         impl.setDownloadDao(mock);
         impl.setDownloadTagService(mockTag);

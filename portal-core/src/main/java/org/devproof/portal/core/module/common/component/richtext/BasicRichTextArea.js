@@ -3,4 +3,4 @@ window.onload = function() {
         contentsCss : ['${defaultCss}'],
         toolbar: 'Basic'
     });
-}
+};

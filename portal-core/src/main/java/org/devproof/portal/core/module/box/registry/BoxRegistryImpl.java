@@ -53,8 +53,6 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
         boxes.put(box.getBoxClass().getSimpleName(), box);
     }
 
-    ;
-
     @Override
     public void removeBox(BoxConfiguration box) {
         boxes.remove(box.getBoxClass().getSimpleName());

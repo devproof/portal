@@ -67,7 +67,7 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
 
             @Override
             public boolean isVisible() {
-                return showModifiedBy() && isSameAuthor() && !isEqualCreationModificationTime() && !showModifiedAtAsCreatedAt();
+                return showModifiedBy() && isSameAuthor() && isNotEqualCreationModificationTime() && !showModifiedAtAsCreatedAt();
             }
         };
     }
@@ -77,9 +77,9 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
         return entity.getCreatedBy().equals(entity.getModifiedBy());
     }
 
-    private boolean isEqualCreationModificationTime() {
+    private boolean isNotEqualCreationModificationTime() {
         BaseEntity entity = entityModel.getObject();
-        return entity.getCreatedAt().equals(entity.getModifiedAt());
+        return !entity.getCreatedAt().equals(entity.getModifiedAt());
     }
 
     private Label createModifiedAtLabel() {
@@ -111,7 +111,7 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
         return new WebMarkupContainer("modified") {
             @Override
             public boolean isVisible() {
-                return showModifiedBy() && !isSameAuthor() && !isEqualCreationModificationTime() && !showModifiedAtAsCreatedAt();
+                return showModifiedBy() && !isSameAuthor() && isNotEqualCreationModificationTime() && !showModifiedAtAsCreatedAt();
             }
         };
     }

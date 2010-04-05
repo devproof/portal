@@ -102,8 +102,7 @@ public abstract class StatelessRatingPanel extends RatingPanel {
             int iteration = item.getIteration();
             // add the star image, which is either active (highlighted) or
             // inactive (no star)
-            Component star = new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
-            return star;
+            return new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
         }
 
         private void copyParameterToLink(BookmarkablePageLink<Void> link) {

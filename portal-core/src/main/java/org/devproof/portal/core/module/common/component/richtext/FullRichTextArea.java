@@ -41,19 +41,8 @@ public class FullRichTextArea extends TextArea<String> {
     public FullRichTextArea(String id, IModel<String> model) {
         super(id, model);
         add(createCKEditorResource());
-        // add(createCKEditorConfiguration());
         setOutputMarkupId(true);
     }
-
-    // private TextTemplateHeaderContributor createCKEditorConfiguration() {
-    // Map<String, Object> variables = new MiniMap<String, Object>(2);
-    // variables.put("defaultCss",
-    // PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
-    // variables.put("markupId", getMarkupId());
-    // return TextTemplateHeaderContributor.forJavaScript(RichTextArea.class,
-    // "RichTextArea.js",
-    // new MapModel<String, Object>(variables));
-    // }
 
     private HeaderContributor createCKEditorResource() {
         return JavascriptPackageResource.getHeaderContribution(FullRichTextArea.class, "ckeditor/ckeditor.js");

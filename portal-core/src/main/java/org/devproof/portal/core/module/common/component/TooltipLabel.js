@@ -2,7 +2,7 @@ function xstooltip_findPosX(obj) {
     var curleft = 0;
     if (obj.offsetParent) {
         while (obj.offsetParent) {
-            curleft += obj.offsetLeft
+            curleft += obj.offsetLeft;
             obj = obj.offsetParent;
         }
     } else if (obj.x)
@@ -10,11 +10,11 @@ function xstooltip_findPosX(obj) {
     return curleft;
 }
 
-function xstooltip_findPosY(obj, tooltip) {
+function xstooltip_findPosY(obj) {
     var curtop = 0;
     if (obj.offsetParent) {
         while (obj.offsetParent) {
-            curtop += obj.offsetTop
+            curtop += obj.offsetTop;
             obj = obj.offsetParent;
         }
     } else if (obj.y)

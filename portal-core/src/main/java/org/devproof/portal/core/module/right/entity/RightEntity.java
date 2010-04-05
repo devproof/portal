@@ -36,7 +36,7 @@ import java.util.List;
 @Table(name = "core_right")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
-final public class RightEntity extends BaseEntity {
+public class RightEntity extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -95,7 +95,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 
             }
 
-            private Object evaluateMethodInvocation(MethodInvocation invocation) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, Throwable {
+            private Object evaluateMethodInvocation(MethodInvocation invocation) throws Throwable {
                 Object result = null;
                 Method method = invocation.getMethod();
                 if (method.isAnnotationPresent(Query.class)) {
@@ -108,7 +108,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
                 return result;
             }
 
-            private Object delegateToServiceMethod(MethodInvocation invocation) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, Throwable {
+            private Object delegateToServiceMethod(MethodInvocation invocation) throws Throwable {
                 Method serviceMethod = FinderDispatcherGenericDaoImpl.this.servicesImpl != null ? FinderDispatcherGenericDaoImpl.this.servicesImpl.getClass().getMethod(invocation.getMethod().getName(), invocation.getMethod().getParameterTypes()) : null;
                 if (serviceMethod != null) {
                     return serviceMethod.invoke(FinderDispatcherGenericDaoImpl.this.servicesImpl, invocation.getArguments());
@@ -129,8 +129,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 
             private boolean isSessionAvailable() {
                 SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
-                boolean isSessionAvailable = TransactionSynchronizationManager.hasResource(sessionFactory);
-                return isSessionAvailable;
+                return TransactionSynchronizationManager.hasResource(sessionFactory);
             }
 
             private void openTransaction() {
