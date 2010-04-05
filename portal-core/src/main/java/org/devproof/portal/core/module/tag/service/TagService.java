@@ -24,38 +24,38 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface TagService<T> extends CrudService<T, String> {
-	/**
-	 * Returns all tags starting with the given string
-	 */
-	List<T> findTagsStartingWith(String prefix);
+    /**
+     * Returns all tags starting with the given string
+     */
+    List<T> findTagsStartingWith(String prefix);
 
-	/**
-	 * Deletes all unused/unreferenced tags
-	 */
-	void deleteUnusedTags();
+    /**
+     * Deletes all unused/unreferenced tags
+     */
+    void deleteUnusedTags();
 
-	/**
-	 * Returns the most popular blog tags
-	 */
-	List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
+    /**
+     * Returns the most popular blog tags
+     */
+    List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
 
-	/**
-	 * Returns the most popular blog tags filtered by role
-	 */
-	List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult);
+    /**
+     * Returns the most popular blog tags filtered by role
+     */
+    List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult);
 
-	/**
-	 * Returns a new instance of the tag
-	 */
-	T newTagEntity(String tag);
+    /**
+     * Returns a new instance of the tag
+     */
+    T newTagEntity(String tag);
 
-	/**
-	 * Returns the belonging tag right for the related object type
-	 */
-	String getRelatedTagRight();
+    /**
+     * Returns the belonging tag right for the related object type
+     */
+    String getRelatedTagRight();
 
-	/**
-	 * Returns a tag by id and creates it, if it does exist
-	 */
-	T findByIdAndCreateIfNotExists(String tagName);
+    /**
+     * Returns a tag by id and creates it, if it does exist
+     */
+    T findByIdAndCreateIfNotExists(String tagName);
 }

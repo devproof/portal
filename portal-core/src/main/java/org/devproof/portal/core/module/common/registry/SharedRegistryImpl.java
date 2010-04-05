@@ -23,32 +23,31 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class SharedRegistryImpl implements SharedRegistry {
-	private final Map<String, Object> resources = new HashMap<String, Object>();
+    private final Map<String, Object> resources = new HashMap<String, Object>();
 
-	@Override
-	public Map<String, ?> getRegisteredResources() {
-		return Collections.unmodifiableMap(resources);
-	}
+    @Override
+    public Map<String, ?> getRegisteredResources() {
+        return Collections.unmodifiableMap(resources);
+    }
 
-	@Override
-	public <T> T getResource(String resourceKey) {
-		@SuppressWarnings("unchecked")
-		T back = (T) resources.get(resourceKey);
-		return back;
-	}
+    @Override
+    public <T> T getResource(String resourceKey) {
+        @SuppressWarnings("unchecked") T back = (T) resources.get(resourceKey);
+        return back;
+    }
 
-	@Override
-	public void registerResource(String resourceKey, Object resource) {
-		resources.put(resourceKey, resource);
-	}
+    @Override
+    public void registerResource(String resourceKey, Object resource) {
+        resources.put(resourceKey, resource);
+    }
 
-	@Override
-	public void removeResource(String resourceKey) {
-		resources.remove(resourceKey);
-	}
+    @Override
+    public void removeResource(String resourceKey) {
+        resources.remove(resourceKey);
+    }
 
-	@Override
-	public boolean isResourceAvailable(String resourceKey) {
-		return resources.containsKey(resourceKey);
-	}
+    @Override
+    public boolean isResourceAvailable(String resourceKey) {
+        return resources.containsKey(resourceKey);
+    }
 }

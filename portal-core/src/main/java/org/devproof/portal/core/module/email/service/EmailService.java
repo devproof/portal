@@ -23,27 +23,27 @@ import java.util.List;
 
 /**
  * Methods to send emails
- * 
+ *
  * @author Carsten Hufe
  */
 public interface EmailService extends CrudService<EmailTemplateEntity, Integer> {
-	/**
-	 * Returns all email templates
-	 */
-	List<EmailTemplateEntity> findAll();
+    /**
+     * Returns all email templates
+     */
+    List<EmailTemplateEntity> findAll();
 
-	/**
-	 * Returns a new {@link EmailTemplateEntity}
-	 */
-	EmailTemplateEntity newEmailTemplateEntity();
+    /**
+     * Returns a new {@link EmailTemplateEntity}
+     */
+    EmailTemplateEntity newEmailTemplateEntity();
 
-	/**
-	 * Send a email to a user
-	 */
-	void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder);
+    /**
+     * Send a email to a user
+     */
+    void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder);
 
-	/**
-	 * Send a email to a user
-	 */
-	void sendEmail(Integer templateId, EmailPlaceholderBean placeholder);
+    /**
+     * Send a email to a user
+     */
+    void sendEmail(Integer templateId, EmailPlaceholderBean placeholder);
 }

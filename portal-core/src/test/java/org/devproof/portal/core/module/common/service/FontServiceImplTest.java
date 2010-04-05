@@ -21,20 +21,20 @@ import junit.framework.TestCase;
  * @author Carsten Hufe
  */
 public class FontServiceImplTest extends TestCase {
-	private FontServiceImpl impl;
+    private FontServiceImpl impl;
 
-	@Override
-	public void setUp() throws Exception {
-		impl = new FontServiceImpl();
-	}
+    @Override
+    public void setUp() throws Exception {
+        impl = new FontServiceImpl();
+    }
 
-	public void testFindAllSystemFonts() {
-		assertNotNull(impl.findAllSystemFonts());
-		assertTrue(impl.findAllSystemFonts().size() > 0);
-	}
+    public void testFindAllSystemFonts() {
+        assertNotNull(impl.findAllSystemFonts());
+        assertTrue(impl.findAllSystemFonts().size() > 0);
+    }
 
-	public void testFindSyntaxHighlighterThemes() {
-		assertNotNull(impl.findSyntaxHighlighterThemes());
-		assertTrue(impl.findSyntaxHighlighterThemes().size() == 7);
-	}
+    public void testFindSyntaxHighlighterThemes() {
+        assertNotNull(impl.findSyntaxHighlighterThemes());
+        assertTrue(impl.findSyntaxHighlighterThemes().size() == 7);
+    }
 }

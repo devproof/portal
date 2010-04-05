@@ -213,6 +213,7 @@ public class UserPage extends TemplatePage {
         private AttributeModifier createUnconfirmedAttributeModifier(final IModel<UserEntity> userModel) {
             return new AttributeModifier("style", true, new AbstractReadOnlyModel<Object>() {
                 private static final long serialVersionUID = -2152809502598433353L;
+
                 @Override
                 public Object getObject() {
                     UserEntity user = userModel.getObject();
@@ -274,6 +275,7 @@ public class UserPage extends TemplatePage {
         private IModel<String> createActiveModel(final IModel<UserEntity> userModel) {
             return new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 5831214219470331468L;
+
                 @Override
                 public String getObject() {
                     UserEntity user = userModel.getObject();

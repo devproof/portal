@@ -32,69 +32,68 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class GlobalAdminPageRegistryImplTest extends TestCase {
-	private GlobalAdminPageRegistryImpl impl;
-	private PageLocator pageLocatorMock;
-	private ModuleService moduleServiceMock;
+    private GlobalAdminPageRegistryImpl impl;
+    private PageLocator pageLocatorMock;
+    private ModuleService moduleServiceMock;
 
-	@Override
-	public void setUp() throws Exception {
-		pageLocatorMock = createStrictMock(PageLocator.class);
-		moduleServiceMock = createStrictMock(ModuleService.class);
-		impl = new GlobalAdminPageRegistryImpl();
-		impl.setModuleService(moduleServiceMock);
-		impl.setPageLocator(pageLocatorMock);
-	}
+    @Override
+    public void setUp() throws Exception {
+        pageLocatorMock = createStrictMock(PageLocator.class);
+        moduleServiceMock = createStrictMock(ModuleService.class);
+        impl = new GlobalAdminPageRegistryImpl();
+        impl.setModuleService(moduleServiceMock);
+        impl.setPageLocator(pageLocatorMock);
+    }
 
-	public void testGetRegisteredGlobalAdminPages() {
-		impl.registerGlobalAdminPage(RightPage.class);
-		assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
-	}
+    public void testGetRegisteredGlobalAdminPages() {
+        impl.registerGlobalAdminPage(RightPage.class);
+        assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
+    }
 
-	public void testBuildNavigation() {
-		Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
-		PageConfiguration conf = new PageConfiguration();
-		conf.setPageClass(RightPage.class);
-		confs.add(conf);
-		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
-		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-		ModuleLinkEntity link = new ModuleLinkEntity();
-		link.setPageName(RightPage.class.getSimpleName());
-		links.add(link);
-		expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
-		replay(pageLocatorMock, moduleServiceMock);
-		impl.buildNavigation();
-		verify(pageLocatorMock, moduleServiceMock);
-		assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
-	}
-
+    public void testBuildNavigation() {
+        Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
+        PageConfiguration conf = new PageConfiguration();
+        conf.setPageClass(RightPage.class);
+        confs.add(conf);
+        expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
+        ModuleLinkEntity link = new ModuleLinkEntity();
+        link.setPageName(RightPage.class.getSimpleName());
+        links.add(link);
+        expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
+        replay(pageLocatorMock, moduleServiceMock);
+        impl.buildNavigation();
+        verify(pageLocatorMock, moduleServiceMock);
+        assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
+    }
 
 
     public void testAfterPropertiesSet() throws Exception {
-		Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
-		PageConfiguration conf = new PageConfiguration();
-		conf.setPageClass(RightPage.class);
-		confs.add(conf);
-		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
-		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-		ModuleLinkEntity link = new ModuleLinkEntity();
-		link.setPageName(RightPage.class.getSimpleName());
-		links.add(link);
-		expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
-		replay(pageLocatorMock, moduleServiceMock);
-		impl.afterPropertiesSet();
-		verify(pageLocatorMock, moduleServiceMock);
-		assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
-	}
+        Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
+        PageConfiguration conf = new PageConfiguration();
+        conf.setPageClass(RightPage.class);
+        confs.add(conf);
+        expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
+        ModuleLinkEntity link = new ModuleLinkEntity();
+        link.setPageName(RightPage.class.getSimpleName());
+        links.add(link);
+        expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
+        replay(pageLocatorMock, moduleServiceMock);
+        impl.afterPropertiesSet();
+        verify(pageLocatorMock, moduleServiceMock);
+        assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
+    }
 
-	public void testRegisterGlobalAdminPage() {
-		impl.registerGlobalAdminPage(RightPage.class);
-		assertEquals(impl.getRegisteredGlobalAdminPages().get(0), RightPage.class);
-	}
+    public void testRegisterGlobalAdminPage() {
+        impl.registerGlobalAdminPage(RightPage.class);
+        assertEquals(impl.getRegisteredGlobalAdminPages().get(0), RightPage.class);
+    }
 
-	public void testRemoveGlobalAdminPage() {
-		impl.registerGlobalAdminPage(RightPage.class);
-		assertEquals(1, impl.getRegisteredGlobalAdminPages().size());
-		impl.removeGlobalAdminPage(RightPage.class);
-		assertEquals(0, impl.getRegisteredGlobalAdminPages().size());
-	}
+    public void testRemoveGlobalAdminPage() {
+        impl.registerGlobalAdminPage(RightPage.class);
+        assertEquals(1, impl.getRegisteredGlobalAdminPages().size());
+        impl.removeGlobalAdminPage(RightPage.class);
+        assertEquals(0, impl.getRegisteredGlobalAdminPages().size());
+    }
 }

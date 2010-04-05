@@ -23,42 +23,42 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Carsten Hufe
  */
 public class OtherPageServiceImpl implements OtherPageService {
-	private OtherPageDao otherPageDao;
+    private OtherPageDao otherPageDao;
 
-	@Override
-	public boolean existsContentId(String contentId) {
-		return otherPageDao.existsContentId(contentId) > 0;
-	}
+    @Override
+    public boolean existsContentId(String contentId) {
+        return otherPageDao.existsContentId(contentId) > 0;
+    }
 
-	@Override
-	public OtherPageEntity findOtherPageByContentId(String contentId) {
-		return otherPageDao.findOtherPageByContentId(contentId);
-	}
+    @Override
+    public OtherPageEntity findOtherPageByContentId(String contentId) {
+        return otherPageDao.findOtherPageByContentId(contentId);
+    }
 
-	@Override
-	public OtherPageEntity newOtherPageEntity() {
-		OtherPageEntity otherPage = new OtherPageEntity();
-		otherPage.setAllRights(otherPageDao.findLastSelectedRights());
-		return otherPage;
-	}
+    @Override
+    public OtherPageEntity newOtherPageEntity() {
+        OtherPageEntity otherPage = new OtherPageEntity();
+        otherPage.setAllRights(otherPageDao.findLastSelectedRights());
+        return otherPage;
+    }
 
-	@Override
-	public void delete(OtherPageEntity entity) {
-		otherPageDao.delete(entity);
-	}
+    @Override
+    public void delete(OtherPageEntity entity) {
+        otherPageDao.delete(entity);
+    }
 
-	@Override
-	public OtherPageEntity findById(Integer id) {
-		return otherPageDao.findById(id);
-	}
+    @Override
+    public OtherPageEntity findById(Integer id) {
+        return otherPageDao.findById(id);
+    }
 
-	@Override
-	public void save(OtherPageEntity entity) {
-		otherPageDao.save(entity);
-	}
+    @Override
+    public void save(OtherPageEntity entity) {
+        otherPageDao.save(entity);
+    }
 
-	@Required
-	public void setOtherPageDao(OtherPageDao otherPageDao) {
-		this.otherPageDao = otherPageDao;
-	}
+    @Required
+    public void setOtherPageDao(OtherPageDao otherPageDao) {
+        this.otherPageDao = otherPageDao;
+    }
 }

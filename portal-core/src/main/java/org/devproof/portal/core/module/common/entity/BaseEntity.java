@@ -27,73 +27,73 @@ import java.util.List;
 
 /**
  * Base entity class
- * 
+ *
  * @author Carsten Hufe
  */
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name = "created_by", length = 30)
-	private String createdBy;
-	@Column(name = "created_at")
-	private Date createdAt;
-	@Column(name = "modified_by", length = 30)
-	private String modifiedBy;
-	@Column(name = "modified_at")
-	private Date modifiedAt;
-	@Transient
-	private boolean updateModificationData = true;
+    @Column(name = "created_by", length = 30)
+    private String createdBy;
+    @Column(name = "created_at")
+    private Date createdAt;
+    @Column(name = "modified_by", length = 30)
+    private String modifiedBy;
+    @Column(name = "modified_at")
+    private Date modifiedAt;
+    @Transient
+    private boolean updateModificationData = true;
 
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
 
-	public Date getModifiedAt() {
-		return modifiedAt;
-	}
+    public Date getModifiedAt() {
+        return modifiedAt;
+    }
 
-	public void setModifiedAt(Date modifiedAt) {
-		this.modifiedAt = modifiedAt;
-	}
+    public void setModifiedAt(Date modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
+    public String getCreatedBy() {
+        return createdBy;
+    }
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
 
-	public boolean isUpdateModificationData() {
-		return updateModificationData;
-	}
+    public boolean isUpdateModificationData() {
+        return updateModificationData;
+    }
 
-	public void setUpdateModificationData(boolean updateModificationData) {
-		this.updateModificationData = updateModificationData;
-	}
+    public void setUpdateModificationData(boolean updateModificationData) {
+        this.updateModificationData = updateModificationData;
+    }
 
-	@Transient
-	protected List<RightEntity> getRightsStartingWith(List<RightEntity> rights, String prefix) {
-		List<RightEntity> back = new ArrayList<RightEntity>();
-		for (RightEntity right : rights) {
-			if (right.getRight().startsWith(prefix)) {
-				back.add(right);
-			}
-		}
-		return back;
-	}
+    @Transient
+    protected List<RightEntity> getRightsStartingWith(List<RightEntity> rights, String prefix) {
+        List<RightEntity> back = new ArrayList<RightEntity>();
+        for (RightEntity right : rights) {
+            if (right.getRight().startsWith(prefix)) {
+                back.add(right);
+            }
+        }
+        return back;
+    }
 }

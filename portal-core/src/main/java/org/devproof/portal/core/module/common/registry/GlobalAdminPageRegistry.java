@@ -22,29 +22,28 @@ import java.util.List;
 
 /**
  * Registry for {@link GlobalAdminBoxPanel} links
- * 
+ *
  * @author Carsten Hufe
  */
 public interface GlobalAdminPageRegistry {
-	/**
-	 * Registers an admin link The language property file of the page must
-	 * contain a property named "adminLinkLabel" for menu name
-	 */
-	void registerGlobalAdminPage(Class<? extends Page> adminPage);
+    /**
+     * Registers an admin link The language property file of the page must
+     * contain a property named "adminLinkLabel" for menu name
+     */
+    void registerGlobalAdminPage(Class<? extends Page> adminPage);
 
-	/**
-	 * Removes an admin link
-	 */
-	void removeGlobalAdminPage(Class<? extends Page> adminPage);
+    /**
+     * Removes an admin link
+     */
+    void removeGlobalAdminPage(Class<? extends Page> adminPage);
 
-	/**
-	 * Returns all registered global admin pages
-	 * 
-	 */
-	List<Class<? extends Page>> getRegisteredGlobalAdminPages();
+    /**
+     * Returns all registered global admin pages
+     */
+    List<Class<? extends Page>> getRegisteredGlobalAdminPages();
 
-	/**
-	 * Builds or rebuilds the global administration box from the database
-	 */
-	void buildNavigation();
+    /**
+     * Builds or rebuilds the global administration box from the database
+     */
+    void buildNavigation();
 }

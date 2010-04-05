@@ -24,36 +24,38 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class CaptchaPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestCaptchaPanel.class);
-		tester.assertComponent("panel", CaptchaPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestCaptchaPanel.class);
+        tester.assertComponent("panel", CaptchaPanel.class);
+    }
 
-	public static class TestCaptchaPanel extends CaptchaPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestCaptchaPanel extends CaptchaPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestCaptchaPanel(String id) {
-			super(id);
-		}
+        public TestCaptchaPanel(String id) {
+            super(id);
+        }
 
-		@Override
-		protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-		}
+        @Override
+        protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+        }
 
-		@Override
-		protected void onCancel(AjaxRequestTarget target) {
-		}
-	};
+        @Override
+        protected void onCancel(AjaxRequestTarget target) {
+        }
+    }
+
+    ;
 }

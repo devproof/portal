@@ -38,66 +38,65 @@ import java.io.Serializable;
  */
 public class ForgotPasswordPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "userService")
-	private UserService userService;
-	private BubblePanel bubblePanel;
+    @SpringBean(name = "userService")
+    private UserService userService;
+    private BubblePanel bubblePanel;
     private String emailOrUser = "";
 
-	public ForgotPasswordPage(PageParameters params) {
-		super(params);
-		add(createBubblePanel());
-		add(createForgotPasswordForm());
-	}
+    public ForgotPasswordPage(PageParameters params) {
+        super(params);
+        add(createBubblePanel());
+        add(createForgotPasswordForm());
+    }
 
-	private Component createBubblePanel() {
-		bubblePanel = new BubblePanel("bubblePanel");
-		return bubblePanel;
-	}
+    private Component createBubblePanel() {
+        bubblePanel = new BubblePanel("bubblePanel");
+        return bubblePanel;
+    }
 
-	private Form<Serializable> createForgotPasswordForm() {
-		Form<Serializable> form = new Form<Serializable>("form");
-		form.add(createEmailOrUsernameField());
-		form.add(createRequestButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<Serializable> createForgotPasswordForm() {
+        Form<Serializable> form = new Form<Serializable>("form");
+        form.add(createEmailOrUsernameField());
+        form.add(createRequestButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private Component createRequestButton() {
-		return new CaptchaAjaxButton("requestButton", bubblePanel) {
-			private static final long serialVersionUID = 1L;
+    private Component createRequestButton() {
+        return new CaptchaAjaxButton("requestButton", bubblePanel) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				userService.sendForgotPasswordCode(emailOrUser, createForgotPasswordUrlCallback());
-				setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
-			}
+            @Override
+            public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+                userService.sendForgotPasswordCode(emailOrUser, createForgotPasswordUrlCallback());
+                setResponsePage(MessagePage.getMessagePage(getString("email.sent")));
+            }
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(getFeedback());
-			}
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(getFeedback());
+            }
 
-			private UrlCallback createForgotPasswordUrlCallback() {
-				return new UrlCallback() {
-					@Override
-					public String getUrl(String generatedCode) {
-						String requestUrl = getRequestURL();
-						PageParameters param = new PageParameters();
-						param.add(ResetPasswordPage.PARAM_USER, emailOrUser);
-						param.add(ResetPasswordPage.PARAM_CONFIRMATION_CODE, generatedCode);
-						StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/"))
-								.append("/");
-						url.append(ForgotPasswordPage.this.getWebRequestCycle().urlFor(ResetPasswordPage.class, param));
-						return url.toString();
-					}
-				};
-			}
-		};
-	}
+            private UrlCallback createForgotPasswordUrlCallback() {
+                return new UrlCallback() {
+                    @Override
+                    public String getUrl(String generatedCode) {
+                        String requestUrl = getRequestURL();
+                        PageParameters param = new PageParameters();
+                        param.add(ResetPasswordPage.PARAM_USER, emailOrUser);
+                        param.add(ResetPasswordPage.PARAM_CONFIRMATION_CODE, generatedCode);
+                        StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
+                        url.append(ForgotPasswordPage.this.getWebRequestCycle().urlFor(ResetPasswordPage.class, param));
+                        return url.toString();
+                    }
+                };
+            }
+        };
+    }
 
-	private TextField<String> createEmailOrUsernameField() {
-		return new RequiredTextField<String>("emailoruser", new PropertyModel<String>(this, "emailOrUser"));
-	}
+    private TextField<String> createEmailOrUsernameField() {
+        return new RequiredTextField<String>("emailoruser", new PropertyModel<String>(this, "emailOrUser"));
+    }
 }

@@ -31,52 +31,52 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class FeedProviderRegistryImplTest extends TestCase {
-	private FeedProviderRegistryImpl impl;
+    private FeedProviderRegistryImpl impl;
 
-	@Override
-	public void setUp() throws Exception {
-		impl = new FeedProviderRegistryImpl();
-		impl.setPageLocator(new PageLocator() {
-			@Override
-			public Collection<PageConfiguration> getPageConfigurations() {
-				PageConfiguration page = new PageConfiguration();
-				page.setPageClass(DummyPage.class);
-				page.setMountPath("dummy");
-				return Arrays.asList(page);
-			}
-		});
-		impl.registerFeedProvider("dummy", new DummyFeedProviderImpl());
-	}
+    @Override
+    public void setUp() throws Exception {
+        impl = new FeedProviderRegistryImpl();
+        impl.setPageLocator(new PageLocator() {
+            @Override
+            public Collection<PageConfiguration> getPageConfigurations() {
+                PageConfiguration page = new PageConfiguration();
+                page.setPageClass(DummyPage.class);
+                page.setMountPath("dummy");
+                return Arrays.asList(page);
+            }
+        });
+        impl.registerFeedProvider("dummy", new DummyFeedProviderImpl());
+    }
 
-	public void testGetAllFeedProvider() {
-		Map<String, FeedProvider> allFeedProvider = impl.getAllFeedProvider();
-		assertNotNull(allFeedProvider);
-		assertEquals(1, allFeedProvider.size());
-		assertNotNull(allFeedProvider.get("dummy"));
-	}
+    public void testGetAllFeedProvider() {
+        Map<String, FeedProvider> allFeedProvider = impl.getAllFeedProvider();
+        assertNotNull(allFeedProvider);
+        assertEquals(1, allFeedProvider.size());
+        assertNotNull(allFeedProvider.get("dummy"));
+    }
 
-	public void testGetFeedProviderByPath() {
-		assertTrue(impl.getFeedProviderByPath("dummy") instanceof DummyFeedProviderImpl);
-	}
+    public void testGetFeedProviderByPath() {
+        assertTrue(impl.getFeedProviderByPath("dummy") instanceof DummyFeedProviderImpl);
+    }
 
-	public void testRegisterFeedProvider() {
-		assertEquals(1, impl.getAllFeedProvider().size());
-		impl.registerFeedProvider("dummy2", new DummyFeedProviderImpl());
-		assertEquals(2, impl.getAllFeedProvider().size());
-		assertNotNull(impl.getFeedProviderByPath("dummy2"));
-	}
+    public void testRegisterFeedProvider() {
+        assertEquals(1, impl.getAllFeedProvider().size());
+        impl.registerFeedProvider("dummy2", new DummyFeedProviderImpl());
+        assertEquals(2, impl.getAllFeedProvider().size());
+        assertNotNull(impl.getFeedProviderByPath("dummy2"));
+    }
 
-	public void testRemoveFeedProvider() {
-		impl.removeFeedProvider("dummy");
-		assertEquals(0, impl.getAllFeedProvider().size());
-	}
+    public void testRemoveFeedProvider() {
+        impl.removeFeedProvider("dummy");
+        assertEquals(0, impl.getAllFeedProvider().size());
+    }
 
-	public void testGetPathByPageClass() {
-		assertEquals("dummy", impl.getPathByPageClass(DummyPage.class));
-	}
+    public void testGetPathByPageClass() {
+        assertEquals("dummy", impl.getPathByPageClass(DummyPage.class));
+    }
 
-	public void testHasFeedSupport() {
-		assertTrue(impl.hasFeedSupport(DummyPage.class));
-		assertFalse(impl.hasFeedSupport(TemplatePage.class));
-	}
+    public void testHasFeedSupport() {
+        assertTrue(impl.hasFeedSupport(DummyPage.class));
+        assertFalse(impl.hasFeedSupport(TemplatePage.class));
+    }
 }

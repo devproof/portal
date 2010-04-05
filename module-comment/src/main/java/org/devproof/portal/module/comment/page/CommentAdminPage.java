@@ -33,32 +33,32 @@ import org.devproof.portal.module.comment.query.CommentQuery;
  */
 public class CommentAdminPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	public static final String PARAM_ID = "id";
+    private static final long serialVersionUID = 1L;
+    public static final String PARAM_ID = "id";
 
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private CommentPanel commentPanel;
-	private PageParameters params;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private CommentPanel commentPanel;
+    private PageParameters params;
 
-	public CommentAdminPage(PageParameters params) {
-		super(params);
-		this.params = params;
-		add(createCommentPanel());
-		addFilterBox(createCommentSearchBoxPanel());
-	}
+    public CommentAdminPage(PageParameters params) {
+        super(params);
+        this.params = params;
+        add(createCommentPanel());
+        addFilterBox(createCommentSearchBoxPanel());
+    }
 
     private CommentSearchBoxPanel createCommentSearchBoxPanel() {
         IModel<CommentQuery> queryModel = createCommentQueryModel();
         return new CommentSearchBoxPanel("box", queryModel) {
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				target.addComponent(commentPanel);
-			}
-		};
-	}
+            @Override
+            protected void onSubmit(AjaxRequestTarget target) {
+                target.addComponent(commentPanel);
+            }
+        };
+    }
 
     private IModel<CommentQuery> createCommentQueryModel() {
         IModel<CommentQuery> queryModel = commentPanel.getCommentQueryModel();
@@ -67,48 +67,48 @@ public class CommentAdminPage extends TemplatePage {
     }
 
     private Component createCommentPanel() {
-		commentPanel = newCommentPanel();
-		commentPanel.setOutputMarkupId(true);
-		return commentPanel;
-	}
+        commentPanel = newCommentPanel();
+        commentPanel.setOutputMarkupId(true);
+        return commentPanel;
+    }
 
     private CommentPanel newCommentPanel() {
-		return new CommentPanel("comments", new CommentAdminConfiguration()) {
-			private static final long serialVersionUID = 1L;
+        return new CommentPanel("comments", new CommentAdminConfiguration()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public int getNumberOfPages() {
-				return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE_ADMIN);
-			}
+            @Override
+            public int getNumberOfPages() {
+                return configurationService.findAsInteger(CommentConstants.CONF_COMMENT_NUMBER_PER_PAGE_ADMIN);
+            }
 
-			@Override
-			public boolean hideInput() {
-				return true;
-			}
+            @Override
+            public boolean hideInput() {
+                return true;
+            }
         };
-	}
+    }
 
-	private static class CommentAdminConfiguration implements CommentConfiguration {
-		private static final long serialVersionUID = 1L;
+    private static class CommentAdminConfiguration implements CommentConfiguration {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public String getModuleContentId() {
-			return null;
-		}
+        @Override
+        public String getModuleContentId() {
+            return null;
+        }
 
-		@Override
-		public String getModuleName() {
-			return null;
-		}
+        @Override
+        public String getModuleName() {
+            return null;
+        }
 
-		@Override
-		public boolean isAllowedToWrite() {
-			return true;
-		}
+        @Override
+        public boolean isAllowedToWrite() {
+            return true;
+        }
 
-		@Override
-		public boolean isAllowedToView() {
-			return true;
-		}
-	}
+        @Override
+        public boolean isAllowedToView() {
+            return true;
+        }
+    }
 }

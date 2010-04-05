@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:tx="http://www.springframework.org/schema/tx"
-  xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-    
+
     <!-- Module configuration -->
     <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-    	<property name="name" value="Core: Contact"/>
-    	<property name="moduleVersion" value="core"/>
-    	<property name="portalVersion" value="core"/>
-    	<property name="author" value="devproof - Carsten Hufe"/>
-    	<property name="url" value="http://devproof.org"/>	 		
-    	
-    	<property name="pages">
-    		<list>
-    			<bean class="org.devproof.portal.core.config.PageConfiguration">
-    				<property name="mountPath" value="/contact"/>
-    				<property name="pageClass" value="org.devproof.portal.core.module.contact.page.ContactPage"/>
-    				<property name="indexMountedPath" value="true"/>
-    			</bean>
-    		</list>
-    	</property>
+        <property name="name" value="Core: Contact"/>
+        <property name="moduleVersion" value="core"/>
+        <property name="portalVersion" value="core"/>
+        <property name="author" value="devproof - Carsten Hufe"/>
+        <property name="url" value="http://devproof.org"/>
+
+        <property name="pages">
+            <list>
+                <bean class="org.devproof.portal.core.config.PageConfiguration">
+                    <property name="mountPath" value="/contact"/>
+                    <property name="pageClass" value="org.devproof.portal.core.module.contact.page.ContactPage"/>
+                    <property name="indexMountedPath" value="true"/>
+                </bean>
+            </list>
+        </property>
     </bean>
 </beans>

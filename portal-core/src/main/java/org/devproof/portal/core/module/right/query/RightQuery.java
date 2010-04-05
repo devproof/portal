@@ -23,16 +23,16 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public class RightQuery implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String rightAndDescription;
+    private String rightAndDescription;
 
-	@BeanQuery("e.right like '%'||?||'%'" + " or e.description like '%'||?||'%'")
-	public String getRightAndDescription() {
-		return rightAndDescription;
-	}
+    @BeanQuery("e.right like '%'||?||'%'" + " or e.description like '%'||?||'%'")
+    public String getRightAndDescription() {
+        return rightAndDescription;
+    }
 
-	public void setRightAndDescription(String rightAndDescription) {
-		this.rightAndDescription = rightAndDescription;
-	}
+    public void setRightAndDescription(String rightAndDescription) {
+        this.rightAndDescription = rightAndDescription;
+    }
 }

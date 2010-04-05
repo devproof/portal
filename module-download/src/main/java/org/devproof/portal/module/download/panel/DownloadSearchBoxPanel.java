@@ -69,6 +69,7 @@ public abstract class DownloadSearchBoxPanel extends Panel implements BoxTitleVi
     private Select newBrokenDropDown() {
         return new Select("broken") {
             private static final long serialVersionUID = 1446343627905048235L;
+
             @Override
             public boolean isVisible() {
                 return isAuthor();

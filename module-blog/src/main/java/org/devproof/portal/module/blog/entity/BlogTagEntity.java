@@ -33,18 +33,18 @@ import java.util.List;
 @Table(name = "blog_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BlogConstants.ENTITY_CACHE_REGION)
 final public class BlogTagEntity extends BaseTagEntity<BlogEntity> {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
-	private List<BlogEntity> referencedObjects;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+    private List<BlogEntity> referencedObjects;
 
-	@Override
-	public List<BlogEntity> getReferencedObjects() {
-		return referencedObjects;
-	}
+    @Override
+    public List<BlogEntity> getReferencedObjects() {
+        return referencedObjects;
+    }
 
-	@Override
-	public void setReferencedObjects(List<BlogEntity> referencedObjects) {
-		this.referencedObjects = referencedObjects;
-	}
+    @Override
+    public void setReferencedObjects(List<BlogEntity> referencedObjects) {
+        this.referencedObjects = referencedObjects;
+    }
 }

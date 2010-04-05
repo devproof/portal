@@ -22,7 +22,7 @@ import org.apache.wicket.PageParameters;
  */
 public class InternalErrorPage extends MessagePage {
 
-	public InternalErrorPage() {
-		super(new PageParameters("message=internal.error"));
-	}
+    public InternalErrorPage() {
+        super(new PageParameters("message=internal.error"));
+    }
 }

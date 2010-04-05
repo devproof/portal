@@ -21,166 +21,154 @@ import java.io.Serializable;
 
 /**
  * Contains configuration for one page
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class PageConfiguration implements Serializable {
-	private static final long serialVersionUID = 1L;
-	// if null there is no mount path
-	private String mountPath;
-	private Class<? extends Page> pageClass;
-	private boolean registerMainNavigationLink = false;
-	private boolean registerGlobalAdminLink = false;
-	private boolean indexMountedPath = false;
-	private boolean defaultStartPage = false;
-	private boolean registerPageAdminLink = false;
-	private ModuleConfiguration module;
+    private static final long serialVersionUID = 1L;
+    // if null there is no mount path
+    private String mountPath;
+    private Class<? extends Page> pageClass;
+    private boolean registerMainNavigationLink = false;
+    private boolean registerGlobalAdminLink = false;
+    private boolean indexMountedPath = false;
+    private boolean defaultStartPage = false;
+    private boolean registerPageAdminLink = false;
+    private ModuleConfiguration module;
 
-	/**
-	 * @return the mount path of the page
-	 */
-	public String getMountPath() {
-		return mountPath;
-	}
+    /**
+     * @return the mount path of the page
+     */
+    public String getMountPath() {
+        return mountPath;
+    }
 
-	/**
-	 * @param mountPath
-	 *            the mount path of the page
-	 */
-	public void setMountPath(String mountPath) {
-		this.mountPath = mountPath;
-	}
+    /**
+     * @param mountPath the mount path of the page
+     */
+    public void setMountPath(String mountPath) {
+        this.mountPath = mountPath;
+    }
 
-	/**
-	 * @return page class (must extend the wicket page class)
-	 */
-	public Class<? extends Page> getPageClass() {
-		return pageClass;
-	}
+    /**
+     * @return page class (must extend the wicket page class)
+     */
+    public Class<? extends Page> getPageClass() {
+        return pageClass;
+    }
 
-	/**
-	 * @param pageClass
-	 *            page class (must extend the wicket page class)
-	 */
-	public void setPageClass(Class<? extends Page> pageClass) {
-		this.pageClass = pageClass;
-	}
+    /**
+     * @param pageClass page class (must extend the wicket page class)
+     */
+    public void setPageClass(Class<? extends Page> pageClass) {
+        this.pageClass = pageClass;
+    }
 
-	/**
-	 * @return true if the mount path is indexed: indexed means e.g.
-	 *         /hello/arg0/arg1
-	 */
-	public boolean isIndexMountedPath() {
-		return indexMountedPath;
-	}
+    /**
+     * @return true if the mount path is indexed: indexed means e.g.
+     *         /hello/arg0/arg1
+     */
+    public boolean isIndexMountedPath() {
+        return indexMountedPath;
+    }
 
-	/**
-	 * @param indexMountedPath
-	 *            true if the mount path is indexed: indexed means e.g.
-	 *            /hello/arg0/arg1
-	 */
-	public void setIndexMountedPath(boolean indexMountedPath) {
-		this.indexMountedPath = indexMountedPath;
-	}
+    /**
+     * @param indexMountedPath true if the mount path is indexed: indexed means e.g.
+     *                         /hello/arg0/arg1
+     */
+    public void setIndexMountedPath(boolean indexMountedPath) {
+        this.indexMountedPath = indexMountedPath;
+    }
 
-	/**
-	 * @return true if this page should be the default start page of the portal
-	 */
-	public boolean isDefaultStartPage() {
-		return defaultStartPage;
-	}
+    /**
+     * @return true if this page should be the default start page of the portal
+     */
+    public boolean isDefaultStartPage() {
+        return defaultStartPage;
+    }
 
-	/**
-	 * @param defaultStartPage
-	 *            true if this page should be the default start page of the
-	 *            portal
-	 */
-	public void setDefaultStartPage(boolean defaultStartPage) {
-		this.defaultStartPage = defaultStartPage;
-	}
+    /**
+     * @param defaultStartPage true if this page should be the default start page of the
+     *                         portal
+     */
+    public void setDefaultStartPage(boolean defaultStartPage) {
+        this.defaultStartPage = defaultStartPage;
+    }
 
-	/**
-	 * @return true if the page is linked in the global admin box:
-	 *         "Global Administration" on the right side. The page properties
-	 *         file must contain a value adminLinkLabel for the title
-	 */
-	public boolean isRegisterGlobalAdminLink() {
-		return registerGlobalAdminLink;
-	}
+    /**
+     * @return true if the page is linked in the global admin box:
+     *         "Global Administration" on the right side. The page properties
+     *         file must contain a value adminLinkLabel for the title
+     */
+    public boolean isRegisterGlobalAdminLink() {
+        return registerGlobalAdminLink;
+    }
 
-	/**
-	 * @param registerGlobalAdminLink
-	 *            true if the page is linked in the global admin box:
-	 *            "Global Administration" on the right side. The page properties
-	 *            file must contain a value adminLinkLabel for the title
-	 */
-	public void setRegisterGlobalAdminLink(boolean registerGlobalAdminLink) {
-		this.registerGlobalAdminLink = registerGlobalAdminLink;
-	}
+    /**
+     * @param registerGlobalAdminLink true if the page is linked in the global admin box:
+     *                                "Global Administration" on the right side. The page properties
+     *                                file must contain a value adminLinkLabel for the title
+     */
+    public void setRegisterGlobalAdminLink(boolean registerGlobalAdminLink) {
+        this.registerGlobalAdminLink = registerGlobalAdminLink;
+    }
 
-	/**
-	 * @return true if the page is linked in the site administration box
-	 *         "Site administration". E.g. The upload center link is a site
-	 *         admin link. The page properties file must contain a value
-	 *         adminLinkLabel for the title
-	 */
-	public boolean isRegisterPageAdminLink() {
-		return registerPageAdminLink;
-	}
+    /**
+     * @return true if the page is linked in the site administration box
+     *         "Site administration". E.g. The upload center link is a site
+     *         admin link. The page properties file must contain a value
+     *         adminLinkLabel for the title
+     */
+    public boolean isRegisterPageAdminLink() {
+        return registerPageAdminLink;
+    }
 
-	/**
-	 * @param registerPageAdminLink
-	 *            true if the page is linked in the site administration box
-	 *            "Site administration". E.g. The upload center link is a site
-	 *            admin link. The page properties file must contain a value
-	 *            adminLinkLabel for the title
-	 */
-	public void setRegisterPageAdminLink(boolean registerPageAdminLink) {
-		this.registerPageAdminLink = registerPageAdminLink;
-	}
+    /**
+     * @param registerPageAdminLink true if the page is linked in the site administration box
+     *                              "Site administration". E.g. The upload center link is a site
+     *                              admin link. The page properties file must contain a value
+     *                              adminLinkLabel for the title
+     */
+    public void setRegisterPageAdminLink(boolean registerPageAdminLink) {
+        this.registerPageAdminLink = registerPageAdminLink;
+    }
 
-	/**
-	 * @return true if the page registers a top navigation link: e.g. Blog,
-	 *         Bookmarks, etc. The page properties file must contain a value
-	 *         mainNavigationLinkLabel for the title
-	 */
-	public boolean isRegisterMainNavigationLink() {
-		return registerMainNavigationLink;
-	}
+    /**
+     * @return true if the page registers a top navigation link: e.g. Blog,
+     *         Bookmarks, etc. The page properties file must contain a value
+     *         mainNavigationLinkLabel for the title
+     */
+    public boolean isRegisterMainNavigationLink() {
+        return registerMainNavigationLink;
+    }
 
-	/**
-	 * @param registerMainNavigationLink
-	 *            true if the page registers a top navigation link: e.g. Blog,
-	 *            Bookmarks, etc. The page properties file must contain a value
-	 *            mainNavigationLinkLabel for the title
-	 */
-	public void setRegisterMainNavigationLink(boolean registerMainNavigationLink) {
-		this.registerMainNavigationLink = registerMainNavigationLink;
-	}
+    /**
+     * @param registerMainNavigationLink true if the page registers a top navigation link: e.g. Blog,
+     *                                   Bookmarks, etc. The page properties file must contain a value
+     *                                   mainNavigationLinkLabel for the title
+     */
+    public void setRegisterMainNavigationLink(boolean registerMainNavigationLink) {
+        this.registerMainNavigationLink = registerMainNavigationLink;
+    }
 
-	/**
-	 * @return the parent module, must not be set in the spring configuration,
-	 *         is only set from the PageLocator
-	 */
-	public ModuleConfiguration getModule() {
-		return module;
-	}
+    /**
+     * @return the parent module, must not be set in the spring configuration,
+     *         is only set from the PageLocator
+     */
+    public ModuleConfiguration getModule() {
+        return module;
+    }
 
-	/**
-	 * @param module
-	 *            the parent module, must not be set in the spring
-	 *            configuration, is only set from the PageLocator
-	 */
-	public void setModule(ModuleConfiguration module) {
-		this.module = module;
-	}
+    /**
+     * @param module the parent module, must not be set in the spring
+     *               configuration, is only set from the PageLocator
+     */
+    public void setModule(ModuleConfiguration module) {
+        this.module = module;
+    }
 
-	@Override
-	public String toString() {
-		return "PageConfiguration [defaultStartPage=" + defaultStartPage + ", indexMountedPath=" + indexMountedPath
-				+ ", module=" + module + ", mountPath=" + mountPath + ", pageClass=" + pageClass
-				+ ", registerGlobalAdminLink=" + registerGlobalAdminLink + ", registerMainNavigationLink="
-				+ registerMainNavigationLink + ", registerPageAdminLink=" + registerPageAdminLink + "]";
+    @Override
+    public String toString() {
+        return "PageConfiguration [defaultStartPage=" + defaultStartPage + ", indexMountedPath=" + indexMountedPath + ", module=" + module + ", mountPath=" + mountPath + ", pageClass=" + pageClass + ", registerGlobalAdminLink=" + registerGlobalAdminLink + ", registerMainNavigationLink=" + registerMainNavigationLink + ", registerPageAdminLink=" + registerPageAdminLink + "]";
 	}
 }

@@ -26,8 +26,8 @@ public interface DownloadConstants {
     String CONF_DOWNLOAD_VOTE_ENABLED = "download_vote_enabled";
     String CONF_DOWNLOAD_HIDE_BROKEN = "download_hide_broken";
     String CONF_BOX_NUM_LATEST_DOWNLOADS = "box_num_latest_downloads";
-    ResourceReference REF_DOWNLOAD_CSS = new ResourceReference(DownloadConstants.class,	"css/download.css");
-    ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(DownloadConstants.class,	"img/download.png");
+    ResourceReference REF_DOWNLOAD_CSS = new ResourceReference(DownloadConstants.class, "css/download.css");
+    ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(DownloadConstants.class, "img/download.png");
     String CONF_DOWNLOAD_FEED_TITLE = "download_feed_title";
     String CONF_DOWNLOAD_ENTRIES_IN_FEED = "download_entries_in_feed";
     String ENTITY_CACHE_REGION = "entity.content";

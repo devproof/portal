@@ -19,10 +19,10 @@ import org.apache.wicket.ResourceReference;
 
 /**
  * Contains common constants
- * 
+ *
  * @author Carsten Hufe
  */
 public interface FeedConstants {
-	ResourceReference REF_ATOM1 = new ResourceReference(FeedConstants.class, "img/feed_atom1-0.gif");
-	ResourceReference REF_RSS2 = new ResourceReference(FeedConstants.class, "img/feed_rss2-0.gif");
+    ResourceReference REF_ATOM1 = new ResourceReference(FeedConstants.class, "img/feed_atom1-0.gif");
+    ResourceReference REF_RSS2 = new ResourceReference(FeedConstants.class, "img/feed_rss2-0.gif");
 }

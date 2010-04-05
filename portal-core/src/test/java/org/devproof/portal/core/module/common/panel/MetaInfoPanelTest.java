@@ -29,41 +29,41 @@ import java.util.Date;
  * @author Carsten Hufe
  */
 public class MetaInfoPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createMetaInfoPanel());
-		tester.assertComponent("panel", MetaInfoPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createMetaInfoPanel());
+        tester.assertComponent("panel", MetaInfoPanel.class);
+    }
 
-	private TestPanelSource createMetaInfoPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createMetaInfoPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				TestEntity entity = new TestEntity();
-				entity.setCreatedAt(new Date());
-				entity.setModifiedAt(new Date());
-				entity.setCreatedBy("foo");
-				entity.setModifiedBy("bar");
-				return new MetaInfoPanel<TestEntity>(panelId, Model.of(entity));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                TestEntity entity = new TestEntity();
+                entity.setCreatedAt(new Date());
+                entity.setModifiedAt(new Date());
+                entity.setCreatedBy("foo");
+                entity.setModifiedBy("bar");
+                return new MetaInfoPanel<TestEntity>(panelId, Model.of(entity));
+            }
+        };
+    }
 
-	private static class TestEntity extends BaseEntity {
-		private static final long serialVersionUID = 1L;
-	}
+    private static class TestEntity extends BaseEntity {
+        private static final long serialVersionUID = 1L;
+    }
 }

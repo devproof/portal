@@ -26,70 +26,69 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class BlogEditPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
-				"insert_blog.sql");
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql", "insert_blog.sql");
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(createNewBlogEditPage());
-		tester.assertRenderedPage(BlogEditPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(createNewBlogEditPage());
+        tester.assertRenderedPage(BlogEditPage.class);
+    }
 
-	private BlogEditPage createNewBlogEditPage() {
-		return new BlogEditPage(Model.of(new BlogEntity()));
-	}
+    private BlogEditPage createNewBlogEditPage() {
+        return new BlogEditPage(Model.of(new BlogEntity()));
+    }
 
-	public void testSaveBlogEntry() {
-		callBlogEditPage();
-		submitBlogForm();
-		assertBlogPage();
-	}
+    public void testSaveBlogEntry() {
+        callBlogEditPage();
+        submitBlogForm();
+        assertBlogPage();
+    }
 
-	private void callBlogEditPage() {
-		tester.startPage(createNewBlogEditPage());
-		tester.assertRenderedPage(BlogEditPage.class);
-	}
+    private void callBlogEditPage() {
+        tester.startPage(createNewBlogEditPage());
+        tester.assertRenderedPage(BlogEditPage.class);
+    }
 
-	public void testEditBlogEntry() {
-		navigateToBlogEditPage();
-		submitBlogForm();
-		assertBlogPage();
-		assertFalse(tester.getServletResponse().getDocument().contains("This is a sample blog entry."));
-	}
+    public void testEditBlogEntry() {
+        navigateToBlogEditPage();
+        submitBlogForm();
+        assertBlogPage();
+        assertFalse(tester.getServletResponse().getDocument().contains("This is a sample blog entry."));
+    }
 
-	private void navigateToBlogEditPage() {
-		tester.startPage(BlogPage.class);
-		tester.assertRenderedPage(BlogPage.class);
-		tester.assertContains("This is a sample blog entry.");
-		tester.clickLink("listBlog:1:blogView:authorButtons:editLink");
-		tester.assertRenderedPage(BlogEditPage.class);
-	}
+    private void navigateToBlogEditPage() {
+        tester.startPage(BlogPage.class);
+        tester.assertRenderedPage(BlogPage.class);
+        tester.assertContains("This is a sample blog entry.");
+        tester.clickLink("listBlog:1:blogView:authorButtons:editLink");
+        tester.assertRenderedPage(BlogEditPage.class);
+    }
 
-	private void assertBlogPage() {
-		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", createNewBlogEditPage());
-		tester.assertRenderedPage(BlogPage.class);
-		tester.assertInfoMessages(expectedMsgs);
-		tester.startPage(BlogPage.class);
-		tester.assertRenderedPage(BlogPage.class);
-		tester.assertContains("testing headline");
-		tester.assertContains("testing content");
-	}
+    private void assertBlogPage() {
+        String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", createNewBlogEditPage());
+        tester.assertRenderedPage(BlogPage.class);
+        tester.assertInfoMessages(expectedMsgs);
+        tester.startPage(BlogPage.class);
+        tester.assertRenderedPage(BlogPage.class);
+        tester.assertContains("testing headline");
+        tester.assertContains("testing content");
+    }
 
-	private void submitBlogForm() {
-		FormTester form = tester.newFormTester("form");
-		form.setValue("tags", "these are tags");
-		form.setValue("headline", "testing headline");
-		form.setValue("content", "testing content");
-		form.submit();
-	}
+    private void submitBlogForm() {
+        FormTester form = tester.newFormTester("form");
+        form.setValue("tags", "these are tags");
+        form.setValue("headline", "testing headline");
+        form.setValue("content", "testing content");
+        form.submit();
+    }
 }

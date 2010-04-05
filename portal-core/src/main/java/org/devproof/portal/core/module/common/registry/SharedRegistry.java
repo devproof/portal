@@ -19,52 +19,46 @@ import java.util.Map;
 
 /**
  * Registry for shared resources between modules
- * 
+ *
  * @author Carsten Hufe
  */
 public interface SharedRegistry {
-	/**
-	 * Register a shared resource
-	 * 
-	 * @param resourceKey
-	 *            resource key
-	 * @param resource
-	 *            resource to register
-	 */
-	void registerResource(String resourceKey, Object resource);
+    /**
+     * Register a shared resource
+     *
+     * @param resourceKey resource key
+     * @param resource    resource to register
+     */
+    void registerResource(String resourceKey, Object resource);
 
-	/**
-	 * Remove a registered resource
-	 * 
-	 * @param resourceKey
-	 *            resource key
-	 */
-	void removeResource(String resourceKey);
+    /**
+     * Remove a registered resource
+     *
+     * @param resourceKey resource key
+     */
+    void removeResource(String resourceKey);
 
-	/**
-	 * Returns a shared resource by the key
-	 * 
-	 * @param <T>
-	 *            return type of resource
-	 * @param resourceKey
-	 *            resource key
-	 * @return shared resource
-	 */
-	<T> T getResource(String resourceKey);
+    /**
+     * Returns a shared resource by the key
+     *
+     * @param <T>         return type of resource
+     * @param resourceKey resource key
+     * @return shared resource
+     */
+    <T> T getResource(String resourceKey);
 
-	/**
-	 * Returns true if a resource is available
-	 * 
-	 * @param resourceKey
-	 *            resource key
-	 * @return true if available
-	 */
-	boolean isResourceAvailable(String resourceKey);
+    /**
+     * Returns true if a resource is available
+     *
+     * @param resourceKey resource key
+     * @return true if available
+     */
+    boolean isResourceAvailable(String resourceKey);
 
-	/**
-	 * Returns all registered resources
-	 * 
-	 * @return map with registered resources
-	 */
+    /**
+     * Returns all registered resources
+     *
+     * @return map with registered resources
+     */
 	Map<String, ?> getRegisteredResources();
 }

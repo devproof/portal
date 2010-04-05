@@ -20,27 +20,27 @@ import java.text.SimpleDateFormat;
 /**
  * DateFormatFactory provides application scoped DateFormaters Considers the
  * user session locale
- * 
+ *
  * @author Carsten Hufe
  */
 public interface DateFormatFactory {
-	/**
-	 * Creates an instance of date formater without time for displaying
-	 */
-	SimpleDateFormat createDisplayDateFormat();
+    /**
+     * Creates an instance of date formater without time for displaying
+     */
+    SimpleDateFormat createDisplayDateFormat();
 
-	/**
-	 * Creates an instance of date formater with time for displaying
-	 */
-	SimpleDateFormat createDisplayDateTimeFormat();
+    /**
+     * Creates an instance of date formater with time for displaying
+     */
+    SimpleDateFormat createDisplayDateTimeFormat();
 
-	/**
-	 * Creates an instance of date formater without time for input
-	 */
-	SimpleDateFormat createInputDateFormat();
+    /**
+     * Creates an instance of date formater without time for input
+     */
+    SimpleDateFormat createInputDateFormat();
 
-	/**
-	 * Creates an instance of date formater with time for input
-	 */
-	SimpleDateFormat createInputDateTimeFormat();
+    /**
+     * Creates an instance of date formater with time for input
+     */
+    SimpleDateFormat createInputDateTimeFormat();
 }

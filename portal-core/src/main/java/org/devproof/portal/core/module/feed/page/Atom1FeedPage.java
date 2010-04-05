@@ -19,23 +19,23 @@ import org.apache.wicket.PageParameters;
 
 /**
  * Atom 1.0 Feed
- * 
+ *
  * @author Carsten Hufe
  */
 public class Atom1FeedPage extends BaseFeedPage {
     private static final long serialVersionUID = -5992008202571741459L;
 
     public Atom1FeedPage(PageParameters params) {
-		super(params);
-	}
+        super(params);
+    }
 
-	@Override
-	protected String getContentType() {
-		return "application/atom+xml";
-	}
+    @Override
+    protected String getContentType() {
+        return "application/atom+xml";
+    }
 
-	@Override
-	protected String getFeedType() {
-		return "atom_1.0";
-	}
+    @Override
+    protected String getFeedType() {
+        return "atom_1.0";
+    }
 }

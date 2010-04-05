@@ -21,29 +21,28 @@ import java.util.List;
 
 /**
  * Registry for page administration links
- * 
+ *
  * @author Carsten Hufe
  */
 public interface PageAdminPageRegistry {
-	/**
-	 * Registers a page admin link. The language property file of the page must
-	 * contain a property named "adminLinkLabel" for menu name
-	 */
-	void registerPageAdminPage(Class<? extends Page> adminPage);
+    /**
+     * Registers a page admin link. The language property file of the page must
+     * contain a property named "adminLinkLabel" for menu name
+     */
+    void registerPageAdminPage(Class<? extends Page> adminPage);
 
-	/**
-	 * Removes a admin link
-	 */
-	void removePageAdminPage(Class<? extends Page> adminPage);
+    /**
+     * Removes a admin link
+     */
+    void removePageAdminPage(Class<? extends Page> adminPage);
 
-	/**
-	 * Returns all registered admin pages
-	 * 
-	 */
-	List<Class<? extends Page>> getRegisteredPageAdminPages();
+    /**
+     * Returns all registered admin pages
+     */
+    List<Class<? extends Page>> getRegisteredPageAdminPages();
 
-	/**
-	 * Builds or rebuilds the page administration box from the database
-	 */
-	void buildNavigation();
+    /**
+     * Builds or rebuilds the page administration box from the database
+     */
+    void buildNavigation();
 }

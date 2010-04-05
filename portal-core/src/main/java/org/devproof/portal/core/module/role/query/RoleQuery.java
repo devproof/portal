@@ -23,26 +23,26 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public class RoleQuery implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String description;
-	private Boolean active;
+    private String description;
+    private Boolean active;
 
-	@BeanQuery("e.description like '%'||?||'%'")
-	public String getDescription() {
-		return description;
-	}
+    @BeanQuery("e.description like '%'||?||'%'")
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@BeanQuery("e.active = ?")
-	public Boolean getActive() {
-		return active;
-	}
+    @BeanQuery("e.active = ?")
+    public Boolean getActive() {
+        return active;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

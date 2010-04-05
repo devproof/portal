@@ -19,7 +19,7 @@ package org.devproof.portal.core.module.right;
  * @author Carsten Hufe
  */
 public interface RightConstants {
-	String PAGE_RIGHT_PREFIX = "page.";
-	String COMPONENT_RIGHT_PREFIX = "component.";
-	String GENERAL_RIGHT_PREFIX = "general.";
+    String PAGE_RIGHT_PREFIX = "page.";
+    String COMPONENT_RIGHT_PREFIX = "component.";
+    String GENERAL_RIGHT_PREFIX = "general.";
 }

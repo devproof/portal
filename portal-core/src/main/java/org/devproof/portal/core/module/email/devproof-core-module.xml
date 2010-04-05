@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:tx="http://www.springframework.org/schema/tx"
-  xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-    
+
     <!-- Module configuration -->
     <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-    	<property name="name" value="Core: Email"/>
-    	<property name="moduleVersion" value="core"/>
-    	<property name="author" value="devproof - Carsten Hufe"/>
-    	<property name="url" value="http://devproof.org"/>	 		
-    	
-    	<!-- Hibernate/JPA entities -->
-    	<property name="entities">
-    		<list>
-			    <value>org.devproof.portal.core.module.email.entity.EmailTemplateEntity</value>
-			</list>
-    	</property>
-    	<property name="pages">
-    		<list>
-    			<bean class="org.devproof.portal.core.config.PageConfiguration">
-    				<property name="mountPath" value="/admin/emails"/>
-    				<property name="pageClass" value="org.devproof.portal.core.module.email.page.EmailTemplatePage"/>
-    				<property name="registerGlobalAdminLink" value="true"/>
-    			</bean>
-    		</list>
-    	</property>
+        <property name="name" value="Core: Email"/>
+        <property name="moduleVersion" value="core"/>
+        <property name="author" value="devproof - Carsten Hufe"/>
+        <property name="url" value="http://devproof.org"/>
+
+        <!-- Hibernate/JPA entities -->
+        <property name="entities">
+            <list>
+                <value>org.devproof.portal.core.module.email.entity.EmailTemplateEntity</value>
+            </list>
+        </property>
+        <property name="pages">
+            <list>
+                <bean class="org.devproof.portal.core.config.PageConfiguration">
+                    <property name="mountPath" value="/admin/emails"/>
+                    <property name="pageClass" value="org.devproof.portal.core.module.email.page.EmailTemplatePage"/>
+                    <property name="registerGlobalAdminLink" value="true"/>
+                </bean>
+            </list>
+        </property>
     </bean>
-    
-	<!--  Dao  -->
-	<bean id="emailTemplateDao" parent="baseGenericDao">
-		<property name="daoInterface"
-			value="org.devproof.portal.core.module.email.dao.EmailTemplateDao" />
-		<property name="entityClass"
-			value="org.devproof.portal.core.module.email.entity.EmailTemplateEntity" />
-	</bean>
-	
-	<!--  Service  -->
-	<bean id="emailService" class="org.devproof.portal.core.module.email.service.EmailServiceImpl">
-		<property name="configurationService" ref="configurationService"/>
-		<property name="emailTemplateDao" ref="emailTemplateDao"/>
-		<property name="javaMailSender" ref="mailSenderService"/>
-		<property name="dateFormat" ref="displayDateFormat"/>
-		<property name="emailDisabled"><bean factory-bean="jndiConfig" factory-method="resolveEmailDisabled"/></property>
-	</bean>
-	
-	<!--  DataProvider  -->
-	<bean id="emailTemplateDataProvider" parent="persistenceDataProvider" scope="prototype">
-		<property name="entityClass" value="org.devproof.portal.core.module.email.entity.EmailTemplateEntity" />
-		<property name="sort">
-			<bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
-				<constructor-arg value="subject"/>
-				<constructor-arg value="true"/>
-			</bean>		
-		</property>
-	</bean>
-	
+
+    <!--  Dao  -->
+    <bean id="emailTemplateDao" parent="baseGenericDao">
+        <property name="daoInterface"
+                  value="org.devproof.portal.core.module.email.dao.EmailTemplateDao"/>
+        <property name="entityClass"
+                  value="org.devproof.portal.core.module.email.entity.EmailTemplateEntity"/>
+    </bean>
+
+    <!--  Service  -->
+    <bean id="emailService" class="org.devproof.portal.core.module.email.service.EmailServiceImpl">
+        <property name="configurationService" ref="configurationService"/>
+        <property name="emailTemplateDao" ref="emailTemplateDao"/>
+        <property name="javaMailSender" ref="mailSenderService"/>
+        <property name="dateFormat" ref="displayDateFormat"/>
+        <property name="emailDisabled">
+            <bean factory-bean="jndiConfig" factory-method="resolveEmailDisabled"/>
+        </property>
+    </bean>
+
+    <!--  DataProvider  -->
+    <bean id="emailTemplateDataProvider" parent="persistenceDataProvider" scope="prototype">
+        <property name="entityClass" value="org.devproof.portal.core.module.email.entity.EmailTemplateEntity"/>
+        <property name="sort">
+            <bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
+                <constructor-arg value="subject"/>
+                <constructor-arg value="true"/>
+            </bean>
+        </property>
+    </bean>
+
 </beans>

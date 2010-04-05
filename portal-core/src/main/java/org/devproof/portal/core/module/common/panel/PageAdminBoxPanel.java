@@ -37,34 +37,35 @@ import java.util.List;
 
 /**
  * Contains link for upload center and the "add" links
- * 
+ *
  * @author Carsten Hufe
  */
 public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "pageAdminPageRegistry")
-	private PageAdminPageRegistry adminPageRegistry;
-	private RepeatingView extendableRepeating;
-	private WebMarkupContainer titleContainer;
+    @SpringBean(name = "pageAdminPageRegistry")
+    private PageAdminPageRegistry adminPageRegistry;
+    private RepeatingView extendableRepeating;
+    private WebMarkupContainer titleContainer;
 
-	public PageAdminBoxPanel(String id) {
-		super(id);
-		add(createTitleContainer());
-		add(createRepeatingNavExtendable());
-		add(createRepeatingNavFixed());
-	}
+    public PageAdminBoxPanel(String id) {
+        super(id);
+        add(createTitleContainer());
+        add(createRepeatingNavExtendable());
+        add(createRepeatingNavFixed());
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
     private ListView createRepeatingNavFixed() {
         IModel<List<Class<? extends Page>>> registeredPageAdminPagesModel = createRegisteredPageAdminPagesModel();
         return new ListView<Class<? extends Page>>("repeatingNavFixed", registeredPageAdminPagesModel) {
             private static final long serialVersionUID = -277523349047078562L;
+
             @Override
             protected void populateItem(ListItem<Class<? extends Page>> item) {
                 Class<? extends Page> pageClass = item.getModelObject();
@@ -85,11 +86,12 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 //                return link;
 //            }
         };
-	}
+    }
 
     private IModel<List<Class<? extends Page>>> createRegisteredPageAdminPagesModel() {
         return new LoadableDetachableModel<List<Class<? extends Page>>>() {
             private static final long serialVersionUID = 3289204569577932297L;
+
             @Override
             protected List<Class<? extends Page>> load() {
                 return adminPageRegistry.getRegisteredPageAdminPages();
@@ -97,29 +99,27 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
         };
     }
 
-	private RepeatingView createRepeatingNavExtendable() {
-		extendableRepeating = new RepeatingView("repeatingNavExtendable");
-		return extendableRepeating;
-	}
+    private RepeatingView createRepeatingNavExtendable() {
+        extendableRepeating = new RepeatingView("repeatingNavExtendable");
+        return extendableRepeating;
+    }
 
-	private String getLinkLabelName(Class<? extends Page> pageClass) {
-		String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-				CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
-		if (StringUtils.isEmpty(label)) {
-			label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-					CommonConstants.CONTENT_TITLE_LABEL);
-		}
-		return label;
-	}
+    private String getLinkLabelName(Class<? extends Page> pageClass) {
+        String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+        if (StringUtils.isEmpty(label)) {
+            label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
+        }
+        return label;
+    }
 
-	public void addLink(Component link) {
-		WebMarkupContainer container = new WebMarkupContainer(extendableRepeating.newChildId());
-		extendableRepeating.add(container);
-		container.add(link);
-	}
+    public void addLink(Component link) {
+        WebMarkupContainer container = new WebMarkupContainer(extendableRepeating.newChildId());
+        extendableRepeating.add(container);
+        container.add(link);
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

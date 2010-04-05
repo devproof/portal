@@ -26,39 +26,39 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class CaptchaRatingPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestCaptchaRatingPanel.class);
-		tester.assertComponent("panel", TestCaptchaRatingPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestCaptchaRatingPanel.class);
+        tester.assertComponent("panel", TestCaptchaRatingPanel.class);
+    }
 
-	public static class TestCaptchaRatingPanel extends CaptchaRatingPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestCaptchaRatingPanel extends CaptchaRatingPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestCaptchaRatingPanel(String id) {
-			super(id, Model.of(5), Model.of(5), Model.of(5), Model.of(Boolean.FALSE), true, new BubblePanel("id"));
-		}
+        public TestCaptchaRatingPanel(String id) {
+            super(id, Model.of(5), Model.of(5), Model.of(5), Model.of(Boolean.FALSE), true, new BubblePanel("id"));
+        }
 
-		@Override
-		protected boolean onIsStarActive(int star) {
-			return false;
-		}
+        @Override
+        protected boolean onIsStarActive(int star) {
+            return false;
+        }
 
-		@Override
-		protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
+        @Override
+        protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
 
-		}
-	}
+        }
+    }
 }

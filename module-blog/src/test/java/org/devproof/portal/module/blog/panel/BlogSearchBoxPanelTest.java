@@ -27,32 +27,31 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class BlogSearchBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
-				"insert_blog.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql", "insert_blog.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createBogSearchBoxPanel());
-		tester.assertComponent("panel", BlogSearchBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createBogSearchBoxPanel());
+        tester.assertComponent("panel", BlogSearchBoxPanel.class);
+    }
 
-	private TestPanelSource createBogSearchBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createBogSearchBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new BlogSearchBoxPanel(panelId, Model.of(new BlogQuery()));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new BlogSearchBoxPanel(panelId, Model.of(new BlogQuery()));
+            }
+        };
+    }
 }

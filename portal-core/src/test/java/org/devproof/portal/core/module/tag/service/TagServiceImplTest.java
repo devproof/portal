@@ -29,117 +29,117 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class TagServiceImplTest extends TestCase {
-	private TagServiceImpl<DummyTagEntity> impl;
-	private TagDao<DummyTagEntity> mock;
+    private TagServiceImpl<DummyTagEntity> impl;
+    private TagDao<DummyTagEntity> mock;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void setUp() throws Exception {
-		mock = createStrictMock(TagDao.class);
-		impl = new TagServiceImpl<DummyTagEntity>();
-		impl.setTagDao(mock);
-		impl.setRelatedTagRight("testright");
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    public void setUp() throws Exception {
+        mock = createStrictMock(TagDao.class);
+        impl = new TagServiceImpl<DummyTagEntity>();
+        impl.setTagDao(mock);
+        impl.setRelatedTagRight("testright");
+    }
 
-	public void testSave() {
-		DummyTagEntity e = new DummyTagEntity();
-		e.setTagname("tag");
-		expect(mock.save(e)).andReturn(e);
-		replay(mock);
-		impl.save(e);
-		verify(mock);
-	}
+    public void testSave() {
+        DummyTagEntity e = new DummyTagEntity();
+        e.setTagname("tag");
+        expect(mock.save(e)).andReturn(e);
+        replay(mock);
+        impl.save(e);
+        verify(mock);
+    }
 
-	public void testDelete() {
-		DummyTagEntity e = new DummyTagEntity();
-		e.setTagname("tag");
-		mock.delete(e);
-		replay(mock);
-		impl.delete(e);
-		verify(mock);
-	}
+    public void testDelete() {
+        DummyTagEntity e = new DummyTagEntity();
+        e.setTagname("tag");
+        mock.delete(e);
+        replay(mock);
+        impl.delete(e);
+        verify(mock);
+    }
 
-	public void testFindById() {
-		DummyTagEntity e = new DummyTagEntity();
-		e.setTagname("tag");
-		expect(mock.findById("tag")).andReturn(e);
-		replay(mock);
-		assertEquals(impl.findById("tag"), e);
-		verify(mock);
-	}
+    public void testFindById() {
+        DummyTagEntity e = new DummyTagEntity();
+        e.setTagname("tag");
+        expect(mock.findById("tag")).andReturn(e);
+        replay(mock);
+        assertEquals(impl.findById("tag"), e);
+        verify(mock);
+    }
 
-	public void testNewTagEntity() {
-		expect(mock.getType()).andReturn(DummyTagEntity.class);
-		replay(mock);
-		assertNotNull(impl.newTagEntity("tag"));
-	}
+    public void testNewTagEntity() {
+        expect(mock.getType()).andReturn(DummyTagEntity.class);
+        replay(mock);
+        assertNotNull(impl.newTagEntity("tag"));
+    }
 
-	public void testFindMostPopularTags1() {
-		List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
-		list.add(new DummyTagEntity());
-		list.add(new DummyTagEntity());
-		expect(mock.findMostPopularTags(0, 2)).andReturn(list);
-		replay(mock);
-		assertEquals(list, impl.findMostPopularTags(0, 2));
-		verify(mock);
-	}
+    public void testFindMostPopularTags1() {
+        List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
+        list.add(new DummyTagEntity());
+        list.add(new DummyTagEntity());
+        expect(mock.findMostPopularTags(0, 2)).andReturn(list);
+        replay(mock);
+        assertEquals(list, impl.findMostPopularTags(0, 2));
+        verify(mock);
+    }
 
-	public void testFindMostPopularTags2() {
-		List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
-		list.add(new DummyTagEntity());
-		list.add(new DummyTagEntity());
-		RoleEntity role = new RoleEntity();
-		expect(mock.findMostPopularTags(role, "testright", 0, 2)).andReturn(list);
-		replay(mock);
-		assertEquals(list, impl.findMostPopularTags(role, 0, 2));
-		verify(mock);
-	}
+    public void testFindMostPopularTags2() {
+        List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
+        list.add(new DummyTagEntity());
+        list.add(new DummyTagEntity());
+        RoleEntity role = new RoleEntity();
+        expect(mock.findMostPopularTags(role, "testright", 0, 2)).andReturn(list);
+        replay(mock);
+        assertEquals(list, impl.findMostPopularTags(role, 0, 2));
+        verify(mock);
+    }
 
-	public void testFindTagsStartingWith() {
-		List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
-		list.add(new DummyTagEntity());
-		list.add(new DummyTagEntity());
-		expect(mock.findTagsStartingWith("prefix")).andReturn(list);
-		replay(mock);
-		assertEquals(list, impl.findTagsStartingWith("prefix"));
-		verify(mock);
-	}
+    public void testFindTagsStartingWith() {
+        List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
+        list.add(new DummyTagEntity());
+        list.add(new DummyTagEntity());
+        expect(mock.findTagsStartingWith("prefix")).andReturn(list);
+        replay(mock);
+        assertEquals(list, impl.findTagsStartingWith("prefix"));
+        verify(mock);
+    }
 
-	public void testDeleteUnusedTags() {
-		mock.deleteUnusedTags();
-		replay(mock);
-		impl.deleteUnusedTags();
-		verify(mock);
-	}
+    public void testDeleteUnusedTags() {
+        mock.deleteUnusedTags();
+        replay(mock);
+        impl.deleteUnusedTags();
+        verify(mock);
+    }
 
-	public void testFindByIdAndCreateIfNotExists() {
-		expect(mock.findById("sampletag")).andReturn(null);
-		expect(mock.getType()).andReturn(DummyTagEntity.class);
-		expect(mock.save((DummyTagEntity) anyObject())).andReturn(null);
-		replay(mock);
-		DummyTagEntity newTag = impl.findByIdAndCreateIfNotExists("sampletag");
-		assertEquals("sampletag", newTag.getTagname());
-		verify(mock);
-	}
+    public void testFindByIdAndCreateIfNotExists() {
+        expect(mock.findById("sampletag")).andReturn(null);
+        expect(mock.getType()).andReturn(DummyTagEntity.class);
+        expect(mock.save((DummyTagEntity) anyObject())).andReturn(null);
+        replay(mock);
+        DummyTagEntity newTag = impl.findByIdAndCreateIfNotExists("sampletag");
+        assertEquals("sampletag", newTag.getTagname());
+        verify(mock);
+    }
 
-	private static class DummyTagEntity extends BaseTagEntity<Object> {
+    private static class DummyTagEntity extends BaseTagEntity<Object> {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public DummyTagEntity() {
-			super();
-			setTagname(String.valueOf(Math.random()));
-		}
+        public DummyTagEntity() {
+            super();
+            setTagname(String.valueOf(Math.random()));
+        }
 
-		@Override
-		public List<?> getReferencedObjects() {
-			return null;
-		}
+        @Override
+        public List<?> getReferencedObjects() {
+            return null;
+        }
 
-		@Override
-		public void setReferencedObjects(List<Object> refObjs) {
+        @Override
+        public void setReferencedObjects(List<Object> refObjs) {
 
-		}
+        }
 
-	}
+    }
 }

@@ -40,96 +40,96 @@ import java.util.List;
  */
 public class BookmarkEditPage extends BookmarkBasePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "bookmarkService")
-	private BookmarkService bookmarkService;
-	@SpringBean(name = "bookmarkTagService")
-	private TagService<BookmarkTagEntity> bookmarkTagService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "bookmarkService")
+    private BookmarkService bookmarkService;
+    @SpringBean(name = "bookmarkTagService")
+    private TagService<BookmarkTagEntity> bookmarkTagService;
     private IModel<BookmarkEntity> bookmarkModel;
 
 
     public BookmarkEditPage(IModel<BookmarkEntity> bookmarkModel) {
-		super(new PageParameters());
+        super(new PageParameters());
         this.bookmarkModel = bookmarkModel;
         add(createBookmarkEditForm());
-	}
+    }
 
-	private Form<BookmarkEntity> createBookmarkEditForm() {
-		Form<BookmarkEntity> form = newBookmarkEditForm();
-		form.add(createTitleField());
-		form.add(createDescriptionField());
-		form.add(createUrlField());
-		form.add(createHitsField());
-		form.add(createNumberOfVotesField());
-		form.add(createSumOfRatingField());
-		form.add(createTagField());
-		form.add(createViewRightPanel());
-		form.add(createVisitRightPanel());
-		form.add(createVoteRightPanel());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<BookmarkEntity> createBookmarkEditForm() {
+        Form<BookmarkEntity> form = newBookmarkEditForm();
+        form.add(createTitleField());
+        form.add(createDescriptionField());
+        form.add(createUrlField());
+        form.add(createHitsField());
+        form.add(createNumberOfVotesField());
+        form.add(createSumOfRatingField());
+        form.add(createTagField());
+        form.add(createViewRightPanel());
+        form.add(createVisitRightPanel());
+        form.add(createVoteRightPanel());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private FormComponent<String> createUrlField() {
-		return new RequiredTextField<String>("url");
-	}
+    private FormComponent<String> createUrlField() {
+        return new RequiredTextField<String>("url");
+    }
 
-	private FormComponent<String> createTitleField() {
-		return new RequiredTextField<String>("title");
-	}
+    private FormComponent<String> createTitleField() {
+        return new RequiredTextField<String>("title");
+    }
 
-	private FormComponent<String> createDescriptionField() {
-		return new FullRichTextArea("description");
-	}
+    private FormComponent<String> createDescriptionField() {
+        return new FullRichTextArea("description");
+    }
 
-	private FormComponent<String> createHitsField() {
-		return new RequiredTextField<String>("hits");
-	}
+    private FormComponent<String> createHitsField() {
+        return new RequiredTextField<String>("hits");
+    }
 
-	private FormComponent<String> createNumberOfVotesField() {
-		return new RequiredTextField<String>("numberOfVotes");
-	}
+    private FormComponent<String> createNumberOfVotesField() {
+        return new RequiredTextField<String>("numberOfVotes");
+    }
 
-	private FormComponent<String> createSumOfRatingField() {
-		return new RequiredTextField<String>("sumOfRating");
-	}
+    private FormComponent<String> createSumOfRatingField() {
+        return new RequiredTextField<String>("sumOfRating");
+    }
 
-	private RightGridPanel createViewRightPanel() {
-		IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
-		return new RightGridPanel("viewRights", "bookmark.view", rightsListModel);
-	}
+    private RightGridPanel createViewRightPanel() {
+        IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
+        return new RightGridPanel("viewRights", "bookmark.view", rightsListModel);
+    }
 
-	private RightGridPanel createVisitRightPanel() {
-		IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
-		return new RightGridPanel("visitRights", "bookmark.visit", rightsListModel);
-	}
+    private RightGridPanel createVisitRightPanel() {
+        IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
+        return new RightGridPanel("visitRights", "bookmark.visit", rightsListModel);
+    }
 
-	private RightGridPanel createVoteRightPanel() {
-		IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
-		return new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
-	}
+    private RightGridPanel createVoteRightPanel() {
+        IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
+        return new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
+    }
 
-	private TagField<BookmarkTagEntity> createTagField() {
-		IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmarkModel, "tags");
-		return new TagField<BookmarkTagEntity>("tags", listModel, bookmarkTagService);
-	}
+    private TagField<BookmarkTagEntity> createTagField() {
+        IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmarkModel, "tags");
+        return new TagField<BookmarkTagEntity>("tags", listModel, bookmarkTagService);
+    }
 
-	private Form<BookmarkEntity> newBookmarkEditForm() {
+    private Form<BookmarkEntity> newBookmarkEditForm() {
         IModel<BookmarkEntity> compoundModel = new CompoundPropertyModel<BookmarkEntity>(bookmarkModel);
         return new Form<BookmarkEntity>("form", compoundModel) {
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit() {
-				BookmarkEditPage.this.setVisible(false);
-				BookmarkEntity bookmark = getModelObject();
-				bookmark.setBroken(Boolean.FALSE);
-				bookmark.setSource(Source.MANUAL);
-				bookmarkService.save(bookmark);
-				setRedirect(false);
-				info(getString("msg.saved"));
-				setResponsePage(new BookmarkPage(new PageParameters("id=" + bookmark.getId())));
-			}
-		};
-	}
+            @Override
+            protected void onSubmit() {
+                BookmarkEditPage.this.setVisible(false);
+                BookmarkEntity bookmark = getModelObject();
+                bookmark.setBroken(Boolean.FALSE);
+                bookmark.setSource(Source.MANUAL);
+                bookmarkService.save(bookmark);
+                setRedirect(false);
+                info(getString("msg.saved"));
+                setResponsePage(new BookmarkPage(new PageParameters("id=" + bookmark.getId())));
+            }
+        };
+    }
 }

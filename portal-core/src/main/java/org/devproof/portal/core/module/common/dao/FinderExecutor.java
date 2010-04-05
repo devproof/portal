@@ -19,18 +19,17 @@ import java.lang.reflect.Method;
 
 /**
  * Internal interface for generic dao
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface FinderExecutor {
-	/**
-	 * Execute generic query
-	 */
-	Object executeFinder(String query, Object[] queryArgs, Method method, Integer firstResults, Integer maxResults);
+    /**
+     * Execute generic query
+     */
+    Object executeFinder(String query, Object[] queryArgs, Method method, Integer firstResults, Integer maxResults);
 
-	/**
-	 * Execute generic bulk update
-	 */
-	void executeUpdate(String query, Object[] queryArgs);
+    /**
+     * Execute generic bulk update
+     */
+    void executeUpdate(String query, Object[] queryArgs);
 }

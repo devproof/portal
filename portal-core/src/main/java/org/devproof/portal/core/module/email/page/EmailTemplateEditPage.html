@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
-<wicket:extend>	
-<div class="form">
-	<h1><wicket:message key="contentTitle"/></h1>
-	<form wicket:id="form">
-	<table cellspacing="10">
-		<tr>
-			<td><label for="subject"><wicket:message key="subject"/></label></td>
-			<td><input type="text" wicket:id="subject" class="editTitle"/></td>
-		</tr>
-		<tr>
-			<td><label for="content"><wicket:message key="content"/></label></td>
-			<td><textarea wicket:id="content" cols="80" rows="30"></textarea></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="submit" wicket:message="value:save" class="button"/></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>
-				<wicket:message key="placeholder"/>
-			</td>
-		</tr>
-	</table>
-	</form>	
-</div>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<wicket:extend>
+    <div class="form">
+        <h1><wicket:message key="contentTitle"/></h1>
+
+        <form wicket:id="form">
+            <table cellspacing="10">
+                <tr>
+                    <td><label for="subject"><wicket:message key="subject"/></label></td>
+                    <td><input type="text" wicket:id="subject" class="editTitle"/></td>
+                </tr>
+                <tr>
+                    <td><label for="content"><wicket:message key="content"/></label></td>
+                    <td><textarea wicket:id="content" cols="80" rows="30"></textarea></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" wicket:message="value:save" class="button"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <wicket:message key="placeholder"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </wicket:extend>
 </html>

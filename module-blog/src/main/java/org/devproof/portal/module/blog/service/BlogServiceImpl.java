@@ -25,40 +25,40 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Carsten Hufe
  */
 public class BlogServiceImpl implements BlogService {
-	private BlogDao blogDao;
-	private TagService<BlogTagEntity> blogTagService;
+    private BlogDao blogDao;
+    private TagService<BlogTagEntity> blogTagService;
 
-	@Override
-	public void delete(BlogEntity entity) {
-		blogDao.delete(entity);
-		blogTagService.deleteUnusedTags();
-	}
+    @Override
+    public void delete(BlogEntity entity) {
+        blogDao.delete(entity);
+        blogTagService.deleteUnusedTags();
+    }
 
-	@Override
-	public BlogEntity findById(Integer id) {
-		return blogDao.findById(id);
-	}
+    @Override
+    public BlogEntity findById(Integer id) {
+        return blogDao.findById(id);
+    }
 
-	@Override
-	public void save(BlogEntity entity) {
-		blogDao.save(entity);
-		blogTagService.deleteUnusedTags();
-	}
+    @Override
+    public void save(BlogEntity entity) {
+        blogDao.save(entity);
+        blogTagService.deleteUnusedTags();
+    }
 
-	@Override
-	public BlogEntity newBlogEntity() {
-		BlogEntity blog = new BlogEntity();
-		blog.setAllRights(blogDao.findLastSelectedRights());
-		return blog;
-	}
+    @Override
+    public BlogEntity newBlogEntity() {
+        BlogEntity blog = new BlogEntity();
+        blog.setAllRights(blogDao.findLastSelectedRights());
+        return blog;
+    }
 
-	@Required
-	public void setBlogDao(BlogDao blogDao) {
-		this.blogDao = blogDao;
-	}
+    @Required
+    public void setBlogDao(BlogDao blogDao) {
+        this.blogDao = blogDao;
+    }
 
-	@Required
-	public void setBlogTagService(TagService<BlogTagEntity> blogTagService) {
-		this.blogTagService = blogTagService;
-	}
+    @Required
+    public void setBlogTagService(TagService<BlogTagEntity> blogTagService) {
+        this.blogTagService = blogTagService;
+    }
 }

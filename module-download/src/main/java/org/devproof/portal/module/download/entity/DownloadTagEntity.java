@@ -33,19 +33,19 @@ import java.util.List;
 @Table(name = "download_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = DownloadConstants.ENTITY_CACHE_REGION)
 final public class DownloadTagEntity extends BaseTagEntity<DownloadEntity> {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
-	private List<DownloadEntity> referencedObjects;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+    private List<DownloadEntity> referencedObjects;
 
-	@Override
-	public List<DownloadEntity> getReferencedObjects() {
-		return referencedObjects;
-	}
+    @Override
+    public List<DownloadEntity> getReferencedObjects() {
+        return referencedObjects;
+    }
 
-	@Override
-	public void setReferencedObjects(List<DownloadEntity> referencedObjects) {
-		this.referencedObjects = referencedObjects;
-	}
+    @Override
+    public void setReferencedObjects(List<DownloadEntity> referencedObjects) {
+        this.referencedObjects = referencedObjects;
+    }
 
 }

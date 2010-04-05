@@ -22,20 +22,20 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation is required to define a HQL Query on a dao interface method
- * 
+ *
  * @author Carsten Hufe
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.METHOD)
 public @interface Query {
-	/**
-	 * Contains the HQL Statement
-	 */
-	String value();
+    /**
+     * Contains the HQL Statement
+     */
+    String value();
 
-	/**
-	 * if true, the last two parameters of the annotated method have to be
-	 * integers which are first result and maximum result
-	 */
-	boolean limitClause() default false;
+    /**
+     * if true, the last two parameters of the annotated method have to be
+     * integers which are first result and maximum result
+     */
+    boolean limitClause() default false;
 }

@@ -27,111 +27,99 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface UserService extends CrudService<UserEntity, Integer> {
-	/**
-	 * Returns a new instance of the UserEntity
-	 */
-	UserEntity newUserEntity();
+    /**
+     * Returns a new instance of the UserEntity
+     */
+    UserEntity newUserEntity();
 
-	/**
-	 * Returns a user entity by the username
-	 */
-	UserEntity findUserByUsername(String username);
+    /**
+     * Returns a user entity by the username
+     */
+    UserEntity findUserByUsername(String username);
 
-	/**
-	 * Returns a user entity by the session id
-	 */
-	UserEntity findUserBySessionId(String sessionId);
+    /**
+     * Returns a user entity by the session id
+     */
+    UserEntity findUserBySessionId(String sessionId);
 
-	/**
-	 * Returns the guest user
-	 */
-	UserEntity findGuestUser();
+    /**
+     * Returns the guest user
+     */
+    UserEntity findGuestUser();
 
-	/**
-	 * Returns a list with users by the given email
-	 */
-	List<UserEntity> findUserByEmail(String email);
+    /**
+     * Returns a list with users by the given email
+     */
+    List<UserEntity> findUserByEmail(String email);
 
-	/**
-	 * Test wether a user exist
-	 */
-	boolean existsUsername(String username);
+    /**
+     * Test wether a user exist
+     */
+    boolean existsUsername(String username);
 
-	/**
-	 * Returns the number of users for the given role
-	 */
-	long countUserForRole(RoleEntity role);
+    /**
+     * Returns the number of users for the given role
+     */
+    long countUserForRole(RoleEntity role);
 
-	/**
-	 * Returns all users with the given right
-	 */
-	List<UserEntity> findUserWithRight(String right);
+    /**
+     * Returns all users with the given right
+     */
+    List<UserEntity> findUserWithRight(String right);
 
-	/**
-	 * Register a new user
-	 */
-	void registerUser(UserEntity user, UrlCallback urlCallback);
+    /**
+     * Register a new user
+     */
+    void registerUser(UserEntity user, UrlCallback urlCallback);
 
-	/**
-	 * Activate user
-	 * 
-	 * @return true, if user was activated
-	 */
-	boolean activateUser(String username, String activationCode);
+    /**
+     * Activate user
+     *
+     * @return true, if user was activated
+     */
+    boolean activateUser(String username, String activationCode);
 
-	/**
-	 * Sets a new password
-	 */
-	void saveNewPassword(String username, String newPassword);
+    /**
+     * Sets a new password
+     */
+    void saveNewPassword(String username, String newPassword);
 
-	/**
-	 * Authentificates a user
-	 * 
-	 * @param username
-	 *            the username to login
-	 * @param password
-	 *            the user password
-	 * @param ipAddress
-	 *            Current ip address (for logging)
-	 * @return returns the UserEntity when the authentification was successful
-	 * 
-	 * @throws UserNotConfirmedException
-	 *             thrown when a user is not confirmed
-	 * @throws AuthentificationFailedException
-	 *             thrown when an authentification failed e.g. wrong password
-	 */
-	UserEntity authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException,
-			AuthentificationFailedException;
+    /**
+     * Authentificates a user
+     *
+     * @param username  the username to login
+     * @param password  the user password
+     * @param ipAddress Current ip address (for logging)
+     * @return returns the UserEntity when the authentification was successful
+     * @throws UserNotConfirmedException thrown when a user is not confirmed
+     * @throws AuthentificationFailedException
+     *                                   thrown when an authentification failed e.g. wrong password
+     */
+    UserEntity authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException, AuthentificationFailedException;
 
-	/**
-	 * Re-Authentificates a user by tthe session id
-	 * 
-	 * @param sessionId
-	 *            Session ID
-	 * @param ipAddress
-	 *            Current IP address for logging
-	 * @return the authentificated UserEntity, if the authentification failes it
-	 *         returns the guest user
-	 */
-	UserEntity authentificate(String sessionId, String ipAddress);
+    /**
+     * Re-Authentificates a user by tthe session id
+     *
+     * @param sessionId Session ID
+     * @param ipAddress Current IP address for logging
+     * @return the authentificated UserEntity, if the authentification failes it
+     *         returns the guest user
+     */
+    UserEntity authentificate(String sessionId, String ipAddress);
 
-	/**
-	 * Sends the code for the lost password
-	 * 
-	 * @param usernameOrEmail
-	 *            username or email address
-	 * @param urlCallback
-	 *            callback to build the URLs
-	 */
-	void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback);
+    /**
+     * Sends the code for the lost password
+     *
+     * @param usernameOrEmail username or email address
+     * @param urlCallback     callback to build the URLs
+     */
+    void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback);
 
-	/**
-	 * Resends the confirmation code
-	 * 
-	 * @param user
-	 *            user
-	 * @param urlCallback
-	 *            callback to build the URLs
-	 */
+    /**
+     * Resends the confirmation code
+     *
+     * @param user        user
+     * @param urlCallback callback to build the URLs
+     */
 	void resendConfirmationCode(UserEntity user, UrlCallback urlCallback);
 }

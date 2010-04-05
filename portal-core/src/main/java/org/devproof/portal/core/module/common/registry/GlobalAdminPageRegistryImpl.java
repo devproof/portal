@@ -32,50 +32,50 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry, InitializingBean {
-	private PageLocator pageLocator;
-	private ModuleService moduleService;
-	private final List<Class<? extends Page>> adminPages = new ArrayList<Class<? extends Page>>();
+    private PageLocator pageLocator;
+    private ModuleService moduleService;
+    private final List<Class<? extends Page>> adminPages = new ArrayList<Class<? extends Page>>();
 
-	@Override
-	public List<Class<? extends Page>> getRegisteredGlobalAdminPages() {
-		// immutable
-		return Collections.unmodifiableList(adminPages);
-	}
+    @Override
+    public List<Class<? extends Page>> getRegisteredGlobalAdminPages() {
+        // immutable
+        return Collections.unmodifiableList(adminPages);
+    }
 
-	@Override
-	public void registerGlobalAdminPage(Class<? extends Page> adminPage) {
-		adminPages.add(adminPage);
-	}
+    @Override
+    public void registerGlobalAdminPage(Class<? extends Page> adminPage) {
+        adminPages.add(adminPage);
+    }
 
-	@Override
-	public void removeGlobalAdminPage(Class<? extends Page> adminPage) {
-		adminPages.remove(adminPage);
+    @Override
+    public void removeGlobalAdminPage(Class<? extends Page> adminPage) {
+        adminPages.remove(adminPage);
 
-	}
+    }
 
-	@Override
-	public void buildNavigation() {
-		adminPages.clear();
-		Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
-		List<ModuleLinkEntity> links = moduleService.findAllVisibleGlobalAdministrationLinks();
-		for (ModuleLinkEntity link : links) {
-			PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
-			if (conf != null) {
-				registerGlobalAdminPage(conf.getPageClass());
-			}
-		}
-	}
+    @Override
+    public void buildNavigation() {
+        adminPages.clear();
+        Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
+        List<ModuleLinkEntity> links = moduleService.findAllVisibleGlobalAdministrationLinks();
+        for (ModuleLinkEntity link : links) {
+            PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
+            if (conf != null) {
+                registerGlobalAdminPage(conf.getPageClass());
+            }
+        }
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		buildNavigation();
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        buildNavigation();
+    }
 
-	public void setPageLocator(PageLocator pageLocator) {
-		this.pageLocator = pageLocator;
-	}
+    public void setPageLocator(PageLocator pageLocator) {
+        this.pageLocator = pageLocator;
+    }
 
-	public void setModuleService(ModuleService moduleService) {
-		this.moduleService = moduleService;
-	}
+    public void setModuleService(ModuleService moduleService) {
+        this.moduleService = moduleService;
+    }
 }

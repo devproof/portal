@@ -24,26 +24,25 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Factory to create the footer link
- * 
+ *
  * @author Carsten Hufe
  */
 public class FooterLinkFactory implements CommonMarkupContainerFactory, InitializingBean {
-	private SharedRegistry sharedRegistry;
+    private SharedRegistry sharedRegistry;
 
-	@Override
-	public MarkupContainer newInstance(String id, Object... obj) {
-		BookmarkablePageLink<OtherPageViewPage> footerLink = new BookmarkablePageLink<OtherPageViewPage>(id,
-				OtherPageViewPage.class);
-		footerLink.setParameter("0", "about");
-		return footerLink;
-	}
+    @Override
+    public MarkupContainer newInstance(String id, Object... obj) {
+        BookmarkablePageLink<OtherPageViewPage> footerLink = new BookmarkablePageLink<OtherPageViewPage>(id, OtherPageViewPage.class);
+        footerLink.setParameter("0", "about");
+        return footerLink;
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		sharedRegistry.registerResource("footerLink", this);
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        sharedRegistry.registerResource("footerLink", this);
+    }
 
-	public void setSharedRegistry(SharedRegistry sharedRegistry) {
-		this.sharedRegistry = sharedRegistry;
-	}
+    public void setSharedRegistry(SharedRegistry sharedRegistry) {
+        this.sharedRegistry = sharedRegistry;
+    }
 }

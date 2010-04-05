@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
-	<wicket:extend>
-		<div wicket:id="bubble"/>
-		<div wicket:id="repeatingDownloads"><div wicket:id="downloadView"/></div>
-		<br/>
-		<div wicket:id="paging">paging</div>	
-		<span wicket:id="bubblePanel"/>	
-		
-		<wicket:fragment wicket:id="downloadView">	
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td class="downloadDescription" style="width: 70%;">
-						<h1><span wicket:id="broken" style="color: red;">[broken]</span><a href="DownloadPage.html#" wicket:id="titleLink"><span wicket:id="titleLabel">[title]</span></a></h1>
-						<div class="descr">
-							<span wicket:id="metaInfo">[author name]</span>
-							<span wicket:id="authorButtons"></span>		
-						</div>
-						<div wicket:id="tags">tag1 tag2</div><br/>
-						<div wicket:id="description">[description]</div>
-					</td>
-					<td style="width: 30%;" class="downloadInfoTable" >
-						<table  style="height: 100%;">
-							<tr wicket:id="repeatingInfoFields">
-								<td><b><span wicket:id="label">[label]</span></b></td>
-								<td style="width: 30px;">&nbsp;</td>
-								<td><span wicket:id="info">[info]</span></td>
-							</tr>
-							<tr>
-								<td colspan="3">&nbsp;</td>
-							</tr>
-							<tr>
-								<td><wicket:message key="hits"/></td>
-								<td style="width: 30px;">&nbsp;</td>
-								<td><span wicket:id="hits">[num of downloads]</span></td>
-							</tr>
-							<tr>
-								<td colspan="3">&nbsp;</td>
-							</tr>
-							<tr>						
-								<td colspan="3"><span wicket:id="vote">[voting]</span></td>
-							</tr>
-							<tr>
-								<td colspan="3">&nbsp;</td>
-							</tr>
-							<tr>
-								<td colspan="3"><a href="DownloadPage.html#" wicket:id="downloadLink" class="downloadLink"><img wicket:id="downloadImage" alt=""/>&nbsp;&nbsp;<span wicket:id="downloadLinkLabel"/></a></td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</wicket:fragment>
-		<wicket:fragment wicket:id="labelFragment"><span wicket:id="label">[info]</span></wicket:fragment>
-		<wicket:fragment wicket:id="linkFragment"><a wicket:id="link" target="_blank">link</a></wicket:fragment>		
-			
-	</wicket:extend>
+<wicket:extend>
+    <div wicket:id="bubble"/>
+    <div wicket:id="repeatingDownloads">
+        <div wicket:id="downloadView"/>
+    </div>
+    <br/>
+
+    <div wicket:id="paging">paging</div>
+    <span wicket:id="bubblePanel"/>
+
+    <wicket:fragment wicket:id="downloadView">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td class="downloadDescription" style="width: 70%;">
+                    <h1><span wicket:id="broken" style="color: red;">[broken]</span><a href="DownloadPage.html#"
+                                                                                       wicket:id="titleLink"><span
+                            wicket:id="titleLabel">[title]</span></a></h1>
+
+                    <div class="descr">
+                        <span wicket:id="metaInfo">[author name]</span> <span wicket:id="authorButtons"></span>
+                    </div>
+                    <div wicket:id="tags">tag1 tag2</div>
+                    <br/>
+
+                    <div wicket:id="description">[description]</div>
+                </td>
+                <td style="width: 30%;" class="downloadInfoTable">
+                    <table style="height: 100%;">
+                        <tr wicket:id="repeatingInfoFields">
+                            <td><b><span wicket:id="label">[label]</span></b></td>
+                            <td style="width: 30px;">&nbsp;</td>
+                            <td><span wicket:id="info">[info]</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><wicket:message key="hits"/></td>
+                            <td style="width: 30px;">&nbsp;</td>
+                            <td><span wicket:id="hits">[num of downloads]</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><span wicket:id="vote">[voting]</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><a href="DownloadPage.html#" wicket:id="downloadLink"
+                                               class="downloadLink"><img wicket:id="downloadImage"
+                                                                         alt=""/>&nbsp;&nbsp;<span
+                                    wicket:id="downloadLinkLabel"/></a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </wicket:fragment>
+    <wicket:fragment wicket:id="labelFragment"><span wicket:id="label">[info]</span></wicket:fragment>
+    <wicket:fragment wicket:id="linkFragment"><a wicket:id="link" target="_blank">link</a></wicket:fragment>
+
+</wicket:extend>
 </body>
 </html>
 

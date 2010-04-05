@@ -28,9 +28,9 @@ import java.util.List;
  */
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface RoleDao extends GenericDao<RoleEntity, Integer> {
-	@Query("Select distinct(r) from RoleEntity r")
-	List<RoleEntity> findAll();
+    @Query("Select distinct(r) from RoleEntity r")
+    List<RoleEntity> findAll();
 
-	@Query("select distinct(r) from RoleEntity r order by r.description asc")
-	List<RoleEntity> findAllOrderByDescription();
+    @Query("select distinct(r) from RoleEntity r order by r.description asc")
+    List<RoleEntity> findAllOrderByDescription();
 }

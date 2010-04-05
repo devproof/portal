@@ -38,93 +38,94 @@ import java.util.List;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 final public class RoleEntity extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private Integer id;
-	@Column(name = "description")
-	private String description;
-	@Column(name = "active", nullable = false)
-	private Boolean active;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "active", nullable = false)
+    private Boolean active;
     @Fetch(FetchMode.SUBSELECT)
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "core_role_right_xref", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-	@OrderBy("description asc")
-	private List<RightEntity> rights;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "core_role_right_xref", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
+    @OrderBy("description asc")
+    private List<RightEntity> rights;
 
-	// Generated stuff
-	public Integer getId() {
-		return id;
-	}
+    // Generated stuff
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Boolean getActive() {
-		return active;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public Boolean getActive() {
+        return active;
+    }
 
-	public List<RightEntity> getRights() {
-		if (rights == null) {
-			rights = new ArrayList<RightEntity>();
-		}
-		return rights;
-	}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
-	public void setRights(List<RightEntity> rights) {
-		this.rights = rights;
-	}
+    public List<RightEntity> getRights() {
+        if (rights == null) {
+            rights = new ArrayList<RightEntity>();
+        }
+        return rights;
+    }
 
-	public boolean add(RightEntity e) {
-		return rights.add(e);
-	}
+    public void setRights(List<RightEntity> rights) {
+        this.rights = rights;
+    }
 
-	public boolean addAll(Collection<? extends RightEntity> c) {
-		return rights.addAll(c);
-	}
+    public boolean add(RightEntity e) {
+        return rights.add(e);
+    }
 
-	@Override
-	public int hashCode() {
-		int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public boolean addAll(Collection<? extends RightEntity> c) {
+        return rights.addAll(c);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		RoleEntity other = (RoleEntity) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        RoleEntity other = (RoleEntity) obj;
+        if (id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        } else if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
 }

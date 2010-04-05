@@ -20,85 +20,67 @@ import java.util.List;
 
 /**
  * Dao interface for a generic wicket data provider
- * 
+ *
  * @author Carsten Hufe
  */
 public interface DataProviderDao<T> {
 
-	/**
-	 * find all entities with limits and query params
-	 * 
-	 * @param clazz
-	 *            Class to search
-	 * @param sortParam
-	 *            sort parameter
-	 * @param ascending
-	 *            ascending
-	 * @param first
-	 *            first row
-	 * @param count
-	 *            number of results
-	 * @param beanQuery
-	 *            bean with criterias (use BeanQuery and BeanJoin annonation)
-	 * @return list with results
-	 */
-	List<T> findAllWithQuery(Class<T> clazz, String sortParam, boolean ascending, int first, int count,
-			Serializable beanQuery, List<String> prefetch);
+    /**
+     * find all entities with limits and query params
+     *
+     * @param clazz     Class to search
+     * @param sortParam sort parameter
+     * @param ascending ascending
+     * @param first     first row
+     * @param count     number of results
+     * @param beanQuery bean with criterias (use BeanQuery and BeanJoin annonation)
+     * @return list with results
+     */
+    List<T> findAllWithQuery(Class<T> clazz, String sortParam, boolean ascending, int first, int count, Serializable beanQuery, List<String> prefetch);
 
-	/**
-	 * find by Id
-	 * 
-	 * @param clazz
-	 *            entity class
-	 * @param id
-	 *            id of entity
-	 * @return entity
-	 */
-	T findById(Class<T> clazz, Serializable id);
+    /**
+     * find by Id
+     *
+     * @param clazz entity class
+     * @param id    id of entity
+     * @return entity
+     */
+    T findById(Class<T> clazz, Serializable id);
 
-	/**
-	 * finds everything
-	 * 
-	 * @param clazz
-	 *            entity class
-	 * @return list with all entities
-	 */
-	List<T> findAll(Class<T> clazz);
+    /**
+     * finds everything
+     *
+     * @param clazz entity class
+     * @return list with all entities
+     */
+    List<T> findAll(Class<T> clazz);
 
-	/**
-	 * find all entities with limits
-	 * 
-	 * @param clazz
-	 *            entity class
-	 * @param first
-	 *            first row
-	 * @param count
-	 *            number of following rows
-	 * @return all entites limitated by first and count
-	 */
-	List<T> findAll(Class<T> clazz, int first, int count);
+    /**
+     * find all entities with limits
+     *
+     * @param clazz entity class
+     * @param first first row
+     * @param count number of following rows
+     * @return all entites limitated by first and count
+     */
+    List<T> findAll(Class<T> clazz, int first, int count);
 
-	/**
-	 * Returns the number of rows
-	 * 
-	 * @param clazz
-	 *            entity clas
-	 * @param beanQuery
-	 *            bean with criterias (use BeanQuery and BeanJoin annonation)
-	 * @return number of results
-	 */
-	int getSize(Class<T> clazz, Serializable beanQuery);
+    /**
+     * Returns the number of rows
+     *
+     * @param clazz     entity clas
+     * @param beanQuery bean with criterias (use BeanQuery and BeanJoin annonation)
+     * @return number of results
+     */
+    int getSize(Class<T> clazz, Serializable beanQuery);
 
-	/**
-	 * Returns the number of rows
-	 * 
-	 * @param clazz
-	 *            entity clas
-	 * @param beanQuery
-	 *            bean with criterias (use BeanQuery and BeanJoin annonation)
-	 * @param countQuery
-	 *            specific count query e.g. "count(distinct e.name)"
-	 * @return number of results
-	 */
+    /**
+     * Returns the number of rows
+     *
+     * @param clazz      entity clas
+     * @param beanQuery  bean with criterias (use BeanQuery and BeanJoin annonation)
+     * @param countQuery specific count query e.g. "count(distinct e.name)"
+     * @return number of results
+     */
 	int getSize(Class<T> clazz, String countQuery, Serializable beanQuery);
 }

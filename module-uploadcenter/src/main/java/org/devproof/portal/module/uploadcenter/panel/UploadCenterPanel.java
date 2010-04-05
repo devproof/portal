@@ -42,85 +42,84 @@ import java.io.IOException;
  * @author Carsten Hufe
  */
 public abstract class UploadCenterPanel extends Panel {
-	private static final long serialVersionUID = 1L;
-	private static final Log LOG = LogFactory.getLog(UploadCenterPanel.class);
+    private static final long serialVersionUID = 1L;
+    private static final Log LOG = LogFactory.getLog(UploadCenterPanel.class);
 
-	@SpringBean(name = "sharedRegistry")
-	private SharedRegistry sharedRegistry;
-	private IModel<File> fileModel;
-	private BubblePanel bubblePanel;
+    @SpringBean(name = "sharedRegistry")
+    private SharedRegistry sharedRegistry;
+    private IModel<File> fileModel;
+    private BubblePanel bubblePanel;
 
-	public UploadCenterPanel(String id, IModel<File> fileModel, BubblePanel bubblePanel) {
-		super(id, fileModel);
-		this.fileModel = fileModel;
-		this.bubblePanel = bubblePanel;
-		add(createCreateDownloadLink());
-		add(createDownloadLink());
-		add(createDeleteLink());
-	}
+    public UploadCenterPanel(String id, IModel<File> fileModel, BubblePanel bubblePanel) {
+        super(id, fileModel);
+        this.fileModel = fileModel;
+        this.bubblePanel = bubblePanel;
+        add(createCreateDownloadLink());
+        add(createDownloadLink());
+        add(createDeleteLink());
+    }
 
-	private AjaxLink<File> createDeleteLink() {
-		AjaxLink<File> ajaxLink = newDeleteLink();
-		ajaxLink.add(createDeleteLinkImage());
-		return ajaxLink;
-	}
+    private AjaxLink<File> createDeleteLink() {
+        AjaxLink<File> ajaxLink = newDeleteLink();
+        ajaxLink.add(createDeleteLinkImage());
+        return ajaxLink;
+    }
 
     protected boolean isAllowedToCreateDownload() {
         return true;
     }
 
-	private Image createDeleteLinkImage() {
-		return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
-	}
+    private Image createDeleteLinkImage() {
+        return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
+    }
 
-	private AjaxLink<File> newDeleteLink() {
-		return new AjaxLink<File>("deleteLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<File> newDeleteLink() {
+        return new AjaxLink<File>("deleteLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(bubblePanel.getContentId(),
-						fileModel, bubblePanel) {
-					private static final long serialVersionUID = 1L;
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                ConfirmDeletePanel<File> confirmDeletePanel = new ConfirmDeletePanel<File>(bubblePanel.getContentId(), fileModel, bubblePanel) {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onDelete(AjaxRequestTarget target, Form<?> form) {
+                    @Override
+                    public void onDelete(AjaxRequestTarget target, Form<?> form) {
                         File file = fileModel.getObject();
-						if (file.isDirectory()) {
-							try {
-								FileUtils.deleteDirectory(file);
-							} catch (IOException e) {
-								throw new UnhandledException(e);
-							}
-						} else {
-							if (!file.delete()) {
-								LOG.error("Error deleting file " + file);
-							}
-						}
-						UploadCenterPanel.this.onDelete(target);
-						bubblePanel.hide(target);
-					}
-				};
-				bubblePanel.setContent(confirmDeletePanel);
-				bubblePanel.showModal(target);
-			}
-		};
-	}
+                        if (file.isDirectory()) {
+                            try {
+                                FileUtils.deleteDirectory(file);
+                            } catch (IOException e) {
+                                throw new UnhandledException(e);
+                            }
+                        } else {
+                            if (!file.delete()) {
+                                LOG.error("Error deleting file " + file);
+                            }
+                        }
+                        UploadCenterPanel.this.onDelete(target);
+                        bubblePanel.hide(target);
+                    }
+                };
+                bubblePanel.setContent(confirmDeletePanel);
+                bubblePanel.showModal(target);
+            }
+        };
+    }
 
-	private InternalDownloadLink createDownloadLink() {
-		InternalDownloadLink downloadLink = newDownloadLink();
-		downloadLink.add(new Image("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
-		return downloadLink;
-	}
+    private InternalDownloadLink createDownloadLink() {
+        InternalDownloadLink downloadLink = newDownloadLink();
+        downloadLink.add(new Image("downloadImage", UploadCenterConstants.REF_DOWNLOAD_IMG));
+        return downloadLink;
+    }
 
-	private InternalDownloadLink newDownloadLink() {
-		return new InternalDownloadLink("downloadLink") {
-			private static final long serialVersionUID = 1L;
+    private InternalDownloadLink newDownloadLink() {
+        return new InternalDownloadLink("downloadLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected File getFile() {
+            @Override
+            protected File getFile() {
                 return fileModel.getObject();
-			}
+            }
 
             @Override
             public boolean isVisible() {
@@ -128,32 +127,31 @@ public abstract class UploadCenterPanel extends Panel {
                 return file == null || file.isFile();
             }
         };
-	}
+    }
 
-	private Link<File> createCreateDownloadLink() {
-		Link<File> createDownloadLink = newCreateDownloadLink();
-		createDownloadLink.add(new Image("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
-		return createDownloadLink;
-	}
+    private Link<File> createCreateDownloadLink() {
+        Link<File> createDownloadLink = newCreateDownloadLink();
+        createDownloadLink.add(new Image("createDownloadImage", UploadCenterConstants.REF_GALLERY_IMG));
+        return createDownloadLink;
+    }
 
-	private Link<File> newCreateDownloadLink() {
-		return new Link<File>("createDownloadLink", fileModel) {
-			private static final long serialVersionUID = 1L;
+    private Link<File> newCreateDownloadLink() {
+        return new Link<File>("createDownloadLink", fileModel) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick() {
-				CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
-				setResponsePage(createDownloadPage.newInstance(fileModel.getObject().toURI().toString()));
-			}
+            @Override
+            public void onClick() {
+                CommonPageFactory createDownloadPage = sharedRegistry.getResource("createDownloadPage");
+                setResponsePage(createDownloadPage.newInstance(fileModel.getObject().toURI().toString()));
+            }
 
             @Override
             public boolean isVisible() {
                 File file = fileModel.getObject();
-                return (file == null || file.isFile()) && isAllowedToCreateDownload()
-				    && sharedRegistry.isResourceAvailable("createDownloadPage");
+                return (file == null || file.isFile()) && isAllowedToCreateDownload() && sharedRegistry.isResourceAvailable("createDownloadPage");
             }
         };
-	}
+    }
 
-	protected abstract void onDelete(AjaxRequestTarget target);
+    protected abstract void onDelete(AjaxRequestTarget target);
 }

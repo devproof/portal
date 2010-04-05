@@ -46,33 +46,33 @@ import java.util.List;
  */
 public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private TagService<T> tagService;
-	private Class<? extends Page> page;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private TagService<T> tagService;
+    private Class<? extends Page> page;
     private WebMarkupContainer titleContainer;
-	private IModel<List<T>> tagsModel;
+    private IModel<List<T>> tagsModel;
 
-	public TagCloudBoxPanel(String id, TagService<T> tagService, Class<? extends Page> page) {
-		super(id);
-		this.tagService = tagService;
-		this.page = page;
-		this.tagsModel = createTagsModel();
-		add(createCSSHeaderContributor());
-		add(createRepeatingTags());
-		add(createTitleContainer());
-	}
+    public TagCloudBoxPanel(String id, TagService<T> tagService, Class<? extends Page> page) {
+        super(id);
+        this.tagService = tagService;
+        this.page = page;
+        this.tagsModel = createTagsModel();
+        add(createCSSHeaderContributor());
+        add(createRepeatingTags());
+        add(createTitleContainer());
+    }
 
-	@Override
-	public boolean isVisible() {
-		return tagsModel.getObject().size() > 0;
-	}
+    @Override
+    public boolean isVisible() {
+        return tagsModel.getObject().size() > 0;
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
     private ListView<T> createRepeatingTags() {
         return new ListView<T>("repeatingTags", tagsModel) {
@@ -118,49 +118,47 @@ public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implemen
         };
     }
 
-	private boolean isTagSelected(T tag) {
-		String selectedTag = TagUtils.findSelectedTag();
-		return tag.getTagname().equals(selectedTag);
-	}
+    private boolean isTagSelected(T tag) {
+        String selectedTag = TagUtils.findSelectedTag();
+        return tag.getTagname().equals(selectedTag);
+    }
 
-	private T getSelectedTag() {
-		PageParameters params = RequestCycle.get().getPageParameters();
-		if (params != null && params.containsKey("tag")) {
-			return tagService.findById(params.getString("tag"));
-		}
-		return null;
-	}
+    private T getSelectedTag() {
+        PageParameters params = RequestCycle.get().getPageParameters();
+        if (params != null && params.containsKey("tag")) {
+            return tagService.findById(params.getString("tag"));
+        }
+        return null;
+    }
 
-	private IModel<List<T>> createTagsModel() {
-		return new LoadableDetachableModel<List<T>>() {
-			private static final long serialVersionUID = 1L;
+    private IModel<List<T>> createTagsModel() {
+        return new LoadableDetachableModel<List<T>>() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected List<T> load() {
-				PortalSession session = (PortalSession) getSession();
-				final List<T> tags;
-				if (session.hasRight(tagService.getRelatedTagRight())) {
-					tags = tagService.findMostPopularTags(0, configurationService
-							.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
-				} else {
-					tags = tagService.findMostPopularTags(session.getRole(), 0, configurationService
-							.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
-				}
-				T selectedTag = getSelectedTag();
-				if (selectedTag != null && !tags.contains(selectedTag)) {
-					tags.add(selectedTag);
-				}
-				return tags;
-			}
-		};
-	}
+            @Override
+            protected List<T> load() {
+                PortalSession session = (PortalSession) getSession();
+                final List<T> tags;
+                if (session.hasRight(tagService.getRelatedTagRight())) {
+                    tags = tagService.findMostPopularTags(0, configurationService.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
+                } else {
+                    tags = tagService.findMostPopularTags(session.getRole(), 0, configurationService.findAsInteger(TagConstants.CONF_BOX_NUM_TAGS));
+                }
+                T selectedTag = getSelectedTag();
+                if (selectedTag != null && !tags.contains(selectedTag)) {
+                    tags.add(selectedTag);
+                }
+                return tags;
+            }
+        };
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

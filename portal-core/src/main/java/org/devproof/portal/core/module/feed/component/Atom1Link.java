@@ -22,14 +22,14 @@ import org.devproof.portal.core.module.feed.page.Atom1FeedPage;
  * @author Carsten Hufe
  */
 public class Atom1Link extends BaseFeedLink {
-	private static final long serialVersionUID = 1L;
-	
-	public Atom1Link(String id, Class<? extends TemplatePage> page) {
-		super(id, page,  Atom1FeedPage.class);
-	}
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected String getContentType() {
-		return "application/atom+xml";
-	}
+    public Atom1Link(String id, Class<? extends TemplatePage> page) {
+        super(id, page, Atom1FeedPage.class);
+    }
+
+    @Override
+    protected String getContentType() {
+        return "application/atom+xml";
+    }
 }

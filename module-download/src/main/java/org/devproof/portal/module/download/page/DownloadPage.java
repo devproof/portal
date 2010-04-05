@@ -220,6 +220,7 @@ public class DownloadPage extends DownloadBasePage {
         private IModel<DownloadEntity> createDownloadModel() {
             return new LoadableDetachableModel<DownloadEntity>() {
                 private static final long serialVersionUID = -2683624402683569635L;
+
                 @Override
                 protected DownloadEntity load() {
                     DownloadEntity download = downloadModel.getObject();
@@ -316,6 +317,7 @@ public class DownloadPage extends DownloadBasePage {
         private IModel<String> createDownloadLinkLabelModel() {
             return new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 8934555375794694831L;
+
                 @Override
                 public String getObject() {
                     String labelKey = isAllowedToDownload() ? "downloadNow" : "loginToDownload";
@@ -337,8 +339,7 @@ public class DownloadPage extends DownloadBasePage {
         private CaptchaRatingPanel newRatingPanel() {
             IModel<Integer> calculatedRatingModel = new PropertyModel<Integer>(downloadModel, "calculatedRating");
             IModel<Integer> numberOfVotesModel = new PropertyModel<Integer>(downloadModel, "numberOfVotes");
-            return new CaptchaRatingPanel("vote", calculatedRatingModel, Model.of(5), numberOfVotesModel, hasVoted,
-                    true, bubblePanel) {
+            return new CaptchaRatingPanel("vote", calculatedRatingModel, Model.of(5), numberOfVotesModel, hasVoted, true, bubblePanel) {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -409,7 +410,7 @@ public class DownloadPage extends DownloadBasePage {
         }
 
         private Component createBrokenLabel() {
-            return new Label("broken", DownloadPage.this.getString("broken")){
+            return new Label("broken", DownloadPage.this.getString("broken")) {
                 private static final long serialVersionUID = -807674850041935129L;
 
                 @Override

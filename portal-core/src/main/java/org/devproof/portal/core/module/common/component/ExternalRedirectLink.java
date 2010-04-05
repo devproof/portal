@@ -20,20 +20,20 @@ import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 
 /**
  * External link with redirection (if you wanna count the hits)
- * 
+ *
  * @author Carsten Hufe
  */
 public class ExternalRedirectLink extends StatelessLink {
-	private static final long serialVersionUID = 1L;
-	private String url = null;
+    private static final long serialVersionUID = 1L;
+    private String url = null;
 
-	public ExternalRedirectLink(String id, String url) {
-		super(id);
-		this.url = url;
-	}
+    public ExternalRedirectLink(String id, String url) {
+        super(id);
+        this.url = url;
+    }
 
-	@Override
-	public void onClick() {
-		getRequestCycle().setRequestTarget(new RedirectRequestTarget(url));
-	}
+    @Override
+    public void onClick() {
+        getRequestCycle().setRequestTarget(new RedirectRequestTarget(url));
+    }
 }

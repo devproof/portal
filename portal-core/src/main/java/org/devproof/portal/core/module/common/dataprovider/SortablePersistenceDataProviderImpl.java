@@ -29,82 +29,78 @@ import java.util.List;
 /**
  * Generic data provider for wicket data views Only set the type and you will
  * have a persistencinated data provider
- * 
+ *
  * @author Carsten Hufe
- * 
  * @param <T>
- *            Entity type
+ * Entity type
  */
-public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ extends Serializable> extends
-		SortableDataProvider<T> implements SortableQueryDataProvider<T, SQ> {
-	private static final long serialVersionUID = 1L;
+public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ extends Serializable> extends SortableDataProvider<T> implements SortableQueryDataProvider<T, SQ> {
+    private static final long serialVersionUID = 1L;
 
-	private Class<T> entityClass;
-	private Class<T> queryClass;
-	private DataProviderDao<T> dataProviderDao;
-	private IModel<SQ> searchQueryModel;
-	private List<String> prefetch;
-	private String countQuery;
+    private Class<T> entityClass;
+    private Class<T> queryClass;
+    private DataProviderDao<T> dataProviderDao;
+    private IModel<SQ> searchQueryModel;
+    private List<String> prefetch;
+    private String countQuery;
 
-	@Override
-	public Iterator<? extends T> iterator(int first, int count) {
-		SortParam sp = getSort();
-		SQ searchQuery = getSearchQueryModel().getObject();
-		List<T> list = dataProviderDao.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count,
-				searchQuery, prefetch);
-		return list.iterator();
-	}
+    @Override
+    public Iterator<? extends T> iterator(int first, int count) {
+        SortParam sp = getSort();
+        SQ searchQuery = getSearchQueryModel().getObject();
+        List<T> list = dataProviderDao.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count, searchQuery, prefetch);
+        return list.iterator();
+    }
 
-	public IModel<T> model(T obj) {
-		return Model.of(obj);
-	}
+    public IModel<T> model(T obj) {
+        return Model.of(obj);
+    }
 
-	@Override
-	public int size() {
-		SQ searchQuery = getSearchQueryModel().getObject();
-		if (countQuery != null) {
-			return dataProviderDao.getSize(entityClass, countQuery, searchQuery);
-		} else {
-			return dataProviderDao.getSize(entityClass, searchQuery);
-		}
-	}
+    @Override
+    public int size() {
+        SQ searchQuery = getSearchQueryModel().getObject();
+        if (countQuery != null) {
+            return dataProviderDao.getSize(entityClass, countQuery, searchQuery);
+        } else {
+            return dataProviderDao.getSize(entityClass, searchQuery);
+        }
+    }
 
-	@Override
-	public IModel<SQ> getSearchQueryModel() {
-		if (searchQueryModel == null) {
-			searchQueryModel = new Model<SQ>();
-			if (queryClass != null) {
-				try {
-					@SuppressWarnings("unchecked")
-					SQ query = (SQ) queryClass.newInstance();
-					searchQueryModel.setObject(query);
-				} catch (InstantiationException e) {
-					throw new UnhandledException(e);
-				} catch (IllegalAccessException e) {
-					throw new UnhandledException(e);
-				}
-			}
-		}
-		return searchQueryModel;
-	}
+    @Override
+    public IModel<SQ> getSearchQueryModel() {
+        if (searchQueryModel == null) {
+            searchQueryModel = new Model<SQ>();
+            if (queryClass != null) {
+                try {
+                    @SuppressWarnings("unchecked") SQ query = (SQ) queryClass.newInstance();
+                    searchQueryModel.setObject(query);
+                } catch (InstantiationException e) {
+                    throw new UnhandledException(e);
+                } catch (IllegalAccessException e) {
+                    throw new UnhandledException(e);
+                }
+            }
+        }
+        return searchQueryModel;
+    }
 
-	public void setEntityClass(Class<T> entityClass) {
-		this.entityClass = entityClass;
-	}
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
 
-	public void setDataProviderDao(DataProviderDao<T> dataProviderDao) {
-		this.dataProviderDao = dataProviderDao;
-	}
+    public void setDataProviderDao(DataProviderDao<T> dataProviderDao) {
+        this.dataProviderDao = dataProviderDao;
+    }
 
-	public void setPrefetch(List<String> prefetch) {
-		this.prefetch = prefetch;
-	}
+    public void setPrefetch(List<String> prefetch) {
+        this.prefetch = prefetch;
+    }
 
-	public void setCountQuery(String countQuery) {
-		this.countQuery = countQuery;
-	}
+    public void setCountQuery(String countQuery) {
+        this.countQuery = countQuery;
+    }
 
-	public void setQueryClass(Class<T> queryClass) {
-		this.queryClass = queryClass;
-	}
+    public void setQueryClass(Class<T> queryClass) {
+        this.queryClass = queryClass;
+    }
 }

@@ -30,82 +30,81 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class BookmarkServiceImpl implements BookmarkService {
-	private BookmarkDao bookmarkDao;
-	private TagService<BookmarkTagEntity> bookmarkTagService;
+    private BookmarkDao bookmarkDao;
+    private TagService<BookmarkTagEntity> bookmarkTagService;
 
-	@Override
-	public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
-			Integer maxResult) {
-		return bookmarkDao.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
-	}
+    @Override
+    public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+        return bookmarkDao.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
+    }
 
-	@Override
-	public List<BookmarkEntity> findBookmarksBySource(Source source) {
-		return bookmarkDao.findBookmarksBySource(source);
-	}
+    @Override
+    public List<BookmarkEntity> findBookmarksBySource(Source source) {
+        return bookmarkDao.findBookmarksBySource(source);
+    }
 
-	@Override
-	public void incrementHits(BookmarkEntity bookmark) {
-		bookmarkDao.incrementHits(bookmark);
-	}
+    @Override
+    public void incrementHits(BookmarkEntity bookmark) {
+        bookmarkDao.incrementHits(bookmark);
+    }
 
-	@Override
-	public void markBrokenBookmark(BookmarkEntity bookmark) {
-		bookmarkDao.markBrokenBookmark(bookmark);
-	}
+    @Override
+    public void markBrokenBookmark(BookmarkEntity bookmark) {
+        bookmarkDao.markBrokenBookmark(bookmark);
+    }
 
-	@Override
-	public void markValidBookmark(BookmarkEntity bookmark) {
-		bookmarkDao.markValidBookmark(bookmark);
-	}
+    @Override
+    public void markValidBookmark(BookmarkEntity bookmark) {
+        bookmarkDao.markValidBookmark(bookmark);
+    }
 
-	@Override
-	public BookmarkEntity newBookmarkEntity() {
-		BookmarkEntity bookmark = new BookmarkEntity();
-		bookmark.setAllRights(bookmarkDao.findLastSelectedRights());
-		return bookmark;
-	}
+    @Override
+    public BookmarkEntity newBookmarkEntity() {
+        BookmarkEntity bookmark = new BookmarkEntity();
+        bookmark.setAllRights(bookmarkDao.findLastSelectedRights());
+        return bookmark;
+    }
 
-	@Override
-	public void rateBookmark(Integer rating, BookmarkEntity bookmark) {
-		bookmarkDao.rateBookmark(rating, bookmark);
-		bookmarkDao.refresh(bookmark);
-	}
+    @Override
+    public void rateBookmark(Integer rating, BookmarkEntity bookmark) {
+        bookmarkDao.rateBookmark(rating, bookmark);
+        bookmarkDao.refresh(bookmark);
+    }
 
-	@Override
-	public void delete(BookmarkEntity entity) {
-		bookmarkDao.delete(entity);
-		bookmarkTagService.deleteUnusedTags();
-	}
+    @Override
+    public void delete(BookmarkEntity entity) {
+        bookmarkDao.delete(entity);
+        bookmarkTagService.deleteUnusedTags();
+    }
 
-	@Override
-	public List<BookmarkEntity> findAll() {
-		return bookmarkDao.findAll();
-	}
+    @Override
+    public List<BookmarkEntity> findAll() {
+        return bookmarkDao.findAll();
+    }
 
-	@Override
-	public BookmarkEntity findById(Integer id) {
-		return bookmarkDao.findById(id);
-	}
+    @Override
+    public BookmarkEntity findById(Integer id) {
+        return bookmarkDao.findById(id);
+    }
 
-	@Override
-	public void save(BookmarkEntity entity) {
-		bookmarkDao.save(entity);
-		bookmarkTagService.deleteUnusedTags();
-	}
+    @Override
+    public void save(BookmarkEntity entity) {
+        bookmarkDao.save(entity);
+        bookmarkTagService.deleteUnusedTags();
+    }
 
-	@Override
-	public List<RightEntity> findLastSelectedRights() {
-		return bookmarkDao.findLastSelectedRights();
-	}
+    @Override
+    public List<RightEntity> findLastSelectedRights() {
+        return bookmarkDao.findLastSelectedRights();
+    }
 
-	@Required
-	public void setBookmarkDao(BookmarkDao bookmarkDao) {
-		this.bookmarkDao = bookmarkDao;
-	}
+    @Required
+    public void setBookmarkDao(BookmarkDao bookmarkDao) {
+        this.bookmarkDao = bookmarkDao;
+    }
 
-	@Required
-	public void setBookmarkTagService(TagService<BookmarkTagEntity> bookmarkTagService) {
-		this.bookmarkTagService = bookmarkTagService;
-	}
+    @Required
+    public void setBookmarkTagService(TagService<BookmarkTagEntity> bookmarkTagService) {
+        this.bookmarkTagService = bookmarkTagService;
+    }
 }

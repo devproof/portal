@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!--
+<?xml version="1.0" encoding="UTF-8" ?><!--
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
    this work for additional information regarding copyright ownership.
@@ -14,47 +13,47 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
--->
-<?xml version="1.0" encoding="UTF-8"?>
+--><?xml version="1.0" encoding="UTF-8"?>
 <html xmlns:wicket="http://wicket.sourceforge.net/">
 <wicket:head>
-	<script type="text/javascript">
-		function getEventX(element, event) {
-			if (event.offsetX != null) {
-				return event.offsetX;
-			}
-			
-			//return event.pageX - element.offsetLeft;
-			var myleft=0;
-			while(element) {
-				myleft += element.offsetLeft;
-				element= element.offsetParent;
-			}
-			return event.pageX - myleft;
-		}
-		function getEventY(element, event) {
-			if (event.offsetY != null) {
-				return event.offsetY;
-			}
-			var mytop=0;
-			while(element) {
-				mytop += element.offsetTop;
-				element= element.offsetParent;
-			}
-			return event.pageY - mytop;
-		}
+    <script type="text/javascript">
+        function getEventX(element, event) {
+            if (event.offsetX != null) {
+                return event.offsetX;
+            }
 
-	</script>
+            //return event.pageX - element.offsetLeft;
+            var myleft = 0;
+            while (element) {
+                myleft += element.offsetLeft;
+                element = element.offsetParent;
+            }
+            return event.pageX - myleft;
+        }
+        function getEventY(element, event) {
+            if (event.offsetY != null) {
+                return event.offsetY;
+            }
+            var mytop = 0;
+            while (element) {
+                mytop += element.offsetTop;
+                element = element.offsetParent;
+            }
+            return event.pageY - mytop;
+        }
+
+    </script>
 </wicket:head>
 <body>
 <wicket:panel>
-	<div wicket:id="animalSelectionLabel"  style="font-size: 12px;"></div>
-	<p/>
-	<div id="imageContainer">
-		<div wicket:id="imageContainer">
-			<span style="font-size: 24px;"><img src="" wicket:id="image" wicket:message="alt:pleaseWait"></img></span>
-		</div>
-	</div>
+    <div wicket:id="animalSelectionLabel" style="font-size: 12px;"></div>
+    <p/>
+
+    <div id="imageContainer">
+        <div wicket:id="imageContainer">
+            <span style="font-size: 24px;"><img src="" wicket:id="image" wicket:message="alt:pleaseWait"></img></span>
+        </div>
+    </div>
 </wicket:panel>
 </body>
 </html>

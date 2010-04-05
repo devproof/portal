@@ -35,37 +35,37 @@ import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
  */
 public class LoginPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String username = "";
+    private String username = "";
     private String password = "";
 
-	public LoginPage(PageParameters params) {
-		super(params);
-		add(createLoginForm());
-		add(createRegisterLink());
-		add(createForgotPasswordLink());
-	}
+    public LoginPage(PageParameters params) {
+        super(params);
+        add(createLoginForm());
+        add(createRegisterLink());
+        add(createForgotPasswordLink());
+    }
 
-	private Form<ValueMap> createLoginForm() {
-		Form<ValueMap> form = newLoginForm();
-		form.add(createUsernameField());
-		form.add(createPasswordField());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<ValueMap> createLoginForm() {
+        Form<ValueMap> form = newLoginForm();
+        form.add(createUsernameField());
+        form.add(createPasswordField());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private PasswordTextField createPasswordField() {
+    private PasswordTextField createPasswordField() {
         IModel<String> passwordModel = new PropertyModel<String>(this, "password");
         return new PasswordTextField("password", passwordModel);
-	}
+    }
 
-	private RequiredTextField<String> createUsernameField() {
+    private RequiredTextField<String> createUsernameField() {
         IModel<String> usernameModel = new PropertyModel<String>(this, "username");
-		return new RequiredTextField<String>("username", usernameModel);
-	}
+        return new RequiredTextField<String>("username", usernameModel);
+    }
 
-	private Form<ValueMap> newLoginForm() {
+    private Form<ValueMap> newLoginForm() {
         return new Form<ValueMap>("loginForm") {
             private static final long serialVersionUID = 1L;
 
@@ -88,19 +88,18 @@ public class LoginPage extends TemplatePage {
                 boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
                 // production mode check is for unit tests
                 if (productionMode) {
-                    @SuppressWarnings("unchecked")
-                    Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
+                    @SuppressWarnings("unchecked") Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
                     setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
                 }
             }
         };
-	}
+    }
 
-	private BookmarkablePageLink<Void> createForgotPasswordLink() {
-		return new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class);
-	}
+    private BookmarkablePageLink<Void> createForgotPasswordLink() {
+        return new BookmarkablePageLink<Void>("forgotPasswordLink", ForgotPasswordPage.class);
+    }
 
-	private BookmarkablePageLink<Void> createRegisterLink() {
-		return new BookmarkablePageLink<Void>("registerLink", RegisterPage.class);
-	}
+    private BookmarkablePageLink<Void> createRegisterLink() {
+        return new BookmarkablePageLink<Void>("registerLink", RegisterPage.class);
+    }
 }

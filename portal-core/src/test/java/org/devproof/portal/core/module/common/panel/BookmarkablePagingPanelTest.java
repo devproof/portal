@@ -30,60 +30,59 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class BookmarkablePagingPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createBookmarkablePagingPanel());
-		tester.assertComponent("panel", BookmarkablePagingPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createBookmarkablePagingPanel());
+        tester.assertComponent("panel", BookmarkablePagingPanel.class);
+    }
 
-	private TestPanelSource createBookmarkablePagingPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createBookmarkablePagingPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new BookmarkablePagingPanel(panelId, new TestIPageable(), Model.of(new TestSearchQuery()),
-						WebPage.class);
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new BookmarkablePagingPanel(panelId, new TestIPageable(), Model.of(new TestSearchQuery()), WebPage.class);
+            }
+        };
+    }
 
-	private static class TestIPageable implements IPageable {
-		private static final long serialVersionUID = 1L;
+    private static class TestIPageable implements IPageable {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public int getCurrentPage() {
-			return 0;
-		}
+        @Override
+        public int getCurrentPage() {
+            return 0;
+        }
 
-		@Override
-		public int getPageCount() {
-			return 0;
-		}
+        @Override
+        public int getPageCount() {
+            return 0;
+        }
 
-		@Override
-		public void setCurrentPage(int page) {
-		}
-	}
+        @Override
+        public void setCurrentPage(int page) {
+        }
+    }
 
-	private static class TestSearchQuery implements SearchQuery {
-		private static final long serialVersionUID = 1L;
+    private static class TestSearchQuery implements SearchQuery {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public PageParameters getPageParameters() {
-			return new PageParameters();
-		}
-	}
+        @Override
+        public PageParameters getPageParameters() {
+            return new PageParameters();
+        }
+    }
 }

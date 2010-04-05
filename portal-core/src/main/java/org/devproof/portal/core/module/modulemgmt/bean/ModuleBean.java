@@ -21,22 +21,22 @@ import org.devproof.portal.core.config.ModuleConfiguration;
  * @author Carsten Hufe
  */
 public class ModuleBean {
-	private ModuleConfiguration configuration;
-	private String location;
+    private ModuleConfiguration configuration;
+    private String location;
 
-	public ModuleConfiguration getConfiguration() {
-		return configuration;
-	}
+    public ModuleConfiguration getConfiguration() {
+        return configuration;
+    }
 
-	public void setConfiguration(ModuleConfiguration configuration) {
-		this.configuration = configuration;
-	}
+    public void setConfiguration(ModuleConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

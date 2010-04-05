@@ -29,26 +29,26 @@ import org.devproof.portal.core.module.email.service.EmailService;
  * @author Carsten Hufe
  */
 public class EmailTemplateBasePage extends TemplatePage {
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "emailService")
-	private EmailService emailService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "emailService")
+    private EmailService emailService;
 
-	public EmailTemplateBasePage(PageParameters params) {
-		super(params);
-		addPageAdminBoxLink(createCreateEmailTemplateLink());
-	}
+    public EmailTemplateBasePage(PageParameters params) {
+        super(params);
+        addPageAdminBoxLink(createCreateEmailTemplateLink());
+    }
 
-	private Link<EmailTemplateEntity> createCreateEmailTemplateLink() {
-		Link<EmailTemplateEntity> adminLink = newCreateEmailTemplateLink();
-		adminLink.add(createCreateEmailTemplateLinkLabel());
-		return adminLink;
-	}
+    private Link<EmailTemplateEntity> createCreateEmailTemplateLink() {
+        Link<EmailTemplateEntity> adminLink = newCreateEmailTemplateLink();
+        adminLink.add(createCreateEmailTemplateLinkLabel());
+        return adminLink;
+    }
 
-	private Label createCreateEmailTemplateLinkLabel() {
-		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
-	}
+    private Label createCreateEmailTemplateLinkLabel() {
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    }
 
-	private Link<EmailTemplateEntity> newCreateEmailTemplateLink() {
+    private Link<EmailTemplateEntity> newCreateEmailTemplateLink() {
         return new Link<EmailTemplateEntity>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
@@ -59,5 +59,5 @@ public class EmailTemplateBasePage extends TemplatePage {
                 setResponsePage(new EmailTemplateEditPage(emailTemplateModel));
             }
         };
-	}
+    }
 }

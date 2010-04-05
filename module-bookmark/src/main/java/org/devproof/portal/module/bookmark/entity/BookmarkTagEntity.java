@@ -33,19 +33,19 @@ import java.util.List;
 @Table(name = "bookmark_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
 final public class BookmarkTagEntity extends BaseTagEntity<BookmarkEntity> {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
-	private List<BookmarkEntity> referencedObjects;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
+    private List<BookmarkEntity> referencedObjects;
 
-	@Override
-	public List<BookmarkEntity> getReferencedObjects() {
-		return referencedObjects;
-	}
+    @Override
+    public List<BookmarkEntity> getReferencedObjects() {
+        return referencedObjects;
+    }
 
-	@Override
-	public void setReferencedObjects(List<BookmarkEntity> referencedObjects) {
-		this.referencedObjects = referencedObjects;
-	}
+    @Override
+    public void setReferencedObjects(List<BookmarkEntity> referencedObjects) {
+        this.referencedObjects = referencedObjects;
+    }
 
 }

@@ -28,12 +28,12 @@ import java.util.List;
  */
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface BoxDao extends GenericDao<BoxEntity, Integer> {
-	@Query("select max(b.sort) from BoxEntity b")
-	Integer getMaxSortNum();
+    @Query("select max(b.sort) from BoxEntity b")
+    Integer getMaxSortNum();
 
-	@Query("select b from BoxEntity b where b.sort = ?")
-	BoxEntity findBoxBySort(Integer sort);
+    @Query("select b from BoxEntity b where b.sort = ?")
+    BoxEntity findBoxBySort(Integer sort);
 
-	@Query("select b from BoxEntity b order by b.sort")
-	List<BoxEntity> findAllOrderedBySort();
+    @Query("select b from BoxEntity b order by b.sort")
+    List<BoxEntity> findAllOrderedBySort();
 }

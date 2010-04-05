@@ -26,27 +26,27 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class Rss2FeedPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		FeedProviderRegistry registry = PortalTestUtil.getBean("feedProviderRegistry");
-		registry.removeFeedProvider("dummy");
-		registry.registerFeedProvider("dummy", new DummyFeedProviderImpl());
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        FeedProviderRegistry registry = PortalTestUtil.getBean("feedProviderRegistry");
+        registry.removeFeedProvider("dummy");
+        registry.registerFeedProvider("dummy", new DummyFeedProviderImpl());
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(Rss2FeedPage.class, new PageParameters("0=dummy"));
-		tester.assertRenderedPage(Rss2FeedPage.class);
-		tester.assertContains("dummy feed description");
-		tester.assertContains("dummy title");
-		tester.assertContains("http://dummy.url");
-		tester.assertContains("dummy value");
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(Rss2FeedPage.class, new PageParameters("0=dummy"));
+        tester.assertRenderedPage(Rss2FeedPage.class);
+        tester.assertContains("dummy feed description");
+        tester.assertContains("dummy title");
+        tester.assertContains("http://dummy.url");
+        tester.assertContains("dummy value");
+    }
 }

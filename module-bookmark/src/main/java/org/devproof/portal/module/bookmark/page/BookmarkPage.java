@@ -191,6 +191,7 @@ public class BookmarkPage extends BookmarkBasePage {
         private IModel<String> createVisitLinkModel() {
             return new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = -1310603186873782577L;
+
                 @Override
                 public String getObject() {
                     String labelKey = isAllowedToVisit() ? "visitNow" : "loginToVisit";
@@ -242,8 +243,7 @@ public class BookmarkPage extends BookmarkBasePage {
 
         private TagContentPanel<BookmarkTagEntity> createTagPanel() {
             IModel<List<BookmarkTagEntity>> tagsModel = new PropertyModel<List<BookmarkTagEntity>>(bookmarkModel, "tags");
-            return new TagContentPanel<BookmarkTagEntity>("tags", tagsModel,
-                    BookmarkPage.class);
+            return new TagContentPanel<BookmarkTagEntity>("tags", tagsModel, BookmarkPage.class);
         }
 
         private Label createHitsLabel() {
@@ -304,9 +304,10 @@ public class BookmarkPage extends BookmarkBasePage {
         private Component createBrokenLabel() {
             return new Label("broken", BookmarkPage.this.getString("broken")) {
                 private static final long serialVersionUID = 6476871098870011172L;
+
                 @Override
                 public boolean isVisible() {
-                    BookmarkEntity bookmark = bookmarkModel.getObject();                    
+                    BookmarkEntity bookmark = bookmarkModel.getObject();
                     return bookmark.getBroken() != null && bookmark.getBroken();
                 }
             };

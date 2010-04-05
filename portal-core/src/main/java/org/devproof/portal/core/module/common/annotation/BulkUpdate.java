@@ -22,14 +22,14 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation is required to define a HQL bulk update on a dao interface method
- * 
+ *
  * @author Carsten Hufe
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(value = ElementType.METHOD)
 public @interface BulkUpdate {
-	/**
-	 * HQL bulk update statement
-	 */
-	String value();
+    /**
+     * HQL bulk update statement
+     */
+    String value();
 }

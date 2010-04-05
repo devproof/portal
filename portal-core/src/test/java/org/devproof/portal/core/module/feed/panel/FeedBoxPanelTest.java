@@ -26,31 +26,31 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class FeedBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createFeedBoxPanel());
-		// tester.assertComponent("panel", FeedBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createFeedBoxPanel());
+        // tester.assertComponent("panel", FeedBoxPanel.class);
+    }
 
-	private TestPanelSource createFeedBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createFeedBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new FeedBoxPanel(panelId, DummyPanelPage.class);
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new FeedBoxPanel(panelId, DummyPanelPage.class);
+            }
+        };
+    }
 }

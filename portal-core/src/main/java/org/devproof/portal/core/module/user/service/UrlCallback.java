@@ -17,17 +17,16 @@ package org.devproof.portal.core.module.user.service;
 
 /**
  * Builds URLs in the service layer
- * 
+ *
  * @author Carsten Hufe
  */
 public interface UrlCallback {
-	/**
-	 * Returns a URLs which is usally placed in an email
-	 * 
-	 * @param generatedCode
-	 *            code which is generated in the service layer, e.g.
-	 *            confirmation code
-	 * @return Full URL
-	 */
-	String getUrl(String generatedCode);
+    /**
+     * Returns a URLs which is usally placed in an email
+     *
+     * @param generatedCode code which is generated in the service layer, e.g.
+     *                      confirmation code
+     * @return Full URL
+     */
+    String getUrl(String generatedCode);
 }

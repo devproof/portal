@@ -36,68 +36,68 @@ import org.devproof.portal.core.module.user.service.UserService;
  */
 public class ReenterEmailPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "userService")
-	private UserService userService;
-	private IModel<UserEntity> userModel;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "userService")
+    private UserService userService;
+    private IModel<UserEntity> userModel;
     private IModel<String> usernameModel;
 
     public ReenterEmailPage(IModel<String> usernameModel) {
-		super(new PageParameters());
+        super(new PageParameters());
         this.usernameModel = usernameModel;
         this.userModel = createUserModel();
-		add(createReenterEmailForm());
-	}
+        add(createReenterEmailForm());
+    }
 
-	private Form<UserEntity> createReenterEmailForm() {
-		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
-		form.add(createEmailField());
-		form.add(createRequestButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<UserEntity> createReenterEmailForm() {
+        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+        form.add(createEmailField());
+        form.add(createRequestButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private TextField<String> createEmailField() {
-		return new RequiredTextField<String>("email");
-	}
+    private TextField<String> createEmailField() {
+        return new RequiredTextField<String>("email");
+    }
 
-	private Button createRequestButton() {
-		return new Button("requestButton") {
-			private static final long serialVersionUID = 1L;
+    private Button createRequestButton() {
+        return new Button("requestButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onSubmit() {
+            @Override
+            public void onSubmit() {
                 UserEntity user = userModel.getObject();
-				userService.resendConfirmationCode(user, createConfirmationUrlCallback());
-				setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
-			}
+                userService.resendConfirmationCode(user, createConfirmationUrlCallback());
+                setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
+            }
 
-			private UrlCallback createConfirmationUrlCallback() {
-				return new UrlCallback() {
-					@Override
-					public String getUrl(String generatedCode) {
+            private UrlCallback createConfirmationUrlCallback() {
+                return new UrlCallback() {
+                    @Override
+                    public String getUrl(String generatedCode) {
                         UserEntity user = userModel.getObject();
-						String requestUrl = getRequestURL();
-						PageParameters param = new PageParameters();
-						param.add(RegisterPage.PARAM_USER, user.getUsername());
-						param.add(RegisterPage.PARAM_KEY, generatedCode);
-						StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/"))
-								.append("/");
-						url.append(ReenterEmailPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
-						return url.toString();
-					}
-				};
-			}
-		};
-	}
+                        String requestUrl = getRequestURL();
+                        PageParameters param = new PageParameters();
+                        param.add(RegisterPage.PARAM_USER, user.getUsername());
+                        param.add(RegisterPage.PARAM_KEY, generatedCode);
+                        StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
+                        url.append(ReenterEmailPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
+                        return url.toString();
+                    }
+                };
+            }
+        };
+    }
 
-	private IModel<UserEntity> createUserModel() {
+    private IModel<UserEntity> createUserModel() {
         return new LoadableDetachableModel<UserEntity>() {
             private static final long serialVersionUID = 1627241792273434554L;
+
             @Override
             protected UserEntity load() {
                 return userService.findUserByUsername(usernameModel.getObject());
             }
         };
-	}
+    }
 }

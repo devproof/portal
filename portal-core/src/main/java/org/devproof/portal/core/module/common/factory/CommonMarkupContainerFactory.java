@@ -19,19 +19,16 @@ import org.apache.wicket.MarkupContainer;
 
 /**
  * Common factory interface for all purposes
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface CommonMarkupContainerFactory {
-	/**
-	 * Returns a new instance of a wicket component
-	 * 
-	 * @param id
-	 *            wicket id
-	 * @param obj
-	 *            an object if required
-	 * @return instance
-	 */
-	MarkupContainer newInstance(String id, Object... obj);
+    /**
+     * Returns a new instance of a wicket component
+     *
+     * @param id  wicket id
+     * @param obj an object if required
+     * @return instance
+     */
+    MarkupContainer newInstance(String id, Object... obj);
 }

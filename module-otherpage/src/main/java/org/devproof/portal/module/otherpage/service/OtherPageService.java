@@ -22,27 +22,26 @@ import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
  * @author Carsten Hufe
  */
 public interface OtherPageService extends CrudService<OtherPageEntity, Integer> {
-	/**
-	 * Returns a new instance of {@link OtherPageEntity}
-	 * 
-	 * @return new instance of {@link OtherPageEntity}
-	 */
-	OtherPageEntity newOtherPageEntity();
+    /**
+     * Returns a new instance of {@link OtherPageEntity}
+     *
+     * @return new instance of {@link OtherPageEntity}
+     */
+    OtherPageEntity newOtherPageEntity();
 
-	/**
-	 * Tests if a content id does exist
-	 * 
-	 * @param contentId
-	 * @return true if the content-id existss
-	 */
-	boolean existsContentId(String contentId);
+    /**
+     * Tests if a content id does exist
+     *
+     * @param contentId
+     * @return true if the content-id existss
+     */
+    boolean existsContentId(String contentId);
 
-	/**
-	 * finds the {@link OtherPageEntity} by the contend id
-	 * 
-	 * @param contentId
-	 *            content id
-	 * @return other page
-	 */
-	OtherPageEntity findOtherPageByContentId(String contentId);
+    /**
+     * finds the {@link OtherPageEntity} by the contend id
+     *
+     * @param contentId content id
+     * @return other page
+     */
+    OtherPageEntity findOtherPageByContentId(String contentId);
 }

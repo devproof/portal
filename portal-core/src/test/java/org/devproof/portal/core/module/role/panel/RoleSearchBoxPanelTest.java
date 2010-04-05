@@ -26,34 +26,34 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class RoleSearchBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestRoleSearchBoxPanel.class);
-		tester.assertComponent("panel", TestRoleSearchBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestRoleSearchBoxPanel.class);
+        tester.assertComponent("panel", TestRoleSearchBoxPanel.class);
+    }
 
-	public static class TestRoleSearchBoxPanel extends RoleSearchBoxPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestRoleSearchBoxPanel extends RoleSearchBoxPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestRoleSearchBoxPanel(String id) {
-			super(id, Model.of(new RoleQuery()));
-		}
+        public TestRoleSearchBoxPanel(String id) {
+            super(id, Model.of(new RoleQuery()));
+        }
 
-		@Override
-		protected void onSubmit(AjaxRequestTarget target) {
+        @Override
+        protected void onSubmit(AjaxRequestTarget target) {
 
-		}
-	}
+        }
+    }
 }

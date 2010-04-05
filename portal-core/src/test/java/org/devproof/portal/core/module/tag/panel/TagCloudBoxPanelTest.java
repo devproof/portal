@@ -34,95 +34,95 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class TagCloudBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createTagCloudBoxPanel());
-		// tester.assertComponent("panel", TagCloudBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createTagCloudBoxPanel());
+        // tester.assertComponent("panel", TagCloudBoxPanel.class);
+    }
 
-	private TestPanelSource createTagCloudBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createTagCloudBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new TagCloudBoxPanel<TestTagEntity>(panelId, new TestTagService(), WebPage.class);
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new TagCloudBoxPanel<TestTagEntity>(panelId, new TestTagService(), WebPage.class);
+            }
+        };
+    }
 
-	private static class TestTagEntity extends BaseTagEntity<ConfigurationEntity> {
-		private static final long serialVersionUID = 1L;
+    private static class TestTagEntity extends BaseTagEntity<ConfigurationEntity> {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public List<ConfigurationEntity> getReferencedObjects() {
-			return null;
-		}
+        @Override
+        public List<ConfigurationEntity> getReferencedObjects() {
+            return null;
+        }
 
-		@Override
-		public void setReferencedObjects(List<ConfigurationEntity> refObjs) {
-		}
-	}
+        @Override
+        public void setReferencedObjects(List<ConfigurationEntity> refObjs) {
+        }
+    }
 
-	private static class TestTagService implements TagService<TestTagEntity>, Serializable {
-		private static final long serialVersionUID = 1L;
+    private static class TestTagService implements TagService<TestTagEntity>, Serializable {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void deleteUnusedTags() {
-		}
+        @Override
+        public void deleteUnusedTags() {
+        }
 
-		@Override
-		public TestTagEntity findByIdAndCreateIfNotExists(String tagName) {
-			return null;
-		}
+        @Override
+        public TestTagEntity findByIdAndCreateIfNotExists(String tagName) {
+            return null;
+        }
 
-		@Override
-		public List<TestTagEntity> findMostPopularTags(Integer firstResult, Integer maxResult) {
-			return new ArrayList<TestTagEntity>();
-		}
+        @Override
+        public List<TestTagEntity> findMostPopularTags(Integer firstResult, Integer maxResult) {
+            return new ArrayList<TestTagEntity>();
+        }
 
-		@Override
-		public List<TestTagEntity> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
-			return new ArrayList<TestTagEntity>();
-		}
+        @Override
+        public List<TestTagEntity> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
+            return new ArrayList<TestTagEntity>();
+        }
 
-		@Override
-		public List<TestTagEntity> findTagsStartingWith(String prefix) {
-			return new ArrayList<TestTagEntity>();
-		}
+        @Override
+        public List<TestTagEntity> findTagsStartingWith(String prefix) {
+            return new ArrayList<TestTagEntity>();
+        }
 
-		@Override
-		public String getRelatedTagRight() {
-			return null;
-		}
+        @Override
+        public String getRelatedTagRight() {
+            return null;
+        }
 
-		@Override
-		public TestTagEntity newTagEntity(String tag) {
-			return null;
-		}
+        @Override
+        public TestTagEntity newTagEntity(String tag) {
+            return null;
+        }
 
-		@Override
-		public void delete(TestTagEntity entity) {
-		}
+        @Override
+        public void delete(TestTagEntity entity) {
+        }
 
-		@Override
-		public TestTagEntity findById(String id) {
-			return null;
-		}
+        @Override
+        public TestTagEntity findById(String id) {
+            return null;
+        }
 
-		@Override
-		public void save(TestTagEntity entity) {
-		}
-	}
+        @Override
+        public void save(TestTagEntity entity) {
+        }
+    }
 }

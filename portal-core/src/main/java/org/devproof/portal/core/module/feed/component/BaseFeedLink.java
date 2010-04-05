@@ -27,64 +27,64 @@ import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
  * @author Carsten Hufe
  */
 public abstract class BaseFeedLink extends BookmarkablePageLink<BaseFeedLink> {
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "feedProviderRegistry")
-	private FeedProviderRegistry feedProviderRegistry;
-	private Class<? extends TemplatePage> page;
-	private boolean hasFeedSupport;
-	
-	public BaseFeedLink(String id, Class<? extends TemplatePage> page, Class<? extends BaseFeedPage> feedPage) {
-		super(id, feedPage);
-		this.page = page;
-		setHasFeedSupport();
-		setVisiblity();
-		setLinkParameter(); 
-		add(createTitleAttributeModifier());
-		add(createTypeAttributeModifier());
-		add(createRelAttributeModifier());
-	}
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "feedProviderRegistry")
+    private FeedProviderRegistry feedProviderRegistry;
+    private Class<? extends TemplatePage> page;
+    private boolean hasFeedSupport;
 
-	private void setLinkParameter() {
-		if (hasFeedSupport) {
-			String path = getPagePath();
-			setParameter("0", path);
-		}
-	}
+    public BaseFeedLink(String id, Class<? extends TemplatePage> page, Class<? extends BaseFeedPage> feedPage) {
+        super(id, feedPage);
+        this.page = page;
+        setHasFeedSupport();
+        setVisiblity();
+        setLinkParameter();
+        add(createTitleAttributeModifier());
+        add(createTypeAttributeModifier());
+        add(createRelAttributeModifier());
+    }
 
-	private SimpleAttributeModifier createTitleAttributeModifier() {
-		String title = getFeedPageTitle();
-		String feedName = new StringResourceModel("feedName", this, null, new String[] { title }).getString();
-		SimpleAttributeModifier titleModifier = new SimpleAttributeModifier("title", feedName);
-		return titleModifier;
-	}
+    private void setLinkParameter() {
+        if (hasFeedSupport) {
+            String path = getPagePath();
+            setParameter("0", path);
+        }
+    }
 
-	private String getFeedPageTitle() {
-		if(hasFeedSupport) {
-			String path = getPagePath();
-			return feedProviderRegistry.getFeedProviderByPath(path).getFeedName();
-		}
-		return "";
-	}
+    private SimpleAttributeModifier createTitleAttributeModifier() {
+        String title = getFeedPageTitle();
+        String feedName = new StringResourceModel("feedName", this, null, new String[]{title}).getString();
+        SimpleAttributeModifier titleModifier = new SimpleAttributeModifier("title", feedName);
+        return titleModifier;
+    }
 
-	private String getPagePath() {
-		return feedProviderRegistry.getPathByPageClass(page);
-	}
+    private String getFeedPageTitle() {
+        if (hasFeedSupport) {
+            String path = getPagePath();
+            return feedProviderRegistry.getFeedProviderByPath(path).getFeedName();
+        }
+        return "";
+    }
 
-	private void setVisiblity() {
-		setVisible(hasFeedSupport);
-	}
+    private String getPagePath() {
+        return feedProviderRegistry.getPathByPageClass(page);
+    }
 
-	private void setHasFeedSupport() {
-		hasFeedSupport = feedProviderRegistry.hasFeedSupport(page);
-	}
+    private void setVisiblity() {
+        setVisible(hasFeedSupport);
+    }
 
-	private SimpleAttributeModifier createTypeAttributeModifier() {
-		return new SimpleAttributeModifier("type", getContentType());
-	}
+    private void setHasFeedSupport() {
+        hasFeedSupport = feedProviderRegistry.hasFeedSupport(page);
+    }
 
-	private SimpleAttributeModifier createRelAttributeModifier() {
-		return new SimpleAttributeModifier("rel", "alternate");
-	}
-	
-	protected abstract String getContentType();
+    private SimpleAttributeModifier createTypeAttributeModifier() {
+        return new SimpleAttributeModifier("type", getContentType());
+    }
+
+    private SimpleAttributeModifier createRelAttributeModifier() {
+        return new SimpleAttributeModifier("rel", "alternate");
+    }
+
+    protected abstract String getContentType();
 }

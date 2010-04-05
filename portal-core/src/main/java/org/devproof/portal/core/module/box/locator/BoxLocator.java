@@ -21,13 +21,12 @@ import java.util.Collection;
 
 /**
  * Locates the boxes of all modules
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface BoxLocator {
-	/**
-	 * Returns the box configurations of all modules
-	 */
-	Collection<BoxConfiguration> getBoxes();
+    /**
+     * Returns the box configurations of all modules
+     */
+    Collection<BoxConfiguration> getBoxes();
 }

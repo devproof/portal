@@ -48,7 +48,7 @@ import java.io.File;
  */
 public class UploadCenterPage extends TemplatePage {
 
-	private static final long serialVersionUID = 3247255196536400455L;
+    private static final long serialVersionUID = 3247255196536400455L;
 
 //	private DefaultMutableTreeNode rootNode;
 //	private DefaultMutableTreeNode selectedNode;
@@ -61,176 +61,167 @@ public class UploadCenterPage extends TemplatePage {
     private FileTreeModel fileTreeModel;
 
     public UploadCenterPage(PageParameters params) {
-		super(params);
+        super(params);
         this.rootFolder = configurationService.findAsFile(UploadCenterConstants.CONF_UPLOADCENTER_FOLDER);
         this.selectedFolderModel = Model.of(rootFolder);
         this.fileTreeModel = createTreeModel();
-		add(createBubblePanel());
-		add(createFolderTreeTable());
-		addPageAdminBoxLink(createUploadLink());
-		addPageAdminBoxLink(createFolderLink());
-	}
+        add(createBubblePanel());
+        add(createFolderTreeTable());
+        addPageAdminBoxLink(createUploadLink());
+        addPageAdminBoxLink(createFolderLink());
+    }
 
     private AjaxLink<BubblePanel> createFolderLink() {
-		AjaxLink<BubblePanel> createFolderLink = newCreateFolderLink();
-		createFolderLink.add(createFolderLinkLabel());
-		return createFolderLink;
-	}
+        AjaxLink<BubblePanel> createFolderLink = newCreateFolderLink();
+        createFolderLink.add(createFolderLinkLabel());
+        return createFolderLink;
+    }
 
-	private Label createFolderLinkLabel() {
-		return new Label(getPageAdminBoxLinkLabelId(), getString("createFolderLink"));
-	}
+    private Label createFolderLinkLabel() {
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createFolderLink"));
+    }
 
-	private AjaxLink<BubblePanel> createUploadLink() {
-		AjaxLink<BubblePanel> uploadLink = newUploadLink(bubblePanel);
-		uploadLink.add(createUploadLinkLabel());
-		return uploadLink;
-	}
+    private AjaxLink<BubblePanel> createUploadLink() {
+        AjaxLink<BubblePanel> uploadLink = newUploadLink(bubblePanel);
+        uploadLink.add(createUploadLinkLabel());
+        return uploadLink;
+    }
 
-	private Label createUploadLinkLabel() {
-		return new Label(getPageAdminBoxLinkLabelId(), getString("uploadLink"));
-	}
+    private Label createUploadLinkLabel() {
+        return new Label(getPageAdminBoxLinkLabelId(), getString("uploadLink"));
+    }
 
-	private TreeTable createFolderTreeTable() {
-		IColumn columns[] = new IColumn[] {
-				new PropertyTreeColumn(new ColumnLocation(Alignment.MIDDLE, 8, Unit.PROPORTIONAL), this
-						.getString("tableFilename"), "userObject.name"),
-				new PropertyRenderableColumn(new ColumnLocation(Alignment.MIDDLE, 4, Unit.PROPORTIONAL), this
-						.getString("tableFilesize"), "userObject.size"),
-				new PropertyRenderableColumn(new ColumnLocation(Alignment.MIDDLE, 4, Unit.PROPORTIONAL), this
-						.getString("tableFiledate"), "userObject.date"),
-				new PropertyLinkedColumn(new ColumnLocation(Alignment.RIGHT, 80, Unit.PX), "", "userObject.file",
-						bubblePanel) };
+    private TreeTable createFolderTreeTable() {
+        IColumn columns[] = new IColumn[]{new PropertyTreeColumn(new ColumnLocation(Alignment.MIDDLE, 8, Unit.PROPORTIONAL), this.getString("tableFilename"), "userObject.name"), new PropertyRenderableColumn(new ColumnLocation(Alignment.MIDDLE, 4, Unit.PROPORTIONAL), this.getString("tableFilesize"), "userObject.size"), new PropertyRenderableColumn(new ColumnLocation(Alignment.MIDDLE, 4, Unit.PROPORTIONAL), this.getString("tableFiledate"), "userObject.date"), new PropertyLinkedColumn(new ColumnLocation(Alignment.RIGHT, 80, Unit.PX), "", "userObject.file", bubblePanel)};
 
-		folderTreeTable = newFolderTreeTable(columns);
-		folderTreeTable.getTreeState().collapseAll();
-		folderTreeTable.setRootLess(true);
-		return folderTreeTable;
-	}
+        folderTreeTable = newFolderTreeTable(columns);
+        folderTreeTable.getTreeState().collapseAll();
+        folderTreeTable.setRootLess(true);
+        return folderTreeTable;
+    }
 
-	private TreeTable newFolderTreeTable(IColumn[] columns) {
+    private TreeTable newFolderTreeTable(IColumn[] columns) {
         return new TreeTable("treeTable", fileTreeModel, columns) {
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onNodeLinkClicked(AjaxRequestTarget target, TreeNode node) {
-				if (getTreeState().isNodeSelected(node)) {
-					DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
-					FileBean fileBean = (FileBean) n.getUserObject();
-					if (fileBean.getFile().isDirectory()) {
-						selectedFolderModel.setObject(fileBean.getFile());
-					} else {
-						selectedFolderModel.setObject(fileBean.getFile().getParentFile());
-					}
-				} else {
+            @Override
+            protected void onNodeLinkClicked(AjaxRequestTarget target, TreeNode node) {
+                if (getTreeState().isNodeSelected(node)) {
+                    DefaultMutableTreeNode n = (DefaultMutableTreeNode) node;
+                    FileBean fileBean = (FileBean) n.getUserObject();
+                    if (fileBean.getFile().isDirectory()) {
+                        selectedFolderModel.setObject(fileBean.getFile());
+                    } else {
+                        selectedFolderModel.setObject(fileBean.getFile().getParentFile());
+                    }
+                } else {
                     selectedFolderModel.setObject(rootFolder);
-				}
-			}
-		};
-	}
+                }
+            }
+        };
+    }
 
-	private AjaxLink<BubblePanel> newCreateFolderLink() {
-		return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<BubblePanel> newCreateFolderLink() {
+        return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				bubblePanel.setContent(createCreateFolderPanel());
-				bubblePanel.showModal(target);
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bubblePanel.setContent(createCreateFolderPanel());
+                bubblePanel.showModal(target);
+            }
 
-			private CreateFolderPanel createCreateFolderPanel() {
-				return new CreateFolderPanel(bubblePanel.getContentId(), selectedFolderModel) {
-					private static final long serialVersionUID = 1L;
+            private CreateFolderPanel createCreateFolderPanel() {
+                return new CreateFolderPanel(bubblePanel.getContentId(), selectedFolderModel) {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onCreate(AjaxRequestTarget target) {
-						UploadCenterPage.this.forceRefresh(target);
-						bubblePanel.hide(target);
-					}
-				};
-			}
-		};
-	}
+                    @Override
+                    public void onCreate(AjaxRequestTarget target) {
+                        UploadCenterPage.this.forceRefresh(target);
+                        bubblePanel.hide(target);
+                    }
+                };
+            }
+        };
+    }
 
-	private BubblePanel createBubblePanel() {
-		bubblePanel = new BubblePanel("bubblePanel");
-		return bubblePanel;
-	}
+    private BubblePanel createBubblePanel() {
+        bubblePanel = new BubblePanel("bubblePanel");
+        return bubblePanel;
+    }
 
-	private boolean hasRightToCreateDownload() {
-		PortalSession session = (PortalSession) getSession();
-		return session.hasRight(UploadCenterConstants.DOWNLOAD_AUTHOR_RIGHT);
-	}
+    private boolean hasRightToCreateDownload() {
+        PortalSession session = (PortalSession) getSession();
+        return session.hasRight(UploadCenterConstants.DOWNLOAD_AUTHOR_RIGHT);
+    }
 
-	private AjaxLink<BubblePanel> newUploadLink(final BubblePanel bubblePanel) {
-		return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<BubblePanel> newUploadLink(final BubblePanel bubblePanel) {
+        return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				bubblePanel.setContent(createUploadFilePanel(bubblePanel));
-				bubblePanel.showModal(target);
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bubblePanel.setContent(createUploadFilePanel(bubblePanel));
+                bubblePanel.showModal(target);
+            }
 
-			private UploadFilePanel createUploadFilePanel(final BubblePanel bubblePanel) {
-				return new UploadFilePanel(bubblePanel.getContentId(), selectedFolderModel) {
-					private static final long serialVersionUID = 1L;
+            private UploadFilePanel createUploadFilePanel(final BubblePanel bubblePanel) {
+                return new UploadFilePanel(bubblePanel.getContentId(), selectedFolderModel) {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					protected void onSubmit() {
-						forceRefresh(null);
-					}
+                    @Override
+                    protected void onSubmit() {
+                        forceRefresh(null);
+                    }
 
-					@Override
-					protected void onCancel(AjaxRequestTarget target) {
-						bubblePanel.hide(target);
-					}
-				};
-			}
-		};
-	}
+                    @Override
+                    protected void onCancel(AjaxRequestTarget target) {
+                        bubblePanel.hide(target);
+                    }
+                };
+            }
+        };
+    }
 
-	private FileTreeModel createTreeModel() {
+    private FileTreeModel createTreeModel() {
         return new FileTreeModel();
 
-	}
+    }
 
-	private class PropertyLinkedColumn extends PropertyRenderableColumn {
-		private static final long serialVersionUID = 1L;
-		private BubblePanel bubblePanel;
+    private class PropertyLinkedColumn extends PropertyRenderableColumn {
+        private static final long serialVersionUID = 1L;
+        private BubblePanel bubblePanel;
 
-		public PropertyLinkedColumn(ColumnLocation location, String header, String propertyExpression,
-				BubblePanel bubblePanel) {
-			super(location, header, propertyExpression);
-			this.bubblePanel = bubblePanel;
+        public PropertyLinkedColumn(ColumnLocation location, String header, String propertyExpression, BubblePanel bubblePanel) {
+            super(location, header, propertyExpression);
+            this.bubblePanel = bubblePanel;
 
-		}
+        }
 
-		@Override
-		public Component newCell(MarkupContainer parent, String id, final TreeNode node, int level) {
-			return new UploadCenterPanel(id, new PropertyModel<File>(node, getPropertyExpression()), bubblePanel) {
-				private static final long serialVersionUID = 1L;
+        @Override
+        public Component newCell(MarkupContainer parent, String id, final TreeNode node, int level) {
+            return new UploadCenterPanel(id, new PropertyModel<File>(node, getPropertyExpression()), bubblePanel) {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onDelete(AjaxRequestTarget target) {
-					forceRefresh(target);
-				}
+                @Override
+                public void onDelete(AjaxRequestTarget target) {
+                    forceRefresh(target);
+                }
 
                 @Override
                 protected boolean isAllowedToCreateDownload() {
                     return hasRightToCreateDownload();
                 }
             };
-		}
+        }
 
-		@Override
-		public IRenderable newCell(TreeNode node, int level) {
-			return null;
-		}
-	}
+        @Override
+        public IRenderable newCell(TreeNode node, int level) {
+            return null;
+        }
+    }
 
-	private void forceRefresh(AjaxRequestTarget target) {
+    private void forceRefresh(AjaxRequestTarget target) {
 //        // no refresh works?
         setResponsePage(UploadCenterPage.class);
 //        folderTreeTable.markNodeDirty(fileTreeModel.getRoot());
@@ -239,5 +230,5 @@ public class UploadCenterPage extends TemplatePage {
 //        fileTreeModel.forceReload();
 //		folderTreeTable.updateTree(target);
 //        target.addComponent(this);
-	}
+    }
 }

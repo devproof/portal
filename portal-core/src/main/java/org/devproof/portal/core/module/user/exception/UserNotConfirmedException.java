@@ -17,10 +17,9 @@ package org.devproof.portal.core.module.user.exception;
 
 /**
  * Thrown when a user is not confirmed at authentification
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class UserNotConfirmedException extends Exception {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 }

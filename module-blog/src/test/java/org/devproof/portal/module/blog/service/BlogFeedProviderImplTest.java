@@ -36,121 +36,119 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class BlogFeedProviderImplTest extends TestCase {
-	private BlogFeedProviderImpl impl;
-	private SortableQueryDataProvider<BlogEntity, BlogQuery> dataProviderMock;
-	private ConfigurationService configurationServiceMock;
+    private BlogFeedProviderImpl impl;
+    private SortableQueryDataProvider<BlogEntity, BlogQuery> dataProviderMock;
+    private ConfigurationService configurationServiceMock;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void setUp() throws Exception {
-		dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
-		configurationServiceMock = createMock(ConfigurationService.class);
-		impl = new BlogFeedProviderImpl() {
-			@Override
-			protected String getUrl(RequestCycle rc) {
-				return "http://url";
-			}
+    @Override
+    @SuppressWarnings("unchecked")
+    public void setUp() throws Exception {
+        dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
+        configurationServiceMock = createMock(ConfigurationService.class);
+        impl = new BlogFeedProviderImpl() {
+            @Override
+            protected String getUrl(RequestCycle rc) {
+                return "http://url";
+            }
 
-			@Override
-			protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
-				return "http://url/" + blogEntity.getId();
-			}
-		};
-		impl.setConfigurationService(configurationServiceMock);
-		impl.setBlogDataProvider(dataProviderMock);
-	}
+            @Override
+            protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
+                return "http://url/" + blogEntity.getId();
+            }
+        };
+        impl.setConfigurationService(configurationServiceMock);
+        impl.setBlogDataProvider(dataProviderMock);
+    }
 
-	public void testGetFeedName() {
-		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
-		expect(configurationServiceMock.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE)).andReturn("feedtitle");
-		replay(configurationServiceMock);
-		assertEquals("pagetitle - feedtitle", impl.getFeedName());
-		verify(configurationServiceMock);
-	}
+    public void testGetFeedName() {
+        expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
+        expect(configurationServiceMock.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE)).andReturn("feedtitle");
+        replay(configurationServiceMock);
+        assertEquals("pagetitle - feedtitle", impl.getFeedName());
+        verify(configurationServiceMock);
+    }
 
-	public void testSupportedPages() {
-		assertEquals(BlogPage.class, impl.getSupportedFeedPages().get(0));
-	}
+    public void testSupportedPages() {
+        assertEquals(BlogPage.class, impl.getSupportedFeedPages().get(0));
+    }
 
-	@SuppressWarnings("unchecked")
-	public void testGetBlogEntries() {
-		BlogEntity blog = createBlog();
-		Iterator it = Arrays.asList(blog).iterator();
-		expect(configurationServiceMock.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED)).andReturn(10);
-		expect(dataProviderMock.iterator(0, 10)).andReturn(it);
-		replay(configurationServiceMock);
-		replay(dataProviderMock);
-		Iterator<? extends BlogEntity> blogEntries = impl.getBlogEntries();
-		assertSame(blogEntries, it);
-		verify(configurationServiceMock);
-		verify(dataProviderMock);
-	}
+    @SuppressWarnings("unchecked")
+    public void testGetBlogEntries() {
+        BlogEntity blog = createBlog();
+        Iterator it = Arrays.asList(blog).iterator();
+        expect(configurationServiceMock.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED)).andReturn(10);
+        expect(dataProviderMock.iterator(0, 10)).andReturn(it);
+        replay(configurationServiceMock);
+        replay(dataProviderMock);
+        Iterator<? extends BlogEntity> blogEntries = impl.getBlogEntries();
+        assertSame(blogEntries, it);
+        verify(configurationServiceMock);
+        verify(dataProviderMock);
+    }
 
-	public void testGenerateFeed() {
-		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle")
-				.anyTimes();
-		expect(configurationServiceMock.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE)).andReturn("feedtitle")
-				.anyTimes();
-		replay(configurationServiceMock);
-		SyndFeed feed = impl.generateFeed(null);
-		assertEquals("pagetitle - feedtitle", feed.getTitle());
-		assertEquals("pagetitle - feedtitle", feed.getDescription());
-		assertEquals("http://url", feed.getLink());
-		verify(configurationServiceMock);
-	}
+    public void testGenerateFeed() {
+        expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle").anyTimes();
+        expect(configurationServiceMock.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE)).andReturn("feedtitle").anyTimes();
+        replay(configurationServiceMock);
+        SyndFeed feed = impl.generateFeed(null);
+        assertEquals("pagetitle - feedtitle", feed.getTitle());
+        assertEquals("pagetitle - feedtitle", feed.getDescription());
+        assertEquals("http://url", feed.getLink());
+        verify(configurationServiceMock);
+    }
 
-	@SuppressWarnings("unchecked")
-	public void testGenerateFeedEntries() {
-		BlogEntity blog = createBlog();
-		Iterator it = Arrays.asList(blog).iterator();
-		List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
-		SyndEntry entry = generateFeedEntries.get(0);
-		assertEquals("hello", entry.getTitle());
-		assertEquals("http://url/" + blog.getId(), entry.getLink());
-		assertEquals("world", entry.getDescription().getValue());
-		assertEquals("text/plain", entry.getDescription().getType());
-		assertEquals("maxpower", entry.getAuthor());
-		assertNotNull(entry.getPublishedDate());
-	}
+    @SuppressWarnings("unchecked")
+    public void testGenerateFeedEntries() {
+        BlogEntity blog = createBlog();
+        Iterator it = Arrays.asList(blog).iterator();
+        List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
+        SyndEntry entry = generateFeedEntries.get(0);
+        assertEquals("hello", entry.getTitle());
+        assertEquals("http://url/" + blog.getId(), entry.getLink());
+        assertEquals("world", entry.getDescription().getValue());
+        assertEquals("text/plain", entry.getDescription().getType());
+        assertEquals("maxpower", entry.getAuthor());
+        assertNotNull(entry.getPublishedDate());
+    }
 
-	public void testGetFeed() {
-		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		final StringBuilder callOrder = new StringBuilder();
-		impl = new BlogFeedProviderImpl() {
-			@Override
-			protected SyndFeed generateFeed(RequestCycle rc) {
-				callOrder.append("1");
-				return new SyndFeedImpl();
-			}
+    public void testGetFeed() {
+        final List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        final StringBuilder callOrder = new StringBuilder();
+        impl = new BlogFeedProviderImpl() {
+            @Override
+            protected SyndFeed generateFeed(RequestCycle rc) {
+                callOrder.append("1");
+                return new SyndFeedImpl();
+            }
 
-			@Override
-			protected Iterator<? extends BlogEntity> getBlogEntries() {
-				callOrder.append("2");
-				return null;
-			}
+            @Override
+            protected Iterator<? extends BlogEntity> getBlogEntries() {
+                callOrder.append("2");
+                return null;
+            }
 
-			@Override
-			protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
-				callOrder.append("3");
-				return entries;
-			}
+            @Override
+            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
+                callOrder.append("3");
+                return entries;
+            }
 
-			@Override
-			protected String getUrl(RequestCycle rc) {
-				return "";
-			}
-		};
-		impl.getFeed(null);
-		assertEquals("123", callOrder.toString());
-	}
+            @Override
+            protected String getUrl(RequestCycle rc) {
+                return "";
+            }
+        };
+        impl.getFeed(null);
+        assertEquals("123", callOrder.toString());
+    }
 
-	private BlogEntity createBlog() {
-		BlogEntity blog = new BlogEntity();
-		blog.setId(1);
-		blog.setHeadline("hello");
-		blog.setContent("world");
-		blog.setModifiedBy("maxpower");
-		blog.setModifiedAt(new Date());
-		return blog;
-	}
+    private BlogEntity createBlog() {
+        BlogEntity blog = new BlogEntity();
+        blog.setId(1);
+        blog.setHeadline("hello");
+        blog.setContent("world");
+        blog.setModifiedBy("maxpower");
+        blog.setModifiedAt(new Date());
+        return blog;
+    }
 }

@@ -28,24 +28,24 @@ import org.devproof.portal.module.comment.CommentConstants;
  * @author Carsten Hufe
  */
 public class CommentQuery implements SearchQuery {
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
 
-	private Integer id;
-	private String allTextFields;
-	private String moduleName;
-	private String moduleContentId;
-	private Boolean accepted;
-	private Boolean rejected;
-	private Boolean reviewed;
-	private Boolean automaticBlocked;
-	private Boolean author;
+    private Integer id;
+    private String allTextFields;
+    private String moduleName;
+    private String moduleContentId;
+    private Boolean accepted;
+    private Boolean rejected;
+    private Boolean reviewed;
+    private Boolean automaticBlocked;
+    private Boolean author;
 
-	public CommentQuery() {
-		InjectorHolder.getInjector().inject(this);
-		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
-        if(!isAuthor()) {            
+    public CommentQuery() {
+        InjectorHolder.getInjector().inject(this);
+        boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
+        if (!isAuthor()) {
             if (showOnlyReviewed) {
                 reviewed = Boolean.TRUE;
                 accepted = Boolean.TRUE;
@@ -53,98 +53,98 @@ public class CommentQuery implements SearchQuery {
                 rejected = Boolean.FALSE;
             }
         }
-		if (!isAuthor()) {
-			automaticBlocked = Boolean.FALSE;
-		}
-	}
+        if (!isAuthor()) {
+            automaticBlocked = Boolean.FALSE;
+        }
+    }
 
-	public CommentQuery(Integer id) {
-		this.id = id;
-	}
+    public CommentQuery(Integer id) {
+        this.id = id;
+    }
 
-	private boolean isAuthor() {
-		if (author == null) {
-			PortalSession session = PortalSession.get();
-			author = session.hasRight(CommentConstants.AUTHOR_RIGHT);
-		}
-		return author.booleanValue();
-	}
+    private boolean isAuthor() {
+        if (author == null) {
+            PortalSession session = PortalSession.get();
+            author = session.hasRight(CommentConstants.AUTHOR_RIGHT);
+        }
+        return author.booleanValue();
+    }
 
-	@BeanQuery("e.accepted = ?")
-	public Boolean getAccepted() {
-		return accepted;
-	}
+    @BeanQuery("e.accepted = ?")
+    public Boolean getAccepted() {
+        return accepted;
+    }
 
-	public void setAccepted(Boolean accepted) {
-		this.accepted = accepted;
-	}
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
+    }
 
-	@BeanQuery("((e.accepted = true and e.reviewed = true) or e.reviewed = false)")
-	public Boolean getRejected() {
-		return rejected;
-	}
+    @BeanQuery("((e.accepted = true and e.reviewed = true) or e.reviewed = false)")
+    public Boolean getRejected() {
+        return rejected;
+    }
 
-	public void setRejected(Boolean rejected) {
-		this.rejected = rejected;
-	}
+    public void setRejected(Boolean rejected) {
+        this.rejected = rejected;
+    }
 
-	@BeanQuery("e.reviewed = ?")
-	public Boolean getReviewed() {
-		return reviewed;
-	}
+    @BeanQuery("e.reviewed = ?")
+    public Boolean getReviewed() {
+        return reviewed;
+    }
 
-	public void setReviewed(Boolean reviewed) {
-		this.reviewed = reviewed;
-	}
+    public void setReviewed(Boolean reviewed) {
+        this.reviewed = reviewed;
+    }
 
-	@BeanQuery("e.automaticBlocked = ?")
-	public Boolean getAutomaticBlocked() {
-		return automaticBlocked;
-	}
+    @BeanQuery("e.automaticBlocked = ?")
+    public Boolean getAutomaticBlocked() {
+        return automaticBlocked;
+    }
 
-	public void setAutomaticBlocked(Boolean automaticBlocked) {
-		this.automaticBlocked = automaticBlocked;
-	}
+    public void setAutomaticBlocked(Boolean automaticBlocked) {
+        this.automaticBlocked = automaticBlocked;
+    }
 
-	@BeanQuery("e.moduleName = ?")
-	public String getModuleName() {
-		return moduleName;
-	}
+    @BeanQuery("e.moduleName = ?")
+    public String getModuleName() {
+        return moduleName;
+    }
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
-	}
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
 
-	@BeanQuery("e.moduleContentId = ?")
-	public String getModuleContentId() {
-		return moduleContentId;
-	}
+    @BeanQuery("e.moduleContentId = ?")
+    public String getModuleContentId() {
+        return moduleContentId;
+    }
 
-	public void setModuleContentId(String moduleContentId) {
-		this.moduleContentId = moduleContentId;
-	}
+    public void setModuleContentId(String moduleContentId) {
+        this.moduleContentId = moduleContentId;
+    }
 
-	@BeanQuery("e.id = ?")
-	public Integer getId() {
-		return id;
-	}
+    @BeanQuery("e.id = ?")
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@BeanQuery("e.comment like '%'||?||'%'")
-	public String getAllTextFields() {
-		return allTextFields;
-	}
+    @BeanQuery("e.comment like '%'||?||'%'")
+    public String getAllTextFields() {
+        return allTextFields;
+    }
 
-	public void setAllTextFields(String allTextFields) {
-		this.allTextFields = allTextFields;
-	}
+    public void setAllTextFields(String allTextFields) {
+        this.allTextFields = allTextFields;
+    }
 
-	@Override
-	public PageParameters getPageParameters() {
+    @Override
+    public PageParameters getPageParameters() {
         // not required for comments
-		return new PageParameters();
-	}
+        return new PageParameters();
+    }
 }

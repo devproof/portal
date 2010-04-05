@@ -23,7 +23,7 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
  */
 public class DummyPage extends TemplatePage {
 
-	public DummyPage(PageParameters params) {
-		super(params);
-	}
+    public DummyPage(PageParameters params) {
+        super(params);
+    }
 }

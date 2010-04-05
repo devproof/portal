@@ -31,26 +31,27 @@ import org.devproof.portal.core.module.user.service.UserService;
 
 /**
  * Linking a username to its contact page
- * 
+ *
  * @author Carsten Hufe
  */
 public class UsernamePanel extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     @SpringBean(name = "userService")
-	private UserService userService;
+    private UserService userService;
     private IModel<String> usernameModel;
     private IModel<UserEntity> userModel;
 
     public UsernamePanel(String id, IModel<String> usernameModel) {
-		super(id);
+        super(id);
         this.usernameModel = usernameModel;
         this.userModel = createUserModel();
-		add(createContactPageLink());
-	}
+        add(createContactPageLink());
+    }
 
     private IModel<UserEntity> createUserModel() {
         return new LoadableDetachableModel<UserEntity>() {
             private static final long serialVersionUID = 5479671452769963088L;
+
             @Override
             protected UserEntity load() {
                 return userService.findUserByUsername(usernameModel.getObject());
@@ -59,13 +60,13 @@ public class UsernamePanel extends Panel {
     }
 
     private WebMarkupContainer createContactPageLink() {
-		BookmarkablePageLink<ContactPage> link = newContactPageLink();
-		link.add(createUsernameLabel());
+        BookmarkablePageLink<ContactPage> link = newContactPageLink();
+        link.add(createUsernameLabel());
         link.setParameter("0", usernameModel.getObject());
-		return link;
-	}
+        return link;
+    }
 
-	private BookmarkablePageLink<ContactPage> newContactPageLink() {
+    private BookmarkablePageLink<ContactPage> newContactPageLink() {
         return new BookmarkablePageLink<ContactPage>("userLink", ContactPage.class) {
             private static final long serialVersionUID = 8519679858021257340L;
 
@@ -77,30 +78,30 @@ public class UsernamePanel extends Panel {
                 return session.hasRight(ContactConstants.CONTACT_RIGHT) && exists && contactFormEnabled();
             }
         };
-	}
+    }
 
-	private Label createUsernameLabel() {
+    private Label createUsernameLabel() {
         IModel<String> usernameDisplayModel = createUsernameDisplayModel();
         return new Label("username", usernameDisplayModel);
-	}
+    }
 
     private IModel<String> createUsernameDisplayModel() {
         return new LoadableDetachableModel<String>() {
             private static final long serialVersionUID = -1304908710263470243L;
+
             @Override
             protected String load() {
                 String username = usernameModel.getObject();
-                UserEntity user = userModel.getObject(); 
+                UserEntity user = userModel.getObject();
                 if (showRealName()) {
-                    if (user != null && StringUtils.isNotBlank(user.getFirstname())
-                            && StringUtils.isNotBlank(user.getLastname())) {
+                    if (user != null && StringUtils.isNotBlank(user.getFirstname()) && StringUtils.isNotBlank(user.getLastname())) {
                         username = user.getFirstname() + " " + user.getLastname();
                     }
                 }
                 return username;
             }
         };
-	}
+    }
 
     /**
      * Hook method

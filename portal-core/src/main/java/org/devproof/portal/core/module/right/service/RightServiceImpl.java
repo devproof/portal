@@ -25,72 +25,72 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class RightServiceImpl implements RightService {
-	private List<RightEntity> allRights;
-	private long dirtyTime = 0l;
-	private RightDao rightDao;
+    private List<RightEntity> allRights;
+    private long dirtyTime = 0l;
+    private RightDao rightDao;
 
-	public void init() {
-		refreshGlobalApplicationRights();
-	}
+    public void init() {
+        refreshGlobalApplicationRights();
+    }
 
-	@Override
-	public List<RightEntity> getAllRights() {
-		return allRights;
-	}
+    @Override
+    public List<RightEntity> getAllRights() {
+        return allRights;
+    }
 
-	@Override
-	public long getDirtyTime() {
-		return dirtyTime;
-	}
+    @Override
+    public long getDirtyTime() {
+        return dirtyTime;
+    }
 
-	@Override
-	public void refreshGlobalApplicationRights() {
-		allRights = rightDao.findAll();
-		dirtyTime = System.currentTimeMillis();
-	}
+    @Override
+    public void refreshGlobalApplicationRights() {
+        allRights = rightDao.findAll();
+        dirtyTime = System.currentTimeMillis();
+    }
 
-	@Override
-	public List<RightEntity> findAllOrderByDescription() {
-		return rightDao.findAllOrderByDescription();
-	}
+    @Override
+    public List<RightEntity> findAllOrderByDescription() {
+        return rightDao.findAllOrderByDescription();
+    }
 
-	@Override
-	public List<RightEntity> findRightsStartingWith(String prefix) {
-		return rightDao.findRightsStartingWith(prefix);
-	}
+    @Override
+    public List<RightEntity> findRightsStartingWith(String prefix) {
+        return rightDao.findRightsStartingWith(prefix);
+    }
 
-	@Override
-	public RightEntity newRightEntity() {
-		return new RightEntity();
-	}
+    @Override
+    public RightEntity newRightEntity() {
+        return new RightEntity();
+    }
 
-	@Override
-	public RightEntity newRightEntity(String right) {
-		return new RightEntity(right);
-	}
+    @Override
+    public RightEntity newRightEntity(String right) {
+        return new RightEntity(right);
+    }
 
-	@Override
-	public void delete(RightEntity entity) {
-		rightDao.delete(entity);
-	}
+    @Override
+    public void delete(RightEntity entity) {
+        rightDao.delete(entity);
+    }
 
-	@Override
-	public List<RightEntity> findAll() {
-		return rightDao.findAll();
-	}
+    @Override
+    public List<RightEntity> findAll() {
+        return rightDao.findAll();
+    }
 
-	@Override
-	public RightEntity findById(String id) {
-		return rightDao.findById(id);
-	}
+    @Override
+    public RightEntity findById(String id) {
+        return rightDao.findById(id);
+    }
 
-	@Override
-	public void save(RightEntity entity) {
-		rightDao.save(entity);
-	}
+    @Override
+    public void save(RightEntity entity) {
+        rightDao.save(entity);
+    }
 
-	@Required
-	public void setRightDao(RightDao rightDao) {
-		this.rightDao = rightDao;
-	}
+    @Required
+    public void setRightDao(RightDao rightDao) {
+        this.rightDao = rightDao;
+    }
 }

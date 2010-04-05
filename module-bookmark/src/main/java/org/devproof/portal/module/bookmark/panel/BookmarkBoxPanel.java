@@ -40,45 +40,46 @@ import java.util.List;
  */
 public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "bookmarkService")
-	private BookmarkService bookmarkService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private WebMarkupContainer titleContainer;
-	private IModel<List<BookmarkEntity>> latestBookmarksModel;
+    @SpringBean(name = "bookmarkService")
+    private BookmarkService bookmarkService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private WebMarkupContainer titleContainer;
+    private IModel<List<BookmarkEntity>> latestBookmarksModel;
 
-	public BookmarkBoxPanel(String id) {
-		super(id);
-		latestBookmarksModel = createLatestBookmarksModel();
-		add(createTitleContainer());
-		add(createRepeatingBookmarks());
-	}
+    public BookmarkBoxPanel(String id) {
+        super(id);
+        latestBookmarksModel = createLatestBookmarksModel();
+        add(createTitleContainer());
+        add(createRepeatingBookmarks());
+    }
 
     @Override
     public boolean isVisible() {
         List<BookmarkEntity> latestBookmarks = latestBookmarksModel.getObject();
         return latestBookmarks.size() > 0;
     }
-    
-	private ListView<BookmarkEntity> createRepeatingBookmarks() {
-		return new ListView<BookmarkEntity>("repeatingBookmarks") {
+
+    private ListView<BookmarkEntity> createRepeatingBookmarks() {
+        return new ListView<BookmarkEntity>("repeatingBookmarks") {
             private static final long serialVersionUID = 6603619378248308439L;
+
             @Override
             protected void populateItem(ListItem<BookmarkEntity> item) {
                 item.add(createLinkToBookmark(item.getModel()));
             }
         };
-	}
+    }
 
-	private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(IModel<BookmarkEntity> bookmarkModel) {
-		BookmarkablePageLink<BookmarkPage> link = new BookmarkablePageLink<BookmarkPage>("link", BookmarkPage.class);
+    private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(IModel<BookmarkEntity> bookmarkModel) {
+        BookmarkablePageLink<BookmarkPage> link = new BookmarkablePageLink<BookmarkPage>("link", BookmarkPage.class);
         BookmarkEntity bookmark = bookmarkModel.getObject();
         link.setParameter("id", bookmark.getId());
-		link.add(createLinkNameLabel(bookmarkModel));
-		return link;
-	}
+        link.add(createLinkNameLabel(bookmarkModel));
+        return link;
+    }
 
     private Label createLinkNameLabel(IModel<BookmarkEntity> bookmarkModel) {
         IModel<String> titleModel = new PropertyModel<String>(bookmarkModel, "title");
@@ -88,6 +89,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
     private IModel<List<BookmarkEntity>> createLatestBookmarksModel() {
         return new LoadableDetachableModel<List<BookmarkEntity>>() {
             private static final long serialVersionUID = 6940753456307593228L;
+
             @Override
             protected List<BookmarkEntity> load() {
                 PortalSession session = (PortalSession) getSession();
@@ -95,15 +97,15 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
                 return bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0, num);
             }
         };
-	}
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

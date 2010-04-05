@@ -27,59 +27,59 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class RoleServiceImpl implements RoleService {
-	private ConfigurationService configurationService;
-	private RoleDao roleDao;
+    private ConfigurationService configurationService;
+    private RoleDao roleDao;
 
-	@Override
-	public RoleEntity newRoleEntity() {
-		return new RoleEntity();
-	}
+    @Override
+    public RoleEntity newRoleEntity() {
+        return new RoleEntity();
+    }
 
-	@Override
-	public List<RoleEntity> findAllOrderByDescription() {
-		return roleDao.findAllOrderByDescription();
-	}
+    @Override
+    public List<RoleEntity> findAllOrderByDescription() {
+        return roleDao.findAllOrderByDescription();
+    }
 
-	@Override
-	public void delete(RoleEntity entity) {
-		roleDao.delete(entity);
-	}
+    @Override
+    public void delete(RoleEntity entity) {
+        roleDao.delete(entity);
+    }
 
-	@Override
-	public List<RoleEntity> findAll() {
-		return roleDao.findAll();
-	}
+    @Override
+    public List<RoleEntity> findAll() {
+        return roleDao.findAll();
+    }
 
-	@Override
-	public RoleEntity findById(Integer id) {
-		return roleDao.findById(id);
-	}
+    @Override
+    public RoleEntity findById(Integer id) {
+        return roleDao.findById(id);
+    }
 
-	@Override
-	public void save(RoleEntity entity) {
-		roleDao.save(entity);
-	}
+    @Override
+    public void save(RoleEntity entity) {
+        roleDao.save(entity);
+    }
 
-	@Override
-	public RoleEntity findGuestRole() {
-		Integer roleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
-		RoleEntity role = findById(roleId);
-		return role;
-	}
+    @Override
+    public RoleEntity findGuestRole() {
+        Integer roleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
+        RoleEntity role = findById(roleId);
+        return role;
+    }
 
-	@Override
-	public RoleEntity findDefaultRegistrationRole() {
-		return findById(configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE));
-	}
+    @Override
+    public RoleEntity findDefaultRegistrationRole() {
+        return findById(configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE));
+    }
 
-	@Required
-	public void setRoleDao(RoleDao roleDao) {
-		this.roleDao = roleDao;
-	}
+    @Required
+    public void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
 
-	@Required
-	public void setConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 
 }

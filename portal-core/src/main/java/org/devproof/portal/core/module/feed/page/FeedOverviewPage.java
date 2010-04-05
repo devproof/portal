@@ -39,22 +39,23 @@ import java.util.Map;
 public class FeedOverviewPage extends TemplatePage {
     private static final long serialVersionUID = 3957452424603515088L;
     @SpringBean(name = "feedProviderRegistry")
-	private FeedProviderRegistry feedProviderRegistry;
+    private FeedProviderRegistry feedProviderRegistry;
     private Map<String, FeedProvider> allFeedProvider;
 
     public FeedOverviewPage(PageParameters params) {
-		super(params);
-		allFeedProvider = feedProviderRegistry.getAllFeedProvider();
-		add(createRepeatingFeeds());
-	}
+        super(params);
+        allFeedProvider = feedProviderRegistry.getAllFeedProvider();
+        add(createRepeatingFeeds());
+    }
 
-	private ListView<String> createRepeatingFeeds() {
+    private ListView<String> createRepeatingFeeds() {
         IModel<List<String>> pathModel = createPathModel();
         return new ListView<String>("repeatingFeeds", pathModel) {
             private static final long serialVersionUID = 6289409135117578201L;
+
             @Override
             protected void populateItem(ListItem<String> item) {
-                String path = item.getModelObject();                
+                String path = item.getModelObject();
                 FeedProvider provider = allFeedProvider.get(path);
                 item.add(createFeedNameLabel(provider));
                 item.add(createPathLabel(path));
@@ -63,11 +64,12 @@ public class FeedOverviewPage extends TemplatePage {
                 item.add(createRss2Link(path));
             }
         };
-	}
+    }
 
     private IModel<List<String>> createPathModel() {
         return new LoadableDetachableModel<List<String>>() {
             private static final long serialVersionUID = -2147576128407507758L;
+
             @Override
             protected List<String> load() {
                 return new ArrayList<String>(allFeedProvider.keySet());
@@ -77,34 +79,33 @@ public class FeedOverviewPage extends TemplatePage {
 
 
     private BookmarkablePageLink<Rss2FeedPage> createRss2Link(String path) {
-		return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0=" + path));
-	}
+        return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0=" + path));
+    }
 
-	private BookmarkablePageLink<Atom1FeedPage> createAtom1Link(String path) {
-		return new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class,
-				new PageParameters("0=" + path));
-	}
+    private BookmarkablePageLink<Atom1FeedPage> createAtom1Link(String path) {
+        return new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class, new PageParameters("0=" + path));
+    }
 
-	private Component createSupportedPagesLabel(FeedProvider provider) {
-		Label supportedPages = new Label("pages", getSupportedPagesString(provider));
-		supportedPages.setEscapeModelStrings(false);
-		return supportedPages;
-	}
+    private Component createSupportedPagesLabel(FeedProvider provider) {
+        Label supportedPages = new Label("pages", getSupportedPagesString(provider));
+        supportedPages.setEscapeModelStrings(false);
+        return supportedPages;
+    }
 
-	private Label createPathLabel(String path) {
-		return new Label("path", path);
-	}
+    private Label createPathLabel(String path) {
+        return new Label("path", path);
+    }
 
-	private Label createFeedNameLabel(FeedProvider provider) {
+    private Label createFeedNameLabel(FeedProvider provider) {
         IModel<String> feedNameModel = new PropertyModel<String>(provider, "feedName");
         return new Label("feedName", feedNameModel);
-	}
+    }
 
-	private String getSupportedPagesString(FeedProvider provider) {
-		StringBuilder buf = new StringBuilder();
-		for (Class<? extends TemplatePage> page : provider.getSupportedFeedPages()) {
-			buf.append(page.getSimpleName()).append(", ");
-		}
-		return buf.toString();
-	}
+    private String getSupportedPagesString(FeedProvider provider) {
+        StringBuilder buf = new StringBuilder();
+        for (Class<? extends TemplatePage> page : provider.getSupportedFeedPages()) {
+            buf.append(page.getSimpleName()).append(", ");
+        }
+        return buf.toString();
+    }
 }

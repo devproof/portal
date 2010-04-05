@@ -19,45 +19,44 @@ import java.io.Serializable;
 
 /**
  * Represents a "post" line from delicous, that means one bookmark
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class DeliciousPostBean implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String href;
-	private String hash;
-	private String description;
-	private String tag;
-	private String time;
-	private String extended;
-	private String meta;
+    private static final long serialVersionUID = 1L;
+    private String href;
+    private String hash;
+    private String description;
+    private String tag;
+    private String time;
+    private String extended;
+    private String meta;
 
-	public String getHref() {
-		return href;
-	}
+    public String getHref() {
+        return href;
+    }
 
-	public String getHash() {
-		return hash;
-	}
+    public String getHash() {
+        return hash;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getTag() {
-		return tag;
-	}
+    public String getTag() {
+        return tag;
+    }
 
-	public String getTime() {
-		return time;
-	}
+    public String getTime() {
+        return time;
+    }
 
-	public String getExtended() {
-		return extended;
-	}
+    public String getExtended() {
+        return extended;
+    }
 
-	public String getMeta() {
-		return meta;
-	}
+    public String getMeta() {
+        return meta;
+    }
 }

@@ -28,112 +28,111 @@ import org.devproof.portal.core.module.common.CommonConstants;
 
 /**
  * Shows the edit and delete button
- * 
+ *
  * @author Carsten Hufe
- * 
  * @param <T>
- *            Entity type
+ * Entity type
  */
 public abstract class AuthorPanel<T> extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Class<? extends Page> redirectPageClazz = null;
-	private PageParameters redirectParams = null;
-	private BubblePanel bubblePanel;
+    private Class<? extends Page> redirectPageClazz = null;
+    private PageParameters redirectParams = null;
+    private BubblePanel bubblePanel;
     private IModel<T> entityModel;
 
     public AuthorPanel(String id, IModel<T> entityModel) {
-		super(id);
+        super(id);
         this.entityModel = entityModel;
-		add(createBubblePanel());
-		add(createEditLink());
-		add(createDeleteLink());
-	}
+        add(createBubblePanel());
+        add(createEditLink());
+        add(createDeleteLink());
+    }
 
-	private MarkupContainer createDeleteLink() {
-		AjaxLink<T> link = newDeleteLink();
-		link.add(createDeleteImage());
-		return link;
-	}
+    private MarkupContainer createDeleteLink() {
+        AjaxLink<T> link = newDeleteLink();
+        link.add(createDeleteImage());
+        return link;
+    }
 
-	private AjaxLink<T> newDeleteLink() {
-		return new AjaxLink<T>("deleteLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<T> newDeleteLink() {
+        return new AjaxLink<T>("deleteLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				bubblePanel.setContent(createConfirmDeletePanel());
-				bubblePanel.showModal(target);
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bubblePanel.setContent(createConfirmDeletePanel());
+                bubblePanel.showModal(target);
+            }
 
-			@Override
-			public boolean isVisible() {
-				return isDeleteButtonVisible();
-			}
+            @Override
+            public boolean isVisible() {
+                return isDeleteButtonVisible();
+            }
 
-			private ConfirmDeletePanel<T> createConfirmDeletePanel() {
-				return new ConfirmDeletePanel<T>(bubblePanel.getContentId(), entityModel, bubblePanel) {
-					private static final long serialVersionUID = 1L;
+            private ConfirmDeletePanel<T> createConfirmDeletePanel() {
+                return new ConfirmDeletePanel<T>(bubblePanel.getContentId(), entityModel, bubblePanel) {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onDelete(AjaxRequestTarget target, Form<?> form) {
-						bubblePanel.hide(target);
-						AuthorPanel.this.onDelete(target);
-						if (redirectPageClazz != null) {
-							setResponsePage(AuthorPanel.this.redirectPageClazz, AuthorPanel.this.redirectParams);
-						}
-					}
+                    @Override
+                    public void onDelete(AjaxRequestTarget target, Form<?> form) {
+                        bubblePanel.hide(target);
+                        AuthorPanel.this.onDelete(target);
+                        if (redirectPageClazz != null) {
+                            setResponsePage(AuthorPanel.this.redirectPageClazz, AuthorPanel.this.redirectParams);
+                        }
+                    }
 
-				};
-			}
-		};
-	}
+                };
+            }
+        };
+    }
 
-	private Image createDeleteImage() {
-		return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
-	}
+    private Image createDeleteImage() {
+        return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
+    }
 
-	private MarkupContainer createEditLink() {
-		AjaxLink<T> link = newEditLink();
-		link.add(createEditImage());
-		return link;
-	}
+    private MarkupContainer createEditLink() {
+        AjaxLink<T> link = newEditLink();
+        link.add(createEditImage());
+        return link;
+    }
 
-	private AjaxLink<T> newEditLink() {
-		return new AjaxLink<T>("editLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<T> newEditLink() {
+        return new AjaxLink<T>("editLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				AuthorPanel.this.onEdit(target);
-			}
-		};
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                AuthorPanel.this.onEdit(target);
+            }
+        };
+    }
 
-	private Image createEditImage() {
-		return new Image("editImage", CommonConstants.REF_EDIT_IMG);
-	}
+    private Image createEditImage() {
+        return new Image("editImage", CommonConstants.REF_EDIT_IMG);
+    }
 
-	private BubblePanel createBubblePanel() {
-		bubblePanel = new BubblePanel("bubblePanel");
-		return bubblePanel;
-	}
+    private BubblePanel createBubblePanel() {
+        bubblePanel = new BubblePanel("bubblePanel");
+        return bubblePanel;
+    }
 
-	public IModel<T> getEntityModel() {
-		return this.entityModel;
-	}
+    public IModel<T> getEntityModel() {
+        return this.entityModel;
+    }
 
-	public AuthorPanel<T> setRedirectPage(Class<? extends Page> redirectPageClazz, PageParameters redirectParams) {
-		this.redirectPageClazz = redirectPageClazz;
-		this.redirectParams = redirectParams;
-		return this;
-	}
+    public AuthorPanel<T> setRedirectPage(Class<? extends Page> redirectPageClazz, PageParameters redirectParams) {
+        this.redirectPageClazz = redirectPageClazz;
+        this.redirectParams = redirectParams;
+        return this;
+    }
 
-	public boolean isDeleteButtonVisible() {
-		return true;
-	}
+    public boolean isDeleteButtonVisible() {
+        return true;
+    }
 
-	public abstract void onEdit(AjaxRequestTarget target);
+    public abstract void onEdit(AjaxRequestTarget target);
 
-	public abstract void onDelete(AjaxRequestTarget target);
+    public abstract void onDelete(AjaxRequestTarget target);
 }

@@ -42,209 +42,209 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
  */
 public class BoxPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "boxDataProvider")
-	private SortableDataProvider<BoxEntity> boxDataProvider;
-	@SpringBean(name = "boxService")
-	private BoxService boxService;
-	@SpringBean(name = "boxRegistry")
-	private BoxRegistry boxRegistry;
-	private BubblePanel bubblePanel;
-	private WebMarkupContainer repeatingBoxesInRefreshContainer;
+    @SpringBean(name = "boxDataProvider")
+    private SortableDataProvider<BoxEntity> boxDataProvider;
+    @SpringBean(name = "boxService")
+    private BoxService boxService;
+    @SpringBean(name = "boxRegistry")
+    private BoxRegistry boxRegistry;
+    private BubblePanel bubblePanel;
+    private WebMarkupContainer repeatingBoxesInRefreshContainer;
 
     public BoxPage(PageParameters params) {
-		super(params);
-		add(createRepeatingBoxesWithRefreshContainer());
-		add(createBubblePanel());
-		addPageAdminBoxLink(createCreateBoxLink());
-	}
+        super(params);
+        add(createRepeatingBoxesWithRefreshContainer());
+        add(createBubblePanel());
+        addPageAdminBoxLink(createCreateBoxLink());
+    }
 
-	private BoxDataView createRepeatingBoxes() {
-		return new BoxDataView("repeatingBoxes");
-	}
+    private BoxDataView createRepeatingBoxes() {
+        return new BoxDataView("repeatingBoxes");
+    }
 
-	private BubblePanel createBubblePanel() {
-		bubblePanel = new BubblePanel("bubblePanel");
-		return bubblePanel;
-	}
+    private BubblePanel createBubblePanel() {
+        bubblePanel = new BubblePanel("bubblePanel");
+        return bubblePanel;
+    }
 
-	private AjaxLink<BoxEntity> createCreateBoxLink() {
-		AjaxLink<BoxEntity> createLink = newCreateBoxLink();
-		createLink.add(createBoxLinkLabel());
-		return createLink;
-	}
+    private AjaxLink<BoxEntity> createCreateBoxLink() {
+        AjaxLink<BoxEntity> createLink = newCreateBoxLink();
+        createLink.add(createBoxLinkLabel());
+        return createLink;
+    }
 
-	private Label createBoxLinkLabel() {
-		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
-	}
+    private Label createBoxLinkLabel() {
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    }
 
-	private AjaxLink<BoxEntity> newCreateBoxLink() {
-		return new AjaxLink<BoxEntity>(getPageAdminBoxLinkId()) {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<BoxEntity> newCreateBoxLink() {
+        return new AjaxLink<BoxEntity>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(final AjaxRequestTarget target) {
-				BoxEditPanel boxEditPanel = newBoxEditPanel();
-				setBoxEditPanelToBubblePanel(target, boxEditPanel);
-			}
+            @Override
+            public void onClick(final AjaxRequestTarget target) {
+                BoxEditPanel boxEditPanel = newBoxEditPanel();
+                setBoxEditPanelToBubblePanel(target, boxEditPanel);
+            }
 
-			private BoxEditPanel newBoxEditPanel() {
-				IModel<BoxEntity> boxModel = Model.of(boxService.newBoxEntity());
-				return new BoxEditPanel(bubblePanel.getContentId(), boxModel) {
-					private static final long serialVersionUID = 1L;
+            private BoxEditPanel newBoxEditPanel() {
+                IModel<BoxEntity> boxModel = Model.of(boxService.newBoxEntity());
+                return new BoxEditPanel(bubblePanel.getContentId(), boxModel) {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onSave(AjaxRequestTarget target) {
-						target.addComponent(repeatingBoxesInRefreshContainer);
-						target.addComponent(BoxPage.this.getFeedback());
-						info(getString("msg.saved"));
-						bubblePanel.hide(target);
-					}
+                    @Override
+                    public void onSave(AjaxRequestTarget target) {
+                        target.addComponent(repeatingBoxesInRefreshContainer);
+                        target.addComponent(BoxPage.this.getFeedback());
+                        info(getString("msg.saved"));
+                        bubblePanel.hide(target);
+                    }
 
-					@Override
-					public void onCancel(AjaxRequestTarget target) {
-						bubblePanel.hide(target);
-					}
-				};
-			}
+                    @Override
+                    public void onCancel(AjaxRequestTarget target) {
+                        bubblePanel.hide(target);
+                    }
+                };
+            }
 
-			private void setBoxEditPanelToBubblePanel(final AjaxRequestTarget target, BoxEditPanel boxEditPanel) {
-				bubblePanel.setContent(boxEditPanel);
-				bubblePanel.showModal(target);
-			}
-		};
-	}
+            private void setBoxEditPanelToBubblePanel(final AjaxRequestTarget target, BoxEditPanel boxEditPanel) {
+                bubblePanel.setContent(boxEditPanel);
+                bubblePanel.showModal(target);
+            }
+        };
+    }
 
-	private WebMarkupContainer createRepeatingBoxesWithRefreshContainer() {
-		repeatingBoxesInRefreshContainer = new WebMarkupContainer("refreshTable");
-		repeatingBoxesInRefreshContainer.add(createRepeatingBoxes());
-		repeatingBoxesInRefreshContainer.setOutputMarkupId(true);
-		return repeatingBoxesInRefreshContainer;
-	}
+    private WebMarkupContainer createRepeatingBoxesWithRefreshContainer() {
+        repeatingBoxesInRefreshContainer = new WebMarkupContainer("refreshTable");
+        repeatingBoxesInRefreshContainer.add(createRepeatingBoxes());
+        repeatingBoxesInRefreshContainer.setOutputMarkupId(true);
+        return repeatingBoxesInRefreshContainer;
+    }
 
     private class BoxDataView extends DataView<BoxEntity> {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
         private IModel<BoxEntity> boxModel;
 
         public BoxDataView(String id) {
-			super(id, boxDataProvider);
-		}
+            super(id, boxDataProvider);
+        }
 
-		@Override
-		protected void populateItem(Item<BoxEntity> item) {
+        @Override
+        protected void populateItem(Item<BoxEntity> item) {
             boxModel = item.getModel();
             item.add(createSortLabel());
-			item.add(createTypeLabel());
-			item.add(createTitleLabel());
-			item.add(createAuthorPanel());
-			item.add(createMoveUpLink());
-			item.add(createMoveDownLink());
-			item.add(createClassEvenOddModifier(item));
-		}
+            item.add(createTypeLabel());
+            item.add(createTitleLabel());
+            item.add(createAuthorPanel());
+            item.add(createMoveUpLink());
+            item.add(createMoveDownLink());
+            item.add(createClassEvenOddModifier(item));
+        }
 
-		private AttributeModifier createClassEvenOddModifier(final Item<BoxEntity> item) {
-			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 1L;
+        private AttributeModifier createClassEvenOddModifier(final Item<BoxEntity> item) {
+            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public String getObject() {
-					return (item.getIndex() % 2 != 0) ? "even" : "odd";
-				}
-			});
-		}
+                @Override
+                public String getObject() {
+                    return (item.getIndex() % 2 != 0) ? "even" : "odd";
+                }
+            });
+        }
 
-		private MarkupContainer createMoveDownLink() {
-			AjaxLink<BoxEntity> moveDownLink = newMoveDownLink();
-			moveDownLink.add(createMoveDownLinkImage());
-			return moveDownLink;
-		}
+        private MarkupContainer createMoveDownLink() {
+            AjaxLink<BoxEntity> moveDownLink = newMoveDownLink();
+            moveDownLink.add(createMoveDownLinkImage());
+            return moveDownLink;
+        }
 
-		private Image createMoveDownLinkImage() {
-			return new Image("downImage", CommonConstants.REF_DOWN_IMG);
-		}
+        private Image createMoveDownLinkImage() {
+            return new Image("downImage", CommonConstants.REF_DOWN_IMG);
+        }
 
-		private AjaxLink<BoxEntity> newMoveDownLink() {
-			return new AjaxLink<BoxEntity>("downLink") {
-				private static final long serialVersionUID = 1L;
+        private AjaxLink<BoxEntity> newMoveDownLink() {
+            return new AjaxLink<BoxEntity>("downLink") {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					boxService.moveDown(boxModel.getObject());
-					target.addComponent(repeatingBoxesInRefreshContainer);
-				}
-			};
-		}
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    boxService.moveDown(boxModel.getObject());
+                    target.addComponent(repeatingBoxesInRefreshContainer);
+                }
+            };
+        }
 
-		private MarkupContainer createMoveUpLink() {
-			AjaxLink<BoxEntity> moveUpLink = newMoveUpLink();
-			moveUpLink.add(createMoveUpLinkImage());
-			return moveUpLink;
-		}
+        private MarkupContainer createMoveUpLink() {
+            AjaxLink<BoxEntity> moveUpLink = newMoveUpLink();
+            moveUpLink.add(createMoveUpLinkImage());
+            return moveUpLink;
+        }
 
-		private Image createMoveUpLinkImage() {
-			return new Image("upImage", CommonConstants.REF_UP_IMG);
-		}
+        private Image createMoveUpLinkImage() {
+            return new Image("upImage", CommonConstants.REF_UP_IMG);
+        }
 
-		private AjaxLink<BoxEntity> newMoveUpLink() {
-			return new AjaxLink<BoxEntity>("upLink") {
-				private static final long serialVersionUID = 1L;
+        private AjaxLink<BoxEntity> newMoveUpLink() {
+            return new AjaxLink<BoxEntity>("upLink") {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					boxService.moveUp(boxModel.getObject());
-					target.addComponent(repeatingBoxesInRefreshContainer);
-				}
-			};
-		}
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    boxService.moveUp(boxModel.getObject());
+                    target.addComponent(repeatingBoxesInRefreshContainer);
+                }
+            };
+        }
 
-		private AuthorPanel<BoxEntity> createAuthorPanel() {
-			return new AuthorPanel<BoxEntity>("authorButtons", boxModel) {
-				private static final long serialVersionUID = 1L;
+        private AuthorPanel<BoxEntity> createAuthorPanel() {
+            return new AuthorPanel<BoxEntity>("authorButtons", boxModel) {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onDelete(AjaxRequestTarget target) {
-					boxService.delete(boxModel.getObject());
-					info(getString("msg.deleted"));
-					target.addComponent(repeatingBoxesInRefreshContainer);
-					target.addComponent(getFeedback());
-				}
+                @Override
+                public void onDelete(AjaxRequestTarget target) {
+                    boxService.delete(boxModel.getObject());
+                    info(getString("msg.deleted"));
+                    target.addComponent(repeatingBoxesInRefreshContainer);
+                    target.addComponent(getFeedback());
+                }
 
-				@Override
-				public void onEdit(final AjaxRequestTarget target) {
-					BoxEditPanel editUserPanel = new BoxEditPanel(bubblePanel.getContentId(), boxModel) {
-						private static final long serialVersionUID = 1L;
+                @Override
+                public void onEdit(final AjaxRequestTarget target) {
+                    BoxEditPanel editUserPanel = new BoxEditPanel(bubblePanel.getContentId(), boxModel) {
+                        private static final long serialVersionUID = 1L;
 
-						@Override
-						public void onSave(AjaxRequestTarget target) {
-							bubblePanel.hide(target);
-							info(getString("msg.saved"));
-							target.addComponent(repeatingBoxesInRefreshContainer);
-							target.addComponent(getFeedback());
-						}
+                        @Override
+                        public void onSave(AjaxRequestTarget target) {
+                            bubblePanel.hide(target);
+                            info(getString("msg.saved"));
+                            target.addComponent(repeatingBoxesInRefreshContainer);
+                            target.addComponent(getFeedback());
+                        }
 
-						@Override
-						public void onCancel(AjaxRequestTarget target) {
-							bubblePanel.hide(target);
-						}
-					};
+                        @Override
+                        public void onCancel(AjaxRequestTarget target) {
+                            bubblePanel.hide(target);
+                        }
+                    };
 
-					bubblePanel.setContent(editUserPanel);
-					bubblePanel.showModal(target);
-				}
+                    bubblePanel.setContent(editUserPanel);
+                    bubblePanel.showModal(target);
+                }
 
-			};
-		}
+            };
+        }
 
-		private Label createTitleLabel() {
+        private Label createTitleLabel() {
             IModel<String> titleModel = new PropertyModel<String>(boxModel, "title");
             return new Label("title", titleModel);
-		}
+        }
 
-		private Label createTypeLabel() {
+        private Label createTypeLabel() {
             IModel<String> typeModel = typeModel();
             return new Label("type", typeModel);
-		}
+        }
 
         private IModel<String> typeModel() {
             return new LoadableDetachableModel<String>() {
@@ -260,7 +260,7 @@ public class BoxPage extends TemplatePage {
 
         private Label createSortLabel() {
             IModel<Integer> sortModel = new PropertyModel<Integer>(boxModel, "title");
-			return new Label("sort", sortModel);
-		}
-	}
+            return new Label("sort", sortModel);
+        }
+    }
 }

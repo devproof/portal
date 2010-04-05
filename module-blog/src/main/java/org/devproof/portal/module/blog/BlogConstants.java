@@ -23,11 +23,11 @@ import org.devproof.portal.module.blog.page.BlogEditPage;
  */
 public interface BlogConstants {
 
-	String CONF_BLOG_ENTRIES_PER_PAGE = "blog_entries_per_page";
-	String CONF_BLOG_ENTRIES_IN_FEED = "blog_entries_in_feed";
-	String CONF_BLOG_FEED_TITLE = "blog_feed_title";
-	ResourceReference REF_BLOG_CSS = new ResourceReference(BlogConstants.class, "css/blog.css");
-	String ENTITY_CACHE_REGION = "entity.content";
-	String QUERY_CACHE_REGION = "query.content";
+    String CONF_BLOG_ENTRIES_PER_PAGE = "blog_entries_per_page";
+    String CONF_BLOG_ENTRIES_IN_FEED = "blog_entries_in_feed";
+    String CONF_BLOG_FEED_TITLE = "blog_feed_title";
+    ResourceReference REF_BLOG_CSS = new ResourceReference(BlogConstants.class, "css/blog.css");
+    String ENTITY_CACHE_REGION = "entity.content";
+    String QUERY_CACHE_REGION = "query.content";
     String AUTHOR_RIGHT = "page." + BlogEditPage.class.getSimpleName();
 }

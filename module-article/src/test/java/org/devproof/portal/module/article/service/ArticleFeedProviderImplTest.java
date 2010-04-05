@@ -36,122 +36,119 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class ArticleFeedProviderImplTest extends TestCase {
-	private ArticleFeedProviderImpl impl;
-	private SortableQueryDataProvider<ArticleEntity, ArticleQuery> dataProviderMock;
-	private ConfigurationService configurationServiceMock;
+    private ArticleFeedProviderImpl impl;
+    private SortableQueryDataProvider<ArticleEntity, ArticleQuery> dataProviderMock;
+    private ConfigurationService configurationServiceMock;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void setUp() throws Exception {
-		dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
-		configurationServiceMock = createMock(ConfigurationService.class);
-		impl = new ArticleFeedProviderImpl() {
-			@Override
-			protected String getUrl(RequestCycle rc) {
-				return "http://url";
-			}
+    @Override
+    @SuppressWarnings("unchecked")
+    public void setUp() throws Exception {
+        dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
+        configurationServiceMock = createMock(ConfigurationService.class);
+        impl = new ArticleFeedProviderImpl() {
+            @Override
+            protected String getUrl(RequestCycle rc) {
+                return "http://url";
+            }
 
-			@Override
-			protected String getUrl(RequestCycle rc, ArticleEntity articleEntity) {
-				return "http://url/" + articleEntity.getId();
-			}
-		};
-		impl.setConfigurationService(configurationServiceMock);
-		impl.setArticleDataProvider(dataProviderMock);
-	}
+            @Override
+            protected String getUrl(RequestCycle rc, ArticleEntity articleEntity) {
+                return "http://url/" + articleEntity.getId();
+            }
+        };
+        impl.setConfigurationService(configurationServiceMock);
+        impl.setArticleDataProvider(dataProviderMock);
+    }
 
-	public void testGetFeedName() {
-		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
-		expect(configurationServiceMock.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE)).andReturn("feedtitle");
-		replay(configurationServiceMock);
-		assertEquals("pagetitle - feedtitle", impl.getFeedName());
-		verify(configurationServiceMock);
-	}
+    public void testGetFeedName() {
+        expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
+        expect(configurationServiceMock.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE)).andReturn("feedtitle");
+        replay(configurationServiceMock);
+        assertEquals("pagetitle - feedtitle", impl.getFeedName());
+        verify(configurationServiceMock);
+    }
 
-	public void testSupportedPages() {
-		assertEquals(ArticlePage.class, impl.getSupportedFeedPages().get(0));
-	}
+    public void testSupportedPages() {
+        assertEquals(ArticlePage.class, impl.getSupportedFeedPages().get(0));
+    }
 
-	@SuppressWarnings("unchecked")
-	public void testGetArticleEntries() {
-		ArticleEntity article = createArticle();
-		Iterator it = Arrays.asList(article).iterator();
-		expect(configurationServiceMock.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED)).andReturn(10);
-		expect(dataProviderMock.iterator(0, 10)).andReturn(it);
-		replay(configurationServiceMock);
-		replay(dataProviderMock);
-		Iterator<? extends ArticleEntity> bookmarkEntries = impl.getArticleEntries();
-		assertSame(bookmarkEntries, it);
-		verify(configurationServiceMock);
-		verify(dataProviderMock);
-	}
+    @SuppressWarnings("unchecked")
+    public void testGetArticleEntries() {
+        ArticleEntity article = createArticle();
+        Iterator it = Arrays.asList(article).iterator();
+        expect(configurationServiceMock.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED)).andReturn(10);
+        expect(dataProviderMock.iterator(0, 10)).andReturn(it);
+        replay(configurationServiceMock);
+        replay(dataProviderMock);
+        Iterator<? extends ArticleEntity> bookmarkEntries = impl.getArticleEntries();
+        assertSame(bookmarkEntries, it);
+        verify(configurationServiceMock);
+        verify(dataProviderMock);
+    }
 
-	public void testGenerateFeed() {
-		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle")
-				.anyTimes();
-		expect(configurationServiceMock.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE)).andReturn("feedtitle")
-				.anyTimes();
-		replay(configurationServiceMock);
-		SyndFeed feed = impl.generateFeed(null);
-		assertEquals("pagetitle - feedtitle", feed.getTitle());
-		assertEquals("pagetitle - feedtitle", feed.getDescription());
-		assertEquals("http://url", feed.getLink());
-		verify(configurationServiceMock);
-	}
+    public void testGenerateFeed() {
+        expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle").anyTimes();
+        expect(configurationServiceMock.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE)).andReturn("feedtitle").anyTimes();
+        replay(configurationServiceMock);
+        SyndFeed feed = impl.generateFeed(null);
+        assertEquals("pagetitle - feedtitle", feed.getTitle());
+        assertEquals("pagetitle - feedtitle", feed.getDescription());
+        assertEquals("http://url", feed.getLink());
+        verify(configurationServiceMock);
+    }
 
-	@SuppressWarnings("unchecked")
-	public void testGenerateFeedEntries() {
-		ArticleEntity bookmark = createArticle();
-		Iterator it = Arrays.asList(bookmark).iterator();
-		List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
-		SyndEntry entry = generateFeedEntries.get(0);
-		assertEquals("hello", entry.getTitle());
-		assertEquals("http://url/" + bookmark.getId(), entry.getLink());
-		assertEquals("world", entry.getDescription().getValue());
-		assertEquals("text/plain", entry.getDescription().getType());
-		assertEquals("maxpower", entry.getAuthor());
-		assertNotNull(entry.getPublishedDate());
-	}
+    @SuppressWarnings("unchecked")
+    public void testGenerateFeedEntries() {
+        ArticleEntity bookmark = createArticle();
+        Iterator it = Arrays.asList(bookmark).iterator();
+        List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
+        SyndEntry entry = generateFeedEntries.get(0);
+        assertEquals("hello", entry.getTitle());
+        assertEquals("http://url/" + bookmark.getId(), entry.getLink());
+        assertEquals("world", entry.getDescription().getValue());
+        assertEquals("text/plain", entry.getDescription().getType());
+        assertEquals("maxpower", entry.getAuthor());
+        assertNotNull(entry.getPublishedDate());
+    }
 
-	public void testGetFeed() {
-		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		final StringBuilder callOrder = new StringBuilder();
-		impl = new ArticleFeedProviderImpl() {
-			@Override
-			protected SyndFeed generateFeed(final RequestCycle rc) {
-				callOrder.append("1");
-				return new SyndFeedImpl();
-			}
+    public void testGetFeed() {
+        final List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        final StringBuilder callOrder = new StringBuilder();
+        impl = new ArticleFeedProviderImpl() {
+            @Override
+            protected SyndFeed generateFeed(final RequestCycle rc) {
+                callOrder.append("1");
+                return new SyndFeedImpl();
+            }
 
-			@Override
-			protected Iterator<? extends ArticleEntity> getArticleEntries() {
-				callOrder.append("2");
-				return null;
-			}
+            @Override
+            protected Iterator<? extends ArticleEntity> getArticleEntries() {
+                callOrder.append("2");
+                return null;
+            }
 
-			@Override
-			protected List<SyndEntry> generateFeedEntries(final RequestCycle rc,
-					final Iterator<? extends ArticleEntity> iterator) {
-				callOrder.append("3");
-				return entries;
-			}
+            @Override
+            protected List<SyndEntry> generateFeedEntries(final RequestCycle rc, final Iterator<? extends ArticleEntity> iterator) {
+                callOrder.append("3");
+                return entries;
+            }
 
-			@Override
-			protected String getUrl(final RequestCycle rc) {
-				return "";
-			}
-		};
-		impl.getFeed(null);
-		assertEquals("123", callOrder.toString());
-	}
+            @Override
+            protected String getUrl(final RequestCycle rc) {
+                return "";
+            }
+        };
+        impl.getFeed(null);
+        assertEquals("123", callOrder.toString());
+    }
 
-	private ArticleEntity createArticle() {
-		ArticleEntity article = new ArticleEntity();
-		article.setId(1);
-		article.setTitle("hello");
-		article.setTeaser("world");
-		article.setModifiedBy("maxpower");
-		article.setModifiedAt(new Date());
-		return article;
-	}
+    private ArticleEntity createArticle() {
+        ArticleEntity article = new ArticleEntity();
+        article.setId(1);
+        article.setTitle("hello");
+        article.setTeaser("world");
+        article.setModifiedBy("maxpower");
+        article.setModifiedAt(new Date());
+        return article;
+    }
 }

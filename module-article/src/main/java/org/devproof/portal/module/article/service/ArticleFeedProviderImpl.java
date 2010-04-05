@@ -39,87 +39,87 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class ArticleFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
-	private ConfigurationService configurationService;
+    private SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
+    private ConfigurationService configurationService;
 
-	@Override
-	public SyndFeed getFeed(RequestCycle rc) {
-		SyndFeed feed = generateFeed(rc);
-		Iterator<? extends ArticleEntity> iterator = getArticleEntries();
-		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
-		feed.setEntries(entries);
-		return feed;
-	}
+    @Override
+    public SyndFeed getFeed(RequestCycle rc) {
+        SyndFeed feed = generateFeed(rc);
+        Iterator<? extends ArticleEntity> iterator = getArticleEntries();
+        List<SyndEntry> entries = generateFeedEntries(rc, iterator);
+        feed.setEntries(entries);
+        return feed;
+    }
 
-	protected Iterator<? extends ArticleEntity> getArticleEntries() {
-		Integer maxNumber = configurationService.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED);
-		Iterator<? extends ArticleEntity> iterator = articleDataProvider.iterator(0, maxNumber);
-		return iterator;
-	}
+    protected Iterator<? extends ArticleEntity> getArticleEntries() {
+        Integer maxNumber = configurationService.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED);
+        Iterator<? extends ArticleEntity> iterator = articleDataProvider.iterator(0, maxNumber);
+        return iterator;
+    }
 
-	protected SyndFeed generateFeed(RequestCycle rc) {
-		SyndFeed feed = new SyndFeedImpl();
-		feed.setTitle(getFeedName());
-		feed.setLink(getUrl(rc));
-		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
-		feed.setAuthor(pageTitle);
-		feed.setCopyright(pageTitle);
-		// must be set for RSS2 feed
-		feed.setDescription(getFeedName());
-		return feed;
-	}
+    protected SyndFeed generateFeed(RequestCycle rc) {
+        SyndFeed feed = new SyndFeedImpl();
+        feed.setTitle(getFeedName());
+        feed.setLink(getUrl(rc));
+        String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+        feed.setAuthor(pageTitle);
+        feed.setCopyright(pageTitle);
+        // must be set for RSS2 feed
+        feed.setDescription(getFeedName());
+        return feed;
+    }
 
-	protected String getUrl(RequestCycle rc) {
-		return rc.urlFor(ArticlePage.class, new PageParameters()).toString();
-	}
+    protected String getUrl(RequestCycle rc) {
+        return rc.urlFor(ArticlePage.class, new PageParameters()).toString();
+    }
 
-	protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends ArticleEntity> iterator) {
-		List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		while (iterator.hasNext()) {
-			ArticleEntity articleEntity = iterator.next();
-			SyndEntry entry = new SyndEntryImpl();
-			entry.setTitle(articleEntity.getTitle());
-			entry.setLink(getUrl(rc, articleEntity));
-			entry.setPublishedDate(articleEntity.getModifiedAt());
-			entry.setAuthor(articleEntity.getModifiedBy());
-			String content = articleEntity.getTeaser();
-			content = content != null ? content : "";
-			content = content.replaceAll("<(.|\n)*?>", "");
-			SyndContent description = new SyndContentImpl();
-			description.setType("text/plain");
-			description.setValue(StringUtils.abbreviate(content, 200));
-			entry.setDescription(description);
-			entries.add(entry);
-		}
-		return entries;
-	}
+    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends ArticleEntity> iterator) {
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        while (iterator.hasNext()) {
+            ArticleEntity articleEntity = iterator.next();
+            SyndEntry entry = new SyndEntryImpl();
+            entry.setTitle(articleEntity.getTitle());
+            entry.setLink(getUrl(rc, articleEntity));
+            entry.setPublishedDate(articleEntity.getModifiedAt());
+            entry.setAuthor(articleEntity.getModifiedBy());
+            String content = articleEntity.getTeaser();
+            content = content != null ? content : "";
+            content = content.replaceAll("<(.|\n)*?>", "");
+            SyndContent description = new SyndContentImpl();
+            description.setType("text/plain");
+            description.setValue(StringUtils.abbreviate(content, 200));
+            entry.setDescription(description);
+            entries.add(entry);
+        }
+        return entries;
+    }
 
-	protected String getUrl(RequestCycle rc, ArticleEntity ArticleEntity) {
-		return rc.urlFor(ArticlePage.class, new PageParameters("id=" + ArticleEntity.getId())).toString();
-	}
+    protected String getUrl(RequestCycle rc, ArticleEntity ArticleEntity) {
+        return rc.urlFor(ArticlePage.class, new PageParameters("id=" + ArticleEntity.getId())).toString();
+    }
 
-	@Override
-	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
-		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
-		pages.add(ArticlePage.class);
-		pages.add(ArticleReadPage.class);
-		return pages;
-	}
+    @Override
+    public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
+        List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
+        pages.add(ArticlePage.class);
+        pages.add(ArticleReadPage.class);
+        return pages;
+    }
 
-	@Override
-	public String getFeedName() {
-		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
-		String feedName = configurationService.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE);
-		return pageTitle + " - " + feedName;
-	}
+    @Override
+    public String getFeedName() {
+        String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+        String feedName = configurationService.findAsString(ArticleConstants.CONF_ARTICLE_FEED_TITLE);
+        return pageTitle + " - " + feedName;
+    }
 
-	@Required
-	public void setArticleDataProvider(SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider) {
-		this.articleDataProvider = articleDataProvider;
-	}
+    @Required
+    public void setArticleDataProvider(SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider) {
+        this.articleDataProvider = articleDataProvider;
+    }
 
-	@Required
-	public void setConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 }

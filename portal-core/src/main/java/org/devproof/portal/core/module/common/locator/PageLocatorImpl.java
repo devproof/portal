@@ -28,29 +28,27 @@ import java.util.Map;
 
 /**
  * Locates the pages of all modules
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class PageLocatorImpl implements ApplicationContextAware, PageLocator {
-	private ApplicationContext context;
+    private ApplicationContext context;
 
-	@Override
-	public Collection<PageConfiguration> getPageConfigurations() {
-		@SuppressWarnings("unchecked")
-		Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
-		List<PageConfiguration> back = new ArrayList<PageConfiguration>();
-		for (ModuleConfiguration module : beans.values()) {
-			back.addAll(module.getPages());
-			for (PageConfiguration page : module.getPages()) {
-				page.setModule(module);
-			}
-		}
-		return back;
-	}
+    @Override
+    public Collection<PageConfiguration> getPageConfigurations() {
+        @SuppressWarnings("unchecked") Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
+        List<PageConfiguration> back = new ArrayList<PageConfiguration>();
+        for (ModuleConfiguration module : beans.values()) {
+            back.addAll(module.getPages());
+            for (PageConfiguration page : module.getPages()) {
+                page.setModule(module);
+            }
+        }
+        return back;
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		context = applicationContext;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
 }

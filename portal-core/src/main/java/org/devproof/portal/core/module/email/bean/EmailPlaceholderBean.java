@@ -22,155 +22,155 @@ import java.util.Map;
 
 /**
  * The bean holds the values which are replaced in the emails
- * 
+ *
  * @author Carsten Hufe
  */
 public class EmailPlaceholderBean implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private Map<String, String> additionalPlaceholder = new HashMap<String, String>();
+    private static final long serialVersionUID = 1L;
+    private Map<String, String> additionalPlaceholder = new HashMap<String, String>();
 
-	private String toUsername;
-	private String toFirstname;
-	private String toLastname;
-	private String toEmail;
-	private String username;
-	private String firstname;
-	private String lastname;
-	private String email;
-	private Date birthday;
-	private String confirmationLink;
-	private String resetPasswordLink;
-	private String content;
-	private String contactFullname;
-	private String contactEmail;
-	private String contactIp;
+    private String toUsername;
+    private String toFirstname;
+    private String toLastname;
+    private String toEmail;
+    private String username;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private Date birthday;
+    private String confirmationLink;
+    private String resetPasswordLink;
+    private String content;
+    private String contactFullname;
+    private String contactEmail;
+    private String contactIp;
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public Date getBirthday() {
-		return birthday;
-	}
+    public Date getBirthday() {
+        return birthday;
+    }
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
-	public String getConfirmationLink() {
-		return confirmationLink;
-	}
+    public String getConfirmationLink() {
+        return confirmationLink;
+    }
 
-	public void setConfirmationLink(String confirmationLink) {
-		this.confirmationLink = confirmationLink;
-	}
+    public void setConfirmationLink(String confirmationLink) {
+        this.confirmationLink = confirmationLink;
+    }
 
-	public String getResetPasswordLink() {
-		return resetPasswordLink;
-	}
+    public String getResetPasswordLink() {
+        return resetPasswordLink;
+    }
 
-	public void setResetPasswordLink(String resetPasswordLink) {
-		this.resetPasswordLink = resetPasswordLink;
-	}
+    public void setResetPasswordLink(String resetPasswordLink) {
+        this.resetPasswordLink = resetPasswordLink;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public String getToUsername() {
-		return toUsername;
-	}
+    public String getToUsername() {
+        return toUsername;
+    }
 
-	public void setToUsername(String toUsername) {
-		this.toUsername = toUsername;
-	}
+    public void setToUsername(String toUsername) {
+        this.toUsername = toUsername;
+    }
 
-	public String getToFirstname() {
-		return toFirstname;
-	}
+    public String getToFirstname() {
+        return toFirstname;
+    }
 
-	public void setToFirstname(String toFirstname) {
-		this.toFirstname = toFirstname;
-	}
+    public void setToFirstname(String toFirstname) {
+        this.toFirstname = toFirstname;
+    }
 
-	public String getToLastname() {
-		return toLastname;
-	}
+    public String getToLastname() {
+        return toLastname;
+    }
 
-	public void setToLastname(String toLastname) {
-		this.toLastname = toLastname;
-	}
+    public void setToLastname(String toLastname) {
+        this.toLastname = toLastname;
+    }
 
-	public String getToEmail() {
-		return toEmail;
-	}
+    public String getToEmail() {
+        return toEmail;
+    }
 
-	public void setToEmail(String toEmail) {
-		this.toEmail = toEmail;
-	}
+    public void setToEmail(String toEmail) {
+        this.toEmail = toEmail;
+    }
 
-	public String getContactFullname() {
-		return contactFullname;
-	}
+    public String getContactFullname() {
+        return contactFullname;
+    }
 
-	public void setContactFullname(String contactFullname) {
-		this.contactFullname = contactFullname;
-	}
+    public void setContactFullname(String contactFullname) {
+        this.contactFullname = contactFullname;
+    }
 
-	public String getContactEmail() {
-		return contactEmail;
-	}
+    public String getContactEmail() {
+        return contactEmail;
+    }
 
-	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
-	}
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
 
-	public String getContactIp() {
-		return contactIp;
-	}
+    public String getContactIp() {
+        return contactIp;
+    }
 
-	public void setContactIp(String contactIp) {
-		this.contactIp = contactIp;
-	}
+    public void setContactIp(String contactIp) {
+        this.contactIp = contactIp;
+    }
 
-	public Map<String, String> getAdditionalPlaceholder() {
-		return additionalPlaceholder;
-	}
+    public Map<String, String> getAdditionalPlaceholder() {
+        return additionalPlaceholder;
+    }
 
-	public String put(String key, String value) {
-		return additionalPlaceholder.put(key, value);
-	}
+    public String put(String key, String value) {
+        return additionalPlaceholder.put(key, value);
+    }
 
 }

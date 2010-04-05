@@ -22,10 +22,10 @@ import org.devproof.portal.module.blog.entity.BlogEntity;
  * @author Carsten Hufe
  */
 public interface BlogService extends CrudService<BlogEntity, Integer> {
-	/**
-	 * Returns a new instance of BlogEntity
-	 * 
-	 * @return new instance of {@link BlogEntity}
-	 */
-	BlogEntity newBlogEntity();
+    /**
+     * Returns a new instance of BlogEntity
+     *
+     * @return new instance of {@link BlogEntity}
+     */
+    BlogEntity newBlogEntity();
 }

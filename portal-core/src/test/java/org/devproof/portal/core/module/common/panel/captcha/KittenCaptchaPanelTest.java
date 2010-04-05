@@ -27,31 +27,31 @@ import java.awt.*;
  * @author Carsten Hufe
  */
 public class KittenCaptchaPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createKittenCaptchaPanel());
-		tester.assertComponent("panel", KittenCaptchaPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createKittenCaptchaPanel());
+        tester.assertComponent("panel", KittenCaptchaPanel.class);
+    }
 
-	private TestPanelSource createKittenCaptchaPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createKittenCaptchaPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new KittenCaptchaPanel(panelId, new Dimension(400, 200));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new KittenCaptchaPanel(panelId, new Dimension(400, 200));
+            }
+        };
+    }
 }

@@ -39,100 +39,98 @@ import org.devproof.portal.module.comment.service.CommentService;
  */
 public class ExpandableCommentPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "commentService")
-	private CommentService commentService;
-	private WebMarkupContainer refreshContainer;
-	private boolean visible = false;
-	private CommentConfiguration configuration;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "commentService")
+    private CommentService commentService;
+    private WebMarkupContainer refreshContainer;
+    private boolean visible = false;
+    private CommentConfiguration configuration;
 
-	public ExpandableCommentPanel(String id, CommentConfiguration configuration) {
-		super(id);
-		this.configuration = configuration;
-		addJQuery();
-		add(createCSSHeaderContributor());
-		add(createRefreshCommentContainer());
-		add(createCommentLink());
-	}
+    public ExpandableCommentPanel(String id, CommentConfiguration configuration) {
+        super(id);
+        this.configuration = configuration;
+        addJQuery();
+        add(createCSSHeaderContributor());
+        add(createRefreshCommentContainer());
+        add(createCommentLink());
+    }
 
-	@Override
-	public boolean isVisible() {
-		return configuration.isAllowedToView();
-	}
+    @Override
+    public boolean isVisible() {
+        return configuration.isAllowedToView();
+    }
 
-	private WebMarkupContainer createRefreshCommentContainer() {
-		refreshContainer = new WebMarkupContainer("refreshCommentContainer");
-		refreshContainer.add(createEmptyCommentPanel());
-		refreshContainer.add(createDisplayNoneModifier());
-		refreshContainer.setOutputMarkupId(true);
-		return refreshContainer;
-	}
+    private WebMarkupContainer createRefreshCommentContainer() {
+        refreshContainer = new WebMarkupContainer("refreshCommentContainer");
+        refreshContainer.add(createEmptyCommentPanel());
+        refreshContainer.add(createDisplayNoneModifier());
+        refreshContainer.setOutputMarkupId(true);
+        return refreshContainer;
+    }
 
-	private EmptyPanel createEmptyCommentPanel() {
-		return new EmptyPanel("comments");
-	}
+    private EmptyPanel createEmptyCommentPanel() {
+        return new EmptyPanel("comments");
+    }
 
-	private SimpleAttributeModifier createDisplayNoneModifier() {
-		return new SimpleAttributeModifier("style", "display:none;");
-	}
+    private SimpleAttributeModifier createDisplayNoneModifier() {
+        return new SimpleAttributeModifier("style", "display:none;");
+    }
 
-	private void addJQuery() {
-		PortalUtil.addJQuery(this);
-	}
+    private void addJQuery() {
+        PortalUtil.addJQuery(this);
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
+    }
 
-	private Component createCommentLink() {
-		WebMarkupContainer commentLink = newCommentLink();
-		commentLink.add(createCommentsLinkLabel());
-		commentLink.setOutputMarkupId(true);
-		return commentLink;
-	}
+    private Component createCommentLink() {
+        WebMarkupContainer commentLink = newCommentLink();
+        commentLink.add(createCommentsLinkLabel());
+        commentLink.setOutputMarkupId(true);
+        return commentLink;
+    }
 
-	private Label createCommentsLinkLabel() {
-		return new Label("commentsLinkLabel", createLinkLabelTextModel());
-	}
+    private Label createCommentsLinkLabel() {
+        return new Label("commentsLinkLabel", createLinkLabelTextModel());
+    }
 
-	private AjaxLink<Void> newCommentLink() {
-		return new AjaxLink<Void>("commentsLink") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<Void> newCommentLink() {
+        return new AjaxLink<Void>("commentsLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				if (visible) {
-					target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
-				} else {
-					refreshContainer.replace(createCommentPanel());
-					target.addComponent(refreshContainer);
-					target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
-				}
-				target.addComponent(this);
-				visible = !visible;
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                if (visible) {
+                    target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
+                } else {
+                    refreshContainer.replace(createCommentPanel());
+                    target.addComponent(refreshContainer);
+                    target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
+                }
+                target.addComponent(this);
+                visible = !visible;
+            }
 
-			private CommentPanel createCommentPanel() {
-				return new CommentPanel("comments", configuration);
-			}
-		};
-	}
+            private CommentPanel createCommentPanel() {
+                return new CommentPanel("comments", configuration);
+            }
+        };
+    }
 
-	private IModel<String> createLinkLabelTextModel() {
-		return new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = 1L;
+    private IModel<String> createLinkLabelTextModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public String getObject() {
-				if (visible) {
-					return getString("hideComments");
-				} else {
-					long numberOfComments = commentService.findNumberOfComments(configuration.getModuleName(),
-							configuration.getModuleContentId());
-					return numberOfComments == 0 && configuration.isAllowedToWrite() ? getString("writeComment")
-							: getString("numberOfComments", Model.of(numberOfComments));
-				}
-			}
-		};
-	}
+            @Override
+            public String getObject() {
+                if (visible) {
+                    return getString("hideComments");
+                } else {
+                    long numberOfComments = commentService.findNumberOfComments(configuration.getModuleName(), configuration.getModuleContentId());
+                    return numberOfComments == 0 && configuration.isAllowedToWrite() ? getString("writeComment") : getString("numberOfComments", Model.of(numberOfComments));
+                }
+            }
+        };
+    }
 }

@@ -24,61 +24,61 @@ import java.util.List;
 
 /**
  * Base class for tags
- * 
+ *
  * @author Carsten Hufe
  */
 @MappedSuperclass
 public abstract class BaseTagEntity<T> extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name = "tagname")
-	private String tagname;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "tagname")
+    private String tagname;
 
-	public String getTagname() {
-		return this.tagname;
-	}
+    public String getTagname() {
+        return this.tagname;
+    }
 
-	public void setTagname(String tagname) {
-		this.tagname = tagname != null ? tagname.toLowerCase() : null;
-	}
+    public void setTagname(String tagname) {
+        this.tagname = tagname != null ? tagname.toLowerCase() : null;
+    }
 
-	public abstract void setReferencedObjects(List<T> refObjs);
+    public abstract void setReferencedObjects(List<T> refObjs);
 
-	public abstract List<?> getReferencedObjects();
+    public abstract List<?> getReferencedObjects();
 
-	@Override
-	public String toString() {
-		return String.format("Tag: %s", this.tagname);
-	}
+    @Override
+    public String toString() {
+        return String.format("Tag: %s", this.tagname);
+    }
 
-	@Override
-	public int hashCode() {
-		int prime = 31;
-		int result = 1;
-		result = prime * result + ((this.tagname == null) ? 0 : this.tagname.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.tagname == null) ? 0 : this.tagname.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		BaseTagEntity<?> other = (BaseTagEntity<?>) obj;
-		if (this.tagname == null) {
-			if (other.tagname != null) {
-				return false;
-			}
-		} else if (!this.tagname.equals(other.tagname)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        BaseTagEntity<?> other = (BaseTagEntity<?>) obj;
+        if (this.tagname == null) {
+            if (other.tagname != null) {
+                return false;
+            }
+        } else if (!this.tagname.equals(other.tagname)) {
+            return false;
+        }
+        return true;
+    }
 }

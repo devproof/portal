@@ -37,25 +37,25 @@ import java.util.List;
 
 /**
  * Latest article box
- * 
+ *
  * @author Carsten Hufe
  */
 public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "articleService")
-	private ArticleService articleService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private WebMarkupContainer titleContainer;
-	private IModel<List<ArticleEntity>> latestArticlesModel;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "articleService")
+    private ArticleService articleService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private WebMarkupContainer titleContainer;
+    private IModel<List<ArticleEntity>> latestArticlesModel;
 
-	public ArticleBoxPanel(String id) {
-		super(id);
+    public ArticleBoxPanel(String id) {
+        super(id);
         latestArticlesModel = createLatestArticlesModel();
-		add(createTitleContainer());
-		add(createRepeatingArticles());
-	}
+        add(createTitleContainer());
+        add(createRepeatingArticles());
+    }
 
     @Override
     public boolean isVisible() {
@@ -64,26 +64,24 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
-	private IModel<List<ArticleEntity>> createLatestArticlesModel() {
+    private IModel<List<ArticleEntity>> createLatestArticlesModel() {
         return new LoadableDetachableModel<List<ArticleEntity>>() {
             private static final long serialVersionUID = -8763260134372373780L;
 
             @Override
             protected List<ArticleEntity> load() {
-                Integer numberOfLatestArticles = configurationService
-                        .findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
+                Integer numberOfLatestArticles = configurationService.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
                 PortalSession session = (PortalSession) getSession();
-                return articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(),
-                        0, numberOfLatestArticles);
+                return articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(), 0, numberOfLatestArticles);
             }
         };
-	}
+    }
 
-	private ListView<ArticleEntity> createRepeatingArticles() {
+    private ListView<ArticleEntity> createRepeatingArticles() {
         return new ListView<ArticleEntity>("repeatingArticles", latestArticlesModel) {
             private static final long serialVersionUID = 3388745835706671920L;
 
@@ -92,22 +90,22 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
                 item.add(createLinkToArticle(item.getModel()));
             }
         };
-	}
+    }
 
-	private BookmarkablePageLink<ArticlePage> createLinkToArticle(IModel<ArticleEntity> articleModel) {
+    private BookmarkablePageLink<ArticlePage> createLinkToArticle(IModel<ArticleEntity> articleModel) {
         ArticleEntity article = articleModel.getObject();
         BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
         link.setParameter("id", article.getId());
-		link.add(createLinkToArticleLabel(articleModel));
-		return link;
-	}
+        link.add(createLinkToArticleLabel(articleModel));
+        return link;
+    }
 
-	private Label createLinkToArticleLabel(IModel<ArticleEntity> articleModel) {
-		return new Label("linkName", new PropertyModel<String>(articleModel, "title"));
-	}
+    private Label createLinkToArticleLabel(IModel<ArticleEntity> articleModel) {
+        return new Label("linkName", new PropertyModel<String>(articleModel, "title"));
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

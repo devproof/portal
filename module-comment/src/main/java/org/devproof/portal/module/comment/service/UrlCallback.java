@@ -19,15 +19,15 @@ import org.devproof.portal.module.comment.entity.CommentEntity;
 
 /**
  * Builds URLs in the service layer
- * 
+ *
  * @author Carsten Hufe
  */
 public interface UrlCallback {
-	/**
-	 * Returns a URLs which is usally placed in an email
-	 * 
-	 * @param comment
-	 * @return Full URL
-	 */
-	String getUrl(CommentEntity comment);
+    /**
+     * Returns a URLs which is usally placed in an email
+     *
+     * @param comment
+     * @return Full URL
+     */
+    String getUrl(CommentEntity comment);
 }

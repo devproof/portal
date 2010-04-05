@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>
 
-	<h1><wicket:message key="boxTitle">[Search]</wicket:message></h1>
-	<form wicket:id="searchForm">
-	<div>
-		<input type="text"  class="boxinput" wicket:id="allnames"/><br/>
-		<select wicket:id="active">
-			  <option wicket:id="chooseActive"><wicket:message key="chooseActive"/></option>
-              <option wicket:id="activeTrue"><wicket:message key="activeTrue"/></option>
-              <option wicket:id="activeFalse"><wicket:message key="activeFalse"/></option>
+    <h1><wicket:message key="boxTitle">[Search]</wicket:message></h1>
+
+    <form wicket:id="searchForm">
+        <div>
+            <input type="text" class="boxinput" wicket:id="allnames"/><br/> <select wicket:id="active">
+            <option wicket:id="chooseActive"><wicket:message key="chooseActive"/></option>
+            <option wicket:id="activeTrue"><wicket:message key="activeTrue"/></option>
+            <option wicket:id="activeFalse"><wicket:message key="activeFalse"/></option>
+        </select><br/> <select wicket:id="confirmed">
+            <option wicket:id="chooseConfirmed"><wicket:message key="chooseConfirmed"/></option>
+            <option wicket:id="confirmedTrue"><wicket:message key="confirmedTrue"/></option>
+            <option wicket:id="confirmedFalse"><wicket:message key="confirmedFalse"/></option>
         </select><br/>
-        <select wicket:id="confirmed">
-			  <option wicket:id="chooseConfirmed"><wicket:message key="chooseConfirmed"/></option>
-              <option wicket:id="confirmedTrue"><wicket:message key="confirmedTrue"/></option>
-              <option wicket:id="confirmedFalse"><wicket:message key="confirmedFalse"/></option>
-        </select><br/> 
-        <!-- input type="submit" wicket:message="value:button" class="button" / -->
-	</div>
-	</form>
+            <!-- input type="submit" wicket:message="value:button" class="button" / -->
+        </div>
+    </form>
 </wicket:panel>
 </html>

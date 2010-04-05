@@ -19,16 +19,14 @@ package org.devproof.portal.core.module.common.util;
  * @author Carsten Hufe
  */
 public class PropertyFilenameGenerator {
-	/**
-	 * Generates a property file name for the actual computer
-	 * 
-	 * @param prefix
-	 *            filename prefix
-	 * @param suffix
-	 *            filename suffix
-	 * @return whole file name
-	 */
-	public static String generate(String prefix, String suffix) {
-		return prefix + System.getenv("COMPUTERNAME") + suffix;
+    /**
+     * Generates a property file name for the actual computer
+     *
+     * @param prefix filename prefix
+     * @param suffix filename suffix
+     * @return whole file name
+     */
+    public static String generate(String prefix, String suffix) {
+        return prefix + System.getenv("COMPUTERNAME") + suffix;
 	}
 }

@@ -21,13 +21,12 @@ import java.util.Collection;
 
 /**
  * Locates the pages of all modules
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface PageLocator {
-	/**
-	 * Returns the page configurations of all modules
-	 */
-	public Collection<PageConfiguration> getPageConfigurations();
+    /**
+     * Returns the page configurations of all modules
+     */
+    public Collection<PageConfiguration> getPageConfigurations();
 }

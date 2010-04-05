@@ -21,23 +21,23 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public interface CommentConfiguration extends Serializable {
-	/**
-	 * Returns the module name
-	 */
-	String getModuleName();
+    /**
+     * Returns the module name
+     */
+    String getModuleName();
 
-	/**
-	 * Returns the module content id
-	 */
-	String getModuleContentId();
+    /**
+     * Returns the module content id
+     */
+    String getModuleContentId();
 
-	/**
-	 * returns true if the user is allowed to view the comments
-	 */
-	boolean isAllowedToView();
+    /**
+     * returns true if the user is allowed to view the comments
+     */
+    boolean isAllowedToView();
 
-	/**
-	 * returns true if the user is allowed to compose comments
-	 */
-	boolean isAllowedToWrite();
+    /**
+     * returns true if the user is allowed to compose comments
+     */
+    boolean isAllowedToWrite();
 }

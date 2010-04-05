@@ -27,24 +27,24 @@ import org.devproof.portal.core.module.modulemgmt.panel.ModuleLinkPanel;
  */
 public class ModuleLinkPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ModuleLinkPage(PageParameters params) {
-		super(params);
-		add(createRepeatingModulesLinks());
-	}
+    public ModuleLinkPage(PageParameters params) {
+        super(params);
+        add(createRepeatingModulesLinks());
+    }
 
-	private RepeatingView createRepeatingModulesLinks() {
-		RepeatingView repeater = new RepeatingView("repeatingModulesLinks");
-		for (LinkType linkType : LinkType.values()) {
-			repeater.add(createModuleLinkTableForLinkType(repeater.newChildId(), linkType));
-		}
-		return repeater;
-	}
+    private RepeatingView createRepeatingModulesLinks() {
+        RepeatingView repeater = new RepeatingView("repeatingModulesLinks");
+        for (LinkType linkType : LinkType.values()) {
+            repeater.add(createModuleLinkTableForLinkType(repeater.newChildId(), linkType));
+        }
+        return repeater;
+    }
 
-	private WebMarkupContainer createModuleLinkTableForLinkType(String id, LinkType linkType) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(new ModuleLinkPanel("content", linkType));
-		return row;
-	}
+    private WebMarkupContainer createModuleLinkTableForLinkType(String id, LinkType linkType) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(new ModuleLinkPanel("content", linkType));
+        return row;
+    }
 }

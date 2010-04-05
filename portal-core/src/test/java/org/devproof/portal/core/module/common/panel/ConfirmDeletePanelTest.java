@@ -27,33 +27,33 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ConfirmDeletePanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestConfirmDeletePanel.class);
-		tester.assertComponent("panel", TestConfirmDeletePanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestConfirmDeletePanel.class);
+        tester.assertComponent("panel", TestConfirmDeletePanel.class);
+    }
 
-	public static class TestConfirmDeletePanel extends ConfirmDeletePanel<ConfigurationEntity> {
-		public TestConfirmDeletePanel(String id) {
-			super(id, Model.of(new ConfigurationEntity()), new BubblePanel("id"));
-		}
+    public static class TestConfirmDeletePanel extends ConfirmDeletePanel<ConfigurationEntity> {
+        public TestConfirmDeletePanel(String id) {
+            super(id, Model.of(new ConfigurationEntity()), new BubblePanel("id"));
+        }
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void onDelete(AjaxRequestTarget target, Form<?> form) {
-		}
-	}
+        @Override
+        public void onDelete(AjaxRequestTarget target, Form<?> form) {
+        }
+    }
 }

@@ -43,113 +43,113 @@ import java.util.List;
  */
 public abstract class UserEditPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "roleService")
-	private RoleService roleService;
-	@SpringBean(name = "userService")
-	private UserService userService;
-	private IModel<UserEntity> userModel;
-	private boolean creation;
-	private FeedbackPanel feedback;
-	private PasswordTextField password1;
-	private PasswordTextField password2;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "roleService")
+    private RoleService roleService;
+    @SpringBean(name = "userService")
+    private UserService userService;
+    private IModel<UserEntity> userModel;
+    private boolean creation;
+    private FeedbackPanel feedback;
+    private PasswordTextField password1;
+    private PasswordTextField password2;
 
-	public UserEditPanel(String id, IModel<UserEntity> userModel, boolean creation) {
-		super(id, userModel);
-		this.userModel = userModel;
-		this.creation = creation;
-		add(createFeedbackPanel());
-		add(createUserEditForm());
-	}
+    public UserEditPanel(String id, IModel<UserEntity> userModel, boolean creation) {
+        super(id, userModel);
+        this.userModel = userModel;
+        this.creation = creation;
+        add(createFeedbackPanel());
+        add(createUserEditForm());
+    }
 
-	private Form<UserEntity> createUserEditForm() {
-		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
-		form.add(createUsernameField());
-		form.add(createFirstnameField());
-		form.add(createLastnameField());
-		form.add(createBirthdayField());
-		form.add(createEmailField());
-		form.add(createRoleDropDown());
-		form.add(createPasswordField1());
-		form.add(createPasswordField2());
-		form.add(createActiveCheckBox());
-		form.add(createConfirmedCheckBox());
-		form.add(createEqualPasswordValidator());
-		form.add(createSaveButton());
-		form.add(createCancelButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<UserEntity> createUserEditForm() {
+        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+        form.add(createUsernameField());
+        form.add(createFirstnameField());
+        form.add(createLastnameField());
+        form.add(createBirthdayField());
+        form.add(createEmailField());
+        form.add(createRoleDropDown());
+        form.add(createPasswordField1());
+        form.add(createPasswordField2());
+        form.add(createActiveCheckBox());
+        form.add(createConfirmedCheckBox());
+        form.add(createEqualPasswordValidator());
+        form.add(createSaveButton());
+        form.add(createCancelButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private CheckBox createConfirmedCheckBox() {
-		return new CheckBox("confirmed");
-	}
+    private CheckBox createConfirmedCheckBox() {
+        return new CheckBox("confirmed");
+    }
 
-	private CheckBox createActiveCheckBox() {
-		return new CheckBox("active");
-	}
+    private CheckBox createActiveCheckBox() {
+        return new CheckBox("active");
+    }
 
-	private AjaxButton createSaveButton() {
-		return new AjaxButton("saveButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxButton createSaveButton() {
+        return new AjaxButton("saveButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				UserEntity user = (UserEntity) form.getModelObject();
-				if (password1.getValue() != null && !"".equals(password1.getValue().trim())) {
-					user.setPlainPassword(password1.getValue());
-				}
-				userService.save(user);
-				UserEditPanel.this.onSave(target);
-			}
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                UserEntity user = (UserEntity) form.getModelObject();
+                if (password1.getValue() != null && !"".equals(password1.getValue().trim())) {
+                    user.setPlainPassword(password1.getValue());
+                }
+                userService.save(user);
+                UserEditPanel.this.onSave(target);
+            }
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(feedback);
-			}
-		};
-	}
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(feedback);
+            }
+        };
+    }
 
-	private AjaxLink<Void> createCancelButton() {
-		return new AjaxLink<Void>("cancelButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<Void> createCancelButton() {
+        return new AjaxLink<Void>("cancelButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				UserEditPanel.this.onCancel(target);
-			}
-		};
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                UserEditPanel.this.onCancel(target);
+            }
+        };
+    }
 
-	private EqualPasswordInputValidator createEqualPasswordValidator() {
-		return new EqualPasswordInputValidator(password1, password2);
-	}
+    private EqualPasswordInputValidator createEqualPasswordValidator() {
+        return new EqualPasswordInputValidator(password1, password2);
+    }
 
-	private PasswordTextField createPasswordField1() {
-		password1 = new PasswordTextField("password1", new Model<String>());
-		password1.setRequired(creation);
-		return password1;
-	}
+    private PasswordTextField createPasswordField1() {
+        password1 = new PasswordTextField("password1", new Model<String>());
+        password1.setRequired(creation);
+        return password1;
+    }
 
-	private PasswordTextField createPasswordField2() {
-		password2 = new PasswordTextField("password2", new Model<String>());
-		password2.setRequired(creation);
-		return password2;
-	}
+    private PasswordTextField createPasswordField2() {
+        password2 = new PasswordTextField("password2", new Model<String>());
+        password2.setRequired(creation);
+        return password2;
+    }
 
-	private DropDownChoice<?> createRoleDropDown() {
-		IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
+    private DropDownChoice<?> createRoleDropDown() {
+        IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
         IModel<RoleEntity> roleModel = new PropertyModel<RoleEntity>(userModel, "role");
         IModel<List<RoleEntity>> availableRolesModel = createAvailableRolesModel();
-        DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", roleModel,
-                availableRolesModel, renderer);
-		role.setRequired(true);
-		return role;
-	}
+        DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", roleModel, availableRolesModel, renderer);
+        role.setRequired(true);
+        return role;
+    }
 
     private IModel<List<RoleEntity>> createAvailableRolesModel() {
         return new LoadableDetachableModel<List<RoleEntity>>() {
             private static final long serialVersionUID = 6780212125058885884L;
+
             @Override
             protected List<RoleEntity> load() {
                 return roleService.findAll();
@@ -158,64 +158,64 @@ public abstract class UserEditPanel extends Panel {
     }
 
     private FormComponent<String> createEmailField() {
-		FormComponent<String> fc = new RequiredTextField<String>("email");
-		fc.add(EmailAddressValidator.getInstance());
-		fc.add(StringValidator.maximumLength(100));
-		return fc;
-	}
+        FormComponent<String> fc = new RequiredTextField<String>("email");
+        fc.add(EmailAddressValidator.getInstance());
+        fc.add(StringValidator.maximumLength(100));
+        return fc;
+    }
 
-	private DateTextField createBirthdayField() {
-		DateTextField dateTextField = new DateTextField("birthday");
-		dateTextField.add(new DatePicker());
-		return dateTextField;
-	}
+    private DateTextField createBirthdayField() {
+        DateTextField dateTextField = new DateTextField("birthday");
+        dateTextField.add(new DatePicker());
+        return dateTextField;
+    }
 
-	private FormComponent<String> createLastnameField() {
-		FormComponent<String> fc = new TextField<String>("lastname");
-		fc.add(StringValidator.maximumLength(100));
-		return fc;
-	}
+    private FormComponent<String> createLastnameField() {
+        FormComponent<String> fc = new TextField<String>("lastname");
+        fc.add(StringValidator.maximumLength(100));
+        return fc;
+    }
 
-	private FormComponent<String> createFirstnameField() {
-		FormComponent<String> fc = new TextField<String>("firstname");
-		fc.add(StringValidator.maximumLength(100));
-		return fc;
-	}
+    private FormComponent<String> createFirstnameField() {
+        FormComponent<String> fc = new TextField<String>("firstname");
+        fc.add(StringValidator.maximumLength(100));
+        return fc;
+    }
 
-	private FormComponent<String> createUsernameField() {
-		FormComponent<String> fc = new RequiredTextField<String>("username");
-		fc.add(StringValidator.lengthBetween(3, 30));
-		fc.add(createExistingUsernameValidator());
-		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
-		fc.setEnabled(false);
-		return fc;
-	}
+    private FormComponent<String> createUsernameField() {
+        FormComponent<String> fc = new RequiredTextField<String>("username");
+        fc.add(StringValidator.lengthBetween(3, 30));
+        fc.add(createExistingUsernameValidator());
+        fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+        fc.setEnabled(false);
+        return fc;
+    }
 
-	private AbstractValidator<String> createExistingUsernameValidator() {
-		return new AbstractValidator<String>() {
-			private static final long serialVersionUID = 1L;
+    private AbstractValidator<String> createExistingUsernameValidator() {
+        return new AbstractValidator<String>() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onValidate(IValidatable<String> ivalidatable) {
-				if (userService.existsUsername(ivalidatable.getValue()) && creation) {
-					error(ivalidatable);
-				}
-			}
+            @Override
+            protected void onValidate(IValidatable<String> ivalidatable) {
+                if (userService.existsUsername(ivalidatable.getValue()) && creation) {
+                    error(ivalidatable);
+                }
+            }
 
-			@Override
-			protected String resourceKey() {
-				return "existing.username";
-			}
-		};
-	}
+            @Override
+            protected String resourceKey() {
+                return "existing.username";
+            }
+        };
+    }
 
-	private FeedbackPanel createFeedbackPanel() {
-		feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		return feedback;
-	}
+    private FeedbackPanel createFeedbackPanel() {
+        feedback = new FeedbackPanel("feedbackPanel");
+        feedback.setOutputMarkupId(true);
+        return feedback;
+    }
 
-	public abstract void onSave(AjaxRequestTarget target);
+    public abstract void onSave(AjaxRequestTarget target);
 
-	public abstract void onCancel(AjaxRequestTarget target);
+    public abstract void onCancel(AjaxRequestTarget target);
 }

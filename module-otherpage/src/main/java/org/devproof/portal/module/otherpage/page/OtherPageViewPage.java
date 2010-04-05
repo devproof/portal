@@ -117,8 +117,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
     private void redirectToErrorPageIfHasNoRights() {
         OtherPageEntity otherPage = otherPageModel.getObject();
         if (otherPage != null && hasRightToViewOtherPage(otherPage)) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"),
-                    getRequestURL()));
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"), getRequestURL()));
         }
     }
 

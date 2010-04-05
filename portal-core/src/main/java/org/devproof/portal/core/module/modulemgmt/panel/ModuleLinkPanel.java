@@ -44,167 +44,169 @@ import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
  */
 public class ModuleLinkPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "moduleLinkDataProvider")
-	private QueryDataProvider<ModuleLinkEntity, ModuleLinkQuery> moduleLinkDataProvider;
-	@SpringBean(name = "moduleService")
-	private ModuleService moduleService;
-	@SpringBean(name = "registryService")
-	private RegistryService registryService;
+    @SpringBean(name = "moduleLinkDataProvider")
+    private QueryDataProvider<ModuleLinkEntity, ModuleLinkQuery> moduleLinkDataProvider;
+    @SpringBean(name = "moduleService")
+    private ModuleService moduleService;
+    @SpringBean(name = "registryService")
+    private RegistryService registryService;
 
-	private LinkType linkType;
-	private WebMarkupContainer refreshTable;
-	private Form<ModuleLinkEntity> form;
+    private LinkType linkType;
+    private WebMarkupContainer refreshTable;
+    private Form<ModuleLinkEntity> form;
 
-	public ModuleLinkPanel(String id, LinkType linkType) {
-		super(id);
-		this.linkType = linkType;
-		setLinkTypeInQuery();
-		add(createLinkTypeTitleLabel());
-		add(createModuleLinkRefreshTable());
-	}
+    public ModuleLinkPanel(String id, LinkType linkType) {
+        super(id);
+        this.linkType = linkType;
+        setLinkTypeInQuery();
+        add(createLinkTypeTitleLabel());
+        add(createModuleLinkRefreshTable());
+    }
 
-	private void setLinkTypeInQuery() {
-		IModel<ModuleLinkQuery> searchQueryModel = moduleLinkDataProvider.getSearchQueryModel();
-		ModuleLinkQuery query = searchQueryModel.getObject();
-		query.setLinkType(linkType);
-	}
+    private void setLinkTypeInQuery() {
+        IModel<ModuleLinkQuery> searchQueryModel = moduleLinkDataProvider.getSearchQueryModel();
+        ModuleLinkQuery query = searchQueryModel.getObject();
+        query.setLinkType(linkType);
+    }
 
-	private Label createLinkTypeTitleLabel() {
-		return new Label("naviTitle", getString(linkType.toString().toLowerCase()));
-	}
+    private Label createLinkTypeTitleLabel() {
+        return new Label("naviTitle", getString(linkType.toString().toLowerCase()));
+    }
 
-	private WebMarkupContainer createModuleLinkRefreshTable() {
-		refreshTable = new WebMarkupContainer("refreshTable");
-		refreshTable.add(createModuleLinkForm());
-		refreshTable.setOutputMarkupId(true);
-		return refreshTable;
-	}
+    private WebMarkupContainer createModuleLinkRefreshTable() {
+        refreshTable = new WebMarkupContainer("refreshTable");
+        refreshTable.add(createModuleLinkForm());
+        refreshTable.setOutputMarkupId(true);
+        return refreshTable;
+    }
 
-	private Form<ModuleLinkEntity> createModuleLinkForm() {
-		form = new Form<ModuleLinkEntity>("form");
-		form.add(createModuleLinkView());
-		return form;
-	}
+    private Form<ModuleLinkEntity> createModuleLinkForm() {
+        form = new Form<ModuleLinkEntity>("form");
+        form.add(createModuleLinkView());
+        return form;
+    }
 
-	private ModuleLinkView createModuleLinkView() {
-		return new ModuleLinkView("tableRow", moduleLinkDataProvider);
-	}
+    private ModuleLinkView createModuleLinkView() {
+        return new ModuleLinkView("tableRow", moduleLinkDataProvider);
+    }
 
-	private class ModuleLinkView extends DataView<ModuleLinkEntity> {
-		private static final long serialVersionUID = 1L;
+    private class ModuleLinkView extends DataView<ModuleLinkEntity> {
+        private static final long serialVersionUID = 1L;
 
-		public ModuleLinkView(String id, IDataProvider<ModuleLinkEntity> dataProvider) {
-			super(id, dataProvider);
-		}
+        public ModuleLinkView(String id, IDataProvider<ModuleLinkEntity> dataProvider) {
+            super(id, dataProvider);
+        }
 
-		@Override
-		protected void populateItem(Item<ModuleLinkEntity> item) {
-			item.add(createSortLabel(item));
-			item.add(createPageNameLabel(item));
-			item.add(createModuleNameLabel(item));
-			item.add(createVisibleCheckBox(item));
-			item.add(createMoveUpLink(item));
-			item.add(createMoveDownLink(item));
-			item.add(createAlternatingModifier(item));
-		}
+        @Override
+        protected void populateItem(Item<ModuleLinkEntity> item) {
+            item.add(createSortLabel(item));
+            item.add(createPageNameLabel(item));
+            item.add(createModuleNameLabel(item));
+            item.add(createVisibleCheckBox(item));
+            item.add(createMoveUpLink(item));
+            item.add(createMoveDownLink(item));
+            item.add(createAlternatingModifier(item));
+        }
 
-		private AjaxLink<ModuleLinkEntity> createMoveUpLink(Item<ModuleLinkEntity> item) {
-			AjaxLink<ModuleLinkEntity> upLink = newUpLink(item);
-			upLink.add(createUpLinkImage());
-			return upLink;
-		}
+        private AjaxLink<ModuleLinkEntity> createMoveUpLink(Item<ModuleLinkEntity> item) {
+            AjaxLink<ModuleLinkEntity> upLink = newUpLink(item);
+            upLink.add(createUpLinkImage());
+            return upLink;
+        }
 
-		private Image createUpLinkImage() {
-			return new Image("upImage", CommonConstants.REF_UP_IMG);
-		}
+        private Image createUpLinkImage() {
+            return new Image("upImage", CommonConstants.REF_UP_IMG);
+        }
 
-		private AjaxLink<ModuleLinkEntity> newUpLink(final Item<ModuleLinkEntity> item) {
-			return new AjaxLink<ModuleLinkEntity>("upLink") {
-				private static final long serialVersionUID = 1L;
+        private AjaxLink<ModuleLinkEntity> newUpLink(final Item<ModuleLinkEntity> item) {
+            return new AjaxLink<ModuleLinkEntity>("upLink") {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					moduleService.moveUp(item.getModelObject());
-					registryService.rebuildRegistries(item.getModelObject().getLinkType());
-					target.addComponent(refreshTable);
-				}
-			};
-		}
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    moduleService.moveUp(item.getModelObject());
+                    registryService.rebuildRegistries(item.getModelObject().getLinkType());
+                    target.addComponent(refreshTable);
+                }
+            };
+        }
 
-		private AjaxLink<ModuleLinkEntity> createMoveDownLink(Item<ModuleLinkEntity> item) {
-			AjaxLink<ModuleLinkEntity> downLink = newDownLink(item);
-			downLink.add(createDownLinkImage());
-			return downLink;
-		}
+        private AjaxLink<ModuleLinkEntity> createMoveDownLink(Item<ModuleLinkEntity> item) {
+            AjaxLink<ModuleLinkEntity> downLink = newDownLink(item);
+            downLink.add(createDownLinkImage());
+            return downLink;
+        }
 
-		private Image createDownLinkImage() {
-			return new Image("downImage", CommonConstants.REF_DOWN_IMG);
-		}
+        private Image createDownLinkImage() {
+            return new Image("downImage", CommonConstants.REF_DOWN_IMG);
+        }
 
-		private AjaxLink<ModuleLinkEntity> newDownLink(final Item<ModuleLinkEntity> item) {
-			AjaxLink<ModuleLinkEntity> downLink = new AjaxLink<ModuleLinkEntity>("downLink") {
-				private static final long serialVersionUID = 1L;
+        private AjaxLink<ModuleLinkEntity> newDownLink(final Item<ModuleLinkEntity> item) {
+            AjaxLink<ModuleLinkEntity> downLink = new AjaxLink<ModuleLinkEntity>("downLink") {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					moduleService.moveDown(item.getModelObject());
-					registryService.rebuildRegistries(item.getModelObject().getLinkType());
-					target.addComponent(refreshTable);
-				}
-			};
-			return downLink;
-		}
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    moduleService.moveDown(item.getModelObject());
+                    registryService.rebuildRegistries(item.getModelObject().getLinkType());
+                    target.addComponent(refreshTable);
+                }
+            };
+            return downLink;
+        }
 
-		private Label createSortLabel(Item<ModuleLinkEntity> item) {
-			return new Label("sort", Integer.toString(item.getModelObject().getSort()));
-		}
+        private Label createSortLabel(Item<ModuleLinkEntity> item) {
+            return new Label("sort", Integer.toString(item.getModelObject().getSort()));
+        }
 
-		private Label createPageNameLabel(Item<ModuleLinkEntity> item) {
-			return new Label("pageName", item.getModelObject().getPageName());
-		}
+        private Label createPageNameLabel(Item<ModuleLinkEntity> item) {
+            return new Label("pageName", item.getModelObject().getPageName());
+        }
 
-		private Label createModuleNameLabel(Item<ModuleLinkEntity> item) {
-			return new Label("moduleName", item.getModelObject().getModuleName());
-		}
+        private Label createModuleNameLabel(Item<ModuleLinkEntity> item) {
+            return new Label("moduleName", item.getModelObject().getModuleName());
+        }
 
-		private CheckBox createVisibleCheckBox(final Item<ModuleLinkEntity> item) {
-			return new CheckBox("visible", new PropertyModel<Boolean>(item.getModelObject(), "visible")) {
-				private static final long serialVersionUID = 1L;
+        private CheckBox createVisibleCheckBox(final Item<ModuleLinkEntity> item) {
+            return new CheckBox("visible", new PropertyModel<Boolean>(item.getModelObject(), "visible")) {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				protected void onSelectionChanged(Object newSelection) {
-					moduleService.save(item.getModelObject());
-					registryService.rebuildRegistries(item.getModelObject().getLinkType());
-					setSelectionMessage(newSelection);
-				}
+                @Override
+                protected void onSelectionChanged(Object newSelection) {
+                    moduleService.save(item.getModelObject());
+                    registryService.rebuildRegistries(item.getModelObject().getLinkType());
+                    setSelectionMessage(newSelection);
+                }
 
-				private void setSelectionMessage(Object newSelection) {
-					Boolean selection = (Boolean) newSelection;
-					if (selection) {
-						info(getString("msg.selected"));
-					} else {
-						info(getString("msg.deselected"));
-					}
-				}
+                private void setSelectionMessage(Object newSelection) {
+                    Boolean selection = (Boolean) newSelection;
+                    if (selection) {
+                        info(getString("msg.selected"));
+                    } else {
+                        info(getString("msg.deselected"));
+                    }
+                }
 
-				@Override
-				protected boolean wantOnSelectionChangedNotifications() {
-					return true;
-				}
-			};
-		}
+                @Override
+                protected boolean wantOnSelectionChangedNotifications() {
+                    return true;
+                }
+            };
+        }
 
-		private AttributeModifier createAlternatingModifier(final Item<ModuleLinkEntity> item) {
-			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 1L;
+        private AttributeModifier createAlternatingModifier(final Item<ModuleLinkEntity> item) {
+            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public String getObject() {
-					return (item.getIndex() % 2 != 0) ? "even" : "odd";
-				}
-			});
-		}
-	};
+                @Override
+                public String getObject() {
+                    return (item.getIndex() % 2 != 0) ? "even" : "odd";
+                }
+            });
+        }
+    }
+
+    ;
 }

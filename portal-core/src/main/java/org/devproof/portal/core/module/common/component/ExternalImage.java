@@ -25,31 +25,31 @@ import org.apache.wicket.util.string.UrlUtils;
 /**
  * For external images. If the path doesn't start with a / it corrects the path
  * to the context path
- * 
+ *
  * @author Carsten Hufe
  */
 public class ExternalImage extends WebComponent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ExternalImage(String id, String imageUrl) {
-		super(id);
-		String url = UrlUtils.rewriteToContextRelative(imageUrl, getRequest());
-		add(new AttributeModifier("src", true, Model.of(url)));
-		setVisible(!(url == null || "".equals(url)));
-	}
+    public ExternalImage(String id, String imageUrl) {
+        super(id);
+        String url = UrlUtils.rewriteToContextRelative(imageUrl, getRequest());
+        add(new AttributeModifier("src", true, Model.of(url)));
+        setVisible(!(url == null || "".equals(url)));
+    }
 
-	public ExternalImage(String id, ResourceReference imageResource) {
-		super(id);
-		String url = getRequestCycle().urlFor(imageResource).toString();
-		add(new AttributeModifier("src", true, Model.of(url)));
-		setVisible(!(url == null || "".equals(url)));
-	}
+    public ExternalImage(String id, ResourceReference imageResource) {
+        super(id);
+        String url = getRequestCycle().urlFor(imageResource).toString();
+        add(new AttributeModifier("src", true, Model.of(url)));
+        setVisible(!(url == null || "".equals(url)));
+    }
 
-	@Override
-	protected void onComponentTag(ComponentTag tag) {
-		super.onComponentTag(tag);
-		checkComponentTag(tag, "img");
-	}
+    @Override
+    protected void onComponentTag(ComponentTag tag) {
+        super.onComponentTag(tag);
+        checkComponentTag(tag, "img");
+    }
 
 }

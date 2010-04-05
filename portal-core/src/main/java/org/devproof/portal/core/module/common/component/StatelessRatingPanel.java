@@ -27,97 +27,96 @@ import org.apache.wicket.model.IModel;
 
 /**
  * Is an extension of the rating panel Without ajax and with bookmarkable links
- * 
+ *
  * @author Carsten Hufe
  */
 public abstract class StatelessRatingPanel extends RatingPanel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private IModel<Boolean> hasVoted;
-	private PageParameters params;
-	private Integer contentId;
-	private IModel<Integer> nrOfStars;
+    private IModel<Boolean> hasVoted;
+    private PageParameters params;
+    private Integer contentId;
+    private IModel<Integer> nrOfStars;
 
-	public StatelessRatingPanel(String id, IModel<Integer> rating, IModel<Integer> nrOfStars,
-			IModel<Integer> nrOfVotes, IModel<Boolean> hasVoted, boolean addDefaultCssStyle, PageParameters params,
-			Integer contentId) {
-		super(id, rating, nrOfStars, nrOfVotes, hasVoted, addDefaultCssStyle);
-		this.hasVoted = hasVoted;
-		this.params = params;
-		this.contentId = contentId;
-		this.nrOfStars = nrOfStars;
-		executeStatelessVoting();
-	}
+    public StatelessRatingPanel(String id, IModel<Integer> rating, IModel<Integer> nrOfStars, IModel<Integer> nrOfVotes, IModel<Boolean> hasVoted, boolean addDefaultCssStyle, PageParameters params, Integer contentId) {
+        super(id, rating, nrOfStars, nrOfVotes, hasVoted, addDefaultCssStyle);
+        this.hasVoted = hasVoted;
+        this.params = params;
+        this.contentId = contentId;
+        this.nrOfStars = nrOfStars;
+        executeStatelessVoting();
+    }
 
-	private void executeStatelessVoting() {
-		if (hasNecessaryParameter()) {
-			Integer rateId = params.getAsInteger("rateid");
-			Integer vote = params.getAsInteger("vote");
-			if (vote > nrOfStars.getObject()) {
-				vote = nrOfStars.getObject();
-			}
-			if (contentId.equals(rateId)) {
-				hasVoted.setObject(Boolean.TRUE);
-				onRated(vote + 1);
-			}
-		}
-	}
+    private void executeStatelessVoting() {
+        if (hasNecessaryParameter()) {
+            Integer rateId = params.getAsInteger("rateid");
+            Integer vote = params.getAsInteger("vote");
+            if (vote > nrOfStars.getObject()) {
+                vote = nrOfStars.getObject();
+            }
+            if (contentId.equals(rateId)) {
+                hasVoted.setObject(Boolean.TRUE);
+                onRated(vote + 1);
+            }
+        }
+    }
 
-	private boolean hasNecessaryParameter() {
-		return params.containsKey("rateid") && params.containsKey("vote");
-	}
+    private boolean hasNecessaryParameter() {
+        return params.containsKey("rateid") && params.containsKey("vote");
+    }
 
-	@Override
-	protected Component newRatingStarBar(String id, IModel<Integer> nrOfStars) {
-		return new StatelessRatingStarBar(id, nrOfStars);
-	}
+    @Override
+    protected Component newRatingStarBar(String id, IModel<Integer> nrOfStars) {
+        return new StatelessRatingStarBar(id, nrOfStars);
+    }
 
-	/**
-	 * Renders the stars and the links necessary for rating.
-	 */
-	private final class StatelessRatingStarBar extends Loop {
-		/** For serialization. */
-		private static final long serialVersionUID = 1L;
+    /**
+     * Renders the stars and the links necessary for rating.
+     */
+    private final class StatelessRatingStarBar extends Loop {
+        /**
+         * For serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
-		private StatelessRatingStarBar(String id, IModel<Integer> model) {
-			super(id, model);
-		}
+        private StatelessRatingStarBar(String id, IModel<Integer> model) {
+            super(id, model);
+        }
 
-		@Override
-		protected void populateItem(LoopItem item) {
-			item.add(creatingStarBookmarkableLink(item));
-		}
+        @Override
+        protected void populateItem(LoopItem item) {
+            item.add(creatingStarBookmarkableLink(item));
+        }
 
-		private BookmarkablePageLink<Void> creatingStarBookmarkableLink(LoopItem item) {
-			BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link", getPage().getClass());
-			link.setEnabled(!hasVoted.getObject());
-			link.setParameter("rateid", contentId);
-			link.setParameter("vote", item.getIteration());
-			link.add(createStarContainer(item));
-			copyParameterToLink(link);
-			return link;
-		}
+        private BookmarkablePageLink<Void> creatingStarBookmarkableLink(LoopItem item) {
+            BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link", getPage().getClass());
+            link.setEnabled(!hasVoted.getObject());
+            link.setParameter("rateid", contentId);
+            link.setParameter("vote", item.getIteration());
+            link.add(createStarContainer(item));
+            copyParameterToLink(link);
+            return link;
+        }
 
-		private Component createStarContainer(LoopItem item) {
-			int iteration = item.getIteration();
-			// add the star image, which is either active (highlighted) or
-			// inactive (no star)
-			Component star = new WebMarkupContainer("star").add(new SimpleAttributeModifier("src",
-					(onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
-			return star;
-		}
+        private Component createStarContainer(LoopItem item) {
+            int iteration = item.getIteration();
+            // add the star image, which is either active (highlighted) or
+            // inactive (no star)
+            Component star = new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
+            return star;
+        }
 
-		private void copyParameterToLink(BookmarkablePageLink<Void> link) {
-			for (String key : params.keySet()) {
-				link.setParameter(key, params.getString(key));
-			}
-		}
-	}
+        private void copyParameterToLink(BookmarkablePageLink<Void> link) {
+            for (String key : params.keySet()) {
+                link.setParameter(key, params.getString(key));
+            }
+        }
+    }
 
-	@Override
-	protected void onRated(int rating, AjaxRequestTarget target) {
-		this.onRated(rating);
-	}
+    @Override
+    protected void onRated(int rating, AjaxRequestTarget target) {
+        this.onRated(rating);
+    }
 
-	protected abstract void onRated(int rating);
+    protected abstract void onRated(int rating);
 }

@@ -26,29 +26,29 @@ import java.io.File;
  * @author Carsten Hufe
  */
 public class UploadFilePanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestUploadCenterPanel.class);
-		tester.assertComponent("panel", UploadFilePanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestUploadCenterPanel.class);
+        tester.assertComponent("panel", UploadFilePanel.class);
+    }
 
-	public static class TestUploadCenterPanel extends UploadFilePanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestUploadCenterPanel extends UploadFilePanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestUploadCenterPanel(String id) {
-			super(id, Model.of(new File("./")));
-		}
-	}
+        public TestUploadCenterPanel(String id) {
+            super(id, Model.of(new File("./")));
+        }
+    }
 }

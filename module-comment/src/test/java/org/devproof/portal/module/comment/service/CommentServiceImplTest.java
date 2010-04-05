@@ -36,224 +36,219 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class CommentServiceImplTest extends TestCase {
-	private CommentServiceImpl impl;
-	private CommentDao commentDaoMock;
-	private ConfigurationService configurationServiceMock;
-	private UserService userServiceMock;
+    private CommentServiceImpl impl;
+    private CommentDao commentDaoMock;
+    private ConfigurationService configurationServiceMock;
+    private UserService userServiceMock;
 
-	@Override
-	protected void setUp() throws Exception {
-		commentDaoMock = createStrictMock(CommentDao.class);
-		configurationServiceMock = createStrictMock(ConfigurationService.class);
-		userServiceMock = createStrictMock(UserService.class);
-		impl = new CommentServiceImpl();
-		impl.setCommentDao(commentDaoMock);
-		impl.setConfigurationService(configurationServiceMock);
-		impl.setUserService(userServiceMock);
-		impl.setDisplayDateTimeFormat(new SimpleDateFormat());
-	}
+    @Override
+    protected void setUp() throws Exception {
+        commentDaoMock = createStrictMock(CommentDao.class);
+        configurationServiceMock = createStrictMock(ConfigurationService.class);
+        userServiceMock = createStrictMock(UserService.class);
+        impl = new CommentServiceImpl();
+        impl.setCommentDao(commentDaoMock);
+        impl.setConfigurationService(configurationServiceMock);
+        impl.setUserService(userServiceMock);
+        impl.setDisplayDateTimeFormat(new SimpleDateFormat());
+    }
 
-	public void testNewCommentEntity() {
-		assertNotNull(impl.newCommentEntity());
-	}
+    public void testNewCommentEntity() {
+        assertNotNull(impl.newCommentEntity());
+    }
 
-	public void testDelete() {
-		CommentEntity e = new CommentEntity();
-		commentDaoMock.delete(e);
-		replay(commentDaoMock);
-		impl.delete(e);
-		verify(commentDaoMock);
-	}
+    public void testDelete() {
+        CommentEntity e = new CommentEntity();
+        commentDaoMock.delete(e);
+        replay(commentDaoMock);
+        impl.delete(e);
+        verify(commentDaoMock);
+    }
 
-	public void testFindById() {
-		CommentEntity e = createCommentEntity();
-		expect(commentDaoMock.findById(1)).andReturn(e);
-		replay(commentDaoMock);
-		assertEquals(impl.findById(1), e);
-		verify(commentDaoMock);
-	}
+    public void testFindById() {
+        CommentEntity e = createCommentEntity();
+        expect(commentDaoMock.findById(1)).andReturn(e);
+        replay(commentDaoMock);
+        assertEquals(impl.findById(1), e);
+        verify(commentDaoMock);
+    }
 
-	public void testSave() {
-		CommentEntity e = createCommentEntity();
-		expect(commentDaoMock.save(e)).andReturn(e);
-		replay(commentDaoMock);
-		impl.save(e);
-		verify(commentDaoMock);
-	}
+    public void testSave() {
+        CommentEntity e = createCommentEntity();
+        expect(commentDaoMock.save(e)).andReturn(e);
+        replay(commentDaoMock);
+        impl.save(e);
+        verify(commentDaoMock);
+    }
 
-	public void testSaveNewComment() {
-		final StringBuilder called = new StringBuilder();
-		final CommentEntity e = createCommentEntity();
-		impl = new CommentServiceImpl() {
-			@Override
-			protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right,
-					UrlCallback urlCallback, String reporterIp) {
-				called.append("sendEmailNotificationToAdmins");
-				assertEquals(2, templateId.intValue());
-				assertEquals(e, comment);
-				assertEquals("comment.notify.newcomment", right);
-			}
-		};
-		impl.setConfigurationService(configurationServiceMock);
-		impl.setCommentDao(commentDaoMock);
-		expect(commentDaoMock.save(e)).andReturn(e);
-		expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT)).andReturn(2);
-		UrlCallback urlCallback = createUrlCallback();
-		replay(commentDaoMock, configurationServiceMock);
-		impl.saveNewComment(e, urlCallback);
-		assertEquals("sendEmailNotificationToAdmins", called.toString());
-		verify(commentDaoMock, configurationServiceMock);
-	}
+    public void testSaveNewComment() {
+        final StringBuilder called = new StringBuilder();
+        final CommentEntity e = createCommentEntity();
+        impl = new CommentServiceImpl() {
+            @Override
+            protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+                called.append("sendEmailNotificationToAdmins");
+                assertEquals(2, templateId.intValue());
+                assertEquals(e, comment);
+                assertEquals("comment.notify.newcomment", right);
+            }
+        };
+        impl.setConfigurationService(configurationServiceMock);
+        impl.setCommentDao(commentDaoMock);
+        expect(commentDaoMock.save(e)).andReturn(e);
+        expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT)).andReturn(2);
+        UrlCallback urlCallback = createUrlCallback();
+        replay(commentDaoMock, configurationServiceMock);
+        impl.saveNewComment(e, urlCallback);
+        assertEquals("sendEmailNotificationToAdmins", called.toString());
+        verify(commentDaoMock, configurationServiceMock);
+    }
 
-	public void testRejectComment() {
-		CommentEntity e = createCommentEntity();
-		commentDaoMock.rejectComment(e);
-		commentDaoMock.refresh(e);
-		replay(commentDaoMock);
-		impl.rejectComment(e);
-		verify(commentDaoMock);
-	}
+    public void testRejectComment() {
+        CommentEntity e = createCommentEntity();
+        commentDaoMock.rejectComment(e);
+        commentDaoMock.refresh(e);
+        replay(commentDaoMock);
+        impl.rejectComment(e);
+        verify(commentDaoMock);
+    }
 
-	public void testAcceptComment() {
-		CommentEntity e = createCommentEntity();
-		commentDaoMock.acceptComment(e);
-		commentDaoMock.refresh(e);
-		replay(commentDaoMock);
-		impl.acceptComment(e);
-		verify(commentDaoMock);
-	}
+    public void testAcceptComment() {
+        CommentEntity e = createCommentEntity();
+        commentDaoMock.acceptComment(e);
+        commentDaoMock.refresh(e);
+        replay(commentDaoMock);
+        impl.acceptComment(e);
+        verify(commentDaoMock);
+    }
 
-	public void testFindNumberOfComments_showAll() {
-		expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(
-				Boolean.FALSE);
-		expect(commentDaoMock.findNumberOfComments("moduleName", "contentId")).andReturn(3l);
-		replay(commentDaoMock, configurationServiceMock);
-		impl.findNumberOfComments("moduleName", "contentId");
-		verify(commentDaoMock, configurationServiceMock);
-	}
+    public void testFindNumberOfComments_showAll() {
+        expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(Boolean.FALSE);
+        expect(commentDaoMock.findNumberOfComments("moduleName", "contentId")).andReturn(3l);
+        replay(commentDaoMock, configurationServiceMock);
+        impl.findNumberOfComments("moduleName", "contentId");
+        verify(commentDaoMock, configurationServiceMock);
+    }
 
-	public void testFindNumberOfComments_reviewed() {
-		expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(
-				Boolean.TRUE);
-		expect(commentDaoMock.findNumberOfReviewedComments("moduleName", "contentId")).andReturn(3l);
-		replay(commentDaoMock, configurationServiceMock);
-		impl.findNumberOfComments("moduleName", "contentId");
-		verify(commentDaoMock, configurationServiceMock);
-	}
+    public void testFindNumberOfComments_reviewed() {
+        expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(Boolean.TRUE);
+        expect(commentDaoMock.findNumberOfReviewedComments("moduleName", "contentId")).andReturn(3l);
+        replay(commentDaoMock, configurationServiceMock);
+        impl.findNumberOfComments("moduleName", "contentId");
+        verify(commentDaoMock, configurationServiceMock);
+    }
 
-	public void testReportViolation_thresholdReached() {
-		final StringBuilder called = new StringBuilder();
-		final CommentEntity e = createCommentEntity();
-		impl = new CommentServiceImpl() {
-			@Override
-			protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right,
-					UrlCallback urlCallback, String reporterIp) {
-				called.append("sendEmailNotificationToAdmins");
-				assertEquals(2, templateId.intValue());
-				assertEquals(e, comment);
-				assertEquals("123.123.123.123", reporterIp);
-				assertEquals("comment.notify.autoblocked", right);
-			}
-		};
-		impl.setConfigurationService(configurationServiceMock);
-		impl.setCommentDao(commentDaoMock);
-		expect(commentDaoMock.save(e)).andReturn(e);
-		expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(3);
-		expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED)).andReturn(2);
-		UrlCallback urlCallback = createUrlCallback();
-		replay(commentDaoMock, configurationServiceMock);
-		impl.reportViolation(e, urlCallback, "123.123.123.123");
-		assertEquals("sendEmailNotificationToAdmins", called.toString());
-		assertEquals(3, e.getNumberOfBlames().intValue());
-		assertEquals(Boolean.TRUE, e.getAutomaticBlocked());
-		verify(commentDaoMock, configurationServiceMock);
-	}
+    public void testReportViolation_thresholdReached() {
+        final StringBuilder called = new StringBuilder();
+        final CommentEntity e = createCommentEntity();
+        impl = new CommentServiceImpl() {
+            @Override
+            protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+                called.append("sendEmailNotificationToAdmins");
+                assertEquals(2, templateId.intValue());
+                assertEquals(e, comment);
+                assertEquals("123.123.123.123", reporterIp);
+                assertEquals("comment.notify.autoblocked", right);
+            }
+        };
+        impl.setConfigurationService(configurationServiceMock);
+        impl.setCommentDao(commentDaoMock);
+        expect(commentDaoMock.save(e)).andReturn(e);
+        expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(3);
+        expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED)).andReturn(2);
+        UrlCallback urlCallback = createUrlCallback();
+        replay(commentDaoMock, configurationServiceMock);
+        impl.reportViolation(e, urlCallback, "123.123.123.123");
+        assertEquals("sendEmailNotificationToAdmins", called.toString());
+        assertEquals(3, e.getNumberOfBlames().intValue());
+        assertEquals(Boolean.TRUE, e.getAutomaticBlocked());
+        verify(commentDaoMock, configurationServiceMock);
+    }
 
-	public void testReportViolation_thresholdNotReached() {
-		final StringBuilder called = new StringBuilder();
-		final CommentEntity e = createCommentEntity();
-		impl = new CommentServiceImpl() {
-			@Override
-			protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right,
-					UrlCallback urlCallback, String reporterIp) {
-				called.append("sendEmailNotificationToAdmins");
-				assertEquals(2, templateId.intValue());
-				assertEquals(e, comment);
-				assertEquals("123.123.123.123", reporterIp);
-				assertEquals("comment.notify.violation", right);
-			}
-		};
-		impl.setConfigurationService(configurationServiceMock);
-		impl.setCommentDao(commentDaoMock);
-		expect(commentDaoMock.save(e)).andReturn(e);
-		expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(5);
-		expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION)).andReturn(2);
-		UrlCallback urlCallback = createUrlCallback();
-		replay(commentDaoMock, configurationServiceMock);
-		impl.reportViolation(e, urlCallback, "123.123.123.123");
-		assertEquals("sendEmailNotificationToAdmins", called.toString());
-		assertEquals(3, e.getNumberOfBlames().intValue());
-		assertEquals(Boolean.FALSE, e.getAutomaticBlocked());
-		verify(commentDaoMock, configurationServiceMock);
-	}
+    public void testReportViolation_thresholdNotReached() {
+        final StringBuilder called = new StringBuilder();
+        final CommentEntity e = createCommentEntity();
+        impl = new CommentServiceImpl() {
+            @Override
+            protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+                called.append("sendEmailNotificationToAdmins");
+                assertEquals(2, templateId.intValue());
+                assertEquals(e, comment);
+                assertEquals("123.123.123.123", reporterIp);
+                assertEquals("comment.notify.violation", right);
+            }
+        };
+        impl.setConfigurationService(configurationServiceMock);
+        impl.setCommentDao(commentDaoMock);
+        expect(commentDaoMock.save(e)).andReturn(e);
+        expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(5);
+        expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION)).andReturn(2);
+        UrlCallback urlCallback = createUrlCallback();
+        replay(commentDaoMock, configurationServiceMock);
+        impl.reportViolation(e, urlCallback, "123.123.123.123");
+        assertEquals("sendEmailNotificationToAdmins", called.toString());
+        assertEquals(3, e.getNumberOfBlames().intValue());
+        assertEquals(Boolean.FALSE, e.getAutomaticBlocked());
+        verify(commentDaoMock, configurationServiceMock);
+    }
 
-	public void testSendEmailNotificationToAdmins() {
-		final StringBuilder called = new StringBuilder();
-		EmailService emailServiceMock = new EmailServiceMock() {
-			private static final long serialVersionUID = 1L;
+    public void testSendEmailNotificationToAdmins() {
+        final StringBuilder called = new StringBuilder();
+        EmailService emailServiceMock = new EmailServiceMock() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
-				called.append("sendEmail");
-				assertEquals(2, templateId.intValue());
-				assertEquals("peterpan", placeholder.getToUsername());
-				assertEquals("Peter", placeholder.getToFirstname());
-				assertEquals("Pan", placeholder.getToLastname());
-				assertEquals("test@email.tld", placeholder.getToEmail());
-				assertEquals("testcreator", placeholder.getUsername());
-				assertEquals("hello world", placeholder.getAdditionalPlaceholder().get("COMMENT"));
-				assertEquals("testurl", placeholder.getAdditionalPlaceholder().get("COMMENT_URL"));
-				assertEquals("123.123.123.123", placeholder.getAdditionalPlaceholder().get("REPORTER_IP"));
-				assertNotNull(placeholder.getAdditionalPlaceholder().get("REPORTING_TIME"));
-			}
-		};
-		impl.setEmailService(emailServiceMock);
-		CommentEntity e = createCommentEntity();
-		UrlCallback urlCallback = createUrlCallback();
-		List<UserEntity> users = createUsers();
-		expect(userServiceMock.findUserWithRight("testright")).andReturn(users);
-		replay(userServiceMock);
-		impl.sendEmailNotificationToAdmins(e, 2, "testright", urlCallback, "123.123.123.123");
-		assertEquals("sendEmail", called.toString());
-		verify(userServiceMock);
-	}
+            @Override
+            public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
+                called.append("sendEmail");
+                assertEquals(2, templateId.intValue());
+                assertEquals("peterpan", placeholder.getToUsername());
+                assertEquals("Peter", placeholder.getToFirstname());
+                assertEquals("Pan", placeholder.getToLastname());
+                assertEquals("test@email.tld", placeholder.getToEmail());
+                assertEquals("testcreator", placeholder.getUsername());
+                assertEquals("hello world", placeholder.getAdditionalPlaceholder().get("COMMENT"));
+                assertEquals("testurl", placeholder.getAdditionalPlaceholder().get("COMMENT_URL"));
+                assertEquals("123.123.123.123", placeholder.getAdditionalPlaceholder().get("REPORTER_IP"));
+                assertNotNull(placeholder.getAdditionalPlaceholder().get("REPORTING_TIME"));
+            }
+        };
+        impl.setEmailService(emailServiceMock);
+        CommentEntity e = createCommentEntity();
+        UrlCallback urlCallback = createUrlCallback();
+        List<UserEntity> users = createUsers();
+        expect(userServiceMock.findUserWithRight("testright")).andReturn(users);
+        replay(userServiceMock);
+        impl.sendEmailNotificationToAdmins(e, 2, "testright", urlCallback, "123.123.123.123");
+        assertEquals("sendEmail", called.toString());
+        verify(userServiceMock);
+    }
 
-	private List<UserEntity> createUsers() {
-		UserEntity user = new UserEntity();
-		user.setFirstname("Peter");
-		user.setLastname("Pan");
-		user.setEmail("test@email.tld");
-		user.setUsername("peterpan");
-		List<UserEntity> users = Arrays.asList(user);
-		return users;
-	}
+    private List<UserEntity> createUsers() {
+        UserEntity user = new UserEntity();
+        user.setFirstname("Peter");
+        user.setLastname("Pan");
+        user.setEmail("test@email.tld");
+        user.setUsername("peterpan");
+        List<UserEntity> users = Arrays.asList(user);
+        return users;
+    }
 
-	private UrlCallback createUrlCallback() {
-		return new UrlCallback() {
-			@Override
-			public String getUrl(CommentEntity comment) {
-				return "testurl";
-			}
-		};
-	}
+    private UrlCallback createUrlCallback() {
+        return new UrlCallback() {
+            @Override
+            public String getUrl(CommentEntity comment) {
+                return "testurl";
+            }
+        };
+    }
 
-	private CommentEntity createCommentEntity() {
-		CommentEntity comment = new CommentEntity();
-		comment.setId(1);
-		comment.setComment("hello world");
-		comment.setCreatedBy("testcreator");
-		comment.setReviewed(Boolean.FALSE);
-		comment.setNumberOfBlames(2);
-		return comment;
-	}
+    private CommentEntity createCommentEntity() {
+        CommentEntity comment = new CommentEntity();
+        comment.setId(1);
+        comment.setComment("hello world");
+        comment.setCreatedBy("testcreator");
+        comment.setReviewed(Boolean.FALSE);
+        comment.setNumberOfBlames(2);
+        return comment;
+    }
 }

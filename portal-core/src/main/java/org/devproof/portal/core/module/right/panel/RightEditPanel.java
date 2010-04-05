@@ -43,68 +43,68 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public abstract class RightEditPanel extends Panel {
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "roleService")
-	private RoleService roleService;
-	@SpringBean(name = "rightService")
-	private RightService rightService;
-	private FeedbackPanel feedback;
-	private IModel<RightEntity> rightModel;
-	private boolean rightNameEditable;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "roleService")
+    private RoleService roleService;
+    @SpringBean(name = "rightService")
+    private RightService rightService;
+    private FeedbackPanel feedback;
+    private IModel<RightEntity> rightModel;
+    private boolean rightNameEditable;
 
     public RightEditPanel(String id, IModel<RightEntity> rightModel, boolean rightNameEditable) {
-		super(id, rightModel);
-		this.rightModel = rightModel;
-		this.rightNameEditable = rightNameEditable;
-		add(createFeedbackPanel());
-		add(createRightEditForm());
-	}
+        super(id, rightModel);
+        this.rightModel = rightModel;
+        this.rightNameEditable = rightNameEditable;
+        add(createFeedbackPanel());
+        add(createRightEditForm());
+    }
 
-	private Form<RightEntity> createRightEditForm() {
-		Form<RightEntity> form = new Form<RightEntity>("form", new CompoundPropertyModel<RightEntity>(rightModel));
-		form.add(createRightNameField());
-		form.add(createDescriptionField());
-		form.add(createRolesPalette());
-		form.add(createSaveButton());
-		form.add(createCancelButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<RightEntity> createRightEditForm() {
+        Form<RightEntity> form = new Form<RightEntity>("form", new CompoundPropertyModel<RightEntity>(rightModel));
+        form.add(createRightNameField());
+        form.add(createDescriptionField());
+        form.add(createRolesPalette());
+        form.add(createSaveButton());
+        form.add(createCancelButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private AjaxButton createSaveButton() {
-		return new AjaxButton("saveButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxButton createSaveButton() {
+        return new AjaxButton("saveButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				rightService.save((RightEntity) form.getModelObject());
-				RightEditPanel.this.onSave(target);
-			}
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                rightService.save((RightEntity) form.getModelObject());
+                RightEditPanel.this.onSave(target);
+            }
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(feedback);
-			}
-		};
-	}
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(feedback);
+            }
+        };
+    }
 
-	private AjaxLink<Void> createCancelButton() {
-		return new AjaxLink<Void>("cancelButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<Void> createCancelButton() {
+        return new AjaxLink<Void>("cancelButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				onCancel(target);
-			}
-		};
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                onCancel(target);
+            }
+        };
+    }
 
-	private Palette<RoleEntity> createRolesPalette() {
-		IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
+    private Palette<RoleEntity> createRolesPalette() {
+        IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
         IModel<Collection<RoleEntity>> allRoles = createAllRolesModel();
         IModel<List<RoleEntity>> rightsRoles = new PropertyModel<List<RoleEntity>>(rightModel, "roles");
-		return newRolesPalette(renderer, allRoles, rightsRoles);
-	}
+        return newRolesPalette(renderer, allRoles, rightsRoles);
+    }
 
     private IModel<Collection<RoleEntity>> createAllRolesModel() {
         return new LoadableDetachableModel<Collection<RoleEntity>>() {
@@ -117,8 +117,7 @@ public abstract class RightEditPanel extends Panel {
         };
     }
 
-    private Palette<RoleEntity> newRolesPalette(IChoiceRenderer<RoleEntity> renderer,
-			IModel<Collection<RoleEntity>> allRoles, IModel<List<RoleEntity>> rightsRoles) {
+    private Palette<RoleEntity> newRolesPalette(IChoiceRenderer<RoleEntity> renderer, IModel<Collection<RoleEntity>> allRoles, IModel<List<RoleEntity>> rightsRoles) {
         return new Palette<RoleEntity>("roles", rightsRoles, allRoles, renderer, 10, false) {
             private static final long serialVersionUID = 1L;
 
@@ -137,28 +136,28 @@ public abstract class RightEditPanel extends Panel {
                 return new Label(componentId, getString("palette.selected"));
             }
         };
-	}
+    }
 
-	private FormComponent<String> createDescriptionField() {
+    private FormComponent<String> createDescriptionField() {
         TextArea<String> textArea = new TextArea<String>("description");
         textArea.setRequired(true);
         return textArea;
-	}
+    }
 
-	private FormComponent<String> createRightNameField() {
-		FormComponent<String> fc = new RequiredTextField<String>("right");
-		fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
-		fc.setEnabled(rightNameEditable);
-		return fc;
-	}
+    private FormComponent<String> createRightNameField() {
+        FormComponent<String> fc = new RequiredTextField<String>("right");
+        fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+        fc.setEnabled(rightNameEditable);
+        return fc;
+    }
 
-	private FeedbackPanel createFeedbackPanel() {
-		feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		return feedback;
-	}
+    private FeedbackPanel createFeedbackPanel() {
+        feedback = new FeedbackPanel("feedbackPanel");
+        feedback.setOutputMarkupId(true);
+        return feedback;
+    }
 
-	public abstract void onSave(AjaxRequestTarget target);
+    public abstract void onSave(AjaxRequestTarget target);
 
-	public abstract void onCancel(AjaxRequestTarget target);
+    public abstract void onCancel(AjaxRequestTarget target);
 }

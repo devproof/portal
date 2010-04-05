@@ -32,14 +32,14 @@ import org.devproof.portal.module.blog.service.BlogService;
  * @author Carsten Hufe
  */
 public class BlogPrintPage extends PrintPage {
-	@SpringBean(name = "blogService")
-	private BlogService blogService;
+    @SpringBean(name = "blogService")
+    private BlogService blogService;
     private IModel<BlogEntity> blogModel;
     private PageParameters params;
 
     public BlogPrintPage(PageParameters params) {
-		super(params);
-	}
+        super(params);
+    }
 
     private LoadableDetachableModel<BlogEntity> createBlogModel() {
         return new LoadableDetachableModel<BlogEntity>() {
@@ -50,7 +50,7 @@ public class BlogPrintPage extends PrintPage {
             }
         };
     }
-    
+
     @Override
     protected void onBeforeRender() {
         validateAccessRights();
@@ -58,36 +58,35 @@ public class BlogPrintPage extends PrintPage {
     }
 
     private IModel<BlogEntity> getBlogModel() {
-        if(blogModel == null) {
+        if (blogModel == null) {
             blogModel = createBlogModel();
         }
         return blogModel;
     }
 
     @Override
-	protected Component createPrintableComponent(String id, PageParameters params) {
+    protected Component createPrintableComponent(String id, PageParameters params) {
         this.params = params;
-		return new BlogPrintPanel(id,  getBlogModel());
-	}
+        return new BlogPrintPanel(id, getBlogModel());
+    }
 
-	private Integer getBlogId() {
-		Integer blogId = params.getAsInteger("0");
-		if (blogId == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage
-					.getMessagePage(getString("missing.parameter")));
-		}
-		return blogId;
-	}
+    private Integer getBlogId() {
+        Integer blogId = params.getAsInteger("0");
+        if (blogId == null) {
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.parameter")));
+        }
+        return blogId;
+    }
 
-	private void validateAccessRights() {
+    private void validateAccessRights() {
         BlogEntity blog = getBlogModel().getObject();
-		if (blog == null || !isAllowedToRead(blog)) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
-		}
-	}
+        if (blog == null || !isAllowedToRead(blog)) {
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
+        }
+    }
 
-	private boolean isAllowedToRead(BlogEntity blog) {
-		PortalSession session = (PortalSession) getSession();
-		return session.hasRight(blog.getViewRights()) || session.hasRight("blog.view");
-	}
+    private boolean isAllowedToRead(BlogEntity blog) {
+        PortalSession session = (PortalSession) getSession();
+        return session.hasRight(blog.getViewRights()) || session.hasRight("blog.view");
+    }
 }

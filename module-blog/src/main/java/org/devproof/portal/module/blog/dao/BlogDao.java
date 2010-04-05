@@ -29,7 +29,7 @@ import java.util.List;
  */
 @CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
 public interface BlogDao extends GenericDao<BlogEntity, Integer> {
-	@CacheQuery(enabled = false)
-	@Query("select b.allRights from BlogEntity b where b.modifiedAt = (select max(modifiedAt) from BlogEntity)")
-	List<RightEntity> findLastSelectedRights();
+    @CacheQuery(enabled = false)
+    @Query("select b.allRights from BlogEntity b where b.modifiedAt = (select max(modifiedAt) from BlogEntity)")
+    List<RightEntity> findLastSelectedRights();
 }

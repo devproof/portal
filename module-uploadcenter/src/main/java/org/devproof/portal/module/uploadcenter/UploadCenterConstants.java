@@ -21,10 +21,10 @@ import org.apache.wicket.ResourceReference;
  * @author Carsten Hufe
  */
 public interface UploadCenterConstants {
-	String CONF_UPLOADCENTER_FOLDER = "uploadcenter_folder";
-	String CONF_UPLOADCENTER_MAXFILES = "uploadcenter_maxfiles";
-	String CONF_UPLOADCENTER_MAXSIZE = "uploadcenter_maxsize";
-	ResourceReference REF_GALLERY_IMG = new ResourceReference(UploadCenterConstants.class, "img/gallery.png");
-	ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(UploadCenterConstants.class, "img/download.png");
+    String CONF_UPLOADCENTER_FOLDER = "uploadcenter_folder";
+    String CONF_UPLOADCENTER_MAXFILES = "uploadcenter_maxfiles";
+    String CONF_UPLOADCENTER_MAXSIZE = "uploadcenter_maxsize";
+    ResourceReference REF_GALLERY_IMG = new ResourceReference(UploadCenterConstants.class, "img/gallery.png");
+    ResourceReference REF_DOWNLOAD_IMG = new ResourceReference(UploadCenterConstants.class, "img/download.png");
     String DOWNLOAD_AUTHOR_RIGHT = "page.DownloadEditPage";
 }

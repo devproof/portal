@@ -39,104 +39,103 @@ import org.devproof.portal.module.otherpage.service.OtherPageService;
  */
 public class OtherPagePage extends OtherPageBasePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "otherPageService")
-	private OtherPageService otherPageService;
-	@SpringBean(name = "otherPageDataProvider")
-	private ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "otherPageService")
+    private OtherPageService otherPageService;
+    @SpringBean(name = "otherPageDataProvider")
+    private ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
 
-	public OtherPagePage(PageParameters params) {
-		super(params);
-		add(createContentIdOrderHeader());
-		add(createModifiedByOrderHeader());
-		add(createRepeatingOtherPages());
-	}
+    public OtherPagePage(PageParameters params) {
+        super(params);
+        add(createContentIdOrderHeader());
+        add(createModifiedByOrderHeader());
+        add(createRepeatingOtherPages());
+    }
 
-	private OrderByBorder createContentIdOrderHeader() {
-		return new OrderByBorder("table_content_id", "subject", otherPageDataProvider);
-	}
+    private OrderByBorder createContentIdOrderHeader() {
+        return new OrderByBorder("table_content_id", "subject", otherPageDataProvider);
+    }
 
-	private OrderByBorder createModifiedByOrderHeader() {
-		return new OrderByBorder("table_modified_by", "modifiedBy", otherPageDataProvider);
-	}
+    private OrderByBorder createModifiedByOrderHeader() {
+        return new OrderByBorder("table_modified_by", "modifiedBy", otherPageDataProvider);
+    }
 
-	private OtherPageDataView createRepeatingOtherPages() {
-		return new OtherPageDataView("repeatingOtherPages");
-	}
+    private OtherPageDataView createRepeatingOtherPages() {
+        return new OtherPageDataView("repeatingOtherPages");
+    }
 
     private class OtherPageDataView extends DataView<OtherPageEntity> {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public OtherPageDataView(String id) {
-			super(id, otherPageDataProvider);
-		}
+        public OtherPageDataView(String id) {
+            super(id, otherPageDataProvider);
+        }
 
-		@Override
-		protected void populateItem(Item<OtherPageEntity> item) {
-			IModel<OtherPageEntity> otherPageModel = item.getModel();
-			item.add(createContentIdLabel(otherPageModel));
-			item.add(createModifiedByLabel(otherPageModel));
-			item.add(createViewLink(otherPageModel));
-			item.add(createAuthorPanel(item));
-			item.add(createEvenOddModifier(item));
-			item.setOutputMarkupId(true);
-		}
+        @Override
+        protected void populateItem(Item<OtherPageEntity> item) {
+            IModel<OtherPageEntity> otherPageModel = item.getModel();
+            item.add(createContentIdLabel(otherPageModel));
+            item.add(createModifiedByLabel(otherPageModel));
+            item.add(createViewLink(otherPageModel));
+            item.add(createAuthorPanel(item));
+            item.add(createEvenOddModifier(item));
+            item.setOutputMarkupId(true);
+        }
 
-		private BookmarkablePageLink<OtherPageViewPage> createViewLink(IModel<OtherPageEntity> otherPageModel) {
-			OtherPageEntity otherPage = otherPageModel.getObject();
-            BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink",
-					OtherPageViewPage.class);
-			viewLink.add(createViewLinkImage());
-			viewLink.setParameter("0", otherPage.getContentId());
-			return viewLink;
-		}
+        private BookmarkablePageLink<OtherPageViewPage> createViewLink(IModel<OtherPageEntity> otherPageModel) {
+            OtherPageEntity otherPage = otherPageModel.getObject();
+            BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink", OtherPageViewPage.class);
+            viewLink.add(createViewLinkImage());
+            viewLink.setParameter("0", otherPage.getContentId());
+            return viewLink;
+        }
 
-		private Image createViewLinkImage() {
-			Image viewImage = new Image("viewImage", CommonConstants.REF_VIEW_IMG);
-			viewImage.setEscapeModelStrings(false);
-			return viewImage;
-		}
+        private Image createViewLinkImage() {
+            Image viewImage = new Image("viewImage", CommonConstants.REF_VIEW_IMG);
+            viewImage.setEscapeModelStrings(false);
+            return viewImage;
+        }
 
-		private AttributeModifier createEvenOddModifier(final Item<OtherPageEntity> item) {
-			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 1L;
+        private AttributeModifier createEvenOddModifier(final Item<OtherPageEntity> item) {
+            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public String getObject() {
-					return (item.getIndex() % 2 != 0) ? "even" : "odd";
-				}
-			});
-		}
+                @Override
+                public String getObject() {
+                    return (item.getIndex() % 2 != 0) ? "even" : "odd";
+                }
+            });
+        }
 
-		private AuthorPanel<OtherPageEntity> createAuthorPanel(final Item<OtherPageEntity> item) {
+        private AuthorPanel<OtherPageEntity> createAuthorPanel(final Item<OtherPageEntity> item) {
             final IModel<OtherPageEntity> otherPageModel = item.getModel();
-			return new AuthorPanel<OtherPageEntity>("authorButtons", otherPageModel) {
-				private static final long serialVersionUID = 1L;
+            return new AuthorPanel<OtherPageEntity>("authorButtons", otherPageModel) {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onDelete(AjaxRequestTarget target) {
-					otherPageService.delete(otherPageModel.getObject());
-					item.setVisible(false);
-					target.addComponent(item);
-					target.addComponent(getFeedback());
-					info(OtherPagePage.this.getString("msg.deleted"));
-				}
+                @Override
+                public void onDelete(AjaxRequestTarget target) {
+                    otherPageService.delete(otherPageModel.getObject());
+                    item.setVisible(false);
+                    target.addComponent(item);
+                    target.addComponent(getFeedback());
+                    info(OtherPagePage.this.getString("msg.deleted"));
+                }
 
-				@Override
-				public void onEdit(AjaxRequestTarget target) {
-					setResponsePage(new OtherPageEditPage(otherPageModel));
-				}
-			};
-		}
+                @Override
+                public void onEdit(AjaxRequestTarget target) {
+                    setResponsePage(new OtherPageEditPage(otherPageModel));
+                }
+            };
+        }
 
-		private Label createModifiedByLabel(IModel<OtherPageEntity> otherPageModel) {
+        private Label createModifiedByLabel(IModel<OtherPageEntity> otherPageModel) {
             IModel<String> modifiedByModel = new PropertyModel<String>(otherPageModel, "modifiedBy");
             return new Label("modifiedBy", modifiedByModel);
-		}
+        }
 
-		private Label createContentIdLabel(IModel<OtherPageEntity> otherPageModel) {
+        private Label createContentIdLabel(IModel<OtherPageEntity> otherPageModel) {
             IModel<String> contentIdModel = new PropertyModel<String>(otherPageModel, "contentId");
-			return new Label("contentId", contentIdModel);
-		}
-	}
+            return new Label("contentId", contentIdModel);
+        }
+    }
 }

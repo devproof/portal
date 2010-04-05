@@ -25,63 +25,54 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface DownloadService extends CrudService<DownloadEntity, Integer> {
-	/**
-	 * Returns a new instance of {@link DownloadEntity}
-	 * 
-	 * @return new instance of {@link DownloadEntity}
-	 */
-	DownloadEntity newDownloadEntity();
+    /**
+     * Returns a new instance of {@link DownloadEntity}
+     *
+     * @return new instance of {@link DownloadEntity}
+     */
+    DownloadEntity newDownloadEntity();
 
-	/**
-	 * Returns all downloads
-	 */
-	List<DownloadEntity> findAll();
+    /**
+     * Returns all downloads
+     */
+    List<DownloadEntity> findAll();
 
-	/**
-	 * Finds all downloads filtered by role
-	 * 
-	 * @param role
-	 *            {@link RoleEntity} to filter
-	 * @param firstResult
-	 *            first result
-	 * @param maxResult
-	 *            maximum result
-	 * @return list with downloads
-	 */
-	List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
-			Integer maxResult);
+    /**
+     * Finds all downloads filtered by role
+     *
+     * @param role        {@link RoleEntity} to filter
+     * @param firstResult first result
+     * @param maxResult   maximum result
+     * @return list with downloads
+     */
+    List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-	/**
-	 * Increments the number of downloads by one
-	 * 
-	 * @param download
-	 *            {@link DownloadEntity}to increment
-	 */
-	void incrementHits(DownloadEntity download);
+    /**
+     * Increments the number of downloads by one
+     *
+     * @param download {@link DownloadEntity}to increment
+     */
+    void incrementHits(DownloadEntity download);
 
-	/**
-	 * Rates a {@link DownloadEntity}
-	 * 
-	 * @param rating
-	 *            a value from 1 to 5
-	 * @param download
-	 *            the download to rate
-	 */
-	void rateDownload(Integer rating, DownloadEntity download);
+    /**
+     * Rates a {@link DownloadEntity}
+     *
+     * @param rating   a value from 1 to 5
+     * @param download the download to rate
+     */
+    void rateDownload(Integer rating, DownloadEntity download);
 
-	/**
-	 * Marks a download as broken
-	 * 
-	 * @param download
-	 *            {@link DownloadEntity} to mark
-	 */
-	void markBrokenDownload(DownloadEntity download);
+    /**
+     * Marks a download as broken
+     *
+     * @param download {@link DownloadEntity} to mark
+     */
+    void markBrokenDownload(DownloadEntity download);
 
-	/**
-	 * Marks a download as valid
-	 * 
-	 * @param download
-	 *            {@link DownloadEntity} to mark
-	 */
+    /**
+     * Marks a download as valid
+     *
+     * @param download {@link DownloadEntity} to mark
+     */
 	void markValidDownload(DownloadEntity download);
 }

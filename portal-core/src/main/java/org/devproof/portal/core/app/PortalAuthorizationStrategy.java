@@ -33,70 +33,68 @@ import java.util.List;
 
 /**
  * The whole role and rights system of the portal
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
-	private RightService rightService;
+    private RightService rightService;
 
-	public PortalAuthorizationStrategy(ApplicationContext context) {
-		rightService = (RightService) context.getBean("rightService");
-	}
+    public PortalAuthorizationStrategy(ApplicationContext context) {
+        rightService = (RightService) context.getBean("rightService");
+    }
 
-	public boolean isActionAuthorized(Component component, Action action) {
-		// false means the component will not be rendered
-		PortalSession session = ((PortalSession) Session.get());
-		List<RightEntity> allRights = rightService.getAllRights();
-		if (component instanceof LoginBoxPanel) {
-			return !session.isSignedIn();
-		} else if (component instanceof UserBoxPanel) {
-			return session.isSignedIn();
-		} else if (component instanceof BookmarkablePageLink<?>) {
-			/*
-			 * This will remove the links for pages where the user hasn't got
-			 * rights. If there exists a right starting with page.PageClassName,
-			 * the user must have the right to access the page!
-			 */
-			BookmarkablePageLink<?> l = (BookmarkablePageLink<?>) component;
-			Class<?> pageClazz = l.getPageClass();
-			String rightName = RightConstants.PAGE_RIGHT_PREFIX + pageClazz.getSimpleName();
-			RightEntity right = rightService.newRightEntity(rightName);
-			if (allRights.contains(right)) {
-				return session.hasRight(right);
-			}
-			return true;
-		}
-		// problem with tree table, i dont know why
-		else if (!(component instanceof TreeTable)) {
-			String rightName = RightConstants.COMPONENT_RIGHT_PREFIX + component.getPage().getClass().getSimpleName()
-					+ "." + component.getId();
-			RightEntity right = rightService.newRightEntity(rightName);
-			if (allRights.contains(right)) {
-				return session.hasRight(right);
-			}
+    public boolean isActionAuthorized(Component component, Action action) {
+        // false means the component will not be rendered
+        PortalSession session = ((PortalSession) Session.get());
+        List<RightEntity> allRights = rightService.getAllRights();
+        if (component instanceof LoginBoxPanel) {
+            return !session.isSignedIn();
+        } else if (component instanceof UserBoxPanel) {
+            return session.isSignedIn();
+        } else if (component instanceof BookmarkablePageLink<?>) {
+            /*
+                * This will remove the links for pages where the user hasn't got
+                * rights. If there exists a right starting with page.PageClassName,
+                * the user must have the right to access the page!
+                */
+            BookmarkablePageLink<?> l = (BookmarkablePageLink<?>) component;
+            Class<?> pageClazz = l.getPageClass();
+            String rightName = RightConstants.PAGE_RIGHT_PREFIX + pageClazz.getSimpleName();
+            RightEntity right = rightService.newRightEntity(rightName);
+            if (allRights.contains(right)) {
+                return session.hasRight(right);
+            }
+            return true;
+        }
+        // problem with tree table, i dont know why
+        else if (!(component instanceof TreeTable)) {
+            String rightName = RightConstants.COMPONENT_RIGHT_PREFIX + component.getPage().getClass().getSimpleName() + "." + component.getId();
+            RightEntity right = rightService.newRightEntity(rightName);
+            if (allRights.contains(right)) {
+                return session.hasRight(right);
+            }
 
-			rightName = RightConstants.GENERAL_RIGHT_PREFIX + component.getClass().getSimpleName();
-			right = rightService.newRightEntity(rightName);
-			if (allRights.contains(right)) {
-				return session.hasRight(right);
-			}
-		}
-		return true;
-	}
+            rightName = RightConstants.GENERAL_RIGHT_PREFIX + component.getClass().getSimpleName();
+            right = rightService.newRightEntity(rightName);
+            if (allRights.contains(right)) {
+                return session.hasRight(right);
+            }
+        }
+        return true;
+    }
 
-	@SuppressWarnings("unchecked")
-	public boolean isInstantiationAuthorized(Class componentClass) {
-		// false means the whole page is blocked
-		PortalSession session = ((PortalSession) Session.get());
-		List<RightEntity> allRights = rightService.getAllRights();
-		if (Page.class.isAssignableFrom(componentClass)) {
-			String rightName = RightConstants.PAGE_RIGHT_PREFIX + componentClass.getSimpleName();
-			RightEntity right = rightService.newRightEntity(rightName);
-			if (allRights.contains(right)) {
-				return session.hasRight(right);
-			}
-		}
-		return true;
-	}
+    @SuppressWarnings("unchecked")
+    public boolean isInstantiationAuthorized(Class componentClass) {
+        // false means the whole page is blocked
+        PortalSession session = ((PortalSession) Session.get());
+        List<RightEntity> allRights = rightService.getAllRights();
+        if (Page.class.isAssignableFrom(componentClass)) {
+            String rightName = RightConstants.PAGE_RIGHT_PREFIX + componentClass.getSimpleName();
+            RightEntity right = rightService.newRightEntity(rightName);
+            if (allRights.contains(right)) {
+                return session.hasRight(right);
+            }
+        }
+        return true;
+    }
 }

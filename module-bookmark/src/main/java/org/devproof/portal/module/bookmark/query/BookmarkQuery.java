@@ -34,101 +34,101 @@ import org.devproof.portal.module.bookmark.BookmarkConstants;
  */
 @BeanJoin("left join e.allRights ar left join e.tags t")
 public class BookmarkQuery implements SearchQuery {
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
 
-	private static final String SEARCH_PARAM = "search";
-	private static final String BROKEN_PARAM = "broken";
-	private static final String ID_PARAM = "id";
-	private Integer id;
-	private RoleEntity role;
-	private String tagname;
-	private String allTextFields;
-	private Boolean broken;
-	private Boolean author;
+    private static final String SEARCH_PARAM = "search";
+    private static final String BROKEN_PARAM = "broken";
+    private static final String ID_PARAM = "id";
+    private Integer id;
+    private RoleEntity role;
+    private String tagname;
+    private String allTextFields;
+    private Boolean broken;
+    private Boolean author;
 
-	public BookmarkQuery() {
-		InjectorHolder.getInjector().inject(this);
-		id = PortalUtil.getParameterAsInteger(ID_PARAM);
-		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
-		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
-		if (isAuthor()) {
-			broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
-		} else if (configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
-			broken = false;
-		}
-	}
+    public BookmarkQuery() {
+        InjectorHolder.getInjector().inject(this);
+        id = PortalUtil.getParameterAsInteger(ID_PARAM);
+        allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+        tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+        if (isAuthor()) {
+            broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
+        } else if (configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_HIDE_BROKEN)) {
+            broken = false;
+        }
+    }
 
-	private boolean isAuthor() {
-		if (author == null) {
-			PortalSession session = PortalSession.get();
-			author = session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
-		}
-		return author.booleanValue();
-	}
+    private boolean isAuthor() {
+        if (author == null) {
+            PortalSession session = PortalSession.get();
+            author = session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
+        }
+        return author.booleanValue();
+    }
 
-	@BeanQuery("e.id = ?")
-	public Integer getId() {
-		return id;
-	}
+    @BeanQuery("e.id = ?")
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%')")
-	public RoleEntity getRole() {
-		if (role == null) {
-			PortalSession session = PortalSession.get();
-			if (!session.hasRight("bookmark.view")) {
-				role = session.getRole();
-			}
-		}
-		return role;
-	}
+    @BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%')")
+    public RoleEntity getRole() {
+        if (role == null) {
+            PortalSession session = PortalSession.get();
+            if (!session.hasRight("bookmark.view")) {
+                role = session.getRole();
+            }
+        }
+        return role;
+    }
 
-	@BeanQuery("t.tagname = ?")
-	public String getTagname() {
-		return tagname;
-	}
+    @BeanQuery("t.tagname = ?")
+    public String getTagname() {
+        return tagname;
+    }
 
-	public void setTagname(String tagname) {
-		this.tagname = tagname;
-	}
+    public void setTagname(String tagname) {
+        this.tagname = tagname;
+    }
 
-	@BeanQuery("(e.title like '%'||?||'%' or e.description like '%'||?||'%')")
-	public String getAllTextFields() {
-		return allTextFields;
-	}
+    @BeanQuery("(e.title like '%'||?||'%' or e.description like '%'||?||'%')")
+    public String getAllTextFields() {
+        return allTextFields;
+    }
 
-	public void setAllTextFields(String allTextFields) {
-		this.allTextFields = allTextFields;
-		this.tagname = null;
-	}
+    public void setAllTextFields(String allTextFields) {
+        this.allTextFields = allTextFields;
+        this.tagname = null;
+    }
 
-	@BeanQuery("e.broken = ?")
-	public Boolean getBroken() {
-		return broken;
-	}
+    @BeanQuery("e.broken = ?")
+    public Boolean getBroken() {
+        return broken;
+    }
 
-	public void setBroken(Boolean broken) {
-		this.broken = broken;
-		this.tagname = null;
-	}
+    public void setBroken(Boolean broken) {
+        this.broken = broken;
+        this.tagname = null;
+    }
 
-	@Override
-	public PageParameters getPageParameters() {
-		PageParameters params = new PageParameters();
-		if (StringUtils.isNotBlank(allTextFields)) {
-			params.put(SEARCH_PARAM, allTextFields);
-		}
-		if (StringUtils.isNotBlank(tagname)) {
-			params.put(TagConstants.TAG_PARAM, tagname);
-		}
-		if (broken != null) {
-			params.put(BROKEN_PARAM, broken);
-		}
-		return params;
-	}
+    @Override
+    public PageParameters getPageParameters() {
+        PageParameters params = new PageParameters();
+        if (StringUtils.isNotBlank(allTextFields)) {
+            params.put(SEARCH_PARAM, allTextFields);
+        }
+        if (StringUtils.isNotBlank(tagname)) {
+            params.put(TagConstants.TAG_PARAM, tagname);
+        }
+        if (broken != null) {
+            params.put(BROKEN_PARAM, broken);
+        }
+        return params;
+    }
 }

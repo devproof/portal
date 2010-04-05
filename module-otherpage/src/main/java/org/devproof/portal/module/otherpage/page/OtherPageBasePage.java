@@ -33,30 +33,30 @@ import org.devproof.portal.module.otherpage.service.OtherPageService;
  */
 public class OtherPageBasePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	private boolean isAuthor;
-	@SpringBean(name = "otherPageService")
-	private OtherPageService otherPageService;
+    private static final long serialVersionUID = 1L;
+    private boolean isAuthor;
+    @SpringBean(name = "otherPageService")
+    private OtherPageService otherPageService;
 
-	public OtherPageBasePage(PageParameters params) {
-		super(params);
-		addSyntaxHighlighter();
-		addOtherPageAddLink();
-	}
+    public OtherPageBasePage(PageParameters params) {
+        super(params);
+        addSyntaxHighlighter();
+        addOtherPageAddLink();
+    }
 
-	private void addOtherPageAddLink() {
-		if (isAuthor()) {
-			addPageAdminBoxLink(createOtherPageAddLink());
-		}
-	}
+    private void addOtherPageAddLink() {
+        if (isAuthor()) {
+            addPageAdminBoxLink(createOtherPageAddLink());
+        }
+    }
 
-	private MarkupContainer createOtherPageAddLink() {
-		Link<?> link = newOtherPageAddLink();
-		link.add(createOtherPageAddLinkLabel());
-		return link;
-	}
+    private MarkupContainer createOtherPageAddLink() {
+        Link<?> link = newOtherPageAddLink();
+        link.add(createOtherPageAddLinkLabel());
+        return link;
+    }
 
-	private Link<?> newOtherPageAddLink() {
+    private Link<?> newOtherPageAddLink() {
         return new Link<Void>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
@@ -67,14 +67,14 @@ public class OtherPageBasePage extends TemplatePage {
                 setResponsePage(new OtherPageEditPage(otherPageModel));
             }
         };
-	}
+    }
 
-	private Label createOtherPageAddLinkLabel() {
-		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
-	}
+    private Label createOtherPageAddLinkLabel() {
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    }
 
-	public boolean isAuthor() {
+    public boolean isAuthor() {
         PortalSession session = (PortalSession) getSession();
-		return session.hasRight(OtherPageConstants.AUTHOR_RIGHT);
-	}
+        return session.hasRight(OtherPageConstants.AUTHOR_RIGHT);
+    }
 }

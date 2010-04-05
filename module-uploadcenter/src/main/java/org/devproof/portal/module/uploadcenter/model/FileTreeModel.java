@@ -39,9 +39,9 @@ public class FileTreeModel implements TreeModel, Serializable {
     private File rootFolder;
 
     @SpringBean(name = "displayDateTimeFormat")
-	private DateFormat dateFormat;
+    private DateFormat dateFormat;
     @SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+    private ConfigurationService configurationService;
 
     public FileTreeModel() {
         InjectorHolder.getInjector().inject(this);
@@ -50,14 +50,13 @@ public class FileTreeModel implements TreeModel, Serializable {
     }
 
     private DefaultMutableTreeNode getNode(File file) {
-        if(file.isDirectory()) {
+        if (file.isDirectory()) {
             DefaultMutableTreeNode folderNode = new DefaultMutableTreeNode(new FileBean(file, dateFormat));
             for (File tmpFile : file.listFiles()) {
                 folderNode.add(getNode(tmpFile));
             }
             return folderNode;
-        }
-        else {
+        } else {
             return new DefaultMutableTreeNode(new FileBean(file, dateFormat));
         }
     }
@@ -71,13 +70,13 @@ public class FileTreeModel implements TreeModel, Serializable {
     }
 
     private File getFileFromNode(Object obj) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)obj;
-        FileBean o = (FileBean)node.getUserObject();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj;
+        FileBean o = (FileBean) node.getUserObject();
         return o.getFile();
     }
 
     public int getChildCount(Object parent) {
-        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode)parent;
+        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) parent;
         return parentNode.getChildCount();
 //        File file = getFileFromNode(parent);
 //        String[] children = file.list();
@@ -96,13 +95,13 @@ public class FileTreeModel implements TreeModel, Serializable {
 //        }
 //        File file = new File(parentFile, children[index]);
 //     return getNode(file);
-        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode)parent;
+        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) parent;
         return parentNode.getChildAt(index);
     }
 
     public int getIndexOfChild(Object parent, Object child) {
-        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode)parent;
-        return parentNode.getIndex((TreeNode) child); 
+        DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) parent;
+        return parentNode.getIndex((TreeNode) child);
 //        File parentFile = getFileFromNode(parent);
 //        String[] children = parentFile.list();
 //

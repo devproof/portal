@@ -27,33 +27,33 @@ import java.io.File;
  * @author Carsten Hufe
  */
 public class CreateFolderPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestCreateFolderPanel.class);
-		tester.assertComponent("panel", TestCreateFolderPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestCreateFolderPanel.class);
+        tester.assertComponent("panel", TestCreateFolderPanel.class);
+    }
 
-	public static class TestCreateFolderPanel extends CreateFolderPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestCreateFolderPanel extends CreateFolderPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestCreateFolderPanel(String id) {
-			super(id, Model.of(new File(".")));
-		}
+        public TestCreateFolderPanel(String id) {
+            super(id, Model.of(new File(".")));
+        }
 
-		@Override
-		public void onCreate(AjaxRequestTarget target) {
-		}
-	}
+        @Override
+        public void onCreate(AjaxRequestTarget target) {
+        }
+    }
 }

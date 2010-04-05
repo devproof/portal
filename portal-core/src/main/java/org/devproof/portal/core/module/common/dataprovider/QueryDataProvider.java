@@ -22,18 +22,17 @@ import java.io.Serializable;
 
 /**
  * A generic data provider with query objects
- * 
+ *
  * @author Carsten Hufe
- * 
  * @param <T>
- *            Entity type
+ * Entity type
  */
 public interface QueryDataProvider<T, SQ extends Serializable> extends ISortableDataProvider<T> {
 
-	/**
-	 * Get the query object (a bean)
-	 * 
-	 * @return query object
-	 */
-	IModel<SQ> getSearchQueryModel();
+    /**
+     * Get the query object (a bean)
+     *
+     * @return query object
+     */
+    IModel<SQ> getSearchQueryModel();
 }

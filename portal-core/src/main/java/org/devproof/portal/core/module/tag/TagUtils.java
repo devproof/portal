@@ -19,17 +19,18 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * @author Carsten Hufe
- * 
  */
 public class TagUtils {
-	private TagUtils() {
-	};
+    private TagUtils() {
+    }
 
-	/**
-	 * Returns the currently selected tag as string
-	 */
-	public static String findSelectedTag() {
-		return PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
-	}
+    ;
+
+    /**
+     * Returns the currently selected tag as string
+     */
+    public static String findSelectedTag() {
+        return PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+    }
 
 }

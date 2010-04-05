@@ -33,41 +33,41 @@ import java.util.Date;
 
 /**
  * the part in blogs downloads, etc "created by [name] at [date]
- * 
+ *
  * @author Carsten Hufe
  */
 public class MetaInfoPanel<T extends BaseEntity> extends Panel {
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "displayDateFormat")
-	private SimpleDateFormat dateFormat;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	@SpringBean(name = "userService")
-	private UserService userService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "displayDateFormat")
+    private SimpleDateFormat dateFormat;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    @SpringBean(name = "userService")
+    private UserService userService;
 
     private IModel<T> entityModel;
 
     public MetaInfoPanel(String id, IModel<T> entityModel) {
-		super(id, entityModel);
+        super(id, entityModel);
         this.entityModel = entityModel;
-		add(createCreatedContainer());
-		add(createModifiedContainer());
-		add(createSameModifierCreatorContainer());
-	}
+        add(createCreatedContainer());
+        add(createModifiedContainer());
+        add(createSameModifierCreatorContainer());
+    }
 
     private WebMarkupContainer createSameModifierCreatorContainer() {
         WebMarkupContainer sameModified = newSameModifierCreatorContainer();
         sameModified.add(createModifiedAtLabel());
-		return sameModified;
-	}
+        return sameModified;
+    }
 
     private WebMarkupContainer newSameModifierCreatorContainer() {
         return new WebMarkupContainer("sameModified") {
             private static final long serialVersionUID = 5672313742753946319L;
+
             @Override
             public boolean isVisible() {
-                return showModifiedBy() && isSameAuthor() && !isEqualCreationModificationTime()
-                            && !showModifiedAtAsCreatedAt();
+                return showModifiedBy() && isSameAuthor() && !isEqualCreationModificationTime() && !showModifiedAtAsCreatedAt();
             }
         };
     }
@@ -75,17 +75,17 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
     private boolean isSameAuthor() {
         BaseEntity entity = entityModel.getObject();
         return entity.getCreatedBy().equals(entity.getModifiedBy());
-	}
+    }
 
     private boolean isEqualCreationModificationTime() {
         BaseEntity entity = entityModel.getObject();
-		return entity.getCreatedAt().equals(entity.getModifiedAt());
-	}
+        return entity.getCreatedAt().equals(entity.getModifiedAt());
+    }
 
     private Label createModifiedAtLabel() {
         IModel<String> modifiedAtModel = createModifiedAtModel();
         return new Label("modifiedAt", modifiedAtModel);
-	}
+    }
 
 
     private IModel<String> createModifiedAtModel() {
@@ -95,7 +95,7 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
             @Override
             protected String load() {
                 BaseEntity entity = entityModel.getObject();
-		        return dateFormat.format(entity.getModifiedAt());
+                return dateFormat.format(entity.getModifiedAt());
             }
         };
     }
@@ -103,51 +103,51 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
     private WebMarkupContainer createModifiedContainer() {
         WebMarkupContainer modified = newModifiedContainer();
         modified.add(createModifiedAtLabel());
-		modified.add(createModifiedUsernamePanel());
-		return modified;
-	}
+        modified.add(createModifiedUsernamePanel());
+        return modified;
+    }
 
     private WebMarkupContainer newModifiedContainer() {
         return new WebMarkupContainer("modified") {
             @Override
             public boolean isVisible() {
-                return showModifiedBy() && !isSameAuthor() && !isEqualCreationModificationTime()
-                                && !showModifiedAtAsCreatedAt();
+                return showModifiedBy() && !isSameAuthor() && !isEqualCreationModificationTime() && !showModifiedAtAsCreatedAt();
             }
         };
     }
 
     private UsernamePanel createModifiedUsernamePanel() {
         IModel<String> modifiedByModel = new PropertyModel<String>(entityModel, "modifiedBy");
-		return new UsernamePanel("modifiedBy", modifiedByModel) {
+        return new UsernamePanel("modifiedBy", modifiedByModel) {
             @Override
             protected boolean showRealName() {
                 return showRealAuthor();
             }
         };
-	}
+    }
 
     private WebMarkupContainer createCreatedContainer() {
-		WebMarkupContainer created = new WebMarkupContainer("created");
-		created.add(createCreatedAtLabel());
-		created.add(createCreatedUsernamePanel());
-		return created;
-	}
+        WebMarkupContainer created = new WebMarkupContainer("created");
+        created.add(createCreatedAtLabel());
+        created.add(createCreatedUsernamePanel());
+        return created;
+    }
 
     private UsernamePanel createCreatedUsernamePanel() {
         IModel<String> createdByModel = new PropertyModel<String>(entityModel, "createdBy");
         return new UsernamePanel("createdBy", createdByModel) {
             private static final long serialVersionUID = 7238227449225588141L;
+
             @Override
             protected boolean showRealName() {
                 return showRealAuthor();
             }
         };
-	}
+    }
 
     private Label createCreatedAtLabel() {
-		return new Label("createdAt", createCreatedAtModel());
-	}
+        return new Label("createdAt", createCreatedAtModel());
+    }
 
     private IModel<String> createCreatedAtModel() {
         return new LoadableDetachableModel<String>() {
@@ -157,7 +157,7 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
             protected String load() {
                 BaseEntity entity = entityModel.getObject();
                 Date created = showModifiedAtAsCreatedAt() ? entity.getModifiedAt() : entity.getCreatedAt();
-		        return dateFormat.format(created);
+                return dateFormat.format(created);
             }
         };
     }
@@ -171,7 +171,6 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
     }
 
     private Boolean showModifiedAtAsCreatedAt() {
-        return configurationService
-                .findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_AT_AS_CREATED_AT);
+        return configurationService.findAsBoolean(CommonConstants.CONF_SHOW_MODIFIED_AT_AS_CREATED_AT);
     }
 }

@@ -19,13 +19,12 @@ import java.util.Collection;
 
 /**
  * Locates the entities of all modules
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface EntityLocator {
-	/**
-	 * Returns entities of all modules
-	 */
-	Collection<?> getEntities();
+    /**
+     * Returns entities of all modules
+     */
+    Collection<?> getEntities();
 }

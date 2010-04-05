@@ -24,53 +24,53 @@ import java.util.Collection;
  * @author Carsten Hufe
  */
 public class DefaultCommentConfiguration implements CommentConfiguration {
-	private static final long serialVersionUID = 1L;
-	private String moduleName;
-	private String moduleContentId;
-	private Collection<RightEntity> viewRights;
-	private Collection<RightEntity> writeRights;
+    private static final long serialVersionUID = 1L;
+    private String moduleName;
+    private String moduleContentId;
+    private Collection<RightEntity> viewRights;
+    private Collection<RightEntity> writeRights;
 
-	public Collection<RightEntity> getViewRights() {
-		return viewRights;
-	}
+    public Collection<RightEntity> getViewRights() {
+        return viewRights;
+    }
 
-	public void setViewRights(Collection<RightEntity> viewRights) {
-		this.viewRights = viewRights;
-	}
+    public void setViewRights(Collection<RightEntity> viewRights) {
+        this.viewRights = viewRights;
+    }
 
-	public Collection<RightEntity> getWriteRights() {
-		return writeRights;
-	}
+    public Collection<RightEntity> getWriteRights() {
+        return writeRights;
+    }
 
-	public void setWriteRights(Collection<RightEntity> writeRights) {
-		this.writeRights = writeRights;
-	}
+    public void setWriteRights(Collection<RightEntity> writeRights) {
+        this.writeRights = writeRights;
+    }
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
-	}
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
 
-	public void setModuleContentId(String moduleContentId) {
-		this.moduleContentId = moduleContentId;
-	}
+    public void setModuleContentId(String moduleContentId) {
+        this.moduleContentId = moduleContentId;
+    }
 
-	@Override
-	public String getModuleContentId() {
-		return moduleContentId;
-	}
+    @Override
+    public String getModuleContentId() {
+        return moduleContentId;
+    }
 
-	@Override
-	public String getModuleName() {
-		return moduleName;
-	}
+    @Override
+    public String getModuleName() {
+        return moduleName;
+    }
 
-	@Override
-	public boolean isAllowedToWrite() {
-		return PortalSession.get().hasRight(writeRights);
-	}
+    @Override
+    public boolean isAllowedToWrite() {
+        return PortalSession.get().hasRight(writeRights);
+    }
 
-	@Override
-	public boolean isAllowedToView() {
-		return PortalSession.get().hasRight(viewRights);
-	}
+    @Override
+    public boolean isAllowedToView() {
+        return PortalSession.get().hasRight(viewRights);
+    }
 }

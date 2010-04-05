@@ -20,7 +20,7 @@ package org.devproof.portal.module.deadlinkcheck;
  * @author Carsten Hufe
  */
 public class DeadLinkCheckConstants {
-	private DeadLinkCheckConstants() {
-	}
+    private DeadLinkCheckConstants() {
+    }
 
 }

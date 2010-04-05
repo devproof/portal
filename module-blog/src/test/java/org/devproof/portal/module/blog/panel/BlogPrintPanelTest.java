@@ -29,37 +29,36 @@ import java.util.Date;
  * @author Carsten Hufe
  */
 public class BlogPrintPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
-				"insert_blog.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql", "insert_blog.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createBlogPrintPanel());
-		tester.assertComponent("panel", BlogPrintPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createBlogPrintPanel());
+        tester.assertComponent("panel", BlogPrintPanel.class);
+    }
 
-	private TestPanelSource createBlogPrintPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createBlogPrintPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				BlogEntity blog = new BlogEntity();
-				blog.setCreatedAt(new Date());
-				blog.setModifiedAt(new Date());
-				blog.setCreatedBy("foo");
-				blog.setModifiedBy("bar");
-				return new BlogPrintPanel(panelId, Model.of(blog));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                BlogEntity blog = new BlogEntity();
+                blog.setCreatedAt(new Date());
+                blog.setModifiedAt(new Date());
+                blog.setCreatedBy("foo");
+                blog.setModifiedBy("bar");
+                return new BlogPrintPanel(panelId, Model.of(blog));
+            }
+        };
+    }
 }

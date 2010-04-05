@@ -25,35 +25,35 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Carsten Hufe
  */
 public class RegistryServiceImpl implements RegistryService {
-	private MainNavigationRegistry mainNavigationRegistry;
-	private GlobalAdminPageRegistry globalAdminPageRegistry;
-	private PageAdminPageRegistry pageAdminPageRegistry;
+    private MainNavigationRegistry mainNavigationRegistry;
+    private GlobalAdminPageRegistry globalAdminPageRegistry;
+    private PageAdminPageRegistry pageAdminPageRegistry;
 
-	@Override
-	public void rebuildRegistries(LinkType type) {
-		if (type == LinkType.TOP_NAVIGATION) {
-			mainNavigationRegistry.buildNavigation();
-		} else if (type == LinkType.PAGE_ADMINISTRATION) {
-			pageAdminPageRegistry.buildNavigation();
-		} else if (type == LinkType.GLOBAL_ADMINISTRATION) {
-			globalAdminPageRegistry.buildNavigation();
-		} else {
-			throw new IllegalArgumentException("LinkType " + type + " is currently not supported!");
-		}
-	}
+    @Override
+    public void rebuildRegistries(LinkType type) {
+        if (type == LinkType.TOP_NAVIGATION) {
+            mainNavigationRegistry.buildNavigation();
+        } else if (type == LinkType.PAGE_ADMINISTRATION) {
+            pageAdminPageRegistry.buildNavigation();
+        } else if (type == LinkType.GLOBAL_ADMINISTRATION) {
+            globalAdminPageRegistry.buildNavigation();
+        } else {
+            throw new IllegalArgumentException("LinkType " + type + " is currently not supported!");
+        }
+    }
 
-	@Required
-	public void setMainNavigationRegistry(MainNavigationRegistry mainNavigationRegistry) {
-		this.mainNavigationRegistry = mainNavigationRegistry;
-	}
+    @Required
+    public void setMainNavigationRegistry(MainNavigationRegistry mainNavigationRegistry) {
+        this.mainNavigationRegistry = mainNavigationRegistry;
+    }
 
-	@Required
-	public void setGlobalAdminPageRegistry(GlobalAdminPageRegistry globalAdminPageRegistry) {
-		this.globalAdminPageRegistry = globalAdminPageRegistry;
-	}
+    @Required
+    public void setGlobalAdminPageRegistry(GlobalAdminPageRegistry globalAdminPageRegistry) {
+        this.globalAdminPageRegistry = globalAdminPageRegistry;
+    }
 
-	@Required
-	public void setPageAdminPageRegistry(PageAdminPageRegistry pageAdminPageRegistry) {
-		this.pageAdminPageRegistry = pageAdminPageRegistry;
-	}
+    @Required
+    public void setPageAdminPageRegistry(PageAdminPageRegistry pageAdminPageRegistry) {
+        this.pageAdminPageRegistry = pageAdminPageRegistry;
+    }
 }

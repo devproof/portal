@@ -28,45 +28,45 @@ import java.util.ArrayList;
  * @author Carsten Hufe
  */
 public class DeadLinkCheckPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestDeadLinkCheckPanel.class);
-		tester.assertComponent("panel", TestDeadLinkCheckPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestDeadLinkCheckPanel.class);
+        tester.assertComponent("panel", TestDeadLinkCheckPanel.class);
+    }
 
-	public static class TestDeadLinkCheckPanel extends DeadlinkCheckPanel<TestLinkEntity> {
-		public TestDeadLinkCheckPanel(String id) {
-			super(id, "download", new ListModel<TestLinkEntity>(new ArrayList<TestLinkEntity>()));
-		}
+    public static class TestDeadLinkCheckPanel extends DeadlinkCheckPanel<TestLinkEntity> {
+        public TestDeadLinkCheckPanel(String id) {
+            super(id, "download", new ListModel<TestLinkEntity>(new ArrayList<TestLinkEntity>()));
+        }
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void onBroken(TestLinkEntity brokenEntity) {
-		}
+        @Override
+        public void onBroken(TestLinkEntity brokenEntity) {
+        }
 
-		@Override
-		public void onValid(TestLinkEntity validEntity) {
-		}
+        @Override
+        public void onValid(TestLinkEntity validEntity) {
+        }
 
-		@Override
-		public void onCancel(AjaxRequestTarget target) {
+        @Override
+        public void onCancel(AjaxRequestTarget target) {
 
-		}
-	}
+        }
+    }
 
-	private static class TestLinkEntity extends BaseLinkEntity {
-		private static final long serialVersionUID = 1L;
-	}
+    private static class TestLinkEntity extends BaseLinkEntity {
+        private static final long serialVersionUID = 1L;
+    }
 }

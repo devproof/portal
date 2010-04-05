@@ -38,22 +38,22 @@ import java.util.List;
  */
 public abstract class BoxEditPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "boxService")
-	private BoxService boxService;
-	@SpringBean(name = "boxRegistry")
-	private BoxRegistry boxRegistry;
-	private FeedbackPanel feedback;
-	private IModel<BoxConfiguration> boxSelectionModel;
-	private IModel<BoxEntity> boxModel;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "boxService")
+    private BoxService boxService;
+    @SpringBean(name = "boxRegistry")
+    private BoxRegistry boxRegistry;
+    private FeedbackPanel feedback;
+    private IModel<BoxConfiguration> boxSelectionModel;
+    private IModel<BoxEntity> boxModel;
 
-	public BoxEditPanel(String id, IModel<BoxEntity> boxModel) {
-		super(id);
-		this.boxModel = boxModel;
+    public BoxEditPanel(String id, IModel<BoxEntity> boxModel) {
+        super(id);
+        this.boxModel = boxModel;
         this.boxSelectionModel = createBoxSelectionModel();
-		add(createFeedbackPanel());
-		add(createBoxEditForm());
-	}
+        add(createFeedbackPanel());
+        add(createBoxEditForm());
+    }
 
     private Model<BoxConfiguration> createBoxSelectionModel() {
         String boxType = boxModel.getObject().getBoxType();
@@ -63,80 +63,79 @@ public abstract class BoxEditPanel extends Panel {
     private Form<BoxEntity> createBoxEditForm() {
         CompoundPropertyModel<BoxEntity> formModel = new CompoundPropertyModel<BoxEntity>(boxModel);
         Form<BoxEntity> form = new Form<BoxEntity>("form", formModel);
-		form.add(createContentField());
-		form.add(createBoxTypeChoice());
-		form.add(createTitleField());
-		form.add(createHideTitleCheckBox());
-		form.add(createAjaxButton());
-		form.add(createCancelButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+        form.add(createContentField());
+        form.add(createBoxTypeChoice());
+        form.add(createTitleField());
+        form.add(createHideTitleCheckBox());
+        form.add(createAjaxButton());
+        form.add(createCancelButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private CheckBox createHideTitleCheckBox() {
-		return new CheckBox("hideTitle");
-	}
+    private CheckBox createHideTitleCheckBox() {
+        return new CheckBox("hideTitle");
+    }
 
-	private DropDownChoice<BoxConfiguration> createBoxTypeChoice() {
-		List<BoxConfiguration> confs = boxRegistry.getRegisteredBoxes();
-		ChoiceRenderer<BoxConfiguration> choiceRenderer = new ChoiceRenderer<BoxConfiguration>("name", "boxClass");
-		DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", boxSelectionModel,
-				confs, choiceRenderer);
-		boxType.setRequired(true);
-		return boxType;
-	}
+    private DropDownChoice<BoxConfiguration> createBoxTypeChoice() {
+        List<BoxConfiguration> confs = boxRegistry.getRegisteredBoxes();
+        ChoiceRenderer<BoxConfiguration> choiceRenderer = new ChoiceRenderer<BoxConfiguration>("name", "boxClass");
+        DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", boxSelectionModel, confs, choiceRenderer);
+        boxType.setRequired(true);
+        return boxType;
+    }
 
-	private TextField<String> createTitleField() {
-		TextField<String> title = new TextField<String>("title");
-		title.add(StringValidator.maximumLength(100));
-		return title;
-	}
+    private TextField<String> createTitleField() {
+        TextField<String> title = new TextField<String>("title");
+        title.add(StringValidator.maximumLength(100));
+        return title;
+    }
 
-	private AjaxButton createAjaxButton() {
-		return new AjaxButton("saveButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxButton createAjaxButton() {
+        return new AjaxButton("saveButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 BoxEntity box = boxModel.getObject();
-				if (box.getSort() == null) {
-					Integer sort = boxService.getMaxSortNum();
-					box.setSort(sort);
-				}
-				box.setBoxType(boxSelectionModel.getObject().getKey());
-				boxService.save(box);
-				BoxEditPanel.this.onSave(target);
-			}
+                if (box.getSort() == null) {
+                    Integer sort = boxService.getMaxSortNum();
+                    box.setSort(sort);
+                }
+                box.setBoxType(boxSelectionModel.getObject().getKey());
+                boxService.save(box);
+                BoxEditPanel.this.onSave(target);
+            }
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(feedback);
-			}
-		};
-	}
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(feedback);
+            }
+        };
+    }
 
-	private AjaxLink<Void> createCancelButton() {
-		return new AjaxLink<Void>("cancelButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<Void> createCancelButton() {
+        return new AjaxLink<Void>("cancelButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				BoxEditPanel.this.onCancel(target);
-			}
-		};
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                BoxEditPanel.this.onCancel(target);
+            }
+        };
+    }
 
-	private TextArea<String> createContentField() {
-		return new TextArea<String>("content");
-	}
+    private TextArea<String> createContentField() {
+        return new TextArea<String>("content");
+    }
 
-	private FeedbackPanel createFeedbackPanel() {
-		feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		return feedback;
-	}
+    private FeedbackPanel createFeedbackPanel() {
+        feedback = new FeedbackPanel("feedbackPanel");
+        feedback.setOutputMarkupId(true);
+        return feedback;
+    }
 
-	protected abstract void onSave(AjaxRequestTarget target);
+    protected abstract void onSave(AjaxRequestTarget target);
 
-	protected abstract void onCancel(AjaxRequestTarget target);
+    protected abstract void onCancel(AjaxRequestTarget target);
 }

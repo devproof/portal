@@ -27,80 +27,80 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T> {
-	private TagDao<T> tagDao;
-	private String relatedTagRight;
+    private TagDao<T> tagDao;
+    private String relatedTagRight;
 
-	@Override
-	public void deleteUnusedTags() {
-		tagDao.deleteUnusedTags();
-	}
+    @Override
+    public void deleteUnusedTags() {
+        tagDao.deleteUnusedTags();
+    }
 
-	@Override
-	public List<T> findMostPopularTags(Integer firstResult, Integer maxResult) {
-		return tagDao.findMostPopularTags(firstResult, maxResult);
-	}
+    @Override
+    public List<T> findMostPopularTags(Integer firstResult, Integer maxResult) {
+        return tagDao.findMostPopularTags(firstResult, maxResult);
+    }
 
-	@Override
-	public List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
-		return tagDao.findMostPopularTags(role, relatedTagRight, firstResult, maxResult);
-	}
+    @Override
+    public List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
+        return tagDao.findMostPopularTags(role, relatedTagRight, firstResult, maxResult);
+    }
 
-	@Override
-	public List<T> findTagsStartingWith(String prefix) {
-		return tagDao.findTagsStartingWith(prefix);
-	}
+    @Override
+    public List<T> findTagsStartingWith(String prefix) {
+        return tagDao.findTagsStartingWith(prefix);
+    }
 
-	@Override
-	public T newTagEntity(String tag) {
-		T obj;
-		try {
-			obj = tagDao.getType().newInstance();
-		} catch (InstantiationException e) {
-			throw new UnhandledException(e);
-		} catch (IllegalAccessException e) {
-			throw new UnhandledException(e);
-		}
-		obj.setTagname(tag);
-		return obj;
-	}
+    @Override
+    public T newTagEntity(String tag) {
+        T obj;
+        try {
+            obj = tagDao.getType().newInstance();
+        } catch (InstantiationException e) {
+            throw new UnhandledException(e);
+        } catch (IllegalAccessException e) {
+            throw new UnhandledException(e);
+        }
+        obj.setTagname(tag);
+        return obj;
+    }
 
-	@Override
-	public String getRelatedTagRight() {
-		return relatedTagRight;
-	}
+    @Override
+    public String getRelatedTagRight() {
+        return relatedTagRight;
+    }
 
-	@Override
-	public void delete(T entity) {
-		tagDao.delete(entity);
-	}
+    @Override
+    public void delete(T entity) {
+        tagDao.delete(entity);
+    }
 
-	@Override
-	public T findById(String id) {
-		return tagDao.findById(id);
-	}
+    @Override
+    public T findById(String id) {
+        return tagDao.findById(id);
+    }
 
-	@Override
-	public void save(T entity) {
-		tagDao.save(entity);
-	}
+    @Override
+    public void save(T entity) {
+        tagDao.save(entity);
+    }
 
-	@Override
-	public T findByIdAndCreateIfNotExists(String tagName) {
-		T tag = findById(tagName);
-		if (tag == null) {
-			tag = newTagEntity(tagName);
-			save(tag);
-		}
-		return tag;
-	}
+    @Override
+    public T findByIdAndCreateIfNotExists(String tagName) {
+        T tag = findById(tagName);
+        if (tag == null) {
+            tag = newTagEntity(tagName);
+            save(tag);
+        }
+        return tag;
+    }
 
-	@Required
-	public void setTagDao(TagDao<T> tagDao) {
-		this.tagDao = tagDao;
-	}
+    @Required
+    public void setTagDao(TagDao<T> tagDao) {
+        this.tagDao = tagDao;
+    }
 
-	@Required
-	public void setRelatedTagRight(String relatedTagRight) {
-		this.relatedTagRight = relatedTagRight;
-	}
+    @Required
+    public void setRelatedTagRight(String relatedTagRight) {
+        this.relatedTagRight = relatedTagRight;
+    }
 }

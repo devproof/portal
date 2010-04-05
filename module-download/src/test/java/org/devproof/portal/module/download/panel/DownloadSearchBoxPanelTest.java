@@ -28,45 +28,44 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class DownloadSearchBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql",
-				"insert_download.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql", "insert_download.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createDownloadSearchBoxPanel());
-		tester.assertComponent("panel", DownloadSearchBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createDownloadSearchBoxPanel());
+        tester.assertComponent("panel", DownloadSearchBoxPanel.class);
+    }
 
-	private TestPanelSource createDownloadSearchBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createDownloadSearchBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new TestDownloadSearchBoxPanel(panelId, Model.of(new DownloadQuery()));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new TestDownloadSearchBoxPanel(panelId, Model.of(new DownloadQuery()));
+            }
+        };
+    }
 
     private static class TestDownloadSearchBoxPanel extends DownloadSearchBoxPanel {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		private TestDownloadSearchBoxPanel(String id, IModel<DownloadQuery> queryModel) {
-			super(id, queryModel);
-		}
+        private TestDownloadSearchBoxPanel(String id, IModel<DownloadQuery> queryModel) {
+            super(id, queryModel);
+        }
 
-		@Override
-		protected boolean isAuthor() {
-			return true;
-		}
-	}
+        @Override
+        protected boolean isAuthor() {
+            return true;
+        }
+    }
 }

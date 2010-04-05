@@ -28,33 +28,33 @@ import java.io.File;
  * @author Carsten Hufe
  */
 public class UploadCenterPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("insert_uploadcenter.sql");
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestUploadCenterPanel.class);
-		tester.assertComponent("panel", TestUploadCenterPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestUploadCenterPanel.class);
+        tester.assertComponent("panel", TestUploadCenterPanel.class);
+    }
 
-	public static class TestUploadCenterPanel extends UploadCenterPanel {
-		public TestUploadCenterPanel(String id) {
-			super(id, Model.of(new File(".")), new BubblePanel("foobar"));
-		}
+    public static class TestUploadCenterPanel extends UploadCenterPanel {
+        public TestUploadCenterPanel(String id) {
+            super(id, Model.of(new File(".")), new BubblePanel("foobar"));
+        }
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void onDelete(AjaxRequestTarget target) {
-		}
-	}
+        @Override
+        public void onDelete(AjaxRequestTarget target) {
+        }
+    }
 }

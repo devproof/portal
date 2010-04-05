@@ -36,56 +36,55 @@ import java.util.jar.JarFile;
  */
 public class PortalModuleImporter implements ServletContextAware, ApplicationContextAware, InitializingBean {
 
-	private static final String DEVPROOF_MODULE_XML = "devproof-module.xml";
+    private static final String DEVPROOF_MODULE_XML = "devproof-module.xml";
 
-	private ServletContext servletContext;
-	private ConfigurableWebApplicationContext applicationContext;
+    private ServletContext servletContext;
+    private ConfigurableWebApplicationContext applicationContext;
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		List<String> modules = new ArrayList<String>();
-		modules.add("classpath:/devproof-portal-core.xml");
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        List<String> modules = new ArrayList<String>();
+        modules.add("classpath:/devproof-portal-core.xml");
 
-		// Prod modules
-		@SuppressWarnings("unchecked")
-		Set<String> libs = servletContext.getResourcePaths("/WEB-INF/lib");
-		for (String lib : libs) {
-			URL url = servletContext.getResource(lib);
-			JarFile file = new JarFile(url.getFile());
-			Enumeration<JarEntry> entries = file.entries();
-			while (entries.hasMoreElements()) {
-				JarEntry jarEntry = entries.nextElement();
-				if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
-					modules.add("classpath:/" + jarEntry.getName());
-				}
-			}
-		}
-		// For development mode when the lib and classes dir is empty
-		if (libs.isEmpty()) {
-			modules.add("classpath*:**/devproof-module.xml");
-		}
-		String[] configs = convertListToArray(modules);
-		applicationContext.setConfigLocations(configs);
-		applicationContext.refresh();
-	}
+        // Prod modules
+        @SuppressWarnings("unchecked") Set<String> libs = servletContext.getResourcePaths("/WEB-INF/lib");
+        for (String lib : libs) {
+            URL url = servletContext.getResource(lib);
+            JarFile file = new JarFile(url.getFile());
+            Enumeration<JarEntry> entries = file.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+                if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
+                    modules.add("classpath:/" + jarEntry.getName());
+                }
+            }
+        }
+        // For development mode when the lib and classes dir is empty
+        if (libs.isEmpty()) {
+            modules.add("classpath*:**/devproof-module.xml");
+        }
+        String[] configs = convertListToArray(modules);
+        applicationContext.setConfigLocations(configs);
+        applicationContext.refresh();
+    }
 
-	private String[] convertListToArray(List<String> modules) {
-		String[] configs = new String[modules.size()];
-		int i = 0;
-		for (String module : modules) {
-			configs[i++] = module;
+    private String[] convertListToArray(List<String> modules) {
+        String[] configs = new String[modules.size()];
+        int i = 0;
+        for (String module : modules) {
+            configs[i++] = module;
 
-		}
-		return configs;
-	}
+        }
+        return configs;
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = (ConfigurableWebApplicationContext) applicationContext;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = (ConfigurableWebApplicationContext) applicationContext;
+    }
 
-	@Override
-	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 }

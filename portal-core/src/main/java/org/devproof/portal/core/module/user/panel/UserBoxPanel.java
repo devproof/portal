@@ -27,50 +27,49 @@ import org.devproof.portal.core.module.user.page.SettingsPage;
 
 /**
  * User info box with settings and logout link
- * 
+ *
  * @author Carsten Hufe
  */
 public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
-	private WebMarkupContainer titleContainer;
+    private static final long serialVersionUID = 1L;
+    private WebMarkupContainer titleContainer;
 
-	public UserBoxPanel(String id) {
-		super(id);
-		add(createTitleContainer());
-		add(createSettingsLink());
-		add(createLogoutLink());
-	}
+    public UserBoxPanel(String id) {
+        super(id);
+        add(createTitleContainer());
+        add(createSettingsLink());
+        add(createLogoutLink());
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		titleContainer.add(createTitleLabel());
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        titleContainer.add(createTitleLabel());
+        return titleContainer;
+    }
 
-	private Label createTitleLabel() {
-		PortalSession session = (PortalSession) getSession();
-		return new Label("username", session.getUser().getUsername() + " - "
-				+ session.getUser().getRole().getDescription());
-	}
+    private Label createTitleLabel() {
+        PortalSession session = (PortalSession) getSession();
+        return new Label("username", session.getUser().getUsername() + " - " + session.getUser().getRole().getDescription());
+    }
 
-	private BookmarkablePageLink<Void> createSettingsLink() {
-		return new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class);
-	}
+    private BookmarkablePageLink<Void> createSettingsLink() {
+        return new BookmarkablePageLink<Void>("settingsLink", SettingsPage.class);
+    }
 
-	private StatelessLink createLogoutLink() {
-		return new StatelessLink("logoutLink") {
-			private static final long serialVersionUID = 1L;
+    private StatelessLink createLogoutLink() {
+        return new StatelessLink("logoutLink") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick() {
-				setResponsePage(MessagePage.getMessagePageWithLogout(getString("loggedout")));
-			}
-		};
-	}
+            @Override
+            public void onClick() {
+                setResponsePage(MessagePage.getMessagePageWithLogout(getString("loggedout")));
+            }
+        };
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

@@ -26,37 +26,37 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class AuthorPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestAuthorPanel.class);
-		tester.assertComponent("panel", TestAuthorPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestAuthorPanel.class);
+        tester.assertComponent("panel", TestAuthorPanel.class);
+    }
 
-	public static class TestAuthorPanel extends AuthorPanel<ConfigurationEntity> {
-		public TestAuthorPanel(String id) {
-			super(id, Model.of(new ConfigurationEntity()));
-		}
+    public static class TestAuthorPanel extends AuthorPanel<ConfigurationEntity> {
+        public TestAuthorPanel(String id) {
+            super(id, Model.of(new ConfigurationEntity()));
+        }
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void onDelete(AjaxRequestTarget target) {
-		}
+        @Override
+        public void onDelete(AjaxRequestTarget target) {
+        }
 
-		@Override
-		public void onEdit(AjaxRequestTarget target) {
-		}
-	}
+        @Override
+        public void onEdit(AjaxRequestTarget target) {
+        }
+    }
 }

@@ -24,53 +24,53 @@ import java.util.List;
 
 /**
  * Converts a String into an image
- * 
+ *
  * @author Carsten Hufe
  */
 public class String2ImageResource extends RenderedDynamicImageResource {
 
-	private static final long serialVersionUID = 1L;
-	private List<String> lines;
-	private Font font;
-	private int height;
-	private int width;
-	private int size;
+    private static final long serialVersionUID = 1L;
+    private List<String> lines;
+    private Font font;
+    private int height;
+    private int width;
+    private int size;
 
-	public String2ImageResource(List<String> lines, Font font) {
-		super(100, 100);
-		this.lines = lines;
-		this.font = font;
-		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
-		width = 0;
-		size = font.getSize();
-		Graphics2D g = (Graphics2D) image.getGraphics();
-		for (String str : lines) {
-			Rectangle2D l = font.getStringBounds(str, g.getFontRenderContext());
-			int tmpWidth = (int) l.getWidth();
-			if (tmpWidth > width) {
-				width = tmpWidth;
-			}
-			height += size + (size / 2);
+    public String2ImageResource(List<String> lines, Font font) {
+        super(100, 100);
+        this.lines = lines;
+        this.font = font;
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        width = 0;
+        size = font.getSize();
+        Graphics2D g = (Graphics2D) image.getGraphics();
+        for (String str : lines) {
+            Rectangle2D l = font.getStringBounds(str, g.getFontRenderContext());
+            int tmpWidth = (int) l.getWidth();
+            if (tmpWidth > width) {
+                width = tmpWidth;
+            }
+            height += size + (size / 2);
 
-		}
-		setHeight(height);
-		setWidth(width);
-	}
+        }
+        setHeight(height);
+        setWidth(width);
+    }
 
-	@Override
-	protected boolean render(Graphics2D g) {
-		g.setBackground(Color.WHITE);
-		g.clearRect(0, 0, width, height);
-		g.setColor(Color.BLACK);
+    @Override
+    protected boolean render(Graphics2D g) {
+        g.setBackground(Color.WHITE);
+        g.clearRect(0, 0, width, height);
+        g.setColor(Color.BLACK);
 
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setFont(font);
-		int actHeight = -5;
-		for (String str : lines) {
-			actHeight += ((size / 2) + size);
-			g.drawString(str, 0, actHeight);
-		}
-		return true;
-	}
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setFont(font);
+        int actHeight = -5;
+        for (String str : lines) {
+            actHeight += ((size / 2) + size);
+            g.drawString(str, 0, actHeight);
+        }
+        return true;
+    }
 
 }

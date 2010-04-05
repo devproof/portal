@@ -30,46 +30,46 @@ import org.devproof.portal.core.module.right.query.RightQuery;
  * @author Carsten Hufe
  */
 public abstract class RightSearchBoxPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private IModel<RightQuery> queryModel;
+    private IModel<RightQuery> queryModel;
 
-	public RightSearchBoxPanel(String id, IModel<RightQuery> queryModel) {
-		super(id);
-		this.queryModel = queryModel;
-		add(createRightSearchForm());
-	}
+    public RightSearchBoxPanel(String id, IModel<RightQuery> queryModel) {
+        super(id);
+        this.queryModel = queryModel;
+        add(createRightSearchForm());
+    }
 
-	private Form<RightQuery> createRightSearchForm() {
-		Form<RightQuery> form = new Form<RightQuery>("searchForm", new CompoundPropertyModel<RightQuery>(queryModel));
-		form.add(createSearchTextField());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<RightQuery> createRightSearchForm() {
+        Form<RightQuery> form = new Form<RightQuery>("searchForm", new CompoundPropertyModel<RightQuery>(queryModel));
+        form.add(createSearchTextField());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private FormComponent<String> createSearchTextField() {
-		FormComponent<String> fc = new TextField<String>("rightAndDescription");
-		fc.add(new AjaxRefresh("onkeyup"));
-		return fc;
-	}
+    private FormComponent<String> createSearchTextField() {
+        FormComponent<String> fc = new TextField<String>("rightAndDescription");
+        fc.add(new AjaxRefresh("onkeyup"));
+        return fc;
+    }
 
-	protected abstract void onSubmit(AjaxRequestTarget target);
+    protected abstract void onSubmit(AjaxRequestTarget target);
 
-	private class AjaxRefresh extends AjaxFormSubmitBehavior {
-		private static final long serialVersionUID = 1L;
+    private class AjaxRefresh extends AjaxFormSubmitBehavior {
+        private static final long serialVersionUID = 1L;
 
-		public AjaxRefresh(String event) {
-			super(event);
-			setThrottleDelay(Duration.ONE_SECOND);
-		}
+        public AjaxRefresh(String event) {
+            super(event);
+            setThrottleDelay(Duration.ONE_SECOND);
+        }
 
-		@Override
-		protected void onError(AjaxRequestTarget target) {
-		}
+        @Override
+        protected void onError(AjaxRequestTarget target) {
+        }
 
-		@Override
-		protected void onSubmit(AjaxRequestTarget target) {
-			RightSearchBoxPanel.this.onSubmit(target);
-		}
-	}
+        @Override
+        protected void onSubmit(AjaxRequestTarget target) {
+            RightSearchBoxPanel.this.onSubmit(target);
+        }
+    }
 }

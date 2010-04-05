@@ -28,45 +28,44 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class BookmarkSearchBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql",
-				"insert_bookmark.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql", "insert_bookmark.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createBookmarkSearchBoxPanel());
-		tester.assertComponent("panel", BookmarkSearchBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createBookmarkSearchBoxPanel());
+        tester.assertComponent("panel", BookmarkSearchBoxPanel.class);
+    }
 
-	private TestPanelSource createBookmarkSearchBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createBookmarkSearchBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new TestBookmarkSearchBoxPanel(panelId, Model.of(new BookmarkQuery()));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new TestBookmarkSearchBoxPanel(panelId, Model.of(new BookmarkQuery()));
+            }
+        };
+    }
 
-	private static class TestBookmarkSearchBoxPanel extends BookmarkSearchBoxPanel {
-		private static final long serialVersionUID = 1L;
+    private static class TestBookmarkSearchBoxPanel extends BookmarkSearchBoxPanel {
+        private static final long serialVersionUID = 1L;
 
-		private TestBookmarkSearchBoxPanel(String id, IModel<BookmarkQuery> queryModel) {
-			super(id, queryModel);
-		}
+        private TestBookmarkSearchBoxPanel(String id, IModel<BookmarkQuery> queryModel) {
+            super(id, queryModel);
+        }
 
-		@Override
-		protected boolean isAuthor() {
-			return true;
-		}
-	}
+        @Override
+        protected boolean isAuthor() {
+            return true;
+        }
+    }
 }

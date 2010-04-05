@@ -36,267 +36,268 @@ import java.util.Date;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = UserConstants.ENTITY_CACHE_REGION)
 final public class UserEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private Integer id;
-	@Index(name = "username")
-	@Column(name = "username", unique = true, length = 30)
-	private String username;
-	@Column(name = "password", nullable = false)
-	private String encryptedPassword;
-	@Column(name = "forgot_code", nullable = true)
-	private String forgotPasswordCode;
-	@Column(name = "firstname", length = 100, nullable = true)
-	private String firstname;
-	@Column(name = "lastname", length = 100, nullable = true)
-	private String lastname;
-	@Column(name = "birthday", nullable = true)
-	private Date birthday;
-	@Column(name = "email", length = 100, nullable = false)
-	private String email;
-	@Column(name = "enable_contact_form")
-	private Boolean enableContactForm = Boolean.FALSE;
-	@Column(name = "session_id", nullable = true)
-	private String sessionId;
-	@Column(name = "reg_date", nullable = false)
-	private Date registrationDate = PortalUtil.now();
-	@Column(name = "changed_at")
-	private Date changedAt;
-	// IPv6 length
-	@Column(name = "last_ip", length = 39)
-	private String lastIp;
-	@Column(name = "last_login_at")
-	private Date lastLoginAt;
-	@Column(name = "active", nullable = false)
-	private Boolean active = Boolean.TRUE;
-	@Column(name = "confirmed", nullable = false)
-	private Boolean confirmed = Boolean.TRUE;
-	@Column(name = "confirmation_code")
-	private String confirmationCode;
-	@Column(name = "confirm_req_at")
-	private Date confirmationRequestedAt;
-	@Column(name = "confirm_app_at")
-	private Date confirmationApprovedAt;
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id", nullable = false)
-	private RoleEntity role;
-	@Transient
-	private boolean guestRole = false;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
+    @Index(name = "username")
+    @Column(name = "username", unique = true, length = 30)
+    private String username;
+    @Column(name = "password", nullable = false)
+    private String encryptedPassword;
+    @Column(name = "forgot_code", nullable = true)
+    private String forgotPasswordCode;
+    @Column(name = "firstname", length = 100, nullable = true)
+    private String firstname;
+    @Column(name = "lastname", length = 100, nullable = true)
+    private String lastname;
+    @Column(name = "birthday", nullable = true)
+    private Date birthday;
+    @Column(name = "email", length = 100, nullable = false)
+    private String email;
+    @Column(name = "enable_contact_form")
+    private Boolean enableContactForm = Boolean.FALSE;
+    @Column(name = "session_id", nullable = true)
+    private String sessionId;
+    @Column(name = "reg_date", nullable = false)
+    private Date registrationDate = PortalUtil.now();
+    @Column(name = "changed_at")
+    private Date changedAt;
+    // IPv6 length
+    @Column(name = "last_ip", length = 39)
+    private String lastIp;
+    @Column(name = "last_login_at")
+    private Date lastLoginAt;
+    @Column(name = "active", nullable = false)
+    private Boolean active = Boolean.TRUE;
+    @Column(name = "confirmed", nullable = false)
+    private Boolean confirmed = Boolean.TRUE;
+    @Column(name = "confirmation_code")
+    private String confirmationCode;
+    @Column(name = "confirm_req_at")
+    private Date confirmationRequestedAt;
+    @Column(name = "confirm_app_at")
+    private Date confirmationApprovedAt;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private RoleEntity role;
+    @Transient
+    private boolean guestRole = false;
 
-	@Override
-	public String toString() {
-		return id + ": " + username + "(" + email + ")";
-	}
+    @Override
+    public String toString() {
+        return id + ": " + username + "(" + email + ")";
+    }
 
-	// generated stuff
-	public String getUsername() {
-		return username;
-	}
+    // generated stuff
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getEncryptedPassword() {
-		return encryptedPassword;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
-	}
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
 
-	@Transient
-	public void setPlainPassword(String plainPassword) {
-		this.encryptedPassword = PortalUtil.generateMd5(plainPassword);
-	}
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
+    }
 
-	@Transient
-	public boolean equalPassword(String plainPassword) {
-		return PortalUtil.generateMd5(plainPassword).equals(encryptedPassword);
-	}
+    @Transient
+    public void setPlainPassword(String plainPassword) {
+        this.encryptedPassword = PortalUtil.generateMd5(plainPassword);
+    }
 
-	public String getForgotPasswordCode() {
-		return forgotPasswordCode;
-	}
+    @Transient
+    public boolean equalPassword(String plainPassword) {
+        return PortalUtil.generateMd5(plainPassword).equals(encryptedPassword);
+    }
 
-	public void setForgotPasswordCode(String forgotPasswordCode) {
-		this.forgotPasswordCode = forgotPasswordCode;
-	}
+    public String getForgotPasswordCode() {
+        return forgotPasswordCode;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setForgotPasswordCode(String forgotPasswordCode) {
+        this.forgotPasswordCode = forgotPasswordCode;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
 
-	public Date getChangedAt() {
-		return changedAt;
-	}
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
 
-	public void setChangedAt(Date changedAt) {
-		this.changedAt = changedAt;
-	}
+    public Date getChangedAt() {
+        return changedAt;
+    }
 
-	public String getLastIp() {
-		return lastIp;
-	}
+    public void setChangedAt(Date changedAt) {
+        this.changedAt = changedAt;
+    }
 
-	public void setLastIp(String lastIp) {
-		this.lastIp = lastIp;
-	}
+    public String getLastIp() {
+        return lastIp;
+    }
 
-	public Date getLastLoginAt() {
-		return lastLoginAt;
-	}
+    public void setLastIp(String lastIp) {
+        this.lastIp = lastIp;
+    }
 
-	public void setLastLoginAt(Date lastLoginAt) {
-		this.lastLoginAt = lastLoginAt;
-	}
+    public Date getLastLoginAt() {
+        return lastLoginAt;
+    }
 
-	public Boolean getActive() {
-		return active;
-	}
+    public void setLastLoginAt(Date lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public Boolean getActive() {
+        return active;
+    }
 
-	public Boolean getConfirmed() {
-		return confirmed;
-	}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
-	}
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
 
-	public String getConfirmationCode() {
-		return confirmationCode;
-	}
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
+    }
 
-	public void setConfirmationCode(String confirmationCode) {
-		this.confirmationCode = confirmationCode;
-	}
+    public String getConfirmationCode() {
+        return confirmationCode;
+    }
 
-	public Date getConfirmationRequestedAt() {
-		return confirmationRequestedAt;
-	}
+    public void setConfirmationCode(String confirmationCode) {
+        this.confirmationCode = confirmationCode;
+    }
 
-	public void setConfirmationRequestedAt(Date confirmationRequestedAt) {
-		this.confirmationRequestedAt = confirmationRequestedAt;
-	}
+    public Date getConfirmationRequestedAt() {
+        return confirmationRequestedAt;
+    }
 
-	public Date getConfirmationApprovedAt() {
-		return confirmationApprovedAt;
-	}
+    public void setConfirmationRequestedAt(Date confirmationRequestedAt) {
+        this.confirmationRequestedAt = confirmationRequestedAt;
+    }
 
-	public void setConfirmationApprovedAt(Date confirmationApprovedAt) {
-		this.confirmationApprovedAt = confirmationApprovedAt;
-	}
+    public Date getConfirmationApprovedAt() {
+        return confirmationApprovedAt;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setConfirmationApprovedAt(Date confirmationApprovedAt) {
+        this.confirmationApprovedAt = confirmationApprovedAt;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public Date getBirthday() {
-		return birthday;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
+    public Date getBirthday() {
+        return birthday;
+    }
 
-	public String getSessionId() {
-		return sessionId;
-	}
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+    public String getSessionId() {
+        return sessionId;
+    }
 
-	public RoleEntity getRole() {
-		return role;
-	}
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
-	public void setRole(RoleEntity role) {
-		this.role = role;
-	}
+    public RoleEntity getRole() {
+        return role;
+    }
 
-	public boolean isGuestRole() {
-		return guestRole;
-	}
+    public void setRole(RoleEntity role) {
+        this.role = role;
+    }
 
-	public void setGuestRole(boolean guestRole) {
-		this.guestRole = guestRole;
-	}
+    public boolean isGuestRole() {
+        return guestRole;
+    }
 
-	public Boolean getEnableContactForm() {
-		return enableContactForm;
-	}
+    public void setGuestRole(boolean guestRole) {
+        this.guestRole = guestRole;
+    }
 
-	public void setEnableContactForm(Boolean enableContactForm) {
-		this.enableContactForm = enableContactForm;
-	}
+    public Boolean getEnableContactForm() {
+        return enableContactForm;
+    }
 
-	@Override
-	public int hashCode() {
-		int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public void setEnableContactForm(Boolean enableContactForm) {
+        this.enableContactForm = enableContactForm;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		UserEntity other = (UserEntity) obj;
-		if (id == null) {
-			if (other.id != null) {
-				return false;
-			}
-		} else if (!id.equals(other.id)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        UserEntity other = (UserEntity) obj;
+        if (id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        } else if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
 }

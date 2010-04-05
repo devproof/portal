@@ -41,62 +41,61 @@ import java.util.List;
 /**
  * Rollback of transaction when a runtime exception occurs Inform the admin
  * about the runtime exception
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
-	private SessionFactory sessionFactory;
-	private ConfigurationService configurationService;
-	private UserService userService;
-	private EmailService emailService;
+    private SessionFactory sessionFactory;
+    private ConfigurationService configurationService;
+    private UserService userService;
+    private EmailService emailService;
 
-	public PortalRequestCycleProcessor(ApplicationContext context, boolean production) {
-		sessionFactory = (SessionFactory) context.getBean("sessionFactory");
-		configurationService = (ConfigurationService) context.getBean("configurationService");
-		userService = (UserService) context.getBean("userService");
-		emailService = (EmailService) context.getBean("emailService");
-	}
+    public PortalRequestCycleProcessor(ApplicationContext context, boolean production) {
+        sessionFactory = (SessionFactory) context.getBean("sessionFactory");
+        configurationService = (ConfigurationService) context.getBean("configurationService");
+        userService = (UserService) context.getBean("userService");
+        emailService = (EmailService) context.getBean("emailService");
+    }
 
-	@Override
-	protected Page onRuntimeException(Page page, RuntimeException e) {
-		if (e instanceof WicketRuntimeException) {
-			WicketRuntimeException wre = (WicketRuntimeException) e;
-			if (wre.getCause() instanceof InvocationTargetException) {
-				InvocationTargetException ite = (InvocationTargetException) wre.getCause();
-				if (ite.getTargetException() instanceof UnsupportedOperationException) {
-					return new UnsupportedOperationPage();
-				}
-			}
-		}
-		// send mail to the admin!
-		if (!(e instanceof PageExpiredException) && !(e instanceof UnauthorizedInstantiationException)) {
-			Integer templateId = configurationService.findAsInteger(CommonConstants.CONF_UNKNOWN_ERROR_EMAIL);
+    @Override
+    protected Page onRuntimeException(Page page, RuntimeException e) {
+        if (e instanceof WicketRuntimeException) {
+            WicketRuntimeException wre = (WicketRuntimeException) e;
+            if (wre.getCause() instanceof InvocationTargetException) {
+                InvocationTargetException ite = (InvocationTargetException) wre.getCause();
+                if (ite.getTargetException() instanceof UnsupportedOperationException) {
+                    return new UnsupportedOperationPage();
+                }
+            }
+        }
+        // send mail to the admin!
+        if (!(e instanceof PageExpiredException) && !(e instanceof UnauthorizedInstantiationException)) {
+            Integer templateId = configurationService.findAsInteger(CommonConstants.CONF_UNKNOWN_ERROR_EMAIL);
 
-			Writer content = new StringWriter();
-			PrintWriter printWriter = new PrintWriter(content);
-			e.printStackTrace(printWriter);
-			sendEmailToUsers(templateId, content.toString());
+            Writer content = new StringWriter();
+            PrintWriter printWriter = new PrintWriter(content);
+            e.printStackTrace(printWriter);
+            sendEmailToUsers(templateId, content.toString());
 
-		}
-		// does the rollback if there is a runtime exception
-		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
-		if (holder.getTransaction() != null) {
-			holder.getTransaction().rollback();
-		}
-		return super.onRuntimeException(page, e);
-	}
+        }
+        // does the rollback if there is a runtime exception
+        SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
+        if (holder.getTransaction() != null) {
+            holder.getTransaction().rollback();
+        }
+        return super.onRuntimeException(page, e);
+    }
 
-	private void sendEmailToUsers(Integer templateId, String content) {
-		EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
-		placeholder.setContent(content);
-		List<UserEntity> users = userService.findUserWithRight("emailnotification.unknown.application.error");
-		for (UserEntity user : users) {
-			placeholder.setUsername(user.getUsername());
-			placeholder.setFirstname(user.getFirstname());
-			placeholder.setLastname(user.getLastname());
-			placeholder.setEmail(user.getEmail());
-			emailService.sendEmail(templateId, placeholder);
-		}
-	}
+    private void sendEmailToUsers(Integer templateId, String content) {
+        EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
+        placeholder.setContent(content);
+        List<UserEntity> users = userService.findUserWithRight("emailnotification.unknown.application.error");
+        for (UserEntity user : users) {
+            placeholder.setUsername(user.getUsername());
+            placeholder.setFirstname(user.getFirstname());
+            placeholder.setLastname(user.getLastname());
+            placeholder.setEmail(user.getEmail());
+            emailService.sendEmail(templateId, placeholder);
+        }
+    }
 }

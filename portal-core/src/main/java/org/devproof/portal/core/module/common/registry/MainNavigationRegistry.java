@@ -21,41 +21,40 @@ import java.util.List;
 
 /**
  * Registry for pages which will displayed in main menu (on top)
- * 
+ *
  * @author Carsten Hufe
  */
 public interface MainNavigationRegistry {
-	/**
-	 * Registers a main navigation links. The language property file of the page
-	 * must contain a property named "mainNavigationLinkLabel" for menu name
-	 */
-	void registerPage(Class<? extends Page> page);
+    /**
+     * Registers a main navigation links. The language property file of the page
+     * must contain a property named "mainNavigationLinkLabel" for menu name
+     */
+    void registerPage(Class<? extends Page> page);
 
-	/**
-	 * Registers a main navigation links. The language property file of the page
-	 * must contain a property named "mainNavigationLinkLabel" for menu name
-	 */
-	void registerPages(List<Class<? extends Page>> pages);
+    /**
+     * Registers a main navigation links. The language property file of the page
+     * must contain a property named "mainNavigationLinkLabel" for menu name
+     */
+    void registerPages(List<Class<? extends Page>> pages);
 
-	/**
-	 * Clear registry
-	 */
-	void clearRegistry();
+    /**
+     * Clear registry
+     */
+    void clearRegistry();
 
-	/**
-	 * Removes a link
-	 */
-	void removePage(Class<? extends Page> page);
+    /**
+     * Removes a link
+     */
+    void removePage(Class<? extends Page> page);
 
-	/**
-	 * Returns all registered pages
-	 * 
-	 */
-	List<Class<? extends Page>> getRegisteredPages();
+    /**
+     * Returns all registered pages
+     */
+    List<Class<? extends Page>> getRegisteredPages();
 
-	/**
-	 * Builds or rebuilds the main navigation from the database
-	 */
-	void buildNavigation();
+    /**
+     * Builds or rebuilds the main navigation from the database
+     */
+    void buildNavigation();
 
 }

@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:tx="http://www.springframework.org/schema/tx"
-  xmlns:util="http://www.springframework.org/schema/util"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-    
+
     <!-- Module configuration -->
     <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-    	<property name="name" value="Blog"/>
-    	<property name="moduleVersion" value="${devproof.version}"/>
-    	<property name="portalVersion" value="${devproof.version}"/>
-    	<property name="author" value="devproof - Carsten Hufe"/>
-    	<property name="url" value="http://devproof.org"/>	 		
-    	
-    	<!-- Hibernate/JPA entities -->
-    	<property name="entities">
-    		<list>
-			    <value>org.devproof.portal.module.blog.entity.BlogEntity</value>
-			    <value>org.devproof.portal.module.blog.entity.BlogTagEntity</value>
-			</list>
-    	</property> 
-    	<property name="pages">
-    		<list>
-    			<bean class="org.devproof.portal.core.config.PageConfiguration">
-    				<property name="mountPath" value="/blog"/>
-    				<property name="pageClass" value="org.devproof.portal.module.blog.page.BlogPage"/>
-    				<property name="registerMainNavigationLink" value="true"/>
-    				<property name="defaultStartPage" value="true"/>
-    			</bean>
-    			<bean class="org.devproof.portal.core.config.PageConfiguration">
-    				<property name="mountPath" value="/print/blog"/>
-    				<property name="pageClass" value="org.devproof.portal.module.blog.page.BlogPrintPage"/>
-    				<property name="indexMountedPath" value="true"/>
-    			</bean>
-    		</list>
-    	</property>
+        <property name="name" value="Blog"/>
+        <property name="moduleVersion" value="${devproof.version}"/>
+        <property name="portalVersion" value="${devproof.version}"/>
+        <property name="author" value="devproof - Carsten Hufe"/>
+        <property name="url" value="http://devproof.org"/>
+
+        <!-- Hibernate/JPA entities -->
+        <property name="entities">
+            <list>
+                <value>org.devproof.portal.module.blog.entity.BlogEntity</value>
+                <value>org.devproof.portal.module.blog.entity.BlogTagEntity</value>
+            </list>
+        </property>
+        <property name="pages">
+            <list>
+                <bean class="org.devproof.portal.core.config.PageConfiguration">
+                    <property name="mountPath" value="/blog"/>
+                    <property name="pageClass" value="org.devproof.portal.module.blog.page.BlogPage"/>
+                    <property name="registerMainNavigationLink" value="true"/>
+                    <property name="defaultStartPage" value="true"/>
+                </bean>
+                <bean class="org.devproof.portal.core.config.PageConfiguration">
+                    <property name="mountPath" value="/print/blog"/>
+                    <property name="pageClass" value="org.devproof.portal.module.blog.page.BlogPrintPage"/>
+                    <property name="indexMountedPath" value="true"/>
+                </bean>
+            </list>
+        </property>
     </bean>
-    
-	<!--  Dao  -->
-	<bean id="blogDao" parent="baseGenericDao">
-		<property name="daoInterface"
-			value="org.devproof.portal.module.blog.dao.BlogDao" />
-		<property name="entityClass"
-			value="org.devproof.portal.module.blog.entity.BlogEntity" />
-	</bean>
-	
-	<!--  Service  -->
-	<bean id="blogService" class="org.devproof.portal.module.blog.service.BlogServiceImpl">
-		<property name="blogDao" ref="blogDao"/>
-		<property name="blogTagService" ref="blogTagService"/>
-	</bean>
-	
-	<bean id="blogTagService"  parent="baseTagService">
-		<property name="tagDao">
-			<bean parent="baseTagDao">
-				<property name="entityClass"
-					value="org.devproof.portal.module.blog.entity.BlogTagEntity" />
-			</bean>
-		</property>
-		<property name="relatedTagRight" value="blog.view"/>
-	</bean>
-	
-	<bean class="org.devproof.portal.module.blog.service.BlogFeedProviderImpl">
-		<property name="blogDataProvider" ref="blogDataProvider"/>
-		<property name="configurationService" ref="configurationService"/>
-	</bean>
-	
-	<!--  DataProvider  -->
-	<bean id="blogDataProvider" parent="persistenceDataProvider" scope="prototype">
-		<property name="entityClass" value="org.devproof.portal.module.blog.entity.BlogEntity" />
-        <property name="queryClass" value="org.devproof.portal.module.blog.query.BlogQuery" />
-		<property name="sort">
-			<bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
-				<constructor-arg value="createdAt" index="0"/>
-				<constructor-arg value="false" index="1"/>
-			</bean>		
-		</property>
-	</bean>
+
+    <!--  Dao  -->
+    <bean id="blogDao" parent="baseGenericDao">
+        <property name="daoInterface"
+                  value="org.devproof.portal.module.blog.dao.BlogDao"/>
+        <property name="entityClass"
+                  value="org.devproof.portal.module.blog.entity.BlogEntity"/>
+    </bean>
+
+    <!--  Service  -->
+    <bean id="blogService" class="org.devproof.portal.module.blog.service.BlogServiceImpl">
+        <property name="blogDao" ref="blogDao"/>
+        <property name="blogTagService" ref="blogTagService"/>
+    </bean>
+
+    <bean id="blogTagService" parent="baseTagService">
+        <property name="tagDao">
+            <bean parent="baseTagDao">
+                <property name="entityClass"
+                          value="org.devproof.portal.module.blog.entity.BlogTagEntity"/>
+            </bean>
+        </property>
+        <property name="relatedTagRight" value="blog.view"/>
+    </bean>
+
+    <bean class="org.devproof.portal.module.blog.service.BlogFeedProviderImpl">
+        <property name="blogDataProvider" ref="blogDataProvider"/>
+        <property name="configurationService" ref="configurationService"/>
+    </bean>
+
+    <!--  DataProvider  -->
+    <bean id="blogDataProvider" parent="persistenceDataProvider" scope="prototype">
+        <property name="entityClass" value="org.devproof.portal.module.blog.entity.BlogEntity"/>
+        <property name="queryClass" value="org.devproof.portal.module.blog.query.BlogQuery"/>
+        <property name="sort">
+            <bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
+                <constructor-arg value="createdAt" index="0"/>
+                <constructor-arg value="false" index="1"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

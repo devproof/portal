@@ -33,44 +33,44 @@ import org.devproof.portal.module.blog.service.BlogService;
  */
 public abstract class BlogBasePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "blogService")
-	private BlogService blogService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "blogService")
+    private BlogService blogService;
 
-	public BlogBasePage(PageParameters params) {
-		super(params);
-		add(createCSSHeaderContributor());
-		addSyntaxHighlighter();
-		addBlogAddLink();
-	}
+    public BlogBasePage(PageParameters params) {
+        super(params);
+        add(createCSSHeaderContributor());
+        addSyntaxHighlighter();
+        addBlogAddLink();
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS);
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS);
+    }
 
-	private void addBlogAddLink() {
-		// New Blog Link
-		if (isAuthor()) {
-			Link<?> addLink = createBlogAddLink();
-			addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
-			addPageAdminBoxLink(addLink);
-		}
-	}
+    private void addBlogAddLink() {
+        // New Blog Link
+        if (isAuthor()) {
+            Link<?> addLink = createBlogAddLink();
+            addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
+            addPageAdminBoxLink(addLink);
+        }
+    }
 
-	private Link<?> createBlogAddLink() {
-		return new Link<Void>(getPageAdminBoxLinkId()) {
-			private static final long serialVersionUID = 1L;
+    private Link<?> createBlogAddLink() {
+        return new Link<Void>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick() {
-				BlogEntity newEntry = blogService.newBlogEntity();
-				setResponsePage(new BlogEditPage(Model.of(newEntry)));
-			}
-		};
-	}
+            @Override
+            public void onClick() {
+                BlogEntity newEntry = blogService.newBlogEntity();
+                setResponsePage(new BlogEditPage(Model.of(newEntry)));
+            }
+        };
+    }
 
-	protected boolean isAuthor() {
-		PortalSession session = (PortalSession) getSession();
-		return session.hasRight(BlogConstants.AUTHOR_RIGHT);
-	}
+    protected boolean isAuthor() {
+        PortalSession session = (PortalSession) getSession();
+        return session.hasRight(BlogConstants.AUTHOR_RIGHT);
+    }
 }

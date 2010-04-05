@@ -31,151 +31,151 @@ import javax.persistence.Table;
  */
 public class ModuleInfoPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private ModuleConfiguration module;
-	
-	public ModuleInfoPanel(String id, ModuleConfiguration module) {
-		super(id);
-		this.module = module;
-		add(createRepeatingPages());
-		add(createRepeatingBoxes());
-		add(createRepeatingEntities());
-	}
+    private ModuleConfiguration module;
 
-	private RepeatingView createRepeatingEntities() {
-		RepeatingView view = new RepeatingView("repeatingEntities");
-		if (module.getEntities().isEmpty()) {
-			view.add(createEmptyEntitiesRow(view.newChildId()));
-		} else {
-			for (Class<?> entity : module.getEntities()) {
-				view.add(createEntityRow(view.newChildId(), entity));
-			}
-		}
-		return view;
-	}
+    public ModuleInfoPanel(String id, ModuleConfiguration module) {
+        super(id);
+        this.module = module;
+        add(createRepeatingPages());
+        add(createRepeatingBoxes());
+        add(createRepeatingEntities());
+    }
 
-	private WebMarkupContainer createEntityRow(String id, Class<?> entity) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createEntitySimpleClassNameLabel(entity));
-		row.add(createTableNameLabel(entity));
-		return row;
-	}
+    private RepeatingView createRepeatingEntities() {
+        RepeatingView view = new RepeatingView("repeatingEntities");
+        if (module.getEntities().isEmpty()) {
+            view.add(createEmptyEntitiesRow(view.newChildId()));
+        } else {
+            for (Class<?> entity : module.getEntities()) {
+                view.add(createEntityRow(view.newChildId(), entity));
+            }
+        }
+        return view;
+    }
 
-	private Label createTableNameLabel(Class<?> entity) {
-		String table = getTableName(entity);
-		return new Label("table", table);
-	}
+    private WebMarkupContainer createEntityRow(String id, Class<?> entity) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(createEntitySimpleClassNameLabel(entity));
+        row.add(createTableNameLabel(entity));
+        return row;
+    }
 
-	private Label createEntitySimpleClassNameLabel(Class<?> entity) {
-		return new Label("entity", entity.getSimpleName());
-	}
+    private Label createTableNameLabel(Class<?> entity) {
+        String table = getTableName(entity);
+        return new Label("table", table);
+    }
 
-	private String getTableName(Class<?> entity) {
-		String table = entity.getSimpleName();
-		Table tableAnno = entity.getAnnotation(Table.class);
-		if (tableAnno != null && StringUtils.isNotEmpty(tableAnno.name())) {
-			table = tableAnno.name();
-		}
-		return table;
-	}
+    private Label createEntitySimpleClassNameLabel(Class<?> entity) {
+        return new Label("entity", entity.getSimpleName());
+    }
 
-	private WebMarkupContainer createEmptyEntitiesRow(String id) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createNoEntitiesLabel());
-		row.add(createEmptyTableNameLabel());
-		return row;
-	}
+    private String getTableName(Class<?> entity) {
+        String table = entity.getSimpleName();
+        Table tableAnno = entity.getAnnotation(Table.class);
+        if (tableAnno != null && StringUtils.isNotEmpty(tableAnno.name())) {
+            table = tableAnno.name();
+        }
+        return table;
+    }
 
-	private Label createEmptyTableNameLabel() {
-		return new Label("table", "");
-	}
+    private WebMarkupContainer createEmptyEntitiesRow(String id) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(createNoEntitiesLabel());
+        row.add(createEmptyTableNameLabel());
+        return row;
+    }
 
-	private Label createNoEntitiesLabel() {
-		return new Label("entity", getString("noentities"));
-	}
+    private Label createEmptyTableNameLabel() {
+        return new Label("table", "");
+    }
 
-	private RepeatingView createRepeatingBoxes() {
-		RepeatingView view = new RepeatingView("repeatingBoxes");
-		if (module.getBoxes().isEmpty()) {
-			view.add(createNoBoxesRow(view.newChildId()));
-		} else {
-			for (BoxConfiguration box : module.getBoxes()) {
-				view.add(createBoxRow(view.newChildId(), box));
-			}
-		}
-		return view;
-	}
+    private Label createNoEntitiesLabel() {
+        return new Label("entity", getString("noentities"));
+    }
 
-	private WebMarkupContainer createBoxRow(String id, BoxConfiguration box) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createBoxSimpleClassNameLabel(box));
-		row.add(createBoxNameLabel(box));
-		return row;
-	}
+    private RepeatingView createRepeatingBoxes() {
+        RepeatingView view = new RepeatingView("repeatingBoxes");
+        if (module.getBoxes().isEmpty()) {
+            view.add(createNoBoxesRow(view.newChildId()));
+        } else {
+            for (BoxConfiguration box : module.getBoxes()) {
+                view.add(createBoxRow(view.newChildId(), box));
+            }
+        }
+        return view;
+    }
 
-	private Label createBoxNameLabel(BoxConfiguration box) {
-		return new Label("name", box.getName());
-	}
+    private WebMarkupContainer createBoxRow(String id, BoxConfiguration box) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(createBoxSimpleClassNameLabel(box));
+        row.add(createBoxNameLabel(box));
+        return row;
+    }
 
-	private Label createBoxSimpleClassNameLabel(BoxConfiguration box) {
-		return new Label("box", box.getBoxClass().getSimpleName());
-	}
+    private Label createBoxNameLabel(BoxConfiguration box) {
+        return new Label("name", box.getName());
+    }
 
-	private WebMarkupContainer createNoBoxesRow(String id) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createNoBoxesLabel());
-		row.add(createEmptyBoxNameLabel());
-		return row;
-	}
+    private Label createBoxSimpleClassNameLabel(BoxConfiguration box) {
+        return new Label("box", box.getBoxClass().getSimpleName());
+    }
 
-	private Label createEmptyBoxNameLabel() {
-		return new Label("name", "");
-	}
+    private WebMarkupContainer createNoBoxesRow(String id) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(createNoBoxesLabel());
+        row.add(createEmptyBoxNameLabel());
+        return row;
+    }
 
-	private Label createNoBoxesLabel() {
-		return new Label("box", getString("noboxes"));
-	}
+    private Label createEmptyBoxNameLabel() {
+        return new Label("name", "");
+    }
 
-	private RepeatingView createRepeatingPages() {
-		RepeatingView view = new RepeatingView("repeatingPages");
-		if (module.getPages().isEmpty()) {
-			view.add(createNoPagesRow(view.newChildId()));
-		} else {
-			for (PageConfiguration page : module.getPages()) {
-				view.add(createPageRow(view.newChildId(), page));
-			}
-		}
-		return view;
-	}
+    private Label createNoBoxesLabel() {
+        return new Label("box", getString("noboxes"));
+    }
 
-	private WebMarkupContainer createPageRow(String id, PageConfiguration page) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createPageNameLabel(page));
-		row.add(createMounthPathLabel(page));
-		return row;
-	}
+    private RepeatingView createRepeatingPages() {
+        RepeatingView view = new RepeatingView("repeatingPages");
+        if (module.getPages().isEmpty()) {
+            view.add(createNoPagesRow(view.newChildId()));
+        } else {
+            for (PageConfiguration page : module.getPages()) {
+                view.add(createPageRow(view.newChildId(), page));
+            }
+        }
+        return view;
+    }
 
-	private Label createPageNameLabel(PageConfiguration page) {
-		return new Label("page", page.getPageClass().getSimpleName());
-	}
+    private WebMarkupContainer createPageRow(String id, PageConfiguration page) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(createPageNameLabel(page));
+        row.add(createMounthPathLabel(page));
+        return row;
+    }
 
-	private Label createMounthPathLabel(PageConfiguration page) {
-		return new Label("mountPath", page.getMountPath());
-	}
+    private Label createPageNameLabel(PageConfiguration page) {
+        return new Label("page", page.getPageClass().getSimpleName());
+    }
 
-	private WebMarkupContainer createNoPagesRow(String id) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createNoPagesLabel());
-		row.add(createEmptyMounthPathLabel());
-		return row;
-	}
+    private Label createMounthPathLabel(PageConfiguration page) {
+        return new Label("mountPath", page.getMountPath());
+    }
 
-	private Label createEmptyMounthPathLabel() {
-		return new Label("mountPath", "");
-	}
+    private WebMarkupContainer createNoPagesRow(String id) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(createNoPagesLabel());
+        row.add(createEmptyMounthPathLabel());
+        return row;
+    }
 
-	private Label createNoPagesLabel() {
-		return new Label("page", getString("nopages"));
-	}
+    private Label createEmptyMounthPathLabel() {
+        return new Label("mountPath", "");
+    }
+
+    private Label createNoPagesLabel() {
+        return new Label("page", getString("nopages"));
+    }
 }

@@ -26,32 +26,32 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ModuleInfoPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createModuleInfoPanel());
-		tester.assertComponent("panel", ModuleInfoPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createModuleInfoPanel());
+        tester.assertComponent("panel", ModuleInfoPanel.class);
+    }
 
-	private TestPanelSource createModuleInfoPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createModuleInfoPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new ModuleInfoPanel(panelId, new ModuleConfiguration());
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new ModuleInfoPanel(panelId, new ModuleConfiguration());
+            }
+        };
+    }
 }

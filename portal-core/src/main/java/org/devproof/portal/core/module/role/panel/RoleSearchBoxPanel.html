@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>
 
-	<h1><wicket:message key="boxTitle">[Search]</wicket:message></h1>
-	<form wicket:id="searchForm">
-	<div>
-		<input type="text"  class="boxinput" wicket:id="description"/><br/>
-		<select wicket:id="active">
-			  <option wicket:id="chooseActive"><wicket:message key="chooseActive"/></option>
-              <option wicket:id="activeTrue"><wicket:message key="activeTrue"/></option>
-              <option wicket:id="activeFalse"><wicket:message key="activeFalse"/></option>
+    <h1><wicket:message key="boxTitle">[Search]</wicket:message></h1>
+
+    <form wicket:id="searchForm">
+        <div>
+            <input type="text" class="boxinput" wicket:id="description"/><br/> <select wicket:id="active">
+            <option wicket:id="chooseActive"><wicket:message key="chooseActive"/></option>
+            <option wicket:id="activeTrue"><wicket:message key="activeTrue"/></option>
+            <option wicket:id="activeFalse"><wicket:message key="activeFalse"/></option>
         </select><br/>
-	</div>
-	</form>
+        </div>
+    </form>
 </wicket:panel>
 </html>

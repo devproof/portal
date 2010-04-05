@@ -25,12 +25,12 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface ConfigurationDao extends GenericDao<ConfigurationEntity, String> {
-	@Query("Select distinct(c) from ConfigurationEntity c")
-	List<ConfigurationEntity> findAll();
+    @Query("Select distinct(c) from ConfigurationEntity c")
+    List<ConfigurationEntity> findAll();
 
-	@Query("Select distinct(c.group) from ConfigurationEntity c where c.group not like 'hidden' order by c.group")
-	List<String> findConfigurationGroups();
+    @Query("Select distinct(c.group) from ConfigurationEntity c where c.group not like 'hidden' order by c.group")
+    List<String> findConfigurationGroups();
 
-	@Query("Select distinct(c) from ConfigurationEntity c where c.group = ? and c.key not like 'hidden.%' order by c.description")
-	List<ConfigurationEntity> findConfigurationsByGroup(String group);
+    @Query("Select distinct(c) from ConfigurationEntity c where c.group = ? and c.key not like 'hidden.%' order by c.description")
+    List<ConfigurationEntity> findConfigurationsByGroup(String group);
 }

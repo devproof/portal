@@ -23,14 +23,14 @@ import java.lang.annotation.Target;
 /**
  * Required to generate HQL from a bean, especially to match a bean property
  * with a part of a HQL-statement.
- * 
+ *
  * @author Carsten Hufe
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.METHOD)
 public @interface BeanQuery {
-	/**
-	 * part of HQL statement
-	 */
-	String value();
+    /**
+     * part of HQL statement
+     */
+    String value();
 }

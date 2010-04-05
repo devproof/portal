@@ -40,19 +40,19 @@ public class BlogQuery implements SearchQuery {
 
     public BlogQuery() {
         id = PortalUtil.getParameterAsInteger(ID_PARAM);
-		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
-		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+        allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+        tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
     }
 
     @BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
     public RoleEntity getRole() {
-		if (role == null) {
-			PortalSession session = PortalSession.get();
-			if (!session.hasRight("blog.view")) {
-				role = session.getRole();
-			}
-		}
-		return role;
+        if (role == null) {
+            PortalSession session = PortalSession.get();
+            if (!session.hasRight("blog.view")) {
+                role = session.getRole();
+            }
+        }
+        return role;
     }
 
     @BeanQuery("t.tagname = ?")
@@ -85,12 +85,12 @@ public class BlogQuery implements SearchQuery {
     @Override
     public PageParameters getPageParameters() {
         PageParameters params = new PageParameters();
-        if(StringUtils.isNotBlank(tagname)) {
-			params.put(TagConstants.TAG_PARAM, tagname);
-		}
-		if (StringUtils.isNotBlank(allTextFields)) {
-			params.put(SEARCH_PARAM, allTextFields);
-		}
+        if (StringUtils.isNotBlank(tagname)) {
+            params.put(TagConstants.TAG_PARAM, tagname);
+        }
+        if (StringUtils.isNotBlank(allTextFields)) {
+            params.put(SEARCH_PARAM, allTextFields);
+        }
         return params;
     }
 }

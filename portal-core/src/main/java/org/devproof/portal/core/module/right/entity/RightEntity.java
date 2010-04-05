@@ -38,101 +38,102 @@ import java.util.List;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 final public class RightEntity extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "right_id", length = 50)
-	private String right;
-	@Column(name = "description")
-	private String description;
+    @Id
+    @Column(name = "right_id", length = 50)
+    private String right;
+    @Column(name = "description")
+    private String description;
     @Fetch(FetchMode.SUBSELECT)
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "core_role_right_xref", joinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	@OrderBy("description asc")
-	private List<RoleEntity> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "core_role_right_xref", joinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @OrderBy("description asc")
+    private List<RoleEntity> roles;
 
-	@Transient
-	private boolean selected = false;
+    @Transient
+    private boolean selected = false;
 
-	public RightEntity() {
-	}
+    public RightEntity() {
+    }
 
-	public RightEntity(String right) {
-		this.right = right;
-	}
+    public RightEntity(String right) {
+        this.right = right;
+    }
 
-	// Generated stuff
-	public String getRight() {
-		return right;
-	}
+    // Generated stuff
 
-	public void setRight(String right) {
-		this.right = right;
-	}
+    public String getRight() {
+        return right;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setRight(String right) {
+        this.right = right;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public List<RoleEntity> getRoles() {
-		if (roles == null) {
-			roles = new ArrayList<RoleEntity>();
-		}
-		return roles;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setRoles(List<RoleEntity> roles) {
-		this.roles = roles;
-	}
+    public List<RoleEntity> getRoles() {
+        if (roles == null) {
+            roles = new ArrayList<RoleEntity>();
+        }
+        return roles;
+    }
 
-	public boolean add(RoleEntity e) {
-		return roles.add(e);
-	}
+    public void setRoles(List<RoleEntity> roles) {
+        this.roles = roles;
+    }
 
-	public boolean addAll(Collection<? extends RoleEntity> c) {
-		return roles.addAll(c);
-	}
+    public boolean add(RoleEntity e) {
+        return roles.add(e);
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
+    public boolean addAll(Collection<? extends RoleEntity> c) {
+        return roles.addAll(c);
+    }
 
-	public void setSelected(boolean pSelected) {
-		selected = pSelected;
-	}
+    public boolean isSelected() {
+        return selected;
+    }
 
-	@Override
-	public int hashCode() {
-		int prime = 31;
-		int result = 1;
-		result = prime * result + ((right == null) ? 0 : right.hashCode());
-		return result;
-	}
+    public void setSelected(boolean pSelected) {
+        selected = pSelected;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		RightEntity other = (RightEntity) obj;
-		if (right == null) {
-			if (other.right != null) {
-				return false;
-			}
-		} else if (!right.equals(other.right)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 1;
+        result = prime * result + ((right == null) ? 0 : right.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        RightEntity other = (RightEntity) obj;
+        if (right == null) {
+            if (other.right != null) {
+                return false;
+            }
+        } else if (!right.equals(other.right)) {
+            return false;
+        }
+        return true;
+    }
 
 }

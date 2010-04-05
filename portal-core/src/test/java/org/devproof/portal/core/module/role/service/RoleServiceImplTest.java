@@ -30,92 +30,92 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class RoleServiceImplTest extends TestCase {
-	private RoleServiceImpl impl;
-	private RoleDao roleDaoMock;
-	private ConfigurationService configurationServiceMock;
+    private RoleServiceImpl impl;
+    private RoleDao roleDaoMock;
+    private ConfigurationService configurationServiceMock;
 
-	@Override
-	public void setUp() throws Exception {
-		roleDaoMock = createStrictMock(RoleDao.class);
-		configurationServiceMock = createStrictMock(ConfigurationService.class);
-		impl = new RoleServiceImpl();
-		impl.setRoleDao(roleDaoMock);
-		impl.setConfigurationService(configurationServiceMock);
-	}
+    @Override
+    public void setUp() throws Exception {
+        roleDaoMock = createStrictMock(RoleDao.class);
+        configurationServiceMock = createStrictMock(ConfigurationService.class);
+        impl = new RoleServiceImpl();
+        impl.setRoleDao(roleDaoMock);
+        impl.setConfigurationService(configurationServiceMock);
+    }
 
-	public void testSave() {
-		RoleEntity e = impl.newRoleEntity();
-		e.setId(1);
-		expect(roleDaoMock.save(e)).andReturn(e);
-		replay(roleDaoMock);
-		impl.save(e);
-		verify(roleDaoMock);
-	}
+    public void testSave() {
+        RoleEntity e = impl.newRoleEntity();
+        e.setId(1);
+        expect(roleDaoMock.save(e)).andReturn(e);
+        replay(roleDaoMock);
+        impl.save(e);
+        verify(roleDaoMock);
+    }
 
-	public void testDelete() {
-		RoleEntity e = impl.newRoleEntity();
-		e.setId(1);
-		roleDaoMock.delete(e);
-		replay(roleDaoMock);
-		impl.delete(e);
-		verify(roleDaoMock);
-	}
+    public void testDelete() {
+        RoleEntity e = impl.newRoleEntity();
+        e.setId(1);
+        roleDaoMock.delete(e);
+        replay(roleDaoMock);
+        impl.delete(e);
+        verify(roleDaoMock);
+    }
 
-	public void testFindAll() {
-		List<RoleEntity> list = new ArrayList<RoleEntity>();
-		list.add(impl.newRoleEntity());
-		list.add(impl.newRoleEntity());
-		expect(roleDaoMock.findAll()).andReturn(list);
-		replay(roleDaoMock);
-		assertEquals(list, impl.findAll());
-		verify(roleDaoMock);
-	}
+    public void testFindAll() {
+        List<RoleEntity> list = new ArrayList<RoleEntity>();
+        list.add(impl.newRoleEntity());
+        list.add(impl.newRoleEntity());
+        expect(roleDaoMock.findAll()).andReturn(list);
+        replay(roleDaoMock);
+        assertEquals(list, impl.findAll());
+        verify(roleDaoMock);
+    }
 
-	public void testFindById() {
-		RoleEntity e = impl.newRoleEntity();
-		e.setId(1);
-		expect(roleDaoMock.findById(1)).andReturn(e);
-		replay(roleDaoMock);
-		assertEquals(impl.findById(1), e);
-		verify(roleDaoMock);
-	}
+    public void testFindById() {
+        RoleEntity e = impl.newRoleEntity();
+        e.setId(1);
+        expect(roleDaoMock.findById(1)).andReturn(e);
+        replay(roleDaoMock);
+        assertEquals(impl.findById(1), e);
+        verify(roleDaoMock);
+    }
 
-	public void testNewRoleEntity() {
-		assertNotNull(impl.newRoleEntity());
-	}
+    public void testNewRoleEntity() {
+        assertNotNull(impl.newRoleEntity());
+    }
 
-	public void testGetDefaultRegistrationRole() {
-		RoleEntity e = impl.newRoleEntity();
-		e.setId(1);
-		expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE)).andReturn(1);
-		expect(roleDaoMock.findById(1)).andReturn(e);
-		replay(configurationServiceMock);
-		replay(roleDaoMock);
-		RoleEntity defaultRegistrationRole = impl.findDefaultRegistrationRole();
-		assertNotNull(defaultRegistrationRole);
-		assertEquals(e.getId(), defaultRegistrationRole.getId());
-		verify(configurationServiceMock);
-		verify(roleDaoMock);
-	}
+    public void testGetDefaultRegistrationRole() {
+        RoleEntity e = impl.newRoleEntity();
+        e.setId(1);
+        expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE)).andReturn(1);
+        expect(roleDaoMock.findById(1)).andReturn(e);
+        replay(configurationServiceMock);
+        replay(roleDaoMock);
+        RoleEntity defaultRegistrationRole = impl.findDefaultRegistrationRole();
+        assertNotNull(defaultRegistrationRole);
+        assertEquals(e.getId(), defaultRegistrationRole.getId());
+        verify(configurationServiceMock);
+        verify(roleDaoMock);
+    }
 
-	public void testFindAllOrderByDescription() {
-		List<RoleEntity> list = new ArrayList<RoleEntity>();
-		list.add(impl.newRoleEntity());
-		list.add(impl.newRoleEntity());
-		expect(roleDaoMock.findAllOrderByDescription()).andReturn(list);
-		replay(roleDaoMock);
-		assertEquals(list, impl.findAllOrderByDescription());
-		verify(roleDaoMock);
-	}
+    public void testFindAllOrderByDescription() {
+        List<RoleEntity> list = new ArrayList<RoleEntity>();
+        list.add(impl.newRoleEntity());
+        list.add(impl.newRoleEntity());
+        expect(roleDaoMock.findAllOrderByDescription()).andReturn(list);
+        replay(roleDaoMock);
+        assertEquals(list, impl.findAllOrderByDescription());
+        verify(roleDaoMock);
+    }
 
-	public void testFindGuestRole() {
-		RoleEntity role = impl.newRoleEntity();
-		expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE)).andReturn(1);
-		expect(roleDaoMock.findById(1)).andReturn(role);
-		replay(configurationServiceMock);
-		replay(roleDaoMock);
-		assertEquals(role, impl.findGuestRole());
-		verify(configurationServiceMock);
-		verify(roleDaoMock);
-	}
+    public void testFindGuestRole() {
+        RoleEntity role = impl.newRoleEntity();
+        expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE)).andReturn(1);
+        expect(roleDaoMock.findById(1)).andReturn(role);
+        replay(configurationServiceMock);
+        replay(roleDaoMock);
+        assertEquals(role, impl.findGuestRole());
+        verify(configurationServiceMock);
+        verify(roleDaoMock);
+    }
 }

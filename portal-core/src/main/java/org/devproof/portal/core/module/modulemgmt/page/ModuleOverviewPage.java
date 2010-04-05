@@ -34,62 +34,61 @@ import java.util.List;
  */
 public class ModuleOverviewPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "moduleService")
-	private ModuleService moduleService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "moduleService")
+    private ModuleService moduleService;
 
-	public ModuleOverviewPage(PageParameters params) {
-		super(params);
-		add(createRepeatingModuleOverview());
-	}
+    public ModuleOverviewPage(PageParameters params) {
+        super(params);
+        add(createRepeatingModuleOverview());
+    }
 
-	private RepeatingView createRepeatingModuleOverview() {
-		List<ModuleBean> modules = moduleService.findModules();
-		RepeatingView table = new RepeatingView("repeatingModuleOverview");
-		for (ModuleBean module : modules) {
-			table.add(createModuleRow(table.newChildId(), module));
-		}
-		return table;
-	}
+    private RepeatingView createRepeatingModuleOverview() {
+        List<ModuleBean> modules = moduleService.findModules();
+        RepeatingView table = new RepeatingView("repeatingModuleOverview");
+        for (ModuleBean module : modules) {
+            table.add(createModuleRow(table.newChildId(), module));
+        }
+        return table;
+    }
 
-	private WebMarkupContainer createModuleRow(String id, ModuleBean module) {
-		WebMarkupContainer row = new WebMarkupContainer(id);
-		row.add(createTooltipLabel(module));
-		row.add(createModuleVersionLabel(module));
-		row.add(createAuthorHomepageLink(module));
-		row.add(createPortalVersionLabel(module));
-		row.add(createLocationLabel(module));
-		return row;
-	}
+    private WebMarkupContainer createModuleRow(String id, ModuleBean module) {
+        WebMarkupContainer row = new WebMarkupContainer(id);
+        row.add(createTooltipLabel(module));
+        row.add(createModuleVersionLabel(module));
+        row.add(createAuthorHomepageLink(module));
+        row.add(createPortalVersionLabel(module));
+        row.add(createLocationLabel(module));
+        return row;
+    }
 
-	private TooltipLabel createTooltipLabel(ModuleBean module) {
-		ModuleInfoPanel moduleTooltip = createModuleTooltipPanel(module);
-		Label label = createTooltipLabelLabel(module);
-		return new TooltipLabel("name", label, moduleTooltip);
-	}
+    private TooltipLabel createTooltipLabel(ModuleBean module) {
+        ModuleInfoPanel moduleTooltip = createModuleTooltipPanel(module);
+        Label label = createTooltipLabelLabel(module);
+        return new TooltipLabel("name", label, moduleTooltip);
+    }
 
-	private Label createTooltipLabelLabel(ModuleBean module) {
-		return new Label("label", module.getConfiguration().getName());
-	}
+    private Label createTooltipLabelLabel(ModuleBean module) {
+        return new Label("label", module.getConfiguration().getName());
+    }
 
-	private Label createModuleVersionLabel(ModuleBean module) {
-		return new Label("moduleVersion", module.getConfiguration().getModuleVersion());
-	}
+    private Label createModuleVersionLabel(ModuleBean module) {
+        return new Label("moduleVersion", module.getConfiguration().getModuleVersion());
+    }
 
-	private ExternalLink createAuthorHomepageLink(ModuleBean module) {
-		return new ExternalLink("authorHomepageLink", module.getConfiguration().getUrl(), module
-				.getConfiguration().getAuthor());
-	}
+    private ExternalLink createAuthorHomepageLink(ModuleBean module) {
+        return new ExternalLink("authorHomepageLink", module.getConfiguration().getUrl(), module.getConfiguration().getAuthor());
+    }
 
-	private Label createPortalVersionLabel(ModuleBean module) {
-		return new Label("portalVersion", module.getConfiguration().getPortalVersion());
-	}
+    private Label createPortalVersionLabel(ModuleBean module) {
+        return new Label("portalVersion", module.getConfiguration().getPortalVersion());
+    }
 
-	private Label createLocationLabel(ModuleBean module) {
-		return new Label("location", module.getLocation());
-	}
+    private Label createLocationLabel(ModuleBean module) {
+        return new Label("location", module.getLocation());
+    }
 
-	private ModuleInfoPanel createModuleTooltipPanel(ModuleBean module) {
-		return new ModuleInfoPanel("tooltip", module.getConfiguration());
-	}
+    private ModuleInfoPanel createModuleTooltipPanel(ModuleBean module) {
+        return new ModuleInfoPanel("tooltip", module.getConfiguration());
+    }
 }

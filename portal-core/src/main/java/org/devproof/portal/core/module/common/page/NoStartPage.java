@@ -22,8 +22,8 @@ import org.apache.wicket.PageParameters;
  */
 public class NoStartPage extends MessagePage {
 
-	public NoStartPage() {
-		super(new PageParameters("message=page.nostartpage"));
-	}
+    public NoStartPage() {
+        super(new PageParameters("message=page.nostartpage"));
+    }
 
 }

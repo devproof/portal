@@ -22,145 +22,136 @@ import java.util.List;
 
 /**
  * Contains the configuration of a module
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class ModuleConfiguration implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String name;
-	private String moduleVersion;
-	private String author;
-	private String portalVersion;
-	private String url;
-	private List<Class<?>> entities = new ArrayList<Class<?>>();
-	// mounting etc
-	private Collection<PageConfiguration> pages = new ArrayList<PageConfiguration>();
-	private Collection<BoxConfiguration> boxes = new ArrayList<BoxConfiguration>();
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private String moduleVersion;
+    private String author;
+    private String portalVersion;
+    private String url;
+    private List<Class<?>> entities = new ArrayList<Class<?>>();
+    // mounting etc
+    private Collection<PageConfiguration> pages = new ArrayList<PageConfiguration>();
+    private Collection<BoxConfiguration> boxes = new ArrayList<BoxConfiguration>();
 
-	/**
-	 * @return name of the module
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * @return name of the module
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param name
-	 *            name of the module
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * @param name name of the module
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return module version
-	 */
-	public String getModuleVersion() {
-		return moduleVersion;
-	}
+    /**
+     * @return module version
+     */
+    public String getModuleVersion() {
+        return moduleVersion;
+    }
 
-	/**
-	 * @param moduleVersion
-	 *            module version
-	 */
-	public void setModuleVersion(String moduleVersion) {
-		this.moduleVersion = moduleVersion;
-	}
+    /**
+     * @param moduleVersion module version
+     */
+    public void setModuleVersion(String moduleVersion) {
+        this.moduleVersion = moduleVersion;
+    }
 
-	/**
-	 * @return author of the module
-	 */
-	public String getAuthor() {
-		return author;
-	}
+    /**
+     * @return author of the module
+     */
+    public String getAuthor() {
+        return author;
+    }
 
-	/**
-	 * @param author
-	 *            author of the module
-	 */
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    /**
+     * @param author author of the module
+     */
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	/**
-	 * @return portal version (written for devproof portal version ...)
-	 */
-	public String getPortalVersion() {
-		return portalVersion;
-	}
+    /**
+     * @return portal version (written for devproof portal version ...)
+     */
+    public String getPortalVersion() {
+        return portalVersion;
+    }
 
-	/**
-	 * @param portalVersion
-	 *            portal version (written for devproof portal version ...)
-	 */
-	public void setPortalVersion(String portalVersion) {
-		this.portalVersion = portalVersion;
-	}
+    /**
+     * @param portalVersion portal version (written for devproof portal version ...)
+     */
+    public void setPortalVersion(String portalVersion) {
+        this.portalVersion = portalVersion;
+    }
 
-	/**
-	 * @return list with module related entities (JPA and hibernate annotations
-	 *         are possible)
-	 */
-	public List<Class<?>> getEntities() {
-		return entities;
-	}
+    /**
+     * @return list with module related entities (JPA and hibernate annotations
+     *         are possible)
+     */
+    public List<Class<?>> getEntities() {
+        return entities;
+    }
 
-	/**
-	 * @param entities
-	 *            list with module related entities (JPA and hibernate
-	 *            annotations are possible)
-	 */
-	public void setEntities(List<Class<?>> entities) {
-		this.entities = entities;
-	}
+    /**
+     * @param entities list with module related entities (JPA and hibernate
+     *                 annotations are possible)
+     */
+    public void setEntities(List<Class<?>> entities) {
+        this.entities = entities;
+    }
 
-	/**
-	 * @return list with page configurations {@link PageConfiguration}
-	 */
-	public Collection<PageConfiguration> getPages() {
-		return pages;
-	}
+    /**
+     * @return list with page configurations {@link PageConfiguration}
+     */
+    public Collection<PageConfiguration> getPages() {
+        return pages;
+    }
 
-	/**
-	 * @param pages
-	 *            list with page {@link PageConfiguration}
-	 */
-	public void setPages(Collection<PageConfiguration> pages) {
-		this.pages = pages;
-	}
+    /**
+     * @param pages list with page {@link PageConfiguration}
+     */
+    public void setPages(Collection<PageConfiguration> pages) {
+        this.pages = pages;
+    }
 
-	/**
-	 * @return List with boxes (right navigation) {@link BoxConfiguration}
-	 */
-	public Collection<BoxConfiguration> getBoxes() {
-		return boxes;
-	}
+    /**
+     * @return List with boxes (right navigation) {@link BoxConfiguration}
+     */
+    public Collection<BoxConfiguration> getBoxes() {
+        return boxes;
+    }
 
-	/**
-	 * @param boxes
-	 *            List with boxes (right navigation) {@link BoxConfiguration}
-	 */
-	public void setBoxes(Collection<BoxConfiguration> boxes) {
-		this.boxes = boxes;
-	}
+    /**
+     * @param boxes List with boxes (right navigation) {@link BoxConfiguration}
+     */
+    public void setBoxes(Collection<BoxConfiguration> boxes) {
+        this.boxes = boxes;
+    }
 
-	/**
-	 * @return url of the authors homepage
-	 */
-	public String getUrl() {
-		return url;
-	}
+    /**
+     * @return url of the authors homepage
+     */
+    public String getUrl() {
+        return url;
+    }
 
-	/**
-	 * @param url
-	 *            url of the authors homepage
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    /**
+     * @param url url of the authors homepage
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	@Override
+    @Override
 	public String toString() {
 		return name;
 	}

@@ -24,21 +24,20 @@ import org.devproof.portal.test.PortalTestUtil;
  * Simple test using the WicketTester
  */
 public class ArticleReadPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql",
-				"insert_article.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql", "insert_article.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(ArticleReadPage.class, new PageParameters("0=Sample_article"));
-		tester.assertRenderedPage(ArticleReadPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(ArticleReadPage.class, new PageParameters("0=Sample_article"));
+        tester.assertRenderedPage(ArticleReadPage.class);
+    }
 }

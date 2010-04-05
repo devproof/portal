@@ -33,67 +33,67 @@ import org.devproof.portal.core.module.user.query.UserQuery;
  * @author Carsten Hufe
  */
 public abstract class UserSearchBoxPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private IModel<UserQuery> queryModel;
+    private IModel<UserQuery> queryModel;
 
-	public UserSearchBoxPanel(String id, IModel<UserQuery> queryModel) {
-		super(id);
-		this.queryModel = queryModel;
-		add(createUserSearchForm());
+    public UserSearchBoxPanel(String id, IModel<UserQuery> queryModel) {
+        super(id);
+        this.queryModel = queryModel;
+        add(createUserSearchForm());
 
-	}
+    }
 
-	private Form<UserQuery> createUserSearchForm() {
-		Form<UserQuery> form = new Form<UserQuery>("searchForm", new CompoundPropertyModel<UserQuery>(queryModel));
-		form.add(createSearchTextField());
-		form.add(createActiveDropDown());
-		form.add(createConfirmedDropDown());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<UserQuery> createUserSearchForm() {
+        Form<UserQuery> form = new Form<UserQuery>("searchForm", new CompoundPropertyModel<UserQuery>(queryModel));
+        form.add(createSearchTextField());
+        form.add(createActiveDropDown());
+        form.add(createConfirmedDropDown());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private Select createConfirmedDropDown() {
-		Select confirmed = new Select("confirmed");
-		confirmed.add(new SelectOption<Boolean>("chooseConfirmed", new Model<Boolean>()));
-		confirmed.add(new SelectOption<Boolean>("confirmedTrue", Model.of(Boolean.TRUE)));
-		confirmed.add(new SelectOption<Boolean>("confirmedFalse", Model.of(Boolean.FALSE)));
-		confirmed.add(new AjaxRefresh("onchange"));
-		return confirmed;
-	}
+    private Select createConfirmedDropDown() {
+        Select confirmed = new Select("confirmed");
+        confirmed.add(new SelectOption<Boolean>("chooseConfirmed", new Model<Boolean>()));
+        confirmed.add(new SelectOption<Boolean>("confirmedTrue", Model.of(Boolean.TRUE)));
+        confirmed.add(new SelectOption<Boolean>("confirmedFalse", Model.of(Boolean.FALSE)));
+        confirmed.add(new AjaxRefresh("onchange"));
+        return confirmed;
+    }
 
-	private Select createActiveDropDown() {
-		Select active = new Select("active");
-		active.add(new SelectOption<Boolean>("chooseActive", new Model<Boolean>()));
-		active.add(new SelectOption<Boolean>("activeTrue", Model.of(Boolean.TRUE)));
-		active.add(new SelectOption<Boolean>("activeFalse", Model.of(Boolean.FALSE)));
-		active.add(new AjaxRefresh("onchange"));
-		return active;
-	}
+    private Select createActiveDropDown() {
+        Select active = new Select("active");
+        active.add(new SelectOption<Boolean>("chooseActive", new Model<Boolean>()));
+        active.add(new SelectOption<Boolean>("activeTrue", Model.of(Boolean.TRUE)));
+        active.add(new SelectOption<Boolean>("activeFalse", Model.of(Boolean.FALSE)));
+        active.add(new AjaxRefresh("onchange"));
+        return active;
+    }
 
-	private FormComponent<String> createSearchTextField() {
-		FormComponent<String> fc = new TextField<String>("allnames");
-		fc.add(new AjaxRefresh("onkeyup"));
-		return fc;
-	}
+    private FormComponent<String> createSearchTextField() {
+        FormComponent<String> fc = new TextField<String>("allnames");
+        fc.add(new AjaxRefresh("onkeyup"));
+        return fc;
+    }
 
-	protected abstract void onSubmit(AjaxRequestTarget target);
+    protected abstract void onSubmit(AjaxRequestTarget target);
 
-	private class AjaxRefresh extends AjaxFormSubmitBehavior {
-		private static final long serialVersionUID = 1L;
+    private class AjaxRefresh extends AjaxFormSubmitBehavior {
+        private static final long serialVersionUID = 1L;
 
-		public AjaxRefresh(String event) {
-			super(event);
-			setThrottleDelay(Duration.ONE_SECOND);
-		}
+        public AjaxRefresh(String event) {
+            super(event);
+            setThrottleDelay(Duration.ONE_SECOND);
+        }
 
-		@Override
-		protected void onError(AjaxRequestTarget target) {
-		}
+        @Override
+        protected void onError(AjaxRequestTarget target) {
+        }
 
-		@Override
-		protected void onSubmit(AjaxRequestTarget target) {
-			UserSearchBoxPanel.this.onSubmit(target);
-		}
-	}
+        @Override
+        protected void onSubmit(AjaxRequestTarget target) {
+            UserSearchBoxPanel.this.onSubmit(target);
+        }
+    }
 }

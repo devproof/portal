@@ -19,23 +19,23 @@ import org.apache.wicket.PageParameters;
 
 /**
  * RSS 2.0 Feed
- * 
+ *
  * @author Carsten Hufe
  */
 public class Rss2FeedPage extends BaseFeedPage {
     private static final long serialVersionUID = -7224994016332605429L;
 
     public Rss2FeedPage(PageParameters params) {
-		super(params);
-	}
+        super(params);
+    }
 
-	@Override
-	protected String getContentType() {
-		return "application/rss+xml";
-	}
+    @Override
+    protected String getContentType() {
+        return "application/rss+xml";
+    }
 
-	@Override
-	protected String getFeedType() {
-		return "rss_2.0";
-	}
+    @Override
+    protected String getFeedType() {
+        return "rss_2.0";
+    }
 }

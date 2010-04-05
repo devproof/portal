@@ -35,62 +35,61 @@ import java.io.IOException;
  * @author Carsten Hufe
  */
 public abstract class CreateFolderPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private FeedbackPanel feedbackPanel;
+    private FeedbackPanel feedbackPanel;
     private IModel<File> actualFolderModel;
     private String foldername = "";
 
     public CreateFolderPanel(String id, IModel<File> actualFolderModel) {
-		super(id);
+        super(id);
         this.actualFolderModel = actualFolderModel;
         add(feedbackPanel = createFeedbackPanel());
-		add(createCreateFolderForm());
-	}
+        add(createCreateFolderForm());
+    }
 
-	private Form<ValueMap> createCreateFolderForm() {
-		Form<ValueMap> form = new Form<ValueMap>("form");
-		form.add(createFoldernameField());
-		form.add(createCreateFolderButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<ValueMap> createCreateFolderForm() {
+        Form<ValueMap> form = new Form<ValueMap>("form");
+        form.add(createFoldernameField());
+        form.add(createCreateFolderButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private AjaxButton createCreateFolderButton() {
-		return new AjaxButton("createButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxButton createCreateFolderButton() {
+        return new AjaxButton("createButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 File actualFolder = actualFolderModel.getObject();
                 try {
-					FileUtils.forceMkdir(new File(actualFolder.getAbsolutePath() + File.separator
-							+ foldername));
-				} catch (IOException e) {
-					throw new UnhandledException(e);
-				}
-				CreateFolderPanel.this.onCreate(target);
-			}
+                    FileUtils.forceMkdir(new File(actualFolder.getAbsolutePath() + File.separator + foldername));
+                } catch (IOException e) {
+                    throw new UnhandledException(e);
+                }
+                CreateFolderPanel.this.onCreate(target);
+            }
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(feedbackPanel);
-			}
-		};
-	}
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(feedbackPanel);
+            }
+        };
+    }
 
-	private FeedbackPanel createFeedbackPanel() {
-		FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
-		feedback.setOutputMarkupId(true);
-		return feedback;
-	}
+    private FeedbackPanel createFeedbackPanel() {
+        FeedbackPanel feedback = new FeedbackPanel("feedbackPanel");
+        feedback.setOutputMarkupId(true);
+        return feedback;
+    }
 
-	private RequiredTextField<String> createFoldernameField() {
+    private RequiredTextField<String> createFoldernameField() {
         IModel<String> foldernameModel = new PropertyModel<String>(this, "foldername");
         RequiredTextField<String> foldername = new RequiredTextField<String>("foldername", foldernameModel);
-		foldername.add(new PatternValidator("[A-Za-z0-9\\.]*"));
-		return foldername;
-	}
+        foldername.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+        return foldername;
+    }
 
-	public abstract void onCreate(AjaxRequestTarget target);
+    public abstract void onCreate(AjaxRequestTarget target);
 }

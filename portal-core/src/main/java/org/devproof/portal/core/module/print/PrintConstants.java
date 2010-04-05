@@ -21,6 +21,5 @@ import org.apache.wicket.ResourceReference;
  * @author Carsten Hufe
  */
 public interface PrintConstants {
-	ResourceReference REF_PRINTER_IMG = new ResourceReference(PrintConstants.class,
-			"img/printer.png");
+    ResourceReference REF_PRINTER_IMG = new ResourceReference(PrintConstants.class, "img/printer.png");
 }

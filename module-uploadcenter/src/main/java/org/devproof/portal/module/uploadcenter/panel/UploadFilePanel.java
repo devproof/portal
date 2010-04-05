@@ -45,68 +45,67 @@ import java.util.Collection;
  * @author Carsten Hufe
  */
 public class UploadFilePanel extends Panel {
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private IModel<Collection<FileUpload>> uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private IModel<Collection<FileUpload>> uploadModel = new CollectionModel<FileUpload>(new ArrayList<FileUpload>());
     private IModel<File> uploadFolderModel;
 
     public UploadFilePanel(String id, IModel<File> uploadFolderModel) {
-		super(id);
+        super(id);
         this.uploadFolderModel = uploadFolderModel;
         add(createCSSHeaderContributor());
-		add(createFeedbackPanel());
-		add(createUploadForm());
-	}
+        add(createFeedbackPanel());
+        add(createUploadForm());
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
+    }
 
-	private Form<Collection<FileUpload>> createUploadForm() {
-		Form<Collection<FileUpload>> uploadForm = newUploadForm();
-		uploadForm.add(createMultiFileUploadField());
-		uploadForm.add(createUploadProgressBar(uploadForm));
-		uploadForm.add(createCancelButton());
-		uploadForm.setMaxSize(getMaxFileSize());
-		uploadForm.setMultiPart(true);
-		return uploadForm;
-	}
+    private Form<Collection<FileUpload>> createUploadForm() {
+        Form<Collection<FileUpload>> uploadForm = newUploadForm();
+        uploadForm.add(createMultiFileUploadField());
+        uploadForm.add(createUploadProgressBar(uploadForm));
+        uploadForm.add(createCancelButton());
+        uploadForm.setMaxSize(getMaxFileSize());
+        uploadForm.setMultiPart(true);
+        return uploadForm;
+    }
 
-	private AjaxLink<Void> createCancelButton() {
-		return new AjaxLink<Void>("cancelButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<Void> createCancelButton() {
+        return new AjaxLink<Void>("cancelButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				onCancel(target);
-			}
-		};
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                onCancel(target);
+            }
+        };
+    }
 
-	private UploadProgressBar createUploadProgressBar(Form<Collection<FileUpload>> uploadForm) {
-		return new UploadProgressBar("progress", uploadForm);
-	}
+    private UploadProgressBar createUploadProgressBar(Form<Collection<FileUpload>> uploadForm) {
+        return new UploadProgressBar("progress", uploadForm);
+    }
 
-	private Bytes getMaxFileSize() {
-		return Bytes.kilobytes(configurationService.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE));
-	}
+    private Bytes getMaxFileSize() {
+        return Bytes.kilobytes(configurationService.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXSIZE));
+    }
 
-	private MultiFileUploadField createMultiFileUploadField() {
-		return new MultiFileUploadField("fileInput", uploadModel, configurationService
-				.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXFILES));
-	}
+    private MultiFileUploadField createMultiFileUploadField() {
+        return new MultiFileUploadField("fileInput", uploadModel, configurationService.findAsInteger(UploadCenterConstants.CONF_UPLOADCENTER_MAXFILES));
+    }
 
-	private FeedbackPanel createFeedbackPanel() {
-		return new FeedbackPanel("uploadFeedback");
-	}
+    private FeedbackPanel createFeedbackPanel() {
+        return new FeedbackPanel("uploadFeedback");
+    }
 
-	private Form<Collection<FileUpload>> newUploadForm() {
-		return new Form<Collection<FileUpload>>("uploadForm", uploadModel) {
-			private static final long serialVersionUID = 1L;
+    private Form<Collection<FileUpload>> newUploadForm() {
+        return new Form<Collection<FileUpload>>("uploadForm", uploadModel) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit() {
+            @Override
+            protected void onSubmit() {
                 Folder uploadFolder = new Folder(uploadFolderModel.getObject().getAbsolutePath());
                 Collection<FileUpload> fileUploads = uploadModel.getObject();
                 for (FileUpload fileUpload : fileUploads) {
@@ -115,8 +114,7 @@ public class UploadFilePanel extends Panel {
                     try {
                         if (newFile.createNewFile()) {
                             fileUpload.writeTo(newFile);
-                            UploadFilePanel.this.info(new StringResourceModel("msg.uploaded", UploadFilePanel.this,
-                                    null, new Object[]{fileUpload.getClientFileName()}).getString());
+                            UploadFilePanel.this.info(new StringResourceModel("msg.uploaded", UploadFilePanel.this, null, new Object[]{fileUpload.getClientFileName()}).getString());
                         } else {
                             throw new IllegalStateException("Unable to write file" + newFile);
                         }
@@ -124,31 +122,31 @@ public class UploadFilePanel extends Panel {
                         throw new UnhandledException(e);
                     }
                 }
-				UploadFilePanel.this.onSubmit();
+                UploadFilePanel.this.onSubmit();
                 super.onSubmit();
             }
-		};
-	}
+        };
+    }
 
-	private void deleteFile(File newFile) {
-		if (newFile.exists()) {
-			if (!Files.remove(newFile)) {
-				throw new IllegalStateException("Unable to overwrite " + newFile.getAbsolutePath());
-			}
-		}
-	}
-
-    /**
-     * Hook methods
-     */
-	protected void onSubmit() {
-
-	}
+    private void deleteFile(File newFile) {
+        if (newFile.exists()) {
+            if (!Files.remove(newFile)) {
+                throw new IllegalStateException("Unable to overwrite " + newFile.getAbsolutePath());
+            }
+        }
+    }
 
     /**
      * Hook methods
      */
-	protected void onCancel(AjaxRequestTarget target) {
+    protected void onSubmit() {
+
+    }
+
+    /**
+     * Hook methods
+     */
+    protected void onCancel(AjaxRequestTarget target) {
 
 	}
 }

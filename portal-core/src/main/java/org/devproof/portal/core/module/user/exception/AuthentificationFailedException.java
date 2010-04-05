@@ -17,14 +17,13 @@ package org.devproof.portal.core.module.user.exception;
 
 /**
  * Thrown when the authentification failed
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class AuthentificationFailedException extends Exception {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public AuthentificationFailedException(String message) {
-		super(message);
-	}
+    public AuthentificationFailedException(String message) {
+        super(message);
+    }
 }

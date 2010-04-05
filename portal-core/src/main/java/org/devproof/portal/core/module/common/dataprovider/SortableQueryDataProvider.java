@@ -22,6 +22,5 @@ import java.io.Serializable;
 /**
  * @author Carsten Hufe
  */
-public interface SortableQueryDataProvider<T, SQ extends Serializable> extends ISortableDataProvider<T>,
-		QueryDataProvider<T, SQ> {
+public interface SortableQueryDataProvider<T, SQ extends Serializable> extends ISortableDataProvider<T>, QueryDataProvider<T, SQ> {
 }

@@ -30,37 +30,37 @@ import java.text.SimpleDateFormat;
  */
 public class UserInfoPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "displayDateFormat")
-	private SimpleDateFormat dateFormat;
-	@SpringBean(name = "displayDateTimeFormat")
-	private SimpleDateFormat dateTimeFormat;
+    @SpringBean(name = "displayDateFormat")
+    private SimpleDateFormat dateFormat;
+    @SpringBean(name = "displayDateTimeFormat")
+    private SimpleDateFormat dateTimeFormat;
     private IModel<UserEntity> userModel;
 
     public UserInfoPanel(String id, IModel<UserEntity> userModel) {
-		super(id, new CompoundPropertyModel<UserEntity>(userModel));
+        super(id, new CompoundPropertyModel<UserEntity>(userModel));
         this.userModel = userModel;
         add(createUsernameLabel());
-		add(createFirstnameLabel());
-		add(createLastnameLabel());
-		add(createBirthdayLabel());
-		add(createEmailLabel());
-		add(createActiveLabel());
-		add(createConfirmedLabel());
-		add(createRegistrationDateLabel());
-		add(createLastLoginTimeLabel());
-		add(createLastIpLabel());
-	}
+        add(createFirstnameLabel());
+        add(createLastnameLabel());
+        add(createBirthdayLabel());
+        add(createEmailLabel());
+        add(createActiveLabel());
+        add(createConfirmedLabel());
+        add(createRegistrationDateLabel());
+        add(createLastLoginTimeLabel());
+        add(createLastIpLabel());
+    }
 
-	private Label createLastIpLabel() {
-		return new Label("lastIp");
-	}
+    private Label createLastIpLabel() {
+        return new Label("lastIp");
+    }
 
-	private Label createLastLoginTimeLabel() {
+    private Label createLastLoginTimeLabel() {
         IModel<String> lastLoginAtModel = createLastLoginAtModel();
         return new Label("lastLoginAt", lastLoginAtModel);
-	}
+    }
 
     private IModel<String> createLastLoginAtModel() {
         return new AbstractReadOnlyModel<String>() {
@@ -69,14 +69,14 @@ public class UserInfoPanel extends Panel {
             @Override
             public String getObject() {
                 UserEntity user = userModel.getObject();
-                return user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt())	: "";
+                return user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt()) : "";
             }
         };
     }
 
     private Label createRegistrationDateLabel() {
-		return new Label("registeredAt", createRegistrationDateModel());
-	}
+        return new Label("registeredAt", createRegistrationDateModel());
+    }
 
     private IModel<String> createRegistrationDateModel() {
         return new AbstractReadOnlyModel<String>() {
@@ -90,9 +90,9 @@ public class UserInfoPanel extends Panel {
         };
     }
 
-	private Label createConfirmedLabel() {
-		return new Label("confirmed", createConfirmedModel());
-	}
+    private Label createConfirmedLabel() {
+        return new Label("confirmed", createConfirmedModel());
+    }
 
     private IModel<String> createConfirmedModel() {
         return new AbstractReadOnlyModel<String>() {
@@ -106,9 +106,9 @@ public class UserInfoPanel extends Panel {
         };
     }
 
-	private Label createActiveLabel() {
-		return new Label("active", createActiveModel());
-	}
+    private Label createActiveLabel() {
+        return new Label("active", createActiveModel());
+    }
 
     private IModel<String> createActiveModel() {
         return new AbstractReadOnlyModel<String>() {
@@ -117,22 +117,23 @@ public class UserInfoPanel extends Panel {
             @Override
             public String getObject() {
                 UserEntity user = userModel.getObject();
-                return  user.getActive() != null ? getString("active." + user.getActive().toString()) : "";
+                return user.getActive() != null ? getString("active." + user.getActive().toString()) : "";
             }
         };
     }
 
-	private Label createEmailLabel() {
-		return new Label("email");
-	}
+    private Label createEmailLabel() {
+        return new Label("email");
+    }
 
-	private Label createBirthdayLabel() {
-		return new Label("birthday", createBirthdayModel());
-	}
+    private Label createBirthdayLabel() {
+        return new Label("birthday", createBirthdayModel());
+    }
 
     private IModel<String> createBirthdayModel() {
         return new AbstractReadOnlyModel<String>() {
             private static final long serialVersionUID = -1935766462928249555L;
+
             @Override
             public String getObject() {
                 UserEntity user = userModel.getObject();
@@ -141,15 +142,15 @@ public class UserInfoPanel extends Panel {
         };
     }
 
-	private Label createLastnameLabel() {
-		return new Label("lastname");
-	}
+    private Label createLastnameLabel() {
+        return new Label("lastname");
+    }
 
-	private Label createFirstnameLabel() {
-		return new Label("firstname");
-	}
+    private Label createFirstnameLabel() {
+        return new Label("firstname");
+    }
 
-	private Label createUsernameLabel() {
-		return new Label("username");
-	}
+    private Label createUsernameLabel() {
+        return new Label("username");
+    }
 }

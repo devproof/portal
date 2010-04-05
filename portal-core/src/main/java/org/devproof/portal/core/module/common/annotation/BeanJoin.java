@@ -23,14 +23,14 @@ import java.lang.annotation.Target;
 /**
  * Required to generate HQL from a bean, especially to join with other
  * tables/entities
- * 
+ *
  * @author Carsten Hufe
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.TYPE)
 public @interface BeanJoin {
-	/**
-	 * join expression
-	 */
-	String value();
+    /**
+     * join expression
+     */
+    String value();
 }

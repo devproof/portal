@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.devproof.portal</groupId>
-	<artifactId>module-article</artifactId>
-	<packaging>jar</packaging>
-	<name>devproof module-article</name>
-	<version>${devproof.version}</version>
-	<description>Portal article module</description>
-	<url>http://www.devproof.org</url>
-	<parent>
-    	<groupId>org.devproof.portal</groupId>
-    	<artifactId>portal-build</artifactId>
-    	<version>FIXED</version>
-  	</parent>
-	
-	<developers>
-		<developer>
-			<id>Carsten.Hufe</id>
-			<name>Carsten Hufe</name>
-			<email>carsten.hufe@devproof.org</email>
-			<url>http://www.devproof.org</url>
-		</developer>
-	</developers>
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-                    <include>**/*.xml</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.devproof.portal</groupId>
+    <artifactId>module-article</artifactId>
+    <packaging>jar</packaging>
+    <name>devproof module-article</name>
+    <version>${devproof.version}</version>
+    <description>Portal article module</description>
+    <url>http://www.devproof.org</url>
+    <parent>
+        <groupId>org.devproof.portal</groupId>
+        <artifactId>portal-build</artifactId>
+        <version>FIXED</version>
+    </parent>
+
+    <developers>
+        <developer>
+            <id>Carsten.Hufe</id>
+            <name>Carsten Hufe</name>
+            <email>carsten.hufe@devproof.org</email>
+            <url>http://www.devproof.org</url>
+        </developer>
+    </developers>
+    <build>
+        <resources>
             <resource>
-				<directory>src/main/java</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>**</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**</include>
-				</includes>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/java</directory>
-			</testResource>
-		</testResources>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<excludes />
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-				<inherited>true</inherited>
-			</plugin>
-		</plugins>
-	</build>
-	<dependencies>
-		<dependency>
-			<groupId>org.devproof.portal</groupId>
-			<artifactId>portal-core</artifactId>
-			<version>${devproof.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.devproof.portal</groupId>
-			<artifactId>module-comment</artifactId>
-			<version>${devproof.version}</version>
-		</dependency>
-		<!-- Dependencies comes from parent pom -->
-		<!-- Sorry guys, I'm too lazy to manage to many dependencies -->
-	</dependencies>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/java</directory>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <excludes/>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <inherited>true</inherited>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.devproof.portal</groupId>
+            <artifactId>portal-core</artifactId>
+            <version>${devproof.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.devproof.portal</groupId>
+            <artifactId>module-comment</artifactId>
+            <version>${devproof.version}</version>
+        </dependency>
+        <!-- Dependencies comes from parent pom -->
+        <!-- Sorry guys, I'm too lazy to manage to many dependencies -->
+    </dependencies>
 </project>
