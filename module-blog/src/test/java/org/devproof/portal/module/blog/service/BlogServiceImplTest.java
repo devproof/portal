@@ -20,18 +20,24 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe
  */
-public class BlogServiceImplTest extends TestCase {
+public class BlogServiceImplTest {
     private BlogServiceImpl impl;
     private BlogDao mock;
     private TagService<BlogTagEntity> mockTag;
 
-    @Override
+    @Before
+    @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(BlogDao.class);
         mockTag = (TagService<BlogTagEntity>) createStrictMock(TagService.class);
@@ -40,6 +46,7 @@ public class BlogServiceImplTest extends TestCase {
         impl.setBlogTagService(mockTag);
     }
 
+    @Test
     public void testSave() {
         BlogEntity e = createBlogEntity();
         expect(mock.save(e)).andReturn(e);
@@ -51,6 +58,7 @@ public class BlogServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testDelete() {
         BlogEntity e = createBlogEntity();
         mock.delete(e);
@@ -62,6 +70,7 @@ public class BlogServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testFindById() {
         BlogEntity e = createBlogEntity();
         expect(mock.findById(1)).andReturn(e);
@@ -70,6 +79,7 @@ public class BlogServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewBlogEntity() {
         assertNotNull(impl.newBlogEntity());
     }

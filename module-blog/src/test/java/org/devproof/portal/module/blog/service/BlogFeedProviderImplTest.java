@@ -27,20 +27,26 @@ import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.page.BlogPage;
 import org.devproof.portal.module.blog.query.BlogQuery;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.*;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Carsten Hufe
  */
-public class BlogFeedProviderImplTest extends TestCase {
+public class BlogFeedProviderImplTest {
     private BlogFeedProviderImpl impl;
     private SortableQueryDataProvider<BlogEntity, BlogQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
@@ -60,6 +66,7 @@ public class BlogFeedProviderImplTest extends TestCase {
         impl.setBlogDataProvider(dataProviderMock);
     }
 
+    @Test
     public void testGetFeedName() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
         expect(configurationServiceMock.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE)).andReturn("feedtitle");
@@ -68,10 +75,12 @@ public class BlogFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     public void testSupportedPages() {
         assertEquals(BlogPage.class, impl.getSupportedFeedPages().get(0));
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGetBlogEntries() {
         BlogEntity blog = createBlog();
@@ -86,6 +95,7 @@ public class BlogFeedProviderImplTest extends TestCase {
         verify(dataProviderMock);
     }
 
+    @Test
     public void testGenerateFeed() {
         expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle").anyTimes();
         expect(configurationServiceMock.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE)).andReturn("feedtitle").anyTimes();
@@ -97,6 +107,7 @@ public class BlogFeedProviderImplTest extends TestCase {
         verify(configurationServiceMock);
     }
 
+    @Test
     @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
         BlogEntity blog = createBlog();
@@ -111,6 +122,7 @@ public class BlogFeedProviderImplTest extends TestCase {
         assertNotNull(entry.getPublishedDate());
     }
 
+    @Test
     public void testGetFeed() {
         final List<SyndEntry> entries = new ArrayList<SyndEntry>();
         final StringBuilder callOrder = new StringBuilder();

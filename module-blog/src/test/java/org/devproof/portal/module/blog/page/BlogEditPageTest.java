@@ -21,24 +21,29 @@ import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Carsten Hufe
  */
-public class BlogEditPageTest extends TestCase {
+public class BlogEditPageTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql", "insert_blog.sql");
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPage() {
         tester.startPage(createNewBlogEditPage());
         tester.assertRenderedPage(BlogEditPage.class);
@@ -48,6 +53,7 @@ public class BlogEditPageTest extends TestCase {
         return new BlogEditPage(Model.of(new BlogEntity()));
     }
 
+    @Test
     public void testSaveBlogEntry() {
         callBlogEditPage();
         submitBlogForm();
@@ -59,11 +65,12 @@ public class BlogEditPageTest extends TestCase {
         tester.assertRenderedPage(BlogEditPage.class);
     }
 
+    @Test
     public void testEditBlogEntry() {
         navigateToBlogEditPage();
         submitBlogForm();
         assertBlogPage();
-        assertFalse(tester.getServletResponse().getDocument().contains("This is a sample blog entry."));
+        Assert.assertFalse(tester.getServletResponse().getDocument().contains("This is a sample blog entry."));
     }
 
     private void navigateToBlogEditPage() {
