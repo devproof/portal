@@ -21,23 +21,28 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.download.dao.DownloadDao;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Checks the delegating functionality of the DownloadServiceImpl
  *
  * @author Carsten Hufe
  */
-public class DownloadServiceImplTest extends TestCase {
+public class DownloadServiceImplTest {
     private DownloadServiceImpl impl;
     private DownloadDao mock;
     private TagService<DownloadTagEntity> mockTag;
 
-    @Override
+    @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(DownloadDao.class);
@@ -47,6 +52,7 @@ public class DownloadServiceImplTest extends TestCase {
         impl.setDownloadTagService(mockTag);
     }
 
+    @Test
     public void testSave() {
         DownloadEntity e = createDownloadEntity();
         expect(mock.save(e)).andReturn(e);
@@ -58,6 +64,7 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testDelete() {
         DownloadEntity e = createDownloadEntity();
         mock.delete(e);
@@ -69,6 +76,7 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mockTag);
     }
 
+    @Test
     public void testFindAll() {
         List<DownloadEntity> list = new ArrayList<DownloadEntity>();
         list.add(createDownloadEntity());
@@ -79,6 +87,7 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testFindById() {
         DownloadEntity e = createDownloadEntity();
         expect(mock.findById(1)).andReturn(e);
@@ -87,10 +96,12 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testNewDownloadEntity() {
         assertNotNull(impl.newDownloadEntity());
     }
 
+    @Test
     public void testFindAllDownloadsForRoleOrderedByDateDesc() {
         List<DownloadEntity> list = new ArrayList<DownloadEntity>();
         list.add(createDownloadEntity());
@@ -103,6 +114,7 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testIncrementHits() {
         DownloadEntity e = createDownloadEntity();
         mock.incrementHits(e);
@@ -111,6 +123,7 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testMarkBrokenDownload() {
         DownloadEntity e = createDownloadEntity();
         mock.markBrokenDownload(e);
@@ -119,6 +132,7 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testMarkValidDownload() {
         DownloadEntity e = createDownloadEntity();
         mock.markValidDownload(e);
@@ -127,6 +141,7 @@ public class DownloadServiceImplTest extends TestCase {
         verify(mock);
     }
 
+    @Test
     public void testRateDownload() {
         DownloadEntity e = createDownloadEntity();
         mock.rateDownload(5, e);

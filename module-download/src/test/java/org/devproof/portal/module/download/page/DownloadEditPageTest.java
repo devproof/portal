@@ -21,35 +21,44 @@ import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.test.PortalTestUtil;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Carsten Hufe
  */
-public class DownloadEditPageTest extends TestCase {
+public class DownloadEditPageTest {
     private WicketTester tester;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql", "insert_download.sql");
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         PortalTestUtil.destroy(tester);
     }
 
+    @Test
     public void testRenderDefaultPage() {
         tester.startPage(new DownloadEditPage(Model.of(new DownloadEntity())));
         tester.assertRenderedPage(DownloadEditPage.class);
     }
 
+    @Test
     public void testSaveDownload() {
         callDownloadEditPage();
         submitDownloadForm();
         assertDownloadPage();
     }
 
+    @Test
     public void testEditDownload() {
         navigateToDownloadEditPage();
         submitDownloadForm();
