@@ -19,7 +19,6 @@ import com.sun.syndication.feed.synd.*;
 import org.apache.wicket.RequestCycle;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class DummyFeedProviderImpl implements FeedProvider, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
+	public SyndFeed getFeed(RequestCycle rc) {
 		SyndFeed feed = new SyndFeedImpl();
 		feed.setTitle(getFeedName());
 		feed.setLink("http://dummy.feed.link");

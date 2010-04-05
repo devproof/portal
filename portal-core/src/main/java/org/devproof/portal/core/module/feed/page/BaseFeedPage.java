@@ -76,9 +76,7 @@ public abstract class BaseFeedPage extends WebPage {
 		FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
 		final SyndFeed feed;
 		if (feedProvider != null) {
-			// TODO remove role aus signature
-			RoleEntity guestRole = roleService.findGuestRole();
-			feed = feedProvider.getFeed(getRequestCycle(), guestRole);
+			feed = feedProvider.getFeed(getRequestCycle());
 		} else {
 			feed = new SyndFeedImpl();
 		}

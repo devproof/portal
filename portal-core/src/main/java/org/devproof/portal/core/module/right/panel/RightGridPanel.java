@@ -133,7 +133,6 @@ public class RightGridPanel extends Panel implements IFormModelUpdateListener {
 
 	@Override
 	public void updateModel() {
-        // TODO test ob es mit rights setzen funktioniert
 		originalRightsListModel.getObject().addAll(getSelectedRights());
 	}
 }

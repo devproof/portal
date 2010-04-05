@@ -33,7 +33,7 @@ import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.print.PrintConstants;
-import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
+import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
@@ -223,9 +223,9 @@ public class ArticleReadPage extends ArticleBasePage {
         return new ExtendedLabel("content", contentModel);
 	}
 
-	private ContentTagPanel<ArticleTagEntity> createTagPanel() {
+	private TagContentPanel<ArticleTagEntity> createTagPanel() {
         IModel<List<ArticleTagEntity>> tagModel = new PropertyModel<List<ArticleTagEntity>>(displayedPageModel, "article.tags");
-        return new ContentTagPanel<ArticleTagEntity>("tags", tagModel, ArticlePage.class);
+        return new TagContentPanel<ArticleTagEntity>("tags", tagModel, ArticlePage.class);
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {

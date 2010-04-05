@@ -42,7 +42,7 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
+import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
@@ -361,9 +361,9 @@ public class DownloadPage extends DownloadBasePage {
             };
         }
 
-        private ContentTagPanel<DownloadTagEntity> createTagPanel() {
+        private TagContentPanel<DownloadTagEntity> createTagPanel() {
             IModel<List<DownloadTagEntity>> tagsModel = new PropertyModel<List<DownloadTagEntity>>(downloadModel, "tags");
-            return new ContentTagPanel<DownloadTagEntity>("tags", tagsModel, DownloadPage.class);
+            return new TagContentPanel<DownloadTagEntity>("tags", tagsModel, DownloadPage.class);
         }
 
         private Label createHitsLabel() {
