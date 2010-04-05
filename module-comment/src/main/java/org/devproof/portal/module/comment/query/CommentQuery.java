@@ -144,7 +144,7 @@ public class CommentQuery implements SearchQuery {
 
 	@Override
 	public PageParameters getPageParameters() {
-		// TODO Auto-generated method stub
-		return null;
+        // not required for comments
+		return new PageParameters();
 	}
 }
