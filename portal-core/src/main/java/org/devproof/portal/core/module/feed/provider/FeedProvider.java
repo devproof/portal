@@ -18,7 +18,6 @@ package org.devproof.portal.core.module.feed.provider;
 import com.sun.syndication.feed.synd.SyndFeed;
 import org.apache.wicket.RequestCycle;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
 
 import java.util.List;
 
@@ -26,20 +25,20 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface FeedProvider {
-	/**
-	 * Returns the feed with feed items. See https://rome.dev.java.net/
-	 */
-	SyndFeed getFeed(RequestCycle rc);
+    /**
+     * Returns the feed with feed items. See https://rome.dev.java.net/
+     */
+    SyndFeed getFeed(RequestCycle rc);
 
-	/**
-	 * Returns the supported feed pages where the feed reference will be
-	 * embedded
-	 */
-	List<Class<? extends TemplatePage>> getSupportedFeedPages();
+    /**
+     * Returns the supported feed pages where the feed reference will be
+     * embedded
+     */
+    List<Class<? extends TemplatePage>> getSupportedFeedPages();
 
-	/**
-	 * Returns the feed name which is shown in the overview and in the page
-	 * reference
-	 */
-	String getFeedName();
+    /**
+     * Returns the feed name which is shown in the overview and in the page
+     * reference
+     */
+    String getFeedName();
 }

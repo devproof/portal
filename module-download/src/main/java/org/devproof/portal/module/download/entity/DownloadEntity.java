@@ -37,107 +37,107 @@ import java.util.List;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = DownloadConstants.ENTITY_CACHE_REGION)
 final public class DownloadEntity extends BaseLinkEntity {
 
-	private static final long serialVersionUID = 1L;
-	@Column(name = "software_version")
-	private String softwareVersion;
-	@Column(name = "download_size")
-	private String downloadSize;
-	@Column(name = "manufacturer_homepage")
-	private String manufacturerHomepage;
-	@Column(name = "manufacturer")
-	private String manufacturer;
-	@Column(name = "licence")
-	private String licence;
-	@Column(name = "price")
-	private String price;
-	@ManyToMany(fetch = FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
-	@JoinTable(name = "download_right_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-	private List<RightEntity> allRights;
-	@ManyToMany(fetch = FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
-	@JoinTable(name = "download_tag_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
-	private List<DownloadTagEntity> tags;
+    private static final long serialVersionUID = 1L;
+    @Column(name = "software_version")
+    private String softwareVersion;
+    @Column(name = "download_size")
+    private String downloadSize;
+    @Column(name = "manufacturer_homepage")
+    private String manufacturerHomepage;
+    @Column(name = "manufacturer")
+    private String manufacturer;
+    @Column(name = "licence")
+    private String licence;
+    @Column(name = "price")
+    private String price;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinTable(name = "download_right_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
+    private List<RightEntity> allRights;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinTable(name = "download_tag_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
+    private List<DownloadTagEntity> tags;
 
-	@Transient
-	public List<RightEntity> getVoteRights() {
-		return getRightsStartingWith(allRights, "download.vote");
-	}
+    @Transient
+    public List<RightEntity> getVoteRights() {
+        return getRightsStartingWith(allRights, "download.vote");
+    }
 
-	@Transient
-	public List<RightEntity> getDownloadRights() {
-		return getRightsStartingWith(allRights, "download.download");
-	}
+    @Transient
+    public List<RightEntity> getDownloadRights() {
+        return getRightsStartingWith(allRights, "download.download");
+    }
 
-	@Transient
-	public List<RightEntity> getViewRights() {
-		return getRightsStartingWith(allRights, "download.view");
-	}
+    @Transient
+    public List<RightEntity> getViewRights() {
+        return getRightsStartingWith(allRights, "download.view");
+    }
 
-	public String getSoftwareVersion() {
-		return softwareVersion;
-	}
+    public String getSoftwareVersion() {
+        return softwareVersion;
+    }
 
-	public void setSoftwareVersion(String softwareVersion) {
-		this.softwareVersion = softwareVersion;
-	}
+    public void setSoftwareVersion(String softwareVersion) {
+        this.softwareVersion = softwareVersion;
+    }
 
-	public String getDownloadSize() {
-		return downloadSize;
-	}
+    public String getDownloadSize() {
+        return downloadSize;
+    }
 
-	public void setDownloadSize(String downloadSize) {
-		this.downloadSize = downloadSize;
-	}
+    public void setDownloadSize(String downloadSize) {
+        this.downloadSize = downloadSize;
+    }
 
-	public String getManufacturerHomepage() {
-		return manufacturerHomepage;
-	}
+    public String getManufacturerHomepage() {
+        return manufacturerHomepage;
+    }
 
-	public void setManufacturerHomepage(String manufacturerHomepage) {
-		this.manufacturerHomepage = manufacturerHomepage;
-	}
+    public void setManufacturerHomepage(String manufacturerHomepage) {
+        this.manufacturerHomepage = manufacturerHomepage;
+    }
 
-	public String getLicence() {
-		return licence;
-	}
+    public String getLicence() {
+        return licence;
+    }
 
-	public void setLicence(String licence) {
-		this.licence = licence;
-	}
+    public void setLicence(String licence) {
+        this.licence = licence;
+    }
 
-	public String getPrice() {
-		return price;
-	}
+    public String getPrice() {
+        return price;
+    }
 
-	public void setPrice(String price) {
-		this.price = price;
-	}
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-	public String getManufacturer() {
-		return manufacturer;
-	}
+    public String getManufacturer() {
+        return manufacturer;
+    }
 
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
-	}
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
 
-	public List<RightEntity> getAllRights() {
-		if (allRights == null) {
-			allRights = new ArrayList<RightEntity>();
-		}
-		return allRights;
-	}
+    public List<RightEntity> getAllRights() {
+        if (allRights == null) {
+            allRights = new ArrayList<RightEntity>();
+        }
+        return allRights;
+    }
 
-	public void setAllRights(List<RightEntity> allRights) {
-		this.allRights = allRights;
-	}
+    public void setAllRights(List<RightEntity> allRights) {
+        this.allRights = allRights;
+    }
 
-	public List<DownloadTagEntity> getTags() {
-		return tags;
-	}
+    public List<DownloadTagEntity> getTags() {
+        return tags;
+    }
 
-	public void setTags(List<DownloadTagEntity> tags) {
-		this.tags = tags;
-	}
+    public void setTags(List<DownloadTagEntity> tags) {
+        this.tags = tags;
+    }
 }

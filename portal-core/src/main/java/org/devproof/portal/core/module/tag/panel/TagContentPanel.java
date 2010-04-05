@@ -35,77 +35,76 @@ import java.util.List;
 
 /**
  * For displaying the tags and mark if one is selected
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class TagContentPanel<T extends BaseTagEntity<?>> extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private IModel<List<T>> tagModel;
-	private Class<? extends Page> page;
+    private IModel<List<T>> tagModel;
+    private Class<? extends Page> page;
 
-	public TagContentPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page) {
-		super(id);
-		this.tagModel = tagModel;
-		this.page = page;
-		add(createCSSHeaderContributor());
-		add(createRepeatingTags());
-	}
+    public TagContentPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page) {
+        super(id);
+        this.tagModel = tagModel;
+        this.page = page;
+        add(createCSSHeaderContributor());
+        add(createRepeatingTags());
+    }
 
     private RepeatingView createRepeatingTags() {
-		RepeatingView repeating = new RepeatingView("repeatingTags");
-		for (T tag : tagModel.getObject()) {
-			repeating.add(createTagItem(repeating.newChildId(), tag));
-		}
-		return repeating;
-	}
+        RepeatingView repeating = new RepeatingView("repeatingTags");
+        for (T tag : tagModel.getObject()) {
+            repeating.add(createTagItem(repeating.newChildId(), tag));
+        }
+        return repeating;
+    }
 
-	private WebMarkupContainer createTagItem(String id, T tag) {
-		WebMarkupContainer item = new WebMarkupContainer(id);
-		item.add(createClassSelectedModifier(tag));
-		item.add(createTagLink(tag));
-		return item;
-	}
+    private WebMarkupContainer createTagItem(String id, T tag) {
+        WebMarkupContainer item = new WebMarkupContainer(id);
+        item.add(createClassSelectedModifier(tag));
+        item.add(createTagLink(tag));
+        return item;
+    }
 
-	private boolean isTagSelected(T tag) {
-		String selectedTag = TagUtils.findSelectedTag();
-		return tag.getTagname().equals(selectedTag);
-	}
+    private boolean isTagSelected(T tag) {
+        String selectedTag = TagUtils.findSelectedTag();
+        return tag.getTagname().equals(selectedTag);
+    }
 
-	private AttributeModifier createClassSelectedModifier(T tag) {
-		IModel<String> cssStyle = createClassSelectedModifierModel(tag);
-		return new AttributeModifier("class", true, cssStyle);
-	}
+    private AttributeModifier createClassSelectedModifier(T tag) {
+        IModel<String> cssStyle = createClassSelectedModifierModel(tag);
+        return new AttributeModifier("class", true, cssStyle);
+    }
 
-	private IModel<String> createClassSelectedModifierModel(final T tag) {
-		return new AbstractReadOnlyModel<String>() {
-			private static final long serialVersionUID = 1L;
+    private IModel<String> createClassSelectedModifierModel(final T tag) {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public String getObject() {
-				if (isTagSelected(tag)) {
-					return "tagViewSelected";
-				}
-				return "";
-			}
-		};
-	}
+            @Override
+            public String getObject() {
+                if (isTagSelected(tag)) {
+                    return "tagViewSelected";
+                }
+                return "";
+            }
+        };
+    }
 
-	private BookmarkablePageLink<String> createTagLink(T tag) {
-		BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("tagLink", page);
-		link.add(createTagLinkLabel(tag));
-		if (!isTagSelected(tag)) {
-			link.setParameter("tag", tag.getTagname());
-		}
-		return link;
-	}
+    private BookmarkablePageLink<String> createTagLink(T tag) {
+        BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("tagLink", page);
+        link.add(createTagLinkLabel(tag));
+        if (!isTagSelected(tag)) {
+            link.setParameter("tag", tag.getTagname());
+        }
+        return link;
+    }
 
-	private Label createTagLinkLabel(T tag) {
-		return new Label("tagName", new PropertyModel<String>(tag, "tagname"));
-	}
+    private Label createTagLinkLabel(T tag) {
+        return new Label("tagName", new PropertyModel<String>(tag, "tagname"));
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);
+    }
 }

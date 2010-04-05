@@ -34,63 +34,60 @@ import org.devproof.portal.core.module.print.PrintConstants;
  */
 public abstract class PrintPage extends WebPage {
 
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private PageParameters params;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private PageParameters params;
 
-	public PrintPage(PageParameters params) {
-		super(params);
-		this.params = params;
-		addSyntaxHighlighter();
-		add(createDefaultCSSHeaderContributor());
-		add(createPrinterCSSHeaderContributor());
-		add(createPrintableComponent());
-		add(createPageTitle());
-		add(createCopyrightContainer());
-		add(createFooterLabel());
-	}
+    public PrintPage(PageParameters params) {
+        super(params);
+        this.params = params;
+        addSyntaxHighlighter();
+        add(createDefaultCSSHeaderContributor());
+        add(createPrinterCSSHeaderContributor());
+        add(createPrintableComponent());
+        add(createPageTitle());
+        add(createCopyrightContainer());
+        add(createFooterLabel());
+    }
 
-	private Component createPrintableComponent() {
-		return createPrintableComponent("content", params);
-	}
+    private Component createPrintableComponent() {
+        return createPrintableComponent("content", params);
+    }
 
-	private void addSyntaxHighlighter() {
-		String theme = configurationService.findAsString(CommonConstants.CONF_SYNTAXHL_THEME);
-		PortalUtil.addSyntaxHightlighter(this, theme);
-	}
+    private void addSyntaxHighlighter() {
+        String theme = configurationService.findAsString(CommonConstants.CONF_SYNTAXHL_THEME);
+        PortalUtil.addSyntaxHightlighter(this, theme);
+    }
 
-	private HeaderContributor createPrinterCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css");
-	}
+    private HeaderContributor createPrinterCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css");
+    }
 
-	private HeaderContributor createDefaultCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
-	}
+    private HeaderContributor createDefaultCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
+    }
 
-	private Component createFooterLabel() {
-		String footerContent = configurationService.findAsString("footer_content");
-		return new Label("footerLabel", footerContent).setEscapeModelStrings(false);
-	}
+    private Component createFooterLabel() {
+        String footerContent = configurationService.findAsString("footer_content");
+        return new Label("footerLabel", footerContent).setEscapeModelStrings(false);
+    }
 
-	private WebMarkupContainer createCopyrightContainer() {
-		WebMarkupContainer copyright = new WebMarkupContainer("copyright");
-		copyright.add(new SimpleAttributeModifier("content", configurationService
-				.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
-		return copyright;
-	}
+    private WebMarkupContainer createCopyrightContainer() {
+        WebMarkupContainer copyright = new WebMarkupContainer("copyright");
+        copyright.add(new SimpleAttributeModifier("content", configurationService.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
+        return copyright;
+    }
 
-	private Label createPageTitle() {
-		return new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
-	}
+    private Label createPageTitle() {
+        return new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
+    }
 
-	/**
-	 * Returns the printable component
-	 * 
-	 * @param id
-	 *            wicket id
-	 * @param params
-	 *            Page Parameter
-	 * @return Instanciated component
-	 */
-	protected abstract Component createPrintableComponent(String id, PageParameters params);
+    /**
+     * Returns the printable component
+     *
+     * @param id     wicket id
+     * @param params Page Parameter
+     * @return Instanciated component
+     */
+    protected abstract Component createPrintableComponent(String id, PageParameters params);
 }

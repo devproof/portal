@@ -24,20 +24,20 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ReenterEmailPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(new ReenterEmailPage(Model.of("testuser")));
-		tester.assertRenderedPage(ReenterEmailPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(new ReenterEmailPage(Model.of("testuser")));
+        tester.assertRenderedPage(ReenterEmailPage.class);
+    }
 }

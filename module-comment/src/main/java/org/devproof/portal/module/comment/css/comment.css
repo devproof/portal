@@ -1,85 +1,85 @@
 .commentsLink {
-#	color: #666;
-	text-decoration: none;
-	font-size: 16px;	
-	font-weight: bold;
+# color : #666;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .commentsLink:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
 
 .commentsMain {
-	text-align: left;
-	width: 580px;
-	margin: 0 auto;
-	border: 3px dashed #CCC;
-	padding: 15px;
+    text-align: left;
+    width: 580px;
+    margin: 0 auto;
+    border: 3px dashed #CCC;
+    padding: 15px;
 }
 
 .commentsMain h3 {
-	color: #666;
-	padding-left: 15px;
-	padding-bottom: 15px;
+    color: #666;
+    padding-left: 15px;
+    padding-bottom: 15px;
 }
 
 .noCommentsHint {
-	color: #666;
-	padding: 15px 15px 3px 15px;
+    color: #666;
+    padding: 15px 15px 3px 15px;
 }
 
 .commentsView {
-	border-top: 1px solid #CCC;
-	padding: 15px 15px 15px 15px;
+    border-top: 1px solid #CCC;
+    padding: 15px 15px 15px 15px;
 }
 
 .commentsView {
-	border-top: 1px solid #CCC;
-	padding: 15px 15px 15px 15px;
+    border-top: 1px solid #CCC;
+    padding: 15px 15px 15px 15px;
 }
 
 .comment {
-	color: #666;
+    color: #666;
 }
 
 .commentMetaInfo {
-	color: #888;
-	font-size: 8pt;
-	padding-top: 0.5em;
+    color: #888;
+    font-size: 8pt;
+    padding-top: 0.5em;
 }
 
 .commentAdmin {
-	padding-top: 10px;
+    padding-top: 10px;
 }
 
 .commentAdmin * {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 .commentAccepted {
-	color: white; 
-	background-color: green; 
-	padding: 2px;	
+    color: white;
+    background-color: green;
+    padding: 2px;
 }
 
 .commentRejected {
-	color: white; 
-	background-color: red; 
-	padding: 2px;	
+    color: white;
+    background-color: red;
+    padding: 2px;
 }
 
 .commentBlocked {
-	color: white; 
-	background-color: #FF9900; 
-	padding: 2px;	
+    color: white;
+    background-color: #FF9900;
+    padding: 2px;
 }
 
 .commentsForm {
-	padding-top: 15px;
-	border-top: 1px solid #CCC;
+    padding-top: 15px;
+    border-top: 1px solid #CCC;
 }
 
 .commentsForm th {
-	color: #666;
-	vertical-align: text-top;
+    color: #666;
+    vertical-align: text-top;
 }

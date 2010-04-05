@@ -22,24 +22,24 @@ import java.lang.annotation.Target;
 
 /**
  * If annotation is present the query will be cached.
- * 
+ *
  * @author Carsten Hufe
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.METHOD, ElementType.TYPE })
+@Target({ElementType.METHOD, ElementType.TYPE})
 public @interface CacheQuery {
-	/**
-	 * @see org.hibernate.CacheMode
-	 */
-	String cacheMode() default "";
+    /**
+     * @see org.hibernate.CacheMode
+     */
+    String cacheMode() default "";
 
-	/**
-	 * Cache region
-	 */
-	String region() default "";
+    /**
+     * Cache region
+     */
+    String region() default "";
 
-	/**
-	 * enables the caching
-	 */
-	boolean enabled() default true;
+    /**
+     * enables the caching
+     */
+    boolean enabled() default true;
 }

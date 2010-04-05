@@ -33,77 +33,77 @@ import org.devproof.portal.module.comment.query.CommentQuery;
  * @author Carsten Hufe
  */
 public abstract class CommentSearchBoxPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private IModel<CommentQuery> queryModel;
+    private IModel<CommentQuery> queryModel;
 
-	public CommentSearchBoxPanel(String id, IModel<CommentQuery> queryModel) {
-		super(id);
-		this.queryModel = queryModel;
-		add(createCommentSearchForm());
-	}
+    public CommentSearchBoxPanel(String id, IModel<CommentQuery> queryModel) {
+        super(id);
+        this.queryModel = queryModel;
+        add(createCommentSearchForm());
+    }
 
-	private Form<CommentQuery> createCommentSearchForm() {
-		CompoundPropertyModel<CommentQuery> compoundModel = new CompoundPropertyModel<CommentQuery>(queryModel);
-		Form<CommentQuery> form = new Form<CommentQuery>("searchForm", compoundModel);
-		form.add(createSearchTextField());
-		form.add(createAcceptedDropDown());
-		form.add(createReviewedDropDown());
-		form.add(createAutomaticBlockedDropDown());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<CommentQuery> createCommentSearchForm() {
+        CompoundPropertyModel<CommentQuery> compoundModel = new CompoundPropertyModel<CommentQuery>(queryModel);
+        Form<CommentQuery> form = new Form<CommentQuery>("searchForm", compoundModel);
+        form.add(createSearchTextField());
+        form.add(createAcceptedDropDown());
+        form.add(createReviewedDropDown());
+        form.add(createAutomaticBlockedDropDown());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private Select createAutomaticBlockedDropDown() {
-		Select automaticBlocked = new Select("automaticBlocked");
-		automaticBlocked.add(new SelectOption<Boolean>("chooseAutomaticBlocked", new Model<Boolean>()));
-		automaticBlocked.add(new SelectOption<Boolean>("automaticBlockedTrue", Model.of(Boolean.TRUE)));
-		automaticBlocked.add(new SelectOption<Boolean>("automaticBlockedFalse", Model.of(Boolean.FALSE)));
-		automaticBlocked.add(new AjaxRefresh("onchange"));
-		return automaticBlocked;
-	}
+    private Select createAutomaticBlockedDropDown() {
+        Select automaticBlocked = new Select("automaticBlocked");
+        automaticBlocked.add(new SelectOption<Boolean>("chooseAutomaticBlocked", new Model<Boolean>()));
+        automaticBlocked.add(new SelectOption<Boolean>("automaticBlockedTrue", Model.of(Boolean.TRUE)));
+        automaticBlocked.add(new SelectOption<Boolean>("automaticBlockedFalse", Model.of(Boolean.FALSE)));
+        automaticBlocked.add(new AjaxRefresh("onchange"));
+        return automaticBlocked;
+    }
 
-	private Select createReviewedDropDown() {
-		Select reviewed = new Select("reviewed");
-		reviewed.add(new SelectOption<Boolean>("chooseReviewed", new Model<Boolean>()));
-		reviewed.add(new SelectOption<Boolean>("reviewedTrue", Model.of(Boolean.TRUE)));
-		reviewed.add(new SelectOption<Boolean>("reviewedFalse", Model.of(Boolean.FALSE)));
-		reviewed.add(new AjaxRefresh("onchange"));
-		return reviewed;
-	}
+    private Select createReviewedDropDown() {
+        Select reviewed = new Select("reviewed");
+        reviewed.add(new SelectOption<Boolean>("chooseReviewed", new Model<Boolean>()));
+        reviewed.add(new SelectOption<Boolean>("reviewedTrue", Model.of(Boolean.TRUE)));
+        reviewed.add(new SelectOption<Boolean>("reviewedFalse", Model.of(Boolean.FALSE)));
+        reviewed.add(new AjaxRefresh("onchange"));
+        return reviewed;
+    }
 
-	private Select createAcceptedDropDown() {
-		Select accepted = new Select("accepted");
-		accepted.add(new SelectOption<Boolean>("chooseAccepted", new Model<Boolean>()));
-		accepted.add(new SelectOption<Boolean>("acceptedTrue", Model.of(Boolean.TRUE)));
-		accepted.add(new SelectOption<Boolean>("acceptedFalse", Model.of(Boolean.FALSE)));
-		accepted.add(new AjaxRefresh("onchange"));
-		return accepted;
-	}
+    private Select createAcceptedDropDown() {
+        Select accepted = new Select("accepted");
+        accepted.add(new SelectOption<Boolean>("chooseAccepted", new Model<Boolean>()));
+        accepted.add(new SelectOption<Boolean>("acceptedTrue", Model.of(Boolean.TRUE)));
+        accepted.add(new SelectOption<Boolean>("acceptedFalse", Model.of(Boolean.FALSE)));
+        accepted.add(new AjaxRefresh("onchange"));
+        return accepted;
+    }
 
-	private FormComponent<String> createSearchTextField() {
-		FormComponent<String> fc = new TextField<String>("allTextFields");
-		fc.add(new AjaxRefresh("onkeyup"));
-		return fc;
-	}
+    private FormComponent<String> createSearchTextField() {
+        FormComponent<String> fc = new TextField<String>("allTextFields");
+        fc.add(new AjaxRefresh("onkeyup"));
+        return fc;
+    }
 
-	protected abstract void onSubmit(AjaxRequestTarget target);
+    protected abstract void onSubmit(AjaxRequestTarget target);
 
-	private class AjaxRefresh extends AjaxFormSubmitBehavior {
-		private static final long serialVersionUID = 1L;
+    private class AjaxRefresh extends AjaxFormSubmitBehavior {
+        private static final long serialVersionUID = 1L;
 
-		public AjaxRefresh(String event) {
-			super(event);
-			setThrottleDelay(Duration.ONE_SECOND);
-		}
+        public AjaxRefresh(String event) {
+            super(event);
+            setThrottleDelay(Duration.ONE_SECOND);
+        }
 
-		@Override
-		protected void onError(AjaxRequestTarget target) {
-		}
+        @Override
+        protected void onError(AjaxRequestTarget target) {
+        }
 
-		@Override
-		protected void onSubmit(AjaxRequestTarget target) {
-			CommentSearchBoxPanel.this.onSubmit(target);
-		}
-	}
+        @Override
+        protected void onSubmit(AjaxRequestTarget target) {
+            CommentSearchBoxPanel.this.onSubmit(target);
+        }
+    }
 }

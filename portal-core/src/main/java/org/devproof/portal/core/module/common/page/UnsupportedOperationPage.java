@@ -22,7 +22,7 @@ import org.apache.wicket.PageParameters;
  */
 public class UnsupportedOperationPage extends MessagePage {
 
-	public UnsupportedOperationPage() {
-		super(new PageParameters("message=unsupported.operation"));
-	}
+    public UnsupportedOperationPage() {
+        super(new PageParameters("message=unsupported.operation"));
+    }
 }

@@ -19,51 +19,48 @@ import java.io.Serializable;
 
 /**
  * GenericDao interface with CRUD methods
- * 
+ *
  * @author Carsten Hufe
  */
 public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
-	/**
-	 * Get an entity by id
-	 * 
-	 * @param id
-	 * @return entity
-	 */
-	T findById(PK id);
+    /**
+     * Get an entity by id
+     *
+     * @param id
+     * @return entity
+     */
+    T findById(PK id);
 
-	// /**
-	// * Find all entites
-	// *
-	// * @return list of entities
-	// */
-	// List<T> findAll();
+    // /**
+    // * Find all entites
+    // *
+    // * @return list of entities
+    // */
+    // List<T> findAll();
 
-	/**
-	 * Stores an entity
-	 * 
-	 * @param entity
-	 *            entity to save
-	 */
-	T save(T entity);
+    /**
+     * Stores an entity
+     *
+     * @param entity entity to save
+     */
+    T save(T entity);
 
-	/**
-	 * Deletes an entity
-	 * 
-	 * @param entity
-	 *            entity to delete
-	 */
-	void delete(T entity);
+    /**
+     * Deletes an entity
+     *
+     * @param entity entity to delete
+     */
+    void delete(T entity);
 
-	/**
-	 * refresh an entity
-	 * 
-	 * @param entity
-	 *            entity to refresh
-	 */
-	void refresh(T entity);
+    /**
+     * refresh an entity
+     *
+     * @param entity entity to refresh
+     */
+    void refresh(T entity);
 
-	/**
-	 * Returns the represented generic type
+    /**
+     * Returns the represented generic type
 	 */
 	Class<T> getType();
 }

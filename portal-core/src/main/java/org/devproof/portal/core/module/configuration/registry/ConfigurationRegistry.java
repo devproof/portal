@@ -19,22 +19,22 @@ import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 
 /**
  * Configuration registry: Caches the database configuration entities
- * 
+ *
  * @author Carsten Hufe
  */
 public interface ConfigurationRegistry {
-	/**
-	 * Returns the configuration by key
-	 */
-	ConfigurationEntity getConfiguration(String key);
+    /**
+     * Returns the configuration by key
+     */
+    ConfigurationEntity getConfiguration(String key);
 
-	/**
-	 * Register a configuration value
-	 */
-	void registerConfiguration(String key, ConfigurationEntity configurationEntity);
+    /**
+     * Register a configuration value
+     */
+    void registerConfiguration(String key, ConfigurationEntity configurationEntity);
 
-	/**
-	 * Removes the configuration
-	 */
-	void removeConfiguration(String key);
+    /**
+     * Removes the configuration
+     */
+    void removeConfiguration(String key);
 }

@@ -24,26 +24,25 @@ import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Factory to create the terms of use link
- * 
+ *
  * @author Carsten Hufe
  */
 public class TermsOfUseLinkFactory implements CommonMarkupContainerFactory, InitializingBean {
-	private SharedRegistry sharedRegistry;
+    private SharedRegistry sharedRegistry;
 
-	@Override
-	public MarkupContainer newInstance(String id, Object... obj) {
-		BookmarkablePageLink<OtherPageViewPage> footerLink = new BookmarkablePageLink<OtherPageViewPage>(id,
-				OtherPageViewPage.class);
-		footerLink.setParameter("0", "terms_of_use");
-		return footerLink;
-	}
+    @Override
+    public MarkupContainer newInstance(String id, Object... obj) {
+        BookmarkablePageLink<OtherPageViewPage> footerLink = new BookmarkablePageLink<OtherPageViewPage>(id, OtherPageViewPage.class);
+        footerLink.setParameter("0", "terms_of_use");
+        return footerLink;
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		sharedRegistry.registerResource("termsOfUseLink", this);
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        sharedRegistry.registerResource("termsOfUseLink", this);
+    }
 
-	public void setSharedRegistry(SharedRegistry sharedRegistry) {
-		this.sharedRegistry = sharedRegistry;
-	}
+    public void setSharedRegistry(SharedRegistry sharedRegistry) {
+        this.sharedRegistry = sharedRegistry;
+    }
 }

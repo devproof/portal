@@ -33,29 +33,29 @@ import org.devproof.portal.module.article.service.ArticleService;
  */
 public class ArticleBasePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "articleService")
-	private ArticleService articleService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "articleService")
+    private ArticleService articleService;
 
-	private boolean isAuthor = false;
+    private boolean isAuthor = false;
 
-	public ArticleBasePage(PageParameters params) {
-		super(params);
-		add(createCSSHeaderContributor());
-		addSyntaxHighlighter();
-		addArticleAddLink();
-	}
+    public ArticleBasePage(PageParameters params) {
+        super(params);
+        add(createCSSHeaderContributor());
+        addSyntaxHighlighter();
+        addArticleAddLink();
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS);
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS);
+    }
 
-	private void addArticleAddLink() {
-		if (isAuthor()) {
+    private void addArticleAddLink() {
+        if (isAuthor()) {
             Link<?> addLink = createArticleAddLink();
-			addPageAdminBoxLink(addLink);
-		}
-	}
+            addPageAdminBoxLink(addLink);
+        }
+    }
 
     private Link<?> createArticleAddLink() {
         Link<?> addLink = newArticleAddLink();
@@ -64,19 +64,19 @@ public class ArticleBasePage extends TemplatePage {
     }
 
     private Link<?> newArticleAddLink() {
-		return new Link<Object>(getPageAdminBoxLinkId()) {
-			private static final long serialVersionUID = 1L;
+        return new Link<Object>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick() {
-				ArticleEntity newEntry = articleService.newArticleEntity();
-				setResponsePage(new ArticleEditPage(Model.of(newEntry)));
-			}
-		};
-	}
+            @Override
+            public void onClick() {
+                ArticleEntity newEntry = articleService.newArticleEntity();
+                setResponsePage(new ArticleEditPage(Model.of(newEntry)));
+            }
+        };
+    }
 
-	public boolean isAuthor() {
-		PortalSession session = (PortalSession) getSession();
-		return session.hasRight(ArticleConstants.AUTHOR_RIGHT);
-	}
+    public boolean isAuthor() {
+        PortalSession session = (PortalSession) getSession();
+        return session.hasRight(ArticleConstants.AUTHOR_RIGHT);
+    }
 }

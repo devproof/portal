@@ -19,39 +19,36 @@ import java.io.Serializable;
 
 /**
  * Default CRUD methods
- * 
+ *
  * @author Carsten Hufe
  */
 public interface CrudService<T, PK extends Serializable> {
-	/**
-	 * Get an entity by id
-	 * 
-	 * @param id
-	 *            primary key
-	 * @return entity matching the primary key
-	 */
-	T findById(PK id);
+    /**
+     * Get an entity by id
+     *
+     * @param id primary key
+     * @return entity matching the primary key
+     */
+    T findById(PK id);
 
-	// /**
-	// * Find all entites
-	// *
-	// * @return returns all entities
-	// */
-	// List<T> findAll();
+    // /**
+    // * Find all entites
+    // *
+    // * @return returns all entities
+    // */
+    // List<T> findAll();
 
-	/**
-	 * Stores/updates an entity
-	 * 
-	 * @param entity
-	 *            Entity to save
-	 */
-	void save(T entity);
+    /**
+     * Stores/updates an entity
+     *
+     * @param entity Entity to save
+     */
+    void save(T entity);
 
-	/**
-	 * Deletes an entity
-	 * 
-	 * @param entity
-	 *            Entity to delete
-	 */
+    /**
+     * Deletes an entity
+     *
+     * @param entity Entity to delete
+     */
 	void delete(T entity);
 }

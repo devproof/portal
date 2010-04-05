@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
-	<div wicket:id="bubblePanel"/>
-	<h2><wicket:message key="contentTitle">[edit user]</wicket:message></h2><br/>
-	<div wicket:id="refreshTable">
-	<p><span wicket:id="navigatorTop">[dataview navigator]</span></p>
-	<table class="dataview" cellspacing="0">
-		<tr>
-			<th wicket:id="table_username"><wicket:message key="table_username">[username]</wicket:message></th>
-			<th wicket:id="table_firstname"><wicket:message key="table_firstname">[firstname]</wicket:message></th>
-			<th wicket:id="table_lastname"><wicket:message key="table_lastname">[lastname]</wicket:message></th>
-			<th wicket:id="table_role"><wicket:message key="table_role">[role]</wicket:message></th>
-			<th wicket:id="table_regdate"><wicket:message key="table_regdate">[registration date]</wicket:message></th>
-			<th wicket:id="table_active"><wicket:message key="table_active">[active]</wicket:message></th>
-			<th>&nbsp;</th>
-		</tr>
-		<tr wicket:id="repeatingUsers">
-			<td><div wicket:id="username">[username]</div></td>
-			<td wicket:id="firstname">[firstname]</td>
-			<td wicket:id="lastname">[lastname]</td>
-			<td wicket:id="role">[role]</td>
-			<td wicket:id="registration">[registration]</td>
-			<td wicket:id="active">[active]</td>
-			<td style="white-space: nowrap"><span wicket:id="authorButtons">[edit/delete buttons]</span></td>
-		</tr>		
-	</table>
-	<p><span wicket:id="navigatorBottom">[dataview navigator]</span></p>
-	</div>
+    <div wicket:id="bubblePanel"/>
+    <h2><wicket:message key="contentTitle">[edit user]</wicket:message></h2><br/>
+
+    <div wicket:id="refreshTable">
+        <p><span wicket:id="navigatorTop">[dataview navigator]</span></p>
+        <table class="dataview" cellspacing="0">
+            <tr>
+                <th wicket:id="table_username"><wicket:message key="table_username">[username]</wicket:message></th>
+                <th wicket:id="table_firstname"><wicket:message key="table_firstname">[firstname]</wicket:message></th>
+                <th wicket:id="table_lastname"><wicket:message key="table_lastname">[lastname]</wicket:message></th>
+                <th wicket:id="table_role"><wicket:message key="table_role">[role]</wicket:message></th>
+                <th wicket:id="table_regdate"><wicket:message key="table_regdate">[registration date]</wicket:message>
+                </th>
+                <th wicket:id="table_active"><wicket:message key="table_active">[active]</wicket:message></th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr wicket:id="repeatingUsers">
+                <td>
+                    <div wicket:id="username">[username]</div>
+                </td>
+                <td wicket:id="firstname">[firstname]</td>
+                <td wicket:id="lastname">[lastname]</td>
+                <td wicket:id="role">[role]</td>
+                <td wicket:id="registration">[registration]</td>
+                <td wicket:id="active">[active]</td>
+                <td style="white-space: nowrap"><span wicket:id="authorButtons">[edit/delete buttons]</span></td>
+            </tr>
+        </table>
+        <p><span wicket:id="navigatorBottom">[dataview navigator]</span></p>
+    </div>
 </wicket:extend>
 </body>
 </html>

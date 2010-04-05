@@ -19,8 +19,8 @@ package org.devproof.portal.core.module.user.service;
  * @author Carsten Hufe
  */
 public interface UsernameResolver {
-	/**
-	 * Returns the username of the logged in person
-	 */
-	String getUsername();
+    /**
+     * Returns the username of the logged in person
+     */
+    String getUsername();
 }

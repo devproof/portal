@@ -26,7 +26,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
 
 import java.io.IOException;
@@ -36,60 +35,60 @@ import java.io.PrintWriter;
  * @author Carsten Hufe
  */
 public abstract class BaseFeedPage extends WebPage {
-	@SpringBean(name = "feedProviderRegistry")
-	private FeedProviderRegistry feedProviderRegistry;
-	@SpringBean(name = "roleService")
-	private RoleService roleService;
-	private PageParameters params;
-	private String path;
+    @SpringBean(name = "feedProviderRegistry")
+    private FeedProviderRegistry feedProviderRegistry;
+    @SpringBean(name = "roleService")
+    private RoleService roleService;
+    private PageParameters params;
+    private String path;
 
-	public BaseFeedPage(PageParameters params) {
-		super(params);
-		this.params = params;
-		this.path = getFeedPath();
-	}
+    public BaseFeedPage(PageParameters params) {
+        super(params);
+        this.params = params;
+        this.path = getFeedPath();
+    }
 
-	private String getFeedPath() {
-		if (params.size() > 0) {
-			return params.getString("0");
-		}
+    private String getFeedPath() {
+        if (params.size() > 0) {
+            return params.getString("0");
+        }
         return "";
-	}
+    }
 
-	@Override
-	protected final void onRender(MarkupStream markupStream) {
-		getResponse().setContentType(getContentType());
-		PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
-		SyndFeedOutput output = new SyndFeedOutput();
-		try {
-			SyndFeed feed = createAppropriateFeedProvider();
-			output.output(feed, writer);
-			writer.close();
-		} catch (IOException e) {
-			throw new UnhandledException("Error streaming feed.", e);
-		} catch (FeedException e) {
-			throw new UnhandledException("Error streaming feed.", e);
-		}
-	}
+    @Override
+    protected final void onRender(MarkupStream markupStream) {
+        getResponse().setContentType(getContentType());
+        PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
+        SyndFeedOutput output = new SyndFeedOutput();
+        try {
+            SyndFeed feed = createAppropriateFeedProvider();
+            output.output(feed, writer);
+            writer.close();
+        } catch (IOException e) {
+            throw new UnhandledException("Error streaming feed.", e);
+        } catch (FeedException e) {
+            throw new UnhandledException("Error streaming feed.", e);
+        }
+    }
 
-	private SyndFeed createAppropriateFeedProvider() {
-		FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
-		final SyndFeed feed;
-		if (feedProvider != null) {
-			feed = feedProvider.getFeed(getRequestCycle());
-		} else {
-			feed = new SyndFeedImpl();
-		}
-		feed.setFeedType(getFeedType());
-		return feed;
-	}
+    private SyndFeed createAppropriateFeedProvider() {
+        FeedProvider feedProvider = feedProviderRegistry.getFeedProviderByPath(path);
+        final SyndFeed feed;
+        if (feedProvider != null) {
+            feed = feedProvider.getFeed(getRequestCycle());
+        } else {
+            feed = new SyndFeedImpl();
+        }
+        feed.setFeedType(getFeedType());
+        return feed;
+    }
 
-	protected abstract String getContentType();
+    protected abstract String getContentType();
 
-	protected abstract String getFeedType();
+    protected abstract String getFeedType();
 
-	@Override
-	public String getMarkupType() {
-		return "xml";
-	}
+    @Override
+    public String getMarkupType() {
+        return "xml";
+    }
 }

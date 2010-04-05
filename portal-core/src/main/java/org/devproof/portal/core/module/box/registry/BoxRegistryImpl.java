@@ -26,68 +26,70 @@ import java.util.*;
  * @author Carsten Hufe
  */
 public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
-	private BoxLocator boxLocator;
-	private final Map<String, BoxConfiguration> boxes = new HashMap<String, BoxConfiguration>();
+    private BoxLocator boxLocator;
+    private final Map<String, BoxConfiguration> boxes = new HashMap<String, BoxConfiguration>();
 
-	@Override
-	public String getNameBySimpleClassName(String clazz) {
-		BoxConfiguration box = boxes.get(clazz);
-		if (box != null) {
-			return box.getName();
-		}
-		return "[undefined]";
-	}
+    @Override
+    public String getNameBySimpleClassName(String clazz) {
+        BoxConfiguration box = boxes.get(clazz);
+        if (box != null) {
+            return box.getName();
+        }
+        return "[undefined]";
+    }
 
-	@Override
-	public List<BoxConfiguration> getRegisteredBoxes() {
-		return new ArrayList<BoxConfiguration>(boxes.values());
-	}
+    @Override
+    public List<BoxConfiguration> getRegisteredBoxes() {
+        return new ArrayList<BoxConfiguration>(boxes.values());
+    }
 
-	@Override
-	public boolean isBoxClassRegistered(String clazz) {
-		return boxes.containsKey(clazz);
-	}
+    @Override
+    public boolean isBoxClassRegistered(String clazz) {
+        return boxes.containsKey(clazz);
+    }
 
-	@Override
-	public void registerBox(BoxConfiguration box) {
-		boxes.put(box.getBoxClass().getSimpleName(), box);
-	};
+    @Override
+    public void registerBox(BoxConfiguration box) {
+        boxes.put(box.getBoxClass().getSimpleName(), box);
+    }
 
-	@Override
-	public void removeBox(BoxConfiguration box) {
-		boxes.remove(box.getBoxClass().getSimpleName());
-	}
+    ;
 
-	@Override
-	public BoxConfiguration getBoxConfigurationBySimpleClassName(String simpleClazz) {
-		BoxConfiguration box = boxes.get(simpleClazz);
-		if (box != null) {
-			BoxConfiguration back = new BoxConfiguration();
-			back.setBoxClass(box.getBoxClass());
-			back.setName(box.getName());
-			return back;
-		}
-		return null;
-	}
+    @Override
+    public void removeBox(BoxConfiguration box) {
+        boxes.remove(box.getBoxClass().getSimpleName());
+    }
 
-	@Override
-	public Class<? extends Component> getClassBySimpleClassName(String simpleClazz) {
-		BoxConfiguration box = boxes.get(simpleClazz);
-		if (box != null) {
-			return box.getBoxClass();
-		}
-		return null;
-	}
+    @Override
+    public BoxConfiguration getBoxConfigurationBySimpleClassName(String simpleClazz) {
+        BoxConfiguration box = boxes.get(simpleClazz);
+        if (box != null) {
+            BoxConfiguration back = new BoxConfiguration();
+            back.setBoxClass(box.getBoxClass());
+            back.setName(box.getName());
+            return back;
+        }
+        return null;
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		Collection<BoxConfiguration> boxes = boxLocator.getBoxes();
-		for (BoxConfiguration box : boxes) {
-			registerBox(box);
-		}
-	}
+    @Override
+    public Class<? extends Component> getClassBySimpleClassName(String simpleClazz) {
+        BoxConfiguration box = boxes.get(simpleClazz);
+        if (box != null) {
+            return box.getBoxClass();
+        }
+        return null;
+    }
 
-	public void setBoxLocator(BoxLocator boxLocator) {
-		this.boxLocator = boxLocator;
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Collection<BoxConfiguration> boxes = boxLocator.getBoxes();
+        for (BoxConfiguration box : boxes) {
+            registerBox(box);
+        }
+    }
+
+    public void setBoxLocator(BoxLocator boxLocator) {
+        this.boxLocator = boxLocator;
+    }
 }

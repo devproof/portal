@@ -32,30 +32,28 @@ import java.util.List;
  */
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
 public interface BookmarkDao extends GenericDao<BookmarkEntity, Integer> {
-	@Query("Select distinct(b) from BookmarkEntity b")
-	List<BookmarkEntity> findAll();
+    @Query("Select distinct(b) from BookmarkEntity b")
+    List<BookmarkEntity> findAll();
 
-	@CacheQuery(enabled = false)
-	@Query("select b.allRights from BookmarkEntity b where b.modifiedAt = (select max(modifiedAt) from BookmarkEntity)")
-	List<RightEntity> findLastSelectedRights();
+    @CacheQuery(enabled = false)
+    @Query("select b.allRights from BookmarkEntity b where b.modifiedAt = (select max(modifiedAt) from BookmarkEntity)")
+    List<RightEntity> findLastSelectedRights();
 
-	@Query(value = "select distinct(b) from BookmarkEntity b join b.allRights vr"
-			+ " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%') order by b.modifiedAt desc", limitClause = true)
-	List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
-			Integer maxResult);
+    @Query(value = "select distinct(b) from BookmarkEntity b join b.allRights vr" + " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%') order by b.modifiedAt desc", limitClause = true)
+    List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-	@Query("select distinct b from BookmarkEntity b left join fetch b.tags where b.source = ?")
-	List<BookmarkEntity> findBookmarksBySource(final Source source);
+    @Query("select distinct b from BookmarkEntity b left join fetch b.tags where b.source = ?")
+    List<BookmarkEntity> findBookmarksBySource(final Source source);
 
-	@BulkUpdate("update BookmarkEntity b set b.hits = (b.hits + 1) where b = ?")
-	void incrementHits(BookmarkEntity bookmark);
+    @BulkUpdate("update BookmarkEntity b set b.hits = (b.hits + 1) where b = ?")
+    void incrementHits(BookmarkEntity bookmark);
 
-	@BulkUpdate("update BookmarkEntity b set b.numberOfVotes = (b.numberOfVotes + 1), b.sumOfRating = (b.sumOfRating + ?) where b = ?")
-	void rateBookmark(Integer rating, BookmarkEntity bookmark);
+    @BulkUpdate("update BookmarkEntity b set b.numberOfVotes = (b.numberOfVotes + 1), b.sumOfRating = (b.sumOfRating + ?) where b = ?")
+    void rateBookmark(Integer rating, BookmarkEntity bookmark);
 
-	@BulkUpdate("update BookmarkEntity b set b.broken = true where b = ?")
-	void markBrokenBookmark(BookmarkEntity bookmark);
+    @BulkUpdate("update BookmarkEntity b set b.broken = true where b = ?")
+    void markBrokenBookmark(BookmarkEntity bookmark);
 
-	@BulkUpdate("update BookmarkEntity b set b.broken = false where b = ?")
-	void markValidBookmark(BookmarkEntity bookmark);
+    @BulkUpdate("update BookmarkEntity b set b.broken = false where b = ?")
+    void markValidBookmark(BookmarkEntity bookmark);
 }

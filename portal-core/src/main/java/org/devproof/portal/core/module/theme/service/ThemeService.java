@@ -24,45 +24,45 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface ThemeService {
-	public enum ValidationKey {
-		VALID, MISSING_DESCRIPTOR_FILE, INVALID_DESCRIPTOR_FILE, WRONG_VERSION, NOT_A_JARFILE
-	}
+    public enum ValidationKey {
+        VALID, MISSING_DESCRIPTOR_FILE, INVALID_DESCRIPTOR_FILE, WRONG_VERSION, NOT_A_JARFILE
+    }
 
-	/**
-	 * Selects a theme
-	 */
-	void selectTheme(ThemeBean theme);
+    /**
+     * Selects a theme
+     */
+    void selectTheme(ThemeBean theme);
 
-	/**
-	 * Validates a theme
-	 */
-	ValidationKey validateTheme(File themeArchive);
+    /**
+     * Validates a theme
+     */
+    ValidationKey validateTheme(File themeArchive);
 
-	/**
-	 * Installs a theme
-	 */
-	void install(File themeArchive);
+    /**
+     * Installs a theme
+     */
+    void install(File themeArchive);
 
-	/**
-	 * Uninstalls a theme, if the theme is selected the default theme will be
-	 * selected
-	 */
-	void uninstall(ThemeBean theme);
+    /**
+     * Uninstalls a theme, if the theme is selected the default theme will be
+     * selected
+     */
+    void uninstall(ThemeBean theme);
 
-	/**
-	 * Returns all installed themes
-	 */
-	List<ThemeBean> findAllThemes();
+    /**
+     * Returns all installed themes
+     */
+    List<ThemeBean> findAllThemes();
 
-	/**
-	 * Creates a zip file with the "small" theme template. That means only
-	 * TemplatePage (Base Page) and the main css files
-	 */
-	File createSmallDefaultTheme();
+    /**
+     * Creates a zip file with the "small" theme template. That means only
+     * TemplatePage (Base Page) and the main css files
+     */
+    File createSmallDefaultTheme();
 
-	/**
-	 * Creates a zip file with the "complete" theme template. That means
-	 * everything is exported, excepting tinymce stuff
-	 */
-	File createCompleteDefaultTheme();
+    /**
+     * Creates a zip file with the "complete" theme template. That means
+     * everything is exported, excepting tinymce stuff
+     */
+    File createCompleteDefaultTheme();
 }

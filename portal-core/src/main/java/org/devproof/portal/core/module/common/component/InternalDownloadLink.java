@@ -27,75 +27,74 @@ import java.util.Locale;
 
 /**
  * Internal download link with file parameter
- * 
+ *
  * @author Carsten Hufe
  */
 public abstract class InternalDownloadLink extends StatelessLink {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public InternalDownloadLink(String id) {
-		super(id);
-	}
+    public InternalDownloadLink(String id) {
+        super(id);
+    }
 
-	@Override
-	public void onClick() {
-		try {
-			File file = getFile();
-			FileInputStream fis = new FileInputStream(file);
-			IResourceStream resourceStream = createFileResourceStream(file, fis);
-			getRequestCycle().setRequestTarget(createFileResourceStreamRequestTarget(file, resourceStream));
-		} catch (FileNotFoundException e) {
-			throw new UnhandledException(e);
-		}
-	}
+    @Override
+    public void onClick() {
+        try {
+            File file = getFile();
+            FileInputStream fis = new FileInputStream(file);
+            IResourceStream resourceStream = createFileResourceStream(file, fis);
+            getRequestCycle().setRequestTarget(createFileResourceStreamRequestTarget(file, resourceStream));
+        } catch (FileNotFoundException e) {
+            throw new UnhandledException(e);
+        }
+    }
 
-	private ResourceStreamRequestTarget createFileResourceStreamRequestTarget(final File file,
-			IResourceStream resourceStream) {
-		return new ResourceStreamRequestTarget(resourceStream) {
-			@Override
-			public String getFileName() {
-				return (file.getName());
-			}
-		};
-	}
+    private ResourceStreamRequestTarget createFileResourceStreamRequestTarget(final File file, IResourceStream resourceStream) {
+        return new ResourceStreamRequestTarget(resourceStream) {
+            @Override
+            public String getFileName() {
+                return (file.getName());
+            }
+        };
+    }
 
-	private IResourceStream createFileResourceStream(final File file, final FileInputStream fis) {
-		IResourceStream resourceStream = new IResourceStream() {
-			private static final long serialVersionUID = 1L;
+    private IResourceStream createFileResourceStream(final File file, final FileInputStream fis) {
+        IResourceStream resourceStream = new IResourceStream() {
+            private static final long serialVersionUID = 1L;
 
-			public void close() throws IOException {
-				fis.close();
-			}
+            public void close() throws IOException {
+                fis.close();
+            }
 
-			public String getContentType() {
-				return "application/octet-stream";
-			}
+            public String getContentType() {
+                return "application/octet-stream";
+            }
 
-			public InputStream getInputStream() throws ResourceStreamNotFoundException {
-				return fis;
-			}
+            public InputStream getInputStream() throws ResourceStreamNotFoundException {
+                return fis;
+            }
 
-			public Locale getLocale() {
-				return null;
-			}
+            public Locale getLocale() {
+                return null;
+            }
 
-			public long length() {
-				return file.length();
-			}
+            public long length() {
+                return file.length();
+            }
 
-			public void setLocale(Locale locale) {
-			}
+            public void setLocale(Locale locale) {
+            }
 
-			public Time lastModifiedTime() {
-				return Time.milliseconds(file.lastModified());
-			}
-		};
-		return resourceStream;
-	}
+            public Time lastModifiedTime() {
+                return Time.milliseconds(file.lastModified());
+            }
+        };
+        return resourceStream;
+    }
 
-	/**
-	 * @return must return the file which you want to download
-	 */
-	protected abstract File getFile();
+    /**
+     * @return must return the file which you want to download
+     */
+    protected abstract File getFile();
 
 }

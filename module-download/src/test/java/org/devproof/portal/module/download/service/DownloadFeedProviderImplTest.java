@@ -36,122 +36,119 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class DownloadFeedProviderImplTest extends TestCase {
-	private DownloadFeedProviderImpl impl;
-	private SortableQueryDataProvider<DownloadEntity, DownloadQuery> dataProviderMock;
-	private ConfigurationService configurationServiceMock;
+    private DownloadFeedProviderImpl impl;
+    private SortableQueryDataProvider<DownloadEntity, DownloadQuery> dataProviderMock;
+    private ConfigurationService configurationServiceMock;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void setUp() throws Exception {
-		dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
-		configurationServiceMock = createMock(ConfigurationService.class);
-		impl = new DownloadFeedProviderImpl() {
-			@Override
-			protected String getUrl(RequestCycle rc) {
-				return "http://url";
-			}
+    @Override
+    @SuppressWarnings("unchecked")
+    public void setUp() throws Exception {
+        dataProviderMock = createStrictMock(SortableQueryDataProvider.class);
+        configurationServiceMock = createMock(ConfigurationService.class);
+        impl = new DownloadFeedProviderImpl() {
+            @Override
+            protected String getUrl(RequestCycle rc) {
+                return "http://url";
+            }
 
-			@Override
-			protected String getUrl(RequestCycle rc, DownloadEntity downloadEntity) {
-				return "http://url/" + downloadEntity.getId();
-			}
-		};
-		impl.setConfigurationService(configurationServiceMock);
-		impl.setDownloadDataProvider(dataProviderMock);
-	}
+            @Override
+            protected String getUrl(RequestCycle rc, DownloadEntity downloadEntity) {
+                return "http://url/" + downloadEntity.getId();
+            }
+        };
+        impl.setConfigurationService(configurationServiceMock);
+        impl.setDownloadDataProvider(dataProviderMock);
+    }
 
-	public void testGetFeedName() {
-		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
-		expect(configurationServiceMock.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE))
-				.andReturn("feedtitle");
-		replay(configurationServiceMock);
-		assertEquals("pagetitle - feedtitle", impl.getFeedName());
-		verify(configurationServiceMock);
-	}
+    public void testGetFeedName() {
+        expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle");
+        expect(configurationServiceMock.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE)).andReturn("feedtitle");
+        replay(configurationServiceMock);
+        assertEquals("pagetitle - feedtitle", impl.getFeedName());
+        verify(configurationServiceMock);
+    }
 
-	public void testSupportedPages() {
-		assertEquals(DownloadPage.class, impl.getSupportedFeedPages().get(0));
-	}
+    public void testSupportedPages() {
+        assertEquals(DownloadPage.class, impl.getSupportedFeedPages().get(0));
+    }
 
-	@SuppressWarnings("unchecked")
-	public void testGetDownloadEntries() {
-		DownloadEntity download = createDownload();
-		Iterator it = Arrays.asList(download).iterator();
-		expect(configurationServiceMock.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED)).andReturn(10);
-		expect(dataProviderMock.iterator(0, 10)).andReturn(it);
-		replay(configurationServiceMock);
-		replay(dataProviderMock);
-		Iterator<? extends DownloadEntity> bookmarkEntries = impl.getDownloadEntries();
-		assertSame(bookmarkEntries, it);
-		verify(configurationServiceMock);
-		verify(dataProviderMock);
-	}
+    @SuppressWarnings("unchecked")
+    public void testGetDownloadEntries() {
+        DownloadEntity download = createDownload();
+        Iterator it = Arrays.asList(download).iterator();
+        expect(configurationServiceMock.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED)).andReturn(10);
+        expect(dataProviderMock.iterator(0, 10)).andReturn(it);
+        replay(configurationServiceMock);
+        replay(dataProviderMock);
+        Iterator<? extends DownloadEntity> bookmarkEntries = impl.getDownloadEntries();
+        assertSame(bookmarkEntries, it);
+        verify(configurationServiceMock);
+        verify(dataProviderMock);
+    }
 
-	public void testGenerateFeed() {
-		expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle")
-				.anyTimes();
-		expect(configurationServiceMock.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE))
-				.andReturn("feedtitle").anyTimes();
-		replay(configurationServiceMock);
-		SyndFeed feed = impl.generateFeed(null);
-		assertEquals("pagetitle - feedtitle", feed.getTitle());
-		assertEquals("pagetitle - feedtitle", feed.getDescription());
-		assertEquals("http://url", feed.getLink());
-		verify(configurationServiceMock);
-	}
+    public void testGenerateFeed() {
+        expect(configurationServiceMock.findAsString(CommonConstants.CONF_PAGE_TITLE)).andReturn("pagetitle").anyTimes();
+        expect(configurationServiceMock.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE)).andReturn("feedtitle").anyTimes();
+        replay(configurationServiceMock);
+        SyndFeed feed = impl.generateFeed(null);
+        assertEquals("pagetitle - feedtitle", feed.getTitle());
+        assertEquals("pagetitle - feedtitle", feed.getDescription());
+        assertEquals("http://url", feed.getLink());
+        verify(configurationServiceMock);
+    }
 
-	@SuppressWarnings("unchecked")
-	public void testGenerateFeedEntries() {
-		DownloadEntity bookmark = createDownload();
-		Iterator it = Arrays.asList(bookmark).iterator();
-		List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
-		SyndEntry entry = generateFeedEntries.get(0);
-		assertEquals("hello", entry.getTitle());
-		assertEquals("http://url/" + bookmark.getId(), entry.getLink());
-		assertEquals("world", entry.getDescription().getValue());
-		assertEquals("text/plain", entry.getDescription().getType());
-		assertEquals("maxpower", entry.getAuthor());
-		assertNotNull(entry.getPublishedDate());
-	}
+    @SuppressWarnings("unchecked")
+    public void testGenerateFeedEntries() {
+        DownloadEntity bookmark = createDownload();
+        Iterator it = Arrays.asList(bookmark).iterator();
+        List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
+        SyndEntry entry = generateFeedEntries.get(0);
+        assertEquals("hello", entry.getTitle());
+        assertEquals("http://url/" + bookmark.getId(), entry.getLink());
+        assertEquals("world", entry.getDescription().getValue());
+        assertEquals("text/plain", entry.getDescription().getType());
+        assertEquals("maxpower", entry.getAuthor());
+        assertNotNull(entry.getPublishedDate());
+    }
 
-	public void testGetFeed() {
-		final List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		final StringBuilder callOrder = new StringBuilder();
-		impl = new DownloadFeedProviderImpl() {
-			@Override
-			protected SyndFeed generateFeed(RequestCycle rc) {
-				callOrder.append("1");
-				return new SyndFeedImpl();
-			}
+    public void testGetFeed() {
+        final List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        final StringBuilder callOrder = new StringBuilder();
+        impl = new DownloadFeedProviderImpl() {
+            @Override
+            protected SyndFeed generateFeed(RequestCycle rc) {
+                callOrder.append("1");
+                return new SyndFeedImpl();
+            }
 
-			@Override
-			protected Iterator<? extends DownloadEntity> getDownloadEntries() {
-				callOrder.append("2");
-				return null;
-			}
+            @Override
+            protected Iterator<? extends DownloadEntity> getDownloadEntries() {
+                callOrder.append("2");
+                return null;
+            }
 
-			@Override
-			protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
-				callOrder.append("3");
-				return entries;
-			}
+            @Override
+            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
+                callOrder.append("3");
+                return entries;
+            }
 
-			@Override
-			protected String getUrl(RequestCycle rc) {
-				return "";
-			}
-		};
-		impl.getFeed(null);
-		assertEquals("123", callOrder.toString());
-	}
+            @Override
+            protected String getUrl(RequestCycle rc) {
+                return "";
+            }
+        };
+        impl.getFeed(null);
+        assertEquals("123", callOrder.toString());
+    }
 
-	private DownloadEntity createDownload() {
-		DownloadEntity download = new DownloadEntity();
-		download.setId(1);
-		download.setTitle("hello");
-		download.setDescription("world");
-		download.setModifiedBy("maxpower");
-		download.setModifiedAt(new Date());
-		return download;
-	}
+    private DownloadEntity createDownload() {
+        DownloadEntity download = new DownloadEntity();
+        download.setId(1);
+        download.setTitle("hello");
+        download.setDescription("world");
+        download.setModifiedBy("maxpower");
+        download.setModifiedAt(new Date());
+        return download;
+    }
 }

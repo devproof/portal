@@ -39,78 +39,78 @@ import java.util.List;
  */
 public class OtherPageEditPage extends OtherPageBasePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "otherPageService")
-	private OtherPageService otherPageService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "otherPageService")
+    private OtherPageService otherPageService;
     private IModel<OtherPageEntity> otherPageModel;
 
     public OtherPageEditPage(IModel<OtherPageEntity> otherPageModel) {
-		super(new PageParameters());
+        super(new PageParameters());
         this.otherPageModel = otherPageModel;
         add(createOtherPageEditForm());
-	}
+    }
 
-	private Form<OtherPageEntity> createOtherPageEditForm() {
-		Form<OtherPageEntity> form = newOtherPageEditForm();
-		form.add(createContentIdField());
-		form.add(createContentField());
-		form.add(createViewRightPanel());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<OtherPageEntity> createOtherPageEditForm() {
+        Form<OtherPageEntity> form = newOtherPageEditForm();
+        form.add(createContentIdField());
+        form.add(createContentField());
+        form.add(createViewRightPanel());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private FormComponent<String> createContentField() {
-		return new FullRichTextArea("content");
-	}
+    private FormComponent<String> createContentField() {
+        return new FullRichTextArea("content");
+    }
 
-	private FormComponent<String> createContentIdField() {
-		FormComponent<String> fc = new RequiredTextField<String>("contentId");
-		fc.add(createContentIdPatternValidator());
-		fc.add(createContentIdValidator());
-		return fc;
-	}
+    private FormComponent<String> createContentIdField() {
+        FormComponent<String> fc = new RequiredTextField<String>("contentId");
+        fc.add(createContentIdPatternValidator());
+        fc.add(createContentIdValidator());
+        return fc;
+    }
 
-	private PatternValidator createContentIdPatternValidator() {
-		return new PatternValidator("[A-Za-z0-9\\_\\._\\-]*");
-	}
+    private PatternValidator createContentIdPatternValidator() {
+        return new PatternValidator("[A-Za-z0-9\\_\\._\\-]*");
+    }
 
-	private AbstractValidator<String> createContentIdValidator() {
-		return new AbstractValidator<String>() {
-			private static final long serialVersionUID = 1L;
+    private AbstractValidator<String> createContentIdValidator() {
+        return new AbstractValidator<String>() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onValidate(IValidatable<String> ivalidatable) {
+            @Override
+            protected void onValidate(IValidatable<String> ivalidatable) {
                 OtherPageEntity otherPage = otherPageModel.getObject();
-				if (otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
-					error(ivalidatable);
-				}
-			}
+                if (otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
+                    error(ivalidatable);
+                }
+            }
 
-			@Override
-			protected String resourceKey() {
-				return "existing.contentId";
-			}
-		};
-	}
+            @Override
+            protected String resourceKey() {
+                return "existing.contentId";
+            }
+        };
+    }
 
-	private RightGridPanel createViewRightPanel() {
+    private RightGridPanel createViewRightPanel() {
         IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(otherPageModel, "allRights");
         return new RightGridPanel("viewright", "otherPage.view", allRightsModel);
-	}
+    }
 
-	private Form<OtherPageEntity> newOtherPageEditForm() {
+    private Form<OtherPageEntity> newOtherPageEditForm() {
         IModel<OtherPageEntity> compoundModel = new CompoundPropertyModel<OtherPageEntity>(otherPageModel);
         return new Form<OtherPageEntity>("form", compoundModel) {
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onSubmit() {
+            @Override
+            public void onSubmit() {
                 OtherPageEntity otherPage = otherPageModel.getObject();
                 otherPageService.save(otherPage);
                 setRedirect(false);
                 info(OtherPageEditPage.this.getString("msg.saved"));
                 setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getContentId())));
             }
-		};
-	}
+        };
+    }
 }

@@ -19,5 +19,5 @@ package org.devproof.portal.core.module.common.model;
  * @author Carsten Hufe
  */
 public interface EntityId {
-	Integer getId();
+    Integer getId();
 }

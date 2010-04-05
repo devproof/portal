@@ -26,13 +26,13 @@ import org.devproof.portal.core.module.user.entity.UserEntity;
  */
 public class UsernameResolverImpl implements UsernameResolver {
 
-	@Override
-	public String getUsername() {
-		if (RequestCycle.get() != null) {
-			PortalSession session = ((PortalSession) Session.get());
-			UserEntity user = session.getUser();
-			return user.getUsername();
-		}
-		return UserConstants.UNKNOWN_USERNAME;
-	}
+    @Override
+    public String getUsername() {
+        if (RequestCycle.get() != null) {
+            PortalSession session = ((PortalSession) Session.get());
+            UserEntity user = session.getUser();
+            return user.getUsername();
+        }
+        return UserConstants.UNKNOWN_USERNAME;
+    }
 }

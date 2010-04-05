@@ -38,83 +38,83 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class BlogFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
-	private ConfigurationService configurationService;
+    private SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
+    private ConfigurationService configurationService;
 
-	@Override
-	public SyndFeed getFeed(RequestCycle rc) {
-		SyndFeed feed = generateFeed(rc);
-		Iterator<? extends BlogEntity> iterator = getBlogEntries();
-		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
-		feed.setEntries(entries);
-		return feed;
-	}
+    @Override
+    public SyndFeed getFeed(RequestCycle rc) {
+        SyndFeed feed = generateFeed(rc);
+        Iterator<? extends BlogEntity> iterator = getBlogEntries();
+        List<SyndEntry> entries = generateFeedEntries(rc, iterator);
+        feed.setEntries(entries);
+        return feed;
+    }
 
-	protected Iterator<? extends BlogEntity> getBlogEntries() {
-		Integer maxNumber = configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED);
+    protected Iterator<? extends BlogEntity> getBlogEntries() {
+        Integer maxNumber = configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED);
         return blogDataProvider.iterator(0, maxNumber);
-	}
+    }
 
-	protected SyndFeed generateFeed(RequestCycle rc) {
-		SyndFeed feed = new SyndFeedImpl();
-		feed.setTitle(getFeedName());
-		feed.setLink(getUrl(rc));
-		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
-		feed.setAuthor(pageTitle);
-		feed.setCopyright(pageTitle);
-		// must be set for RSS2 feed
-		feed.setDescription(getFeedName());
-		return feed;
-	}
+    protected SyndFeed generateFeed(RequestCycle rc) {
+        SyndFeed feed = new SyndFeedImpl();
+        feed.setTitle(getFeedName());
+        feed.setLink(getUrl(rc));
+        String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+        feed.setAuthor(pageTitle);
+        feed.setCopyright(pageTitle);
+        // must be set for RSS2 feed
+        feed.setDescription(getFeedName());
+        return feed;
+    }
 
-	protected String getUrl(RequestCycle rc) {
-		return rc.urlFor(BlogPage.class, new PageParameters()).toString();
-	}
+    protected String getUrl(RequestCycle rc) {
+        return rc.urlFor(BlogPage.class, new PageParameters()).toString();
+    }
 
-	protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
-		List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		while (iterator.hasNext()) {
-			BlogEntity blogEntity = iterator.next();
-			SyndEntry entry = new SyndEntryImpl();
-			entry.setTitle(blogEntity.getHeadline());
-			entry.setLink(getUrl(rc, blogEntity));
-			entry.setPublishedDate(blogEntity.getModifiedAt());
-			entry.setAuthor(blogEntity.getModifiedBy());
-			String content = blogEntity.getContent().replaceAll("<(.|\n)*?>", "");
-			SyndContent description = new SyndContentImpl();
-			description.setType("text/plain");
-			description.setValue(StringUtils.abbreviate(content, 200));
-			entry.setDescription(description);
-			entries.add(entry);
-		}
-		return entries;
-	}
+    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        while (iterator.hasNext()) {
+            BlogEntity blogEntity = iterator.next();
+            SyndEntry entry = new SyndEntryImpl();
+            entry.setTitle(blogEntity.getHeadline());
+            entry.setLink(getUrl(rc, blogEntity));
+            entry.setPublishedDate(blogEntity.getModifiedAt());
+            entry.setAuthor(blogEntity.getModifiedBy());
+            String content = blogEntity.getContent().replaceAll("<(.|\n)*?>", "");
+            SyndContent description = new SyndContentImpl();
+            description.setType("text/plain");
+            description.setValue(StringUtils.abbreviate(content, 200));
+            entry.setDescription(description);
+            entries.add(entry);
+        }
+        return entries;
+    }
 
-	protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
-		return rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString();
-	}
+    protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
+        return rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString();
+    }
 
-	@Override
-	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
-		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
-		pages.add(BlogPage.class);
-		return pages;
-	}
+    @Override
+    public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
+        List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
+        pages.add(BlogPage.class);
+        return pages;
+    }
 
-	@Override
-	public String getFeedName() {
-		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
-		String feedName = configurationService.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE);
-		return pageTitle + " - " + feedName;
-	}
+    @Override
+    public String getFeedName() {
+        String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+        String feedName = configurationService.findAsString(BlogConstants.CONF_BLOG_FEED_TITLE);
+        return pageTitle + " - " + feedName;
+    }
 
-	@Required
-	public void setBlogDataProvider(SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider) {
-		this.blogDataProvider = blogDataProvider;
-	}
+    @Required
+    public void setBlogDataProvider(SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider) {
+        this.blogDataProvider = blogDataProvider;
+    }
 
-	@Required
-	public void setConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 }

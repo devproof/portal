@@ -34,119 +34,118 @@ import java.util.List;
  */
 public class CommentServiceImpl implements CommentService {
 
-	private ConfigurationService configurationService;
-	private UserService userService;
-	private EmailService emailService;
-	private CommentDao commentDao;
-	private DateFormat displayDateTimeFormat;
+    private ConfigurationService configurationService;
+    private UserService userService;
+    private EmailService emailService;
+    private CommentDao commentDao;
+    private DateFormat displayDateTimeFormat;
 
-	@Override
-	public CommentEntity newCommentEntity() {
-		return new CommentEntity();
-	}
+    @Override
+    public CommentEntity newCommentEntity() {
+        return new CommentEntity();
+    }
 
-	@Override
-	public void delete(CommentEntity entity) {
-		commentDao.delete(entity);
-	}
+    @Override
+    public void delete(CommentEntity entity) {
+        commentDao.delete(entity);
+    }
 
-	@Override
-	public CommentEntity findById(Integer id) {
-		return commentDao.findById(id);
-	}
+    @Override
+    public CommentEntity findById(Integer id) {
+        return commentDao.findById(id);
+    }
 
-	@Override
-	public void save(CommentEntity entity) {
-		commentDao.save(entity);
-	}
+    @Override
+    public void save(CommentEntity entity) {
+        commentDao.save(entity);
+    }
 
-	@Override
-	public void saveNewComment(CommentEntity comment, UrlCallback urlCallback) {
-		CommentEntity saved = commentDao.save(comment);
-		Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT);
-		sendEmailNotificationToAdmins(saved, templateId, "comment.notify.newcomment", urlCallback, saved.getIpAddress());
-	}
+    @Override
+    public void saveNewComment(CommentEntity comment, UrlCallback urlCallback) {
+        CommentEntity saved = commentDao.save(comment);
+        Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT);
+        sendEmailNotificationToAdmins(saved, templateId, "comment.notify.newcomment", urlCallback, saved.getIpAddress());
+    }
 
-	@Override
-	public void rejectComment(CommentEntity comment) {
-		commentDao.rejectComment(comment);
-		commentDao.refresh(comment);
-	}
+    @Override
+    public void rejectComment(CommentEntity comment) {
+        commentDao.rejectComment(comment);
+        commentDao.refresh(comment);
+    }
 
-	@Override
-	public void acceptComment(CommentEntity comment) {
-		commentDao.acceptComment(comment);
-		commentDao.refresh(comment);
-	}
+    @Override
+    public void acceptComment(CommentEntity comment) {
+        commentDao.acceptComment(comment);
+        commentDao.refresh(comment);
+    }
 
-	@Override
-	public long findNumberOfComments(String moduleName, String moduleContentId) {
-		boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
-		if (showOnlyReviewed) {
-			return commentDao.findNumberOfReviewedComments(moduleName, moduleContentId);
-		} else {
-			return commentDao.findNumberOfComments(moduleName, moduleContentId);
-		}
-	}
+    @Override
+    public long findNumberOfComments(String moduleName, String moduleContentId) {
+        boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
+        if (showOnlyReviewed) {
+            return commentDao.findNumberOfReviewedComments(moduleName, moduleContentId);
+        } else {
+            return commentDao.findNumberOfComments(moduleName, moduleContentId);
+        }
+    }
 
-	@Override
-	public void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp) {
-		int maxNumberOfBlames = configurationService.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD);
-		int blames = comment.getNumberOfBlames() + 1;
-		comment.setNumberOfBlames(blames);
-		boolean automaticBlocked = blames >= maxNumberOfBlames;
-		if (automaticBlocked && !comment.getReviewed()) {
-			comment.setAutomaticBlocked(automaticBlocked);
-			save(comment);
-			Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED);
-			sendEmailNotificationToAdmins(comment, templateId, "comment.notify.autoblocked", urlCallback, reporterIp);
-		} else {
-			save(comment);
-			Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION);
-			sendEmailNotificationToAdmins(comment, templateId, "comment.notify.violation", urlCallback, reporterIp);
-		}
-	}
+    @Override
+    public void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp) {
+        int maxNumberOfBlames = configurationService.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD);
+        int blames = comment.getNumberOfBlames() + 1;
+        comment.setNumberOfBlames(blames);
+        boolean automaticBlocked = blames >= maxNumberOfBlames;
+        if (automaticBlocked && !comment.getReviewed()) {
+            comment.setAutomaticBlocked(automaticBlocked);
+            save(comment);
+            Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED);
+            sendEmailNotificationToAdmins(comment, templateId, "comment.notify.autoblocked", urlCallback, reporterIp);
+        } else {
+            save(comment);
+            Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION);
+            sendEmailNotificationToAdmins(comment, templateId, "comment.notify.violation", urlCallback, reporterIp);
+        }
+    }
 
-	protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right,
-			UrlCallback urlCallback, String reporterIp) {
-		EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
-		List<UserEntity> notifyUsers = userService.findUserWithRight(right);
-		for (UserEntity notifyUser : notifyUsers) {
-			placeholder.setToUsername(notifyUser.getUsername());
-			placeholder.setToFirstname(notifyUser.getFirstname());
-			placeholder.setToLastname(notifyUser.getLastname());
-			placeholder.setToEmail(notifyUser.getEmail());
-			placeholder.setUsername(comment.getGuestName() != null ? comment.getGuestName() : comment.getCreatedBy());
-			placeholder.put("COMMENT", comment.getComment());
-			placeholder.put("COMMENT_URL", urlCallback.getUrl(comment));
-			placeholder.put("REPORTER_IP", reporterIp);
-			placeholder.put("REPORTING_TIME", displayDateTimeFormat.format(new Date()));
-			emailService.sendEmail(templateId, placeholder);
-		}
-	}
+    protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+        EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
+        List<UserEntity> notifyUsers = userService.findUserWithRight(right);
+        for (UserEntity notifyUser : notifyUsers) {
+            placeholder.setToUsername(notifyUser.getUsername());
+            placeholder.setToFirstname(notifyUser.getFirstname());
+            placeholder.setToLastname(notifyUser.getLastname());
+            placeholder.setToEmail(notifyUser.getEmail());
+            placeholder.setUsername(comment.getGuestName() != null ? comment.getGuestName() : comment.getCreatedBy());
+            placeholder.put("COMMENT", comment.getComment());
+            placeholder.put("COMMENT_URL", urlCallback.getUrl(comment));
+            placeholder.put("REPORTER_IP", reporterIp);
+            placeholder.put("REPORTING_TIME", displayDateTimeFormat.format(new Date()));
+            emailService.sendEmail(templateId, placeholder);
+        }
+    }
 
-	@Required
-	public void setCommentDao(CommentDao commentDao) {
-		this.commentDao = commentDao;
-	}
+    @Required
+    public void setCommentDao(CommentDao commentDao) {
+        this.commentDao = commentDao;
+    }
 
-	@Required
-	public void setConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 
-	@Required
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+    @Required
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
-	@Required
-	public void setEmailService(EmailService emailService) {
-		this.emailService = emailService;
-	}
+    @Required
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
-	@Required
-	public void setDisplayDateTimeFormat(DateFormat displayDateTimeFormat) {
-		this.displayDateTimeFormat = displayDateTimeFormat;
-	}
+    @Required
+    public void setDisplayDateTimeFormat(DateFormat displayDateTimeFormat) {
+        this.displayDateTimeFormat = displayDateTimeFormat;
+    }
 }

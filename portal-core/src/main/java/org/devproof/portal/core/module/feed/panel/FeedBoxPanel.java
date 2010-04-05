@@ -32,21 +32,22 @@ import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
  * @author Carsten Hufe
  */
 public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
-	private static final long serialVersionUID = 1L;
-	private WebMarkupContainer titleContainer;
+    private static final long serialVersionUID = 1L;
+    private WebMarkupContainer titleContainer;
 
-	@SpringBean(name = "feedProviderRegistry")
-	private FeedProviderRegistry feedProviderRegistry;
-	private Class<? extends Page> page;
-	private PageParameters linkParameter;
-	public FeedBoxPanel(String id, Class<? extends Page> page) {
-		super(id);
-		this.page = page;
+    @SpringBean(name = "feedProviderRegistry")
+    private FeedProviderRegistry feedProviderRegistry;
+    private Class<? extends Page> page;
+    private PageParameters linkParameter;
+
+    public FeedBoxPanel(String id, Class<? extends Page> page) {
+        super(id);
+        this.page = page;
         this.linkParameter = createLinkParameter();
-		add(createTitleContainer());
-		add(createAtom1Link());
-		add(createRss2Link());
-	}
+        add(createTitleContainer());
+        add(createAtom1Link());
+        add(createRss2Link());
+    }
 
     @Override
     public boolean isVisible() {
@@ -54,39 +55,37 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private BookmarkablePageLink<Rss2FeedPage> createRss2Link() {
-		BookmarkablePageLink<Rss2FeedPage> rss2FeedLink = new BookmarkablePageLink<Rss2FeedPage>("rssLink",
-				Rss2FeedPage.class, linkParameter);
-		rss2FeedLink.add(createRss2LinkImage());
-		return rss2FeedLink;
-	}
+        BookmarkablePageLink<Rss2FeedPage> rss2FeedLink = new BookmarkablePageLink<Rss2FeedPage>("rssLink", Rss2FeedPage.class, linkParameter);
+        rss2FeedLink.add(createRss2LinkImage());
+        return rss2FeedLink;
+    }
 
-	private Image createRss2LinkImage() {
-		return new Image("rssImage", FeedConstants.REF_RSS2);
-	}
+    private Image createRss2LinkImage() {
+        return new Image("rssImage", FeedConstants.REF_RSS2);
+    }
 
-	private BookmarkablePageLink<Atom1FeedPage> createAtom1Link() {
-		BookmarkablePageLink<Atom1FeedPage> atom1FeedLink = new BookmarkablePageLink<Atom1FeedPage>("atomLink",
-				Atom1FeedPage.class, linkParameter);
-		atom1FeedLink.add(createAtom1LinkImage());
-		return atom1FeedLink;
-	}
+    private BookmarkablePageLink<Atom1FeedPage> createAtom1Link() {
+        BookmarkablePageLink<Atom1FeedPage> atom1FeedLink = new BookmarkablePageLink<Atom1FeedPage>("atomLink", Atom1FeedPage.class, linkParameter);
+        atom1FeedLink.add(createAtom1LinkImage());
+        return atom1FeedLink;
+    }
 
-	private Image createAtom1LinkImage() {
-		return new Image("atomImage", FeedConstants.REF_ATOM1);
-	}
+    private Image createAtom1LinkImage() {
+        return new Image("atomImage", FeedConstants.REF_ATOM1);
+    }
 
-	private PageParameters createLinkParameter() {
-		String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
-		return new PageParameters("0=" + pathByPageClass);
-	}
+    private PageParameters createLinkParameter() {
+        String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
+        return new PageParameters("0=" + pathByPageClass);
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

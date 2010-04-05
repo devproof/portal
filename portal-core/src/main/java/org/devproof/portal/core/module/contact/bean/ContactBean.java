@@ -21,42 +21,42 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public class ContactBean implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String touser;
-	private String fullname;
-	private String email;
-	private String content;
+    private static final long serialVersionUID = 1L;
+    private String touser;
+    private String fullname;
+    private String email;
+    private String content;
 
-	public String getFullname() {
-		return fullname;
-	}
+    public String getFullname() {
+        return fullname;
+    }
 
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
-	}
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public String getTouser() {
-		return touser;
-	}
+    public String getTouser() {
+        return touser;
+    }
 
-	public void setTouser(String touser) {
-		this.touser = touser;
-	}
+    public void setTouser(String touser) {
+        this.touser = touser;
+    }
 
 }

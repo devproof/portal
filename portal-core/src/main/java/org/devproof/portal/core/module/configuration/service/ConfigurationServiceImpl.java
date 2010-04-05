@@ -32,131 +32,130 @@ import java.util.NoSuchElementException;
  * @author Carsten Hufe
  */
 public class ConfigurationServiceImpl implements ConfigurationService {
-	private ConfigurationRegistry configurationRegistry;
-	private ConfigurationDao configurationDao;
-	private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private ConfigurationRegistry configurationRegistry;
+    private ConfigurationDao configurationDao;
+    private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	public void init() {
-		refreshGlobalConfiguration();
-	}
+    public void init() {
+        refreshGlobalConfiguration();
+    }
 
-	@Override
-	public Object findAsObject(String key) {
-		ConfigurationEntity c = configurationRegistry.getConfiguration(key);
-		if (c == null) {
-			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
-		}
-		try {
-			Class<?> clazz = Class.forName(c.getType());
-			if (clazz.isEnum()) {
-				@SuppressWarnings("unchecked")
-				Enum<?> e = Enum.valueOf((Class) clazz, c.getValue());
-				return e;
-			} else {
-				Constructor<?> constructor = clazz.getConstructor(String.class);
-				return constructor.newInstance(c.getValue());
-			}
-		} catch (Exception e) {
-			throw new NoSuchElementException("Configuration element \"" + key + "\" has an invalid type! " + e);
-		}
-	}
+    @Override
+    public Object findAsObject(String key) {
+        ConfigurationEntity c = configurationRegistry.getConfiguration(key);
+        if (c == null) {
+            throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
+        }
+        try {
+            Class<?> clazz = Class.forName(c.getType());
+            if (clazz.isEnum()) {
+                @SuppressWarnings("unchecked") Enum<?> e = Enum.valueOf((Class) clazz, c.getValue());
+                return e;
+            } else {
+                Constructor<?> constructor = clazz.getConstructor(String.class);
+                return constructor.newInstance(c.getValue());
+            }
+        } catch (Exception e) {
+            throw new NoSuchElementException("Configuration element \"" + key + "\" has an invalid type! " + e);
+        }
+    }
 
-	@Override
-	public Boolean findAsBoolean(String key) {
-		return (Boolean) findAsObject(key);
-	}
+    @Override
+    public Boolean findAsBoolean(String key) {
+        return (Boolean) findAsObject(key);
+    }
 
-	@Override
-	public Date findAsDate(String key) {
-		ConfigurationEntity c = configurationRegistry.getConfiguration(key);
-		if (c == null) {
-			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
-		}
-		if (Date.class.getName().equals(c.getType())) {
-			try {
-				return inputDateFormat.parse(c.getValue());
-			} catch (ParseException e) {
-				throw new NoSuchElementException("Configuration element \"" + key + "\" has not a valid date!");
-			}
-		} else {
-			throw new NoSuchElementException("Configuration element \"" + key + "\" has not the type date!");
-		}
-	}
+    @Override
+    public Date findAsDate(String key) {
+        ConfigurationEntity c = configurationRegistry.getConfiguration(key);
+        if (c == null) {
+            throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
+        }
+        if (Date.class.getName().equals(c.getType())) {
+            try {
+                return inputDateFormat.parse(c.getValue());
+            } catch (ParseException e) {
+                throw new NoSuchElementException("Configuration element \"" + key + "\" has not a valid date!");
+            }
+        } else {
+            throw new NoSuchElementException("Configuration element \"" + key + "\" has not the type date!");
+        }
+    }
 
-	@Override
-	public Double findAsDouble(String key) {
-		return (Double) findAsObject(key);
-	}
+    @Override
+    public Double findAsDouble(String key) {
+        return (Double) findAsObject(key);
+    }
 
-	@Override
-	public Enum<?> findAsEnum(String key) {
-		return (Enum<?>) findAsObject(key);
-	}
+    @Override
+    public Enum<?> findAsEnum(String key) {
+        return (Enum<?>) findAsObject(key);
+    }
 
-	@Override
-	public Integer findAsInteger(String key) {
-		return (Integer) findAsObject(key);
-	}
+    @Override
+    public Integer findAsInteger(String key) {
+        return (Integer) findAsObject(key);
+    }
 
-	@Override
-	public String findAsString(String key) {
-		return (String) findAsObject(key);
-	}
+    @Override
+    public String findAsString(String key) {
+        return (String) findAsObject(key);
+    }
 
-	@Override
-	public File findAsFile(String key) {
-		String path = findAsString(key);
-		if (path.equals("java.io.tmpdir")) {
-			path = System.getProperty("java.io.tmpdir");
-		}
-		return new File(path);
-	}
+    @Override
+    public File findAsFile(String key) {
+        String path = findAsString(key);
+        if (path.equals("java.io.tmpdir")) {
+            path = System.getProperty("java.io.tmpdir");
+        }
+        return new File(path);
+    }
 
-	@Override
-	public synchronized void refreshGlobalConfiguration() {
-		List<ConfigurationEntity> list = findAll();
-		for (ConfigurationEntity configuration : list) {
-			configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
-		}
-	}
+    @Override
+    public synchronized void refreshGlobalConfiguration() {
+        List<ConfigurationEntity> list = findAll();
+        for (ConfigurationEntity configuration : list) {
+            configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
+        }
+    }
 
-	@Override
-	public List<ConfigurationEntity> findAll() {
-		return configurationDao.findAll();
-	}
+    @Override
+    public List<ConfigurationEntity> findAll() {
+        return configurationDao.findAll();
+    }
 
-	@Override
-	public List<String> findConfigurationGroups() {
-		return configurationDao.findConfigurationGroups();
-	}
+    @Override
+    public List<String> findConfigurationGroups() {
+        return configurationDao.findConfigurationGroups();
+    }
 
-	@Override
-	public List<ConfigurationEntity> findConfigurationsByGroup(String group) {
-		return configurationDao.findConfigurationsByGroup(group);
-	}
+    @Override
+    public List<ConfigurationEntity> findConfigurationsByGroup(String group) {
+        return configurationDao.findConfigurationsByGroup(group);
+    }
 
-	@Override
-	public void delete(ConfigurationEntity entity) {
-		configurationDao.delete(entity);
-	}
+    @Override
+    public void delete(ConfigurationEntity entity) {
+        configurationDao.delete(entity);
+    }
 
-	@Override
-	public ConfigurationEntity findById(String id) {
-		return configurationDao.findById(id);
-	}
+    @Override
+    public ConfigurationEntity findById(String id) {
+        return configurationDao.findById(id);
+    }
 
-	@Override
-	public void save(ConfigurationEntity entity) {
-		configurationDao.save(entity);
-	}
+    @Override
+    public void save(ConfigurationEntity entity) {
+        configurationDao.save(entity);
+    }
 
-	@Required
-	public void setConfigurationDao(ConfigurationDao configurationDao) {
-		this.configurationDao = configurationDao;
-	}
+    @Required
+    public void setConfigurationDao(ConfigurationDao configurationDao) {
+        this.configurationDao = configurationDao;
+    }
 
-	@Required
-	public void setConfigurationRegistry(ConfigurationRegistry configurationRegistry) {
-		this.configurationRegistry = configurationRegistry;
-	}
+    @Required
+    public void setConfigurationRegistry(ConfigurationRegistry configurationRegistry) {
+        this.configurationRegistry = configurationRegistry;
+    }
 }

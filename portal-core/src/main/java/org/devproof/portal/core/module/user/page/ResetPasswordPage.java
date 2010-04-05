@@ -36,80 +36,80 @@ import org.devproof.portal.core.module.user.service.UserService;
  */
 public class ResetPasswordPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
-	public static final String PARAM_USER = "user";
-	public static final String PARAM_CONFIRMATION_CODE = "forgot";
+    private static final long serialVersionUID = 1L;
+    public static final String PARAM_USER = "user";
+    public static final String PARAM_CONFIRMATION_CODE = "forgot";
 
-	@SpringBean(name = "userService")
-	private UserService userService;
-	private PageParameters params;
-	private IModel<UserEntity> userModel;
-	private PasswordTextField password1;
-	private PasswordTextField password2;
+    @SpringBean(name = "userService")
+    private UserService userService;
+    private PageParameters params;
+    private IModel<UserEntity> userModel;
+    private PasswordTextField password1;
+    private PasswordTextField password2;
 
-	public ResetPasswordPage(PageParameters params) {
-		super(params);
-		this.params = params;
-		validateParameter();
-		this.userModel = createUserModel();
-		add(createResetPasswordForm());
-	}
+    public ResetPasswordPage(PageParameters params) {
+        super(params);
+        this.params = params;
+        validateParameter();
+        this.userModel = createUserModel();
+        add(createResetPasswordForm());
+    }
 
-	private Form<UserEntity> createResetPasswordForm() {
-		Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
-		form.add(createUsernameField());
-		form.add(createPasswordField1());
-		form.add(createPasswordField2());
-		form.add(createEqualPasswordValidator());
-		form.add(createSaveButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<UserEntity> createResetPasswordForm() {
+        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+        form.add(createUsernameField());
+        form.add(createPasswordField1());
+        form.add(createPasswordField2());
+        form.add(createEqualPasswordValidator());
+        form.add(createSaveButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private Button createSaveButton() {
-		return new Button("saveButton") {
-			private static final long serialVersionUID = 1L;
+    private Button createSaveButton() {
+        return new Button("saveButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onSubmit() {
+            @Override
+            public void onSubmit() {
                 UserEntity user = userModel.getObject();
-				if (params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode())) {
-					userService.saveNewPassword(user.getUsername(), password1.getValue());
-					setResponsePage(MessagePage.getMessagePage(getString("changed")));
-				}
-			}
-		};
-	}
+                if (params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode())) {
+                    userService.saveNewPassword(user.getUsername(), password1.getValue());
+                    setResponsePage(MessagePage.getMessagePage(getString("changed")));
+                }
+            }
+        };
+    }
 
-	private EqualPasswordInputValidator createEqualPasswordValidator() {
-		return new EqualPasswordInputValidator(password1, password2);
-	}
+    private EqualPasswordInputValidator createEqualPasswordValidator() {
+        return new EqualPasswordInputValidator(password1, password2);
+    }
 
-	private PasswordTextField createPasswordField1() {
-		password1 = createPasswordField("password1");
-		return password1;
-	}
+    private PasswordTextField createPasswordField1() {
+        password1 = createPasswordField("password1");
+        return password1;
+    }
 
-	private PasswordTextField createPasswordField2() {
-		password2 = createPasswordField("password2");
-		return password2;
-	}
+    private PasswordTextField createPasswordField2() {
+        password2 = createPasswordField("password2");
+        return password2;
+    }
 
-	private PasswordTextField createPasswordField(String id) {
-		PasswordTextField password = new PasswordTextField(id, new Model<String>());
-		password.add(StringValidator.minimumLength(5));
-		password.setRequired(true);
-		return password;
-	}
+    private PasswordTextField createPasswordField(String id) {
+        PasswordTextField password = new PasswordTextField(id, new Model<String>());
+        password.add(StringValidator.minimumLength(5));
+        password.setRequired(true);
+        return password;
+    }
 
-	private FormComponent<String> createUsernameField() {
-		FormComponent<String> fc;
-		fc = new RequiredTextField<String>("username");
-		fc.setEnabled(false);
-		return fc;
-	}
+    private FormComponent<String> createUsernameField() {
+        FormComponent<String> fc;
+        fc = new RequiredTextField<String>("username");
+        fc.setEnabled(false);
+        return fc;
+    }
 
-	private IModel<UserEntity> createUserModel() {
+    private IModel<UserEntity> createUserModel() {
         return new LoadableDetachableModel<UserEntity>() {
             private static final long serialVersionUID = 4622636378084141707L;
 
@@ -117,8 +117,7 @@ public class ResetPasswordPage extends TemplatePage {
             protected UserEntity load() {
                 UserEntity user = userService.findUserByUsername(params.getString(PARAM_USER));
                 if (user == null) {
-                    throw new RestartResponseAtInterceptPageException(MessagePage
-                            .getMessagePage(getString("user.notregistered")));
+                    throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("user.notregistered")));
                 } else if (isConfirmationCodeNotCorrect(user)) {
                     throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("wrong.key")));
                 }
@@ -127,15 +126,14 @@ public class ResetPasswordPage extends TemplatePage {
 
 
             private boolean isConfirmationCodeNotCorrect(UserEntity user) {
-                return StringUtils.isNotEmpty(user.getForgotPasswordCode())
-                        && !params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode());
+                return StringUtils.isNotEmpty(user.getForgotPasswordCode()) && !params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode());
             }
         };
-	}
+    }
 
-	private void validateParameter() {
-		if (!params.containsKey(PARAM_USER) || !params.containsKey(PARAM_CONFIRMATION_CODE)) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.params")));
-		}
-	}
+    private void validateParameter() {
+        if (!params.containsKey(PARAM_USER) || !params.containsKey(PARAM_CONFIRMATION_CODE)) {
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.params")));
+        }
+    }
 }

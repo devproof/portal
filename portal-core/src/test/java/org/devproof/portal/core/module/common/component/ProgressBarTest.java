@@ -25,41 +25,41 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ProgressBarTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createProgressBar());
-		tester.assertComponent("panel", ProgressBar.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createProgressBar());
+        tester.assertComponent("panel", ProgressBar.class);
+    }
 
-	private TestPanelSource createProgressBar() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createProgressBar() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new ProgressBar(panelId, new TestProgressionModel());
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new ProgressBar(panelId, new TestProgressionModel());
+            }
+        };
+    }
 
-	private static class TestProgressionModel extends ProgressionModel {
-		private static final long serialVersionUID = 1L;
+    private static class TestProgressionModel extends ProgressionModel {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		protected Progression getProgression() {
-			return new Progression(50);
-		}
-	}
+        @Override
+        protected Progression getProgression() {
+            return new Progression(50);
+        }
+    }
 }

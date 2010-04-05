@@ -24,21 +24,21 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class ConfigurationRegistryImpl implements ConfigurationRegistry {
-	private final Map<String, ConfigurationEntity> configurations = new HashMap<String, ConfigurationEntity>();
+    private final Map<String, ConfigurationEntity> configurations = new HashMap<String, ConfigurationEntity>();
 
-	@Override
-	public ConfigurationEntity getConfiguration(String key) {
-		return configurations.get(key);
-	}
+    @Override
+    public ConfigurationEntity getConfiguration(String key) {
+        return configurations.get(key);
+    }
 
-	@Override
-	public void registerConfiguration(String key, ConfigurationEntity configurationEntity) {
-		configurations.put(key, configurationEntity);
-	}
+    @Override
+    public void registerConfiguration(String key, ConfigurationEntity configurationEntity) {
+        configurations.put(key, configurationEntity);
+    }
 
-	@Override
-	public void removeConfiguration(String key) {
-		configurations.remove(key);
-	}
+    @Override
+    public void removeConfiguration(String key) {
+        configurations.remove(key);
+    }
 
 }

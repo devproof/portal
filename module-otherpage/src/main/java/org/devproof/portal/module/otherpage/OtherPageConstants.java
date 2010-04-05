@@ -21,7 +21,7 @@ import org.devproof.portal.module.otherpage.page.OtherPagePage;
  * @author Carsten Hufe
  */
 public interface OtherPageConstants {
-	String ENTITY_CACHE_REGION = "entity.content";
-	String QUERY_CACHE_REGION = "query.content";
+    String ENTITY_CACHE_REGION = "entity.content";
+    String QUERY_CACHE_REGION = "query.content";
     String AUTHOR_RIGHT = "page." + OtherPagePage.class.getSimpleName();
 }

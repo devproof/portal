@@ -25,39 +25,39 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class StatelessRatingPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestStatelessRatingPanel.class);
-		tester.assertComponent("panel", TestStatelessRatingPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestStatelessRatingPanel.class);
+        tester.assertComponent("panel", TestStatelessRatingPanel.class);
+    }
 
-	public static class TestStatelessRatingPanel extends StatelessRatingPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestStatelessRatingPanel extends StatelessRatingPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestStatelessRatingPanel(String id) {
+        public TestStatelessRatingPanel(String id) {
 
-			super(id, Model.of(5), Model.of(5), Model.of(5), Model.of(Boolean.FALSE), true, new PageParameters(), 6);
-		}
+            super(id, Model.of(5), Model.of(5), Model.of(5), Model.of(Boolean.FALSE), true, new PageParameters(), 6);
+        }
 
-		@Override
-		protected void onRated(int rating) {
-		}
+        @Override
+        protected void onRated(int rating) {
+        }
 
-		@Override
-		protected boolean onIsStarActive(int star) {
-			return false;
-		}
-	}
+        @Override
+        protected boolean onIsStarActive(int star) {
+            return false;
+        }
+    }
 }

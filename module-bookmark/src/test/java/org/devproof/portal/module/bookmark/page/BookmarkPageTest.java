@@ -23,22 +23,21 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class BookmarkPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql",
-				"insert_bookmark.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql", "insert_bookmark.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(BookmarkPage.class);
-		tester.assertRenderedPage(BookmarkPage.class);
+    public void testRenderDefaultPage() {
+        tester.startPage(BookmarkPage.class);
+        tester.assertRenderedPage(BookmarkPage.class);
 
-	}
+    }
 }

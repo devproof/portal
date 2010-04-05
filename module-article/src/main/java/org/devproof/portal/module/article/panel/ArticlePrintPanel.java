@@ -30,30 +30,30 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
  */
 public class ArticlePrintPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private IModel<ArticleEntity> articleModel;
 
     public ArticlePrintPanel(String id, IModel<ArticleEntity> articleModel) {
-		super(id, articleModel);
+        super(id, articleModel);
         this.articleModel = articleModel;
         add(createTitle());
-		add(createMetaInfoPanel());
-		add(createContentLabel());
-	}
+        add(createMetaInfoPanel());
+        add(createContentLabel());
+    }
 
-	private Label createTitle() {
+    private Label createTitle() {
         PropertyModel<String> titleModel = new PropertyModel<String>(articleModel, "title");
         return new Label("title", titleModel);
-	}
+    }
 
-	private MetaInfoPanel<ArticleEntity> createMetaInfoPanel() {
-		return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
-	}
+    private MetaInfoPanel<ArticleEntity> createMetaInfoPanel() {
+        return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
+    }
 
-	private ExtendedLabel createContentLabel() {
+    private ExtendedLabel createContentLabel() {
         IModel<String> contentModel = createContentModel();
         return new ExtendedLabel("content", contentModel);
-	}
+    }
 
     private IModel<String> createContentModel() {
         return new AbstractReadOnlyModel<String>() {
@@ -61,7 +61,7 @@ public class ArticlePrintPanel extends Panel {
             public String getObject() {
                 ArticleEntity article = articleModel.getObject();
                 String content = article.getFullArticle();
-		        content = content.replace(ArticleConstants.PAGEBREAK, "<br/><br/>");
+                content = content.replace(ArticleConstants.PAGEBREAK, "<br/><br/>");
                 return content;
             }
         };

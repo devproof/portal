@@ -30,22 +30,21 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class BoxLocatorImpl implements ApplicationContextAware, BoxLocator {
-	private ApplicationContext context;
+    private ApplicationContext context;
 
-	@Override
-	public Collection<BoxConfiguration> getBoxes() {
-		@SuppressWarnings("unchecked")
-		Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
-		List<BoxConfiguration> back = new ArrayList<BoxConfiguration>();
-		for (ModuleConfiguration module : beans.values()) {
-			back.addAll(module.getBoxes());
-		}
-		return back;
-	}
+    @Override
+    public Collection<BoxConfiguration> getBoxes() {
+        @SuppressWarnings("unchecked") Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
+        List<BoxConfiguration> back = new ArrayList<BoxConfiguration>();
+        for (ModuleConfiguration module : beans.values()) {
+            back.addAll(module.getBoxes());
+        }
+        return back;
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		context = applicationContext;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
 
 }

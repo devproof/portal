@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:extend>
-<div class="form">
-	<h1><wicket:message key="contentTitle"/></h1>
-	<form wicket:id="form">
-	<table cellspacing="10">
-		<tr>
-			<td><label for="headline"><wicket:message key="headline"/></label></td>
-			<td><input type="text" wicket:id="headline" class="editTitle"/></td>
-		</tr>
-		<tr>
-			<td><label for="content"><wicket:message key="content"/></label></td>
-			<td><textarea wicket:id="content" cols="220" rows="22"></textarea></td>
-		</tr>
-		<tr>
-			<td><label for="tags"><wicket:message key="tags"/></label></td>
-			<td><input type="text" wicket:id="tags" class="tagInputBlog"/></td>
-		</tr>
-		<tr>
-			<td><label><wicket:message key="viewrights"/></label></td>
-			<td>
-				<span wicket:id="viewright">[view rights]</span>
-			</td>
-		</tr>
-		<tr>
-			<td><label><wicket:message key="commentrights"/></label></td>
-			<td>
-				<span wicket:id="commentright">[comment rights]</span>
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="submit" wicket:message="value:save" class="button"/></td>
-		</tr>
-	</table>
-	</form>	
-</div>
+    <div class="form">
+        <h1><wicket:message key="contentTitle"/></h1>
+
+        <form wicket:id="form">
+            <table cellspacing="10">
+                <tr>
+                    <td><label for="headline"><wicket:message key="headline"/></label></td>
+                    <td><input type="text" wicket:id="headline" class="editTitle"/></td>
+                </tr>
+                <tr>
+                    <td><label for="content"><wicket:message key="content"/></label></td>
+                    <td><textarea wicket:id="content" cols="220" rows="22"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="tags"><wicket:message key="tags"/></label></td>
+                    <td><input type="text" wicket:id="tags" class="tagInputBlog"/></td>
+                </tr>
+                <tr>
+                    <td><label><wicket:message key="viewrights"/></label></td>
+                    <td>
+                        <span wicket:id="viewright">[view rights]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label><wicket:message key="commentrights"/></label></td>
+                    <td>
+                        <span wicket:id="commentright">[comment rights]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" wicket:message="value:save" class="button"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </wicket:extend>
 </html>

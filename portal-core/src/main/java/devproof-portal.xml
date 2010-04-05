@@ -6,8 +6,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
             http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd 
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-	
-	<!-- resources are imported by this one -->
-	<bean class="org.devproof.portal.core.app.PortalModuleImporter"/>
-	
+
+    <!-- resources are imported by this one -->
+    <bean class="org.devproof.portal.core.app.PortalModuleImporter"/>
+
 </beans>

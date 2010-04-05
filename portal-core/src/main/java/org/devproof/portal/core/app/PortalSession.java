@@ -41,211 +41,203 @@ import java.util.List;
 
 /**
  * Global portal session
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class PortalSession extends WebSession {
 
-	private static final long serialVersionUID = 1L;
-	// private static final Log LOG = LogFactory.getLog(PortalSession.class);
-	private static final int COOKIE_MAX_AGE = 3600 * 24 * 7; // 7 Days
-	@SpringBean(name = "userService")
-	protected UserService userService;
-	@SpringBean(name = "roleService")
-	protected RoleService roleService;
-	@SpringBean(name = "rightService")
-	protected RightService rightService;
-	protected long dirtyTime = 0l;
-	protected UserEntity user;
+    private static final long serialVersionUID = 1L;
+    // private static final Log LOG = LogFactory.getLog(PortalSession.class);
+    private static final int COOKIE_MAX_AGE = 3600 * 24 * 7; // 7 Days
+    @SpringBean(name = "userService")
+    protected UserService userService;
+    @SpringBean(name = "roleService")
+    protected RoleService roleService;
+    @SpringBean(name = "rightService")
+    protected RightService rightService;
+    protected long dirtyTime = 0l;
+    protected UserEntity user;
 
-	public PortalSession(Request request) {
-		super(request);
-		injectSpringBeans();
-	}
+    public PortalSession(Request request) {
+        super(request);
+        injectSpringBeans();
+    }
 
-	protected void injectSpringBeans() {
-		InjectorHolder.getInjector().inject(this);
-	}
+    protected void injectSpringBeans() {
+        InjectorHolder.getInjector().inject(this);
+    }
 
-	/**
-	 * Authentificates a user
-	 * 
-	 * @param username
-	 *            Username
-	 * @param password
-	 *            Password
-	 * @return null if there is no error, if there is an error it returns the
-	 *         error message key
-	 */
-	public final String authenticate(String username, String password) throws UserNotConfirmedException {
-		try {
-			user = userService.authentificate(username, password, getIpAddress());
-			storeCookie();
-			return null;
-		} catch (AuthentificationFailedException e) {
-			return e.getMessage();
-		}
-	}
+    /**
+     * Authentificates a user
+     *
+     * @param username Username
+     * @param password Password
+     * @return null if there is no error, if there is an error it returns the
+     *         error message key
+     */
+    public final String authenticate(String username, String password) throws UserNotConfirmedException {
+        try {
+            user = userService.authentificate(username, password, getIpAddress());
+            storeCookie();
+            return null;
+        } catch (AuthentificationFailedException e) {
+            return e.getMessage();
+        }
+    }
 
-	/**
-	 * User is logged in?
-	 * 
-	 * @return true if logged in
-	 */
-	public boolean isSignedIn() {
-		return !getUser().isGuestRole();
-	}
+    /**
+     * User is logged in?
+     *
+     * @return true if logged in
+     */
+    public boolean isSignedIn() {
+        return !getUser().isGuestRole();
+    }
 
-	/**
-	 * Stores a cookie for the relogin
-	 */
-	public void storeCookie() {
-		if (user != null && !user.isGuestRole()) {
-			Cookie cookie = new Cookie(CommonConstants.SESSION_ID_COOKIE, user.getSessionId());
-			cookie.setMaxAge(COOKIE_MAX_AGE);
-			cookie.setPath("/");
-			((WebResponse) RequestCycle.get().getResponse()).addCookie(cookie);
-			// LOG.debug("Store cookie.");
-		}
-	}
+    /**
+     * Stores a cookie for the relogin
+     */
+    public void storeCookie() {
+        if (user != null && !user.isGuestRole()) {
+            Cookie cookie = new Cookie(CommonConstants.SESSION_ID_COOKIE, user.getSessionId());
+            cookie.setMaxAge(COOKIE_MAX_AGE);
+            cookie.setPath("/");
+            ((WebResponse) RequestCycle.get().getResponse()).addCookie(cookie);
+            // LOG.debug("Store cookie.");
+        }
+    }
 
-	/**
-	 * Get the user object
-	 * 
-	 * @return logged in user
-	 */
-	public UserEntity getUser() {
-		if (user == null) {
-			String sessionId = getSessionIdFromCookie();
-			if (sessionId != null) {
-				user = userService.authentificate(sessionId, getIpAddress());
-				storeCookie();
-			}
-			if (user == null) {
-				user = userService.findGuestUser();
-			}
-		}
-		refreshRoleIfUpdated();
-		return user;
-	}
+    /**
+     * Get the user object
+     *
+     * @return logged in user
+     */
+    public UserEntity getUser() {
+        if (user == null) {
+            String sessionId = getSessionIdFromCookie();
+            if (sessionId != null) {
+                user = userService.authentificate(sessionId, getIpAddress());
+                storeCookie();
+            }
+            if (user == null) {
+                user = userService.findGuestUser();
+            }
+        }
+        refreshRoleIfUpdated();
+        return user;
+    }
 
-	protected String getSessionIdFromCookie() {
-		Cookie cookie = getCookie();
-		if (cookie != null) {
-			return cookie.getValue();
-		}
-		return null;
-	}
+    protected String getSessionIdFromCookie() {
+        Cookie cookie = getCookie();
+        if (cookie != null) {
+            return cookie.getValue();
+        }
+        return null;
+    }
 
-	protected Cookie getCookie() {
-		WebRequest request = (WebRequest) RequestCycle.get().getRequest();
-		return request.getCookie(CommonConstants.SESSION_ID_COOKIE);
-	}
+    protected Cookie getCookie() {
+        WebRequest request = (WebRequest) RequestCycle.get().getRequest();
+        return request.getCookie(CommonConstants.SESSION_ID_COOKIE);
+    }
 
-	private void refreshRoleIfUpdated() {
-		long appDirtyTime = rightService.getDirtyTime();
-		if (appDirtyTime != dirtyTime) {
-			dirtyTime = appDirtyTime;
-			RoleEntity role = roleService.findById(user.getRole().getId());
-			user.setRole(role);
-		}
-	}
+    private void refreshRoleIfUpdated() {
+        long appDirtyTime = rightService.getDirtyTime();
+        if (appDirtyTime != dirtyTime) {
+            dirtyTime = appDirtyTime;
+            RoleEntity role = roleService.findById(user.getRole().getId());
+            user.setRole(role);
+        }
+    }
 
-	public String getIpAddress() {
-		ClientProperties prop = ((WebClientInfo) getClientInfo()).getProperties();
-		return prop.getRemoteAddress();
-	}
+    public String getIpAddress() {
+        ClientProperties prop = ((WebClientInfo) getClientInfo()).getProperties();
+        return prop.getRemoteAddress();
+    }
 
-	/**
-	 * logs the user out
-	 */
-	public void logoutUser() {
-		// LOG.debug("Logout user " + user.getUsername());
-		clearCookie();
-		user = null;
-	}
+    /**
+     * logs the user out
+     */
+    public void logoutUser() {
+        // LOG.debug("Logout user " + user.getUsername());
+        clearCookie();
+        user = null;
+    }
 
-	protected void clearCookie() {
-		Cookie cookie = getCookie();
-		if (cookie != null) {
-			cookie.setPath("/");
-			((WebResponse) RequestCycle.get().getResponse()).clearCookie(cookie);
-		}
-	}
+    protected void clearCookie() {
+        Cookie cookie = getCookie();
+        if (cookie != null) {
+            cookie.setPath("/");
+            ((WebResponse) RequestCycle.get().getResponse()).clearCookie(cookie);
+        }
+    }
 
-	/**
-	 * Returns the role object
-	 * 
-	 * @return the role of the user
-	 */
-	public RoleEntity getRole() {
-		return getUser().getRole();
-	}
+    /**
+     * Returns the role object
+     *
+     * @return the role of the user
+     */
+    public RoleEntity getRole() {
+        return getUser().getRole();
+    }
 
-	/**
-	 * Returns the user rights
-	 * 
-	 * @return user rights
-	 */
-	public List<RightEntity> getRights() {
-		return getRole().getRights();
-	}
+    /**
+     * Returns the user rights
+     *
+     * @return user rights
+     */
+    public List<RightEntity> getRights() {
+        return getRole().getRights();
+    }
 
-	/**
-	 * Has this right
-	 * 
-	 * @param rightName
-	 *            right as string
-	 * @return true if he has the right
-	 */
-	public boolean hasRight(String rightName) {
-		RightEntity right = rightService.newRightEntity(rightName);
-		return this.hasRight(right);
-	}
+    /**
+     * Has this right
+     *
+     * @param rightName right as string
+     * @return true if he has the right
+     */
+    public boolean hasRight(String rightName) {
+        RightEntity right = rightService.newRightEntity(rightName);
+        return this.hasRight(right);
+    }
 
-	/**
-	 * Whether a user has this right
-	 * 
-	 * @param right
-	 *            right entity
-	 * @return true if he has
-	 */
-	public boolean hasRight(RightEntity right) {
-		UserEntity user = getUser();
-		return user.getRole().getRights().contains(right);
-	}
+    /**
+     * Whether a user has this right
+     *
+     * @param right right entity
+     * @return true if he has
+     */
+    public boolean hasRight(RightEntity right) {
+        UserEntity user = getUser();
+        return user.getRole().getRights().contains(right);
+    }
 
-	/**
-	 * Returns true if he has one of the rights
-	 * 
-	 * @param rights
-	 *            collection with rights
-	 * @return true if he has one right
-	 */
-	public boolean hasRight(Collection<RightEntity> rights) {
-		UserEntity user = getUser();
-		Collection<RightEntity> userRights = user.getRole().getRights();
-		for (RightEntity right : rights) {
-			if (userRights.contains(right)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * Returns true if he has one of the rights
+     *
+     * @param rights collection with rights
+     * @return true if he has one right
+     */
+    public boolean hasRight(Collection<RightEntity> rights) {
+        UserEntity user = getUser();
+        Collection<RightEntity> userRights = user.getRole().getRights();
+        for (RightEntity right : rights) {
+            if (userRights.contains(right)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Returns true if he has the admin right or one of these rights
-	 * 
-	 * @param adminRight
-	 *            admin right
-	 * @param rights
-	 *            collection with rights
-	 * @return true if he has one right
-	 */
-	public boolean hasRight(String adminRight, Collection<RightEntity> rights) {
-		if (hasRight(adminRight)) {
-			return true;
+    /**
+     * Returns true if he has the admin right or one of these rights
+     *
+     * @param adminRight admin right
+     * @param rights     collection with rights
+     * @return true if he has one right
+     */
+    public boolean hasRight(String adminRight, Collection<RightEntity> rights) {
+        if (hasRight(adminRight)) {
+            return true;
 		}
 		return hasRight(rights);
 	}

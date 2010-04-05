@@ -20,77 +20,77 @@ import java.io.Serializable;
 
 /**
  * Primary key for article page
- * 
+ *
  * @author Carsten Hufe
  */
 public class ArticlePageId implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	@Column(name = "content_id")
-	private String contentId;
-	@Column(name = "page")
-	private Integer page;
+    private static final long serialVersionUID = 1L;
+    @Column(name = "content_id")
+    private String contentId;
+    @Column(name = "page")
+    private Integer page;
 
-	public ArticlePageId() {
-	}
+    public ArticlePageId() {
+    }
 
-	public ArticlePageId(String contentId, Integer page) {
-		this.contentId = contentId;
-		this.page = page;
-	}
+    public ArticlePageId(String contentId, Integer page) {
+        this.contentId = contentId;
+        this.page = page;
+    }
 
-	public String getContentId() {
-		return contentId;
-	}
+    public String getContentId() {
+        return contentId;
+    }
 
-	public void setContentId(String contentId) {
-		this.contentId = contentId;
-	}
+    public void setContentId(String contentId) {
+        this.contentId = contentId;
+    }
 
-	public Integer getPage() {
-		return page;
-	}
+    public Integer getPage() {
+        return page;
+    }
 
-	public void setPage(Integer page) {
-		this.page = page;
-	}
+    public void setPage(Integer page) {
+        this.page = page;
+    }
 
-	@Override
-	public int hashCode() {
-		int prime = 31;
-		int result = 1;
-		result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
-		result = prime * result + ((page == null) ? 0 : page.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 1;
+        result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
+        result = prime * result + ((page == null) ? 0 : page.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		ArticlePageId other = (ArticlePageId) obj;
-		if (contentId == null) {
-			if (other.contentId != null) {
-				return false;
-			}
-		} else if (!contentId.equals(other.contentId)) {
-			return false;
-		}
-		if (page == null) {
-			if (other.page != null) {
-				return false;
-			}
-		} else if (!page.equals(other.page)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        ArticlePageId other = (ArticlePageId) obj;
+        if (contentId == null) {
+            if (other.contentId != null) {
+                return false;
+            }
+        } else if (!contentId.equals(other.contentId)) {
+            return false;
+        }
+        if (page == null) {
+            if (other.page != null) {
+                return false;
+            }
+        } else if (!page.equals(other.page)) {
+            return false;
+        }
+        return true;
+    }
 
 }

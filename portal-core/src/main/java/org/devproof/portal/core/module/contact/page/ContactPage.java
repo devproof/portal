@@ -54,28 +54,28 @@ import org.devproof.portal.core.module.user.service.UserService;
  */
 public class ContactPage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "emailService")
-	private EmailService emailService;
-	@SpringBean(name = "userService")
-	private UserService userService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private PageParameters params;
-	private IModel<UserEntity> toUserModel;
-	private IModel<ContactBean> contactBeanModel;
-	private BubblePanel bubblePanel;
+    @SpringBean(name = "emailService")
+    private EmailService emailService;
+    @SpringBean(name = "userService")
+    private UserService userService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private PageParameters params;
+    private IModel<UserEntity> toUserModel;
+    private IModel<ContactBean> contactBeanModel;
+    private BubblePanel bubblePanel;
 
-	public ContactPage(PageParameters params) {
-		super(params);
-		this.params = params;
-		this.toUserModel = createToUserModel();
-		this.contactBeanModel = createContactBeanModel();
-		add(createCSSHeaderContributor());
-		add(createBubblePanel());
-		add(createContactForm());
-	}
+    public ContactPage(PageParameters params) {
+        super(params);
+        this.params = params;
+        this.toUserModel = createToUserModel();
+        this.contactBeanModel = createContactBeanModel();
+        add(createCSSHeaderContributor());
+        add(createBubblePanel());
+        add(createContactForm());
+    }
 
     @Override
     protected void onBeforeRender() {
@@ -84,89 +84,86 @@ public class ContactPage extends TemplatePage {
     }
 
     private Component createBubblePanel() {
-		bubblePanel = new BubblePanel("bubblePanel");
-		return bubblePanel;
-	}
+        bubblePanel = new BubblePanel("bubblePanel");
+        return bubblePanel;
+    }
 
-	private Form<ContactBean> createContactForm() {
-		Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBeanModel));
-		form.add(createToUserField());
-		form.add(createFullnameField());
-		form.add(createEmailField());
-		form.add(createContentField());
-		form.add(createSendButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<ContactBean> createContactForm() {
+        Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBeanModel));
+        form.add(createToUserField());
+        form.add(createFullnameField());
+        form.add(createEmailField());
+        form.add(createContentField());
+        form.add(createSendButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private FormComponent<String> createContentField() {
-		FormComponent<String> fc = new TextArea<String>("content");
-		fc.add(StringValidator.minimumLength(30));
-		fc.setRequired(true);
-		return fc;
-	}
+    private FormComponent<String> createContentField() {
+        FormComponent<String> fc = new TextArea<String>("content");
+        fc.add(StringValidator.minimumLength(30));
+        fc.setRequired(true);
+        return fc;
+    }
 
-	private FormComponent<String> createEmailField() {
-		FormComponent<String> fc = new RequiredTextField<String>("email");
-		fc.add(EmailAddressValidator.getInstance());
-		fc.add(StringValidator.maximumLength(100));
-		return fc;
-	}
+    private FormComponent<String> createEmailField() {
+        FormComponent<String> fc = new RequiredTextField<String>("email");
+        fc.add(EmailAddressValidator.getInstance());
+        fc.add(StringValidator.maximumLength(100));
+        return fc;
+    }
 
-	private FormComponent<String> createFullnameField() {
-		FormComponent<String> fc = new RequiredTextField<String>("fullname");
-		fc.add(StringValidator.minimumLength(5));
-		fc.add(StringValidator.maximumLength(100));
-		return fc;
-	}
+    private FormComponent<String> createFullnameField() {
+        FormComponent<String> fc = new RequiredTextField<String>("fullname");
+        fc.add(StringValidator.minimumLength(5));
+        fc.add(StringValidator.maximumLength(100));
+        return fc;
+    }
 
-	private FormComponent<String> createToUserField() {
-		FormComponent<String> fc = new RequiredTextField<String>("touser");
-		fc.setEnabled(false);
-		return fc;
-	}
+    private FormComponent<String> createToUserField() {
+        FormComponent<String> fc = new RequiredTextField<String>("touser");
+        fc.setEnabled(false);
+        return fc;
+    }
 
-	private IModel<ContactBean> createContactBeanModel() {
-		PortalSession session = (PortalSession) getSession();
-		ContactBean contactBean = new ContactBean();
-		contactBean.setTouser(getToUsername());
-		if (session.isSignedIn()) {
-			UserEntity user = session.getUser();
-			if (isFullnameGiven(user)) {
-				contactBean.setFullname(user.getFirstname() + " " + user.getLastname());
-			}
-			if (isEmailGiven(user)) {
-				contactBean.setEmail(user.getEmail());
-			}
-		}
+    private IModel<ContactBean> createContactBeanModel() {
+        PortalSession session = (PortalSession) getSession();
+        ContactBean contactBean = new ContactBean();
+        contactBean.setTouser(getToUsername());
+        if (session.isSignedIn()) {
+            UserEntity user = session.getUser();
+            if (isFullnameGiven(user)) {
+                contactBean.setFullname(user.getFirstname() + " " + user.getLastname());
+            }
+            if (isEmailGiven(user)) {
+                contactBean.setEmail(user.getEmail());
+            }
+        }
         return Model.of(contactBean);
-	}
+    }
 
-	private boolean isEmailGiven(UserEntity user) {
-		return user.getEmail() != null;
-	}
+    private boolean isEmailGiven(UserEntity user) {
+        return user.getEmail() != null;
+    }
 
-	private boolean isFullnameGiven(UserEntity user) {
-		return user.getFirstname() != null && user.getLastname() != null;
-	}
+    private boolean isFullnameGiven(UserEntity user) {
+        return user.getFirstname() != null && user.getLastname() != null;
+    }
 
-	private void validateToUser() {
+    private void validateToUser() {
         UserEntity toUser = toUserModel.getObject();
         if (toUser == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
-					.getString("user.doesnotexist")));
-		}
-		if (hasContactFormPermission(toUser)) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
-					.getString("user.missing.right")));
-		}
-		if (isRecipientContactFormEnabled(toUser)) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this
-					.getString("user.contactform.disabled")));
-		}
-	}
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.doesnotexist")));
+        }
+        if (hasContactFormPermission(toUser)) {
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.missing.right")));
+        }
+        if (isRecipientContactFormEnabled(toUser)) {
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.contactform.disabled")));
+        }
+    }
 
-	private IModel<UserEntity> createToUserModel() {
+    private IModel<UserEntity> createToUserModel() {
         return new LoadableDetachableModel<UserEntity>() {
             private static final long serialVersionUID = -1538236896675592045L;
 
@@ -175,61 +172,60 @@ public class ContactPage extends TemplatePage {
                 return userService.findUserByUsername(getToUsername());
             }
         };
-	}
+    }
 
-	private boolean isRecipientContactFormEnabled(UserEntity touser) {
-		return !Boolean.TRUE.equals(touser.getEnableContactForm());
-	}
+    private boolean isRecipientContactFormEnabled(UserEntity touser) {
+        return !Boolean.TRUE.equals(touser.getEnableContactForm());
+    }
 
-	private boolean hasContactFormPermission(UserEntity touser) {
-		return !touser.getRole().getRights().contains(new RightEntity("contact.form.enable"));
-	}
+    private boolean hasContactFormPermission(UserEntity touser) {
+        return !touser.getRole().getRights().contains(new RightEntity("contact.form.enable"));
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS);
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS);
+    }
 
-	private String getToUsername() {
-		if (params != null && params.containsKey("0")) {
-			return params.getString("0");
-		}
-		return "§$$§";
-	}
+    private String getToUsername() {
+        if (params != null && params.containsKey("0")) {
+            return params.getString("0");
+        }
+        return "§$$§";
+    }
 
-	private Component createSendButton() {
-		return new CaptchaAjaxButton("sendButton", bubblePanel) {
-			private static final long serialVersionUID = 1L;
+    private Component createSendButton() {
+        return new CaptchaAjaxButton("sendButton", bubblePanel) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				// send notification
-				Integer templateId = configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
+            @Override
+            public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+                // send notification
+                Integer templateId = configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
                 UserEntity toUser = toUserModel.getObject();
                 EmailPlaceholderBean placeholder = createEmailPlaceholderBean(toUser);
-				emailService.sendEmail(templateId, placeholder);
-				setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
-			}
+                emailService.sendEmail(templateId, placeholder);
+                setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
+            }
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.addComponent(getFeedback());
-			}
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(getFeedback());
+            }
 
-			private EmailPlaceholderBean createEmailPlaceholderBean(UserEntity touser) {
-				EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(touser);
+            private EmailPlaceholderBean createEmailPlaceholderBean(UserEntity touser) {
+                EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(touser);
                 ContactBean contactBean = contactBeanModel.getObject();
                 placeholder.setContactEmail(contactBean.getEmail());
-				placeholder.setContactFullname(contactBean.getFullname());
-				placeholder.setContactIp(getIpAddress());
-				placeholder.setContent(contactBean.getContent());
-				return placeholder;
-			}
+                placeholder.setContactFullname(contactBean.getFullname());
+                placeholder.setContactIp(getIpAddress());
+                placeholder.setContent(contactBean.getContent());
+                return placeholder;
+            }
 
-			private String getIpAddress() {
-				ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo())
-						.getProperties();
+            private String getIpAddress() {
+                ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo()).getProperties();
                 return prop.getRemoteAddress();
-			}
-		};
-	}
+            }
+        };
+    }
 }

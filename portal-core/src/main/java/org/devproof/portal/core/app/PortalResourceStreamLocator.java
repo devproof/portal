@@ -27,42 +27,41 @@ import java.net.URL;
 
 /**
  * Resource stream locator, required to managed more then one theme
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class PortalResourceStreamLocator extends ResourceStreamLocator {
-	private ServletContext servletContext;
-	private String themeUuid;
+    private ServletContext servletContext;
+    private String themeUuid;
 
-	public PortalResourceStreamLocator(ServletContext servletContext, String themeUuid) {
-		this.servletContext = servletContext;
-		setThemeUuid(themeUuid);
-	}
+    public PortalResourceStreamLocator(ServletContext servletContext, String themeUuid) {
+        this.servletContext = servletContext;
+        setThemeUuid(themeUuid);
+    }
 
-	@Override
-	public IResourceStream locate(Class<?> clazz, String path) {
-		// try to load the resource from the web context
-		if (themeUuid != null) {
-			try {
-				StringBuilder b = new StringBuilder();
-				b.append("/WEB-INF/themes/").append(themeUuid).append("/").append(path);
-				URL url = servletContext.getResource(b.toString());
-				if (url != null) {
-					return new UrlResourceStream(url);
-				}
-			} catch (MalformedURLException e) {
-				throw new UnhandledException("Must not occur!", e);
-			}
-		}
-		return super.locate(clazz, path);
-	}
+    @Override
+    public IResourceStream locate(Class<?> clazz, String path) {
+        // try to load the resource from the web context
+        if (themeUuid != null) {
+            try {
+                StringBuilder b = new StringBuilder();
+                b.append("/WEB-INF/themes/").append(themeUuid).append("/").append(path);
+                URL url = servletContext.getResource(b.toString());
+                if (url != null) {
+                    return new UrlResourceStream(url);
+                }
+            } catch (MalformedURLException e) {
+                throw new UnhandledException("Must not occur!", e);
+            }
+        }
+        return super.locate(clazz, path);
+    }
 
-	public void setThemeUuid(String themeUuid) {
-		if (ThemeConstants.CONF_SELECTED_THEME_DEFAULT.equals(themeUuid)) {
-			this.themeUuid = null;
-		} else {
-			this.themeUuid = themeUuid;
-		}
-	}
+    public void setThemeUuid(String themeUuid) {
+        if (ThemeConstants.CONF_SELECTED_THEME_DEFAULT.equals(themeUuid)) {
+            this.themeUuid = null;
+        } else {
+            this.themeUuid = themeUuid;
+        }
+    }
 }

@@ -31,133 +31,134 @@ import java.util.Date;
 // selfcached
 final public class ConfigurationEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "conf_key")
-	private String key;
-	@Column(name = "conf_description")
-	private String description;
-	@Column(name = "conf_group")
-	private String group;
-	@Column(name = "conf_type")
-	private String type;
-	@Column(name = "conf_value", nullable = false)
-	private String value;
+    @Id
+    @Column(name = "conf_key")
+    private String key;
+    @Column(name = "conf_description")
+    private String description;
+    @Column(name = "conf_group")
+    private String group;
+    @Column(name = "conf_type")
+    private String type;
+    @Column(name = "conf_value", nullable = false)
+    private String value;
 
-	@Transient
-	public Integer getIntegerValue() {
-		return new Integer(value);
-	}
+    @Transient
+    public Integer getIntegerValue() {
+        return new Integer(value);
+    }
 
-	@Transient
-	public void setIntegerValue(Integer value) {
-		this.value = String.valueOf(value);
-	}
+    @Transient
+    public void setIntegerValue(Integer value) {
+        this.value = String.valueOf(value);
+    }
 
-	@Transient
-	public Double getDoubleValue() {
-		return new Double(value);
-	}
+    @Transient
+    public Double getDoubleValue() {
+        return new Double(value);
+    }
 
-	@Transient
-	public void setDoubleValue(Double value) {
-		this.value = String.valueOf(value);
-	}
+    @Transient
+    public void setDoubleValue(Double value) {
+        this.value = String.valueOf(value);
+    }
 
-	@Transient
-	public Boolean getBooleanValue() {
-		return Boolean.valueOf(value);
-	}
+    @Transient
+    public Boolean getBooleanValue() {
+        return Boolean.valueOf(value);
+    }
 
-	@Transient
-	public void setBooleanValue(Boolean value) {
-		this.value = String.valueOf(value);
-	}
+    @Transient
+    public void setBooleanValue(Boolean value) {
+        this.value = String.valueOf(value);
+    }
 
-	@Transient
-	public Date getDateValue() {
-		try {
-			return ConfigurationConstants.DATE_FORMAT.parse(value);
-		} catch (ParseException e) {
-			throw new UnhandledException("The configuration date format is wrong!", e);
-		}
-	}
+    @Transient
+    public Date getDateValue() {
+        try {
+            return ConfigurationConstants.DATE_FORMAT.parse(value);
+        } catch (ParseException e) {
+            throw new UnhandledException("The configuration date format is wrong!", e);
+        }
+    }
 
-	@Transient
-	public void setDateValue(Date value) {
-		this.value = ConfigurationConstants.DATE_FORMAT.format(value);
-	}
+    @Transient
+    public void setDateValue(Date value) {
+        this.value = ConfigurationConstants.DATE_FORMAT.format(value);
+    }
 
-	// Generated stuff
-	public String getKey() {
-		return key;
-	}
+    // Generated stuff
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public String getKey() {
+        return key;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public String getGroup() {
+        return group;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setGroup(String group) {
+        this.group = group;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	@Override
-	public int hashCode() {
-		int prime = 31;
-		int result = 1;
-		result = prime * result + ((key == null) ? 0 : key.hashCode());
-		return result;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		ConfigurationEntity other = (ConfigurationEntity) obj;
-		if (key == null) {
-			if (other.key != null) {
-				return false;
-			}
-		} else if (!key.equals(other.key)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 1;
+        result = prime * result + ((key == null) ? 0 : key.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        ConfigurationEntity other = (ConfigurationEntity) obj;
+        if (key == null) {
+            if (other.key != null) {
+                return false;
+            }
+        } else if (!key.equals(other.key)) {
+            return false;
+        }
+        return true;
+    }
 
 }

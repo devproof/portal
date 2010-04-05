@@ -21,64 +21,64 @@ import java.util.List;
 
 /**
  * The whole data of one request from delicious
- * 
+ *
  * @author Carsten Hufe
  */
 public class DeliciousBean implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String update;
-	private String user;
-	private String tag;
-	private Integer total;
-	private List<DeliciousPostBean> posts = new ArrayList<DeliciousPostBean>();
-	private Integer httpCode;
-	private String errorMessage = "";
+    private static final long serialVersionUID = 1L;
+    private String update;
+    private String user;
+    private String tag;
+    private Integer total;
+    private List<DeliciousPostBean> posts = new ArrayList<DeliciousPostBean>();
+    private Integer httpCode;
+    private String errorMessage = "";
 
-	public String getUpdate() {
-		return update;
-	}
+    public String getUpdate() {
+        return update;
+    }
 
-	public String getTag() {
-		return tag;
-	}
+    public String getTag() {
+        return tag;
+    }
 
-	public Integer getTotal() {
-		return total;
-	}
+    public Integer getTotal() {
+        return total;
+    }
 
-	public List<DeliciousPostBean> getPosts() {
-		return posts;
-	}
+    public List<DeliciousPostBean> getPosts() {
+        return posts;
+    }
 
-	public void setPosts(List<DeliciousPostBean> posts) {
-		this.posts = posts;
-	}
+    public void setPosts(List<DeliciousPostBean> posts) {
+        this.posts = posts;
+    }
 
-	public boolean add(DeliciousPostBean e) {
-		return posts.add(e);
-	}
+    public boolean add(DeliciousPostBean e) {
+        return posts.add(e);
+    }
 
-	public Integer getHttpCode() {
-		return httpCode;
-	}
+    public Integer getHttpCode() {
+        return httpCode;
+    }
 
-	public void setHttpCode(Integer httpCode) {
-		this.httpCode = httpCode;
-	}
+    public void setHttpCode(Integer httpCode) {
+        this.httpCode = httpCode;
+    }
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
-	public String getUser() {
-		return user;
-	}
+    public String getUser() {
+        return user;
+    }
 
-	public boolean hasError() {
-		return httpCode == null || httpCode / 100 != 2;
-	}
+    public boolean hasError() {
+        return httpCode == null || httpCode / 100 != 2;
+    }
 }

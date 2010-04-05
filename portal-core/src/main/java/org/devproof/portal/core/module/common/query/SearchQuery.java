@@ -27,7 +27,7 @@ public interface SearchQuery extends Serializable {
      * Required to build the paging url
      * If the key/value pair is key=value, the URL would look like http://localhost/blog/key/value
      *
-     * @return default wicket PageParameters 
+     * @return default wicket PageParameters
      */
-	PageParameters getPageParameters();
+    PageParameters getPageParameters();
 }

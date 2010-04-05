@@ -30,17 +30,16 @@ import java.util.List;
  */
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 public interface ArticleDao extends GenericDao<ArticleEntity, Integer> {
-	@CacheQuery(enabled = false)
-	@Query("select a.allRights from ArticleEntity a where a.modifiedAt = (select max(modifiedAt) from ArticleEntity)")
-	List<RightEntity> findLastSelectedRights();
+    @CacheQuery(enabled = false)
+    @Query("select a.allRights from ArticleEntity a where a.modifiedAt = (select max(modifiedAt) from ArticleEntity)")
+    List<RightEntity> findLastSelectedRights();
 
-	@Query("select a from ArticleEntity a where a.contentId = ?")
-	ArticleEntity findByContentId(String contentId);
+    @Query("select a from ArticleEntity a where a.contentId = ?")
+    ArticleEntity findByContentId(String contentId);
 
-	@Query(value = "select distinct(a) from ArticleEntity a join a.allRights vr"
-			+ " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'article.view%') order by a.modifiedAt desc", limitClause = true)
-	List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    @Query(value = "select distinct(a) from ArticleEntity a join a.allRights vr" + " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'article.view%') order by a.modifiedAt desc", limitClause = true)
+    List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-	@Query("select count(a) from ArticleEntity a where a.contentId like ?")
-	long existsContentId(String contentId);
+    @Query("select count(a) from ArticleEntity a where a.contentId like ?")
+    long existsContentId(String contentId);
 }

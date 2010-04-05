@@ -1,50 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
-	<wicket:extend>
-		<div wicket:id="bubble"/>
-		<div wicket:id="repeatingBookmarks"><div wicket:id="bookmarkView"/></div>
-		<br/>
-		<div wicket:id="paging">paging</div>	
-		<span wicket:id="bubbleWindow"/>
-		<wicket:fragment wicket:id="bookmarkView">	
-			<table border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr>
-					<td class="bookmarkDescription" style="width: 70%;">
-						<h1><span wicket:id="broken" style="color: red;">[broken]</span><a href="BookmarkPage.html#" wicket:id="titleLink"><span wicket:id="titleLabel">[title]</span></a></h1>
-						<div class="descr">
-							<img wicket:id="delicious" alt=""/>
-							<span wicket:id="metaInfo">[author name]</span>
-							<span wicket:id="authorButtons"></span>		
-						</div>
-						<div wicket:id="tags">tag1 tag2</div><br/>
-						<div wicket:id="description">[description]</div>
-					</td>
-					<td class="bookmarkInfoTable" style="width: 30%;">
-						<table style="height: 100%;">
-							<tr>
-								<td><wicket:message key="hits"/></td>
-								<td style="width: 30px;">&nbsp;</td>
-								<td><span wicket:id="hits">[num of visits]</span></td>
-							</tr>
-							<tr>
-								<td colspan="3">&nbsp;</td>
-							</tr>
-							<tr>						
-								<td colspan="3"><span wicket:id="vote">[voting]</span></td>
-							</tr>
-							<tr>
-								<td colspan="3">&nbsp;</td>
-							</tr>
-							<tr>
-								<td colspan="3"><a href="BookmarkPage.html#" target="_blank" wicket:id="bookmarkLink" class="bookmarkLink"><img wicket:id="bookmarkImage" alt=""/>&nbsp;&nbsp;<span wicket:id="bookmarkLinkLabel"/></a></td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</wicket:fragment>
-	</wicket:extend>
+<wicket:extend>
+    <div wicket:id="bubble"/>
+    <div wicket:id="repeatingBookmarks">
+        <div wicket:id="bookmarkView"/>
+    </div>
+    <br/>
+
+    <div wicket:id="paging">paging</div>
+    <span wicket:id="bubbleWindow"/>
+    <wicket:fragment wicket:id="bookmarkView">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td class="bookmarkDescription" style="width: 70%;">
+                    <h1><span wicket:id="broken" style="color: red;">[broken]</span><a href="BookmarkPage.html#"
+                                                                                       wicket:id="titleLink"><span
+                            wicket:id="titleLabel">[title]</span></a></h1>
+
+                    <div class="descr">
+                        <img wicket:id="delicious" alt=""/> <span wicket:id="metaInfo">[author name]</span> <span
+                            wicket:id="authorButtons"></span>
+                    </div>
+                    <div wicket:id="tags">tag1 tag2</div>
+                    <br/>
+
+                    <div wicket:id="description">[description]</div>
+                </td>
+                <td class="bookmarkInfoTable" style="width: 30%;">
+                    <table style="height: 100%;">
+                        <tr>
+                            <td><wicket:message key="hits"/></td>
+                            <td style="width: 30px;">&nbsp;</td>
+                            <td><span wicket:id="hits">[num of visits]</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><span wicket:id="vote">[voting]</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><a href="BookmarkPage.html#" target="_blank" wicket:id="bookmarkLink"
+                                               class="bookmarkLink"><img wicket:id="bookmarkImage"
+                                                                         alt=""/>&nbsp;&nbsp;<span
+                                    wicket:id="bookmarkLinkLabel"/></a></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </wicket:fragment>
+</wicket:extend>
 </body>
 </html>

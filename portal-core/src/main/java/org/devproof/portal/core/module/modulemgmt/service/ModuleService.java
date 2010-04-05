@@ -22,42 +22,42 @@ import java.util.List;
 
 /**
  * Provides methodes to retrieve module information
- * 
+ *
  * @author carsten
  */
 public interface ModuleService {
-	/**
-	 * Finds all modules, the list starts with the core modules
-	 */
-	List<ModuleBean> findModules();
+    /**
+     * Finds all modules, the list starts with the core modules
+     */
+    List<ModuleBean> findModules();
 
-	/**
-	 * Moves the link down
-	 */
-	void moveDown(ModuleLinkEntity link);
+    /**
+     * Moves the link down
+     */
+    void moveDown(ModuleLinkEntity link);
 
-	/**
-	 * Moves the link up
-	 */
-	void moveUp(ModuleLinkEntity link);
+    /**
+     * Moves the link up
+     */
+    void moveUp(ModuleLinkEntity link);
 
-	/**
-	 * Save the module link
-	 */
-	void save(ModuleLinkEntity link);
+    /**
+     * Save the module link
+     */
+    void save(ModuleLinkEntity link);
 
-	/**
-	 * @return all visible main/top navigation links
-	 */
-	List<ModuleLinkEntity> findAllVisibleMainNavigationLinks();
+    /**
+     * @return all visible main/top navigation links
+     */
+    List<ModuleLinkEntity> findAllVisibleMainNavigationLinks();
 
-	/**
-	 * @return all visible global administration links
-	 */
-	List<ModuleLinkEntity> findAllVisibleGlobalAdministrationLinks();
+    /**
+     * @return all visible global administration links
+     */
+    List<ModuleLinkEntity> findAllVisibleGlobalAdministrationLinks();
 
-	/**
-	 * @return all visible page administration links
-	 */
-	List<ModuleLinkEntity> findAllVisiblePageAdministrationLinks();
+    /**
+     * @return all visible page administration links
+     */
+    List<ModuleLinkEntity> findAllVisiblePageAdministrationLinks();
 }

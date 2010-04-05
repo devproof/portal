@@ -52,236 +52,236 @@ import org.devproof.portal.core.module.user.service.UserService;
  */
 public class RolePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "roleDataProvider")
-	private QueryDataProvider<RoleEntity, RoleQuery> roleDataProvider;
-	@SpringBean(name = "roleService")
-	private RoleService roleService;
-	@SpringBean(name = "userService")
-	private UserService userService;
-	@SpringBean(name = "rightService")
-	private RightService rightService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
-	private IModel<RoleQuery> queryModel;
-	private WebMarkupContainer refreshTable;
-	private BubblePanel bubblePanel;
+    @SpringBean(name = "roleDataProvider")
+    private QueryDataProvider<RoleEntity, RoleQuery> roleDataProvider;
+    @SpringBean(name = "roleService")
+    private RoleService roleService;
+    @SpringBean(name = "userService")
+    private UserService userService;
+    @SpringBean(name = "rightService")
+    private RightService rightService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
+    private IModel<RoleQuery> queryModel;
+    private WebMarkupContainer refreshTable;
+    private BubblePanel bubblePanel;
 
-	public RolePage(PageParameters params) {
-		super(params);
-		this.queryModel = roleDataProvider.getSearchQueryModel();
-		add(createRoleTableRefreshContainer());
-		add(createBubblePanel());
-		addPageAdminBoxLink(createCreateRoleLink());
-		addFilterBox(createSearchBoxPanel());
-	}
+    public RolePage(PageParameters params) {
+        super(params);
+        this.queryModel = roleDataProvider.getSearchQueryModel();
+        add(createRoleTableRefreshContainer());
+        add(createBubblePanel());
+        addPageAdminBoxLink(createCreateRoleLink());
+        addFilterBox(createSearchBoxPanel());
+    }
 
-	private WebMarkupContainer createRoleTableRefreshContainer() {
-		refreshTable = new WebMarkupContainer("refreshTable");
-		refreshTable.add(createRoleDescriptionTableOrder());
-		refreshTable.add(createRoleActiveTableOrder());
-		refreshTable.add(createRepeatingRoles());
-		refreshTable.setOutputMarkupId(true);
-		return refreshTable;
-	}
+    private WebMarkupContainer createRoleTableRefreshContainer() {
+        refreshTable = new WebMarkupContainer("refreshTable");
+        refreshTable.add(createRoleDescriptionTableOrder());
+        refreshTable.add(createRoleActiveTableOrder());
+        refreshTable.add(createRepeatingRoles());
+        refreshTable.setOutputMarkupId(true);
+        return refreshTable;
+    }
 
-	private OrderByBorder createRoleDescriptionTableOrder() {
-		return new OrderByBorder("tableDescription", "description", roleDataProvider);
-	}
+    private OrderByBorder createRoleDescriptionTableOrder() {
+        return new OrderByBorder("tableDescription", "description", roleDataProvider);
+    }
 
-	private OrderByBorder createRoleActiveTableOrder() {
-		return new OrderByBorder("tableActive", "active", roleDataProvider);
-	}
+    private OrderByBorder createRoleActiveTableOrder() {
+        return new OrderByBorder("tableActive", "active", roleDataProvider);
+    }
 
-	private RoleDataView createRepeatingRoles() {
-		return new RoleDataView("repeatingRoles", roleDataProvider);
-	}
+    private RoleDataView createRepeatingRoles() {
+        return new RoleDataView("repeatingRoles", roleDataProvider);
+    }
 
-	private BubblePanel createBubblePanel() {
-		bubblePanel = new BubblePanel("bubblePanel");
-		return bubblePanel;
-	}
+    private BubblePanel createBubblePanel() {
+        bubblePanel = new BubblePanel("bubblePanel");
+        return bubblePanel;
+    }
 
-	private RoleSearchBoxPanel createSearchBoxPanel() {
-		return new RoleSearchBoxPanel("box", queryModel) {
-			private static final long serialVersionUID = 1L;
+    private RoleSearchBoxPanel createSearchBoxPanel() {
+        return new RoleSearchBoxPanel("box", queryModel) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				target.addComponent(refreshTable);
-			}
-		};
-	}
+            @Override
+            protected void onSubmit(AjaxRequestTarget target) {
+                target.addComponent(refreshTable);
+            }
+        };
+    }
 
-	private AjaxLink<RoleEntity> createCreateRoleLink() {
-		AjaxLink<RoleEntity> link = newCreateRoleLink();
-		link.add(createCreateRoleLinkLabel());
-		return link;
-	}
+    private AjaxLink<RoleEntity> createCreateRoleLink() {
+        AjaxLink<RoleEntity> link = newCreateRoleLink();
+        link.add(createCreateRoleLinkLabel());
+        return link;
+    }
 
-	private Label createCreateRoleLinkLabel() {
-		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
-	}
+    private Label createCreateRoleLinkLabel() {
+        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    }
 
-	private AjaxLink<RoleEntity> newCreateRoleLink() {
-		return new AjaxLink<RoleEntity>(getPageAdminBoxLinkId()) {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<RoleEntity> newCreateRoleLink() {
+        return new AjaxLink<RoleEntity>(getPageAdminBoxLinkId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				bubblePanel.setContent(createRoleEditPanel());
-				bubblePanel.showModal(target);
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                bubblePanel.setContent(createRoleEditPanel());
+                bubblePanel.showModal(target);
+            }
 
-			private RoleEditPanel createRoleEditPanel() {
-				IModel<RoleEntity> roleModel = Model.of(roleService.newRoleEntity());
-				return new RoleEditPanel(bubblePanel.getContentId(), roleModel) {
-					private static final long serialVersionUID = 1L;
+            private RoleEditPanel createRoleEditPanel() {
+                IModel<RoleEntity> roleModel = Model.of(roleService.newRoleEntity());
+                return new RoleEditPanel(bubblePanel.getContentId(), roleModel) {
+                    private static final long serialVersionUID = 1L;
 
-					@Override
-					public void onSave(AjaxRequestTarget target) {
-						rightService.refreshGlobalApplicationRights();
-						bubblePanel.hide(target);
-						info(getString("msg.saved"));
-						target.addComponent(refreshTable);
-						target.addComponent(RolePage.this.getFeedback());
-					}
+                    @Override
+                    public void onSave(AjaxRequestTarget target) {
+                        rightService.refreshGlobalApplicationRights();
+                        bubblePanel.hide(target);
+                        info(getString("msg.saved"));
+                        target.addComponent(refreshTable);
+                        target.addComponent(RolePage.this.getFeedback());
+                    }
 
-					@Override
-					public void onCancel(AjaxRequestTarget target) {
-						bubblePanel.hide(target);
-					}
-				};
-			}
-		};
-	}
+                    @Override
+                    public void onCancel(AjaxRequestTarget target) {
+                        bubblePanel.hide(target);
+                    }
+                };
+            }
+        };
+    }
 
     private class RoleDataView extends DataView<RoleEntity> {
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public RoleDataView(String id, IDataProvider<RoleEntity> dataProvider) {
-			super(id, dataProvider);
-		}
+        public RoleDataView(String id, IDataProvider<RoleEntity> dataProvider) {
+            super(id, dataProvider);
+        }
 
-		@Override
-		protected void populateItem(Item<RoleEntity> item) {
+        @Override
+        protected void populateItem(Item<RoleEntity> item) {
 
-			item.add(createRoleDescriptionLabel(item));
-			item.add(createRoleActiveLabel(item));
-			item.add(createEditLink(item));
-			item.add(createDeleteLink(item));
-			item.add(createAlternatingModifier(item));
-		}
+            item.add(createRoleDescriptionLabel(item));
+            item.add(createRoleActiveLabel(item));
+            item.add(createEditLink(item));
+            item.add(createDeleteLink(item));
+            item.add(createAlternatingModifier(item));
+        }
 
-		private Label createRoleDescriptionLabel(Item<RoleEntity> item) {
-			return new Label("description", item.getModelObject().getDescription());
-		}
+        private Label createRoleDescriptionLabel(Item<RoleEntity> item) {
+            return new Label("description", item.getModelObject().getDescription());
+        }
 
-		private Label createRoleActiveLabel(Item<RoleEntity> item) {
-			return new Label("active", getActiveString(item));
-		}
+        private Label createRoleActiveLabel(Item<RoleEntity> item) {
+            return new Label("active", getActiveString(item));
+        }
 
-		private String getActiveString(Item<RoleEntity> item) {
-			return item.getModelObject().getActive() ? getString("status.active") : this.getString("status.inactive");
-		}
+        private String getActiveString(Item<RoleEntity> item) {
+            return item.getModelObject().getActive() ? getString("status.active") : this.getString("status.inactive");
+        }
 
-		private AjaxLink<RoleEntity> createDeleteLink(final Item<RoleEntity> item) {
-			AjaxLink<RoleEntity> deleteLink = newDeleteLink(item);
-			deleteLink.add(createDeleteLinkImage());
-			deleteLink.setOutputMarkupId(true);
-			return deleteLink;
-		}
+        private AjaxLink<RoleEntity> createDeleteLink(final Item<RoleEntity> item) {
+            AjaxLink<RoleEntity> deleteLink = newDeleteLink(item);
+            deleteLink.add(createDeleteLinkImage());
+            deleteLink.setOutputMarkupId(true);
+            return deleteLink;
+        }
 
-		private Image createDeleteLinkImage() {
-			return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
-		}
+        private Image createDeleteLinkImage() {
+            return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
+        }
 
-		private AjaxLink<RoleEntity> newDeleteLink(final Item<RoleEntity> item) {
-			return new AjaxLink<RoleEntity>("deleteLink") {
-				private static final long serialVersionUID = 1L;
+        private AjaxLink<RoleEntity> newDeleteLink(final Item<RoleEntity> item) {
+            return new AjaxLink<RoleEntity>("deleteLink") {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					IModel<RoleEntity> roleModel = item.getModel();
-					String validationMessage = validateRoleForDeletion(roleModel);
-					if (validationMessage != null) {
-						bubblePanel.showMessage(getMarkupId(), target, validationMessage);
-					} else {
-						bubblePanel.setContent(createConfirmDeletePanel(roleModel));
-						bubblePanel.showModal(target);
-					}
-				}
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    IModel<RoleEntity> roleModel = item.getModel();
+                    String validationMessage = validateRoleForDeletion(roleModel);
+                    if (validationMessage != null) {
+                        bubblePanel.showMessage(getMarkupId(), target, validationMessage);
+                    } else {
+                        bubblePanel.setContent(createConfirmDeletePanel(roleModel));
+                        bubblePanel.showModal(target);
+                    }
+                }
 
-				private String validateRoleForDeletion(IModel<RoleEntity> roleModel) {
+                private String validateRoleForDeletion(IModel<RoleEntity> roleModel) {
                     RoleEntity role = roleModel.getObject();
-					long numberOfUserInRole = userService.countUserForRole(role);
-					String msg = null;
-					if (isGuestRole(role)) {
-						msg = getString("msg.cannot.delete.guestrole", numberOfUserInRole);
-					} else if (isRegistrationRole(role)) {
-						msg = getString("msg.cannot.delete.reguserrole", numberOfUserInRole);
-					} else if (numberOfUserInRole != 0) {
-						msg = getString("msg.cannot.delete.assigneduser", numberOfUserInRole);
-					}
-					return msg;
-				}
+                    long numberOfUserInRole = userService.countUserForRole(role);
+                    String msg = null;
+                    if (isGuestRole(role)) {
+                        msg = getString("msg.cannot.delete.guestrole", numberOfUserInRole);
+                    } else if (isRegistrationRole(role)) {
+                        msg = getString("msg.cannot.delete.reguserrole", numberOfUserInRole);
+                    } else if (numberOfUserInRole != 0) {
+                        msg = getString("msg.cannot.delete.assigneduser", numberOfUserInRole);
+                    }
+                    return msg;
+                }
 
-				private boolean isGuestRole(RoleEntity role) {
-					Integer guestRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
-					return guestRoleId.equals(role.getId());
-				}
+                private boolean isGuestRole(RoleEntity role) {
+                    Integer guestRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
+                    return guestRoleId.equals(role.getId());
+                }
 
-				private boolean isRegistrationRole(RoleEntity role) {
-					Integer reguserRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE);
-					return reguserRoleId.equals(role.getId());
-				}
+                private boolean isRegistrationRole(RoleEntity role) {
+                    Integer reguserRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE);
+                    return reguserRoleId.equals(role.getId());
+                }
 
-				private String getString(String key, Long numUser) {
-					return new StringResourceModel(key, this, null, new Object[] { numUser }).getString();
-				}
+                private String getString(String key, Long numUser) {
+                    return new StringResourceModel(key, this, null, new Object[]{numUser}).getString();
+                }
 
-				private ConfirmDeletePanel<RoleEntity> createConfirmDeletePanel(final IModel<RoleEntity> roleModel) {
-					return new ConfirmDeletePanel<RoleEntity>(bubblePanel.getContentId(), roleModel, bubblePanel) {
-						private static final long serialVersionUID = 1L;
+                private ConfirmDeletePanel<RoleEntity> createConfirmDeletePanel(final IModel<RoleEntity> roleModel) {
+                    return new ConfirmDeletePanel<RoleEntity>(bubblePanel.getContentId(), roleModel, bubblePanel) {
+                        private static final long serialVersionUID = 1L;
 
-						@Override
-						public void onDelete(AjaxRequestTarget target, Form<?> form) {
+                        @Override
+                        public void onDelete(AjaxRequestTarget target, Form<?> form) {
                             RoleEntity role = roleModel.getObject();
                             roleService.delete(role);
-							rightService.refreshGlobalApplicationRights();
-							bubblePanel.hide(target);
-							info(getString("msg.deleted"));
-							target.addComponent(refreshTable);
-							target.addComponent(getFeedback());
-						}
+                            rightService.refreshGlobalApplicationRights();
+                            bubblePanel.hide(target);
+                            info(getString("msg.deleted"));
+                            target.addComponent(refreshTable);
+                            target.addComponent(getFeedback());
+                        }
 
-					};
-				}
-			};
-		}
+                    };
+                }
+            };
+        }
 
-		private AjaxLink<RoleEntity> createEditLink(Item<RoleEntity> item) {
-			AjaxLink<RoleEntity> editLink = newRoleEditLink(item);
-			editLink.add(createEditLinkImage());
-			return editLink;
-		}
+        private AjaxLink<RoleEntity> createEditLink(Item<RoleEntity> item) {
+            AjaxLink<RoleEntity> editLink = newRoleEditLink(item);
+            editLink.add(createEditLinkImage());
+            return editLink;
+        }
 
-		private Image createEditLinkImage() {
-			return new Image("editImage", CommonConstants.REF_EDIT_IMG);
-		}
+        private Image createEditLinkImage() {
+            return new Image("editImage", CommonConstants.REF_EDIT_IMG);
+        }
 
-		private AjaxLink<RoleEntity> newRoleEditLink(final Item<RoleEntity> item) {
-			return new AjaxLink<RoleEntity>("editLink", item.getModel()) {
-				private static final long serialVersionUID = 1L;
+        private AjaxLink<RoleEntity> newRoleEditLink(final Item<RoleEntity> item) {
+            return new AjaxLink<RoleEntity>("editLink", item.getModel()) {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					bubblePanel.setContent(createRoleEditPanel(item.getModel()));
-					bubblePanel.showModal(target);
-				}
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    bubblePanel.setContent(createRoleEditPanel(item.getModel()));
+                    bubblePanel.showModal(target);
+                }
 
-				private RoleEditPanel createRoleEditPanel(IModel<RoleEntity> roleModel) {
+                private RoleEditPanel createRoleEditPanel(IModel<RoleEntity> roleModel) {
                     return new RoleEditPanel(bubblePanel.getContentId(), roleModel) {
                         private static final long serialVersionUID = 6979098758367103659L;
 
@@ -301,17 +301,17 @@ public class RolePage extends TemplatePage {
                     };
                 }
             };
-		}
+        }
 
-		private AttributeModifier createAlternatingModifier(final Item<RoleEntity> item) {
-			return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 1L;
+        private AttributeModifier createAlternatingModifier(final Item<RoleEntity> item) {
+            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public String getObject() {
-					return (item.getIndex() % 2 != 0) ? "even" : "odd";
-				}
-			});
-		}
-	}
+                @Override
+                public String getObject() {
+                    return (item.getIndex() % 2 != 0) ? "even" : "odd";
+                }
+            });
+        }
+    }
 }

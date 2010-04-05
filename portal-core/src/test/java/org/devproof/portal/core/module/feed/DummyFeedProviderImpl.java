@@ -29,42 +29,42 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class DummyFeedProviderImpl implements FeedProvider, Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public SyndFeed getFeed(RequestCycle rc) {
-		SyndFeed feed = new SyndFeedImpl();
-		feed.setTitle(getFeedName());
-		feed.setLink("http://dummy.feed.link");
-		feed.setDescription("dummy feed description");
+    @Override
+    public SyndFeed getFeed(RequestCycle rc) {
+        SyndFeed feed = new SyndFeedImpl();
+        feed.setTitle(getFeedName());
+        feed.setLink("http://dummy.feed.link");
+        feed.setDescription("dummy feed description");
 
-		List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		SyndEntry entry;
-		SyndContent description;
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        SyndEntry entry;
+        SyndContent description;
 
-		entry = new SyndEntryImpl();
-		entry.setTitle("dummy title");
-		entry.setLink("http://dummy.url");
-		entry.setPublishedDate(new Date());
-		description = new SyndContentImpl();
-		description.setType("text/plain");
-		description.setValue("dummy value");
-		entry.setDescription(description);
-		entries.add(entry);
-		feed.setEntries(entries);
-		return feed;
-	}
+        entry = new SyndEntryImpl();
+        entry.setTitle("dummy title");
+        entry.setLink("http://dummy.url");
+        entry.setPublishedDate(new Date());
+        description = new SyndContentImpl();
+        description.setType("text/plain");
+        description.setValue("dummy value");
+        entry.setDescription(description);
+        entries.add(entry);
+        feed.setEntries(entries);
+        return feed;
+    }
 
-	@Override
-	public String getFeedName() {
-		return "dummy feed";
-	}
+    @Override
+    public String getFeedName() {
+        return "dummy feed";
+    }
 
-	@Override
-	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
-		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
-		pages.add(DummyPage.class);
-		return pages;
-	}
+    @Override
+    public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
+        List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
+        pages.add(DummyPage.class);
+        return pages;
+    }
 
 }

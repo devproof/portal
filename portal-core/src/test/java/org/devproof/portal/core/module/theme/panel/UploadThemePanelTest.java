@@ -24,39 +24,39 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class UploadThemePanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestUploadThemePanel.class);
-		tester.assertComponent("panel", UploadThemePanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestUploadThemePanel.class);
+        tester.assertComponent("panel", UploadThemePanel.class);
+    }
 
-	public static class TestUploadThemePanel extends UploadThemePanel {
+    public static class TestUploadThemePanel extends UploadThemePanel {
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		public TestUploadThemePanel(String id) {
-			super(id);
-		}
+        public TestUploadThemePanel(String id) {
+            super(id);
+        }
 
-		@Override
-		public void onCancel(AjaxRequestTarget target) {
-		}
+        @Override
+        public void onCancel(AjaxRequestTarget target) {
+        }
 
-		@Override
-		public void onSubmit() {
+        @Override
+        public void onSubmit() {
 
-		}
-	}
+        }
+    }
 }

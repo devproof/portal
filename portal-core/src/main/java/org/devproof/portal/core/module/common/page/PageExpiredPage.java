@@ -22,7 +22,7 @@ import org.apache.wicket.PageParameters;
  */
 public class PageExpiredPage extends MessagePage {
 
-	public PageExpiredPage() {
-		super(new PageParameters("message=page.expired"));
-	}
+    public PageExpiredPage() {
+        super(new PageParameters("message=page.expired"));
+    }
 }

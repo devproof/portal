@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>
-	<h1 wicket:id="title"><wicket:message key="boxTitle">[Login]</wicket:message></h1>
-	<form wicket:id="loginForm">
-	<div>
-		<input type="hidden" wicket:id="optparam"/>
-		<div><wicket:message key="username">[Username]</wicket:message></div>	
-		<input type="text" wicket:id="username" class="boxinput"/>
-		<div><wicket:message key="password">[Password]</wicket:message></div>
-		<input type="password" wicket:id="password" class="boxinput"/>
-		<input type="submit" wicket:message="value:button" class="button" />
-		<br/><br/>		
-	</div>
-	</form>
-	<ul>
-		<li><a wicket:id="registerLink" href="LoginBoxPanel.html#"><wicket:message key="register">[register]</wicket:message></a></li>
-		<li><a wicket:id="forgotPasswordLink" href="LoginBoxPanel.html#"><wicket:message key="forgot.password">[forgot password]</wicket:message></a></li>
-	</ul>
+    <h1 wicket:id="title"><wicket:message key="boxTitle">[Login]</wicket:message></h1>
+
+    <form wicket:id="loginForm">
+        <div>
+            <input type="hidden" wicket:id="optparam"/>
+
+            <div><wicket:message key="username">[Username]</wicket:message></div>
+            <input type="text" wicket:id="username" class="boxinput"/>
+
+            <div><wicket:message key="password">[Password]</wicket:message></div>
+            <input type="password" wicket:id="password" class="boxinput"/> <input type="submit"
+                                                                                  wicket:message="value:button"
+                                                                                  class="button"/> <br/><br/>
+        </div>
+    </form>
+    <ul>
+        <li><a wicket:id="registerLink" href="LoginBoxPanel.html#"><wicket:message
+                key="register">[register]</wicket:message></a></li>
+        <li><a wicket:id="forgotPasswordLink" href="LoginBoxPanel.html#"><wicket:message key="forgot.password">[forgot
+            password]</wicket:message></a></li>
+    </ul>
 </wicket:panel>
 </html>

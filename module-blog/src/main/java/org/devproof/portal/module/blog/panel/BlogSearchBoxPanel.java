@@ -31,39 +31,39 @@ import org.devproof.portal.module.blog.query.BlogQuery;
  */
 public class BlogSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
-	private WebMarkupContainer titleContainer;
+    private static final long serialVersionUID = 1L;
+    private WebMarkupContainer titleContainer;
     private IModel<BlogQuery> queryModel;
 
     public BlogSearchBoxPanel(String id, IModel<BlogQuery> queryModel) {
-		super(id, queryModel);
+        super(id, queryModel);
         this.queryModel = queryModel;
-		add(createTitleContainer());
+        add(createTitleContainer());
         add(createSearchForm());
-	}
+    }
 
-	private Component createSearchForm() {
-		Form<SearchQuery> form = newSearchForm();
-		form.add(createSearchTextField());
-		return form;
-	}
+    private Component createSearchForm() {
+        Form<SearchQuery> form = newSearchForm();
+        form.add(createSearchTextField());
+        return form;
+    }
 
-	private Form<SearchQuery> newSearchForm() {
-		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
-		return new Form<SearchQuery>("searchForm", formModel);
-	}
+    private Form<SearchQuery> newSearchForm() {
+        CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
+        return new Form<SearchQuery>("searchForm", formModel);
+    }
 
-	private TextField<String> createSearchTextField() {
-		return new TextField<String>("allTextFields");
-	}
+    private TextField<String> createSearchTextField() {
+        return new TextField<String>("allTextFields");
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

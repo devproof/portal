@@ -38,107 +38,107 @@ import java.io.IOException;
 
 /**
  * Upload form for themes
- * 
+ *
  * @author Carsten Hufe
  */
 public abstract class UploadThemePanel extends Panel {
-	private static final long serialVersionUID = 1L;
-	private static final Log LOG = LogFactory.getLog(UploadThemePanel.class);
+    private static final long serialVersionUID = 1L;
+    private static final Log LOG = LogFactory.getLog(UploadThemePanel.class);
 
-	@SpringBean(name = "themeService")
-	private ThemeService themeService;
-	private Form<FileUpload> uploadForm;
-	private FileUploadField uploadField;
+    @SpringBean(name = "themeService")
+    private ThemeService themeService;
+    private Form<FileUpload> uploadForm;
+    private FileUploadField uploadField;
 
-	public UploadThemePanel(String id) {
-		super(id);
-		add(createCSSHeaderContributor());
-		add(createFeedbackPanel());
-		add(createUploadForm());
-	}
+    public UploadThemePanel(String id) {
+        super(id);
+        add(createCSSHeaderContributor());
+        add(createFeedbackPanel());
+        add(createUploadForm());
+    }
 
-	private Form<FileUpload> createUploadForm() {
-		Form<FileUpload> uploadForm = newUploadForm();
-		uploadForm.add(createUploadField());
-		uploadForm.add(createUploadProgressBar());
-		uploadForm.add(createCancelButton());
-		uploadForm.setMultiPart(true);
-		return uploadForm;
-	}
+    private Form<FileUpload> createUploadForm() {
+        Form<FileUpload> uploadForm = newUploadForm();
+        uploadForm.add(createUploadField());
+        uploadForm.add(createUploadProgressBar());
+        uploadForm.add(createCancelButton());
+        uploadForm.setMultiPart(true);
+        return uploadForm;
+    }
 
-	private UploadProgressBar createUploadProgressBar() {
-		return new UploadProgressBar("progress", uploadForm);
-	}
+    private UploadProgressBar createUploadProgressBar() {
+        return new UploadProgressBar("progress", uploadForm);
+    }
 
-	private Form<FileUpload> newUploadForm() {
-		uploadForm = new Form<FileUpload>("uploadForm") {
-			private static final long serialVersionUID = 1L;
+    private Form<FileUpload> newUploadForm() {
+        uploadForm = new Form<FileUpload>("uploadForm") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit() {
-				FileUpload fileUpload = uploadField.getFileUpload();
-				try {
-					File tmpFile = fileUpload.writeToTempFile();
-					ValidationKey key = themeService.validateTheme(tmpFile);
-					if (key == ValidationKey.VALID) {
-						themeService.install(tmpFile);
-						info(getString("msg.installed"));
-					} else {
-						handleErrorMessage(key);
-					}
-					if (!tmpFile.delete()) {
-						LOG.error("Could not delete " + tmpFile);
-					}
-				} catch (IOException e) {
-					throw new UnhandledException(e);
-				}
-				UploadThemePanel.this.onSubmit();
-				super.onSubmit();
-			}
+            @Override
+            protected void onSubmit() {
+                FileUpload fileUpload = uploadField.getFileUpload();
+                try {
+                    File tmpFile = fileUpload.writeToTempFile();
+                    ValidationKey key = themeService.validateTheme(tmpFile);
+                    if (key == ValidationKey.VALID) {
+                        themeService.install(tmpFile);
+                        info(getString("msg.installed"));
+                    } else {
+                        handleErrorMessage(key);
+                    }
+                    if (!tmpFile.delete()) {
+                        LOG.error("Could not delete " + tmpFile);
+                    }
+                } catch (IOException e) {
+                    throw new UnhandledException(e);
+                }
+                UploadThemePanel.this.onSubmit();
+                super.onSubmit();
+            }
 
-			private void handleErrorMessage(ValidationKey key) {
-				if (key == ValidationKey.INVALID_DESCRIPTOR_FILE) {
-					error(getString("msg.invalid_descriptor_file"));
-				} else if (key == ValidationKey.MISSING_DESCRIPTOR_FILE) {
-					error(getString("msg.missing_descriptor_file"));
-				} else if (key == ValidationKey.NOT_A_JARFILE) {
-					error(getString("msg.not_a_jarfile"));
-				} else if (key == ValidationKey.WRONG_VERSION) {
-					error(getString("wrong_version"));
-				} else {
-					throw new IllegalArgumentException("Unknown ValidationKey: " + key);
-				}
-			}
-		};
-		return uploadForm;
-	}
+            private void handleErrorMessage(ValidationKey key) {
+                if (key == ValidationKey.INVALID_DESCRIPTOR_FILE) {
+                    error(getString("msg.invalid_descriptor_file"));
+                } else if (key == ValidationKey.MISSING_DESCRIPTOR_FILE) {
+                    error(getString("msg.missing_descriptor_file"));
+                } else if (key == ValidationKey.NOT_A_JARFILE) {
+                    error(getString("msg.not_a_jarfile"));
+                } else if (key == ValidationKey.WRONG_VERSION) {
+                    error(getString("wrong_version"));
+                } else {
+                    throw new IllegalArgumentException("Unknown ValidationKey: " + key);
+                }
+            }
+        };
+        return uploadForm;
+    }
 
-	private FileUploadField createUploadField() {
-		uploadField = new FileUploadField("fileInput");
-		uploadField.setRequired(true);
-		return uploadField;
-	}
+    private FileUploadField createUploadField() {
+        uploadField = new FileUploadField("fileInput");
+        uploadField.setRequired(true);
+        return uploadField;
+    }
 
-	private AjaxLink<Void> createCancelButton() {
-		return new AjaxLink<Void>("cancelButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<Void> createCancelButton() {
+        return new AjaxLink<Void>("cancelButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				onCancel(target);
-			}
-		};
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                onCancel(target);
+            }
+        };
+    }
 
-	private FeedbackPanel createFeedbackPanel() {
+    private FeedbackPanel createFeedbackPanel() {
         return new FeedbackPanel("uploadFeedback");
-	}
+    }
 
-	private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
-	}
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
+    }
 
-	protected abstract void onSubmit();
+    protected abstract void onSubmit();
 
-	protected abstract void onCancel(AjaxRequestTarget target);
+    protected abstract void onCancel(AjaxRequestTarget target);
 }

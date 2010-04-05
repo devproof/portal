@@ -27,15 +27,15 @@ import org.devproof.portal.module.comment.entity.CommentEntity;
  */
 @CacheQuery(region = CommentConstants.QUERY_CACHE_REGION)
 public interface CommentDao extends GenericDao<CommentEntity, Integer> {
-	@BulkUpdate("update CommentEntity c set c.accepted = true, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
-	void acceptComment(CommentEntity comment);
+    @BulkUpdate("update CommentEntity c set c.accepted = true, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
+    void acceptComment(CommentEntity comment);
 
-	@BulkUpdate("update CommentEntity c set c.accepted = false, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
-	void rejectComment(CommentEntity comment);
+    @BulkUpdate("update CommentEntity c set c.accepted = false, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
+    void rejectComment(CommentEntity comment);
 
-	@Query("select count(distinct c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.accepted = true and c.reviewed = true and c.automaticBlocked = false")
-	long findNumberOfReviewedComments(String moduleName, String moduleContentId);
+    @Query("select count(distinct c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.accepted = true and c.reviewed = true and c.automaticBlocked = false")
+    long findNumberOfReviewedComments(String moduleName, String moduleContentId);
 
-	@Query("select count(distinct c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.automaticBlocked = false and ((c.accepted = true and c.reviewed = true) or c.reviewed = false)")
-	long findNumberOfComments(String moduleName, String moduleContentId);
+    @Query("select count(distinct c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.automaticBlocked = false and ((c.accepted = true and c.reviewed = true) or c.reviewed = false)")
+    long findNumberOfComments(String moduleName, String moduleContentId);
 }

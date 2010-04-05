@@ -35,62 +35,62 @@ import org.devproof.portal.module.bookmark.query.BookmarkQuery;
  */
 public abstract class BookmarkSearchBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
-	private WebMarkupContainer titleContainer;
-	private IModel<BookmarkQuery> queryModel;
+    private static final long serialVersionUID = 1L;
+    private WebMarkupContainer titleContainer;
+    private IModel<BookmarkQuery> queryModel;
 
-	public BookmarkSearchBoxPanel(String id, IModel<BookmarkQuery> queryModel) {
-		super(id, queryModel);
-		this.queryModel = queryModel;
-		add(createTitleContainer());
-		add(createSearchForm());
-	}
+    public BookmarkSearchBoxPanel(String id, IModel<BookmarkQuery> queryModel) {
+        super(id, queryModel);
+        this.queryModel = queryModel;
+        add(createTitleContainer());
+        add(createSearchForm());
+    }
 
-	private Component createSearchForm() {
-		Form<SearchQuery> form = newSearchForm();
-		form.add(createSearchTextField());
-		form.add(createBrokenDropDown());
-		return form;
-	}
+    private Component createSearchForm() {
+        Form<SearchQuery> form = newSearchForm();
+        form.add(createSearchTextField());
+        form.add(createBrokenDropDown());
+        return form;
+    }
 
-	private Form<SearchQuery> newSearchForm() {
-		CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
-		return new Form<SearchQuery>("searchForm", formModel);
-	}
+    private Form<SearchQuery> newSearchForm() {
+        CompoundPropertyModel<SearchQuery> formModel = new CompoundPropertyModel<SearchQuery>(queryModel);
+        return new Form<SearchQuery>("searchForm", formModel);
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
-	private TextField<String> createSearchTextField() {
-		return new TextField<String>("allTextFields");
-	}
+    private TextField<String> createSearchTextField() {
+        return new TextField<String>("allTextFields");
+    }
 
-	private Select createBrokenDropDown() {
-		Select selectBroken = newBrokenDropDown();
-		selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
-		selectBroken.add(new SelectOption<Boolean>("brokenTrue", Model.of(Boolean.TRUE)));
-		selectBroken.add(new SelectOption<Boolean>("brokenFalse", Model.of(Boolean.FALSE)));
-		selectBroken.add(new SimpleAttributeModifier("onchange", "submit();"));
-		return selectBroken;
-	}
+    private Select createBrokenDropDown() {
+        Select selectBroken = newBrokenDropDown();
+        selectBroken.add(new SelectOption<Boolean>("chooseBroken", new Model<Boolean>()));
+        selectBroken.add(new SelectOption<Boolean>("brokenTrue", Model.of(Boolean.TRUE)));
+        selectBroken.add(new SelectOption<Boolean>("brokenFalse", Model.of(Boolean.FALSE)));
+        selectBroken.add(new SimpleAttributeModifier("onchange", "submit();"));
+        return selectBroken;
+    }
 
-	private Select newBrokenDropDown() {
-		return new Select("broken") {
-			private static final long serialVersionUID = 1L;
+    private Select newBrokenDropDown() {
+        return new Select("broken") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean isVisible() {
-				return isAuthor();
-			}
-		};
-	}
+            @Override
+            public boolean isVisible() {
+                return isAuthor();
+            }
+        };
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 
-	protected abstract boolean isAuthor();
+    protected abstract boolean isAuthor();
 }

@@ -25,22 +25,20 @@ import java.util.Map;
 
 /**
  * Locates the pages of all modules
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class FeedProviderLocatorImpl implements ApplicationContextAware, FeedProviderLocator {
-	private ApplicationContext context;
+    private ApplicationContext context;
 
-	@Override
-	public Collection<FeedProvider> getFeedProviders() {
-		@SuppressWarnings("unchecked")
-		Map<String, FeedProvider> beans = context.getBeansOfType(FeedProvider.class);
-		return beans.values();
-	}
+    @Override
+    public Collection<FeedProvider> getFeedProviders() {
+        @SuppressWarnings("unchecked") Map<String, FeedProvider> beans = context.getBeansOfType(FeedProvider.class);
+        return beans.values();
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		context = applicationContext;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
 }

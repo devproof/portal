@@ -26,72 +26,62 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface ArticleService extends CrudService<ArticleEntity, Integer> {
-	/**
-	 * Returns a new instance of ArticleEntity
-	 * 
-	 * @return new instance of {@link ArticleEntity}
-	 */
-	ArticleEntity newArticleEntity();
+    /**
+     * Returns a new instance of ArticleEntity
+     *
+     * @return new instance of {@link ArticleEntity}
+     */
+    ArticleEntity newArticleEntity();
 
-	/**
-	 * Returns a new instance of ArticlePageEntity
-	 * 
-	 * @param article
-	 *            ArticleEntity
-	 * @param page
-	 *            page number
-	 * @return new instance of {@link ArticleEntity}
-	 */
-	ArticlePageEntity newArticlePageEntity(ArticleEntity article, Integer page);
+    /**
+     * Returns a new instance of ArticlePageEntity
+     *
+     * @param article ArticleEntity
+     * @param page    page number
+     * @return new instance of {@link ArticleEntity}
+     */
+    ArticlePageEntity newArticlePageEntity(ArticleEntity article, Integer page);
 
-	/**
-	 * Returns a list with all articles allowed for the role
-	 * 
-	 * @param role
-	 *            role to filter
-	 * @param firstResult
-	 *            first result number
-	 * @param maxResult
-	 *            maximum result number
-	 * @return list with article entities
-	 */
-	List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    /**
+     * Returns a list with all articles allowed for the role
+     *
+     * @param role        role to filter
+     * @param firstResult first result number
+     * @param maxResult   maximum result number
+     * @return list with article entities
+     */
+    List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-	/**
-	 * Returns true if a content id exists
-	 * 
-	 * @param contentId
-	 *            content id
-	 * @return true if content id exists
-	 */
-	boolean existsContentId(String contentId);
+    /**
+     * Returns true if a content id exists
+     *
+     * @param contentId content id
+     * @return true if content id exists
+     */
+    boolean existsContentId(String contentId);
 
-	/**
-	 * Number of pages of the article
-	 * 
-	 * @param contentId
-	 *            content id
-	 * @return number of pages
-	 */
-	long getPageCount(String contentId);
+    /**
+     * Number of pages of the article
+     *
+     * @param contentId content id
+     * @return number of pages
+     */
+    long getPageCount(String contentId);
 
-	/**
-	 * Returns the article page
-	 * 
-	 * @param contentId
-	 *            content id
-	 * @param page
-	 *            page number
-	 * @return {@link ArticlePageEntity}
-	 */
-	ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page);
+    /**
+     * Returns the article page
+     *
+     * @param contentId content id
+     * @param page      page number
+     * @return {@link ArticlePageEntity}
+     */
+    ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page);
 
-	/**
-	 * Returns the Article by content id
-	 * 
-	 * @param contentId
-	 *            content id
-	 * @return {@link ArticleEntity}
-	 */
+    /**
+     * Returns the Article by content id
+     *
+     * @param contentId content id
+     * @return {@link ArticleEntity}
+     */
 	ArticleEntity findByContentId(String contentId);
 }

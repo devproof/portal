@@ -43,105 +43,103 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class PortalApplication extends WebApplication {
-	private static final Log LOG = LogFactory.getLog(PortalApplication.class);
-	private Class<? extends Page> startPage;
-	private boolean productionMode = false;
+    private static final Log LOG = LogFactory.getLog(PortalApplication.class);
+    private Class<? extends Page> startPage;
+    private boolean productionMode = false;
 
-	@Override
-	protected void init() {
-		super.init();
-		configureWicket();
-		mountPagesAndSetStartPage();
-		loadTheme();
-		LOG.info("Portal is initialized!");
-	}
+    @Override
+    protected void init() {
+        super.init();
+        configureWicket();
+        mountPagesAndSetStartPage();
+        loadTheme();
+        LOG.info("Portal is initialized!");
+    }
 
-	private void loadTheme() {
-		ConfigurationService configurationService = this.getSpringBean("configurationService");
-		String themeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
-		getResourceSettings().setResourceStreamLocator(new PortalResourceStreamLocator(getServletContext(), themeUuid));
-	}
+    private void loadTheme() {
+        ConfigurationService configurationService = this.getSpringBean("configurationService");
+        String themeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
+        getResourceSettings().setResourceStreamLocator(new PortalResourceStreamLocator(getServletContext(), themeUuid));
+    }
 
-	private void mountPagesAndSetStartPage() {
-		startPage = NoStartPage.class;
-		PageLocator pageLocator = this.getSpringBean("pageLocator");
-		MainNavigationRegistry mainNavigationRegistry = this.getSpringBean("mainNavigationRegistry");
-		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
-		for (PageConfiguration page : pages) {
-			if (page.getMountPath() != null) {
-				if (page.isIndexMountedPath()) {
-					mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
-				} else {
-					mountBookmarkablePage(page.getMountPath(), page.getPageClass());
-				}
-			}
-		}
+    private void mountPagesAndSetStartPage() {
+        startPage = NoStartPage.class;
+        PageLocator pageLocator = this.getSpringBean("pageLocator");
+        MainNavigationRegistry mainNavigationRegistry = this.getSpringBean("mainNavigationRegistry");
+        Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
+        for (PageConfiguration page : pages) {
+            if (page.getMountPath() != null) {
+                if (page.isIndexMountedPath()) {
+                    mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
+                } else {
+                    mountBookmarkablePage(page.getMountPath(), page.getPageClass());
+                }
+            }
+        }
 
-		List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
-		if (!registeredPages.isEmpty()) {
-			// First visible page in the main navigation is the startpage!
-			startPage = registeredPages.get(0);
-		}
-	}
+        List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
+        if (!registeredPages.isEmpty()) {
+            // First visible page in the main navigation is the startpage!
+            startPage = registeredPages.get(0);
+        }
+    }
 
-	private void configureWicket() {
-		productionMode = DEPLOYMENT.equals(getConfigurationType());
-		getResourceSettings().setThrowExceptionOnMissingResource(false);
-		addComponentInstantiationListener(new SpringComponentInjector(this, getSpringContext(), true));
-		getMarkupSettings().setStripWicketTags(true);
-		getMarkupSettings().setCompressWhitespace(true);
-		getMarkupSettings().setStripComments(true);
-		getSecuritySettings().setAuthorizationStrategy(new PortalAuthorizationStrategy(getSpringContext()));
-		getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
-		getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
-		getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
-	}
+    private void configureWicket() {
+        productionMode = DEPLOYMENT.equals(getConfigurationType());
+        getResourceSettings().setThrowExceptionOnMissingResource(false);
+        addComponentInstantiationListener(new SpringComponentInjector(this, getSpringContext(), true));
+        getMarkupSettings().setStripWicketTags(true);
+        getMarkupSettings().setCompressWhitespace(true);
+        getMarkupSettings().setStripComments(true);
+        getSecuritySettings().setAuthorizationStrategy(new PortalAuthorizationStrategy(getSpringContext()));
+        getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
+        getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
+        getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
+    }
 
-	public boolean isProductionMode() {
-		return productionMode;
-	}
+    public boolean isProductionMode() {
+        return productionMode;
+    }
 
-	public void setThemeUuid(String themeUuid) {
-		PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings()
-				.getResourceStreamLocator();
-		locator.setThemeUuid(themeUuid);
-		getMarkupSettings().getMarkupCache().clear();
-		LOG.debug("Theme " + themeUuid + " selected.");
-	}
+    public void setThemeUuid(String themeUuid) {
+        PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings().getResourceStreamLocator();
+        locator.setThemeUuid(themeUuid);
+        getMarkupSettings().getMarkupCache().clear();
+        LOG.debug("Theme " + themeUuid + " selected.");
+    }
 
-	/**
-	 * Rollback on runtime exception Inform the admin about the runtime
-	 * exception
-	 */
-	@Override
-	protected IRequestCycleProcessor newRequestCycleProcessor() {
-		return new PortalRequestCycleProcessor(getSpringContext(), isProductionMode());
-	}
+    /**
+     * Rollback on runtime exception Inform the admin about the runtime
+     * exception
+     */
+    @Override
+    protected IRequestCycleProcessor newRequestCycleProcessor() {
+        return new PortalRequestCycleProcessor(getSpringContext(), isProductionMode());
+    }
 
-	@Override
-	@SuppressWarnings(value = "unchecked")
-	public Class getHomePage() {
-		return startPage;
-	}
+    @Override
+    @SuppressWarnings(value = "unchecked")
+    public Class getHomePage() {
+        return startPage;
+    }
 
-	public ApplicationContext getSpringContext() {
-		return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-	}
+    public ApplicationContext getSpringContext() {
+        return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+    }
 
-	public <T> T getSpringBean(String id) {
-		@SuppressWarnings("unchecked")
-		T back = (T) getSpringContext().getBean(id);
-		return back;
-	}
+    public <T> T getSpringBean(String id) {
+        @SuppressWarnings("unchecked") T back = (T) getSpringContext().getBean(id);
+        return back;
+    }
 
-	@Override
-	public Session newSession(Request request, Response response) {
-		LOG.debug("New session created.");
-		return new PortalSession(request);
-	}
+    @Override
+    public Session newSession(Request request, Response response) {
+        LOG.debug("New session created.");
+        return new PortalSession(request);
+    }
 
-	@Override
-	public RequestCycle newRequestCycle(Request request, Response response) {
-		return new PortalWebRequestCycle(this, (WebRequest) request, (WebResponse) response, getSpringContext());
-	}
+    @Override
+    public RequestCycle newRequestCycle(Request request, Response response) {
+        return new PortalWebRequestCycle(this, (WebRequest) request, (WebResponse) response, getSpringContext());
+    }
 }

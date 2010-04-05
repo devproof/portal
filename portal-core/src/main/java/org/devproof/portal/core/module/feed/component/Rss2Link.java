@@ -22,14 +22,14 @@ import org.devproof.portal.core.module.feed.page.Rss2FeedPage;
  * @author Carsten Hufe
  */
 public class Rss2Link extends BaseFeedLink {
-	private static final long serialVersionUID = 1L;
-	
-	public Rss2Link(String id, Class<? extends TemplatePage> page) {
-		super(id, page,  Rss2FeedPage.class);
-	}
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected String getContentType() {
-		return "application/rss+xml";
-	}
+    public Rss2Link(String id, Class<? extends TemplatePage> page) {
+        super(id, page, Rss2FeedPage.class);
+    }
+
+    @Override
+    protected String getContentType() {
+        return "application/rss+xml";
+    }
 }

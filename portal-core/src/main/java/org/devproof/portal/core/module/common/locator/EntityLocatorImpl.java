@@ -29,22 +29,21 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class EntityLocatorImpl implements ApplicationContextAware, EntityLocator {
-	private ApplicationContext context;
+    private ApplicationContext context;
 
-	@Override
-	public Collection<?> getEntities() {
-		@SuppressWarnings("unchecked")
-		Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
-		List<Object> back = new ArrayList<Object>();
-		for (ModuleConfiguration module : beans.values()) {
-			back.addAll(module.getEntities());
-		}
-		return back;
-	}
+    @Override
+    public Collection<?> getEntities() {
+        @SuppressWarnings("unchecked") Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
+        List<Object> back = new ArrayList<Object>();
+        for (ModuleConfiguration module : beans.values()) {
+            back.addAll(module.getEntities());
+        }
+        return back;
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		context = applicationContext;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
+    }
 
 }

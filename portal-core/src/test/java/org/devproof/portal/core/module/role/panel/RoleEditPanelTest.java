@@ -26,39 +26,39 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class RoleEditPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestRoleEditPanel.class);
-		tester.assertComponent("panel", TestRoleEditPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestRoleEditPanel.class);
+        tester.assertComponent("panel", TestRoleEditPanel.class);
+    }
 
-	public static class TestRoleEditPanel extends RoleEditPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestRoleEditPanel extends RoleEditPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestRoleEditPanel(String id) {
-			super(id, Model.of(new RoleEntity()));
-		}
+        public TestRoleEditPanel(String id) {
+            super(id, Model.of(new RoleEntity()));
+        }
 
-		@Override
-		public void onSave(AjaxRequestTarget target) {
+        @Override
+        public void onSave(AjaxRequestTarget target) {
 
-		}
+        }
 
-		@Override
-		public void onCancel(AjaxRequestTarget target) {
+        @Override
+        public void onCancel(AjaxRequestTarget target) {
 
-		}
-	}
+        }
+    }
 }

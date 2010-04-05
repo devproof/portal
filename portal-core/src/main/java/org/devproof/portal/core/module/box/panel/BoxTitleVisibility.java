@@ -19,8 +19,8 @@ package org.devproof.portal.core.module.box.panel;
  * @author Carsten Hufe
  */
 public interface BoxTitleVisibility {
-	/**
-	 * Sets the visibility of the box title
-	 */
-	void setTitleVisible(boolean visible);
+    /**
+     * Sets the visibility of the box title
+     */
+    void setTitleVisible(boolean visible);
 }

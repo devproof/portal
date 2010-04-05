@@ -29,13 +29,13 @@ import java.util.List;
  */
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 public interface OtherPageDao extends GenericDao<OtherPageEntity, Integer> {
-	@CacheQuery(enabled = false)
-	@Query("select op.allRights from OtherPageEntity op where op.modifiedAt = (select max(modifiedAt) from OtherPageEntity)")
-	List<RightEntity> findLastSelectedRights();
+    @CacheQuery(enabled = false)
+    @Query("select op.allRights from OtherPageEntity op where op.modifiedAt = (select max(modifiedAt) from OtherPageEntity)")
+    List<RightEntity> findLastSelectedRights();
 
-	@Query("select count(op.contentId) from OtherPageEntity op where op.contentId like ?")
-	long existsContentId(String contentId);
+    @Query("select count(op.contentId) from OtherPageEntity op where op.contentId like ?")
+    long existsContentId(String contentId);
 
-	@Query("select op from OtherPageEntity op where op.contentId like ?")
-	OtherPageEntity findOtherPageByContentId(String contentId);
+    @Query("select op from OtherPageEntity op where op.contentId like ?")
+    OtherPageEntity findOtherPageByContentId(String contentId);
 }

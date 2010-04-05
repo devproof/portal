@@ -26,70 +26,70 @@ import static org.easymock.EasyMock.createStrictMock;
  * @author Carsten Hufe
  */
 public class BoxRegistryImplTest extends TestCase {
-	private BoxRegistryImpl impl;
-	private BoxLocator boxLocatorMock;
+    private BoxRegistryImpl impl;
+    private BoxLocator boxLocatorMock;
 
-	@Override
-	public void setUp() throws Exception {
-		boxLocatorMock = createStrictMock(BoxLocator.class);
-		impl = new BoxRegistryImpl();
-		impl.setBoxLocator(boxLocatorMock);
-	}
+    @Override
+    public void setUp() throws Exception {
+        boxLocatorMock = createStrictMock(BoxLocator.class);
+        impl = new BoxRegistryImpl();
+        impl.setBoxLocator(boxLocatorMock);
+    }
 
-	public void testGetRegisteredGlobalAdminPages() {
-		BoxConfiguration box = new BoxConfiguration();
-		box.setBoxClass(Panel.class);
-		impl.registerBox(box);
-		assertEquals(box, impl.getRegisteredBoxes().get(0));
-	}
+    public void testGetRegisteredGlobalAdminPages() {
+        BoxConfiguration box = new BoxConfiguration();
+        box.setBoxClass(Panel.class);
+        impl.registerBox(box);
+        assertEquals(box, impl.getRegisteredBoxes().get(0));
+    }
 
-	public void testRegisterBox() {
-		BoxConfiguration box = new BoxConfiguration();
-		box.setBoxClass(Panel.class);
-		impl.registerBox(box);
-		assertEquals(box, impl.getRegisteredBoxes().get(0));
-	}
+    public void testRegisterBox() {
+        BoxConfiguration box = new BoxConfiguration();
+        box.setBoxClass(Panel.class);
+        impl.registerBox(box);
+        assertEquals(box, impl.getRegisteredBoxes().get(0));
+    }
 
-	public void testRemoveBox() {
-		BoxConfiguration box = new BoxConfiguration();
-		box.setBoxClass(Panel.class);
-		impl.registerBox(box);
-		assertEquals(1, impl.getRegisteredBoxes().size());
-		impl.removeBox(box);
-		assertEquals(0, impl.getRegisteredBoxes().size());
+    public void testRemoveBox() {
+        BoxConfiguration box = new BoxConfiguration();
+        box.setBoxClass(Panel.class);
+        impl.registerBox(box);
+        assertEquals(1, impl.getRegisteredBoxes().size());
+        impl.removeBox(box);
+        assertEquals(0, impl.getRegisteredBoxes().size());
 
-	}
+    }
 
-	public void testGetBoxConfigurationBySimpleClassName() {
-		BoxConfiguration box = new BoxConfiguration();
-		box.setBoxClass(Panel.class);
-		impl.registerBox(box);
-		BoxConfiguration config = impl.getBoxConfigurationBySimpleClassName(Panel.class.getSimpleName());
-		assertEquals(config.getBoxClass(), Panel.class);
-	}
+    public void testGetBoxConfigurationBySimpleClassName() {
+        BoxConfiguration box = new BoxConfiguration();
+        box.setBoxClass(Panel.class);
+        impl.registerBox(box);
+        BoxConfiguration config = impl.getBoxConfigurationBySimpleClassName(Panel.class.getSimpleName());
+        assertEquals(config.getBoxClass(), Panel.class);
+    }
 
-	public void testGetClassBySimpleClassName() {
-		BoxConfiguration box = new BoxConfiguration();
-		box.setBoxClass(Panel.class);
-		impl.registerBox(box);
-		Class<?> clazz = impl.getClassBySimpleClassName(Panel.class.getSimpleName());
-		assertEquals(clazz, Panel.class);
-	}
+    public void testGetClassBySimpleClassName() {
+        BoxConfiguration box = new BoxConfiguration();
+        box.setBoxClass(Panel.class);
+        impl.registerBox(box);
+        Class<?> clazz = impl.getClassBySimpleClassName(Panel.class.getSimpleName());
+        assertEquals(clazz, Panel.class);
+    }
 
-	public void testGetNameBySimpleClassName() {
-		BoxConfiguration box = new BoxConfiguration();
-		box.setBoxClass(Panel.class);
-		box.setName("foobar");
-		impl.registerBox(box);
-		String name = impl.getNameBySimpleClassName(Panel.class.getSimpleName());
-		assertEquals(name, "foobar");
-	}
+    public void testGetNameBySimpleClassName() {
+        BoxConfiguration box = new BoxConfiguration();
+        box.setBoxClass(Panel.class);
+        box.setName("foobar");
+        impl.registerBox(box);
+        String name = impl.getNameBySimpleClassName(Panel.class.getSimpleName());
+        assertEquals(name, "foobar");
+    }
 
-	public void testIsBoxClassRegistered() {
-		BoxConfiguration box = new BoxConfiguration();
-		box.setBoxClass(Panel.class);
-		impl.registerBox(box);
-		assertTrue(impl.isBoxClassRegistered(Panel.class.getSimpleName()));
-		assertFalse(impl.isBoxClassRegistered("doesnotexist"));
-	}
+    public void testIsBoxClassRegistered() {
+        BoxConfiguration box = new BoxConfiguration();
+        box.setBoxClass(Panel.class);
+        impl.registerBox(box);
+        assertTrue(impl.isBoxClassRegistered(Panel.class.getSimpleName()));
+        assertFalse(impl.isBoxClassRegistered("doesnotexist"));
+    }
 }

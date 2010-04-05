@@ -31,27 +31,25 @@ import java.util.List;
  */
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
 public interface DownloadDao extends GenericDao<DownloadEntity, Integer> {
-	@Query("Select distinct(d) from DownloadEntity d")
-	List<DownloadEntity> findAll();
+    @Query("Select distinct(d) from DownloadEntity d")
+    List<DownloadEntity> findAll();
 
-	@CacheQuery(enabled = false)
-	@Query("select d.allRights from DownloadEntity d where d.modifiedAt = (select max(modifiedAt) from DownloadEntity)")
-	List<RightEntity> findLastSelectedRights();
+    @CacheQuery(enabled = false)
+    @Query("select d.allRights from DownloadEntity d where d.modifiedAt = (select max(modifiedAt) from DownloadEntity)")
+    List<RightEntity> findLastSelectedRights();
 
-	@Query(value = "select distinct(d) from DownloadEntity d join d.allRights ar"
-			+ " where ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%') order by d.modifiedAt desc", limitClause = true)
-	List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
-			Integer maxResult);
+    @Query(value = "select distinct(d) from DownloadEntity d join d.allRights ar" + " where ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%') order by d.modifiedAt desc", limitClause = true)
+    List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-	@BulkUpdate("update DownloadEntity d set d.hits = (d.hits + 1) where d = ?")
-	void incrementHits(DownloadEntity download);
+    @BulkUpdate("update DownloadEntity d set d.hits = (d.hits + 1) where d = ?")
+    void incrementHits(DownloadEntity download);
 
-	@BulkUpdate("update DownloadEntity d set d.numberOfVotes = (d.numberOfVotes + 1), d.sumOfRating = (d.sumOfRating + ?) where d = ?")
-	void rateDownload(Integer rating, DownloadEntity download);
+    @BulkUpdate("update DownloadEntity d set d.numberOfVotes = (d.numberOfVotes + 1), d.sumOfRating = (d.sumOfRating + ?) where d = ?")
+    void rateDownload(Integer rating, DownloadEntity download);
 
-	@BulkUpdate("update DownloadEntity d set d.broken = true where d = ?")
-	void markBrokenDownload(DownloadEntity download);
+    @BulkUpdate("update DownloadEntity d set d.broken = true where d = ?")
+    void markBrokenDownload(DownloadEntity download);
 
-	@BulkUpdate("update DownloadEntity d set d.broken = false where d = ?")
-	void markValidDownload(DownloadEntity download);
+    @BulkUpdate("update DownloadEntity d set d.broken = false where d = ?")
+    void markValidDownload(DownloadEntity download);
 }

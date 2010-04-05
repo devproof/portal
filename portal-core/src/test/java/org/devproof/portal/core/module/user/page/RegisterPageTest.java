@@ -28,39 +28,39 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class RegisterPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(RegisterPage.class);
-		tester.assertRenderedPage(RegisterPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(RegisterPage.class);
+        tester.assertRenderedPage(RegisterPage.class);
+    }
 
-	public void testRegistration() {
-		Page page = tester.startPage(RegisterPage.class);
-		tester.assertRenderedPage(RegisterPage.class);
-		PortalSession.get().getRights().add(new RightEntity("captcha.disabled"));
-		FormTester ft = tester.newFormTester("form");
-		ft.setValue("username", "peterpan");
-		ft.setValue("firstname", "mike");
-		ft.setValue("lastname", "jack");
-		ft.setValue("email", "mike.jack@email.tld");
-		ft.setValue("birthday", "1981-10-13");
-		ft.setValue("password1", "testing");
-		ft.setValue("password2", "testing");
-		ft.setValue("termsOfUse", true);
-		tester.executeAjaxEvent("form:registerButton", "onclick");
-		tester.assertNoErrorMessage();
-		tester.assertRenderedPage(MessagePage.class);
-		tester.assertContains(page.getString("confirm.email"));
-	}
+    public void testRegistration() {
+        Page page = tester.startPage(RegisterPage.class);
+        tester.assertRenderedPage(RegisterPage.class);
+        PortalSession.get().getRights().add(new RightEntity("captcha.disabled"));
+        FormTester ft = tester.newFormTester("form");
+        ft.setValue("username", "peterpan");
+        ft.setValue("firstname", "mike");
+        ft.setValue("lastname", "jack");
+        ft.setValue("email", "mike.jack@email.tld");
+        ft.setValue("birthday", "1981-10-13");
+        ft.setValue("password1", "testing");
+        ft.setValue("password2", "testing");
+        ft.setValue("termsOfUse", true);
+        tester.executeAjaxEvent("form:registerButton", "onclick");
+        tester.assertNoErrorMessage();
+        tester.assertRenderedPage(MessagePage.class);
+        tester.assertContains(page.getString("confirm.email"));
+    }
 }

@@ -34,156 +34,153 @@ import java.util.Collection;
 
 /**
  * Implementation of the generic dao
- * 
+ *
  * @author Carsten Hufe
- * 
  * @param <T>
- *            entity type
+ * entity type
  * @param <PK>
- *            primary key type
+ * primary key type
  */
-public class GenericHibernateDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements
-		GenericDao<T, PK> {
-	private static final Log LOG = LogFactory.getLog(GenericHibernateDaoImpl.class);
-	private UsernameResolver usernameResolver;
-	private Class<T> type;
+public class GenericHibernateDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericDao<T, PK> {
+    private static final Log LOG = LogFactory.getLog(GenericHibernateDaoImpl.class);
+    private UsernameResolver usernameResolver;
+    private Class<T> type;
 
-	public GenericHibernateDaoImpl(Class<T> type) {
-		this.type = type;
-		LOG.debug("Constructor GenericHibernateDaoImpl");
-	}
+    public GenericHibernateDaoImpl(Class<T> type) {
+        this.type = type;
+        LOG.debug("Constructor GenericHibernateDaoImpl");
+    }
 
-	@SuppressWarnings(value = "unchecked")
-	public T findById(PK id) {
-		return (T) getSession().get(type, id);
-	}
+    @SuppressWarnings(value = "unchecked")
+    public T findById(PK id) {
+        return (T) getSession().get(type, id);
+    }
 
-	@SuppressWarnings("unchecked")
-	public T save(T entity) {
-		openTransaction();
-		LOG.debug("save " + type);
-		updateModificationData(entity);
-		return (T) getSession().merge(entity);
-	}
+    @SuppressWarnings("unchecked")
+    public T save(T entity) {
+        openTransaction();
+        LOG.debug("save " + type);
+        updateModificationData(entity);
+        return (T) getSession().merge(entity);
+    }
 
-	private void updateModificationData(T entity) {
-		if (entity instanceof BaseEntity) {
-			BaseEntity base = (BaseEntity) entity;
-			// only works in the request
-			if (base.isUpdateModificationData()) {
-				String username = usernameResolver.getUsername();
-				LOG.debug("BaseEntity " + entity + "set creation date and user");
-				if (base.getCreatedAt() == null) {
-					base.setCreatedAt(PortalUtil.now());
-				}
-				if (base.getCreatedBy() == null) {
-					base.setCreatedBy(username);
-				}
-				base.setModifiedAt(PortalUtil.now());
-				base.setModifiedBy(username);
-			}
-		}
-	}
+    private void updateModificationData(T entity) {
+        if (entity instanceof BaseEntity) {
+            BaseEntity base = (BaseEntity) entity;
+            // only works in the request
+            if (base.isUpdateModificationData()) {
+                String username = usernameResolver.getUsername();
+                LOG.debug("BaseEntity " + entity + "set creation date and user");
+                if (base.getCreatedAt() == null) {
+                    base.setCreatedAt(PortalUtil.now());
+                }
+                if (base.getCreatedBy() == null) {
+                    base.setCreatedBy(username);
+                }
+                base.setModifiedAt(PortalUtil.now());
+                base.setModifiedBy(username);
+            }
+        }
+    }
 
-	private void openTransaction() {
-		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
-		if (holder.getTransaction() == null) {
-			holder.setTransaction(holder.getSession().beginTransaction());
-		}
-	}
+    private void openTransaction() {
+        SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
+        if (holder.getTransaction() == null) {
+            holder.setTransaction(holder.getSession().beginTransaction());
+        }
+    }
 
-	@Override
-	public void refresh(T entity) {
-		getSession().refresh(entity);
-	}
+    @Override
+    public void refresh(T entity) {
+        getSession().refresh(entity);
+    }
 
-	public void delete(T entity) throws DeleteFailedException {
-		SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
-		if (holder.getTransaction() == null) {
-			LOG.debug("No transaction found, start one.");
-			holder.setTransaction(holder.getSession().beginTransaction());
-		}
-		getSession().delete(entity);
-	}
+    public void delete(T entity) throws DeleteFailedException {
+        SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
+        if (holder.getTransaction() == null) {
+            LOG.debug("No transaction found, start one.");
+            holder.setTransaction(holder.getSession().beginTransaction());
+        }
+        getSession().delete(entity);
+    }
 
-	public Object executeFinder(String query, Object[] queryArgs, Method method, Integer firstResults,
-			Integer maxResults) {
-		String hqlQuery = replaceGenericTypeName(query);
-		Query q = getSession().createQuery(hqlQuery);
-		setCacheConfiguration(method, q);
-		setParameter(queryArgs, q);
-		setResultLimitations(firstResults, maxResults, q);
-		if (Collection.class.isAssignableFrom(method.getReturnType())) {
-			return q.list();
-		} else {
-			return q.uniqueResult();
-		}
-	}
+    public Object executeFinder(String query, Object[] queryArgs, Method method, Integer firstResults, Integer maxResults) {
+        String hqlQuery = replaceGenericTypeName(query);
+        Query q = getSession().createQuery(hqlQuery);
+        setCacheConfiguration(method, q);
+        setParameter(queryArgs, q);
+        setResultLimitations(firstResults, maxResults, q);
+        if (Collection.class.isAssignableFrom(method.getReturnType())) {
+            return q.list();
+        } else {
+            return q.uniqueResult();
+        }
+    }
 
-	private void setCacheConfiguration(Method method, Query q) {
-		CacheQuery cacheAnnotation = method.getAnnotation(CacheQuery.class);
-		if (cacheAnnotation != null) {
-			handleCacheConfiguration(q, cacheAnnotation);
-		} else {
-			cacheAnnotation = method.getDeclaringClass().getAnnotation(CacheQuery.class);
-			if (cacheAnnotation != null) {
-				handleCacheConfiguration(q, cacheAnnotation);
-			}
-		}
-	}
+    private void setCacheConfiguration(Method method, Query q) {
+        CacheQuery cacheAnnotation = method.getAnnotation(CacheQuery.class);
+        if (cacheAnnotation != null) {
+            handleCacheConfiguration(q, cacheAnnotation);
+        } else {
+            cacheAnnotation = method.getDeclaringClass().getAnnotation(CacheQuery.class);
+            if (cacheAnnotation != null) {
+                handleCacheConfiguration(q, cacheAnnotation);
+            }
+        }
+    }
 
-	private void handleCacheConfiguration(Query q, CacheQuery cacheAnnotation) {
-		q.setCacheable(cacheAnnotation.enabled());
-		if (!"".equals(cacheAnnotation.region())) {
-			q.setCacheMode(CacheMode.parse(cacheAnnotation.cacheMode()));
-		}
-		if (!"".equals(cacheAnnotation.region())) {
-			q.setCacheRegion(cacheAnnotation.region());
-		}
-	}
+    private void handleCacheConfiguration(Query q, CacheQuery cacheAnnotation) {
+        q.setCacheable(cacheAnnotation.enabled());
+        if (!"".equals(cacheAnnotation.region())) {
+            q.setCacheMode(CacheMode.parse(cacheAnnotation.cacheMode()));
+        }
+        if (!"".equals(cacheAnnotation.region())) {
+            q.setCacheRegion(cacheAnnotation.region());
+        }
+    }
 
-	private void setResultLimitations(Integer firstResults, Integer maxResults, Query q) {
-		if (firstResults != null) {
-			q.setFirstResult(firstResults);
-		}
-		if (maxResults != null) {
-			q.setMaxResults(maxResults);
-		}
-	}
+    private void setResultLimitations(Integer firstResults, Integer maxResults, Query q) {
+        if (firstResults != null) {
+            q.setFirstResult(firstResults);
+        }
+        if (maxResults != null) {
+            q.setMaxResults(maxResults);
+        }
+    }
 
-	public void executeUpdate(String query, Object[] queryArgs) {
-		String hqlQuery = replaceGenericTypeName(query);
-		Query q = getSession().createQuery(hqlQuery);
-		setParameter(queryArgs, q);
-		q.executeUpdate();
-	}
+    public void executeUpdate(String query, Object[] queryArgs) {
+        String hqlQuery = replaceGenericTypeName(query);
+        Query q = getSession().createQuery(hqlQuery);
+        setParameter(queryArgs, q);
+        q.executeUpdate();
+    }
 
-	private String replaceGenericTypeName(String query) {
-		if (query.contains("$TYPE")) {
-			return query.replace("$TYPE", type.getSimpleName());
-		}
-		return query;
-	}
+    private String replaceGenericTypeName(String query) {
+        if (query.contains("$TYPE")) {
+            return query.replace("$TYPE", type.getSimpleName());
+        }
+        return query;
+    }
 
-	private void setParameter(Object[] queryArgs, Query q) {
-		if (queryArgs != null) {
-			for (int i = 0; i < queryArgs.length; i++) {
-				q.setParameter(i, queryArgs[i]);
-			}
-		}
-	}
+    private void setParameter(Object[] queryArgs, Query q) {
+        if (queryArgs != null) {
+            for (int i = 0; i < queryArgs.length; i++) {
+                q.setParameter(i, queryArgs[i]);
+            }
+        }
+    }
 
-	public Class<T> getType() {
-		return type;
-	}
+    public Class<T> getType() {
+        return type;
+    }
 
-	@Required
-	public void setType(Class<T> type) {
-		this.type = type;
-	}
+    @Required
+    public void setType(Class<T> type) {
+        this.type = type;
+    }
 
-	@Required
-	public void setUsernameResolver(UsernameResolver usernameResolver) {
-		this.usernameResolver = usernameResolver;
-	}
+    @Required
+    public void setUsernameResolver(UsernameResolver usernameResolver) {
+        this.usernameResolver = usernameResolver;
+    }
 }

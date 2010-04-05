@@ -17,12 +17,11 @@ package org.devproof.portal.core.module.common.dao;
 
 /**
  * @author Carsten Hufe
- * 
  */
 public class DeleteFailedException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public DeleteFailedException(Exception e) {
-		super(e);
-	}
+    public DeleteFailedException(Exception e) {
+        super(e);
+    }
 }

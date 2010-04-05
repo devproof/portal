@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
-	<wicket:extend>
-		<div class="form">
-		<h1><wicket:message key="contentTitle"/></h1>
-		<form wicket:id="form">
-		<table cellspacing="10">
-			<tr>
-				<td><label for="username"><wicket:message key="username"/></label></td>
-				<td><input type="text" wicket:id="username"/></td>
-			</tr>
-			<tr>
-				<td><label for="firstname"><wicket:message key="firstname"/></label></td>
-				<td><input type="text" wicket:id="firstname"/></td>
-			</tr>
-			<tr>
-				<td><label for="lastname"><wicket:message key="lastname"/></label></td>
-				<td><input type="text" wicket:id="lastname"/></td>
-			</tr>
-			<tr>
-				<td><label for="birthday"><wicket:message key="birthday"/></label></td>
-				<td><input type="text" wicket:id="birthday"/></td>
-			</tr>
-			<tr>
-				<td><label for="email"><wicket:message key="email"/></label></td>
-				<td><input type="text" wicket:id="email"/></td>
-			</tr>
-			<tr>
-				<td><label for="enableContactForm"><wicket:message key="enableContactForm"/></label></td>
-				<td><input type="checkbox" wicket:id="enableContactForm"/></td>
-			</tr>
-			<tr>
-				<td><label for="currentPassword"><wicket:message key="currentPassword"/></label></td>
-				<td><input type="password" wicket:id="currentPassword"/></td>
-			</tr>	
-			<tr>
-				<td><label for="newPassword1"><wicket:message key="newPassword1"/></label></td>
-				<td><input type="password" wicket:id="newPassword1"/></td>
-			</tr>	
-			<tr>
-				<td><label for="newPassword2"><wicket:message key="newPassword2"/></label></td>
-				<td><input type="password" wicket:id="newPassword2"/></td>
-			</tr>		
-			<tr>
-				<td></td>
-				<td><input type="submit" wicket:id="saveButton" wicket:message="value:saveButton" class="button"/></td>
-			</tr>
-		</table>
-		</form>
-		</div>
-	</wicket:extend>
+<wicket:extend>
+    <div class="form">
+        <h1><wicket:message key="contentTitle"/></h1>
+
+        <form wicket:id="form">
+            <table cellspacing="10">
+                <tr>
+                    <td><label for="username"><wicket:message key="username"/></label></td>
+                    <td><input type="text" wicket:id="username"/></td>
+                </tr>
+                <tr>
+                    <td><label for="firstname"><wicket:message key="firstname"/></label></td>
+                    <td><input type="text" wicket:id="firstname"/></td>
+                </tr>
+                <tr>
+                    <td><label for="lastname"><wicket:message key="lastname"/></label></td>
+                    <td><input type="text" wicket:id="lastname"/></td>
+                </tr>
+                <tr>
+                    <td><label for="birthday"><wicket:message key="birthday"/></label></td>
+                    <td><input type="text" wicket:id="birthday"/></td>
+                </tr>
+                <tr>
+                    <td><label for="email"><wicket:message key="email"/></label></td>
+                    <td><input type="text" wicket:id="email"/></td>
+                </tr>
+                <tr>
+                    <td><label for="enableContactForm"><wicket:message key="enableContactForm"/></label></td>
+                    <td><input type="checkbox" wicket:id="enableContactForm"/></td>
+                </tr>
+                <tr>
+                    <td><label for="currentPassword"><wicket:message key="currentPassword"/></label></td>
+                    <td><input type="password" wicket:id="currentPassword"/></td>
+                </tr>
+                <tr>
+                    <td><label for="newPassword1"><wicket:message key="newPassword1"/></label></td>
+                    <td><input type="password" wicket:id="newPassword1"/></td>
+                </tr>
+                <tr>
+                    <td><label for="newPassword2"><wicket:message key="newPassword2"/></label></td>
+                    <td><input type="password" wicket:id="newPassword2"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" wicket:id="saveButton" wicket:message="value:saveButton" class="button"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</wicket:extend>
 </body>
 </html>

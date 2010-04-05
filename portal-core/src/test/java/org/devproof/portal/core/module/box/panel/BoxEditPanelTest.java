@@ -28,55 +28,55 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class BoxEditPanelTest extends TestCase {
-	private WicketTester tester;
-	private static boolean calledSave = false;
+    private WicketTester tester;
+    private static boolean calledSave = false;
 
-	@Override
-	public void setUp() throws Exception {
-		calledSave = false;
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        calledSave = false;
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestBoxEditPanel.class);
-		tester.assertComponent("panel", TestBoxEditPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestBoxEditPanel.class);
+        tester.assertComponent("panel", TestBoxEditPanel.class);
+    }
 
-	public void testSaveBox() {
-		tester.startPanel(TestBoxEditPanel.class);
-		tester.assertComponent("panel", TestBoxEditPanel.class);
-		FormTester ft = tester.newFormTester("panel:form");
-		ft.select("boxType", 7);
-		ft.setValue("title", "mytitle");
-		ft.setValue("content", "mycontent");
-		tester.executeAjaxEvent("panel:form:saveButton", "onclick");
-		tester.assertNoErrorMessage();
-		assertTrue(calledSave);
-		tester.startPage(BoxPage.class);
-		tester.assertContains("mytitle");
-	}
+    public void testSaveBox() {
+        tester.startPanel(TestBoxEditPanel.class);
+        tester.assertComponent("panel", TestBoxEditPanel.class);
+        FormTester ft = tester.newFormTester("panel:form");
+        ft.select("boxType", 7);
+        ft.setValue("title", "mytitle");
+        ft.setValue("content", "mycontent");
+        tester.executeAjaxEvent("panel:form:saveButton", "onclick");
+        tester.assertNoErrorMessage();
+        assertTrue(calledSave);
+        tester.startPage(BoxPage.class);
+        tester.assertContains("mytitle");
+    }
 
-	public static class TestBoxEditPanel extends BoxEditPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestBoxEditPanel extends BoxEditPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestBoxEditPanel(String id) {
-			super(id, Model.of(new BoxEntity()));
-		}
+        public TestBoxEditPanel(String id) {
+            super(id, Model.of(new BoxEntity()));
+        }
 
-		@Override
-		public void onSave(AjaxRequestTarget target) {
-			calledSave = true;
-		}
+        @Override
+        public void onSave(AjaxRequestTarget target) {
+            calledSave = true;
+        }
 
-		@Override
-		public void onCancel(AjaxRequestTarget target) {
-		}
+        @Override
+        public void onCancel(AjaxRequestTarget target) {
+        }
 
-	}
+    }
 }

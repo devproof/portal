@@ -26,58 +26,59 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class RightEditPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	// private static boolean calledSave = false;
+    // private static boolean calledSave = false;
 
-	@Override
-	public void setUp() throws Exception {
-		// calledSave = false;
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        // calledSave = false;
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestRightEditPanel.class);
-		tester.assertComponent("panel", TestRightEditPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestRightEditPanel.class);
+        tester.assertComponent("panel", TestRightEditPanel.class);
+    }
 
-	/*
-	 * Palette seems to have a bug, so it is not testable with the WicketTester
-	 */
-	public void testSaveRight() {
-		// tester.startPanel(TestRightEditPanel.class);
-		// tester.assertComponent("panel", RightEditPanel.class);
-		// FormTester ft = tester.newFormTester("panel:form");
-		// ft.setValue("right", "myrightname");
-		// ft.setValue("description", "myrightdescription");
-		// tester.clickLink("panel:form:saveButton", true);
-		// tester.assertNoErrorMessage();
-		// assertTrue(calledSave);
-		// tester.startPage(RightPage.class);
-		// tester.assertContains("myrightname");
-		// tester.assertContains("myrightdescription");
-	}
+    /*
+      * Palette seems to have a bug, so it is not testable with the WicketTester
+      */
 
-	public static class TestRightEditPanel extends RightEditPanel {
-		private static final long serialVersionUID = 1L;
+    public void testSaveRight() {
+        // tester.startPanel(TestRightEditPanel.class);
+        // tester.assertComponent("panel", RightEditPanel.class);
+        // FormTester ft = tester.newFormTester("panel:form");
+        // ft.setValue("right", "myrightname");
+        // ft.setValue("description", "myrightdescription");
+        // tester.clickLink("panel:form:saveButton", true);
+        // tester.assertNoErrorMessage();
+        // assertTrue(calledSave);
+        // tester.startPage(RightPage.class);
+        // tester.assertContains("myrightname");
+        // tester.assertContains("myrightdescription");
+    }
 
-		public TestRightEditPanel(String id) {
-			super(id, Model.of(new RightEntity()), true);
-		}
+    public static class TestRightEditPanel extends RightEditPanel {
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void onSave(AjaxRequestTarget target) {
-			// calledSave = true;
-		}
+        public TestRightEditPanel(String id) {
+            super(id, Model.of(new RightEntity()), true);
+        }
 
-		@Override
-		public void onCancel(AjaxRequestTarget target) {
-		}
-	}
+        @Override
+        public void onSave(AjaxRequestTarget target) {
+            // calledSave = true;
+        }
+
+        @Override
+        public void onCancel(AjaxRequestTarget target) {
+        }
+    }
 }

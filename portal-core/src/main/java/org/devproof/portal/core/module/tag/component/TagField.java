@@ -32,91 +32,90 @@ import java.util.StringTokenizer;
 
 /**
  * Ajax autocompletion field for tags
- * 
+ *
  * @author Carsten Hufe
  */
-public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> implements
-		IFormModelUpdateListener {
-	private static final long serialVersionUID = 1L;
-	private TagService<T> tagService;
-	private IModel<List<T>> originalTagsModel = null;
+public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> implements IFormModelUpdateListener {
+    private static final long serialVersionUID = 1L;
+    private TagService<T> tagService;
+    private IModel<List<T>> originalTagsModel = null;
 
-	public TagField(String id, IModel<List<T>> tags, TagService<T> tagService) {
-		super(id, Model.of(createModelString(tags.getObject())));
+    public TagField(String id, IModel<List<T>> tags, TagService<T> tagService) {
+        super(id, Model.of(createModelString(tags.getObject())));
         add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
-		originalTagsModel = tags;
-		this.tagService = tagService;
-	}
+        originalTagsModel = tags;
+        this.tagService = tagService;
+    }
 
-	private static <T extends BaseTagEntity<?>> String createModelString(List<T> tags) {
-		StringBuilder concat = new StringBuilder();
-		if (tags != null) {
-			for (T tag : tags) {
-				concat.append(tag.getTagname()).append(TagConstants.TAG_DEFAULT_SEPERATOR);
-			}
-		}
-		return concat.toString();
-	}
+    private static <T extends BaseTagEntity<?>> String createModelString(List<T> tags) {
+        StringBuilder concat = new StringBuilder();
+        if (tags != null) {
+            for (T tag : tags) {
+                concat.append(tag.getTagname()).append(TagConstants.TAG_DEFAULT_SEPERATOR);
+            }
+        }
+        return concat.toString();
+    }
 
-	@Override
-	protected Iterator<String> getChoices(String input) {
+    @Override
+    protected Iterator<String> getChoices(String input) {
 
-		if (Strings.isEmpty(input)) {
-			return new ArrayList<String>().iterator();
-		}
+        if (Strings.isEmpty(input)) {
+            return new ArrayList<String>().iterator();
+        }
 
-		String lastWord = getLastWord(input);
-		List<String> choices = new ArrayList<String>(10);
-		if (isSearchable(input, lastWord)) {
-			String leadingTags = getLeadingTags(input, lastWord);
-			List<T> matchingCompletionTags = tagService.findTagsStartingWith(lastWord);
-			for (T matchingCompletionTag : matchingCompletionTags) {
-				choices.add(leadingTags + matchingCompletionTag.getTagname());
-			}
-		}
-		return choices.iterator();
+        String lastWord = getLastWord(input);
+        List<String> choices = new ArrayList<String>(10);
+        if (isSearchable(input, lastWord)) {
+            String leadingTags = getLeadingTags(input, lastWord);
+            List<T> matchingCompletionTags = tagService.findTagsStartingWith(lastWord);
+            for (T matchingCompletionTag : matchingCompletionTags) {
+                choices.add(leadingTags + matchingCompletionTag.getTagname());
+            }
+        }
+        return choices.iterator();
 
-	}
+    }
 
-	private String getLeadingTags(String input, String lastWord) {
-		String prefix = input.substring(0, input.length() - lastWord.length());
-		return prefix;
-	}
+    private String getLeadingTags(String input, String lastWord) {
+        String prefix = input.substring(0, input.length() - lastWord.length());
+        return prefix;
+    }
 
-	private boolean isSearchable(String input, String lastWord) {
-		return lastWord.length() > 1 && input.endsWith(lastWord);
-	}
+    private boolean isSearchable(String input, String lastWord) {
+        return lastWord.length() > 1 && input.endsWith(lastWord);
+    }
 
-	private String getLastWord(String input) {
-		StringTokenizer tokenizer = new StringTokenizer(input, TagConstants.TAG_SEPERATORS, false);
-		String lastToken = "";
-		while (tokenizer.hasMoreTokens()) {
-			lastToken = tokenizer.nextToken();
-		}
-		return lastToken;
-	}
+    private String getLastWord(String input) {
+        StringTokenizer tokenizer = new StringTokenizer(input, TagConstants.TAG_SEPERATORS, false);
+        String lastToken = "";
+        while (tokenizer.hasMoreTokens()) {
+            lastToken = tokenizer.nextToken();
+        }
+        return lastToken;
+    }
 
-	/**
-	 * Returns the tags and stores it
-	 */
-	private List<T> getTagsAndStore() {
-		List<T> back = new ArrayList<T>();
-		StringTokenizer tokenizer = new StringTokenizer(getValue(), TagConstants.TAG_SEPERATORS, false);
-		while (tokenizer.hasMoreTokens()) {
-			String tagName = tokenizer.nextToken().trim();
-			// save only token with 3 letters or more!
-			if (!Strings.isEmpty(tagName) && tagName.length() > 2) {
-				T tag = tagService.findByIdAndCreateIfNotExists(tagName);
-				back.add(tag);
-			}
-		}
-		return back;
-	}
+    /**
+     * Returns the tags and stores it
+     */
+    private List<T> getTagsAndStore() {
+        List<T> back = new ArrayList<T>();
+        StringTokenizer tokenizer = new StringTokenizer(getValue(), TagConstants.TAG_SEPERATORS, false);
+        while (tokenizer.hasMoreTokens()) {
+            String tagName = tokenizer.nextToken().trim();
+            // save only token with 3 letters or more!
+            if (!Strings.isEmpty(tagName) && tagName.length() > 2) {
+                T tag = tagService.findByIdAndCreateIfNotExists(tagName);
+                back.add(tag);
+            }
+        }
+        return back;
+    }
 
-	@Override
-	public void updateModel() {
-		super.updateModel();
-		List<T> tagsAndStore = getTagsAndStore();
-		originalTagsModel.setObject(tagsAndStore);
-	}
+    @Override
+    public void updateModel() {
+        super.updateModel();
+        List<T> tagsAndStore = getTagsAndStore();
+        originalTagsModel.setObject(tagsAndStore);
+    }
 }

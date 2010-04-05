@@ -28,96 +28,96 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class RightServiceImplTest extends TestCase {
-	private RightServiceImpl impl;
-	private RightDao mock;
+    private RightServiceImpl impl;
+    private RightDao mock;
 
-	@Override
-	public void setUp() throws Exception {
-		mock = createStrictMock(RightDao.class);
-		impl = new RightServiceImpl();
-		impl.setRightDao(mock);
-	}
+    @Override
+    public void setUp() throws Exception {
+        mock = createStrictMock(RightDao.class);
+        impl = new RightServiceImpl();
+        impl.setRightDao(mock);
+    }
 
-	public void testSave() {
-		RightEntity e = impl.newRightEntity();
-		e.setRight("right");
-		expect(mock.save(e)).andReturn(e);
-		replay(mock);
-		impl.save(e);
-		verify(mock);
-	}
+    public void testSave() {
+        RightEntity e = impl.newRightEntity();
+        e.setRight("right");
+        expect(mock.save(e)).andReturn(e);
+        replay(mock);
+        impl.save(e);
+        verify(mock);
+    }
 
-	public void testDelete() {
-		RightEntity e = impl.newRightEntity();
-		e.setRight("right");
-		mock.delete(e);
-		replay(mock);
-		impl.delete(e);
-		verify(mock);
-	}
+    public void testDelete() {
+        RightEntity e = impl.newRightEntity();
+        e.setRight("right");
+        mock.delete(e);
+        replay(mock);
+        impl.delete(e);
+        verify(mock);
+    }
 
-	public void testFindAll() {
-		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(impl.newRightEntity());
-		list.add(impl.newRightEntity());
-		expect(mock.findAll()).andReturn(list);
-		replay(mock);
-		assertEquals(list, impl.findAll());
-		verify(mock);
-	}
+    public void testFindAll() {
+        List<RightEntity> list = new ArrayList<RightEntity>();
+        list.add(impl.newRightEntity());
+        list.add(impl.newRightEntity());
+        expect(mock.findAll()).andReturn(list);
+        replay(mock);
+        assertEquals(list, impl.findAll());
+        verify(mock);
+    }
 
-	public void testFindById() {
-		RightEntity e = impl.newRightEntity();
-		e.setRight("right");
-		expect(mock.findById("right")).andReturn(e);
-		replay(mock);
-		assertEquals(impl.findById("right"), e);
-		verify(mock);
-	}
+    public void testFindById() {
+        RightEntity e = impl.newRightEntity();
+        e.setRight("right");
+        expect(mock.findById("right")).andReturn(e);
+        replay(mock);
+        assertEquals(impl.findById("right"), e);
+        verify(mock);
+    }
 
-	public void testNewRightEntity() {
-		assertNotNull(impl.newRightEntity());
-	}
+    public void testNewRightEntity() {
+        assertNotNull(impl.newRightEntity());
+    }
 
-	public void testNewRightEntityParam() {
-		RightEntity r = impl.newRightEntity("hello");
-		assertNotNull(r);
-		assertNotNull(r.getRight());
-	}
+    public void testNewRightEntityParam() {
+        RightEntity r = impl.newRightEntity("hello");
+        assertNotNull(r);
+        assertNotNull(r.getRight());
+    }
 
-	public void testGetDirtyTime() {
-		impl.refreshGlobalApplicationRights();
-		assertTrue(impl.getDirtyTime() > 0);
-	}
+    public void testGetDirtyTime() {
+        impl.refreshGlobalApplicationRights();
+        assertTrue(impl.getDirtyTime() > 0);
+    }
 
-	public void testFindAllOrderByDescription() {
-		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(impl.newRightEntity());
-		list.add(impl.newRightEntity());
-		expect(mock.findAllOrderByDescription()).andReturn(list);
-		replay(mock);
-		assertEquals(list, impl.findAllOrderByDescription());
-		verify(mock);
-	}
+    public void testFindAllOrderByDescription() {
+        List<RightEntity> list = new ArrayList<RightEntity>();
+        list.add(impl.newRightEntity());
+        list.add(impl.newRightEntity());
+        expect(mock.findAllOrderByDescription()).andReturn(list);
+        replay(mock);
+        assertEquals(list, impl.findAllOrderByDescription());
+        verify(mock);
+    }
 
-	public void testFindRightsStartingWith() {
-		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(impl.newRightEntity());
-		list.add(impl.newRightEntity());
-		expect(mock.findRightsStartingWith("prefix")).andReturn(list);
-		replay(mock);
-		assertEquals(list, impl.findRightsStartingWith("prefix"));
-		verify(mock);
-	}
+    public void testFindRightsStartingWith() {
+        List<RightEntity> list = new ArrayList<RightEntity>();
+        list.add(impl.newRightEntity());
+        list.add(impl.newRightEntity());
+        expect(mock.findRightsStartingWith("prefix")).andReturn(list);
+        replay(mock);
+        assertEquals(list, impl.findRightsStartingWith("prefix"));
+        verify(mock);
+    }
 
-	public void testGetAllRights() {
-		List<RightEntity> list = new ArrayList<RightEntity>();
-		list.add(impl.newRightEntity());
-		list.add(impl.newRightEntity());
-		expect(mock.findAll()).andReturn(list);
-		replay(mock);
-		impl.init();
-		assertEquals(impl.getAllRights(), list);
-		verify(mock);
-	}
+    public void testGetAllRights() {
+        List<RightEntity> list = new ArrayList<RightEntity>();
+        list.add(impl.newRightEntity());
+        list.add(impl.newRightEntity());
+        expect(mock.findAll()).andReturn(list);
+        replay(mock);
+        impl.init();
+        assertEquals(impl.getAllRights(), list);
+        verify(mock);
+    }
 }

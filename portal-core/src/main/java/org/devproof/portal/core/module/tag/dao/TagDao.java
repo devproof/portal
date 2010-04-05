@@ -29,16 +29,15 @@ import java.util.List;
  */
 @CacheQuery(region = TagConstants.QUERY_CACHE_REGION)
 public interface TagDao<T> extends GenericDao<T, String> {
-	@Query("select distinct(t) from $TYPE t where t.tagname like ?||'%'")
-	List<T> findTagsStartingWith(String prefix);
+    @Query("select distinct(t) from $TYPE t where t.tagname like ?||'%'")
+    List<T> findTagsStartingWith(String prefix);
 
-	@BulkUpdate("delete from $TYPE t where size(t.referencedObjects) = 0")
-	void deleteUnusedTags();
+    @BulkUpdate("delete from $TYPE t where size(t.referencedObjects) = 0")
+    void deleteUnusedTags();
 
-	@Query(value = "select distinct(t) from $TYPE t order by size(t.referencedObjects) desc", limitClause = true)
-	List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
+    @Query(value = "select distinct(t) from $TYPE t order by size(t.referencedObjects) desc", limitClause = true)
+    List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
 
-	@Query(value = "select distinct(t) from $TYPE t join t.referencedObjects ro join ro.allRights ar where "
-			+ "ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like ?||'%') order by size(t.referencedObjects) desc", limitClause = true)
-	List<T> findMostPopularTags(RoleEntity role, String viewRight, Integer firstResult, Integer maxResult);
+    @Query(value = "select distinct(t) from $TYPE t join t.referencedObjects ro join ro.allRights ar where " + "ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like ?||'%') order by size(t.referencedObjects) desc", limitClause = true)
+    List<T> findMostPopularTags(RoleEntity role, String viewRight, Integer firstResult, Integer maxResult);
 }

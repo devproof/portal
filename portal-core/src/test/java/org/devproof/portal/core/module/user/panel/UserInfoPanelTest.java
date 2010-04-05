@@ -27,32 +27,32 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class UserInfoPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createUserInfoPanel());
-		tester.assertComponent("panel", UserInfoPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createUserInfoPanel());
+        tester.assertComponent("panel", UserInfoPanel.class);
+    }
 
-	private TestPanelSource createUserInfoPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createUserInfoPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new UserInfoPanel(panelId, Model.of(new UserEntity()));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new UserInfoPanel(panelId, Model.of(new UserEntity()));
+            }
+        };
+    }
 }

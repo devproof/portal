@@ -23,23 +23,22 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class BlogPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql",
-				"insert_blog.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql", "insert_blog.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(BlogPage.class);
-		// must be stateless to save memory (non-stateless creates HttpSession)
-		// assertTrue(tester.getLastRenderedPage().isPageStateless());
-		tester.assertRenderedPage(BlogPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(BlogPage.class);
+        // must be stateless to save memory (non-stateless creates HttpSession)
+        // assertTrue(tester.getLastRenderedPage().isPageStateless());
+        tester.assertRenderedPage(BlogPage.class);
+    }
 }

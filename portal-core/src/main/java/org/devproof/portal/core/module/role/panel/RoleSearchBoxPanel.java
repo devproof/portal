@@ -33,57 +33,57 @@ import org.devproof.portal.core.module.role.query.RoleQuery;
  * @author Carsten Hufe
  */
 public abstract class RoleSearchBoxPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private IModel<RoleQuery> queryModel;
+    private IModel<RoleQuery> queryModel;
 
-	public RoleSearchBoxPanel(String id, IModel<RoleQuery> queryModel) {
-		super(id);
-		this.queryModel = queryModel;
-		add(createRoleSearchForm());
-	}
+    public RoleSearchBoxPanel(String id, IModel<RoleQuery> queryModel) {
+        super(id);
+        this.queryModel = queryModel;
+        add(createRoleSearchForm());
+    }
 
-	private Form<RoleQuery> createRoleSearchForm() {
-		Form<RoleQuery> form = new Form<RoleQuery>("searchForm", new CompoundPropertyModel<RoleQuery>(queryModel));
-		form.add(createSearchTextField());
-		form.add(createActiveDropDown());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<RoleQuery> createRoleSearchForm() {
+        Form<RoleQuery> form = new Form<RoleQuery>("searchForm", new CompoundPropertyModel<RoleQuery>(queryModel));
+        form.add(createSearchTextField());
+        form.add(createActiveDropDown());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private FormComponent<String> createSearchTextField() {
-		FormComponent<String> fc = new TextField<String>("description");
-		fc.add(new AjaxRefresh("onkeyup"));
-		return fc;
-	}
+    private FormComponent<String> createSearchTextField() {
+        FormComponent<String> fc = new TextField<String>("description");
+        fc.add(new AjaxRefresh("onkeyup"));
+        return fc;
+    }
 
-	private Select createActiveDropDown() {
-		Select active = new Select("active");
-		active.add(new SelectOption<Boolean>("chooseActive", new Model<Boolean>()));
-		active.add(new SelectOption<Boolean>("activeTrue", Model.of(Boolean.TRUE)));
-		active.add(new SelectOption<Boolean>("activeFalse", Model.of(Boolean.FALSE)));
-		active.add(new AjaxRefresh("onchange"));
-		return active;
-	}
+    private Select createActiveDropDown() {
+        Select active = new Select("active");
+        active.add(new SelectOption<Boolean>("chooseActive", new Model<Boolean>()));
+        active.add(new SelectOption<Boolean>("activeTrue", Model.of(Boolean.TRUE)));
+        active.add(new SelectOption<Boolean>("activeFalse", Model.of(Boolean.FALSE)));
+        active.add(new AjaxRefresh("onchange"));
+        return active;
+    }
 
-	protected abstract void onSubmit(AjaxRequestTarget target);
+    protected abstract void onSubmit(AjaxRequestTarget target);
 
-	private class AjaxRefresh extends AjaxFormSubmitBehavior {
-		private static final long serialVersionUID = 1L;
+    private class AjaxRefresh extends AjaxFormSubmitBehavior {
+        private static final long serialVersionUID = 1L;
 
-		public AjaxRefresh(String event) {
-			super(event);
-			setThrottleDelay(Duration.ONE_SECOND);
-		}
+        public AjaxRefresh(String event) {
+            super(event);
+            setThrottleDelay(Duration.ONE_SECOND);
+        }
 
-		@Override
-		protected void onError(AjaxRequestTarget target) {
+        @Override
+        protected void onError(AjaxRequestTarget target) {
 
-		}
+        }
 
-		@Override
-		protected void onSubmit(AjaxRequestTarget target) {
-			RoleSearchBoxPanel.this.onSubmit(target);
-		}
-	}
+        @Override
+        protected void onSubmit(AjaxRequestTarget target) {
+            RoleSearchBoxPanel.this.onSubmit(target);
+        }
+    }
 }

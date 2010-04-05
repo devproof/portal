@@ -1,18 +1,17 @@
-.xstooltip 
-{
-    visibility: hidden; 
-    position: absolute; 
-    top: 0;  
-    left: 0; 
-    z-index: 2; 
+.xstooltip {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
 
-    font: normal 8pt sans-serif; 
-    padding: 3px; 
+    font: normal 8pt sans-serif;
+    padding: 3px;
     border: 1px solid #222222;
     filter: alpha(opacity:90);
-	KHTMLOpacity: 0.90;
-	MozOpacity: 0.90;
-	opacity: 0.90;
-	background-color:#D6EEFF;
-	color:#222222;
+    KHTMLOpacity: 0.90;
+    MozOpacity: 0.90;
+    opacity: 0.90;
+    background-color: #D6EEFF;
+    color: #222222;
 }

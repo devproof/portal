@@ -25,19 +25,19 @@ import java.util.List;
  */
 public class FontServiceImpl implements FontService {
 
-	@Override
-	public List<Font> findAllSystemFonts() {
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		String[] fontNames = env.getAvailableFontFamilyNames();
-		List<Font> fonts = new ArrayList<Font>(fontNames.length);
-		for (String fontName : fontNames) {
-			fonts.add(new Font(fontName, Font.PLAIN, 12));
-		}
-		return fonts;
-	}
+    @Override
+    public List<Font> findAllSystemFonts() {
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        String[] fontNames = env.getAvailableFontFamilyNames();
+        List<Font> fonts = new ArrayList<Font>(fontNames.length);
+        for (String fontName : fontNames) {
+            fonts.add(new Font(fontName, Font.PLAIN, 12));
+        }
+        return fonts;
+    }
 
-	@Override
-	public List<String> findSyntaxHighlighterThemes() {
-		return Arrays.asList("Default", "Django", "Eclipse", "Emacs", "FadeToGrey", "Midnight", "RDark");
-	}
+    @Override
+    public List<String> findSyntaxHighlighterThemes() {
+        return Arrays.asList("Default", "Django", "Eclipse", "Emacs", "FadeToGrey", "Midnight", "RDark");
+    }
 }

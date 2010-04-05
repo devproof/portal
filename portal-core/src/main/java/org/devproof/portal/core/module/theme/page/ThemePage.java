@@ -138,6 +138,7 @@ public class ThemePage extends TemplatePage {
     private LoadableDetachableModel<String> createSelectedLinkLabelModel(final IModel<ThemeBean> themeModel) {
         return new LoadableDetachableModel<String>() {
             private static final long serialVersionUID = -5655831323982352436L;
+
             @Override
             protected String load() {
                 String selectedThemeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
@@ -156,8 +157,7 @@ public class ThemePage extends TemplatePage {
             public void onClick() {
                 ThemeBean theme = themeModel.getObject();
                 themeService.uninstall(theme);
-                info(new StringResourceModel("msg.uninstalled", this, null, new Object[]{theme.getTheme()})
-                        .getString());
+                info(new StringResourceModel("msg.uninstalled", this, null, new Object[]{theme.getTheme()}).getString());
                 setDefaultTheme();
             }
 

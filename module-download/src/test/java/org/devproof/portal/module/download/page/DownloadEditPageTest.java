@@ -26,71 +26,70 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class DownloadEditPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql",
-				"insert_download.sql");
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_download.sql", "insert_download.sql");
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(new DownloadEditPage(Model.of(new DownloadEntity())));
-		tester.assertRenderedPage(DownloadEditPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(new DownloadEditPage(Model.of(new DownloadEntity())));
+        tester.assertRenderedPage(DownloadEditPage.class);
+    }
 
-	public void testSaveDownload() {
-		callDownloadEditPage();
-		submitDownloadForm();
-		assertDownloadPage();
-	}
+    public void testSaveDownload() {
+        callDownloadEditPage();
+        submitDownloadForm();
+        assertDownloadPage();
+    }
 
-	public void testEditDownload() {
-		navigateToDownloadEditPage();
-		submitDownloadForm();
-		assertDownloadPage();
-		assertFalse(tester.getServletResponse().getDocument().contains("This is a sample."));
-	}
+    public void testEditDownload() {
+        navigateToDownloadEditPage();
+        submitDownloadForm();
+        assertDownloadPage();
+        assertFalse(tester.getServletResponse().getDocument().contains("This is a sample."));
+    }
 
-	private void callDownloadEditPage() {
-		tester.startPage(getNewDownloadEditPage());
-		tester.assertRenderedPage(DownloadEditPage.class);
-	}
+    private void callDownloadEditPage() {
+        tester.startPage(getNewDownloadEditPage());
+        tester.assertRenderedPage(DownloadEditPage.class);
+    }
 
-	private DownloadEditPage getNewDownloadEditPage() {
-		return new DownloadEditPage(Model.of(new DownloadEntity()));
-	}
+    private DownloadEditPage getNewDownloadEditPage() {
+        return new DownloadEditPage(Model.of(new DownloadEntity()));
+    }
 
-	private void submitDownloadForm() {
-		FormTester form = tester.newFormTester("form");
-		form.setValue("title", "testing title");
-		form.setValue("description", "testing description");
-		form.setValue("url", "http://www.devproof.org/download");
-		form.submit();
-	}
+    private void submitDownloadForm() {
+        FormTester form = tester.newFormTester("form");
+        form.setValue("title", "testing title");
+        form.setValue("description", "testing description");
+        form.setValue("url", "http://www.devproof.org/download");
+        form.submit();
+    }
 
-	private void navigateToDownloadEditPage() {
-		tester.startPage(DownloadPage.class);
-		tester.assertRenderedPage(DownloadPage.class);
-		tester.assertContains("This is a sample.");
-		PortalTestUtil.callOnBeginRequest();
-		tester.clickLink("listDownload:1:downloadView:authorButtons:editLink");
-		tester.assertRenderedPage(DownloadEditPage.class);
-	}
+    private void navigateToDownloadEditPage() {
+        tester.startPage(DownloadPage.class);
+        tester.assertRenderedPage(DownloadPage.class);
+        tester.assertContains("This is a sample.");
+        PortalTestUtil.callOnBeginRequest();
+        tester.clickLink("listDownload:1:downloadView:authorButtons:editLink");
+        tester.assertRenderedPage(DownloadEditPage.class);
+    }
 
-	private void assertDownloadPage() {
-		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewDownloadEditPage());
-		tester.assertRenderedPage(DownloadPage.class);
-		tester.assertInfoMessages(expectedMsgs);
-		tester.startPage(DownloadPage.class);
-		tester.assertRenderedPage(DownloadPage.class);
-		tester.assertContains("testing title");
-		tester.assertContains("testing description");
-	}
+    private void assertDownloadPage() {
+        String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", getNewDownloadEditPage());
+        tester.assertRenderedPage(DownloadPage.class);
+        tester.assertInfoMessages(expectedMsgs);
+        tester.startPage(DownloadPage.class);
+        tester.assertRenderedPage(DownloadPage.class);
+        tester.assertContains("testing title");
+        tester.assertContains("testing description");
+    }
 }

@@ -39,66 +39,66 @@ import java.util.List;
  */
 public class BlogEditPage extends BlogBasePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "blogService")
-	private BlogService blogService;
-	@SpringBean(name = "blogTagService")
-	private TagService<BlogTagEntity> blogTagService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "blogService")
+    private BlogService blogService;
+    @SpringBean(name = "blogTagService")
+    private TagService<BlogTagEntity> blogTagService;
     private IModel<BlogEntity> blogModel;
 
     public BlogEditPage(IModel<BlogEntity> blogModel) {
-		super(new PageParameters());
+        super(new PageParameters());
         this.blogModel = blogModel;
         add(createBlogEditForm());
-	}
+    }
 
-	private Form<BlogEntity> createBlogEditForm() {
-		Form<BlogEntity> form = newBlogEditForm();
-		form.add(createHeadlineField());
-		form.add(createContentField());
-		form.add(createTagField());
-		form.add(createViewRightPanel());
-		form.add(createCommentRightPanel());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<BlogEntity> createBlogEditForm() {
+        Form<BlogEntity> form = newBlogEditForm();
+        form.add(createHeadlineField());
+        form.add(createContentField());
+        form.add(createTagField());
+        form.add(createViewRightPanel());
+        form.add(createCommentRightPanel());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private Form<BlogEntity> newBlogEditForm() {
-		return new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blogModel)) {
-			private static final long serialVersionUID = 1L;
+    private Form<BlogEntity> newBlogEditForm() {
+        return new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blogModel)) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit() {
-				BlogEditPage.this.setVisible(false);
-				BlogEntity blog = getModelObject();
-				blogService.save(blog);
-				setRedirect(false);
-				setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));
-				info(getString("msg.saved"));
-			}
-		};
-	}
+            @Override
+            protected void onSubmit() {
+                BlogEditPage.this.setVisible(false);
+                BlogEntity blog = getModelObject();
+                blogService.save(blog);
+                setRedirect(false);
+                setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));
+                info(getString("msg.saved"));
+            }
+        };
+    }
 
-	private RightGridPanel createViewRightPanel() {
+    private RightGridPanel createViewRightPanel() {
         IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(blogModel, "allRights");
         return new RightGridPanel("viewright", "blog.view", allRightsModel);
-	}
+    }
 
-	private RightGridPanel createCommentRightPanel() {
+    private RightGridPanel createCommentRightPanel() {
         IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(blogModel, "allRights");
-		return new RightGridPanel("commentright", "blog.comment", allRightsModel);
-	}
+        return new RightGridPanel("commentright", "blog.comment", allRightsModel);
+    }
 
-	private TagField<BlogTagEntity> createTagField() {
-		IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blogModel, "tags");
-		return new TagField<BlogTagEntity>("tags", blogListModel, blogTagService);
-	}
+    private TagField<BlogTagEntity> createTagField() {
+        IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blogModel, "tags");
+        return new TagField<BlogTagEntity>("tags", blogListModel, blogTagService);
+    }
 
-	private FormComponent<String> createContentField() {
-		return new FullRichTextArea("content");
-	}
+    private FormComponent<String> createContentField() {
+        return new FullRichTextArea("content");
+    }
 
-	private FormComponent<String> createHeadlineField() {
-		return new RequiredTextField<String>("headline");
-	}
+    private FormComponent<String> createHeadlineField() {
+        return new RequiredTextField<String>("headline");
+    }
 }

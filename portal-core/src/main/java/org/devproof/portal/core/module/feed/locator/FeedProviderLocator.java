@@ -21,13 +21,12 @@ import java.util.Collection;
 
 /**
  * Locates feed providers
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface FeedProviderLocator {
-	/**
-	 * Returns the feed providers of all modules
-	 */
-	Collection<FeedProvider> getFeedProviders();
+    /**
+     * Returns the feed providers of all modules
+     */
+    Collection<FeedProvider> getFeedProviders();
 }

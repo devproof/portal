@@ -25,50 +25,50 @@ import org.devproof.portal.core.app.PortalSession;
  */
 public class MessagePage extends TemplatePage {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public MessagePage(PageParameters params) {
-		super(params);
-		String msg = params.getString("message");
-		if (msg == null) {
-			msg = "unknown.error";
-		}
-		addOrReplace(new Label("message", this.getString(msg)));
-	}
+    public MessagePage(PageParameters params) {
+        super(params);
+        String msg = params.getString("message");
+        if (msg == null) {
+            msg = "unknown.error";
+        }
+        addOrReplace(new Label("message", this.getString(msg)));
+    }
 
-	private MessagePage(PageParameters params, String message) {
-		super(params);
-		addOrReplace(new Label("message", message));
-	}
+    private MessagePage(PageParameters params, String message) {
+        super(params);
+        addOrReplace(new Label("message", message));
+    }
 
-	public static MessagePage getMessagePageByKey(String messageKey) {
-		PageParameters params = new PageParameters();
-		params.add("message", messageKey);
-		return new MessagePage(params);
-	}
+    public static MessagePage getMessagePageByKey(String messageKey) {
+        PageParameters params = new PageParameters();
+        params.add("message", messageKey);
+        return new MessagePage(params);
+    }
 
-	public static MessagePage getMessagePage(String message) {
-		PageParameters params = new PageParameters();
-		return new MessagePage(params, message);
-	}
+    public static MessagePage getMessagePage(String message) {
+        PageParameters params = new PageParameters();
+        return new MessagePage(params, message);
+    }
 
-	public static MessagePage getMessagePage(String message, final String redirectUrl) {
-		PageParameters params = new PageParameters();
-		return new MessagePage(params, message) {
-			@Override
-			public String getRedirectURLAfterLogin() {
-				return redirectUrl;
-			}
-		};
-	}
+    public static MessagePage getMessagePage(String message, final String redirectUrl) {
+        PageParameters params = new PageParameters();
+        return new MessagePage(params, message) {
+            @Override
+            public String getRedirectURLAfterLogin() {
+                return redirectUrl;
+            }
+        };
+    }
 
-	public static MessagePage getMessagePageWithLogout(String messageKey) {
-		((PortalSession) Session.get()).logoutUser();
-		PageParameters params = new PageParameters();
-		return new MessagePage(params, messageKey);
-	}
+    public static MessagePage getMessagePageWithLogout(String messageKey) {
+        ((PortalSession) Session.get()).logoutUser();
+        PageParameters params = new PageParameters();
+        return new MessagePage(params, messageKey);
+    }
 
-	public String getRedirectURLAfterLogin() {
-		return null;
-	}
+    public String getRedirectURLAfterLogin() {
+        return null;
+    }
 }

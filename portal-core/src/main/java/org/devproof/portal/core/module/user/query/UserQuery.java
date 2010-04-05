@@ -23,37 +23,36 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public class UserQuery implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String allnames;
-	private Boolean active;
-	private Boolean confirmed;
+    private String allnames;
+    private Boolean active;
+    private Boolean confirmed;
 
-	@BeanQuery("e.username like '%'||?||'%'" + " or e.firstname like '%'||?||'%'" + " or e.lastname like '%'||?||'%'"
-			+ " or e.role.description like '%'||?||'%'")
-	public String getAllnames() {
-		return allnames;
-	}
+    @BeanQuery("e.username like '%'||?||'%'" + " or e.firstname like '%'||?||'%'" + " or e.lastname like '%'||?||'%'" + " or e.role.description like '%'||?||'%'")
+    public String getAllnames() {
+        return allnames;
+    }
 
-	public void setAllnames(String allnames) {
-		this.allnames = allnames;
-	}
+    public void setAllnames(String allnames) {
+        this.allnames = allnames;
+    }
 
-	@BeanQuery("e.active = ?")
-	public Boolean getActive() {
-		return active;
-	}
+    @BeanQuery("e.active = ?")
+    public Boolean getActive() {
+        return active;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
-	@BeanQuery("e.confirmed = ?")
-	public Boolean getConfirmed() {
-		return confirmed;
-	}
+    @BeanQuery("e.confirmed = ?")
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
 
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
-	}
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
+    }
 }

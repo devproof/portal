@@ -1,13 +1,14 @@
 .articleDescription {
-	border-bottom: 1px solid #E0E0E0;
-	vertical-align: top; 
+    border-bottom: 1px solid #E0E0E0;
+    vertical-align: top;
 }
 
 .articleLink {
-	color: #555;
-	font: bold 1.3em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
-	text-decoration: none;
+    color: #555;
+    font: bold 1.3em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+    text-decoration: none;
 }
+
 .tagInputArticle {
-	width: 654px;	
+    width: 654px;
 }

@@ -21,8 +21,8 @@ import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkTy
  * @author Carsten Hufe
  */
 public interface RegistryService {
-	/**
-	 * Rebuild the registries after making changes in the db
-	 */
-	void rebuildRegistries(LinkType type);
+    /**
+     * Rebuild the registries after making changes in the db
+     */
+    void rebuildRegistries(LinkType type);
 }

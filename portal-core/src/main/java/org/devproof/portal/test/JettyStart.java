@@ -40,81 +40,81 @@ import java.util.Properties;
 
 /**
  * Test jetty start class for development
- * 
+ *
  * @author Carsten Hufe
  */
 public class JettyStart {
 
-	public static void main(final String[] args) throws Exception {
-		if (args.length != 5) {
-			System.out.println("JettyStart <DbUser/Pass/Schema> <httpport> <smtphost> <smtpuser> <smtppass>");
-			return;
-		}
-		Server server = new Server();
-		SocketConnector connector = new SocketConnector();
-		// Set some timeout options to make debugging easier.
-		connector.setMaxIdleTime(1000 * 60 * 60);
-		connector.setSoLingerTime(-1);
-		connector.setPort(Integer.valueOf(args[1]));
-		server.setConnectors(new Connector[] { connector });
+    public static void main(final String[] args) throws Exception {
+        if (args.length != 5) {
+            System.out.println("JettyStart <DbUser/Pass/Schema> <httpport> <smtphost> <smtpuser> <smtppass>");
+            return;
+        }
+        Server server = new Server();
+        SocketConnector connector = new SocketConnector();
+        // Set some timeout options to make debugging easier.
+        connector.setMaxIdleTime(1000 * 60 * 60);
+        connector.setSoLingerTime(-1);
+        connector.setPort(Integer.valueOf(args[1]));
+        server.setConnectors(new Connector[]{connector});
 
-		WebAppContext bb = new WebAppContext();
-		bb.setServer(server);
-		bb.setContextPath("/");
-		bb.setWar(System.getProperty("java.io.tmpdir"));
-		bb.addEventListener(new ContextLoaderListener());
-		Map<String, String> initParams = new HashMap<String, String>();
-		initParams.put("contextConfigLocation", "classpath:/devproof-portal.xml");
-		bb.setInitParams(initParams);
-		FilterHolder servlet = new FilterHolder();
-		servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
-		// servlet.setInitParameter("configuration", "deployment");
-		servlet.setClassName(WicketFilter.class.getName());
-		servlet.setName(WicketFilter.class.getName());
-		bb.addFilter(servlet, "/*", 0);
-		server.addHandler(bb);
+        WebAppContext bb = new WebAppContext();
+        bb.setServer(server);
+        bb.setContextPath("/");
+        bb.setWar(System.getProperty("java.io.tmpdir"));
+        bb.addEventListener(new ContextLoaderListener());
+        Map<String, String> initParams = new HashMap<String, String>();
+        initParams.put("contextConfigLocation", "classpath:/devproof-portal.xml");
+        bb.setInitParams(initParams);
+        FilterHolder servlet = new FilterHolder();
+        servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
+        // servlet.setInitParameter("configuration", "deployment");
+        servlet.setClassName(WicketFilter.class.getName());
+        servlet.setName(WicketFilter.class.getName());
+        bb.addFilter(servlet, "/*", 0);
+        server.addHandler(bb);
 
-		BasicDataSource datasource = new BasicDataSource();
-		datasource.setUrl("jdbc:mysql://localhost/" + args[0]);
-		datasource.setUsername(args[0]);
-		datasource.setPassword(args[0]);
-		datasource.setDriverClassName(Driver.class.getName());
-		new Resource(CommonConstants.JNDI_DATASOURCE, datasource);
+        BasicDataSource datasource = new BasicDataSource();
+        datasource.setUrl("jdbc:mysql://localhost/" + args[0]);
+        datasource.setUsername(args[0]);
+        datasource.setPassword(args[0]);
+        datasource.setDriverClassName(Driver.class.getName());
+        new Resource(CommonConstants.JNDI_DATASOURCE, datasource);
 
-		Properties props = System.getProperties();
-		props.put("mail.smtp.host", args[2]);
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.port", "25");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.debug", "true");
+        Properties props = System.getProperties();
+        props.put("mail.smtp.host", args[2]);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
 
-		Authenticator auth = new Authenticator() {
-			@Override
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(args[3], args[4]);
-			}
-		};
+        Authenticator auth = new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(args[3], args[4]);
+            }
+        };
 
-		Session mailSession = Session.getDefaultInstance(props, auth);
-		new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
-		new Resource(CommonConstants.JNDI_PROP_EMAIL_DISABLED, "true");
-		// START JMX SERVER
-		MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-		MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
-		server.getContainer().addEventListener(mBeanContainer);
-		mBeanContainer.start();
-		try {
-			System.out.println(">>> STARTING DEVPROOF PORTAL, PRESS ANY KEY TO STOP");
-			server.start();
-			while (System.in.available() == 0) {
-				Thread.sleep(5000);
-			}
-			server.stop();
-			server.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(100);
-		}
-	}
+        Session mailSession = Session.getDefaultInstance(props, auth);
+        new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
+        new Resource(CommonConstants.JNDI_PROP_EMAIL_DISABLED, "true");
+        // START JMX SERVER
+        MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+        MBeanContainer mBeanContainer = new MBeanContainer(mBeanServer);
+        server.getContainer().addEventListener(mBeanContainer);
+        mBeanContainer.start();
+        try {
+            System.out.println(">>> STARTING DEVPROOF PORTAL, PRESS ANY KEY TO STOP");
+            server.start();
+            while (System.in.available() == 0) {
+                Thread.sleep(5000);
+            }
+            server.stop();
+            server.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(100);
+        }
+    }
 }

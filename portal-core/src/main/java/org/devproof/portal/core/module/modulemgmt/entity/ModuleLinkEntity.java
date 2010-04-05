@@ -27,7 +27,7 @@ import javax.persistence.*;
  * represents one module link (top navigation, page administration, global
  * admistration). The entity is required to sort the links of the different
  * modules.
- * 
+ *
  * @author Carsten Hufe
  */
 @Entity
@@ -37,106 +37,106 @@ import javax.persistence.*;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 final public class ModuleLinkEntity extends BaseEntity implements Comparable<ModuleLinkEntity> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public enum LinkType {
-		TOP_NAVIGATION, GLOBAL_ADMINISTRATION, PAGE_ADMINISTRATION
-	}
+    public enum LinkType {
+        TOP_NAVIGATION, GLOBAL_ADMINISTRATION, PAGE_ADMINISTRATION
+    }
 
-	@Id
-	@Column(name = "page_name")
-	private String pageName;
-	@Id
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "link_type")
-	private LinkType linkType;
-	@Column(name = "module_name", nullable = false)
-	private String moduleName;
-	@Column(name = "visible", nullable = false)
-	private Boolean visible;
-	@Column(name = "sort", nullable = false)
-	private Integer sort;
+    @Id
+    @Column(name = "page_name")
+    private String pageName;
+    @Id
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "link_type")
+    private LinkType linkType;
+    @Column(name = "module_name", nullable = false)
+    private String moduleName;
+    @Column(name = "visible", nullable = false)
+    private Boolean visible;
+    @Column(name = "sort", nullable = false)
+    private Integer sort;
 
-	public String getModuleName() {
-		return moduleName;
-	}
+    public String getModuleName() {
+        return moduleName;
+    }
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
-	}
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
 
-	public String getPageName() {
-		return pageName;
-	}
+    public String getPageName() {
+        return pageName;
+    }
 
-	public void setPageName(String pageName) {
-		this.pageName = pageName;
-	}
+    public void setPageName(String pageName) {
+        this.pageName = pageName;
+    }
 
-	public Integer getSort() {
-		return sort;
-	}
+    public Integer getSort() {
+        return sort;
+    }
 
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
-	public LinkType getLinkType() {
-		return linkType;
-	}
+    public LinkType getLinkType() {
+        return linkType;
+    }
 
-	public void setLinkType(LinkType linkType) {
-		this.linkType = linkType;
-	}
+    public void setLinkType(LinkType linkType) {
+        this.linkType = linkType;
+    }
 
-	public Boolean getVisible() {
-		return visible;
-	}
+    public Boolean getVisible() {
+        return visible;
+    }
 
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
-	}
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
 
-	@Override
-	public int hashCode() {
-		int prime = 31;
-		int result = 1;
-		result = prime * result + ((linkType == null) ? 0 : linkType.hashCode());
-		result = prime * result + ((pageName == null) ? 0 : pageName.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int prime = 31;
+        int result = 1;
+        result = prime * result + ((linkType == null) ? 0 : linkType.hashCode());
+        result = prime * result + ((pageName == null) ? 0 : pageName.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		ModuleLinkEntity other = (ModuleLinkEntity) obj;
-		if (linkType == null) {
-			if (other.linkType != null) {
-				return false;
-			}
-		} else if (!linkType.equals(other.linkType)) {
-			return false;
-		}
-		if (pageName == null) {
-			if (other.pageName != null) {
-				return false;
-			}
-		} else if (!pageName.equals(other.pageName)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        ModuleLinkEntity other = (ModuleLinkEntity) obj;
+        if (linkType == null) {
+            if (other.linkType != null) {
+                return false;
+            }
+        } else if (!linkType.equals(other.linkType)) {
+            return false;
+        }
+        if (pageName == null) {
+            if (other.pageName != null) {
+                return false;
+            }
+        } else if (!pageName.equals(other.pageName)) {
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public int compareTo(ModuleLinkEntity arg0) {
-		return sort.compareTo(arg0.getSort());
-	}
+    @Override
+    public int compareTo(ModuleLinkEntity arg0) {
+        return sort.compareTo(arg0.getSort());
+    }
 }

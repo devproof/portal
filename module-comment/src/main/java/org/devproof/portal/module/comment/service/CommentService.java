@@ -22,35 +22,35 @@ import org.devproof.portal.module.comment.entity.CommentEntity;
  * @author Carsten Hufe
  */
 public interface CommentService extends CrudService<CommentEntity, Integer> {
-	/**
-	 * Returns a new instance of CommentEntity
-	 * 
-	 * @return new instance of {@link CommentEntity}
-	 */
-	CommentEntity newCommentEntity();
+    /**
+     * Returns a new instance of CommentEntity
+     *
+     * @return new instance of {@link CommentEntity}
+     */
+    CommentEntity newCommentEntity();
 
-	/**
-	 * Marks the comment as deleted (visible = false)
-	 */
-	void rejectComment(CommentEntity comment);
+    /**
+     * Marks the comment as deleted (visible = false)
+     */
+    void rejectComment(CommentEntity comment);
 
-	/**
-	 * Marks the comment as reviewed
-	 */
-	void acceptComment(CommentEntity comment);
+    /**
+     * Marks the comment as reviewed
+     */
+    void acceptComment(CommentEntity comment);
 
-	/**
-	 * Saves a new comment and sends notification emails
-	 */
-	void saveNewComment(CommentEntity comment, UrlCallback urlCallback);
+    /**
+     * Saves a new comment and sends notification emails
+     */
+    void saveNewComment(CommentEntity comment, UrlCallback urlCallback);
 
-	/**
-	 * Returns the number of comments for the given module and module content id
-	 */
-	long findNumberOfComments(String moduleName, String moduleContentId);
+    /**
+     * Returns the number of comments for the given module and module content id
+     */
+    long findNumberOfComments(String moduleName, String moduleContentId);
 
-	/**
-	 * Report a violation
-	 */
-	void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp);
+    /**
+     * Report a violation
+     */
+    void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp);
 }

@@ -28,6 +28,6 @@ import java.util.List;
  */
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface EmailTemplateDao extends GenericDao<EmailTemplateEntity, Integer> {
-	@Query("Select distinct(e) from EmailTemplateEntity e")
-	List<EmailTemplateEntity> findAll();
+    @Query("Select distinct(e) from EmailTemplateEntity e")
+    List<EmailTemplateEntity> findAll();
 }

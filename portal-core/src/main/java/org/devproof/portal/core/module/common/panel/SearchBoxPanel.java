@@ -20,19 +20,19 @@ import org.apache.wicket.markup.MarkupStream;
 
 /**
  * Only a dummy class for search boxes
- * 
+ *
  * @author Carsten Hufe
  */
 public class SearchBoxPanel extends Component {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public SearchBoxPanel(String id) {
-		super(id);
-	}
+    public SearchBoxPanel(String id) {
+        super(id);
+    }
 
-	@Override
-	protected void onRender(MarkupStream markupStream) {
+    @Override
+    protected void onRender(MarkupStream markupStream) {
 
-	}
+    }
 }

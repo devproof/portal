@@ -28,45 +28,44 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class CommentSearchBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_comment.sql",
-				"insert_comment.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_comment.sql", "insert_comment.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createCommentSearchBoxPanel());
-		tester.assertComponent("panel", CommentSearchBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createCommentSearchBoxPanel());
+        tester.assertComponent("panel", CommentSearchBoxPanel.class);
+    }
 
-	private TestPanelSource createCommentSearchBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createCommentSearchBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new TestCommentSearchBoxPanel(panelId, new CommentQuery());
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new TestCommentSearchBoxPanel(panelId, new CommentQuery());
+            }
+        };
+    }
 
-	protected static class TestCommentSearchBoxPanel extends CommentSearchBoxPanel {
-		private static final long serialVersionUID = 1L;
+    protected static class TestCommentSearchBoxPanel extends CommentSearchBoxPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestCommentSearchBoxPanel(String id, CommentQuery query) {
-			super(id, Model.of(query));
-		}
+        public TestCommentSearchBoxPanel(String id, CommentQuery query) {
+            super(id, Model.of(query));
+        }
 
-		@Override
-		protected void onSubmit(AjaxRequestTarget target) {
+        @Override
+        protected void onSubmit(AjaxRequestTarget target) {
 
-		}
-	}
+        }
+    }
 }

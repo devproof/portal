@@ -1,11 +1,11 @@
 body {
-	font: normal 9pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';	
+    font: normal 9pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';
 }
 
 a {
-	color: #F70;
+    color: #F70;
 }
 
 a:hover {
-	color: #C60;
+    color: #C60;
 }

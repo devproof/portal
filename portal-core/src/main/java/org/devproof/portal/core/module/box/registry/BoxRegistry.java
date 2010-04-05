@@ -22,62 +22,54 @@ import java.util.List;
 
 /**
  * Registry for boxes
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface BoxRegistry {
-	/**
-	 * Registers a box
-	 * 
-	 * @param box
-	 *            box to register
-	 */
-	void registerBox(BoxConfiguration box);
+    /**
+     * Registers a box
+     *
+     * @param box box to register
+     */
+    void registerBox(BoxConfiguration box);
 
-	/**
-	 * Removes a box
-	 * 
-	 * @param box
-	 *            box to remove
-	 */
-	void removeBox(BoxConfiguration box);
+    /**
+     * Removes a box
+     *
+     * @param box box to remove
+     */
+    void removeBox(BoxConfiguration box);
 
-	/**
-	 * Returns all registered boxes
-	 * 
-	 */
-	List<BoxConfiguration> getRegisteredBoxes();
+    /**
+     * Returns all registered boxes
+     */
+    List<BoxConfiguration> getRegisteredBoxes();
 
-	/**
-	 * Returns true if the box is registered
-	 * 
-	 * @param clazz
-	 *            Implementation class of the box
-	 */
-	boolean isBoxClassRegistered(String clazz);
+    /**
+     * Returns true if the box is registered
+     *
+     * @param clazz Implementation class of the box
+     */
+    boolean isBoxClassRegistered(String clazz);
 
-	/**
-	 * Returns the name of box
-	 * 
-	 * @param simpleClazz
-	 *            clazz
-	 */
-	String getNameBySimpleClassName(String simpleClazz);
+    /**
+     * Returns the name of box
+     *
+     * @param simpleClazz clazz
+     */
+    String getNameBySimpleClassName(String simpleClazz);
 
-	/**
-	 * Returns the name of box configuration
-	 * 
-	 * @param simpleClazz
-	 *            Simple class name
-	 */
-	BoxConfiguration getBoxConfigurationBySimpleClassName(String simpleClazz);
+    /**
+     * Returns the name of box configuration
+     *
+     * @param simpleClazz Simple class name
+     */
+    BoxConfiguration getBoxConfigurationBySimpleClassName(String simpleClazz);
 
-	/**
-	 * Returns the class by simple class name
-	 * 
-	 * @param simpleClazz
-	 *            simple class name
-	 */
+    /**
+     * Returns the class by simple class name
+     *
+     * @param simpleClazz simple class name
+     */
 	Class<? extends Component> getClassBySimpleClassName(String simpleClazz);
 }

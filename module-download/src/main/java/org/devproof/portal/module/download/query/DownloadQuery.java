@@ -51,86 +51,85 @@ public class DownloadQuery implements SearchQuery {
 
     public DownloadQuery() {
         InjectorHolder.getInjector().inject(this);
-		id = PortalUtil.getParameterAsInteger(ID_PARAM);
-		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
-		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
-		if (isAuthor()) {
-			broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
-		} else if (configurationService.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_HIDE_BROKEN)) {
-			broken = false;
-		}
+        id = PortalUtil.getParameterAsInteger(ID_PARAM);
+        allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+        tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+        if (isAuthor()) {
+            broken = PortalUtil.getParameterAsBoolean(BROKEN_PARAM);
+        } else if (configurationService.findAsBoolean(DownloadConstants.CONF_DOWNLOAD_HIDE_BROKEN)) {
+            broken = false;
+        }
     }
 
 
-	private boolean isAuthor() {
-		if (author == null) {
-			PortalSession session = PortalSession.get();
-			author = session.hasRight(DownloadConstants.AUTHOR_RIGHT);
-		}
-		return author.booleanValue();
-	}
+    private boolean isAuthor() {
+        if (author == null) {
+            PortalSession session = PortalSession.get();
+            author = session.hasRight(DownloadConstants.AUTHOR_RIGHT);
+        }
+        return author.booleanValue();
+    }
 
     @BeanQuery("ar in(select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%')")
-	public RoleEntity getRole() {
-		if (role == null) {
-			PortalSession session = PortalSession.get();
-			if (!session.hasRight("download.view")) {
-				role = session.getRole();
-			}
-		}
-		return role;
-	}
+    public RoleEntity getRole() {
+        if (role == null) {
+            PortalSession session = PortalSession.get();
+            if (!session.hasRight("download.view")) {
+                role = session.getRole();
+            }
+        }
+        return role;
+    }
 
-	@BeanQuery("t.tagname = ?")
-	public String getTagname() {
-		return tagname;
-	}
+    @BeanQuery("t.tagname = ?")
+    public String getTagname() {
+        return tagname;
+    }
 
-	public void setTagname(String tagname) {
-		this.tagname = tagname;
-	}
+    public void setTagname(String tagname) {
+        this.tagname = tagname;
+    }
 
-	@BeanQuery("(e.manufacturer like '%'||?||'%' or e.licence like '%'||?||'%' or e.title like '%'||?||'%'"
-			+ " or e.description like '%'||?||'%')")
-	public String getAllTextFields() {
-		return allTextFields;
-	}
+    @BeanQuery("(e.manufacturer like '%'||?||'%' or e.licence like '%'||?||'%' or e.title like '%'||?||'%'" + " or e.description like '%'||?||'%')")
+    public String getAllTextFields() {
+        return allTextFields;
+    }
 
-	public void setAllTextFields(String allTextFields) {
-		this.allTextFields = allTextFields;
-	}
+    public void setAllTextFields(String allTextFields) {
+        this.allTextFields = allTextFields;
+    }
 
-	@BeanQuery("e.broken = ?")
-	public Boolean getBroken() {
-		return broken;
-	}
+    @BeanQuery("e.broken = ?")
+    public Boolean getBroken() {
+        return broken;
+    }
 
-	public void setBroken(Boolean broken) {
-		this.broken = broken;
-	}
+    public void setBroken(Boolean broken) {
+        this.broken = broken;
+    }
 
-	@BeanQuery("e.id = ?")
-	public Integer getId() {
-		return id;
-	}
+    @BeanQuery("e.id = ?")
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 
     @Override
     public PageParameters getPageParameters() {
-		PageParameters params = new PageParameters();
-		if (StringUtils.isNotBlank(allTextFields)) {
-			params.put(SEARCH_PARAM, allTextFields);
-		}
-		if (StringUtils.isNotBlank(tagname)) {
-			params.put(TagConstants.TAG_PARAM, tagname);
-		}
-		if (broken != null) {
-			params.put(BROKEN_PARAM, broken);
-		}
-		return params;
+        PageParameters params = new PageParameters();
+        if (StringUtils.isNotBlank(allTextFields)) {
+            params.put(SEARCH_PARAM, allTextFields);
+        }
+        if (StringUtils.isNotBlank(tagname)) {
+            params.put(TagConstants.TAG_PARAM, tagname);
+        }
+        if (broken != null) {
+            params.put(BROKEN_PARAM, broken);
+        }
+        return params;
     }
 }

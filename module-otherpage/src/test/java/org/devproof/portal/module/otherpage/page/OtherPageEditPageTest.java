@@ -27,54 +27,53 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class OtherPageEditPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_otherpage.sql",
-				"insert_otherpage.sql");
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_otherpage.sql", "insert_otherpage.sql");
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(createNewOtherPageEditPage());
-		tester.assertRenderedPage(OtherPageEditPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(createNewOtherPageEditPage());
+        tester.assertRenderedPage(OtherPageEditPage.class);
+    }
 
-	public void testSaveOtherPage() {
-		callOtherPageEditPage();
-		submitOtherPageForm();
-		assertOtherPageViewPage();
-	}
+    public void testSaveOtherPage() {
+        callOtherPageEditPage();
+        submitOtherPageForm();
+        assertOtherPageViewPage();
+    }
 
-	private void callOtherPageEditPage() {
-		tester.startPage(createNewOtherPageEditPage());
-		tester.assertRenderedPage(OtherPageEditPage.class);
-	}
+    private void callOtherPageEditPage() {
+        tester.startPage(createNewOtherPageEditPage());
+        tester.assertRenderedPage(OtherPageEditPage.class);
+    }
 
-	private OtherPageEditPage createNewOtherPageEditPage() {
-		return new OtherPageEditPage(Model.of(new OtherPageEntity()));
-	}
+    private OtherPageEditPage createNewOtherPageEditPage() {
+        return new OtherPageEditPage(Model.of(new OtherPageEntity()));
+    }
 
-	private void assertOtherPageViewPage() {
-		String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", createNewOtherPageEditPage());
-		tester.assertRenderedPage(OtherPageViewPage.class);
-		tester.assertNoErrorMessage();
-		tester.assertInfoMessages(expectedMsgs);
-		tester.startPage(OtherPageViewPage.class, new PageParameters("0=cont_id"));
-		tester.assertRenderedPage(OtherPageViewPage.class);
-		tester.assertContains("testing content");
-	}
+    private void assertOtherPageViewPage() {
+        String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", createNewOtherPageEditPage());
+        tester.assertRenderedPage(OtherPageViewPage.class);
+        tester.assertNoErrorMessage();
+        tester.assertInfoMessages(expectedMsgs);
+        tester.startPage(OtherPageViewPage.class, new PageParameters("0=cont_id"));
+        tester.assertRenderedPage(OtherPageViewPage.class);
+        tester.assertContains("testing content");
+    }
 
-	private void submitOtherPageForm() {
-		FormTester form = tester.newFormTester("form");
-		form.setValue("contentId", "cont_id");
-		form.setValue("content", "testing content");
-		form.submit();
-	}
+    private void submitOtherPageForm() {
+        FormTester form = tester.newFormTester("form");
+        form.setValue("contentId", "cont_id");
+        form.setValue("content", "testing content");
+        form.submit();
+    }
 }

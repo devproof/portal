@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
-	<wicket:extend>
-		<div wicket:id="bubblePanel"/>
-		<div class="form">
-		<h1><wicket:message key="contentTitle"/></h1>
-		<form wicket:id="form">
-		<table cellspacing="10">
-			<tr>
-				<td><label for="touser"><wicket:message key="touser"/></label></td>
-				<td><input type="text" wicket:id="touser" class="editContact"/></td>
-			</tr>
-			<tr>
-				<td><label for="fullname"><wicket:message key="fullname"/></label></td>
-				<td><input type="text" wicket:id="fullname" class="editContact"/></td>
-			</tr>
-			<tr>
-				<td><label for="email"><wicket:message key="email"/></label></td>
-				<td><input type="text" wicket:id="email" class="editContact"/></td>
-			</tr>
-			<tr>
-				<td><label for="content"><wicket:message key="content"/></label></td>
-				<td><textarea wicket:id="content" cols="100" rows="10"></textarea></td>
-			</tr>		
-			<tr>
-				<td></td>
-				<td><input type="submit" wicket:id="sendButton" wicket:message="value:sendButton" class="button"/></td>
-			</tr>
-		</table>
-		</form>
-		</div>
-	</wicket:extend>
+<wicket:extend>
+    <div wicket:id="bubblePanel"/>
+    <div class="form">
+        <h1><wicket:message key="contentTitle"/></h1>
+
+        <form wicket:id="form">
+            <table cellspacing="10">
+                <tr>
+                    <td><label for="touser"><wicket:message key="touser"/></label></td>
+                    <td><input type="text" wicket:id="touser" class="editContact"/></td>
+                </tr>
+                <tr>
+                    <td><label for="fullname"><wicket:message key="fullname"/></label></td>
+                    <td><input type="text" wicket:id="fullname" class="editContact"/></td>
+                </tr>
+                <tr>
+                    <td><label for="email"><wicket:message key="email"/></label></td>
+                    <td><input type="text" wicket:id="email" class="editContact"/></td>
+                </tr>
+                <tr>
+                    <td><label for="content"><wicket:message key="content"/></label></td>
+                    <td><textarea wicket:id="content" cols="100" rows="10"></textarea></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" wicket:id="sendButton" wicket:message="value:sendButton" class="button"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</wicket:extend>
 </body>
 </html>

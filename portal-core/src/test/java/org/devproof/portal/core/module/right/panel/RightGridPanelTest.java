@@ -29,32 +29,32 @@ import java.util.ArrayList;
  * @author Carsten Hufe
  */
 public class RightGridPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createRightGridPanel());
-		tester.assertComponent("panel", RightGridPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createRightGridPanel());
+        tester.assertComponent("panel", RightGridPanel.class);
+    }
 
-	private TestPanelSource createRightGridPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createRightGridPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new RightGridPanel(panelId, "", new ListModel<RightEntity>(new ArrayList<RightEntity>()));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new RightGridPanel(panelId, "", new ListModel<RightEntity>(new ArrayList<RightEntity>()));
+            }
+        };
+    }
 }

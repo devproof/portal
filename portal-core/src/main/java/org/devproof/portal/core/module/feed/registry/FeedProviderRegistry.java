@@ -22,43 +22,41 @@ import java.util.Map;
 
 /**
  * Registry for {@link FeedProvider}
- * 
+ *
  * @author Carsten Hufe
  */
 public interface FeedProviderRegistry {
-	/**
-	 * Registers a {@link FeedProvider}
-	 * 
-	 * @param path
-	 *            e.g. blog for a blog entry, throws an
-	 *            {@link IllegalArgumentException} if you register a path twice
-	 * @param feedProvider
-	 *            feed provider
-	 */
-	void registerFeedProvider(String path, FeedProvider feedProvider);
+    /**
+     * Registers a {@link FeedProvider}
+     *
+     * @param path         e.g. blog for a blog entry, throws an
+     *                     {@link IllegalArgumentException} if you register a path twice
+     * @param feedProvider feed provider
+     */
+    void registerFeedProvider(String path, FeedProvider feedProvider);
 
-	/**
-	 * Removes a {@link FeedProvider}
-	 */
-	void removeFeedProvider(String path);
+    /**
+     * Removes a {@link FeedProvider}
+     */
+    void removeFeedProvider(String path);
 
-	/**
-	 * Returns the {@link FeedProvider} by the path
-	 */
-	FeedProvider getFeedProviderByPath(String path);
+    /**
+     * Returns the {@link FeedProvider} by the path
+     */
+    FeedProvider getFeedProviderByPath(String path);
 
-	/**
-	 * Returns the path by page class
-	 */
-	String getPathByPageClass(Class<? extends Page> pageClazz);
+    /**
+     * Returns the path by page class
+     */
+    String getPathByPageClass(Class<? extends Page> pageClazz);
 
-	/**
-	 * Returns true if a class has a feed provider
-	 */
-	boolean hasFeedSupport(Class<? extends Page> pageClazz);
+    /**
+     * Returns true if a class has a feed provider
+     */
+    boolean hasFeedSupport(Class<? extends Page> pageClazz);
 
-	/**
-	 * Returns all {@link FeedProvider} in a {@link Map}
-	 */
-	Map<String, FeedProvider> getAllFeedProvider();
+    /**
+     * Returns all {@link FeedProvider} in a {@link Map}
+     */
+    Map<String, FeedProvider> getAllFeedProvider();
 }

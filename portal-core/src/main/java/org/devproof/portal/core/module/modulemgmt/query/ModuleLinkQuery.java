@@ -24,17 +24,17 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public class ModuleLinkQuery implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private LinkType linkType;
+    private LinkType linkType;
 
-	@BeanQuery("e.linkType = ?")
-	public LinkType getLinkType() {
-		return linkType;
-	}
+    @BeanQuery("e.linkType = ?")
+    public LinkType getLinkType() {
+        return linkType;
+    }
 
-	public void setLinkType(LinkType linkType) {
-		this.linkType = linkType;
-	}
+    public void setLinkType(LinkType linkType) {
+        this.linkType = linkType;
+    }
 
 }

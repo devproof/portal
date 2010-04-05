@@ -28,51 +28,47 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 /**
  * Hibernate transaction and session management
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class PortalWebRequestCycle extends WebRequestCycle {
 
-	private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
-	public PortalWebRequestCycle(WebApplication application, WebRequest request, Response response,
-			ApplicationContext context) {
-		super(application, request, response);
-		sessionFactory = (SessionFactory) context.getBean("sessionFactory");
-	}
+    public PortalWebRequestCycle(WebApplication application, WebRequest request, Response response, ApplicationContext context) {
+        super(application, request, response);
+        sessionFactory = (SessionFactory) context.getBean("sessionFactory");
+    }
 
-	@Override
-	protected void onBeginRequest() {
-		// getSession should bind the resource
-		openHibernateSessionInView();
-		super.onBeginRequest();
-	}
+    @Override
+    protected void onBeginRequest() {
+        // getSession should bind the resource
+        openHibernateSessionInView();
+        super.onBeginRequest();
+    }
 
-	@Override
-	public void detach() {
-		closeHibernateSessionInView();
-		super.detach();
-	}
+    @Override
+    public void detach() {
+        closeHibernateSessionInView();
+        super.detach();
+    }
 
-	private void openHibernateSessionInView() {
-		Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-		SessionHolder holder = new SessionHolder(session);
-		if (!TransactionSynchronizationManager.hasResource(sessionFactory)) {
-			TransactionSynchronizationManager.bindResource(sessionFactory, holder);
-		}
-	}
+    private void openHibernateSessionInView() {
+        Session session = SessionFactoryUtils.getSession(sessionFactory, true);
+        SessionHolder holder = new SessionHolder(session);
+        if (!TransactionSynchronizationManager.hasResource(sessionFactory)) {
+            TransactionSynchronizationManager.bindResource(sessionFactory, holder);
+        }
+    }
 
-	private void closeHibernateSessionInView() {
-		if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
-			SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
-					.unbindResource(sessionFactory);
-			if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()
-					&& !sessionHolder.getTransaction().wasCommitted()) {
-				sessionHolder.getTransaction().commit();
-			}
-			SessionFactoryUtils.closeSession(sessionHolder.getSession());
-		}
-	}
+    private void closeHibernateSessionInView() {
+        if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
+            SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(sessionFactory);
+            if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack() && !sessionHolder.getTransaction().wasCommitted()) {
+                sessionHolder.getTransaction().commit();
+            }
+            SessionFactoryUtils.closeSession(sessionHolder.getSession());
+        }
+    }
 
 }

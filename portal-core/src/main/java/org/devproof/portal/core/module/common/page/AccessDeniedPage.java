@@ -22,7 +22,7 @@ import org.apache.wicket.PageParameters;
  */
 public class AccessDeniedPage extends MessagePage {
 
-	public AccessDeniedPage() {
-		super(new PageParameters("message=access.denied"));
-	}
+    public AccessDeniedPage() {
+        super(new PageParameters("message=access.denied"));
+    }
 }

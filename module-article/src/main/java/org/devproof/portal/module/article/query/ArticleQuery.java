@@ -30,68 +30,68 @@ import org.devproof.portal.core.module.tag.TagConstants;
  */
 @BeanJoin("left join e.allRights vr left join e.tags t")
 public class ArticleQuery implements SearchQuery {
-	private static final long serialVersionUID = 1L;
-	private static final String ID_PARAM = "id";
-	private static final String SEARCH_PARAM = "search";
-	private Integer id;
-	private RoleEntity role;
-	private String allTextFields;
-	private String tagname;
+    private static final long serialVersionUID = 1L;
+    private static final String ID_PARAM = "id";
+    private static final String SEARCH_PARAM = "search";
+    private Integer id;
+    private RoleEntity role;
+    private String allTextFields;
+    private String tagname;
 
-	public ArticleQuery() {
-		id = PortalUtil.getParameterAsInteger(ID_PARAM);
-		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
-		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
-	}
+    public ArticleQuery() {
+        id = PortalUtil.getParameterAsInteger(ID_PARAM);
+        allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+        tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
+    }
 
-	@BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
-	public RoleEntity getRole() {
-		if (role == null) {
-			PortalSession session = PortalSession.get();
-			if (!session.hasRight("article.view")) {
-				role = session.getRole();
-			}
-		}
-		return role;
-	}
+    @BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
+    public RoleEntity getRole() {
+        if (role == null) {
+            PortalSession session = PortalSession.get();
+            if (!session.hasRight("article.view")) {
+                role = session.getRole();
+            }
+        }
+        return role;
+    }
 
-	@BeanQuery("t.tagname = ?")
-	public String getTagname() {
-		return tagname;
-	}
+    @BeanQuery("t.tagname = ?")
+    public String getTagname() {
+        return tagname;
+    }
 
-	public void setTagname(String tagname) {
-		this.tagname = tagname;
-	}
+    public void setTagname(String tagname) {
+        this.tagname = tagname;
+    }
 
-	@BeanQuery("e.title like '%'||?||'%'" + " or e.teaser like '%'||?||'%'")
-	public String getAllTextFields() {
-		return this.allTextFields;
-	}
+    @BeanQuery("e.title like '%'||?||'%'" + " or e.teaser like '%'||?||'%'")
+    public String getAllTextFields() {
+        return this.allTextFields;
+    }
 
-	public void setAllTextFields(String allTextFields) {
-		this.allTextFields = allTextFields;
-		this.tagname = null;
-	}
+    public void setAllTextFields(String allTextFields) {
+        this.allTextFields = allTextFields;
+        this.tagname = null;
+    }
 
-	@BeanQuery("e.id = ?")
-	public Integer getId() {
-		return this.id;
-	}
+    @BeanQuery("e.id = ?")
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Override
-	public PageParameters getPageParameters() {
-		PageParameters params = new PageParameters();
-		if (StringUtils.isNotBlank(allTextFields)) {
-			params.put(SEARCH_PARAM, allTextFields);
-		}
-		if (StringUtils.isNotBlank(tagname)) {
-			params.put(TagConstants.TAG_PARAM, tagname);
-		}
-		return params;
-	}
+    @Override
+    public PageParameters getPageParameters() {
+        PageParameters params = new PageParameters();
+        if (StringUtils.isNotBlank(allTextFields)) {
+            params.put(SEARCH_PARAM, allTextFields);
+        }
+        if (StringUtils.isNotBlank(tagname)) {
+            params.put(TagConstants.TAG_PARAM, tagname);
+        }
+        return params;
+    }
 }

@@ -26,31 +26,31 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class LoginBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createLoginBoxPanel());
-		tester.assertComponent("panel", LoginBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createLoginBoxPanel());
+        tester.assertComponent("panel", LoginBoxPanel.class);
+    }
 
-	private TestPanelSource createLoginBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createLoginBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new LoginBoxPanel(panelId, new PageParameters());
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new LoginBoxPanel(panelId, new PageParameters());
+            }
+        };
+    }
 }

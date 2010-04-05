@@ -32,63 +32,63 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class MainNavigationRegistryImpl implements MainNavigationRegistry, InitializingBean {
-	private PageLocator pageLocator;
-	private ModuleService moduleService;
+    private PageLocator pageLocator;
+    private ModuleService moduleService;
 
-	private final List<Class<? extends Page>> pages = new ArrayList<Class<? extends Page>>();
+    private final List<Class<? extends Page>> pages = new ArrayList<Class<? extends Page>>();
 
-	@Override
-	public List<Class<? extends Page>> getRegisteredPages() {
-		// immutable
-		return Collections.unmodifiableList(pages);
-	}
+    @Override
+    public List<Class<? extends Page>> getRegisteredPages() {
+        // immutable
+        return Collections.unmodifiableList(pages);
+    }
 
-	@Override
-	public void registerPage(Class<? extends Page> page) {
-		pages.add(page);
-	}
+    @Override
+    public void registerPage(Class<? extends Page> page) {
+        pages.add(page);
+    }
 
-	@Override
-	public void registerPages(List<Class<? extends Page>> pages) {
-		for (Class<? extends Page> page : pages) {
-			registerPage(page);
-		}
-	}
+    @Override
+    public void registerPages(List<Class<? extends Page>> pages) {
+        for (Class<? extends Page> page : pages) {
+            registerPage(page);
+        }
+    }
 
-	@Override
-	public void clearRegistry() {
-		pages.clear();
-	}
+    @Override
+    public void clearRegistry() {
+        pages.clear();
+    }
 
-	@Override
-	public void removePage(Class<? extends Page> page) {
-		pages.remove(page);
-	}
+    @Override
+    public void removePage(Class<? extends Page> page) {
+        pages.remove(page);
+    }
 
-	@Override
-	public void buildNavigation() {
-		clearRegistry();
-		Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
-		List<ModuleLinkEntity> links = moduleService.findAllVisibleMainNavigationLinks();
-		for (ModuleLinkEntity link : links) {
-			PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
-			if (conf != null) {
-				registerPage(conf.getPageClass());
-			}
-		}
-	}
+    @Override
+    public void buildNavigation() {
+        clearRegistry();
+        Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
+        List<ModuleLinkEntity> links = moduleService.findAllVisibleMainNavigationLinks();
+        for (ModuleLinkEntity link : links) {
+            PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
+            if (conf != null) {
+                registerPage(conf.getPageClass());
+            }
+        }
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		buildNavigation();
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        buildNavigation();
+    }
 
-	public void setPageLocator(PageLocator pageLocator) {
-		this.pageLocator = pageLocator;
-	}
+    public void setPageLocator(PageLocator pageLocator) {
+        this.pageLocator = pageLocator;
+    }
 
-	public void setModuleService(ModuleService moduleService) {
-		this.moduleService = moduleService;
-	}
+    public void setModuleService(ModuleService moduleService) {
+        this.moduleService = moduleService;
+    }
 
 }

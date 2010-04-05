@@ -36,84 +36,84 @@ import java.util.List;
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
 final public class BookmarkEntity extends BaseLinkEntity {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public enum Source {
-		MANUAL, DELICIOUS
-	}
+    public enum Source {
+        MANUAL, DELICIOUS
+    }
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "source")
-	private Source source = Source.MANUAL;
-	@Column(name = "sync_username")
-	private String syncUsername;
-	@Column(name = "sync_hash")
-	private String syncHash;
-	@ManyToMany(fetch = FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
-	@JoinTable(name = "bookmark_right_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-	private List<RightEntity> allRights;
-	@ManyToMany(fetch = FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
-	@JoinTable(name = "bookmark_tag_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
-	private List<BookmarkTagEntity> tags;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "source")
+    private Source source = Source.MANUAL;
+    @Column(name = "sync_username")
+    private String syncUsername;
+    @Column(name = "sync_hash")
+    private String syncHash;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinTable(name = "bookmark_right_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
+    private List<RightEntity> allRights;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinTable(name = "bookmark_tag_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
+    private List<BookmarkTagEntity> tags;
 
-	@Transient
-	public List<RightEntity> getVoteRights() {
-		return getRightsStartingWith(allRights, "bookmark.vote");
-	}
+    @Transient
+    public List<RightEntity> getVoteRights() {
+        return getRightsStartingWith(allRights, "bookmark.vote");
+    }
 
-	@Transient
-	public List<RightEntity> getVisitRights() {
-		return getRightsStartingWith(allRights, "bookmark.visit");
-	}
+    @Transient
+    public List<RightEntity> getVisitRights() {
+        return getRightsStartingWith(allRights, "bookmark.visit");
+    }
 
-	@Transient
-	public List<RightEntity> getViewRights() {
-		return getRightsStartingWith(allRights, "bookmark.view");
-	}
+    @Transient
+    public List<RightEntity> getViewRights() {
+        return getRightsStartingWith(allRights, "bookmark.view");
+    }
 
-	public List<RightEntity> getAllRights() {
-		if (allRights == null) {
-			allRights = new ArrayList<RightEntity>();
-		}
-		return allRights;
-	}
+    public List<RightEntity> getAllRights() {
+        if (allRights == null) {
+            allRights = new ArrayList<RightEntity>();
+        }
+        return allRights;
+    }
 
-	public void setAllRights(List<RightEntity> allRights) {
-		this.allRights = allRights;
-	}
+    public void setAllRights(List<RightEntity> allRights) {
+        this.allRights = allRights;
+    }
 
-	public List<BookmarkTagEntity> getTags() {
-		return tags;
-	}
+    public List<BookmarkTagEntity> getTags() {
+        return tags;
+    }
 
-	public void setTags(List<BookmarkTagEntity> tags) {
-		this.tags = tags;
-	}
+    public void setTags(List<BookmarkTagEntity> tags) {
+        this.tags = tags;
+    }
 
-	public Source getSource() {
-		return source;
-	}
+    public Source getSource() {
+        return source;
+    }
 
-	public void setSource(Source source) {
-		this.source = source;
-	}
+    public void setSource(Source source) {
+        this.source = source;
+    }
 
-	public String getSyncUsername() {
-		return syncUsername;
-	}
+    public String getSyncUsername() {
+        return syncUsername;
+    }
 
-	public void setSyncUsername(String syncUsername) {
-		this.syncUsername = syncUsername;
-	}
+    public void setSyncUsername(String syncUsername) {
+        this.syncUsername = syncUsername;
+    }
 
-	public String getSyncHash() {
-		return syncHash;
-	}
+    public String getSyncHash() {
+        return syncHash;
+    }
 
-	public void setSyncHash(String syncHash) {
-		this.syncHash = syncHash;
-	}
+    public void setSyncHash(String syncHash) {
+        this.syncHash = syncHash;
+    }
 
 }

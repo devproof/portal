@@ -31,46 +31,46 @@ import org.devproof.portal.core.module.email.service.EmailService;
  */
 public class EmailTemplateEditPage extends EmailTemplateBasePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "emailService")
-	private EmailService emailService;
-	private IModel<EmailTemplateEntity> emailTemplateModel;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "emailService")
+    private EmailService emailService;
+    private IModel<EmailTemplateEntity> emailTemplateModel;
 
-	public EmailTemplateEditPage(IModel<EmailTemplateEntity> emailTemplateModel) {
-		super(new PageParameters());
-		this.emailTemplateModel = emailTemplateModel;
-		add(createEditEmailTemplateForm());
-	}
+    public EmailTemplateEditPage(IModel<EmailTemplateEntity> emailTemplateModel) {
+        super(new PageParameters());
+        this.emailTemplateModel = emailTemplateModel;
+        add(createEditEmailTemplateForm());
+    }
 
-	private Form<EmailTemplateEntity> createEditEmailTemplateForm() {
-		Form<EmailTemplateEntity> form = newEditEmailTemplateForm();
-		form.add(createSubjectField());
-		form.add(createContentField());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<EmailTemplateEntity> createEditEmailTemplateForm() {
+        Form<EmailTemplateEntity> form = newEditEmailTemplateForm();
+        form.add(createSubjectField());
+        form.add(createContentField());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private Form<EmailTemplateEntity> newEditEmailTemplateForm() {
-		return new Form<EmailTemplateEntity>("form", new CompoundPropertyModel<EmailTemplateEntity>(emailTemplateModel)) {
-			private static final long serialVersionUID = 1L;
+    private Form<EmailTemplateEntity> newEditEmailTemplateForm() {
+        return new Form<EmailTemplateEntity>("form", new CompoundPropertyModel<EmailTemplateEntity>(emailTemplateModel)) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onSubmit() {
-				emailService.save(emailTemplateModel.getObject());
-				setRedirect(false);
-				info(EmailTemplateEditPage.this.getString("msg.saved"));
-				setResponsePage(EmailTemplatePage.class);
-			}
-		};
-	}
+            @Override
+            public void onSubmit() {
+                emailService.save(emailTemplateModel.getObject());
+                setRedirect(false);
+                info(EmailTemplateEditPage.this.getString("msg.saved"));
+                setResponsePage(EmailTemplatePage.class);
+            }
+        };
+    }
 
-	private FormComponent<String> createContentField() {
-		FormComponent<String> fc = new BasicRichTextArea("content", true);
-		fc.setRequired(true);
-		return fc;
-	}
+    private FormComponent<String> createContentField() {
+        FormComponent<String> fc = new BasicRichTextArea("content", true);
+        fc.setRequired(true);
+        return fc;
+    }
 
-	private FormComponent<String> createSubjectField() {
-		return new RequiredTextField<String>("subject");
-	}
+    private FormComponent<String> createSubjectField() {
+        return new RequiredTextField<String>("subject");
+    }
 }

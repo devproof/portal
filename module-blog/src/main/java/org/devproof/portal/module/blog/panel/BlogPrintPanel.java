@@ -28,29 +28,29 @@ import org.devproof.portal.module.blog.entity.BlogEntity;
  */
 public class BlogPrintPanel extends Panel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private IModel<BlogEntity> blogModel;
 
 
     public BlogPrintPanel(String id, IModel<BlogEntity> blogModel) {
-		super(id);
+        super(id);
         this.blogModel = blogModel;
         add(createHeadline());
-		add(createMetaInfoPanel());
-		add(createContentLabel());
-	}
+        add(createMetaInfoPanel());
+        add(createContentLabel());
+    }
 
-	private Label createHeadline() {
+    private Label createHeadline() {
         IModel<String> headlineModel = new PropertyModel<String>(blogModel, "headline");
         return new Label("headline", headlineModel);
-	}
+    }
 
-	private MetaInfoPanel createMetaInfoPanel() {
-		return new MetaInfoPanel("metaInfo", blogModel);
-	}
+    private MetaInfoPanel createMetaInfoPanel() {
+        return new MetaInfoPanel("metaInfo", blogModel);
+    }
 
-	private ExtendedLabel createContentLabel() {
+    private ExtendedLabel createContentLabel() {
         IModel<String> contentModel = new PropertyModel<String>(blogModel, "content");
         return new ExtendedLabel("content", contentModel);
-	}
+    }
 }

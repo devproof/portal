@@ -24,28 +24,28 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface RoleService extends CrudService<RoleEntity, Integer> {
-	/**
-	 * Returns all roles
-	 */
-	List<RoleEntity> findAll();
+    /**
+     * Returns all roles
+     */
+    List<RoleEntity> findAll();
 
-	/**
-	 * Returns a new instance of role
-	 */
-	RoleEntity newRoleEntity();
+    /**
+     * Returns a new instance of role
+     */
+    RoleEntity newRoleEntity();
 
-	/**
-	 * Returns all roles ordered by description
-	 */
-	List<RoleEntity> findAllOrderByDescription();
+    /**
+     * Returns all roles ordered by description
+     */
+    List<RoleEntity> findAllOrderByDescription();
 
-	/**
-	 * returns the guest role
-	 */
-	RoleEntity findGuestRole();
+    /**
+     * returns the guest role
+     */
+    RoleEntity findGuestRole();
 
-	/**
-	 * returns the default registration role
-	 */
-	RoleEntity findDefaultRegistrationRole();
+    /**
+     * returns the default registration role
+     */
+    RoleEntity findDefaultRegistrationRole();
 }

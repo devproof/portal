@@ -29,35 +29,34 @@ import java.util.Date;
  * @author Carsten Hufe
  */
 public class CommentInfoPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_comment.sql",
-				"insert_comment.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_comment.sql", "insert_comment.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createCommentInfoPanel());
-		tester.assertComponent("panel", CommentInfoPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createCommentInfoPanel());
+        tester.assertComponent("panel", CommentInfoPanel.class);
+    }
 
-	private TestPanelSource createCommentInfoPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createCommentInfoPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				CommentEntity comment = new CommentEntity();
-				comment.setCreatedAt(new Date());
-				comment.setModifiedAt(new Date());
-				return new CommentInfoPanel(panelId, Model.of(comment));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                CommentEntity comment = new CommentEntity();
+                comment.setCreatedAt(new Date());
+                comment.setModifiedAt(new Date());
+                return new CommentInfoPanel(panelId, Model.of(comment));
+            }
+        };
+    }
 }

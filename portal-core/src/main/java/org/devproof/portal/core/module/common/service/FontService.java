@@ -22,13 +22,13 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface FontService {
-	/**
-	 * Returns all System fonts
-	 */
-	List<Font> findAllSystemFonts();
+    /**
+     * Returns all System fonts
+     */
+    List<Font> findAllSystemFonts();
 
-	/**
-	 * Returns syntax highlighter themes
-	 */
-	List<String> findSyntaxHighlighterThemes();
+    /**
+     * Returns syntax highlighter themes
+     */
+    List<String> findSyntaxHighlighterThemes();
 }

@@ -24,33 +24,33 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ConfigurationPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(ConfigurationPage.class);
-		tester.assertRenderedPage(ConfigurationPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(ConfigurationPage.class);
+        tester.assertRenderedPage(ConfigurationPage.class);
+    }
 
-	public void testSaveConfiguration() {
-		tester.startPage(ConfigurationPage.class);
-		tester.assertRenderedPage(ConfigurationPage.class);
-		tester.assertLabel("form:repeatingConfiguration:4:description", "From email address");
-		FormTester ft = tester.newFormTester("form");
-		ft.setValue("repeatingConfiguration:4:editor:edit", "hello@world.tld");
-		ft.submit();
-		tester.assertNoErrorMessage();
-		tester.startPage(ConfigurationPage.class);
-		tester.assertContains("hello@world.tld");
-	}
+    public void testSaveConfiguration() {
+        tester.startPage(ConfigurationPage.class);
+        tester.assertRenderedPage(ConfigurationPage.class);
+        tester.assertLabel("form:repeatingConfiguration:4:description", "From email address");
+        FormTester ft = tester.newFormTester("form");
+        ft.setValue("repeatingConfiguration:4:editor:edit", "hello@world.tld");
+        ft.submit();
+        tester.assertNoErrorMessage();
+        tester.startPage(ConfigurationPage.class);
+        tester.assertContains("hello@world.tld");
+    }
 }

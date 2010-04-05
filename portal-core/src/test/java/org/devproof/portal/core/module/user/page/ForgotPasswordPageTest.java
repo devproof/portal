@@ -28,32 +28,32 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ForgotPasswordPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(ForgotPasswordPage.class);
-		tester.assertRenderedPage(ForgotPasswordPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(ForgotPasswordPage.class);
+        tester.assertRenderedPage(ForgotPasswordPage.class);
+    }
 
-	public void testRequestEmail() {
-		Page page = tester.startPage(ForgotPasswordPage.class);
-		tester.assertRenderedPage(ForgotPasswordPage.class);
-		PortalSession.get().getRights().add(new RightEntity("captcha.disabled"));
-		FormTester ft = tester.newFormTester("form");
-		ft.setValue("emailoruser", "admin");
-		tester.executeAjaxEvent("form:requestButton", "onclick");
-		tester.assertNoErrorMessage();
-		tester.assertRenderedPage(MessagePage.class);
-		tester.assertContains(page.getString("email.sent"));
-	}
+    public void testRequestEmail() {
+        Page page = tester.startPage(ForgotPasswordPage.class);
+        tester.assertRenderedPage(ForgotPasswordPage.class);
+        PortalSession.get().getRights().add(new RightEntity("captcha.disabled"));
+        FormTester ft = tester.newFormTester("form");
+        ft.setValue("emailoruser", "admin");
+        tester.executeAjaxEvent("form:requestButton", "onclick");
+        tester.assertNoErrorMessage();
+        tester.assertRenderedPage(MessagePage.class);
+        tester.assertContains(page.getString("email.sent"));
+    }
 }

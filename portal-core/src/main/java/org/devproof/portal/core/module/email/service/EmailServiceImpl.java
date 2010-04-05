@@ -39,156 +39,146 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class EmailServiceImpl implements EmailService {
-	private static final Log LOG = LogFactory.getLog(EmailServiceImpl.class);
-	private EmailTemplateDao emailTemplateDao;
-	private ConfigurationService configurationService;
-	private JavaMailSender javaMailSender;
-	private SimpleDateFormat dateFormat;
-	private boolean emailDisabled;
+    private static final Log LOG = LogFactory.getLog(EmailServiceImpl.class);
+    private EmailTemplateDao emailTemplateDao;
+    private ConfigurationService configurationService;
+    private JavaMailSender javaMailSender;
+    private SimpleDateFormat dateFormat;
+    private boolean emailDisabled;
 
-	@Override
-	public EmailTemplateEntity newEmailTemplateEntity() {
-		return new EmailTemplateEntity();
-	}
+    @Override
+    public EmailTemplateEntity newEmailTemplateEntity() {
+        return new EmailTemplateEntity();
+    }
 
-	@Override
-	public void delete(EmailTemplateEntity entity) {
-		emailTemplateDao.delete(entity);
-	}
+    @Override
+    public void delete(EmailTemplateEntity entity) {
+        emailTemplateDao.delete(entity);
+    }
 
-	@Override
-	public List<EmailTemplateEntity> findAll() {
-		return emailTemplateDao.findAll();
-	}
+    @Override
+    public List<EmailTemplateEntity> findAll() {
+        return emailTemplateDao.findAll();
+    }
 
-	@Override
-	public EmailTemplateEntity findById(Integer id) {
-		return emailTemplateDao.findById(id);
-	}
+    @Override
+    public EmailTemplateEntity findById(Integer id) {
+        return emailTemplateDao.findById(id);
+    }
 
-	@Override
-	public void save(EmailTemplateEntity entity) {
-		emailTemplateDao.save(entity);
-	}
+    @Override
+    public void save(EmailTemplateEntity entity) {
+        emailTemplateDao.save(entity);
+    }
 
-	@Override
-	public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
-		if (emailDisabled) {
-			return;
-		}
-		// Create email
-		try {
-			MimeMessage msg = javaMailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(msg);
-			if (placeholder.getContactEmail() != null) {
-				String from = "";
-				if (placeholder.getContactFullname() != null) {
-					from += placeholder.getContactFullname();
-				} else {
-					from += placeholder.getContactEmail();
-				}
-				from += " <" + placeholder.getContactEmail() + ">";
-				helper.setFrom(from);
-			} else {
-				String from = configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME);
-				from += " <" + configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS) + ">";
-				helper.setFrom(from);
-			}
-			if (placeholder.getToEmail() != null) {
-				String name = placeholder.getToFirstname() != null ? placeholder.getToFirstname() : "";
-				name += " " + (placeholder.getToLastname() != null ? placeholder.getToLastname() : "");
-				if (StringUtils.isBlank(name)) {
-					name = placeholder.getToUsername();
-				}
-				helper.setTo(name + " <" + placeholder.getToEmail() + ">");
-			} else {
-				String name = placeholder.getFirstname() != null ? placeholder.getFirstname() : "";
-				name += " " + (placeholder.getLastname() != null ? placeholder.getLastname() : "");
-				if (StringUtils.isBlank(name)) {
-					name = placeholder.getUsername();
-				}
-				helper.setTo(name + " <" + placeholder.getEmail() + ">");
-			}
-			helper.setSubject(replace(template.getSubject(), placeholder));
-			helper.setText("<html><body>" + replace(template.getContent(), placeholder) + "</body></html>", true);
-			javaMailSender.send(msg);
-			LOG.info("Send email to " + placeholder.getToEmail() + " " + template.getSubject());
-		} catch (MailException e) {
-			throw new UnhandledException(e);
-		} catch (MessagingException e) {
-			throw new UnhandledException(e);
-		}
-	}
+    @Override
+    public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
+        if (emailDisabled) {
+            return;
+        }
+        // Create email
+        try {
+            MimeMessage msg = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(msg);
+            if (placeholder.getContactEmail() != null) {
+                String from = "";
+                if (placeholder.getContactFullname() != null) {
+                    from += placeholder.getContactFullname();
+                } else {
+                    from += placeholder.getContactEmail();
+                }
+                from += " <" + placeholder.getContactEmail() + ">";
+                helper.setFrom(from);
+            } else {
+                String from = configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME);
+                from += " <" + configurationService.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS) + ">";
+                helper.setFrom(from);
+            }
+            if (placeholder.getToEmail() != null) {
+                String name = placeholder.getToFirstname() != null ? placeholder.getToFirstname() : "";
+                name += " " + (placeholder.getToLastname() != null ? placeholder.getToLastname() : "");
+                if (StringUtils.isBlank(name)) {
+                    name = placeholder.getToUsername();
+                }
+                helper.setTo(name + " <" + placeholder.getToEmail() + ">");
+            } else {
+                String name = placeholder.getFirstname() != null ? placeholder.getFirstname() : "";
+                name += " " + (placeholder.getLastname() != null ? placeholder.getLastname() : "");
+                if (StringUtils.isBlank(name)) {
+                    name = placeholder.getUsername();
+                }
+                helper.setTo(name + " <" + placeholder.getEmail() + ">");
+            }
+            helper.setSubject(replace(template.getSubject(), placeholder));
+            helper.setText("<html><body>" + replace(template.getContent(), placeholder) + "</body></html>", true);
+            javaMailSender.send(msg);
+            LOG.info("Send email to " + placeholder.getToEmail() + " " + template.getSubject());
+        } catch (MailException e) {
+            throw new UnhandledException(e);
+        } catch (MessagingException e) {
+            throw new UnhandledException(e);
+        }
+    }
 
-	@Override
-	public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
-		EmailTemplateEntity template = emailTemplateDao.findById(templateId);
-		this.sendEmail(template, placeholder);
-	}
+    @Override
+    public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
+        EmailTemplateEntity template = emailTemplateDao.findById(templateId);
+        this.sendEmail(template, placeholder);
+    }
 
-	private String replace(String in, EmailPlaceholderBean placeholder) {
-		String content = in;
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_USERNAME,
-				placeholder.getUsername() != null ? placeholder.getUsername() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_FIRSTNAME,
-				placeholder.getFirstname() != null ? placeholder.getFirstname() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_LASTNAME,
-				placeholder.getLastname() != null ? placeholder.getLastname() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PAGENAME, configurationService
-				.findAsString(EmailConstants.CONF_PAGE_NAME));
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_EMAIL, placeholder.getEmail() != null ? placeholder
-				.getEmail() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONFIRMATIONLINK,
-				placeholder.getConfirmationLink() != null ? placeholder.getConfirmationLink() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PASSWORDRESETLINK, placeholder
-				.getResetPasswordLink() != null ? placeholder.getResetPasswordLink() : "");
+    private String replace(String in, EmailPlaceholderBean placeholder) {
+        String content = in;
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_USERNAME, placeholder.getUsername() != null ? placeholder.getUsername() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_FIRSTNAME, placeholder.getFirstname() != null ? placeholder.getFirstname() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_LASTNAME, placeholder.getLastname() != null ? placeholder.getLastname() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PAGENAME, configurationService.findAsString(EmailConstants.CONF_PAGE_NAME));
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_EMAIL, placeholder.getEmail() != null ? placeholder.getEmail() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONFIRMATIONLINK, placeholder.getConfirmationLink() != null ? placeholder.getConfirmationLink() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_PASSWORDRESETLINK, placeholder.getResetPasswordLink() != null ? placeholder.getResetPasswordLink() : "");
 
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_FULLNAME,
-				placeholder.getContactFullname() != null ? placeholder.getContactFullname() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_EMAIL,
-				placeholder.getContactEmail() != null ? placeholder.getContactEmail() : "");
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_IP,
-				placeholder.getContactIp() != null ? placeholder.getContactIp() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_FULLNAME, placeholder.getContactFullname() != null ? placeholder.getContactFullname() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_EMAIL, placeholder.getContactEmail() != null ? placeholder.getContactEmail() : "");
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTACT_IP, placeholder.getContactIp() != null ? placeholder.getContactIp() : "");
 
-		String inlineContent = "";
-		if (placeholder.getContent() != null) {
-			inlineContent = placeholder.getContent().replace("\n", "<br />");
-		}
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTENT, inlineContent);
-		String birthday = "";
-		if (placeholder.getBirthday() != null) {
-			birthday = dateFormat.format(placeholder.getBirthday());
-		}
-		content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_BIRTHDAY, birthday);
-		Map<String, String> additionalPlaceholder = placeholder.getAdditionalPlaceholder();
-		for (String key : additionalPlaceholder.keySet()) {
-			content = content.replace("#" + key + "#", additionalPlaceholder.get(key));
-		}
-		return content;
-	}
+        String inlineContent = "";
+        if (placeholder.getContent() != null) {
+            inlineContent = placeholder.getContent().replace("\n", "<br />");
+        }
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_CONTENT, inlineContent);
+        String birthday = "";
+        if (placeholder.getBirthday() != null) {
+            birthday = dateFormat.format(placeholder.getBirthday());
+        }
+        content = content.replace(EmailConstants.EMAIL_PLACEHOLDER_BIRTHDAY, birthday);
+        Map<String, String> additionalPlaceholder = placeholder.getAdditionalPlaceholder();
+        for (String key : additionalPlaceholder.keySet()) {
+            content = content.replace("#" + key + "#", additionalPlaceholder.get(key));
+        }
+        return content;
+    }
 
-	@Required
-	public void setEmailTemplateDao(EmailTemplateDao emailTemplateDao) {
-		this.emailTemplateDao = emailTemplateDao;
-	}
+    @Required
+    public void setEmailTemplateDao(EmailTemplateDao emailTemplateDao) {
+        this.emailTemplateDao = emailTemplateDao;
+    }
 
-	@Required
-	public void setConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 
-	@Required
-	public void setJavaMailSender(JavaMailSender javaMailSender) {
-		this.javaMailSender = javaMailSender;
-	}
+    @Required
+    public void setJavaMailSender(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
-	@Required
-	public void setDateFormat(SimpleDateFormat dateFormat) {
-		this.dateFormat = dateFormat;
-	}
+    @Required
+    public void setDateFormat(SimpleDateFormat dateFormat) {
+        this.dateFormat = dateFormat;
+    }
 
-	@Required
-	public void setEmailDisabled(boolean emailDisabled) {
-		this.emailDisabled = emailDisabled;
-	}
+    @Required
+    public void setEmailDisabled(boolean emailDisabled) {
+        this.emailDisabled = emailDisabled;
+    }
 }

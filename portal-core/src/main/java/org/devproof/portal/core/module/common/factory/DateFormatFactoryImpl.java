@@ -27,43 +27,41 @@ import java.util.Locale;
  * @author Carsten Hufe
  */
 public class DateFormatFactoryImpl implements DateFormatFactory {
-	private ConfigurationService configurationService;
-	
-	@Override
-	public SimpleDateFormat createDisplayDateFormat() {
-		return createDateFormat("display_date_format");
-	}
+    private ConfigurationService configurationService;
 
-	@Override
-	public SimpleDateFormat createDisplayDateTimeFormat() {
-		return createDateFormat("display_date_time_format");
-	}
+    @Override
+    public SimpleDateFormat createDisplayDateFormat() {
+        return createDateFormat("display_date_format");
+    }
 
-	@Override
-	public SimpleDateFormat createInputDateFormat() {
-		return createDateFormat("input_date_format");
-	}
+    @Override
+    public SimpleDateFormat createDisplayDateTimeFormat() {
+        return createDateFormat("display_date_time_format");
+    }
+
+    @Override
+    public SimpleDateFormat createInputDateFormat() {
+        return createDateFormat("input_date_format");
+    }
 
 
-	@Override
-	public SimpleDateFormat createInputDateTimeFormat() {
-		return createDateFormat("input_date_time_format");
-	}
+    @Override
+    public SimpleDateFormat createInputDateTimeFormat() {
+        return createDateFormat("input_date_time_format");
+    }
 
-	@Required
-	public void setConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 
-	private SimpleDateFormat createDateFormat(String formatKey) {
-		Locale locale = Locale.getDefault();
-		if(RequestCycle.get() != null
-				&& Session.get() != null 
-				&& Session.get().getLocale() != null) {
-			locale = Session.get().getLocale();
-		}
-		String format = configurationService.findAsString(formatKey);
-		SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
-		return sdf;
-	}
+    private SimpleDateFormat createDateFormat(String formatKey) {
+        Locale locale = Locale.getDefault();
+        if (RequestCycle.get() != null && Session.get() != null && Session.get().getLocale() != null) {
+            locale = Session.get().getLocale();
+        }
+        String format = configurationService.findAsString(formatKey);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
+        return sdf;
+    }
 }

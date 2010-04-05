@@ -32,34 +32,32 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class BasicRichTextArea extends TextArea<String> {
-	private static final long serialVersionUID = 1L;
-	private static final ResourceReference REF_BASE_CSS = new ResourceReference(BasicRichTextArea.class, "css/base.css");
-	private boolean baseStyle;
+    private static final long serialVersionUID = 1L;
+    private static final ResourceReference REF_BASE_CSS = new ResourceReference(BasicRichTextArea.class, "css/base.css");
+    private boolean baseStyle;
 
-	public BasicRichTextArea(String id) {
-		this(id, false);
-	}
+    public BasicRichTextArea(String id) {
+        this(id, false);
+    }
 
-	public BasicRichTextArea(String id, boolean baseStyle) {
-		super(id);
-		this.baseStyle = baseStyle;
-		add(createCKEditorResource());
-		setOutputMarkupId(true);
-	}
+    public BasicRichTextArea(String id, boolean baseStyle) {
+        super(id);
+        this.baseStyle = baseStyle;
+        add(createCKEditorResource());
+        setOutputMarkupId(true);
+    }
 
-	private HeaderContributor createCKEditorResource() {
-		return JavascriptPackageResource.getHeaderContribution(FullRichTextArea.class, "ckeditor/ckeditor.js");
-	}
+    private HeaderContributor createCKEditorResource() {
+        return JavascriptPackageResource.getHeaderContribution(FullRichTextArea.class, "ckeditor/ckeditor.js");
+    }
 
-	@Override
-	protected void onRender(MarkupStream markupStream) {
-		super.onRender(markupStream);
-		Map<String, Object> variables = new MiniMap<String, Object>(2);
-		variables.put("defaultCss", PortalUtil.toUrl(baseStyle ? REF_BASE_CSS : CommonConstants.REF_DEFAULT_CSS,
-				getRequest()));
-		variables.put("markupId", getMarkupId());
-		String javascript = TextTemplateHeaderContributor.forJavaScript(FullRichTextArea.class, "BasicRichTextArea.js",
-				new MapModel<String, Object>(variables)).toString();
-		getResponse().write(javascript);
-	}
+    @Override
+    protected void onRender(MarkupStream markupStream) {
+        super.onRender(markupStream);
+        Map<String, Object> variables = new MiniMap<String, Object>(2);
+        variables.put("defaultCss", PortalUtil.toUrl(baseStyle ? REF_BASE_CSS : CommonConstants.REF_DEFAULT_CSS, getRequest()));
+        variables.put("markupId", getMarkupId());
+        String javascript = TextTemplateHeaderContributor.forJavaScript(FullRichTextArea.class, "BasicRichTextArea.js", new MapModel<String, Object>(variables)).toString();
+        getResponse().write(javascript);
+    }
 }

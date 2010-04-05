@@ -22,46 +22,40 @@ import java.util.List;
 
 /**
  * Methods to access and sync data from external
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface SynchronizeService {
-	/**
-	 * Returns a the data from the account
-	 * 
-	 * @param username
-	 *            del.icio.us username
-	 * @param password
-	 *            del.icio.us password
-	 * @return returns a bean filled with the bookmarks from del.icio.us
-	 */
-	DeliciousBean getDataFromDelicious(String username, String password, String tags);
+    /**
+     * Returns a the data from the account
+     *
+     * @param username del.icio.us username
+     * @param password del.icio.us password
+     * @return returns a bean filled with the bookmarks from del.icio.us
+     */
+    DeliciousBean getDataFromDelicious(String username, String password, String tags);
 
-	/**
-	 * Returns a list with new delicious bookmarks
-	 * 
-	 * @param bean
-	 *            DeliciousBean from getDataFromDelicious
-	 * @return List with new bookmarks
-	 */
-	List<BookmarkEntity> getNewDeliciousBookmarks(DeliciousBean bean);
+    /**
+     * Returns a list with new delicious bookmarks
+     *
+     * @param bean DeliciousBean from getDataFromDelicious
+     * @return List with new bookmarks
+     */
+    List<BookmarkEntity> getNewDeliciousBookmarks(DeliciousBean bean);
 
-	/**
-	 * Returns a list with updated delicious bookmarks
-	 * 
-	 * @param bean
-	 *            DeliciousBean from getDataFromDelicious
-	 * @return List with modified bookmarks
-	 */
-	List<BookmarkEntity> getModifiedDeliciousBookmarks(DeliciousBean bean);
+    /**
+     * Returns a list with updated delicious bookmarks
+     *
+     * @param bean DeliciousBean from getDataFromDelicious
+     * @return List with modified bookmarks
+     */
+    List<BookmarkEntity> getModifiedDeliciousBookmarks(DeliciousBean bean);
 
-	/**
-	 * Returns a list with delicious bookmarks which were removed
-	 * 
-	 * @param bean
-	 *            DeliciousBean from getDataFromDelicious
-	 * @return List with removed bookmarks
-	 */
-	List<BookmarkEntity> getRemovedDeliciousBookmarks(DeliciousBean bean);
+    /**
+     * Returns a list with delicious bookmarks which were removed
+     *
+     * @param bean DeliciousBean from getDataFromDelicious
+     * @return List with removed bookmarks
+     */
+    List<BookmarkEntity> getRemovedDeliciousBookmarks(DeliciousBean bean);
 }

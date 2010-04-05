@@ -22,63 +22,61 @@ import java.util.List;
 
 /**
  * Manage user rights
- * 
+ *
  * @author Carsten Hufe
  */
 public interface RightService extends CrudService<RightEntity, String> {
-	/**
-	 * Returns all rights
-	 */
-	List<RightEntity> findAll();
+    /**
+     * Returns all rights
+     */
+    List<RightEntity> findAll();
 
-	/**
-	 * Returns the dirty time
-	 * 
-	 * @return last refreshed unix time
-	 */
-	long getDirtyTime();
+    /**
+     * Returns the dirty time
+     *
+     * @return last refreshed unix time
+     */
+    long getDirtyTime();
 
-	/**
-	 * Refreshes the global instanz of all rights
-	 */
-	void refreshGlobalApplicationRights();
+    /**
+     * Refreshes the global instanz of all rights
+     */
+    void refreshGlobalApplicationRights();
 
-	/**
-	 * Returns all rights from member variable
-	 * 
-	 * @return list with all rights
-	 */
-	List<RightEntity> getAllRights();
+    /**
+     * Returns all rights from member variable
+     *
+     * @return list with all rights
+     */
+    List<RightEntity> getAllRights();
 
-	/**
-	 * Returns all rights starting with the given prefix
-	 * 
-	 * @param prefix
-	 *            right prefix
-	 * @return list with matching rights
-	 */
-	List<RightEntity> findRightsStartingWith(String prefix);
+    /**
+     * Returns all rights starting with the given prefix
+     *
+     * @param prefix right prefix
+     * @return list with matching rights
+     */
+    List<RightEntity> findRightsStartingWith(String prefix);
 
-	/**
-	 * Returns all rights ordered by description
-	 * 
-	 * @return list with rights
-	 */
-	List<RightEntity> findAllOrderByDescription();
+    /**
+     * Returns all rights ordered by description
+     *
+     * @return list with rights
+     */
+    List<RightEntity> findAllOrderByDescription();
 
-	/**
-	 * Returns a new instance of RightEntity
-	 * 
-	 * @return new instance of RightEntity
-	 */
-	RightEntity newRightEntity();
+    /**
+     * Returns a new instance of RightEntity
+     *
+     * @return new instance of RightEntity
+     */
+    RightEntity newRightEntity();
 
-	/**
-	 * Returns a new instance of RightEntity
-	 * 
-	 * @param right
-	 *            right key
-	 * @return new instance of RightEntity
-	 */
+    /**
+     * Returns a new instance of RightEntity
+     *
+     * @param right right key
+     * @return new instance of RightEntity
+     */
 	RightEntity newRightEntity(String right);
 }

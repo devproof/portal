@@ -28,72 +28,71 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class DownloadServiceImpl implements DownloadService {
-	private DownloadDao downloadDao;
-	private TagService<DownloadTagEntity> downloadTagService;
+    private DownloadDao downloadDao;
+    private TagService<DownloadTagEntity> downloadTagService;
 
-	@Override
-	public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
-			Integer maxResult) {
-		return downloadDao.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
-	}
+    @Override
+    public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+        return downloadDao.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
+    }
 
-	@Override
-	public void incrementHits(DownloadEntity download) {
-		downloadDao.incrementHits(download);
-	}
+    @Override
+    public void incrementHits(DownloadEntity download) {
+        downloadDao.incrementHits(download);
+    }
 
-	@Override
-	public void markBrokenDownload(DownloadEntity download) {
-		downloadDao.markBrokenDownload(download);
-	}
+    @Override
+    public void markBrokenDownload(DownloadEntity download) {
+        downloadDao.markBrokenDownload(download);
+    }
 
-	@Override
-	public void markValidDownload(DownloadEntity download) {
-		downloadDao.markValidDownload(download);
-	}
+    @Override
+    public void markValidDownload(DownloadEntity download) {
+        downloadDao.markValidDownload(download);
+    }
 
-	@Override
-	public DownloadEntity newDownloadEntity() {
-		DownloadEntity download = new DownloadEntity();
-		download.setAllRights(downloadDao.findLastSelectedRights());
-		return download;
-	}
+    @Override
+    public DownloadEntity newDownloadEntity() {
+        DownloadEntity download = new DownloadEntity();
+        download.setAllRights(downloadDao.findLastSelectedRights());
+        return download;
+    }
 
-	@Override
-	public void rateDownload(Integer rating, DownloadEntity download) {
-		downloadDao.rateDownload(rating, download);
-		downloadDao.refresh(download);
-	}
+    @Override
+    public void rateDownload(Integer rating, DownloadEntity download) {
+        downloadDao.rateDownload(rating, download);
+        downloadDao.refresh(download);
+    }
 
-	@Override
-	public void delete(DownloadEntity entity) {
-		downloadDao.delete(entity);
-		downloadTagService.deleteUnusedTags();
-	}
+    @Override
+    public void delete(DownloadEntity entity) {
+        downloadDao.delete(entity);
+        downloadTagService.deleteUnusedTags();
+    }
 
-	@Override
-	public List<DownloadEntity> findAll() {
-		return downloadDao.findAll();
-	}
+    @Override
+    public List<DownloadEntity> findAll() {
+        return downloadDao.findAll();
+    }
 
-	@Override
-	public DownloadEntity findById(Integer id) {
-		return downloadDao.findById(id);
-	}
+    @Override
+    public DownloadEntity findById(Integer id) {
+        return downloadDao.findById(id);
+    }
 
-	@Override
-	public void save(DownloadEntity entity) {
-		downloadDao.save(entity);
-		downloadTagService.deleteUnusedTags();
-	}
+    @Override
+    public void save(DownloadEntity entity) {
+        downloadDao.save(entity);
+        downloadTagService.deleteUnusedTags();
+    }
 
-	@Required
-	public void setDownloadDao(DownloadDao downloadDao) {
-		this.downloadDao = downloadDao;
-	}
+    @Required
+    public void setDownloadDao(DownloadDao downloadDao) {
+        this.downloadDao = downloadDao;
+    }
 
-	@Required
-	public void setDownloadTagService(TagService<DownloadTagEntity> downloadTagService) {
-		this.downloadTagService = downloadTagService;
-	}
+    @Required
+    public void setDownloadTagService(TagService<DownloadTagEntity> downloadTagService) {
+        this.downloadTagService = downloadTagService;
+    }
 }

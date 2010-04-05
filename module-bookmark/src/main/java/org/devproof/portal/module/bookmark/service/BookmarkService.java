@@ -27,78 +27,67 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
-	/**
-	 * Returns a new instance of BookmarkEntity
-	 * 
-	 * @return new instance of {@link BookmarkEntity}
-	 */
-	BookmarkEntity newBookmarkEntity();
+    /**
+     * Returns a new instance of BookmarkEntity
+     *
+     * @return new instance of {@link BookmarkEntity}
+     */
+    BookmarkEntity newBookmarkEntity();
 
-	/**
-	 * Returns all bookmarks which are available for the given role
-	 * 
-	 * @param role
-	 *            role enity
-	 * @param firstResult
-	 *            first result
-	 * @param maxResult
-	 *            maximum result
-	 * @return list with bookmarks
-	 */
-	List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult,
-			Integer maxResult);
+    /**
+     * Returns all bookmarks which are available for the given role
+     *
+     * @param role        role enity
+     * @param firstResult first result
+     * @param maxResult   maximum result
+     * @return list with bookmarks
+     */
+    List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-	/**
-	 * Returns all bookmarks
-	 * 
-	 */
-	List<BookmarkEntity> findAll();
+    /**
+     * Returns all bookmarks
+     */
+    List<BookmarkEntity> findAll();
 
-	/**
-	 * Returns all bookmarks with the given source
-	 * 
-	 * @param source
-	 *            manual/delicious
-	 * @return list with bookmarks
-	 */
-	List<BookmarkEntity> findBookmarksBySource(Source source);
+    /**
+     * Returns all bookmarks with the given source
+     *
+     * @param source manual/delicious
+     * @return list with bookmarks
+     */
+    List<BookmarkEntity> findBookmarksBySource(Source source);
 
-	/**
-	 * Increments the hits by 1
-	 * 
-	 * @param bookmark
-	 *            bookmark
-	 */
-	void incrementHits(BookmarkEntity bookmark);
+    /**
+     * Increments the hits by 1
+     *
+     * @param bookmark bookmark
+     */
+    void incrementHits(BookmarkEntity bookmark);
 
-	/**
-	 * Rates a bookmark
-	 * 
-	 * @param rating
-	 *            rating value 1 to 5
-	 * @param bookmark
-	 *            bookmark
-	 */
-	void rateBookmark(Integer rating, BookmarkEntity bookmark);
+    /**
+     * Rates a bookmark
+     *
+     * @param rating   rating value 1 to 5
+     * @param bookmark bookmark
+     */
+    void rateBookmark(Integer rating, BookmarkEntity bookmark);
 
-	/**
-	 * Marks a the given bookmark as broken
-	 * 
-	 * @param bookmark
-	 *            bookmark
-	 */
-	void markBrokenBookmark(BookmarkEntity bookmark);
+    /**
+     * Marks a the given bookmark as broken
+     *
+     * @param bookmark bookmark
+     */
+    void markBrokenBookmark(BookmarkEntity bookmark);
 
-	/**
-	 * Marks a the given bookmark as valid
-	 * 
-	 * @param bookmark
-	 *            bookmark
-	 */
-	void markValidBookmark(BookmarkEntity bookmark);
+    /**
+     * Marks a the given bookmark as valid
+     *
+     * @param bookmark bookmark
+     */
+    void markValidBookmark(BookmarkEntity bookmark);
 
-	/**
-	 * Returns the rights from the last editited bookmark
+    /**
+     * Returns the rights from the last editited bookmark
 	 */
 	List<RightEntity> findLastSelectedRights();
 }

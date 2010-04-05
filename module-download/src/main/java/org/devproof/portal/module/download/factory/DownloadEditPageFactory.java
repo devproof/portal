@@ -28,33 +28,32 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * Shared resource: This factory is required for the upload center to create
  * downloads directly from the upload center
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class DownloadEditPageFactory implements CommonPageFactory, InitializingBean {
-	private SharedRegistry sharedRegistry;
-	private DownloadService downloadService;
+    private SharedRegistry sharedRegistry;
+    private DownloadService downloadService;
 
-	@Override
-	public Page newInstance(Object... obj) {
-		DownloadEntity download = downloadService.newDownloadEntity();
-		download.setUrl((String) obj[0]);
-		return new DownloadEditPage(Model.of(download));
-	}
+    @Override
+    public Page newInstance(Object... obj) {
+        DownloadEntity download = downloadService.newDownloadEntity();
+        download.setUrl((String) obj[0]);
+        return new DownloadEditPage(Model.of(download));
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		sharedRegistry.registerResource("createDownloadPage", this);
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        sharedRegistry.registerResource("createDownloadPage", this);
+    }
 
-	@Required
-	public void setDownloadService(DownloadService downloadService) {
-		this.downloadService = downloadService;
-	}
+    @Required
+    public void setDownloadService(DownloadService downloadService) {
+        this.downloadService = downloadService;
+    }
 
-	@Required
-	public void setSharedRegistry(SharedRegistry sharedRegistry) {
-		this.sharedRegistry = sharedRegistry;
-	}
+    @Required
+    public void setSharedRegistry(SharedRegistry sharedRegistry) {
+        this.sharedRegistry = sharedRegistry;
+    }
 }

@@ -19,64 +19,64 @@ import java.io.Serializable;
 
 /**
  * Theme bean represents one theme/design
- * 
+ *
  * @author Carsten Hufe
  */
 public class ThemeBean implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private String theme;
-	private String author;
-	private String url;
-	private String portalThemeVersion;
-	private String portalVersion;
-	private String uuid;
+    private static final long serialVersionUID = 1L;
+    private String theme;
+    private String author;
+    private String url;
+    private String portalThemeVersion;
+    private String portalVersion;
+    private String uuid;
 
-	public String getTheme() {
-		return theme;
-	}
+    public String getTheme() {
+        return theme;
+    }
 
-	public void setTheme(String theme) {
-		this.theme = theme;
-	}
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
 
-	public String getAuthor() {
-		return author;
-	}
+    public String getAuthor() {
+        return author;
+    }
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public String getPortalThemeVersion() {
-		return portalThemeVersion;
-	}
+    public String getPortalThemeVersion() {
+        return portalThemeVersion;
+    }
 
-	public void setPortalThemeVersion(String portalThemeVersion) {
-		this.portalThemeVersion = portalThemeVersion;
-	}
+    public void setPortalThemeVersion(String portalThemeVersion) {
+        this.portalThemeVersion = portalThemeVersion;
+    }
 
-	public String getPortalVersion() {
-		return portalVersion;
-	}
+    public String getPortalVersion() {
+        return portalVersion;
+    }
 
-	public void setPortalVersion(String portalVersion) {
-		this.portalVersion = portalVersion;
-	}
+    public void setPortalVersion(String portalVersion) {
+        this.portalVersion = portalVersion;
+    }
 
-	public String getUuid() {
-		return uuid;
-	}
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }

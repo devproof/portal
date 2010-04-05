@@ -24,33 +24,32 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class DeliciousSyncPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql",
-				"insert_bookmark.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql", "insert_bookmark.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestDeliciousSyncPanel.class);
-		tester.assertComponent("panel", DeliciousSyncPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestDeliciousSyncPanel.class);
+        tester.assertComponent("panel", DeliciousSyncPanel.class);
+    }
 
-	public static class TestDeliciousSyncPanel extends DeliciousSyncPanel {
-		private static final long serialVersionUID = 1L;
+    public static class TestDeliciousSyncPanel extends DeliciousSyncPanel {
+        private static final long serialVersionUID = 1L;
 
-		public TestDeliciousSyncPanel(String id) {
-			super(id);
-		}
+        public TestDeliciousSyncPanel(String id) {
+            super(id);
+        }
 
-		@Override
-		public void onCancel(AjaxRequestTarget target) {
-		}
-	}
+        @Override
+        public void onCancel(AjaxRequestTarget target) {
+        }
+    }
 }

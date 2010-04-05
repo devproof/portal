@@ -23,59 +23,59 @@ import static org.easymock.EasyMock.*;
 
 /**
  * Checks the delegating functionality of the OtherPageServiceImpl
- * 
+ *
  * @author Carsten Hufe
  */
 public class OtherPageServiceImplTest extends TestCase {
-	private OtherPageServiceImpl impl;
-	private OtherPageDao mock;
+    private OtherPageServiceImpl impl;
+    private OtherPageDao mock;
 
-	@Override
-	public void setUp() throws Exception {
-		mock = createStrictMock(OtherPageDao.class);
-		impl = new OtherPageServiceImpl();
-		impl.setOtherPageDao(mock);
-	}
+    @Override
+    public void setUp() throws Exception {
+        mock = createStrictMock(OtherPageDao.class);
+        impl = new OtherPageServiceImpl();
+        impl.setOtherPageDao(mock);
+    }
 
-	public void testSave() {
-		OtherPageEntity e = createOtherPageEntity();
-		expect(mock.save(e)).andReturn(e);
-		replay(mock);
-		impl.save(e);
-		verify(mock);
-	}
+    public void testSave() {
+        OtherPageEntity e = createOtherPageEntity();
+        expect(mock.save(e)).andReturn(e);
+        replay(mock);
+        impl.save(e);
+        verify(mock);
+    }
 
-	public void testDelete() {
-		OtherPageEntity e = createOtherPageEntity();
-		e.setId(1);
-		mock.delete(e);
-		replay(mock);
-		impl.delete(e);
-		verify(mock);
-	}
+    public void testDelete() {
+        OtherPageEntity e = createOtherPageEntity();
+        e.setId(1);
+        mock.delete(e);
+        replay(mock);
+        impl.delete(e);
+        verify(mock);
+    }
 
-	public void testFindById() {
-		OtherPageEntity e = createOtherPageEntity();
-		expect(mock.findById(1)).andReturn(e);
-		replay(mock);
-		assertEquals(impl.findById(1), e);
-		verify(mock);
-	}
+    public void testFindById() {
+        OtherPageEntity e = createOtherPageEntity();
+        expect(mock.findById(1)).andReturn(e);
+        replay(mock);
+        assertEquals(impl.findById(1), e);
+        verify(mock);
+    }
 
-	public void testNewOtherPageEntity() {
-		assertNotNull(impl.newOtherPageEntity());
-	}
+    public void testNewOtherPageEntity() {
+        assertNotNull(impl.newOtherPageEntity());
+    }
 
-	public void testExistsContentId() {
-		expect(mock.existsContentId("contentId")).andReturn(1l);
-		replay(mock);
-		assertTrue(impl.existsContentId("contentId"));
-		verify(mock);
-	}
+    public void testExistsContentId() {
+        expect(mock.existsContentId("contentId")).andReturn(1l);
+        replay(mock);
+        assertTrue(impl.existsContentId("contentId"));
+        verify(mock);
+    }
 
-	private OtherPageEntity createOtherPageEntity() {
-		OtherPageEntity e = new OtherPageEntity();
-		e.setId(1);
-		return e;
-	}
+    private OtherPageEntity createOtherPageEntity() {
+        OtherPageEntity e = new OtherPageEntity();
+        e.setId(1);
+        return e;
+    }
 }

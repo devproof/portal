@@ -22,39 +22,39 @@ import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
  * @author Carsten Hufe
  */
 public class ConfigurationRegistryImplTest extends TestCase {
-	private ConfigurationRegistryImpl impl;
+    private ConfigurationRegistryImpl impl;
 
-	@Override
-	public void setUp() throws Exception {
-		impl = new ConfigurationRegistryImpl();
-	}
+    @Override
+    public void setUp() throws Exception {
+        impl = new ConfigurationRegistryImpl();
+    }
 
-	public void testGetConfiguration() {
-		ConfigurationEntity conf = new ConfigurationEntity();
-		conf.setKey("foo");
-		conf.setValue("bar");
-		conf.setType(String.class.getName());
-		impl.registerConfiguration("foo", conf);
-		assertEquals(conf, impl.getConfiguration("foo"));
-	}
+    public void testGetConfiguration() {
+        ConfigurationEntity conf = new ConfigurationEntity();
+        conf.setKey("foo");
+        conf.setValue("bar");
+        conf.setType(String.class.getName());
+        impl.registerConfiguration("foo", conf);
+        assertEquals(conf, impl.getConfiguration("foo"));
+    }
 
-	public void testRegisterConfiguration() {
-		ConfigurationEntity conf = new ConfigurationEntity();
-		conf.setKey("foo");
-		conf.setValue("bar");
-		conf.setType(String.class.getName());
-		impl.registerConfiguration("foo", conf);
-		assertEquals(conf, impl.getConfiguration("foo"));
-	}
+    public void testRegisterConfiguration() {
+        ConfigurationEntity conf = new ConfigurationEntity();
+        conf.setKey("foo");
+        conf.setValue("bar");
+        conf.setType(String.class.getName());
+        impl.registerConfiguration("foo", conf);
+        assertEquals(conf, impl.getConfiguration("foo"));
+    }
 
-	public void testRemoveConfiguration() {
-		ConfigurationEntity conf = new ConfigurationEntity();
-		conf.setKey("foo");
-		conf.setValue("bar");
-		conf.setType(String.class.getName());
-		impl.registerConfiguration("foo", conf);
-		assertEquals(conf, impl.getConfiguration("foo"));
-		impl.removeConfiguration("foo");
-		assertNull(impl.getConfiguration("foo"));
-	}
+    public void testRemoveConfiguration() {
+        ConfigurationEntity conf = new ConfigurationEntity();
+        conf.setKey("foo");
+        conf.setValue("bar");
+        conf.setType(String.class.getName());
+        impl.registerConfiguration("foo", conf);
+        assertEquals(conf, impl.getConfiguration("foo"));
+        impl.removeConfiguration("foo");
+        assertNull(impl.getConfiguration("foo"));
+    }
 }

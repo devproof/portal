@@ -19,14 +19,14 @@ package org.devproof.portal.core.module.user;
  * @author Carsten Hufe
  */
 public interface UserConstants {
-	String UNKNOWN_USERNAME = "unknown";
-	String CONF_REGISTRATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.regemail";
-	String CONF_RECONFIRMATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.reconfirmemail";
-	String CONF_PASSWORDFORGOT_EMAIL = "spring.emailTemplateDao.findAll.subject.id.forgotemail";
-	String CONF_NOTIFY_USER_REGISTRATION = "spring.emailTemplateDao.findAll.subject.id.registereduser";
-	String CONF_EMAIL_VALIDATION = "email_validation";
-	String CONF_REGISTRATION_REQUIRED_NAME = "registration_required_name";
-	String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";
-	String ENTITY_CACHE_REGION = "entity.user";
-	String QUERY_CACHE_REGION = "query.user";
+    String UNKNOWN_USERNAME = "unknown";
+    String CONF_REGISTRATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.regemail";
+    String CONF_RECONFIRMATION_EMAIL = "spring.emailTemplateDao.findAll.subject.id.reconfirmemail";
+    String CONF_PASSWORDFORGOT_EMAIL = "spring.emailTemplateDao.findAll.subject.id.forgotemail";
+    String CONF_NOTIFY_USER_REGISTRATION = "spring.emailTemplateDao.findAll.subject.id.registereduser";
+    String CONF_EMAIL_VALIDATION = "email_validation";
+    String CONF_REGISTRATION_REQUIRED_NAME = "registration_required_name";
+    String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";
+    String ENTITY_CACHE_REGION = "entity.user";
+    String QUERY_CACHE_REGION = "query.user";
 }

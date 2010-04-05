@@ -26,21 +26,20 @@ import java.util.List;
 
 /**
  * Accessing module links
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface ModuleLinkDao extends GenericDao<ModuleLinkEntity, Integer> {
-	@Query("select m from ModuleLinkEntity m where m.linkType = ? order by m.sort")
-	List<ModuleLinkEntity> findModuleLinks(LinkType type);
+    @Query("select m from ModuleLinkEntity m where m.linkType = ? order by m.sort")
+    List<ModuleLinkEntity> findModuleLinks(LinkType type);
 
-	@Query("select m from ModuleLinkEntity m where m.linkType = ? and m.visible = true order by m.sort")
-	List<ModuleLinkEntity> findVisibleModuleLinks(LinkType type);
+    @Query("select m from ModuleLinkEntity m where m.linkType = ? and m.visible = true order by m.sort")
+    List<ModuleLinkEntity> findVisibleModuleLinks(LinkType type);
 
-	@Query("select max(m.sort) from ModuleLinkEntity m where m.linkType = ?")
-	Integer getMaxSortNum(LinkType type);
+    @Query("select max(m.sort) from ModuleLinkEntity m where m.linkType = ?")
+    Integer getMaxSortNum(LinkType type);
 
-	@Query("select m from ModuleLinkEntity m where m.linkType = ? and m.sort = ?")
-	ModuleLinkEntity findModuleLinkBySort(LinkType linkType, Integer sort);
+    @Query("select m from ModuleLinkEntity m where m.linkType = ? and m.sort = ?")
+    ModuleLinkEntity findModuleLinkBySort(LinkType linkType, Integer sort);
 }

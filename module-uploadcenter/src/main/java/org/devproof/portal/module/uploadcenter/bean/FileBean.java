@@ -24,36 +24,36 @@ import java.util.Date;
  * @author Carsten Hufe
  */
 public class FileBean implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private File file;
-	private String name;
-	private String size;
-	private String date;
+    private static final long serialVersionUID = 1L;
+    private File file;
+    private String name;
+    private String size;
+    private String date;
 
-	public FileBean(File file, DateFormat dateFormat) {
-		this.file = file;
-		date = dateFormat.format(new Date(file.lastModified()));
-		if (file.isFile()) {
-			size = Long.toString(file.length() / 1024) + " KB";
-		} else {
-			size = "";
-		}
-		name = file.getName();
-	}
+    public FileBean(File file, DateFormat dateFormat) {
+        this.file = file;
+        date = dateFormat.format(new Date(file.lastModified()));
+        if (file.isFile()) {
+            size = Long.toString(file.length() / 1024) + " KB";
+        } else {
+            size = "";
+        }
+        name = file.getName();
+    }
 
-	public File getFile() {
-		return file;
-	}
+    public File getFile() {
+        return file;
+    }
 
-	public String getDate() {
-		return date;
-	}
+    public String getDate() {
+        return date;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getSize() {
-		return size;
-	}
+    public String getSize() {
+        return size;
+    }
 }

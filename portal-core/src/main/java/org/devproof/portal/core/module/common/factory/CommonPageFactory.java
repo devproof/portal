@@ -19,17 +19,15 @@ import org.apache.wicket.Page;
 
 /**
  * Common factory interface for all purposes
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public interface CommonPageFactory {
-	/**
-	 * Returns a new instance of a wicket page
-	 * 
-	 * @param obj
-	 *            an object if required in the implementation
-	 * @return instance
-	 */
-	Page newInstance(Object... obj);
+    /**
+     * Returns a new instance of a wicket page
+     *
+     * @param obj an object if required in the implementation
+     * @return instance
+     */
+    Page newInstance(Object... obj);
 }

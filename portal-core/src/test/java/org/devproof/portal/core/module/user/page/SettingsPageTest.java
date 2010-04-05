@@ -24,34 +24,34 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class SettingsPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(SettingsPage.class);
-		tester.assertRenderedPage(SettingsPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(SettingsPage.class);
+        tester.assertRenderedPage(SettingsPage.class);
+    }
 
-	public void testSaveUserSettings() {
-		tester.startPage(SettingsPage.class);
-		tester.assertRenderedPage(SettingsPage.class);
-		FormTester ft = tester.newFormTester("form");
-		ft.setValue("firstname", "Peter");
-		ft.setValue("lastname", "Pan");
-		ft.submit("saveButton");
-		tester.assertNoErrorMessage();
-		tester.startPage(SettingsPage.class);
-		tester.assertContains("Peter");
-		tester.assertContains("Pan");
-	}
+    public void testSaveUserSettings() {
+        tester.startPage(SettingsPage.class);
+        tester.assertRenderedPage(SettingsPage.class);
+        FormTester ft = tester.newFormTester("form");
+        ft.setValue("firstname", "Peter");
+        ft.setValue("lastname", "Pan");
+        ft.submit("saveButton");
+        tester.assertNoErrorMessage();
+        tester.startPage(SettingsPage.class);
+        tester.assertContains("Peter");
+        tester.assertContains("Pan");
+    }
 }

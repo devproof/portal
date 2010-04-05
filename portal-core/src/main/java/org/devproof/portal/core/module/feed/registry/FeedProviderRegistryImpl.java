@@ -32,90 +32,90 @@ import java.util.Map;
  * @author Carsten Hufe
  */
 public class FeedProviderRegistryImpl implements FeedProviderRegistry, InitializingBean {
-	private PageLocator pageLocator;
-	private FeedProviderLocator feedProviderLocator;
-	private final Map<String, FeedProvider> feedProviders = new HashMap<String, FeedProvider>();
-	private final Map<Class<? extends Page>, String> feedPaths = new HashMap<Class<? extends Page>, String>();
+    private PageLocator pageLocator;
+    private FeedProviderLocator feedProviderLocator;
+    private final Map<String, FeedProvider> feedProviders = new HashMap<String, FeedProvider>();
+    private final Map<Class<? extends Page>, String> feedPaths = new HashMap<Class<? extends Page>, String>();
 
-	@Override
-	public Map<String, FeedProvider> getAllFeedProvider() {
-		return Collections.unmodifiableMap(feedProviders);
-	}
+    @Override
+    public Map<String, FeedProvider> getAllFeedProvider() {
+        return Collections.unmodifiableMap(feedProviders);
+    }
 
-	@Override
-	public FeedProvider getFeedProviderByPath(String path) {
-		String newPath = getPathWithoutLeadingSlash(path);
-		return feedProviders.get(newPath);
-	}
+    @Override
+    public FeedProvider getFeedProviderByPath(String path) {
+        String newPath = getPathWithoutLeadingSlash(path);
+        return feedProviders.get(newPath);
+    }
 
-	@Override
-	public void registerFeedProvider(String path, FeedProvider feedProvider) {
-		String newPath = getPathWithoutLeadingSlash(path);
-		if (feedProviders.containsKey(newPath)) {
-			throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
-		}
-		feedProviders.put(newPath, feedProvider);
-		registerFeedPath(path);
-	}
+    @Override
+    public void registerFeedProvider(String path, FeedProvider feedProvider) {
+        String newPath = getPathWithoutLeadingSlash(path);
+        if (feedProviders.containsKey(newPath)) {
+            throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
+        }
+        feedProviders.put(newPath, feedProvider);
+        registerFeedPath(path);
+    }
 
-	@Override
-	public void removeFeedProvider(String path) {
-		String newPath = getPathWithoutLeadingSlash(path);
-		feedProviders.remove(newPath);
-	}
+    @Override
+    public void removeFeedProvider(String path) {
+        String newPath = getPathWithoutLeadingSlash(path);
+        feedProviders.remove(newPath);
+    }
 
-	private String getPathWithoutLeadingSlash(String path) {
-		String newPath = path;
-		if (newPath.startsWith("/")) {
-			newPath = path.substring(1);
-		}
-		return newPath;
-	}
+    private String getPathWithoutLeadingSlash(String path) {
+        String newPath = path;
+        if (newPath.startsWith("/")) {
+            newPath = path.substring(1);
+        }
+        return newPath;
+    }
 
-	@Override
-	public String getPathByPageClass(Class<? extends Page> pageClass) {
-		return feedPaths.get(pageClass);
-	}
+    @Override
+    public String getPathByPageClass(Class<? extends Page> pageClass) {
+        return feedPaths.get(pageClass);
+    }
 
-	@Override
-	public boolean hasFeedSupport(Class<? extends Page> pageClass) {
-		return feedPaths.containsKey(pageClass);
-	}
+    @Override
+    public boolean hasFeedSupport(Class<? extends Page> pageClass) {
+        return feedPaths.containsKey(pageClass);
+    }
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
-		Collection<FeedProvider> feeds = feedProviderLocator.getFeedProviders();
-		for (FeedProvider feed : feeds) {
-			for (PageConfiguration page : pages) {
-				if (feed.getSupportedFeedPages().contains(page.getPageClass())) {
-					registerFeedProvider(page.getMountPath(), feed);
-				}
-			}
-		}
-	}
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
+        Collection<FeedProvider> feeds = feedProviderLocator.getFeedProviders();
+        for (FeedProvider feed : feeds) {
+            for (PageConfiguration page : pages) {
+                if (feed.getSupportedFeedPages().contains(page.getPageClass())) {
+                    registerFeedProvider(page.getMountPath(), feed);
+                }
+            }
+        }
+    }
 
-	private void registerFeedPath(String mountPath) {
-		Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
-		for (PageConfiguration page : pages) {
-			if (page.getMountPath().equals(mountPath)) {
-				String newPath = getPathWithoutLeadingSlash(mountPath);
-				if (feedPaths.containsKey(page.getPageClass())) {
-					throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
-				}
-				feedPaths.put(page.getPageClass(), newPath);
-				break;
-			}
-		}
-	}
+    private void registerFeedPath(String mountPath) {
+        Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
+        for (PageConfiguration page : pages) {
+            if (page.getMountPath().equals(mountPath)) {
+                String newPath = getPathWithoutLeadingSlash(mountPath);
+                if (feedPaths.containsKey(page.getPageClass())) {
+                    throw new IllegalArgumentException(newPath + " does already exist in the FeedProviderRegistry!");
+                }
+                feedPaths.put(page.getPageClass(), newPath);
+                break;
+            }
+        }
+    }
 
-	@Required
-	public void setPageLocator(PageLocator pageLocator) {
-		this.pageLocator = pageLocator;
-	}
+    @Required
+    public void setPageLocator(PageLocator pageLocator) {
+        this.pageLocator = pageLocator;
+    }
 
-	@Required
-	public void setFeedProviderLocator(FeedProviderLocator feedProviderLocator) {
-		this.feedProviderLocator = feedProviderLocator;
-	}
+    @Required
+    public void setFeedProviderLocator(FeedProviderLocator feedProviderLocator) {
+        this.feedProviderLocator = feedProviderLocator;
+    }
 }

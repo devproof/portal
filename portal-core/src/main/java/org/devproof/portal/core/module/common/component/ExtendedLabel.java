@@ -35,27 +35,26 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Portal extended label - Parses the string2img tag
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class ExtendedLabel extends Label {
-	private static final long serialVersionUID = 1L;
-	private static final String PRETAG = "[string2img";
-	private static final String CLOSE_SEP = "]";
-	private static final String POSTTAG = "[/string2img]";
-	private static final Map<String, ImgResourceReference> images = new ConcurrentHashMap<String, ImgResourceReference>();
+    private static final long serialVersionUID = 1L;
+    private static final String PRETAG = "[string2img";
+    private static final String CLOSE_SEP = "]";
+    private static final String POSTTAG = "[/string2img]";
+    private static final Map<String, ImgResourceReference> images = new ConcurrentHashMap<String, ImgResourceReference>();
 
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
     private IModel<String> contentModel;
 
     public ExtendedLabel(String id, IModel<String> contentModel) {
-		super(id, contentModel);
+        super(id, contentModel);
         this.contentModel = contentModel;
-		setDefaultModel(createConvertedContentModel());
-		setEscapeModelStrings(false);
-	}
+        setDefaultModel(createConvertedContentModel());
+        setEscapeModelStrings(false);
+    }
 
     private IModel<String> createConvertedContentModel() {
         return new LoadableDetachableModel<String>() {
@@ -80,85 +79,84 @@ public class ExtendedLabel extends Label {
         };
     }
 
-	private ImgResourceReference getImageResourceAndCache(List<String> str2ImgLines, Font font) {
-		String uuid = String.valueOf(str2ImgLines.hashCode());
-		String2ImageResource resource = new String2ImageResource(str2ImgLines, font);
-		ImgResourceReference imgResource = images.get(uuid);
-		if (imgResource == null) {
-			imgResource = new ImgResourceReference(uuid, resource);
-			// ConcurrentHashMap
-			images.put(uuid, imgResource);
-		}
-		return imgResource;
-	}
+    private ImgResourceReference getImageResourceAndCache(List<String> str2ImgLines, Font font) {
+        String uuid = String.valueOf(str2ImgLines.hashCode());
+        String2ImageResource resource = new String2ImageResource(str2ImgLines, font);
+        ImgResourceReference imgResource = images.get(uuid);
+        if (imgResource == null) {
+            imgResource = new ImgResourceReference(uuid, resource);
+            // ConcurrentHashMap
+            images.put(uuid, imgResource);
+        }
+        return imgResource;
+    }
 
-	private String replaceTagWithImage(String modifiedContent, String fullTag, ImgResourceReference imgResource) {
-		modifiedContent = modifiedContent.replace(fullTag, "<img src=\"" + getRequestCycle().urlFor(imgResource)
-				+ "\" alt=\"\"/>");
-		return modifiedContent;
-	}
+    private String replaceTagWithImage(String modifiedContent, String fullTag, ImgResourceReference imgResource) {
+        modifiedContent = modifiedContent.replace(fullTag, "<img src=\"" + getRequestCycle().urlFor(imgResource) + "\" alt=\"\"/>");
+        return modifiedContent;
+    }
 
-	private void cleanupExpiredImages() {
-		Iterator<String> it = images.keySet().iterator();
-		while (it.hasNext()) {
-			String key = it.next();
-			ImgResourceReference ref = images.get(key);
-			if (ref.isExpired()) {
-				ref.invalidate();
-				getApplication().getSharedResources().remove(key);
-				it.remove();
-			}
-		}
-	}
+    private void cleanupExpiredImages() {
+        Iterator<String> it = images.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
+            ImgResourceReference ref = images.get(key);
+            if (ref.isExpired()) {
+                ref.invalidate();
+                getApplication().getSharedResources().remove(key);
+                it.remove();
+            }
+        }
+    }
 
-	private Font getFont(int fontSize) {
-		String fontName = configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
+    private Font getFont(int fontSize) {
+        String fontName = configurationService.findAsString(CommonConstants.CONF_STRING2IMG_FONT);
         return new Font(fontName, Font.PLAIN, fontSize);
-	}
+    }
 
-	private List<String> getTextLines(String tagPart) {
-		String str2img = StringUtils.substringAfter(tagPart, CLOSE_SEP);
-		List<String> str2ImgLines = new ArrayList<String>();
-		String tmp[] = StringUtils.splitByWholeSeparator(str2img, "<br />");
-		for (String t : tmp) {
-			str2ImgLines.add(HtmlUtils.htmlUnescape(t.replaceAll("\\<.*?>", "")));
-		}
-		return str2ImgLines;
-	}
+    private List<String> getTextLines(String tagPart) {
+        String str2img = StringUtils.substringAfter(tagPart, CLOSE_SEP);
+        List<String> str2ImgLines = new ArrayList<String>();
+        String tmp[] = StringUtils.splitByWholeSeparator(str2img, "<br />");
+        for (String t : tmp) {
+            str2ImgLines.add(HtmlUtils.htmlUnescape(t.replaceAll("\\<.*?>", "")));
+        }
+        return str2ImgLines;
+    }
 
-	private int getFontSize(String[] attrs) {
-		int size = 12;
-		for (int j = 0; j < attrs.length; j++) {
-			String value = attrs[j].trim();
-			if ("size".equalsIgnoreCase(value) && (j + 1) < attrs.length) {
-				try {
-					size = Integer.valueOf(attrs[j + 1].trim());
-				} catch (NumberFormatException e) {
-					// do nothing!
-				}
-			}
-		}
-		return size;
-	}
+    private int getFontSize(String[] attrs) {
+        int size = 12;
+        for (int j = 0; j < attrs.length; j++) {
+            String value = attrs[j].trim();
+            if ("size".equalsIgnoreCase(value) && (j + 1) < attrs.length) {
+                try {
+                    size = Integer.valueOf(attrs[j + 1].trim());
+                } catch (NumberFormatException e) {
+                    // do nothing!
+                }
+            }
+        }
+        return size;
+    }
 
-	public static class ImgResourceReference extends ResourceReference {
-		private static final long serialVersionUID = 1L;
-		private static final long MAX_AGE = 1000 * 60 * 10; // TEN MINUTES
-		private Resource resource;
-		private Date time = PortalUtil.now();
+    public static class ImgResourceReference extends ResourceReference {
+        private static final long serialVersionUID = 1L;
+        private static final long MAX_AGE = 1000 * 60 * 10; // TEN MINUTES
+        private Resource resource;
+        private Date time = PortalUtil.now();
 
-		public ImgResourceReference(String hash, Resource resource) {
-			super(ExtendedLabel.class, hash);
-			this.resource = resource;
-		}
+        public ImgResourceReference(String hash, Resource resource) {
+            super(ExtendedLabel.class, hash);
+            this.resource = resource;
+        }
 
-		@Override
-		public Resource newResource() {
-			return resource;
-		}
+        @Override
+        public Resource newResource() {
+            return resource;
+        }
 
-		public boolean isExpired() {
-			return (time.getTime() + MAX_AGE) < PortalUtil.now().getTime();
-		}
-	}
+        public boolean isExpired() {
+            return (time.getTime() + MAX_AGE) < PortalUtil.now().getTime();
+        }
+    }
 }

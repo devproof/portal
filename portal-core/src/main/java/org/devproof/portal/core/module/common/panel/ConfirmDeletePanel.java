@@ -24,57 +24,57 @@ import org.apache.wicket.model.IModel;
 
 /**
  * Modal window with confirmation for deleting something
- * 
+ *
  * @author Carsten Hufe
  */
 public abstract class ConfirmDeletePanel<T> extends Panel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private BubblePanel bubblePanel;
+    private BubblePanel bubblePanel;
     private IModel<T> entityModel;
 
     public ConfirmDeletePanel(String id, IModel<T> entityModel, BubblePanel bubblePanel) {
-		super(id);
+        super(id);
         this.entityModel = entityModel;
-		this.bubblePanel = bubblePanel;
-		add(createConfirmDeletePanelForm());
+        this.bubblePanel = bubblePanel;
+        add(createConfirmDeletePanelForm());
 
-	}
+    }
 
-	private Form<T> createConfirmDeletePanelForm() {
-		Form<T> form = new Form<T>("form", new CompoundPropertyModel<T>(entityModel));
-		form.add(createYesAjaxButton());
-		form.add(createNoAjaxButton());
-		form.setOutputMarkupId(true);
-		return form;
-	}
+    private Form<T> createConfirmDeletePanelForm() {
+        Form<T> form = new Form<T>("form", new CompoundPropertyModel<T>(entityModel));
+        form.add(createYesAjaxButton());
+        form.add(createNoAjaxButton());
+        form.setOutputMarkupId(true);
+        return form;
+    }
 
-	private AjaxButton createNoAjaxButton() {
-		return new AjaxButton("noButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxButton createNoAjaxButton() {
+        return new AjaxButton("noButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				bubblePanel.hide(target);
-			}
-		};
-	}
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                bubblePanel.hide(target);
+            }
+        };
+    }
 
-	private AjaxButton createYesAjaxButton() {
-		return new AjaxButton("yesButton") {
-			private static final long serialVersionUID = 1L;
+    private AjaxButton createYesAjaxButton() {
+        return new AjaxButton("yesButton") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				ConfirmDeletePanel.this.onDelete(target, form);
-			}
-		};
-	}
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                ConfirmDeletePanel.this.onDelete(target, form);
+            }
+        };
+    }
 
-	/**
-	 * On delete, if the yes button was pressed
-	 */
-	public abstract void onDelete(AjaxRequestTarget target, Form<?> form);
+    /**
+     * On delete, if the yes button was pressed
+     */
+    public abstract void onDelete(AjaxRequestTarget target, Form<?> form);
 
 }

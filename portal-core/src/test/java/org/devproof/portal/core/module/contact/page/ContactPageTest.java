@@ -30,59 +30,59 @@ import java.lang.reflect.Field;
  * @author Carsten Hufe
  */
 public class ContactPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		callContactPage();
-	}
+    public void testRenderDefaultPage() {
+        callContactPage();
+    }
 
-	public void testSendContactForm() throws Exception {
-		EmailServiceMock emailServiceMock = createEmailServiceMock();
-		callContactPage();
-		setEmailServiceMock(emailServiceMock);
-		submitContactForm();
-		assertEmail(emailServiceMock);
-	}
+    public void testSendContactForm() throws Exception {
+        EmailServiceMock emailServiceMock = createEmailServiceMock();
+        callContactPage();
+        setEmailServiceMock(emailServiceMock);
+        submitContactForm();
+        assertEmail(emailServiceMock);
+    }
 
-	private void assertEmail(EmailServiceMock emailServiceMock) {
-		EmailPlaceholderBean emailPlaceholderBean = emailServiceMock.getEmailPlaceholderBean();
-		assertEquals("Max Power", emailPlaceholderBean.getContactFullname());
-		assertEquals("max.power@no.domain", emailPlaceholderBean.getContactEmail());
-		assertEquals("testing content more then 30 letters 1234567890", emailPlaceholderBean.getContent());
-	}
+    private void assertEmail(EmailServiceMock emailServiceMock) {
+        EmailPlaceholderBean emailPlaceholderBean = emailServiceMock.getEmailPlaceholderBean();
+        assertEquals("Max Power", emailPlaceholderBean.getContactFullname());
+        assertEquals("max.power@no.domain", emailPlaceholderBean.getContactEmail());
+        assertEquals("testing content more then 30 letters 1234567890", emailPlaceholderBean.getContent());
+    }
 
-	private void submitContactForm() throws Exception {
-		FormTester form = tester.newFormTester("form");
-		form.setValue("fullname", "Max Power");
-		form.setValue("email", "max.power@no.domain");
-		form.setValue("content", "testing content more then 30 letters 1234567890");
-		tester.executeAjaxEvent("form:sendButton", "onclick");
-	}
+    private void submitContactForm() throws Exception {
+        FormTester form = tester.newFormTester("form");
+        form.setValue("fullname", "Max Power");
+        form.setValue("email", "max.power@no.domain");
+        form.setValue("content", "testing content more then 30 letters 1234567890");
+        tester.executeAjaxEvent("form:sendButton", "onclick");
+    }
 
-	private void callContactPage() {
-		tester.startPage(ContactPage.class, new PageParameters("0=admin"));
-		tester.assertRenderedPage(ContactPage.class);
-	}
+    private void callContactPage() {
+        tester.startPage(ContactPage.class, new PageParameters("0=admin"));
+        tester.assertRenderedPage(ContactPage.class);
+    }
 
-	private void setEmailServiceMock(EmailService emailServiceMock) throws Exception {
-		ContactPage lastRenderedPage = (ContactPage) tester.getLastRenderedPage();
-		Field emailServiceField = ContactPage.class.getDeclaredField("emailService");
-		emailServiceField.setAccessible(true);
-		emailServiceField.set(lastRenderedPage, emailServiceMock);
-	}
+    private void setEmailServiceMock(EmailService emailServiceMock) throws Exception {
+        ContactPage lastRenderedPage = (ContactPage) tester.getLastRenderedPage();
+        Field emailServiceField = ContactPage.class.getDeclaredField("emailService");
+        emailServiceField.setAccessible(true);
+        emailServiceField.set(lastRenderedPage, emailServiceMock);
+    }
 
-	private EmailServiceMock createEmailServiceMock() {
-		return new EmailServiceMock();
-	}
+    private EmailServiceMock createEmailServiceMock() {
+        return new EmailServiceMock();
+    }
 }

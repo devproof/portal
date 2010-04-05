@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:wicket="http://wicket.apache.org/">
-<wicket:extend>	
-<div class="form">
-	<h1><wicket:message key="contentTitle"/></h1>
-	<form wicket:id="form">
-	<table cellspacing="10">
-		<tr>
-			<td><label for="title"><wicket:message key="title"/></label></td>
-			<td colspan="4"><input type="text" wicket:id="title" class="editTitle"/></td>
-		</tr>
-		<tr>
-			<td><label for="description"><wicket:message key="description"/></label></td>
-			<td colspan="4"><textarea wicket:id="description" cols="220" rows="22"></textarea></td>
-		</tr>
-		<tr>
-			<td><label for="url"><wicket:message key="url"/></label></td>
-			<td colspan="4"><input type="text" wicket:id="url" class="tagInputBookmark"/></td>
-		</tr>
-		<tr>
-			<td><label for="hits"><wicket:message key="hits"/></label></td>
-			<td colspan="4"><input type="text" wicket:id="hits"/></td>
-		</tr>
-		<tr>
-			<td><label for="numberOfVotes"><wicket:message key="numberOfVotes"/></label></td>
-			<td><input type="text" wicket:id="numberOfVotes"/></td>
-			<td>&nbsp;</td>
-			<td><label for="sumOfRating"><wicket:message key="sumOfRating"/></label></td>
-			<td><input type="text" wicket:id="sumOfRating"/></td>
-		</tr>
-		<tr>
-			<td><label for="tags"><wicket:message key="tags"/></label></td>
-			<td colspan="4"><input type="text" wicket:id="tags" class="tagInputBookmark"/></td>
-		</tr>
-		<tr>
-			<td><label><wicket:message key="viewRights"/></label></td>
-			<td colspan="4">
-				<span wicket:id="viewRights">[view rights]</span>
-			</td>
-		</tr>
-		<tr>
-			<td><label><wicket:message key="visitRights"/></label></td>
-			<td colspan="4">
-				<span wicket:id="visitRights">[vitit rights]</span>
-			</td>
-		</tr>
-		<tr>
-			<td><label><wicket:message key="voteRights"/></label></td>
-			<td colspan="4">
-				<span wicket:id="voteRights">[vote rights]</span>
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td colspan="4"><input type="submit" wicket:message="value:save" class="button"/></td>
-		</tr>
-	</table>
-	</form>	
-</div>
-<span wicket:id="bubbleWindow"/>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<wicket:extend>
+    <div class="form">
+        <h1><wicket:message key="contentTitle"/></h1>
+
+        <form wicket:id="form">
+            <table cellspacing="10">
+                <tr>
+                    <td><label for="title"><wicket:message key="title"/></label></td>
+                    <td colspan="4"><input type="text" wicket:id="title" class="editTitle"/></td>
+                </tr>
+                <tr>
+                    <td><label for="description"><wicket:message key="description"/></label></td>
+                    <td colspan="4"><textarea wicket:id="description" cols="220" rows="22"></textarea></td>
+                </tr>
+                <tr>
+                    <td><label for="url"><wicket:message key="url"/></label></td>
+                    <td colspan="4"><input type="text" wicket:id="url" class="tagInputBookmark"/></td>
+                </tr>
+                <tr>
+                    <td><label for="hits"><wicket:message key="hits"/></label></td>
+                    <td colspan="4"><input type="text" wicket:id="hits"/></td>
+                </tr>
+                <tr>
+                    <td><label for="numberOfVotes"><wicket:message key="numberOfVotes"/></label></td>
+                    <td><input type="text" wicket:id="numberOfVotes"/></td>
+                    <td>&nbsp;</td>
+                    <td><label for="sumOfRating"><wicket:message key="sumOfRating"/></label></td>
+                    <td><input type="text" wicket:id="sumOfRating"/></td>
+                </tr>
+                <tr>
+                    <td><label for="tags"><wicket:message key="tags"/></label></td>
+                    <td colspan="4"><input type="text" wicket:id="tags" class="tagInputBookmark"/></td>
+                </tr>
+                <tr>
+                    <td><label><wicket:message key="viewRights"/></label></td>
+                    <td colspan="4">
+                        <span wicket:id="viewRights">[view rights]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label><wicket:message key="visitRights"/></label></td>
+                    <td colspan="4">
+                        <span wicket:id="visitRights">[vitit rights]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label><wicket:message key="voteRights"/></label></td>
+                    <td colspan="4">
+                        <span wicket:id="voteRights">[vote rights]</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="4"><input type="submit" wicket:message="value:save" class="button"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <span wicket:id="bubbleWindow"/>
 </wicket:extend>
 </html>

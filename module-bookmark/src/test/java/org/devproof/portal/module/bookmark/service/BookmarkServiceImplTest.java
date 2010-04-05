@@ -33,136 +33,135 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class BookmarkServiceImplTest extends TestCase {
-	private BookmarkServiceImpl impl;
-	private BookmarkDao mock;
-	private TagService<BookmarkTagEntity> mockTag;
+    private BookmarkServiceImpl impl;
+    private BookmarkDao mock;
+    private TagService<BookmarkTagEntity> mockTag;
 
-	@Override
-	public void setUp() throws Exception {
-		mock = createStrictMock(BookmarkDao.class);
-		@SuppressWarnings("unchecked")
-		TagService<BookmarkTagEntity> tagService = createStrictMock(TagService.class);
-		mockTag = tagService;
-		impl = new BookmarkServiceImpl();
-		impl.setBookmarkDao(mock);
-		impl.setBookmarkTagService(mockTag);
-	}
+    @Override
+    public void setUp() throws Exception {
+        mock = createStrictMock(BookmarkDao.class);
+        @SuppressWarnings("unchecked") TagService<BookmarkTagEntity> tagService = createStrictMock(TagService.class);
+        mockTag = tagService;
+        impl = new BookmarkServiceImpl();
+        impl.setBookmarkDao(mock);
+        impl.setBookmarkTagService(mockTag);
+    }
 
-	public void testSave() {
-		BookmarkEntity e = createBookmarkEntity();
-		e.setId(1);
-		expect(mock.save(e)).andReturn(e);
-		mockTag.deleteUnusedTags();
-		replay(mock);
-		replay(mockTag);
-		impl.save(e);
-		verify(mock);
-		verify(mockTag);
-	}
+    public void testSave() {
+        BookmarkEntity e = createBookmarkEntity();
+        e.setId(1);
+        expect(mock.save(e)).andReturn(e);
+        mockTag.deleteUnusedTags();
+        replay(mock);
+        replay(mockTag);
+        impl.save(e);
+        verify(mock);
+        verify(mockTag);
+    }
 
-	public void testDelete() {
-		BookmarkEntity e = createBookmarkEntity();
-		e.setId(1);
-		mock.delete(e);
-		mockTag.deleteUnusedTags();
-		replay(mock);
-		replay(mockTag);
-		impl.delete(e);
-		verify(mock);
-		verify(mockTag);
-	}
+    public void testDelete() {
+        BookmarkEntity e = createBookmarkEntity();
+        e.setId(1);
+        mock.delete(e);
+        mockTag.deleteUnusedTags();
+        replay(mock);
+        replay(mockTag);
+        impl.delete(e);
+        verify(mock);
+        verify(mockTag);
+    }
 
-	public void testFindAll() {
-		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
-		list.add(createBookmarkEntity());
-		list.add(createBookmarkEntity());
-		expect(mock.findAll()).andReturn(list);
-		replay(mock);
-		assertEquals(list, impl.findAll());
-		verify(mock);
-	}
+    public void testFindAll() {
+        List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
+        list.add(createBookmarkEntity());
+        list.add(createBookmarkEntity());
+        expect(mock.findAll()).andReturn(list);
+        replay(mock);
+        assertEquals(list, impl.findAll());
+        verify(mock);
+    }
 
-	public void testFindById() {
-		BookmarkEntity e = createBookmarkEntity();
-		e.setId(1);
-		expect(mock.findById(1)).andReturn(e);
-		replay(mock);
-		assertEquals(impl.findById(1), e);
-		verify(mock);
-	}
+    public void testFindById() {
+        BookmarkEntity e = createBookmarkEntity();
+        e.setId(1);
+        expect(mock.findById(1)).andReturn(e);
+        replay(mock);
+        assertEquals(impl.findById(1), e);
+        verify(mock);
+    }
 
-	public void testNewBookmarkEntity() {
-		assertNotNull(impl.newBookmarkEntity());
-	}
+    public void testNewBookmarkEntity() {
+        assertNotNull(impl.newBookmarkEntity());
+    }
 
-	public void testFindAllBookmarksForRoleOrderedByDateDesc() {
-		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
-		list.add(createBookmarkEntity());
-		list.add(createBookmarkEntity());
-		RoleEntity role = new RoleEntity();
-		role.setId(1);
-		expect(mock.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
-		replay(mock);
-		impl.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2);
-		verify(mock);
-	}
+    public void testFindAllBookmarksForRoleOrderedByDateDesc() {
+        List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
+        list.add(createBookmarkEntity());
+        list.add(createBookmarkEntity());
+        RoleEntity role = new RoleEntity();
+        role.setId(1);
+        expect(mock.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
+        replay(mock);
+        impl.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2);
+        verify(mock);
+    }
 
-	public void testFindBookmarksBySource() {
-		List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
-		list.add(createBookmarkEntity());
-		list.add(createBookmarkEntity());
-		expect(mock.findBookmarksBySource(Source.DELICIOUS)).andReturn(list);
-		replay(mock);
-		impl.findBookmarksBySource(Source.DELICIOUS);
-		verify(mock);
-	}
+    public void testFindBookmarksBySource() {
+        List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
+        list.add(createBookmarkEntity());
+        list.add(createBookmarkEntity());
+        expect(mock.findBookmarksBySource(Source.DELICIOUS)).andReturn(list);
+        replay(mock);
+        impl.findBookmarksBySource(Source.DELICIOUS);
+        verify(mock);
+    }
 
-	public void testIncrementHits() {
-		BookmarkEntity e = createBookmarkEntity();
-		e.setId(1);
-		mock.incrementHits(e);
-		replay(mock);
-		impl.incrementHits(e);
-		verify(mock);
-	}
+    public void testIncrementHits() {
+        BookmarkEntity e = createBookmarkEntity();
+        e.setId(1);
+        mock.incrementHits(e);
+        replay(mock);
+        impl.incrementHits(e);
+        verify(mock);
+    }
 
-	public void testMarkBrokenBookmark() {
-		BookmarkEntity e = createBookmarkEntity();
-		e.setId(1);
-		mock.markBrokenBookmark(e);
-		replay(mock);
-		impl.markBrokenBookmark(e);
-		verify(mock);
-	}
+    public void testMarkBrokenBookmark() {
+        BookmarkEntity e = createBookmarkEntity();
+        e.setId(1);
+        mock.markBrokenBookmark(e);
+        replay(mock);
+        impl.markBrokenBookmark(e);
+        verify(mock);
+    }
 
-	public void testMarkValidBookmark() {
-		BookmarkEntity e = createBookmarkEntity();
-		e.setId(1);
-		mock.markValidBookmark(e);
-		replay(mock);
-		impl.markValidBookmark(e);
-		verify(mock);
-	}
+    public void testMarkValidBookmark() {
+        BookmarkEntity e = createBookmarkEntity();
+        e.setId(1);
+        mock.markValidBookmark(e);
+        replay(mock);
+        impl.markValidBookmark(e);
+        verify(mock);
+    }
 
-	public void testRateBookmark() {
-		BookmarkEntity e = createBookmarkEntity();
-		e.setId(1);
-		mock.rateBookmark(5, e);
-		mock.refresh(e);
-		replay(mock);
-		impl.rateBookmark(5, e);
-		verify(mock);
-	}
+    public void testRateBookmark() {
+        BookmarkEntity e = createBookmarkEntity();
+        e.setId(1);
+        mock.rateBookmark(5, e);
+        mock.refresh(e);
+        replay(mock);
+        impl.rateBookmark(5, e);
+        verify(mock);
+    }
 
-	public void testFindLastSelectedRightsk() {
-		List<RightEntity> list = new ArrayList<RightEntity>();
-		expect(mock.findLastSelectedRights()).andReturn(list);
-		replay(mock);
-		assertTrue(impl.findLastSelectedRights() == list);
-		verify(mock);
-	}
+    public void testFindLastSelectedRightsk() {
+        List<RightEntity> list = new ArrayList<RightEntity>();
+        expect(mock.findLastSelectedRights()).andReturn(list);
+        replay(mock);
+        assertTrue(impl.findLastSelectedRights() == list);
+        verify(mock);
+    }
 
-	private BookmarkEntity createBookmarkEntity() {
-		return new BookmarkEntity();
-	}
+    private BookmarkEntity createBookmarkEntity() {
+        return new BookmarkEntity();
+    }
 }

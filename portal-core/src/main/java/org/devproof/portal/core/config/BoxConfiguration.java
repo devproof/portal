@@ -21,68 +21,63 @@ import java.io.Serializable;
 
 /**
  * Contains configuration for one box
- * 
+ *
  * @author Carsten Hufe
- * 
  */
 public class BoxConfiguration implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String name;
-	private Class<? extends Component> boxClass;
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private Class<? extends Component> boxClass;
 
-	public BoxConfiguration() {
-	}
+    public BoxConfiguration() {
+    }
 
-	/**
-	 * @param name
-	 *            name of the box
-	 * @param boxClass
-	 *            class off the box
-	 */
-	public BoxConfiguration(String name, Class<? extends Component> boxClass) {
-		this.name = name;
-		this.boxClass = boxClass;
-	}
+    /**
+     * @param name     name of the box
+     * @param boxClass class off the box
+     */
+    public BoxConfiguration(String name, Class<? extends Component> boxClass) {
+        this.name = name;
+        this.boxClass = boxClass;
+    }
 
-	/**
-	 * @return name of the box
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * @return name of the box
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param name
-	 *            name of the box
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * @param name name of the box
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return box class (must be a wicket component)
-	 */
-	public Class<? extends Component> getBoxClass() {
-		return boxClass;
-	}
+    /**
+     * @return box class (must be a wicket component)
+     */
+    public Class<? extends Component> getBoxClass() {
+        return boxClass;
+    }
 
-	/**
-	 * @param boxClass
-	 *            box class (must be a wicket component)
-	 */
-	public void setBoxClass(Class<? extends Component> boxClass) {
-		this.boxClass = boxClass;
-	}
+    /**
+     * @param boxClass box class (must be a wicket component)
+     */
+    public void setBoxClass(Class<? extends Component> boxClass) {
+        this.boxClass = boxClass;
+    }
 
-	/**
-	 * @return generated key of the box, currently the simple class name
-	 */
-	public String getKey() {
-		return boxClass.getSimpleName();
-	}
+    /**
+     * @return generated key of the box, currently the simple class name
+     */
+    public String getKey() {
+        return boxClass.getSimpleName();
+    }
 
-	@Override
-	public String toString() {
-		return "BoxConfiguration [boxClass=" + boxClass + ", name=" + name + "]";
+    @Override
+    public String toString() {
+        return "BoxConfiguration [boxClass=" + boxClass + ", name=" + name + "]";
 	}
 }

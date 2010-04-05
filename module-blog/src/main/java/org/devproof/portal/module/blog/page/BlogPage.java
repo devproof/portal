@@ -103,7 +103,7 @@ public class BlogPage extends BlogBasePage {
 
     @Override
     public String getPageTitle() {
-        if(blogDataProvider.size() == 1) {
+        if (blogDataProvider.size() == 1) {
             Iterator<? extends BlogEntity> it = blogDataProvider.iterator(0, 1);
             BlogEntity blog = it.next();
             return blog.getHeadline();
@@ -147,8 +147,7 @@ public class BlogPage extends BlogBasePage {
 
         private Component createPrintLink() {
             BlogEntity blog = blogModel.getObject();
-            BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink",
-                    BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
+            BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink", BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
             link.add(createPrintImage());
             return link;
         }
@@ -190,8 +189,7 @@ public class BlogPage extends BlogBasePage {
         }
 
         private BookmarkablePageLink<BlogPage> createHeadline() {
-            BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink",
-                    BlogPage.class);
+            BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink", BlogPage.class);
             if (params == null || !params.containsKey("id")) {
                 BlogEntity blog = blogModel.getObject();
                 headlineLink.setParameter("id", blog.getId());

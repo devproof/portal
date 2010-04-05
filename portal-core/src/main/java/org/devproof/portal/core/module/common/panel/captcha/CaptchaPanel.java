@@ -23,66 +23,66 @@ import java.awt.*;
 
 /**
  * captcha panel
- * 
+ *
  * @author Carsten Hufe
  */
 public abstract class CaptchaPanel extends Panel {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private KittenCaptchaPanel kittenCaptchaImagePanel;
-	private AjaxLink<Void> confirmButton;
+    private KittenCaptchaPanel kittenCaptchaImagePanel;
+    private AjaxLink<Void> confirmButton;
 
-	public CaptchaPanel(String id) {
-		super(id);
-		add(createKittenCaptchaPanel());
-		add(createConfirmButton());
-		add(createCancelButton());
-		setOutputMarkupId(true);
-	}
+    public CaptchaPanel(String id) {
+        super(id);
+        add(createKittenCaptchaPanel());
+        add(createConfirmButton());
+        add(createCancelButton());
+        setOutputMarkupId(true);
+    }
 
-	private AjaxLink<Void> createCancelButton() {
-		return new AjaxLink<Void>("cancel") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<Void> createCancelButton() {
+        return new AjaxLink<Void>("cancel") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				onCancel(target);
-			}
-		};
-	}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                onCancel(target);
+            }
+        };
+    }
 
-	private AjaxLink<?> createConfirmButton() {
-		confirmButton = new AjaxLink<Void>("confirm") {
-			private static final long serialVersionUID = 1L;
+    private AjaxLink<?> createConfirmButton() {
+        confirmButton = new AjaxLink<Void>("confirm") {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				if (kittenCaptchaImagePanel.allKittensSelected()) {
-					onClickAndCaptchaValidated(target);
-				}
-			}
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                if (kittenCaptchaImagePanel.allKittensSelected()) {
+                    onClickAndCaptchaValidated(target);
+                }
+            }
 
-			@Override
-			public boolean isEnabled() {
-				return kittenCaptchaImagePanel != null && kittenCaptchaImagePanel.allKittensSelected();
-			}
-		};
-		return confirmButton;
-	}
+            @Override
+            public boolean isEnabled() {
+                return kittenCaptchaImagePanel != null && kittenCaptchaImagePanel.allKittensSelected();
+            }
+        };
+        return confirmButton;
+    }
 
-	private KittenCaptchaPanel createKittenCaptchaPanel() {
-		kittenCaptchaImagePanel = new KittenCaptchaPanel("kittenCaptchaImage", new Dimension(400, 200)) {
-			private static final long serialVersionUID = 1L;
+    private KittenCaptchaPanel createKittenCaptchaPanel() {
+        kittenCaptchaImagePanel = new KittenCaptchaPanel("kittenCaptchaImage", new Dimension(400, 200)) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onClick(AjaxRequestTarget target) {
-				target.addComponent(confirmButton);
-			}
-		};
-		return kittenCaptchaImagePanel;
-	}
+            @Override
+            protected void onClick(AjaxRequestTarget target) {
+                target.addComponent(confirmButton);
+            }
+        };
+        return kittenCaptchaImagePanel;
+    }
 
-	protected abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
+    protected abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
 
-	protected abstract void onCancel(AjaxRequestTarget target);
+    protected abstract void onCancel(AjaxRequestTarget target);
 }

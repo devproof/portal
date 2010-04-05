@@ -28,40 +28,40 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class RegistryServiceImplTest extends TestCase {
-	private RegistryServiceImpl impl;
-	private MainNavigationRegistry mainNavigationRegistryMock;
-	private GlobalAdminPageRegistry globalAdminPageRegistryMock;
-	private PageAdminPageRegistry pageAdminPageRegistryMock;
+    private RegistryServiceImpl impl;
+    private MainNavigationRegistry mainNavigationRegistryMock;
+    private GlobalAdminPageRegistry globalAdminPageRegistryMock;
+    private PageAdminPageRegistry pageAdminPageRegistryMock;
 
-	@Override
-	public void setUp() throws Exception {
-		mainNavigationRegistryMock = createStrictMock(MainNavigationRegistry.class);
-		globalAdminPageRegistryMock = createStrictMock(GlobalAdminPageRegistry.class);
-		pageAdminPageRegistryMock = createStrictMock(PageAdminPageRegistry.class);
-		impl = new RegistryServiceImpl();
-		impl.setMainNavigationRegistry(mainNavigationRegistryMock);
-		impl.setGlobalAdminPageRegistry(globalAdminPageRegistryMock);
-		impl.setPageAdminPageRegistry(pageAdminPageRegistryMock);
-	}
+    @Override
+    public void setUp() throws Exception {
+        mainNavigationRegistryMock = createStrictMock(MainNavigationRegistry.class);
+        globalAdminPageRegistryMock = createStrictMock(GlobalAdminPageRegistry.class);
+        pageAdminPageRegistryMock = createStrictMock(PageAdminPageRegistry.class);
+        impl = new RegistryServiceImpl();
+        impl.setMainNavigationRegistry(mainNavigationRegistryMock);
+        impl.setGlobalAdminPageRegistry(globalAdminPageRegistryMock);
+        impl.setPageAdminPageRegistry(pageAdminPageRegistryMock);
+    }
 
-	public void testRebuildRegistries1() {
-		globalAdminPageRegistryMock.buildNavigation();
-		replay(globalAdminPageRegistryMock);
-		impl.rebuildRegistries(LinkType.GLOBAL_ADMINISTRATION);
-		verify(globalAdminPageRegistryMock);
-	}
+    public void testRebuildRegistries1() {
+        globalAdminPageRegistryMock.buildNavigation();
+        replay(globalAdminPageRegistryMock);
+        impl.rebuildRegistries(LinkType.GLOBAL_ADMINISTRATION);
+        verify(globalAdminPageRegistryMock);
+    }
 
-	public void testRebuildRegistries2() {
-		mainNavigationRegistryMock.buildNavigation();
-		replay(mainNavigationRegistryMock);
-		impl.rebuildRegistries(LinkType.TOP_NAVIGATION);
-		verify(mainNavigationRegistryMock);
-	}
+    public void testRebuildRegistries2() {
+        mainNavigationRegistryMock.buildNavigation();
+        replay(mainNavigationRegistryMock);
+        impl.rebuildRegistries(LinkType.TOP_NAVIGATION);
+        verify(mainNavigationRegistryMock);
+    }
 
-	public void testRebuildRegistries3() {
-		pageAdminPageRegistryMock.buildNavigation();
-		replay(pageAdminPageRegistryMock);
-		impl.rebuildRegistries(LinkType.PAGE_ADMINISTRATION);
-		verify(pageAdminPageRegistryMock);
-	}
+    public void testRebuildRegistries3() {
+        pageAdminPageRegistryMock.buildNavigation();
+        replay(pageAdminPageRegistryMock);
+        impl.rebuildRegistries(LinkType.PAGE_ADMINISTRATION);
+        verify(pageAdminPageRegistryMock);
+    }
 }

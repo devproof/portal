@@ -24,23 +24,22 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ArticlePrintPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql",
-				"insert_article.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql", "insert_article.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(ArticlePrintPage.class, new PageParameters("0=Sample_article"));
-		// must be stateless to save memory (non-stateless creates HttpSession)
-		assertTrue(tester.getLastRenderedPage().isPageStateless());
-		tester.assertRenderedPage(ArticlePrintPage.class);
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(ArticlePrintPage.class, new PageParameters("0=Sample_article"));
+        // must be stateless to save memory (non-stateless creates HttpSession)
+        assertTrue(tester.getLastRenderedPage().isPageStateless());
+        tester.assertRenderedPage(ArticlePrintPage.class);
+    }
 }

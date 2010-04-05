@@ -28,56 +28,56 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class UserEditPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		PortalTestUtil.loginDefaultAdminUser(tester);
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        PortalTestUtil.loginDefaultAdminUser(tester);
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(TestUserEditPanel.class);
-		tester.assertComponent("panel", TestUserEditPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(TestUserEditPanel.class);
+        tester.assertComponent("panel", TestUserEditPanel.class);
+    }
 
-	public void testSaveUserTestCase() {
-		tester.startPanel(TestUserEditPanel.class);
-		tester.assertComponent("panel", TestUserEditPanel.class);
-		FormTester ft = tester.newFormTester("panel:form");
-		ft.setValue("firstname", "Peter");
-		ft.setValue("lastname", "Pan");
-		ft.setValue("email", "peterpan@email.tld");
-		ft.select("role", 1);
-		ft.setValue("password1", "testing");
-		ft.setValue("password2", "testing");
-		tester.executeAjaxEvent("panel:form:saveButton", "onclick");
-		tester.assertNoErrorMessage();
-		tester.startPage(UserPage.class);
-		tester.assertContains("Peter");
-		tester.assertContains("Pan");
-	}
+    public void testSaveUserTestCase() {
+        tester.startPanel(TestUserEditPanel.class);
+        tester.assertComponent("panel", TestUserEditPanel.class);
+        FormTester ft = tester.newFormTester("panel:form");
+        ft.setValue("firstname", "Peter");
+        ft.setValue("lastname", "Pan");
+        ft.setValue("email", "peterpan@email.tld");
+        ft.select("role", 1);
+        ft.setValue("password1", "testing");
+        ft.setValue("password2", "testing");
+        tester.executeAjaxEvent("panel:form:saveButton", "onclick");
+        tester.assertNoErrorMessage();
+        tester.startPage(UserPage.class);
+        tester.assertContains("Peter");
+        tester.assertContains("Pan");
+    }
 
-	public static class TestUserEditPanel extends UserEditPanel {
-		public TestUserEditPanel(String id) {
-			super(id, Model.of(new UserEntity()), true);
-		}
+    public static class TestUserEditPanel extends UserEditPanel {
+        public TestUserEditPanel(String id) {
+            super(id, Model.of(new UserEntity()), true);
+        }
 
-		private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
-		@Override
-		public void onSave(AjaxRequestTarget target) {
+        @Override
+        public void onSave(AjaxRequestTarget target) {
 
-		}
+        }
 
-		@Override
-		public void onCancel(AjaxRequestTarget target) {
+        @Override
+        public void onCancel(AjaxRequestTarget target) {
 
-		}
-	}
+        }
+    }
 }

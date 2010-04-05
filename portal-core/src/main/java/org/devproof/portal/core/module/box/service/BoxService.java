@@ -24,46 +24,43 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public interface BoxService extends CrudService<BoxEntity, Integer> {
-	/**
-	 * Returns a new instance of BoxEntity
-	 * 
-	 * @return new instance of {@link BoxEntity}
-	 */
-	BoxEntity newBoxEntity();
+    /**
+     * Returns a new instance of BoxEntity
+     *
+     * @return new instance of {@link BoxEntity}
+     */
+    BoxEntity newBoxEntity();
 
-	/**
-	 * Returns the highest sort number
-	 * 
-	 * @return highest sort number
-	 */
-	Integer getMaxSortNum();
+    /**
+     * Returns the highest sort number
+     *
+     * @return highest sort number
+     */
+    Integer getMaxSortNum();
 
-	/**
-	 * Returns the box with the given sort number
-	 * 
-	 * @param sort
-	 *            order number
-	 */
-	BoxEntity findBoxBySort(Integer sort);
+    /**
+     * Returns the box with the given sort number
+     *
+     * @param sort order number
+     */
+    BoxEntity findBoxBySort(Integer sort);
 
-	/**
-	 * Returns all boxes ordered by sort number
-	 */
-	List<BoxEntity> findAllOrderedBySort();
+    /**
+     * Returns all boxes ordered by sort number
+     */
+    List<BoxEntity> findAllOrderedBySort();
 
-	/**
-	 * Moves the box down
-	 * 
-	 * @param box
-	 *            box to move
-	 */
-	void moveDown(BoxEntity box);
+    /**
+     * Moves the box down
+     *
+     * @param box box to move
+     */
+    void moveDown(BoxEntity box);
 
-	/**
-	 * Moves the box up
-	 * 
-	 * @param box
-	 *            box to move
-	 */
+    /**
+     * Moves the box up
+     *
+     * @param box box to move
+     */
 	void moveUp(BoxEntity box);
 }

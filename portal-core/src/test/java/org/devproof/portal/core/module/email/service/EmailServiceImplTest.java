@@ -35,101 +35,101 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class EmailServiceImplTest extends TestCase {
-	private EmailServiceImpl impl;
-	private EmailTemplateDao daomock;
-	private JavaMailSender emailmock;
-	private ConfigurationService confservice;
+    private EmailServiceImpl impl;
+    private EmailTemplateDao daomock;
+    private JavaMailSender emailmock;
+    private ConfigurationService confservice;
 
-	@Override
-	public void setUp() throws Exception {
-		daomock = createStrictMock(EmailTemplateDao.class);
-		emailmock = createStrictMock(JavaMailSender.class);
-		confservice = createNiceMock(ConfigurationService.class);
-		impl = new EmailServiceImpl();
-		impl.setEmailTemplateDao(daomock);
-		impl.setConfigurationService(confservice);
-		impl.setJavaMailSender(emailmock);
-		impl.setDateFormat(new SimpleDateFormat("dd-mm-yyyy"));
-	}
+    @Override
+    public void setUp() throws Exception {
+        daomock = createStrictMock(EmailTemplateDao.class);
+        emailmock = createStrictMock(JavaMailSender.class);
+        confservice = createNiceMock(ConfigurationService.class);
+        impl = new EmailServiceImpl();
+        impl.setEmailTemplateDao(daomock);
+        impl.setConfigurationService(confservice);
+        impl.setJavaMailSender(emailmock);
+        impl.setDateFormat(new SimpleDateFormat("dd-mm-yyyy"));
+    }
 
-	public void testSave() {
-		EmailTemplateEntity e = impl.newEmailTemplateEntity();
-		e.setId(1);
-		expect(daomock.save(e)).andReturn(e);
-		replay(daomock);
-		impl.save(e);
-		verify(daomock);
-	}
+    public void testSave() {
+        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        e.setId(1);
+        expect(daomock.save(e)).andReturn(e);
+        replay(daomock);
+        impl.save(e);
+        verify(daomock);
+    }
 
-	public void testDelete() {
-		EmailTemplateEntity e = impl.newEmailTemplateEntity();
-		e.setId(1);
-		daomock.delete(e);
-		replay(daomock);
-		impl.delete(e);
-		verify(daomock);
-	}
+    public void testDelete() {
+        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        e.setId(1);
+        daomock.delete(e);
+        replay(daomock);
+        impl.delete(e);
+        verify(daomock);
+    }
 
-	public void testFindAll() {
-		List<EmailTemplateEntity> list = new ArrayList<EmailTemplateEntity>();
-		list.add(impl.newEmailTemplateEntity());
-		list.add(impl.newEmailTemplateEntity());
-		expect(daomock.findAll()).andReturn(list);
-		replay(daomock);
-		assertEquals(list, impl.findAll());
-		verify(daomock);
-	}
+    public void testFindAll() {
+        List<EmailTemplateEntity> list = new ArrayList<EmailTemplateEntity>();
+        list.add(impl.newEmailTemplateEntity());
+        list.add(impl.newEmailTemplateEntity());
+        expect(daomock.findAll()).andReturn(list);
+        replay(daomock);
+        assertEquals(list, impl.findAll());
+        verify(daomock);
+    }
 
-	public void testFindById() {
-		EmailTemplateEntity e = impl.newEmailTemplateEntity();
-		e.setId(1);
-		expect(daomock.findById(1)).andReturn(e);
-		replay(daomock);
-		assertEquals(impl.findById(1), e);
-		verify(daomock);
-	}
+    public void testFindById() {
+        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        e.setId(1);
+        expect(daomock.findById(1)).andReturn(e);
+        replay(daomock);
+        assertEquals(impl.findById(1), e);
+        verify(daomock);
+    }
 
-	public void testNewEmailTemplateEntity() {
-		assertNotNull(impl.newEmailTemplateEntity());
-	}
+    public void testNewEmailTemplateEntity() {
+        assertNotNull(impl.newEmailTemplateEntity());
+    }
 
-	public void testSendEmail1() {
-		EmailTemplateEntity e = impl.newEmailTemplateEntity();
-		e.setSubject("hello");
-		e.setContent("world");
-		EmailPlaceholderBean b = new EmailPlaceholderBean();
+    public void testSendEmail1() {
+        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        e.setSubject("hello");
+        e.setContent("world");
+        EmailPlaceholderBean b = new EmailPlaceholderBean();
 
-		MimeMessage mm = new MimeMessage((Session) null);
-		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
-		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
-		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		expect(emailmock.createMimeMessage()).andReturn(mm);
-		emailmock.send(mm);
-		replay(confservice);
-		replay(emailmock);
-		impl.sendEmail(e, b);
-		verify(emailmock);
-	}
+        MimeMessage mm = new MimeMessage((Session) null);
+        expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
+        expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
+        expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+        expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+        expect(emailmock.createMimeMessage()).andReturn(mm);
+        emailmock.send(mm);
+        replay(confservice);
+        replay(emailmock);
+        impl.sendEmail(e, b);
+        verify(emailmock);
+    }
 
-	public void testSendEmail2() {
-		EmailTemplateEntity e = impl.newEmailTemplateEntity();
-		e.setSubject("hello");
-		e.setContent("world");
-		EmailPlaceholderBean b = new EmailPlaceholderBean();
+    public void testSendEmail2() {
+        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        e.setSubject("hello");
+        e.setContent("world");
+        EmailPlaceholderBean b = new EmailPlaceholderBean();
 
-		MimeMessage mm = new MimeMessage((Session) null);
-		expect(daomock.findById(1)).andReturn(e);
-		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
-		expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
-		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
-		expect(emailmock.createMimeMessage()).andReturn(mm);
-		emailmock.send(mm);
-		replay(daomock);
-		replay(confservice);
-		replay(emailmock);
-		impl.sendEmail(1, b);
-		verify(emailmock);
-	}
+        MimeMessage mm = new MimeMessage((Session) null);
+        expect(daomock.findById(1)).andReturn(e);
+        expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_NAME)).andReturn("anything");
+        expect(confservice.findAsString(EmailConstants.CONF_FROM_EMAIL_ADDRESS)).andReturn("anything");
+        expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+        expect(confservice.findAsString(EmailConstants.CONF_PAGE_NAME)).andReturn("anything");
+        expect(emailmock.createMimeMessage()).andReturn(mm);
+        emailmock.send(mm);
+        replay(daomock);
+        replay(confservice);
+        replay(emailmock);
+        impl.sendEmail(1, b);
+        verify(emailmock);
+    }
 }

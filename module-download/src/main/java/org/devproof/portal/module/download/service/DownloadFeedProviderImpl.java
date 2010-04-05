@@ -38,86 +38,86 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class DownloadFeedProviderImpl implements FeedProvider {
-	private SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
-	private ConfigurationService configurationService;
+    private SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
+    private ConfigurationService configurationService;
 
-	@Override
-	public SyndFeed getFeed(RequestCycle rc) {
-		SyndFeed feed = generateFeed(rc);
-		Iterator<? extends DownloadEntity> iterator = getDownloadEntries();
-		List<SyndEntry> entries = generateFeedEntries(rc, iterator);
-		feed.setEntries(entries);
-		return feed;
-	}
+    @Override
+    public SyndFeed getFeed(RequestCycle rc) {
+        SyndFeed feed = generateFeed(rc);
+        Iterator<? extends DownloadEntity> iterator = getDownloadEntries();
+        List<SyndEntry> entries = generateFeedEntries(rc, iterator);
+        feed.setEntries(entries);
+        return feed;
+    }
 
-	protected Iterator<? extends DownloadEntity> getDownloadEntries() {
-		Integer maxNumber = configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED);
-		Iterator<? extends DownloadEntity> iterator = downloadDataProvider.iterator(0, maxNumber);
-		return iterator;
-	}
+    protected Iterator<? extends DownloadEntity> getDownloadEntries() {
+        Integer maxNumber = configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED);
+        Iterator<? extends DownloadEntity> iterator = downloadDataProvider.iterator(0, maxNumber);
+        return iterator;
+    }
 
-	protected SyndFeed generateFeed(RequestCycle rc) {
-		SyndFeed feed = new SyndFeedImpl();
-		feed.setTitle(getFeedName());
-		feed.setLink(getUrl(rc));
-		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
-		feed.setAuthor(pageTitle);
-		feed.setCopyright(pageTitle);
-		// must be set for RSS2 feed
-		feed.setDescription(getFeedName());
-		return feed;
-	}
+    protected SyndFeed generateFeed(RequestCycle rc) {
+        SyndFeed feed = new SyndFeedImpl();
+        feed.setTitle(getFeedName());
+        feed.setLink(getUrl(rc));
+        String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+        feed.setAuthor(pageTitle);
+        feed.setCopyright(pageTitle);
+        // must be set for RSS2 feed
+        feed.setDescription(getFeedName());
+        return feed;
+    }
 
-	protected String getUrl(RequestCycle rc) {
-		return rc.urlFor(DownloadPage.class, new PageParameters()).toString();
-	}
+    protected String getUrl(RequestCycle rc) {
+        return rc.urlFor(DownloadPage.class, new PageParameters()).toString();
+    }
 
-	protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
-		List<SyndEntry> entries = new ArrayList<SyndEntry>();
-		while (iterator.hasNext()) {
-			DownloadEntity downloadEntity = iterator.next();
-			SyndEntry entry = new SyndEntryImpl();
-			entry.setTitle(downloadEntity.getTitle());
-			entry.setLink(getUrl(rc, downloadEntity));
-			entry.setPublishedDate(downloadEntity.getModifiedAt());
-			entry.setAuthor(downloadEntity.getModifiedBy());
-			String content = downloadEntity.getDescription();
-			content = content != null ? content : "";
-			content = content.replaceAll("<(.|\n)*?>", "");
-			SyndContent description = new SyndContentImpl();
-			description.setType("text/plain");
-			description.setValue(StringUtils.abbreviate(content, 200));
-			entry.setDescription(description);
-			entries.add(entry);
-		}
-		return entries;
-	}
+    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
+        List<SyndEntry> entries = new ArrayList<SyndEntry>();
+        while (iterator.hasNext()) {
+            DownloadEntity downloadEntity = iterator.next();
+            SyndEntry entry = new SyndEntryImpl();
+            entry.setTitle(downloadEntity.getTitle());
+            entry.setLink(getUrl(rc, downloadEntity));
+            entry.setPublishedDate(downloadEntity.getModifiedAt());
+            entry.setAuthor(downloadEntity.getModifiedBy());
+            String content = downloadEntity.getDescription();
+            content = content != null ? content : "";
+            content = content.replaceAll("<(.|\n)*?>", "");
+            SyndContent description = new SyndContentImpl();
+            description.setType("text/plain");
+            description.setValue(StringUtils.abbreviate(content, 200));
+            entry.setDescription(description);
+            entries.add(entry);
+        }
+        return entries;
+    }
 
-	protected String getUrl(RequestCycle rc, DownloadEntity DownloadEntity) {
-		return rc.urlFor(DownloadPage.class, new PageParameters("id=" + DownloadEntity.getId())).toString();
-	}
+    protected String getUrl(RequestCycle rc, DownloadEntity DownloadEntity) {
+        return rc.urlFor(DownloadPage.class, new PageParameters("id=" + DownloadEntity.getId())).toString();
+    }
 
-	@Override
-	public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
-		List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
-		pages.add(DownloadPage.class);
-		return pages;
-	}
+    @Override
+    public List<Class<? extends TemplatePage>> getSupportedFeedPages() {
+        List<Class<? extends TemplatePage>> pages = new ArrayList<Class<? extends TemplatePage>>();
+        pages.add(DownloadPage.class);
+        return pages;
+    }
 
-	@Override
-	public String getFeedName() {
-		String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
-		String feedName = configurationService.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE);
-		return pageTitle + " - " + feedName;
-	}
+    @Override
+    public String getFeedName() {
+        String pageTitle = configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE);
+        String feedName = configurationService.findAsString(DownloadConstants.CONF_DOWNLOAD_FEED_TITLE);
+        return pageTitle + " - " + feedName;
+    }
 
-	@Required
-	public void setDownloadDataProvider(SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider) {
-		this.downloadDataProvider = downloadDataProvider;
-	}
+    @Required
+    public void setDownloadDataProvider(SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider) {
+        this.downloadDataProvider = downloadDataProvider;
+    }
 
-	@Required
-	public void setConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 }

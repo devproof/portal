@@ -24,45 +24,45 @@ import java.util.Locale;
 
 /**
  * For downloading a file
- * 
+ *
  * @author Carsten Hufe
  */
 public class FileResourceStream implements IResourceStream {
 
-	private static final long serialVersionUID = 1L;
-	private FileInputStream fis;
-	private File file;
+    private static final long serialVersionUID = 1L;
+    private FileInputStream fis;
+    private File file;
 
-	public FileResourceStream(File file) throws FileNotFoundException {
-		this.file = file;
-		fis = new FileInputStream(file);
-	}
+    public FileResourceStream(File file) throws FileNotFoundException {
+        this.file = file;
+        fis = new FileInputStream(file);
+    }
 
-	public void close() throws IOException {
-		fis.close();
-	}
+    public void close() throws IOException {
+        fis.close();
+    }
 
-	public String getContentType() {
-		return "application/octet-stream";
-	}
+    public String getContentType() {
+        return "application/octet-stream";
+    }
 
-	public InputStream getInputStream() throws ResourceStreamNotFoundException {
-		return fis;
-	}
+    public InputStream getInputStream() throws ResourceStreamNotFoundException {
+        return fis;
+    }
 
-	public Locale getLocale() {
-		return null;
-	}
+    public Locale getLocale() {
+        return null;
+    }
 
-	public long length() {
-		return file.length();
-	}
+    public long length() {
+        return file.length();
+    }
 
-	public void setLocale(Locale locale) {
-	}
+    public void setLocale(Locale locale) {
+    }
 
-	public Time lastModifiedTime() {
-		return Time.milliseconds(file.lastModified());
-	}
+    public Time lastModifiedTime() {
+        return Time.milliseconds(file.lastModified());
+    }
 
 }

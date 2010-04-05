@@ -40,74 +40,74 @@ import java.util.Properties;
 
 /**
  * Test jetty start class for Java Webstart
- * 
+ *
  * @author Carsten Hufe
  */
 public class JettyWebstart {
-	private final SocketConnector connector;
-	private final Server server;
+    private final SocketConnector connector;
+    private final Server server;
 
-	public JettyWebstart() {
-		server = new Server();
-		connector = new SocketConnector();
-		// Set some timeout options to make debugging easier.
-		connector.setMaxIdleTime(1000 * 60 * 60);
-		connector.setSoLingerTime(-1);
+    public JettyWebstart() {
+        server = new Server();
+        connector = new SocketConnector();
+        // Set some timeout options to make debugging easier.
+        connector.setMaxIdleTime(1000 * 60 * 60);
+        connector.setSoLingerTime(-1);
 
-		server.setConnectors(new Connector[] { connector });
-		WebAppContext bb = new WebAppContext();
-		bb.setServer(server);
-		bb.setContextPath("/");
-		bb.setWar(System.getProperty("java.io.tmpdir"));
-		bb.addEventListener(new ContextLoaderListener());
-		Map<String, String> initParams = new HashMap<String, String>();
-		initParams.put("contextConfigLocation", "classpath:/devproof-portal.xml");
-		bb.setInitParams(initParams);
-		FilterHolder servlet = new FilterHolder();
-		servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
-		servlet.setInitParameter("configuration", "deployment");
-		servlet.setClassName(WicketFilter.class.getName());
-		servlet.setName(WicketFilter.class.getName());
-		bb.addFilter(servlet, "/*", 0);
-		server.addHandler(bb);
+        server.setConnectors(new Connector[]{connector});
+        WebAppContext bb = new WebAppContext();
+        bb.setServer(server);
+        bb.setContextPath("/");
+        bb.setWar(System.getProperty("java.io.tmpdir"));
+        bb.addEventListener(new ContextLoaderListener());
+        Map<String, String> initParams = new HashMap<String, String>();
+        initParams.put("contextConfigLocation", "classpath:/devproof-portal.xml");
+        bb.setInitParams(initParams);
+        FilterHolder servlet = new FilterHolder();
+        servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
+        servlet.setInitParameter("configuration", "deployment");
+        servlet.setClassName(WicketFilter.class.getName());
+        servlet.setName(WicketFilter.class.getName());
+        bb.addFilter(servlet, "/*", 0);
+        server.addHandler(bb);
 
-		SimpleDriverDataSource datasource = new SimpleDriverDataSource();
-		datasource.setUrl("jdbc:hsqldb:mem:testdb");
-		datasource.setUsername("sa");
-		datasource.setPassword("");
-		datasource.setDriverClass(org.hsqldb.jdbcDriver.class);
-		try {
-			new Resource(CommonConstants.JNDI_DATASOURCE, datasource);
-			Properties props = System.getProperties();
-			Session mailSession = Session.getDefaultInstance(props);
-			new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
-			new Resource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, HSQLDialect.class.getName());
-			// PortalTestUtil.createDataStructure(Arrays.asList("file:///E:/Workspaces/devproof/portal-webapp/target/sql/install_devproof_hsql.sql"));
-			PortalTestUtil.createDataStructure(Arrays.asList("install_devproof_hsql.sql"));
-		} catch (NamingException e) {
-			throw new UnhandledException(e);
-		} catch (SQLException e) {
-			throw new UnhandledException(e);
-		} catch (IOException e) {
-			throw new UnhandledException(e);
-		}
-	}
+        SimpleDriverDataSource datasource = new SimpleDriverDataSource();
+        datasource.setUrl("jdbc:hsqldb:mem:testdb");
+        datasource.setUsername("sa");
+        datasource.setPassword("");
+        datasource.setDriverClass(org.hsqldb.jdbcDriver.class);
+        try {
+            new Resource(CommonConstants.JNDI_DATASOURCE, datasource);
+            Properties props = System.getProperties();
+            Session mailSession = Session.getDefaultInstance(props);
+            new Resource(CommonConstants.JNDI_MAIL_SESSION, mailSession);
+            new Resource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, HSQLDialect.class.getName());
+            // PortalTestUtil.createDataStructure(Arrays.asList("file:///E:/Workspaces/devproof/portal-webapp/target/sql/install_devproof_hsql.sql"));
+            PortalTestUtil.createDataStructure(Arrays.asList("install_devproof_hsql.sql"));
+        } catch (NamingException e) {
+            throw new UnhandledException(e);
+        } catch (SQLException e) {
+            throw new UnhandledException(e);
+        } catch (IOException e) {
+            throw new UnhandledException(e);
+        }
+    }
 
-	public void startServer(int port) {
-		connector.setPort(port);
-		try {
-			server.start();
-		} catch (Exception e) {
-			throw new UnhandledException(e);
-		}
-	}
+    public void startServer(int port) {
+        connector.setPort(port);
+        try {
+            server.start();
+        } catch (Exception e) {
+            throw new UnhandledException(e);
+        }
+    }
 
-	public void stopServer() {
-		try {
-			server.stop();
-			server.join();
-		} catch (Exception e) {
-			throw new UnhandledException(e);
-		}
-	}
+    public void stopServer() {
+        try {
+            server.stop();
+            server.join();
+        } catch (Exception e) {
+            throw new UnhandledException(e);
+        }
+    }
 }

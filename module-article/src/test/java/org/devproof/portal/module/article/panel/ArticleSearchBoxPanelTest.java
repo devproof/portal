@@ -27,32 +27,31 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class ArticleSearchBoxPanelTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql",
-				"insert_article.sql");
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_article.sql", "insert_article.sql");
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPanel() {
-		tester.startPanel(createArticleSearchBoxPanel());
-		tester.assertComponent("panel", ArticleSearchBoxPanel.class);
-	}
+    public void testRenderDefaultPanel() {
+        tester.startPanel(createArticleSearchBoxPanel());
+        tester.assertComponent("panel", ArticleSearchBoxPanel.class);
+    }
 
-	private TestPanelSource createArticleSearchBoxPanel() {
-		return new TestPanelSource() {
-			private static final long serialVersionUID = 1L;
+    private TestPanelSource createArticleSearchBoxPanel() {
+        return new TestPanelSource() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public Panel getTestPanel(String panelId) {
-				return new ArticleSearchBoxPanel(panelId, Model.of(new ArticleQuery()));
-			}
-		};
-	}
+            @Override
+            public Panel getTestPanel(String panelId) {
+                return new ArticleSearchBoxPanel(panelId, Model.of(new ArticleQuery()));
+            }
+        };
+    }
 }

@@ -33,80 +33,80 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class MainNavigationRegistryImplTest extends TestCase {
-	private MainNavigationRegistryImpl impl;
-	private PageLocator pageLocatorMock;
-	private ModuleService moduleServiceMock;
+    private MainNavigationRegistryImpl impl;
+    private PageLocator pageLocatorMock;
+    private ModuleService moduleServiceMock;
 
-	@Override
-	public void setUp() throws Exception {
-		pageLocatorMock = createStrictMock(PageLocator.class);
-		moduleServiceMock = createStrictMock(ModuleService.class);
-		impl = new MainNavigationRegistryImpl();
-		impl.setModuleService(moduleServiceMock);
-		impl.setPageLocator(pageLocatorMock);
-	}
+    @Override
+    public void setUp() throws Exception {
+        pageLocatorMock = createStrictMock(PageLocator.class);
+        moduleServiceMock = createStrictMock(ModuleService.class);
+        impl = new MainNavigationRegistryImpl();
+        impl.setModuleService(moduleServiceMock);
+        impl.setPageLocator(pageLocatorMock);
+    }
 
-	public void testGetRegisteredPages() {
-		impl.registerPage(LoginPage.class);
-		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
-	}
+    public void testGetRegisteredPages() {
+        impl.registerPage(LoginPage.class);
+        assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
+    }
 
-	public void testBuildNavigation() {
-		Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
-		PageConfiguration conf = new PageConfiguration();
-		conf.setPageClass(LoginPage.class);
-		confs.add(conf);
-		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
-		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-		ModuleLinkEntity link = new ModuleLinkEntity();
-		link.setPageName(LoginPage.class.getSimpleName());
-		links.add(link);
-		expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-		replay(pageLocatorMock, moduleServiceMock);
-		impl.buildNavigation();
-		verify(pageLocatorMock, moduleServiceMock);
-		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
-	}
+    public void testBuildNavigation() {
+        Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
+        PageConfiguration conf = new PageConfiguration();
+        conf.setPageClass(LoginPage.class);
+        confs.add(conf);
+        expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
+        ModuleLinkEntity link = new ModuleLinkEntity();
+        link.setPageName(LoginPage.class.getSimpleName());
+        links.add(link);
+        expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
+        replay(pageLocatorMock, moduleServiceMock);
+        impl.buildNavigation();
+        verify(pageLocatorMock, moduleServiceMock);
+        assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
+    }
 
-	public void testAfterPropertiesSet() throws Exception {
-		Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
-		PageConfiguration conf = new PageConfiguration();
-		conf.setPageClass(LoginPage.class);
-		confs.add(conf);
-		expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
-		List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-		ModuleLinkEntity link = new ModuleLinkEntity();
-		link.setPageName(LoginPage.class.getSimpleName());
-		links.add(link);
-		expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-		replay(pageLocatorMock, moduleServiceMock);
-		impl.afterPropertiesSet();
-		verify(pageLocatorMock, moduleServiceMock);
-		assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
-	}
+    public void testAfterPropertiesSet() throws Exception {
+        Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
+        PageConfiguration conf = new PageConfiguration();
+        conf.setPageClass(LoginPage.class);
+        confs.add(conf);
+        expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
+        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
+        ModuleLinkEntity link = new ModuleLinkEntity();
+        link.setPageName(LoginPage.class.getSimpleName());
+        links.add(link);
+        expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
+        replay(pageLocatorMock, moduleServiceMock);
+        impl.afterPropertiesSet();
+        verify(pageLocatorMock, moduleServiceMock);
+        assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
+    }
 
-	public void testRegisterPage() {
-		impl.registerPage(LoginPage.class);
-		assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
-	}
+    public void testRegisterPage() {
+        impl.registerPage(LoginPage.class);
+        assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
+    }
 
-	public void testRegisterPages() {
-		List<Class<? extends Page>> pages = new ArrayList<Class<? extends Page>>();
-		pages.add(LoginPage.class);
-		impl.registerPages(pages);
-		assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
-	}
+    public void testRegisterPages() {
+        List<Class<? extends Page>> pages = new ArrayList<Class<? extends Page>>();
+        pages.add(LoginPage.class);
+        impl.registerPages(pages);
+        assertEquals(impl.getRegisteredPages().get(0), LoginPage.class);
+    }
 
-	public void testRemovePage() {
-		impl.registerPage(LoginPage.class);
-		assertEquals(1, impl.getRegisteredPages().size());
-		impl.removePage(LoginPage.class);
-		assertEquals(0, impl.getRegisteredPages().size());
-	}
+    public void testRemovePage() {
+        impl.registerPage(LoginPage.class);
+        assertEquals(1, impl.getRegisteredPages().size());
+        impl.removePage(LoginPage.class);
+        assertEquals(0, impl.getRegisteredPages().size());
+    }
 
-	public void testClearRegistry() {
-		impl.registerPage(LoginPage.class);
-		impl.clearRegistry();
-		assertEquals(impl.getRegisteredPages().size(), 0);
-	}
+    public void testClearRegistry() {
+        impl.registerPage(LoginPage.class);
+        impl.clearRegistry();
+        assertEquals(impl.getRegisteredPages().size(), 0);
+    }
 }

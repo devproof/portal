@@ -34,17 +34,18 @@ import org.devproof.portal.module.article.service.ArticleService;
 public class ArticlePrintPage extends PrintPage {
     private static final long serialVersionUID = 3988970146526291830L;
     @SpringBean(name = "articleService")
-	private ArticleService articleService;
+    private ArticleService articleService;
     private IModel<ArticleEntity> articleModel;
     private PageParameters params;
 
     public ArticlePrintPage(PageParameters params) {
-		super(params);
-	}
+        super(params);
+    }
 
     private LoadableDetachableModel<ArticleEntity> createArticleModel() {
         return new LoadableDetachableModel<ArticleEntity>() {
             private static final long serialVersionUID = 1826109490689274522L;
+
             @Override
             protected ArticleEntity load() {
                 String contentId = getContentId();
@@ -54,17 +55,17 @@ public class ArticlePrintPage extends PrintPage {
     }
 
     private IModel<ArticleEntity> getArticleModel() {
-        if(articleModel == null) {
+        if (articleModel == null) {
             articleModel = createArticleModel();
         }
         return articleModel;
     }
 
     @Override
-	protected Component createPrintableComponent(String id, PageParameters params) {
+    protected Component createPrintableComponent(String id, PageParameters params) {
         this.params = params;
         return new ArticlePrintPanel(id, getArticleModel());
-	}
+    }
 
     @Override
     protected void onBeforeRender() {
@@ -73,23 +74,22 @@ public class ArticlePrintPage extends PrintPage {
     }
 
     private String getContentId() {
-		String contentId = params.getString("0");
-		if (contentId == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage
-					.getMessagePage(getString("missing.parameter")));
-		}
-		return contentId;
-	}
+        String contentId = params.getString("0");
+        if (contentId == null) {
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.parameter")));
+        }
+        return contentId;
+    }
 
-	private void validateAccessRights() {
+    private void validateAccessRights() {
         ArticleEntity article = getArticleModel().getObject();
         if (article == null || !isAllowedToRead(article)) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
-		}
-	}
+            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
+        }
+    }
 
-	private boolean isAllowedToRead(ArticleEntity article) {
-		PortalSession session = (PortalSession) getSession();
-		return session.hasRight(article.getReadRights()) || session.hasRight("article.read");
-	}
+    private boolean isAllowedToRead(ArticleEntity article) {
+        PortalSession session = (PortalSession) getSession();
+        return session.hasRight(article.getReadRights()) || session.hasRight("article.read");
+    }
 }

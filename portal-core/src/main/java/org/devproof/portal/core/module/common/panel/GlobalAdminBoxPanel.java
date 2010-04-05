@@ -39,22 +39,23 @@ import java.util.List;
  */
 public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "globalAdminPageRegistry")
-	private GlobalAdminPageRegistry adminPageRegistry;
-	private WebMarkupContainer titleContainer;
+    @SpringBean(name = "globalAdminPageRegistry")
+    private GlobalAdminPageRegistry adminPageRegistry;
+    private WebMarkupContainer titleContainer;
 
-	public GlobalAdminBoxPanel(String id) {
-		super(id);
-		add(createTitleContainer());
-		add(createRepeatingNavExtendable());
-	}
+    public GlobalAdminBoxPanel(String id) {
+        super(id);
+        add(createTitleContainer());
+        add(createRepeatingNavExtendable());
+    }
 
-	private ListView createRepeatingNavExtendable() {
+    private ListView createRepeatingNavExtendable() {
         IModel<List<Class<? extends Page>>> registeredAdminPageModel = createRegisteredAdminPageModel();
         return new ListView<Class<? extends Page>>("repeatingNavExtendable", registeredAdminPageModel) {
             private static final long serialVersionUID = -277523349047078562L;
+
             @Override
             protected void populateItem(ListItem<Class<? extends Page>> item) {
                 Class<? extends Page> pageClass = item.getModelObject();
@@ -67,11 +68,12 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
                 return link;
             }
         };
-	}
+    }
 
     private IModel<List<Class<? extends Page>>> createRegisteredAdminPageModel() {
         return new LoadableDetachableModel<List<Class<? extends Page>>>() {
             private static final long serialVersionUID = -4836280928165419121L;
+
             @Override
             protected List<Class<? extends Page>> load() {
                 return adminPageRegistry.getRegisteredGlobalAdminPages();
@@ -82,11 +84,12 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
     private Label createAdminLinkLabel(Class<? extends Page> pageClass) {
         IModel<String> pageClassModel = createPageClassModel(pageClass);
         return new Label("adminLinkLabel", pageClassModel);
-	}
+    }
 
     private AbstractReadOnlyModel<String> createPageClassModel(final Class<? extends Page> pageClass) {
         return new AbstractReadOnlyModel<String>() {
             private static final long serialVersionUID = -302528457464799755L;
+
             @Override
             public String getObject() {
                 return getLinkNameByClass(pageClass);
@@ -95,22 +98,20 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private String getLinkNameByClass(Class<? extends Page> pageClass) {
-		String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-				CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
-		if (StringUtils.isEmpty(label)) {
-			label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
-					CommonConstants.CONTENT_TITLE_LABEL);
-		}
-		return label;
-	}
+        String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+        if (StringUtils.isEmpty(label)) {
+            label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
+        }
+        return label;
+    }
 
-	private WebMarkupContainer createTitleContainer() {
-		titleContainer = new WebMarkupContainer("title");
-		return titleContainer;
-	}
+    private WebMarkupContainer createTitleContainer() {
+        titleContainer = new WebMarkupContainer("title");
+        return titleContainer;
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleContainer.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleContainer.setVisible(visible);
+    }
 }

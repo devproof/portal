@@ -24,38 +24,38 @@ import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 
 /**
  * Box with your own content
- * 
+ *
  * @author Carsten Hufe
  */
 public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Label titleLabel;
+    private Label titleLabel;
     private IModel<BoxEntity> boxModel;
 
     public OtherBoxPanel(String id, IModel<BoxEntity> boxModel) {
-		super(id, boxModel);
+        super(id, boxModel);
         this.boxModel = boxModel;
-		add(createTitleLabel());
-		add(createContentLabel());
-	}
+        add(createTitleLabel());
+        add(createContentLabel());
+    }
 
-	private Label createContentLabel() {
+    private Label createContentLabel() {
         IModel<String> contentModel = new PropertyModel<String>(boxModel, "content");
         Label content = new Label("content", contentModel);
-		content.setEscapeModelStrings(false);
-		return content;
-	}
+        content.setEscapeModelStrings(false);
+        return content;
+    }
 
-	private Label createTitleLabel() {
+    private Label createTitleLabel() {
         IModel<String> titleModel = new PropertyModel<String>(boxModel, "title");
         titleLabel = new Label("title", titleModel);
-		return titleLabel;
-	}
+        return titleLabel;
+    }
 
-	@Override
-	public void setTitleVisible(boolean visible) {
-		titleLabel.setVisible(visible);
-	}
+    @Override
+    public void setTitleVisible(boolean visible) {
+        titleLabel.setVisible(visible);
+    }
 }

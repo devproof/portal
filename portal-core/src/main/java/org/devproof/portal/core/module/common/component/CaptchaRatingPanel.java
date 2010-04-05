@@ -30,115 +30,115 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 
 /**
  * Is an extension of the rating panel Without ajax and with bookmarkable links
- * 
+ *
  * @author Carsten Hufe
  */
 public abstract class CaptchaRatingPanel extends RatingPanel {
-	private static final long serialVersionUID = 1L;
-	private BubblePanel bubblePanel;
-	private IModel<Boolean> hasVoted;
+    private static final long serialVersionUID = 1L;
+    private BubblePanel bubblePanel;
+    private IModel<Boolean> hasVoted;
 
-	public CaptchaRatingPanel(String id, IModel<Integer> rating, IModel<Integer> nrOfStars, IModel<Integer> nrOfVotes,
-			IModel<Boolean> hasVoted, boolean addDefaultCssStyle, BubblePanel bubblePanel) {
-		super(id, rating, nrOfStars, nrOfVotes, hasVoted, addDefaultCssStyle);
-		this.bubblePanel = bubblePanel;
-		this.hasVoted = hasVoted;
-		PortalUtil.addJQuery(this);
-	}
+    public CaptchaRatingPanel(String id, IModel<Integer> rating, IModel<Integer> nrOfStars, IModel<Integer> nrOfVotes, IModel<Boolean> hasVoted, boolean addDefaultCssStyle, BubblePanel bubblePanel) {
+        super(id, rating, nrOfStars, nrOfVotes, hasVoted, addDefaultCssStyle);
+        this.bubblePanel = bubblePanel;
+        this.hasVoted = hasVoted;
+        PortalUtil.addJQuery(this);
+    }
 
-	@Override
-	final protected void onRated(int rating, AjaxRequestTarget target) {
-	}
+    @Override
+    final protected void onRated(int rating, AjaxRequestTarget target) {
+    }
 
-	protected void onRated(int rating, AjaxRequestTarget target, String outputMarkupId) {
-		if (!hasVoted.getObject()) {
-			if (showCaptcha()) {
-				CaptchaPanel captchaPanel = createCaptchaPanel(rating, outputMarkupId);
-				bubblePanel.setContent(captchaPanel);
-				bubblePanel.showModal(target);
-			} else {
-				onRatedAndCaptchaValidated(rating, target);
-				bubblePanel.showMessage(outputMarkupId, target, getString("voteCounted"));
-				// target.addComponent(CaptchaRatingPanel.this.get("rater"));
-			}
-		} else {
-			bubblePanel.showMessage(outputMarkupId, target, getString("alreadyVoted"));
-		}
-	}
+    protected void onRated(int rating, AjaxRequestTarget target, String outputMarkupId) {
+        if (!hasVoted.getObject()) {
+            if (showCaptcha()) {
+                CaptchaPanel captchaPanel = createCaptchaPanel(rating, outputMarkupId);
+                bubblePanel.setContent(captchaPanel);
+                bubblePanel.showModal(target);
+            } else {
+                onRatedAndCaptchaValidated(rating, target);
+                bubblePanel.showMessage(outputMarkupId, target, getString("voteCounted"));
+                // target.addComponent(CaptchaRatingPanel.this.get("rater"));
+            }
+        } else {
+            bubblePanel.showMessage(outputMarkupId, target, getString("alreadyVoted"));
+        }
+    }
 
-	protected abstract void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target);
+    protected abstract void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target);
 
-	private CaptchaPanel createCaptchaPanel(final int rating, final String outputMarkupId) {
-		return new CaptchaPanel(bubblePanel.getContentId()) {
-			private static final long serialVersionUID = 1L;
+    private CaptchaPanel createCaptchaPanel(final int rating, final String outputMarkupId) {
+        return new CaptchaPanel(bubblePanel.getContentId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				bubblePanel.hide(target);
-				CaptchaRatingPanel.this.onRatedAndCaptchaValidated(rating, target);
-				bubblePanel.showMessage(outputMarkupId, target, CaptchaRatingPanel.this.getString("voteCounted"));
-				// target.addComponent(CaptchaRatingPanel.this.get("rater"));
-			}
+            @Override
+            protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+                bubblePanel.hide(target);
+                CaptchaRatingPanel.this.onRatedAndCaptchaValidated(rating, target);
+                bubblePanel.showMessage(outputMarkupId, target, CaptchaRatingPanel.this.getString("voteCounted"));
+                // target.addComponent(CaptchaRatingPanel.this.get("rater"));
+            }
 
-			@Override
-			protected void onCancel(AjaxRequestTarget target) {
-				bubblePanel.hide(target);
-			}
-		};
-	}
+            @Override
+            protected void onCancel(AjaxRequestTarget target) {
+                bubblePanel.hide(target);
+            }
+        };
+    }
 
-	@Override
-	protected Component newRatingStarBar(String id, IModel<Integer> nrOfStars) {
-		return new RatingStarBar(id, nrOfStars);
-	}
+    @Override
+    protected Component newRatingStarBar(String id, IModel<Integer> nrOfStars) {
+        return new RatingStarBar(id, nrOfStars);
+    }
 
-	private boolean showCaptcha() {
-		return !PortalSession.get().hasRight("captcha.disabled");
-	}
+    private boolean showCaptcha() {
+        return !PortalSession.get().hasRight("captcha.disabled");
+    }
 
-	/**
-	 * Renders the stars and the links necessary for rating.
-	 */
-	private final class RatingStarBar extends Loop {
-		/** For serialization. */
-		private static final long serialVersionUID = 1L;
+    /**
+     * Renders the stars and the links necessary for rating.
+     */
+    private final class RatingStarBar extends Loop {
+        /**
+         * For serialization.
+         */
+        private static final long serialVersionUID = 1L;
 
-		private RatingStarBar(String id, IModel<Integer> model) {
-			super(id, model);
-		}
+        private RatingStarBar(String id, IModel<Integer> model) {
+            super(id, model);
+        }
 
-		@Override
-		protected void populateItem(LoopItem item) {
-			// Use an AjaxFallbackLink for rating to make voting work even
-			// without Ajax.
-			AjaxLink<Void> link = new AjaxLink<Void>("link") {
-				private static final long serialVersionUID = 1L;
+        @Override
+        protected void populateItem(LoopItem item) {
+            // Use an AjaxFallbackLink for rating to make voting work even
+            // without Ajax.
+            AjaxLink<Void> link = new AjaxLink<Void>("link") {
+                private static final long serialVersionUID = 1L;
 
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					LoopItem item = (LoopItem) getParent();
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    LoopItem item = (LoopItem) getParent();
 
-					// adjust the rating, and provide the target to the subclass
-					// of our rating component, so other components can also get
-					// updated in case of an AJAX event.
+                    // adjust the rating, and provide the target to the subclass
+                    // of our rating component, so other components can also get
+                    // updated in case of an AJAX event.
 
-					onRated(item.getIteration() + 1, target, getMarkupId());
-				}
+                    onRated(item.getIteration() + 1, target, getMarkupId());
+                }
 
-				@Override
-				public boolean isEnabled() {
-					return !hasVoted.getObject() && CaptchaRatingPanel.this.isEnabled();
-				}
-			};
+                @Override
+                public boolean isEnabled() {
+                    return !hasVoted.getObject() && CaptchaRatingPanel.this.isEnabled();
+                }
+            };
 
-			int iteration = item.getIteration();
+            int iteration = item.getIteration();
 
-			// add the star image, which is either active (highlighted) or
-			// inactive (no star)
-			link.add(new WebMarkupContainer("star").add(new SimpleAttributeModifier("src",
-					(onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
-			link.setOutputMarkupId(true);
-			item.add(link);
+            // add the star image, which is either active (highlighted) or
+            // inactive (no star)
+            link.add(new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
+            link.setOutputMarkupId(true);
+            item.add(link);
 		}
 	}
 }

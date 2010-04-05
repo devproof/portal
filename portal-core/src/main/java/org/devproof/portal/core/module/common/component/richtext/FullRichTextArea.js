@@ -1,3 +1,3 @@
-CKEDITOR.replace( '${markupId}', {
-	contentsCss : ['${defaultCss}']
+CKEDITOR.replace('${markupId}', {
+    contentsCss : ['${defaultCss}']
 });

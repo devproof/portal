@@ -32,75 +32,70 @@ import static org.easymock.EasyMock.*;
  * @author Carsten Hufe
  */
 public class SortablePersistenceDataProviderImplTest extends TestCase {
-	private SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery> impl;
-	private DataProviderDao<EmailTemplateEntity> dataProviderDaoMock;
-	private SearchQuery queryMock;
+    private SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery> impl;
+    private DataProviderDao<EmailTemplateEntity> dataProviderDaoMock;
+    private SearchQuery queryMock;
 
-	@Override
-	@SuppressWarnings("unchecked")
-	protected void setUp() throws Exception {
-		dataProviderDaoMock = createMock(DataProviderDao.class);
-		queryMock = createMock(SearchQuery.class);
-		impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery>() {
-			private static final long serialVersionUID = 1L;
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void setUp() throws Exception {
+        dataProviderDaoMock = createMock(DataProviderDao.class);
+        queryMock = createMock(SearchQuery.class);
+        impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery>() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			public IModel<SearchQuery> getSearchQueryModel() {
-				return Model.of(queryMock);
-			}
-		};
-		impl.setEntityClass(EmailTemplateEntity.class);
-		impl.setSort("subject", true);
-		impl.setDataProviderDao(dataProviderDaoMock);
-	}
+            @Override
+            public IModel<SearchQuery> getSearchQueryModel() {
+                return Model.of(queryMock);
+            }
+        };
+        impl.setEntityClass(EmailTemplateEntity.class);
+        impl.setSort("subject", true);
+        impl.setDataProviderDao(dataProviderDaoMock);
+    }
 
-	public void testIterator_WithPrefetch() {
-		List<String> prefetch = Arrays.asList("prefetch");
-		impl.setPrefetch(prefetch);
-		EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
-		expectedTemplate.setId(5);
-		List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-		expect(
-				dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock,
-						prefetch)).andReturn(templates);
-		replay(dataProviderDaoMock, queryMock);
-		Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
-		assertEquals(expectedTemplate.getId(), iterator.next().getId());
-		verify(dataProviderDaoMock, queryMock);
-	}
+    public void testIterator_WithPrefetch() {
+        List<String> prefetch = Arrays.asList("prefetch");
+        impl.setPrefetch(prefetch);
+        EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
+        expectedTemplate.setId(5);
+        List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
+        expect(dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, prefetch)).andReturn(templates);
+        replay(dataProviderDaoMock, queryMock);
+        Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
+        assertEquals(expectedTemplate.getId(), iterator.next().getId());
+        verify(dataProviderDaoMock, queryMock);
+    }
 
-	public void testIterator_WithoutPrefetch() {
-		EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
-		expectedTemplate.setId(5);
-		List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-		expect(
-				dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock,
-						null)).andReturn(templates);
-		replay(dataProviderDaoMock, queryMock);
-		Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
-		assertEquals(expectedTemplate.getId(), iterator.next().getId());
-		verify(dataProviderDaoMock, queryMock);
-	}
+    public void testIterator_WithoutPrefetch() {
+        EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
+        expectedTemplate.setId(5);
+        List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
+        expect(dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, null)).andReturn(templates);
+        replay(dataProviderDaoMock, queryMock);
+        Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
+        assertEquals(expectedTemplate.getId(), iterator.next().getId());
+        verify(dataProviderDaoMock, queryMock);
+    }
 
-	public void testModel() {
-		IModel<EmailTemplateEntity> model = impl.model(new EmailTemplateEntity());
-		assertNotNull(model);
-		assertNotNull(model.getObject());
-	}
+    public void testModel() {
+        IModel<EmailTemplateEntity> model = impl.model(new EmailTemplateEntity());
+        assertNotNull(model);
+        assertNotNull(model.getObject());
+    }
 
-	public void testSize_WithCountQuery() {
-		expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, "count(something)", queryMock))
-				.andReturn(4);
-		replay(dataProviderDaoMock, queryMock);
-		impl.setCountQuery("count(something)");
-		assertEquals(4, impl.size());
-		verify(dataProviderDaoMock, queryMock);
-	}
+    public void testSize_WithCountQuery() {
+        expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, "count(something)", queryMock)).andReturn(4);
+        replay(dataProviderDaoMock, queryMock);
+        impl.setCountQuery("count(something)");
+        assertEquals(4, impl.size());
+        verify(dataProviderDaoMock, queryMock);
+    }
 
-	public void testSize_WithoutCountQuery() {
-		expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, queryMock)).andReturn(4);
-		replay(dataProviderDaoMock, queryMock);
-		assertEquals(4, impl.size());
-		verify(dataProviderDaoMock, queryMock);
-	}
+    public void testSize_WithoutCountQuery() {
+        expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, queryMock)).andReturn(4);
+        replay(dataProviderDaoMock, queryMock);
+        assertEquals(4, impl.size());
+        verify(dataProviderDaoMock, queryMock);
+    }
 }

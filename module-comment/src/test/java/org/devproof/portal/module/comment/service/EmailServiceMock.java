@@ -26,45 +26,45 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class EmailServiceMock implements EmailService, Serializable {
-	private static final long serialVersionUID = 1L;
-	private EmailPlaceholderBean emailPlaceholderBean;
+    private static final long serialVersionUID = 1L;
+    private EmailPlaceholderBean emailPlaceholderBean;
 
-	public EmailPlaceholderBean getEmailPlaceholderBean() {
-		return emailPlaceholderBean;
-	}
+    public EmailPlaceholderBean getEmailPlaceholderBean() {
+        return emailPlaceholderBean;
+    }
 
-	@Override
-	public EmailTemplateEntity newEmailTemplateEntity() {
-		return null;
-	}
+    @Override
+    public EmailTemplateEntity newEmailTemplateEntity() {
+        return null;
+    }
 
-	@Override
-	public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
-		emailPlaceholderBean = placeholder;
-	}
+    @Override
+    public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
+        emailPlaceholderBean = placeholder;
+    }
 
-	@Override
-	public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
-		emailPlaceholderBean = placeholder;
-	}
+    @Override
+    public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
+        emailPlaceholderBean = placeholder;
+    }
 
-	@Override
-	public void delete(EmailTemplateEntity entity) {
+    @Override
+    public void delete(EmailTemplateEntity entity) {
 
-	}
+    }
 
-	@Override
-	public List<EmailTemplateEntity> findAll() {
-		return null;
-	}
+    @Override
+    public List<EmailTemplateEntity> findAll() {
+        return null;
+    }
 
-	@Override
-	public EmailTemplateEntity findById(Integer id) {
-		return null;
-	}
+    @Override
+    public EmailTemplateEntity findById(Integer id) {
+        return null;
+    }
 
-	@Override
-	public void save(EmailTemplateEntity entity) {
+    @Override
+    public void save(EmailTemplateEntity entity) {
 
-	}
+    }
 }

@@ -25,25 +25,25 @@ import org.devproof.portal.test.PortalTestUtil;
  * @author Carsten Hufe
  */
 public class FeedOverviewPageTest extends TestCase {
-	private WicketTester tester;
+    private WicketTester tester;
 
-	@Override
-	public void setUp() throws Exception {
-		tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-		FeedProviderRegistry registry = PortalTestUtil.getBean("feedProviderRegistry");
-		registry.removeFeedProvider("dummy");
-		registry.registerFeedProvider("dummy", new DummyFeedProviderImpl());
-	}
+    @Override
+    public void setUp() throws Exception {
+        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        FeedProviderRegistry registry = PortalTestUtil.getBean("feedProviderRegistry");
+        registry.removeFeedProvider("dummy");
+        registry.registerFeedProvider("dummy", new DummyFeedProviderImpl());
+    }
 
-	@Override
-	protected void tearDown() throws Exception {
-		PortalTestUtil.destroy(tester);
-	}
+    @Override
+    protected void tearDown() throws Exception {
+        PortalTestUtil.destroy(tester);
+    }
 
-	public void testRenderDefaultPage() {
-		tester.startPage(FeedOverviewPage.class);
-		tester.assertRenderedPage(FeedOverviewPage.class);
-		tester.assertContains("dummy feed");
-		tester.assertContains("DummyPage");
-	}
+    public void testRenderDefaultPage() {
+        tester.startPage(FeedOverviewPage.class);
+        tester.assertRenderedPage(FeedOverviewPage.class);
+        tester.assertContains("dummy feed");
+        tester.assertContains("DummyPage");
+    }
 }

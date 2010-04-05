@@ -26,47 +26,47 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
  * @author Carsten Hufe
  */
 public abstract class CaptchaAjaxButton extends AjaxSubmitLink {
-	private static final long serialVersionUID = 1L;
-	private BubblePanel bubblePanel;
+    private static final long serialVersionUID = 1L;
+    private BubblePanel bubblePanel;
 
-	public CaptchaAjaxButton(String id, BubblePanel bubblePanel) {
-		super(id);
-		this.bubblePanel = bubblePanel;
-		PortalUtil.addJQuery(this);
-		setOutputMarkupId(true);
-	}
+    public CaptchaAjaxButton(String id, BubblePanel bubblePanel) {
+        super(id);
+        this.bubblePanel = bubblePanel;
+        PortalUtil.addJQuery(this);
+        setOutputMarkupId(true);
+    }
 
-	@Override
-	final protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-		if (showCaptcha()) {
-			CaptchaPanel captchaPanel = createCaptchaPanel();
-			bubblePanel.setContent(captchaPanel);
-			bubblePanel.showModal(target);
-		} else {
-			onClickAndCaptchaValidated(target);
-		}
-	}
+    @Override
+    final protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+        if (showCaptcha()) {
+            CaptchaPanel captchaPanel = createCaptchaPanel();
+            bubblePanel.setContent(captchaPanel);
+            bubblePanel.showModal(target);
+        } else {
+            onClickAndCaptchaValidated(target);
+        }
+    }
 
-	private CaptchaPanel createCaptchaPanel() {
-		return new CaptchaPanel(bubblePanel.getContentId()) {
-			private static final long serialVersionUID = 1L;
+    private CaptchaPanel createCaptchaPanel() {
+        return new CaptchaPanel(bubblePanel.getContentId()) {
+            private static final long serialVersionUID = 1L;
 
-			@Override
-			protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-				bubblePanel.hide(target);
-				CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
-			}
+            @Override
+            protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
+                bubblePanel.hide(target);
+                CaptchaAjaxButton.this.onClickAndCaptchaValidated(target);
+            }
 
-			@Override
-			protected void onCancel(AjaxRequestTarget target) {
-				bubblePanel.hide(target);
-			}
-		};
-	}
+            @Override
+            protected void onCancel(AjaxRequestTarget target) {
+                bubblePanel.hide(target);
+            }
+        };
+    }
 
-	private boolean showCaptcha() {
-		return !PortalSession.get().hasRight("captcha.disabled");
-	}
+    private boolean showCaptcha() {
+        return !PortalSession.get().hasRight("captcha.disabled");
+    }
 
-	public abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
+    public abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
 }
