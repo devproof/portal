@@ -1,0 +1,10 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #FF6B29 url(../../../../../../../../resources/org/devproof/portal/core/module/common/img/bg.gif) repeat-x;
+	color: #222;
+	margin: 0;
+}
