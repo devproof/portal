@@ -32,6 +32,7 @@ import org.devproof.portal.module.blog.service.BlogService;
  * @author Carsten Hufe
  */
 public class BlogPrintPage extends PrintPage {
+    private static final long serialVersionUID = -861792869467871383L;
     @SpringBean(name = "blogService")
     private BlogService blogService;
     private IModel<BlogEntity> blogModel;
@@ -43,6 +44,8 @@ public class BlogPrintPage extends PrintPage {
 
     private LoadableDetachableModel<BlogEntity> createBlogModel() {
         return new LoadableDetachableModel<BlogEntity>() {
+            private static final long serialVersionUID = 2758949172939182113L;
+
             @Override
             protected BlogEntity load() {
                 Integer blogId = getBlogId();

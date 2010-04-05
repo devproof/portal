@@ -61,5 +61,6 @@ public class TestPersist {
         currentTimeMillis = System.currentTimeMillis();
         // db.bulkCreateDocuments(users);
         System.out.println(System.currentTimeMillis() - currentTimeMillis);
+        System.out.println(users);
     }
 }

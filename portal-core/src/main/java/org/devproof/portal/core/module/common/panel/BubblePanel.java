@@ -92,7 +92,7 @@ public class BubblePanel extends Panel {
 
     public void showModal(AjaxRequestTarget target) {
         target.addComponent(this);
-        String js = "";
+        String js;
         js = "var maskHeight = $(document).height(); var maskWidth = $(window).width();";
         js += "$('#modalMask').css({'width':maskWidth,'height':maskHeight});";
         js += "$('#modalMask').fadeTo('normal',0.3);";

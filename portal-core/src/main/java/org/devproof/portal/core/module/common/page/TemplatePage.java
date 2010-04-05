@@ -410,6 +410,10 @@ public abstract class TemplatePage extends WebPage {
         return "linkName";
     }
 
+    public String getBoxId() {
+        return "box";
+    }
+
     public String getPageTitle() {
         return "";
     }

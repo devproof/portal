@@ -93,6 +93,7 @@ public class PortalSessionTest extends TestCase {
     }
 
     public void testAuthenticate_failed() throws Exception {
+        //noinspection ThrowableInstanceNeverThrown
         expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andThrow(new AuthentificationFailedException("wrong password"));
         replay(portalSession.userService);
         assertEquals("wrong password", portalSession.authenticate("peter", "secretpasswd"));
@@ -102,6 +103,7 @@ public class PortalSessionTest extends TestCase {
 
     public void testAuthenticate_userNotConfirmed() {
         try {
+            //noinspection ThrowableInstanceNeverThrown
             expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andThrow(new UserNotConfirmedException());
             replay(portalSession.userService);
             assertEquals("wrong password", portalSession.authenticate("peter", "secretpasswd"));

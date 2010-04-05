@@ -65,7 +65,7 @@ public class PortalTestUtil {
      */
     public static String getFileContent(String file) throws IOException {
         ResourceLoader resourceLoader = new DefaultResourceLoader();
-        Resource r = null;
+        final Resource r;
         if (file.startsWith("file:/")) {
             r = resourceLoader.getResource(file);
         } else {

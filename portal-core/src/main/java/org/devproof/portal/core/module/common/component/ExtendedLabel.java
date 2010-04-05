@@ -58,6 +58,8 @@ public class ExtendedLabel extends Label {
 
     private IModel<String> createConvertedContentModel() {
         return new LoadableDetachableModel<String>() {
+            private static final long serialVersionUID = -3507047529867991441L;
+
             @Override
             protected String load() {
                 cleanupExpiredImages();

@@ -50,7 +50,7 @@ public class CommentAdminPage extends TemplatePage {
 
     private CommentSearchBoxPanel createCommentSearchBoxPanel() {
         IModel<CommentQuery> queryModel = createCommentQueryModel();
-        return new CommentSearchBoxPanel("box", queryModel) {
+        return new CommentSearchBoxPanel(getBoxId(), queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

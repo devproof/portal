@@ -195,7 +195,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
                 Resource root[] = applicationContext.getResources("classpath*:/");
                 for (String ext : ThemeConstants.ALLOWED_THEME_EXT) {
                     for (String themePath : themePaths) {
-                        Resource resources[] = null;
+                        final Resource resources[];
                         if (themePath.endsWith("/")) {
                             resources = applicationContext.getResources("classpath*:" + themePath + "**/*" + ext);
                         } else {

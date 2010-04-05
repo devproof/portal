@@ -57,6 +57,7 @@ public class ArticlePrintPanel extends Panel {
 
     private IModel<String> createContentModel() {
         return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = -3133650134418166946L;
             @Override
             public String getObject() {
                 ArticleEntity article = articleModel.getObject();
