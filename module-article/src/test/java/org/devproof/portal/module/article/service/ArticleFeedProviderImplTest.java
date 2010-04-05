@@ -23,7 +23,6 @@ import org.apache.wicket.RequestCycle;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.page.ArticlePage;
@@ -142,7 +141,7 @@ public class ArticleFeedProviderImplTest extends TestCase {
 				return "";
 			}
 		};
-		impl.getFeed(null, new RoleEntity());
+		impl.getFeed(null);
 		assertEquals("123", callOrder.toString());
 	}
 

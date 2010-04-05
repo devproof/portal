@@ -23,6 +23,11 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 public interface SearchQuery extends Serializable {
-	// TODO comment
+    /**
+     * Required to build the paging url
+     * If the key/value pair is key=value, the URL would look like http://localhost/blog/key/value
+     *
+     * @return default wicket PageParameters 
+     */
 	PageParameters getPageParameters();
 }

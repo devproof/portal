@@ -40,7 +40,7 @@ import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.print.PrintConstants;
-import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
+import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
@@ -214,9 +214,9 @@ public class ArticlePage extends ArticleBasePage {
             };
         }
 
-        private ContentTagPanel<ArticleTagEntity> createTagPanel() {
+        private TagContentPanel<ArticleTagEntity> createTagPanel() {
             IModel<List<ArticleTagEntity>> tagModel = new PropertyModel<List<ArticleTagEntity>>(articleModel, "tags");
-            return new ContentTagPanel<ArticleTagEntity>("tags", tagModel, 
+            return new TagContentPanel<ArticleTagEntity>("tags", tagModel,
 					ArticlePage.class);
 		}
 

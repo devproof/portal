@@ -47,7 +47,7 @@ public class ContentTagPanelTest extends TestCase {
 
 	public void testRenderDefaultPanel() {
 		tester.startPanel(createContentTagPanel());
-		tester.assertComponent("panel", ContentTagPanel.class);
+		tester.assertComponent("panel", TagContentPanel.class);
 	}
 
 	private TestPanelSource createContentTagPanel() {
@@ -60,7 +60,7 @@ public class ContentTagPanelTest extends TestCase {
 				TestTagEntity tag = new TestTagEntity();
 				tag.setTagname("foobar");
 				tags.add(tag);
-				return new ContentTagPanel<TestTagEntity>(panelId, new ListModel<TestTagEntity>(tags), WebPage.class);
+				return new TagContentPanel<TestTagEntity>(panelId, new ListModel<TestTagEntity>(tags), WebPage.class);
 			}
 		};
 	}

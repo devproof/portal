@@ -36,7 +36,7 @@ import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.print.PrintConstants;
-import org.devproof.portal.core.module.tag.panel.ContentTagPanel;
+import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.BlogEntity;
@@ -224,9 +224,9 @@ public class BlogPage extends BlogBasePage {
             return new ExpandableCommentPanel("comments", conf);
         }
 
-        private ContentTagPanel<BlogTagEntity> createTagPanel() {
+        private TagContentPanel<BlogTagEntity> createTagPanel() {
             IModel<List<BlogTagEntity>> blogTagModel = new PropertyModel<List<BlogTagEntity>>(blogModel, "tags");
-            return new ContentTagPanel<BlogTagEntity>("tags", blogTagModel, BlogPage.class);
+            return new TagContentPanel<BlogTagEntity>("tags", blogTagModel, BlogPage.class);
         }
     }
 }

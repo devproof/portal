@@ -24,7 +24,6 @@ import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProv
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.page.BlogPage;
@@ -43,7 +42,7 @@ public class BlogFeedProviderImpl implements FeedProvider {
 	private ConfigurationService configurationService;
 
 	@Override
-	public SyndFeed getFeed(RequestCycle rc, RoleEntity role) {
+	public SyndFeed getFeed(RequestCycle rc) {
 		SyndFeed feed = generateFeed(rc);
 		Iterator<? extends BlogEntity> iterator = getBlogEntries();
 		List<SyndEntry> entries = generateFeedEntries(rc, iterator);

@@ -39,14 +39,13 @@ import java.util.List;
  * @author Carsten Hufe
  * 
  */
-// TODO rename in TagContentPanel
-public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
+public class TagContentPanel<T extends BaseTagEntity<?>> extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	private IModel<List<T>> tagModel;
 	private Class<? extends Page> page;
 
-	public ContentTagPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page) {
+	public TagContentPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page) {
 		super(id);
 		this.tagModel = tagModel;
 		this.page = page;
@@ -54,7 +53,7 @@ public class ContentTagPanel<T extends BaseTagEntity<?>> extends Panel {
 		add(createRepeatingTags());
 	}
 
-	private RepeatingView createRepeatingTags() {
+    private RepeatingView createRepeatingTags() {
 		RepeatingView repeating = new RepeatingView("repeatingTags");
 		for (T tag : tagModel.getObject()) {
 			repeating.add(createTagItem(repeating.newChildId(), tag));
