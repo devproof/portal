@@ -63,7 +63,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private ListView<BookmarkEntity> createRepeatingBookmarks() {
-        return new ListView<BookmarkEntity>("repeatingBookmarks") {
+        return new ListView<BookmarkEntity>("repeatingBookmarks", latestBookmarksModel) {
             private static final long serialVersionUID = 6603619378248308439L;
 
             @Override
