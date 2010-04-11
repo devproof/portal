@@ -68,7 +68,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private ListView<DownloadEntity> createRepeatingDownloads() {
-        return new ListView<DownloadEntity>("repeatingDownloads") {
+        return new ListView<DownloadEntity>("repeatingDownloads", latestDownloadsModel) {
             private static final long serialVersionUID = -1523488276282233553L;
 
             @Override
