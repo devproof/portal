@@ -15,36 +15,36 @@
  */
 package org.devproof.portal.core.module.box.locator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author Carsten Hufe
  */
 public class BoxLocatorImpl implements ApplicationContextAware, BoxLocator {
-    private ApplicationContext context;
+	private ApplicationContext context;
 
-    @Override
-    public Collection<BoxConfiguration> getBoxes() {
-        @SuppressWarnings("unchecked") Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
-        List<BoxConfiguration> back = new ArrayList<BoxConfiguration>();
-        for (ModuleConfiguration module : beans.values()) {
-            back.addAll(module.getBoxes());
-        }
-        return back;
-    }
+	@Override
+	public Collection<BoxConfiguration> getBoxes() {
+		Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
+		List<BoxConfiguration> back = new ArrayList<BoxConfiguration>();
+		for (ModuleConfiguration module : beans.values()) {
+			back.addAll(module.getBoxes());
+		}
+		return back;
+	}
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
-    }
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		context = applicationContext;
+	}
 
 }

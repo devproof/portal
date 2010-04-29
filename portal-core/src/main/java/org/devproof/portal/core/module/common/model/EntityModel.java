@@ -24,35 +24,34 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  * @author Carsten Hufe
  */
 public class EntityModel<T extends EntityId> extends LoadableDetachableModel<T> {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @SpringBean(name = "hibernateTemplate")
-    private HibernateTemplate hibernateTemplate;
-    private Class<T> entityClass;
-    private Integer entityId;
+	@SpringBean(name = "hibernateTemplate")
+	private HibernateTemplate hibernateTemplate;
+	private Class<T> entityClass;
+	private Integer entityId;
 
-    @SuppressWarnings("unchecked")
-    public EntityModel(T entity) {
-        super(entity);
-        entityId = entity.getId();
-        entityClass = (Class<T>) entity.getClass();
-        InjectorHolder.getInjector().inject(this);
-    }
+	@SuppressWarnings("unchecked")
+	public EntityModel(T entity) {
+		super(entity);
+		entityId = entity.getId();
+		entityClass = (Class<T>) entity.getClass();
+		InjectorHolder.getInjector().inject(this);
+	}
 
-    public EntityModel(Class<T> entityClass, Integer entityId) {
-        super();
-        this.entityClass = entityClass;
-        this.entityId = entityId;
-        InjectorHolder.getInjector().inject(this);
-    }
+	public EntityModel(Class<T> entityClass, Integer entityId) {
+		super();
+		this.entityClass = entityClass;
+		this.entityId = entityId;
+		InjectorHolder.getInjector().inject(this);
+	}
 
-    @Override
-    @SuppressWarnings("unchecked")
-    protected T load() {
-        return (T) hibernateTemplate.get(entityClass, entityId);
-    }
+	@Override
+	protected T load() {
+		return hibernateTemplate.get(entityClass, entityId);
+	}
 
-    public static <T extends EntityId> EntityModel<T> of(T object) {
-        return new EntityModel<T>(object);
-    }
+	public static <T extends EntityId> EntityModel<T> of(T object) {
+		return new EntityModel<T>(object);
+	}
 }

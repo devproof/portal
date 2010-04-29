@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -32,86 +34,86 @@ import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
 
-import java.util.List;
-
 /**
  * @author Carsten Hufe
  */
 public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @SpringBean(name = "globalAdminPageRegistry")
-    private GlobalAdminPageRegistry adminPageRegistry;
-    private WebMarkupContainer titleContainer;
+	@SpringBean(name = "globalAdminPageRegistry")
+	private GlobalAdminPageRegistry adminPageRegistry;
+	private WebMarkupContainer titleContainer;
 
-    public GlobalAdminBoxPanel(String id) {
-        super(id);
-        add(createTitleContainer());
-        add(createRepeatingNavExtendable());
-    }
+	public GlobalAdminBoxPanel(String id) {
+		super(id);
+		add(createTitleContainer());
+		add(createRepeatingNavExtendable());
+	}
 
-    private ListView createRepeatingNavExtendable() {
-        IModel<List<Class<? extends Page>>> registeredAdminPageModel = createRegisteredAdminPageModel();
-        return new ListView<Class<? extends Page>>("repeatingNavExtendable", registeredAdminPageModel) {
-            private static final long serialVersionUID = -277523349047078562L;
+	private ListView<?> createRepeatingNavExtendable() {
+		IModel<List<Class<? extends Page>>> registeredAdminPageModel = createRegisteredAdminPageModel();
+		return new ListView<Class<? extends Page>>("repeatingNavExtendable", registeredAdminPageModel) {
+			private static final long serialVersionUID = -277523349047078562L;
 
-            @Override
-            protected void populateItem(ListItem<Class<? extends Page>> item) {
-                Class<? extends Page> pageClass = item.getModelObject();
-                item.add(createAdminLink(pageClass));
-            }
+			@Override
+			protected void populateItem(ListItem<Class<? extends Page>> item) {
+				Class<? extends Page> pageClass = item.getModelObject();
+				item.add(createAdminLink(pageClass));
+			}
 
-            private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
-                BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
-                link.add(createAdminLinkLabel(pageClass));
-                return link;
-            }
-        };
-    }
+			private BookmarkablePageLink<Void> createAdminLink(Class<? extends Page> pageClass) {
+				BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("adminLink", pageClass);
+				link.add(createAdminLinkLabel(pageClass));
+				return link;
+			}
+		};
+	}
 
-    private IModel<List<Class<? extends Page>>> createRegisteredAdminPageModel() {
-        return new LoadableDetachableModel<List<Class<? extends Page>>>() {
-            private static final long serialVersionUID = -4836280928165419121L;
+	private IModel<List<Class<? extends Page>>> createRegisteredAdminPageModel() {
+		return new LoadableDetachableModel<List<Class<? extends Page>>>() {
+			private static final long serialVersionUID = -4836280928165419121L;
 
-            @Override
-            protected List<Class<? extends Page>> load() {
-                return adminPageRegistry.getRegisteredGlobalAdminPages();
-            }
-        };
-    }
+			@Override
+			protected List<Class<? extends Page>> load() {
+				return adminPageRegistry.getRegisteredGlobalAdminPages();
+			}
+		};
+	}
 
-    private Label createAdminLinkLabel(Class<? extends Page> pageClass) {
-        IModel<String> pageClassModel = createPageClassModel(pageClass);
-        return new Label("adminLinkLabel", pageClassModel);
-    }
+	private Label createAdminLinkLabel(Class<? extends Page> pageClass) {
+		IModel<String> pageClassModel = createPageClassModel(pageClass);
+		return new Label("adminLinkLabel", pageClassModel);
+	}
 
-    private AbstractReadOnlyModel<String> createPageClassModel(final Class<? extends Page> pageClass) {
-        return new AbstractReadOnlyModel<String>() {
-            private static final long serialVersionUID = -302528457464799755L;
+	private AbstractReadOnlyModel<String> createPageClassModel(final Class<? extends Page> pageClass) {
+		return new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = -302528457464799755L;
 
-            @Override
-            public String getObject() {
-                return getLinkNameByClass(pageClass);
-            }
-        };
-    }
+			@Override
+			public String getObject() {
+				return getLinkNameByClass(pageClass);
+			}
+		};
+	}
 
-    private String getLinkNameByClass(Class<? extends Page> pageClass) {
-        String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
-        if (StringUtils.isEmpty(label)) {
-            label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
-        }
-        return label;
-    }
+	private String getLinkNameByClass(Class<? extends Page> pageClass) {
+		String label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+				CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+		if (StringUtils.isEmpty(label)) {
+			label = new ClassStringResourceLoader(pageClass).loadStringResource(null,
+					CommonConstants.CONTENT_TITLE_LABEL);
+		}
+		return label;
+	}
 
-    private WebMarkupContainer createTitleContainer() {
-        titleContainer = new WebMarkupContainer("title");
-        return titleContainer;
-    }
+	private WebMarkupContainer createTitleContainer() {
+		titleContainer = new WebMarkupContainer("title");
+		return titleContainer;
+	}
 
-    @Override
-    public void setTitleVisible(boolean visible) {
-        titleContainer.setVisible(visible);
-    }
+	@Override
+	public void setTitleVisible(boolean visible) {
+		titleContainer.setVisible(visible);
+	}
 }

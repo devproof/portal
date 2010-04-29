@@ -15,6 +15,17 @@
  */
 package org.devproof.portal.core.module.common.dao;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.Query;
@@ -25,139 +36,130 @@ import org.junit.Test;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 /**
  * @author Carsten Hufe
  */
 public class GenericHibernateDaoImplTest {
-    private GenericHibernateDaoImpl<EmailTemplateEntity, Integer> impl;
-    private SessionFactory sessionFactory;
-    private Session session;
-    private Query query;
-    private UsernameResolver usernameResolver;
+	private GenericHibernateDaoImpl<EmailTemplateEntity, Integer> impl;
+	private SessionFactory sessionFactory;
+	private Session session;
+	private Query query;
+	private UsernameResolver usernameResolver;
 
-    @Before
-    public void setUp() throws Exception {
-        sessionFactory = createMock(SessionFactory.class);
-        session = createMock(Session.class);
-        query = createMock(Query.class);
-        usernameResolver = createMock(UsernameResolver.class);
-        impl = new GenericHibernateDaoImpl<EmailTemplateEntity, Integer>(EmailTemplateEntity.class);
-        impl.setSessionFactory(sessionFactory);
-        impl.setUsernameResolver(usernameResolver);
-        expect(session.getSessionFactory()).andReturn(sessionFactory);
-        expect(sessionFactory.openSession()).andReturn(session);
-        SessionHolder sessionHolder = new SessionHolder(session);
-        TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
-        expect(session.isOpen()).andReturn(false);
-        expect(session.getSessionFactory()).andReturn(sessionFactory);
-    }
+	@Before
+	public void setUp() throws Exception {
+		sessionFactory = createMock(SessionFactory.class);
+		session = createMock(Session.class);
+		query = createMock(Query.class);
+		usernameResolver = createMock(UsernameResolver.class);
+		impl = new GenericHibernateDaoImpl<EmailTemplateEntity, Integer>(EmailTemplateEntity.class);
+		impl.setSessionFactory(sessionFactory);
+		impl.setUsernameResolver(usernameResolver);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(sessionFactory.openSession()).andReturn(session);
+		SessionHolder sessionHolder = new SessionHolder(session);
+		TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
+		expect(session.isOpen()).andReturn(false);
+		expect(session.getSessionFactory()).andReturn(sessionFactory);
+	}
 
-    @Test
-    public void testFindById() {
-        EmailTemplateEntity expectedTemplates = newEmailTemplate();
-        expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
-        replay(sessionFactory, session);
-        EmailTemplateEntity newTemplate = impl.findById(1);
-        assertEquals(expectedTemplates, newTemplate);
-        verify(session, sessionFactory);
-    }
+	@Test
+	public void testFindById() {
+		EmailTemplateEntity expectedTemplates = newEmailTemplate();
+		expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
+		replay(sessionFactory, session);
+		EmailTemplateEntity newTemplate = impl.findById(1);
+		assertEquals(expectedTemplates, newTemplate);
+		verify(session, sessionFactory);
+	}
 
-    @Test
-    public void testSave() {
-        EmailTemplateEntity template = newEmailTemplate();
-        expect(session.beginTransaction()).andReturn(null);
-        expect(session.merge(template)).andReturn(1);
-        expect(usernameResolver.getUsername()).andReturn("testuser");
-        replay(sessionFactory, session, query, usernameResolver);
-        impl.save(template);
-        verify(session, sessionFactory, query, usernameResolver);
-        assertNotNull(template.getCreatedAt());
-        assertEquals("testuser", template.getCreatedBy());
-        assertNotNull(template.getModifiedAt());
-        assertEquals("testuser", template.getModifiedBy());
-    }
+	@Test
+	public void testSave() {
+		EmailTemplateEntity template = newEmailTemplate();
+		expect(session.beginTransaction()).andReturn(null);
+		expect(session.merge(template)).andReturn(1);
+		expect(usernameResolver.getUsername()).andReturn("testuser");
+		replay(sessionFactory, session, query, usernameResolver);
+		impl.save(template);
+		verify(session, sessionFactory, query, usernameResolver);
+		assertNotNull(template.getCreatedAt());
+		assertEquals("testuser", template.getCreatedBy());
+		assertNotNull(template.getModifiedAt());
+		assertEquals("testuser", template.getModifiedBy());
+	}
 
-    @Test
-    public void testRefresh() {
-        EmailTemplateEntity template = newEmailTemplate();
-        session.refresh(template);
-        replay(sessionFactory, session, query);
-        impl.refresh(template);
-        verify(session, sessionFactory, query);
-    }
+	@Test
+	public void testRefresh() {
+		EmailTemplateEntity template = newEmailTemplate();
+		session.refresh(template);
+		replay(sessionFactory, session, query);
+		impl.refresh(template);
+		verify(session, sessionFactory, query);
+	}
 
-    @Test
-    public void testDelete() {
-        EmailTemplateEntity template = newEmailTemplate();
-        expect(session.beginTransaction()).andReturn(null);
-        session.delete(template);
-        replay(sessionFactory, session, query);
-        impl.delete(template);
-        verify(session, sessionFactory, query);
-    }
+	@Test
+	public void testDelete() {
+		EmailTemplateEntity template = newEmailTemplate();
+		expect(session.beginTransaction()).andReturn(null);
+		session.delete(template);
+		replay(sessionFactory, session, query);
+		impl.delete(template);
+		verify(session, sessionFactory, query);
+	}
 
-    @Test
-    public void testExecuteFinder_UniqueResult() throws Exception {
-        EmailTemplateEntity expectedTemplate = newEmailTemplate();
-        expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
-        expect(query.setParameter(0, "fakeValue")).andReturn(query);
-        expect(query.setFirstResult(0)).andReturn(query);
-        expect(query.setMaxResults(10)).andReturn(query);
-        expect(query.uniqueResult()).andReturn(expectedTemplate);
-        replay(sessionFactory, session, query);
-        Method method = this.getClass().getMethod("methodObject");
-        Object template = impl.executeFinder("Select e from EmailTemplateEntity e where id = ?", new Object[]{"fakeValue"}, method, 0, 10);
-        verify(session, sessionFactory, query);
-        assertEquals(expectedTemplate, template);
-    }
+	@Test
+	public void testExecuteFinder_UniqueResult() throws Exception {
+		EmailTemplateEntity expectedTemplate = newEmailTemplate();
+		expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
+		expect(query.setParameter(0, "fakeValue")).andReturn(query);
+		expect(query.setFirstResult(0)).andReturn(query);
+		expect(query.setMaxResults(10)).andReturn(query);
+		expect(query.uniqueResult()).andReturn(expectedTemplate);
+		replay(sessionFactory, session, query);
+		Method method = this.getClass().getMethod("methodObject");
+		Object template = impl.executeFinder("Select e from EmailTemplateEntity e where id = ?",
+				new Object[] { "fakeValue" }, method, 0, 10);
+		verify(session, sessionFactory, query);
+		assertEquals(expectedTemplate, template);
+	}
 
-    @Test
-    public void testExecuteFinder_ResultList() throws Exception {
-        List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
-        expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
-        expect(query.setParameter(0, "fakeValue")).andReturn(query);
-        expect(query.setFirstResult(0)).andReturn(query);
-        expect(query.setMaxResults(10)).andReturn(query);
-        expect(query.list()).andReturn(expectedTemplates);
-        replay(sessionFactory, session, query);
-        Method method = this.getClass().getMethod("methodList");
-        List<?> templates = (List<?>) impl.executeFinder("Select e from $TYPE e where id = ?", new Object[]{"fakeValue"}, method, 0, 10);
-        verify(session, sessionFactory, query);
-        assertEquals(expectedTemplates.get(0), templates.get(0));
-    }
+	@Test
+	public void testExecuteFinder_ResultList() throws Exception {
+		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
+		expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
+		expect(query.setParameter(0, "fakeValue")).andReturn(query);
+		expect(query.setFirstResult(0)).andReturn(query);
+		expect(query.setMaxResults(10)).andReturn(query);
+		expect(query.list()).andReturn(expectedTemplates);
+		replay(sessionFactory, session, query);
+		Method method = this.getClass().getMethod("methodList");
+		List<?> templates = (List<?>) impl.executeFinder("Select e from $TYPE e where id = ?",
+				new Object[] { "fakeValue" }, method, 0, 10);
+		verify(session, sessionFactory, query);
+		assertEquals(expectedTemplates.get(0), templates.get(0));
+	}
 
-    @Test
-    public void testExecuteUpdate() {
-        expect(session.createQuery("update EmailTemplateEntity set id = 'someValue' where id = ?")).andReturn(query);
-        expect(query.setParameter(0, "fakeValue")).andReturn(query);
-        expect(query.executeUpdate()).andReturn(0);
-        replay(sessionFactory, session, query);
-        impl.executeUpdate("update $TYPE set id = 'someValue' where id = ?", new Object[]{"fakeValue"});
-        verify(session, sessionFactory, query);
-    }
+	@Test
+	public void testExecuteUpdate() {
+		expect(session.createQuery("update EmailTemplateEntity set id = 'someValue' where id = ?")).andReturn(query);
+		expect(query.setParameter(0, "fakeValue")).andReturn(query);
+		expect(query.executeUpdate()).andReturn(0);
+		replay(sessionFactory, session, query);
+		impl.executeUpdate("update $TYPE set id = 'someValue' where id = ?", new Object[] { "fakeValue" });
+		verify(session, sessionFactory, query);
+	}
 
-    private EmailTemplateEntity newEmailTemplate() {
-        EmailTemplateEntity expectedConfig = new EmailTemplateEntity();
-        expectedConfig.setId(1);
-        return expectedConfig;
-    }
+	private EmailTemplateEntity newEmailTemplate() {
+		EmailTemplateEntity expectedConfig = new EmailTemplateEntity();
+		expectedConfig.setId(1);
+		return expectedConfig;
+	}
 
+	public List<?> methodList() {
+		return null;
+	}
 
-    @SuppressWarnings({"UnusedDeclaration"})
-    public List<?> methodList() {
-        return null;
-    }
-
-    @SuppressWarnings({"UnusedDeclaration"})
-    public EmailTemplateEntity methodObject() {
-        return null;
-    }
+	public EmailTemplateEntity methodObject() {
+		return null;
+	}
 }
