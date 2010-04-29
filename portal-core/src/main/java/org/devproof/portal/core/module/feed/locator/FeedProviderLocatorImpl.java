@@ -15,30 +15,30 @@
  */
 package org.devproof.portal.core.module.feed.locator;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.Collection;
-import java.util.Map;
-
 /**
  * Locates the pages of all modules
- *
+ * 
  * @author Carsten Hufe
  */
 public class FeedProviderLocatorImpl implements ApplicationContextAware, FeedProviderLocator {
-    private ApplicationContext context;
+	private ApplicationContext context;
 
-    @Override
-    public Collection<FeedProvider> getFeedProviders() {
-        @SuppressWarnings("unchecked") Map<String, FeedProvider> beans = context.getBeansOfType(FeedProvider.class);
-        return beans.values();
-    }
+	@Override
+	public Collection<FeedProvider> getFeedProviders() {
+		Map<String, FeedProvider> beans = context.getBeansOfType(FeedProvider.class);
+		return beans.values();
+	}
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
-    }
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		context = applicationContext;
+	}
 }

@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.module.comment.panel;
 
+import java.text.SimpleDateFormat;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -24,89 +26,84 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.panel.UsernamePanel;
-import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.entity.CommentEntity;
-
-import java.text.SimpleDateFormat;
 
 /**
  * @author Carsten Hufe
  */
 public class CommentInfoPanel extends Panel {
-    private static final long serialVersionUID = 1L;
-    @SpringBean(name = "displayDateTimeFormat")
-    private SimpleDateFormat dateFormat;
-    @SpringBean(name = "configurationService")
-    private ConfigurationService configurationService;
-    @SpringBean(name = "userService")
-    private UserService userService;
-    private IModel<CommentEntity> commentModel;
+	private static final long serialVersionUID = 1L;
+	@SpringBean(name = "displayDateTimeFormat")
+	private SimpleDateFormat dateFormat;
+	@SpringBean(name = "configurationService")
+	private ConfigurationService configurationService;
+	private IModel<CommentEntity> commentModel;
 
-    public CommentInfoPanel(String id, IModel<CommentEntity> commentModel) {
-        super(id);
-        this.commentModel = commentModel;
-        add(createCreatedContainer());
-    }
+	public CommentInfoPanel(String id, IModel<CommentEntity> commentModel) {
+		super(id);
+		this.commentModel = commentModel;
+		add(createCreatedContainer());
+	}
 
-    private WebMarkupContainer createCreatedContainer() {
-        WebMarkupContainer created = new WebMarkupContainer("created");
-        created.add(createCreatedAtLabel());
-        created.add(createCreatedUsernamePanel());
-        return created;
-    }
+	private WebMarkupContainer createCreatedContainer() {
+		WebMarkupContainer created = new WebMarkupContainer("created");
+		created.add(createCreatedAtLabel());
+		created.add(createCreatedUsernamePanel());
+		return created;
+	}
 
-    private UsernamePanel createCreatedUsernamePanel() {
-        return new UsernamePanel("createdBy", createCreatedByUserModel()) {
-            private static final long serialVersionUID = -6323896736697531921L;
+	private UsernamePanel createCreatedUsernamePanel() {
+		return new UsernamePanel("createdBy", createCreatedByUserModel()) {
+			private static final long serialVersionUID = -6323896736697531921L;
 
-            @Override
-            protected boolean showRealName() {
-                return showRealAuthorName();
-            }
+			@Override
+			protected boolean showRealName() {
+				return showRealAuthorName();
+			}
 
-            @Override
-            protected boolean contactFormEnabled() {
-                CommentEntity comment = commentModel.getObject();
-                return StringUtils.isBlank(comment.getGuestName());
-            }
-        };
-    }
+			@Override
+			protected boolean contactFormEnabled() {
+				CommentEntity comment = commentModel.getObject();
+				return StringUtils.isBlank(comment.getGuestName());
+			}
+		};
+	}
 
-    private Label createCreatedAtLabel() {
-        AbstractReadOnlyModel<Object> createdAtModel = createCreatedAtModel();
-        return new Label("createdAt", createdAtModel);
-    }
+	private Label createCreatedAtLabel() {
+		AbstractReadOnlyModel<Object> createdAtModel = createCreatedAtModel();
+		return new Label("createdAt", createdAtModel);
+	}
 
-    private AbstractReadOnlyModel<Object> createCreatedAtModel() {
-        return new AbstractReadOnlyModel<Object>() {
-            private static final long serialVersionUID = 3325298161009039240L;
+	private AbstractReadOnlyModel<Object> createCreatedAtModel() {
+		return new AbstractReadOnlyModel<Object>() {
+			private static final long serialVersionUID = 3325298161009039240L;
 
-            @Override
-            public Object getObject() {
-                CommentEntity comment = commentModel.getObject();
-                return dateFormat.format(comment.getCreatedAt());
-            }
-        };
-    }
+			@Override
+			public Object getObject() {
+				CommentEntity comment = commentModel.getObject();
+				return dateFormat.format(comment.getCreatedAt());
+			}
+		};
+	}
 
-    private boolean showRealAuthorName() {
-        return configurationService.findAsBoolean(CommentConstants.CONF_SHOW_REAL_AUTHOR);
-    }
+	private boolean showRealAuthorName() {
+		return configurationService.findAsBoolean(CommentConstants.CONF_SHOW_REAL_AUTHOR);
+	}
 
-    private IModel<String> createCreatedByUserModel() {
-        return new AbstractReadOnlyModel<String>() {
-            private static final long serialVersionUID = 2143000810085055343L;
+	private IModel<String> createCreatedByUserModel() {
+		return new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 2143000810085055343L;
 
-            @Override
-            public String getObject() {
-                CommentEntity comment = commentModel.getObject();
-                if (StringUtils.isBlank(comment.getGuestName())) {
-                    return comment.getCreatedBy();
-                } else {
-                    return getString("guestPrefix") + comment.getGuestName();
-                }
-            }
-        };
-    }
+			@Override
+			public String getObject() {
+				CommentEntity comment = commentModel.getObject();
+				if (StringUtils.isBlank(comment.getGuestName())) {
+					return comment.getCreatedBy();
+				} else {
+					return getString("guestPrefix") + comment.getGuestName();
+				}
+			}
+		};
+	}
 }
