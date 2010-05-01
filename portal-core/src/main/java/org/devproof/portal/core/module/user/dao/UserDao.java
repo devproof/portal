@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.module.user.dao;
 
+import java.util.List;
+
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
@@ -22,28 +24,26 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 
-import java.util.List;
-
 /**
  * @author Carsten Hufe
  */
 @CacheQuery(region = UserConstants.QUERY_CACHE_REGION)
 public interface UserDao extends GenericDao<UserEntity, Integer> {
-    @Query("select u from UserEntity u join fetch u.role r join fetch r.rights where u.username like ?")
-    UserEntity findUserByUsername(String username);
+	@Query("select u from UserEntity u join fetch u.role r join fetch r.rights where u.username like ?")
+	UserEntity findUserByUsername(String username);
 
-    @Query("select u from UserEntity u where u.sessionId = ?")
-    UserEntity findUserBySessionId(String sessionId);
+	@Query("select u from UserEntity u where u.sessionId = ?")
+	UserEntity findUserBySessionId(String sessionId);
 
-    @Query("select distinct u from UserEntity u where u.email like ?")
-    List<UserEntity> findUserByEmail(String email);
+	@Query("select u from UserEntity u where u.email like ?")
+	List<UserEntity> findUserByEmail(String email);
 
-    @Query("select count(u) from UserEntity u where u.username like ?")
-    long existsUsername(String username);
+	@Query("select count(u) from UserEntity u where u.username like ?")
+	long existsUsername(String username);
 
-    @Query("select count(u) from UserEntity u where u.role = ?")
-    Long countUserForRole(RoleEntity role);
+	@Query("select count(u) from UserEntity u where u.role = ?")
+	Long countUserForRole(RoleEntity role);
 
-    @Query(value = "select distinct(u) from UserEntity u join u.role.rights as r where r.right = ?")
-    List<UserEntity> findUserWithRight(String right);
+	@Query(value = "select distinct(u) from UserEntity u join u.role.rights as r where r.right = ?")
+	List<UserEntity> findUserWithRight(String right);
 }
