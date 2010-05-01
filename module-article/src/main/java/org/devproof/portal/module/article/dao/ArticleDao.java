@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.module.article.dao;
 
+import java.util.List;
+
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
@@ -22,8 +24,6 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
-
-import java.util.List;
 
 /**
  * @author Carsten Hufe
@@ -37,7 +37,9 @@ public interface ArticleDao extends GenericDao<ArticleEntity, Integer> {
     @Query("select a from ArticleEntity a where a.contentId = ?")
     ArticleEntity findByContentId(String contentId);
 
-    @Query(value = "select distinct(a) from ArticleEntity a join a.allRights vr" + " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'article.view%') order by a.modifiedAt desc", limitClause = true)
+    @Query(value = "select a from ArticleEntity a where " +
+    		"exists(from ArticleEntity ea left join ea.allRights ar where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'article.view%') and a = ea) " +
+					"order by a.modifiedAt desc", limitClause = true)
     List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
     @Query("select count(a) from ArticleEntity a where a.contentId like ?")

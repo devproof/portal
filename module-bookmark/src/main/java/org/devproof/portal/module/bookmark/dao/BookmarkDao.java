@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.module.bookmark.dao;
 
+import java.util.List;
+
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -25,25 +27,25 @@ import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 
-import java.util.List;
-
 /**
  * @author Carsten Hufe
  */
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
 public interface BookmarkDao extends GenericDao<BookmarkEntity, Integer> {
-    @Query("Select distinct(b) from BookmarkEntity b")
+    @Query("Select b from BookmarkEntity b")
     List<BookmarkEntity> findAll();
 
     @CacheQuery(enabled = false)
     @Query("select b.allRights from BookmarkEntity b where b.modifiedAt = (select max(modifiedAt) from BookmarkEntity)")
     List<RightEntity> findLastSelectedRights();
 
-    @Query(value = "select distinct(b) from BookmarkEntity b join b.allRights vr" + " where vr in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'bookmark.view%') order by b.modifiedAt desc", limitClause = true)
+    @Query(value = "select b from BookmarkEntity b where exists(from BookmarkEntity eb left join eb.allRights ar "
+			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = eb)" +
+					" order by b.modifiedAt desc", limitClause = true)
     List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-    @Query("select distinct b from BookmarkEntity b left join fetch b.tags where b.source = ?")
-    List<BookmarkEntity> findBookmarksBySource(final Source source);
+    @Query("select b from BookmarkEntity b where b.source = ?")
+    List<BookmarkEntity> findBookmarksBySource(Source source);
 
     @BulkUpdate("update BookmarkEntity b set b.hits = (b.hits + 1) where b = ?")
     void incrementHits(BookmarkEntity bookmark);

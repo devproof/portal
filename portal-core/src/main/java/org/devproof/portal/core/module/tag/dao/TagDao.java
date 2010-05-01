@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.module.tag.dao;
 
+import java.util.List;
+
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -22,22 +24,25 @@ import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.TagConstants;
 
-import java.util.List;
-
 /**
  * @author Carsten Hufe
  */
 @CacheQuery(region = TagConstants.QUERY_CACHE_REGION)
 public interface TagDao<T> extends GenericDao<T, String> {
-    @Query("select distinct(t) from $TYPE t where t.tagname like ?||'%'")
+    @Query("select t from $TYPE t where t.tagname like ?||'%'")
     List<T> findTagsStartingWith(String prefix);
 
     @BulkUpdate("delete from $TYPE t where size(t.referencedObjects) = 0")
     void deleteUnusedTags();
 
-    @Query(value = "select distinct(t) from $TYPE t order by size(t.referencedObjects) desc", limitClause = true)
+    @Query(value = "select t from $TYPE t order by size(t.referencedObjects) desc", limitClause = true)
     List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
 
-    @Query(value = "select distinct(t) from $TYPE t join t.referencedObjects ro join ro.allRights ar where " + "ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like ?||'%') order by size(t.referencedObjects) desc", limitClause = true)
+//    @Query(value = "select distinct(t) from $TYPE t join t.referencedObjects ro join ro.allRights ar where " 
+//    	+ "ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like ?||'%') " +
+//    			"order by size(t.referencedObjects) desc", limitClause = true)
+    @Query(value = "select t from $TYPE t where exists(from $TYPE et join et.referencedObjects ro left join ro.allRights ar "
+			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like ?||'%') and t = et) " +
+    			"order by size(t.referencedObjects) desc", limitClause = true)
     List<T> findMostPopularTags(RoleEntity role, String viewRight, Integer firstResult, Integer maxResult);
 }
