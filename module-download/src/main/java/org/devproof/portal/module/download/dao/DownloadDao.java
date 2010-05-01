@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.module.download.dao;
 
+import java.util.List;
+
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -24,21 +26,21 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 
-import java.util.List;
-
 /**
  * @author Carsten Hufe
  */
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
 public interface DownloadDao extends GenericDao<DownloadEntity, Integer> {
-    @Query("Select distinct(d) from DownloadEntity d")
+    @Query("Select d from DownloadEntity d")
     List<DownloadEntity> findAll();
 
     @CacheQuery(enabled = false)
     @Query("select d.allRights from DownloadEntity d where d.modifiedAt = (select max(modifiedAt) from DownloadEntity)")
     List<RightEntity> findLastSelectedRights();
 
-    @Query(value = "select distinct(d) from DownloadEntity d join d.allRights ar" + " where ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like 'download.view%') order by d.modifiedAt desc", limitClause = true)
+    @Query(value = "select d from DownloadEntity d where exists(from DownloadEntity ed left join ed.allRights ar "
+			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'download.view%') and d = ed)" +
+					" order by d.modifiedAt desc", limitClause = true)
     List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
     @BulkUpdate("update DownloadEntity d set d.hits = (d.hits + 1) where d = ?")

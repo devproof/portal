@@ -15,22 +15,22 @@
  */
 package org.devproof.portal.core.module.configuration.dao;
 
+import java.util.List;
+
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
-
-import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
 public interface ConfigurationDao extends GenericDao<ConfigurationEntity, String> {
-    @Query("Select distinct(c) from ConfigurationEntity c")
+    @Query("Select c from ConfigurationEntity c")
     List<ConfigurationEntity> findAll();
 
     @Query("Select distinct(c.group) from ConfigurationEntity c where c.group not like 'hidden' order by c.group")
     List<String> findConfigurationGroups();
 
-    @Query("Select distinct(c) from ConfigurationEntity c where c.group = ? and c.key not like 'hidden.%' order by c.description")
+    @Query("Select c from ConfigurationEntity c where c.group = ? and c.key not like 'hidden.%' order by c.description")
     List<ConfigurationEntity> findConfigurationsByGroup(String group);
 }
