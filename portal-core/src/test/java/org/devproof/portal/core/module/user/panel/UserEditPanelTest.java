@@ -54,6 +54,7 @@ public class UserEditPanelTest {
         tester.startPanel(TestUserEditPanel.class);
         tester.assertComponent("panel", TestUserEditPanel.class);
         FormTester ft = tester.newFormTester("panel:form");
+        ft.setValue("username", "peterpan");
         ft.setValue("firstname", "Peter");
         ft.setValue("lastname", "Pan");
         ft.setValue("email", "peterpan@email.tld");
