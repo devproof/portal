@@ -63,6 +63,11 @@
                 <include name="update_from_1.0-rc2_to_1.0-rc3_mysql*.sql"/>
             </fileset>
         </concat>
+        <concat destfile="${targetsql}/update/update_from_1.0-rc3_to_1.0-rc4_mysql.sql">
+            <fileset dir="${targetsql}/sql/update/">
+                <include name="update_from_1.0-rc3_to_1.0-rc4_mysql*.sql"/>
+            </fileset>
+        </concat>
         <delete dir="${targetsql}/sql/"/>
     </target>
     <!-- Create HSQL DB for quickstartup -->
