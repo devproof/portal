@@ -15,6 +15,12 @@
  */
 package org.devproof.portal.module.deadlinkcheck.panel;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
@@ -35,12 +41,6 @@ import org.devproof.portal.core.module.common.component.Progression;
 import org.devproof.portal.core.module.common.component.ProgressionModel;
 import org.devproof.portal.core.module.common.util.httpclient.ssl.EasySSLProtocolSocketFactory;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
 
 /**
  * Panel for checking deadlinks (bookmarks and downloads)
@@ -107,6 +107,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel
                         threadActive = true;
                         Protocol.registerProtocol("https", new Protocol("https", new EasySSLProtocolSocketFactory(), 443));
                         List<T> listToCheck = listToCheckModel.getObject();
+                        maxItem = listToCheck.size();
                         for (T link : listToCheck) {
                             if (!threadActive) {
                                 return;

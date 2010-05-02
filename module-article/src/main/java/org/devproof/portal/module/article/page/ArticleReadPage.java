@@ -67,9 +67,9 @@ public class ArticleReadPage extends ArticleBasePage {
 	public ArticleReadPage(PageParameters params) {
 		super(params);
 		this.params = params;
+		this.contentId = getContentId();
 		this.currentPageNumber = getCurrentPageNumber();
 		this.numberOfPages = getPageCount();
-		this.contentId = getContentId();
 		this.displayedPageModel = createDisplayedPageModel();
 		add(createTitleLabel());
 		add(createMetaInfoPanel());
