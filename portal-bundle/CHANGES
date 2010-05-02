@@ -1,6 +1,10 @@
 Devproof Portal 1.0-rc4
 -----------------------
 - Caching algorithm changed from LFU to LRU
+- Missing testcases added
+- Some bugfixes
+- External frameworks updated
+- Oracle support
 
 Devproof Portal 1.0-rc3
 -----------------------
