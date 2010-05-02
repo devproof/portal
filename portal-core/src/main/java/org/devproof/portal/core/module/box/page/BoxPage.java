@@ -26,7 +26,11 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.panel.BoxEditPanel;
@@ -125,7 +129,6 @@ public class BoxPage extends TemplatePage {
 
     private class BoxDataView extends DataView<BoxEntity> {
         private static final long serialVersionUID = 1L;
-        private IModel<BoxEntity> boxModel;
 
         public BoxDataView(String id) {
             super(id, boxDataProvider);
@@ -133,13 +136,13 @@ public class BoxPage extends TemplatePage {
 
         @Override
         protected void populateItem(Item<BoxEntity> item) {
-            boxModel = item.getModel();
-            item.add(createSortLabel());
-            item.add(createTypeLabel());
-            item.add(createTitleLabel());
-            item.add(createAuthorPanel());
-            item.add(createMoveUpLink());
-            item.add(createMoveDownLink());
+            IModel<BoxEntity> boxModel = item.getModel();
+            item.add(createSortLabel(boxModel));
+            item.add(createTypeLabel(boxModel));
+            item.add(createTitleLabel(boxModel));
+            item.add(createAuthorPanel(boxModel));
+            item.add(createMoveUpLink(boxModel));
+            item.add(createMoveDownLink(boxModel));
             item.add(createClassEvenOddModifier(item));
         }
 
@@ -154,8 +157,8 @@ public class BoxPage extends TemplatePage {
             });
         }
 
-        private MarkupContainer createMoveDownLink() {
-            AjaxLink<BoxEntity> moveDownLink = newMoveDownLink();
+        private MarkupContainer createMoveDownLink(IModel<BoxEntity> boxModel) {
+            AjaxLink<BoxEntity> moveDownLink = newMoveDownLink(boxModel);
             moveDownLink.add(createMoveDownLinkImage());
             return moveDownLink;
         }
@@ -164,7 +167,7 @@ public class BoxPage extends TemplatePage {
             return new Image("downImage", CommonConstants.REF_DOWN_IMG);
         }
 
-        private AjaxLink<BoxEntity> newMoveDownLink() {
+        private AjaxLink<BoxEntity> newMoveDownLink(final IModel<BoxEntity> boxModel) {
             return new AjaxLink<BoxEntity>("downLink") {
                 private static final long serialVersionUID = 1L;
 
@@ -176,8 +179,8 @@ public class BoxPage extends TemplatePage {
             };
         }
 
-        private MarkupContainer createMoveUpLink() {
-            AjaxLink<BoxEntity> moveUpLink = newMoveUpLink();
+        private MarkupContainer createMoveUpLink(IModel<BoxEntity> boxModel) {
+            AjaxLink<BoxEntity> moveUpLink = newMoveUpLink(boxModel);
             moveUpLink.add(createMoveUpLinkImage());
             return moveUpLink;
         }
@@ -186,7 +189,7 @@ public class BoxPage extends TemplatePage {
             return new Image("upImage", CommonConstants.REF_UP_IMG);
         }
 
-        private AjaxLink<BoxEntity> newMoveUpLink() {
+        private AjaxLink<BoxEntity> newMoveUpLink(final IModel<BoxEntity> boxModel) {
             return new AjaxLink<BoxEntity>("upLink") {
                 private static final long serialVersionUID = 1L;
 
@@ -198,7 +201,7 @@ public class BoxPage extends TemplatePage {
             };
         }
 
-        private AuthorPanel<BoxEntity> createAuthorPanel() {
+        private AuthorPanel<BoxEntity> createAuthorPanel(final IModel<BoxEntity> boxModel) {
             return new AuthorPanel<BoxEntity>("authorButtons", boxModel) {
                 private static final long serialVersionUID = 1L;
 
@@ -236,17 +239,17 @@ public class BoxPage extends TemplatePage {
             };
         }
 
-        private Label createTitleLabel() {
+        private Label createTitleLabel(IModel<BoxEntity> boxModel) {
             IModel<String> titleModel = new PropertyModel<String>(boxModel, "title");
             return new Label("title", titleModel);
         }
 
-        private Label createTypeLabel() {
-            IModel<String> typeModel = typeModel();
+        private Label createTypeLabel(IModel<BoxEntity> boxModel) {
+            IModel<String> typeModel = typeModel(boxModel);
             return new Label("type", typeModel);
         }
 
-        private IModel<String> typeModel() {
+        private IModel<String> typeModel(final IModel<BoxEntity> boxModel) {
             return new LoadableDetachableModel<String>() {
                 private static final long serialVersionUID = 3674902001006638462L;
 
@@ -258,7 +261,7 @@ public class BoxPage extends TemplatePage {
             };
         }
 
-        private Label createSortLabel() {
+        private Label createSortLabel(IModel<BoxEntity> boxModel) {
             IModel<Integer> sortModel = new PropertyModel<Integer>(boxModel, "title");
             return new Label("sort", sortModel);
         }
