@@ -15,16 +15,30 @@
  */
 package org.devproof.portal.core.module.user.panel;
 
+import java.util.List;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.CheckBox;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
@@ -35,8 +49,6 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.service.UserService;
-
-import java.util.List;
 
 /**
  * @author Carsten Hufe
@@ -183,13 +195,23 @@ public abstract class UserEditPanel extends Panel {
     }
 
     private FormComponent<String> createUsernameField() {
-        FormComponent<String> fc = new RequiredTextField<String>("username");
+        FormComponent<String> fc = newUsernameField();
         fc.add(StringValidator.lengthBetween(3, 30));
         fc.add(createExistingUsernameValidator());
         fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
-        fc.setEnabled(false);
         return fc;
     }
+
+	private FormComponent<String> newUsernameField() {
+		return new RequiredTextField<String>("username") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isEnabled() {
+				return userModel.getObject().getId() == null;
+			}
+        	
+        };
+	}
 
     private AbstractValidator<String> createExistingUsernameValidator() {
         return new AbstractValidator<String>() {
