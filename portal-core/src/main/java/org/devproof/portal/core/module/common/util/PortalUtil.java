@@ -15,8 +15,19 @@
  */
 package org.devproof.portal.core.module.common.util;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+
 import org.apache.commons.lang.UnhandledException;
-import org.apache.wicket.*;
+import org.apache.wicket.Component;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.model.util.MapModel;
@@ -27,13 +38,6 @@ import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.user.entity.UserEntity;
-
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * @author Carsten Hufe
@@ -171,7 +175,7 @@ public class PortalUtil {
     }
 
     public static void addJQuery(Component component) {
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery-1.4.1.min.js"));
+        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery-1.4.2.min.js"));
         component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery.center.js"));
     }
 
