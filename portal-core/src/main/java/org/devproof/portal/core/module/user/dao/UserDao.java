@@ -44,6 +44,6 @@ public interface UserDao extends GenericDao<UserEntity, Integer> {
 	@Query("select count(u) from UserEntity u where u.role = ?")
 	Long countUserForRole(RoleEntity role);
 
-	@Query(value = "from UserEntity where exists (from UserEntity u join u.role.rights as r where r.right = ?)")
+	@Query(value = "from UserEntity u where exists (from UserEntity eu join eu.role.rights as r where r.right = ? and eu = u)")
 	List<UserEntity> findUserWithRight(String right);
 }
