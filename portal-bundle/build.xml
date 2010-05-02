@@ -43,6 +43,20 @@
                 <exclude name="*core.sql"/>
             </fileset>
         </concat>
+        <!-- Create oracle -->
+        <concat destfile="${targetsql}/install_devproof_oracle.sql">
+            <!-- create core issues at first -->
+            <fileset dir="${targetsql}/sql/create/">
+                <include name="create_tables_oracle_core.sql"/>
+                <include name="insert_core.sql"/>
+            </fileset>
+            <!-- then create other modules -->
+            <fileset dir="${targetsql}/sql/create/">
+                <include name="create_tables_oracle_*.sql"/>
+                <include name="insert_*.sql"/>
+                <exclude name="*core.sql"/>
+            </fileset>
+        </concat>
         <!-- update scripts -->
         <concat destfile="${targetsql}/update/update_from_1.0-rc2_to_1.0-rc3_mysql.sql">
             <fileset dir="${targetsql}/sql/update/">

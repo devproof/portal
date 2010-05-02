@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- The contents of this file will be loaded for each web application -->
+<Context docBase="../../war/devproof-portal-@devproof.version@.war">
+    <Environment name="/config/devproof/hibernate_dialect" value="org.hibernate.dialect.Oracle10gDialect"
+                 type="java.lang.String"/>
+
+    <Resource name="jdbc/devproof/portal" auth="Container" type="javax.sql.DataSource"
+              maxActive="100" maxIdle="10" maxWait="10000"
+              removeAbandoned="true" removeAbandonedTimeout="300" logAbandoned="true"
+              testWhileIdle="true" timeBetweenEvictionRunsMillis="3600000"
+              username="devproof" password="devproof" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@localhost:1521:XE"/>
+
+    <Resource name="mail/Session" auth="Container" type="javax.mail.Session"
+              mail.smtp.host="localhost" mail.smtp.auth="false"
+              mail.transport.protocol="smtp" mail.smtp.port="25"/>
+
+</Context>
