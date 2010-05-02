@@ -17,8 +17,8 @@ CREATE TABLE `comments` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-CREATE INDEX module_name_idx ON comment (module_name);
-CREATE INDEX module_content_id_idx ON comment (module_content_id);
-CREATE INDEX module_accepted_idx ON comment (accepted);
-CREATE INDEX module_reviewed_idx ON comment (reviewed);
-CREATE INDEX module_automatic_blocked_idx ON comment (automatic_blocked);
+CREATE INDEX module_name_idx ON comments (module_name);
+CREATE INDEX module_content_id_idx ON comments (module_content_id);
+CREATE INDEX module_accepted_idx ON comments (accepted);
+CREATE INDEX module_reviewed_idx ON comments (reviewed);
+CREATE INDEX module_automatic_blocked_idx ON comments (automatic_blocked);
