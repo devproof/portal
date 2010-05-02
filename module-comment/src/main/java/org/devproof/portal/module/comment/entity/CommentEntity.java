@@ -15,19 +15,25 @@
  */
 package org.devproof.portal.module.comment.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
-
 /**
  * @author Carsten Hufe
  */
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 @CacheQuery(region = CommentConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommentConstants.ENTITY_CACHE_REGION)
 final public class CommentEntity extends BaseEntity {
@@ -41,7 +47,7 @@ final public class CommentEntity extends BaseEntity {
     @Column(name = "guest_email", length = 50)
     private String guestEmail;
     @Lob
-    @Column(name = "comment")
+    @Column(name = "content")
     private String comment;
     // ipv6 length
     @Column(name = "ip_address", length = 39)

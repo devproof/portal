@@ -1,4 +1,4 @@
-CREATE TABLE `comment` (
+CREATE TABLE `comments` (
   `id` int(11) NOT NULL auto_increment,
   `created_at` datetime  not null,
   `created_by` varchar(30)  not null,
@@ -6,7 +6,7 @@ CREATE TABLE `comment` (
   `modified_by` varchar(30)  not null,
   `guest_name` varchar(50) default NULL,
   `guest_email` varchar(50) default NULL,
-  `comment` text  not null,
+  `content` text  not null,
   `ip_address` varchar(39)  not null,
   `number_of_blames` int(11) default 0,
   `accepted` bit(1)  not null,
