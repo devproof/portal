@@ -41,6 +41,6 @@ public interface CommentDao extends GenericDao<CommentEntity, Integer> {
     @Query("select count(c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.automaticBlocked = false and ((c.accepted = true and c.reviewed = true) or c.reviewed = false)")
     long findNumberOfComments(String moduleName, String moduleContentId);
 
-    @Query("select c.moduleName from CommentEntity c")
+    @Query("select distinct c.moduleName from CommentEntity c")
     List<String> findAllModuleNames();
 }
