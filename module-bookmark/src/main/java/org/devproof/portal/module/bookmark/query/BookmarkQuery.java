@@ -125,7 +125,7 @@ public class BookmarkQuery implements SearchQuery {
 		if (StringUtils.isNotBlank(tagname)) {
 			params.put(TagConstants.TAG_PARAM, tagname);
 		}
-		if (broken != null) {
+		if (isAuthor() && broken != null) {
 			params.put(BROKEN_PARAM, broken);
 		}
 		return params;
