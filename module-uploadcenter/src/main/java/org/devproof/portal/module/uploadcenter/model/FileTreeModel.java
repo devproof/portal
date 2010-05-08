@@ -53,10 +53,11 @@ public class FileTreeModel implements TreeModel, Serializable {
     private DefaultMutableTreeNode getNode(File file) {
         if (file.isDirectory()) {
             DefaultMutableTreeNode folderNode = new DefaultMutableTreeNode(new FileBean(file, dateFormat));
-            for (File tmpFile : file.listFiles()) {
-            	if(tmpFile != null) {
-            		folderNode.add(getNode(tmpFile));
-            	}
+            File[] tmpFiles = file.listFiles();
+            if(tmpFiles != null) {
+				for (File tmpFile : tmpFiles) {
+	            	folderNode.add(getNode(tmpFile));
+	            }
             }
             return folderNode;
         } else {
