@@ -15,20 +15,21 @@
  */
 package org.devproof.portal.module.uploadcenter.model;
 
-import org.apache.wicket.injection.web.InjectorHolder;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
-import org.devproof.portal.module.uploadcenter.bean.FileBean;
+import java.io.File;
+import java.io.Serializable;
+import java.text.DateFormat;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import java.io.File;
-import java.io.Serializable;
-import java.text.DateFormat;
+
+import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
+import org.devproof.portal.module.uploadcenter.bean.FileBean;
 
 /**
  * @author Carsten Hufe
@@ -53,7 +54,9 @@ public class FileTreeModel implements TreeModel, Serializable {
         if (file.isDirectory()) {
             DefaultMutableTreeNode folderNode = new DefaultMutableTreeNode(new FileBean(file, dateFormat));
             for (File tmpFile : file.listFiles()) {
-                folderNode.add(getNode(tmpFile));
+            	if(tmpFile != null) {
+            		folderNode.add(getNode(tmpFile));
+            	}
             }
             return folderNode;
         } else {
