@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.module.tag.panel;
 
+import java.util.List;
+
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
 import org.apache.wicket.behavior.HeaderContributor;
@@ -30,8 +32,6 @@ import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.core.module.tag.TagUtils;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
-
-import java.util.List;
 
 /**
  * For displaying the tags and mark if one is selected
@@ -54,8 +54,11 @@ public class TagContentPanel<T extends BaseTagEntity<?>> extends Panel {
 
     private RepeatingView createRepeatingTags() {
         RepeatingView repeating = new RepeatingView("repeatingTags");
-        for (T tag : tagModel.getObject()) {
-            repeating.add(createTagItem(repeating.newChildId(), tag));
+        List<T> tags = tagModel.getObject();
+        if(tags != null) {
+			for (T tag : tags) {
+	            repeating.add(createTagItem(repeating.newChildId(), tag));
+	        }
         }
         return repeating;
     }
