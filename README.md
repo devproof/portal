@@ -1,7 +1,7 @@
 [Devproof Portal](http://portal.devproof.org/)
 ==============================================
 
-Project Page: (http://portal.devproof.org)[http://portal.devproof.org]
+Project Page: [http://portal.devproof.org](http://portal.devproof.org)
 
 What you need to build your own Devproof Portal
 -----------------------------------------------
