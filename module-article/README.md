@@ -2,6 +2,7 @@ Devproof module
 ===============
 
 The SQLs are in /src/main/resources/sql and must follow these naming convensions:
+
 * create_tables_hsql_<yourmodule>.sql for the HSQL create tables script.
 * create_tables_mysql_<yourmodule>.sql for the MySQL create tables script.
 * insert_<yourmodule>.sql for the inserts (will used for HSQL and MySQL)
@@ -15,6 +16,7 @@ The versions must be configured in the maven pom.xml file and in the devproof-mo
 Project structure:
 
 package org.devproof.portal.module.<yourmodule>
+
 * dao contains the generic DAO interfaces
 * entity contains the JPA/Hibernate entities
 * page contains the wicket pages
