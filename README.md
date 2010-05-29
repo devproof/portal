@@ -1,7 +1,7 @@
 [Devproof Portal](http://portal.devproof.org/)
 ==============================================
 
-Project Page: http://portal.devproof.org
+Project Page: (http://portal.devproof.org)[http://portal.devproof.org]
 
 What you need to build your own Devproof Portal
 -----------------------------------------------
@@ -13,8 +13,7 @@ What you need to build your own Devproof Portal
 How to build your own Devproof Portal
 -------------------------------------
 
-In the main directory of the distribution , type
-the following to build the project:
+In the main directory of the distribution, type the following to build the project:
 
 `mvn clean install`
 
@@ -23,9 +22,6 @@ Run the Apache Tomcat under
 
 for Windows `portal-bundle/devproof-portal-1.0-rc4-with-tomcat6/apache-tomcat-6.x.x/bin/startup.bat`
 
-or 
-
 for Linux `portal-bundle/devproof-portal-1.0-rc4-with-tomcat6/apache-tomcat-6.x.x/bin/startup.sh`
-
 
 Find more information on http://www.devproof.org/article/portal_getting_started
