@@ -9,18 +9,18 @@ The SQLs are in */src/main/resources/sql* and must follow these naming convensio
 
 All SQL files will be bundled in the JAR file and later extracted to concatinate it. 
 In the portal-webapp project the SQL files of all modules will be concatinated.
-You will find the SQL files under */portal-bundle/target/sql/*:
+You will find the SQL files under */portal-bundle/target/sql/*
 
 * install_devproof_hsql.sql
 * install_devproof_mysql.sql
 * install_devproof_oracle.sql
 
-The versions must be configured in the maven *pom.xml* file and in the devproof-module.xml
+The versions must be configured in the maven *pom.xml* file and in the *devproof-module.xml*
 
-Project structure:
--------------------------
+Project structure
+-----------------------
 
-package org.devproof.portal.module.<yourmodule>
+package *org.devproof.portal.module.yourmodule*
 
 * dao contains the generic DAO interfaces
 * entity contains the JPA/Hibernate entities
