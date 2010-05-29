@@ -1,7 +1,7 @@
 Devproof module
 ===============
 
-The SQLs are in /src/main/resources/sql and must follow these naming convensions:
+The SQLs are in */src/main/resources/sql* and must follow these naming convensions:
 
 * create_tables_hsql_<yourmodule>.sql for the HSQL create tables script.
 * create_tables_mysql_<yourmodule>.sql for the MySQL create tables script.
