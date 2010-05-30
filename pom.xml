@@ -28,8 +28,8 @@
     <version>FIXED</version>
 
     <properties>
-        <devproof.version>1.0-rc4</devproof.version>
-        <wicket.version>1.4.8</wicket.version>
+        <devproof.version>1.0-rc5-SNAPSHOT</devproof.version>
+        <wicket.version>1.4.9</wicket.version>
 		<spring.version>3.0.2.RELEASE</spring.version>
 		<hibernate.version>3.5.1-Final</hibernate.version>
         <jetty.version>6.1.19</jetty.version>
@@ -175,11 +175,6 @@
             <version>1.1</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-        <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.2.2</version>
@@ -208,11 +203,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-mock</artifactId>
-            <version>2.0.8</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -284,7 +274,7 @@
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-            <version>2.0.1</version>
+            <version>2.1.0</version>
             <!-- <type>pom</type>-->
         </dependency>
         <!-- Test dependencies -->
