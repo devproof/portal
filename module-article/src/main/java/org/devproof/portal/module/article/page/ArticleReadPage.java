@@ -21,6 +21,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -113,12 +114,16 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	private Component createCommentPanel() {
 		DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-		ArticleEntity article = displayedPageModel.getObject().getArticle();
-		conf.setModuleContentId(article.getId().toString());
-		conf.setModuleName(ArticlePage.class.getSimpleName());
-		conf.setViewRights(article.getCommentViewRights());
-		conf.setWriteRights(article.getCommentWriteRights());
-		return new ExpandableCommentPanel("comments", conf);
+		ArticlePageEntity articlePage = displayedPageModel.getObject();
+		if(articlePage != null) {
+			ArticleEntity article = articlePage.getArticle();
+			conf.setModuleContentId(article.getId().toString());
+			conf.setModuleName(ArticlePage.class.getSimpleName());
+			conf.setViewRights(article.getCommentViewRights());
+			conf.setWriteRights(article.getCommentWriteRights());
+			return new ExpandableCommentPanel("comments", conf);
+		}
+		return new WebMarkupContainer("comments");
 	}
 
 	private IModel<ArticlePageEntity> createDisplayedPageModel() {

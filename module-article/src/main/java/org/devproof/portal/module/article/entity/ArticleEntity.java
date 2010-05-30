@@ -42,7 +42,6 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -66,8 +65,7 @@ final public class ArticleEntity extends BaseEntity implements EntityId {
     @Lob
     @Column(name = "teaser")
     private String teaser;
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticlePageEntity> articlePages;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "article_right_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
