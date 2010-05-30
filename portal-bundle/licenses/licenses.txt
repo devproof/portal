@@ -8,7 +8,6 @@ Frameworks for production:
 - Log4j Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - Java Persistence API Open Source (http://www.sun.com) 
 - JTA Open Source (http://www.sun.com) 
-- Groovy Open Source using a BSD / Apache style (http://cvs.groovy.codehaus.org/viewcvs.cgi/groovy/groovy-core/LICENSE.txt?rev=HEAD&view=auto)
 - Java Mail Open Source (http://www.sun.com) 
 - Xerces Apache Software License 1.1 (http://www.apache.org/licenses/LICENSE)
 - Slf4j MIT License (http://en.wikipedia.org/wiki/MIT_License)
