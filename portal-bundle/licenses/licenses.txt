@@ -5,7 +5,6 @@ Frameworks for production:
 - Wicket Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - Spring Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - Hibernate LGPL 2.1 (http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
-- Log4j Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - Java Persistence API Open Source (http://www.sun.com) 
 - JTA Open Source (http://www.sun.com) 
 - Java Mail Open Source (http://www.sun.com) 
