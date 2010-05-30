@@ -9,7 +9,6 @@ Frameworks for production:
 - Java Persistence API Open Source (http://www.sun.com) 
 - JTA Open Source (http://www.sun.com) 
 - Java Mail Open Source (http://www.sun.com) 
-- Xerces Apache Software License 1.1 (http://www.apache.org/licenses/LICENSE)
 - Slf4j MIT License (http://en.wikipedia.org/wiki/MIT_License)
 - Apache commons Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - XStream BSD license (http://www.freebsd.org/copyright/license.html)
