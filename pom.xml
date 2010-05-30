@@ -164,11 +164,11 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>persistence-api</artifactId>
-            <version>1.0</version>
-        </dependency>
+            <version>2.0</version>
+        </dependency-->
         <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
