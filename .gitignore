@@ -3,7 +3,8 @@ portal-bundle/true
 .project
 .settings/
 .classpath
+.idea
 *.iml
 *.ipr
 *.iws
-*.ids
+*.ids                                                                                                      
