@@ -51,15 +51,15 @@
     <build>
         <plugins>
             <!-- workaround for a defect mvn eclipse plugin -->
-            <plugin>
+            <!-- plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <version>2.6</version>
-            </plugin>
+            </plugin -->
         </plugins>
     </build>
     <repositories>
         <repository>
-            <id>central</id>
+            <id>centralrepo</id>
             <name>Maven Repository Switchboard</name>
             <url>http://repo1.maven.org/maven2</url>
         </repository>
@@ -80,7 +80,13 @@
             </releases>
         </repository>
     </repositories>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>centralrepo</id>
+            <name>Maven Repository Switchboard</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencies>
         <dependency>
             <groupId>org.apache.wicket</groupId>
