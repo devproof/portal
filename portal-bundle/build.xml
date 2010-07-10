@@ -4,7 +4,7 @@
     </description>
     <property name="targetsql" location="target/sql/"/>
     <property name="webinflib" location="../portal-webapp/target/portal-webapp-${devproof.version}/WEB-INF/lib/"/>
-    <property name="tomcat6_version" value="6.0.26"/>
+    <property name="tomcat6_version" value="6.0.28"/>
 	<property name="tomcat6_download" value="http://apache.copahost.com/tomcat/tomcat-6/v${tomcat6_version}/bin/apache-tomcat-${tomcat6_version}.tar.gz"/>
     <target name="generate_sql">
         <unzip dest="${targetsql}">
