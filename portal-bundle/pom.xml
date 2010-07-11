@@ -44,11 +44,7 @@
                         <configuration>
                             <tasks>
                                 <property name="devproof.version" value="${devproof.version}"/>
-                                <ant target="generate_sql" inheritRefs="true"/>
-                                <ant target="generate_hsql" inheritRefs="true"/>
-                                <ant target="bundle_war" inheritRefs="true"/>
-                                <ant target="bundle_tomcat6" inheritRefs="true"/>
-                                <ant target="cleanup" inheritRefs="true"/>
+                                <ant target="bundle_devproof" inheritRefs="true"/>
                             </tasks>
                         </configuration>
                     </execution>

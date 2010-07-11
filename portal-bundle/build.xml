@@ -4,9 +4,10 @@
     </description>
     <property name="targetsql" location="target/sql/"/>
     <property name="webinflib" location="../portal-webapp/target/portal-webapp-${devproof.version}/WEB-INF/lib/"/>
-    <property name="tomcat6_version" value="6.0.28"/>
-	<property name="tomcat6_download" value="http://apache.copahost.com/tomcat/tomcat-6/v${tomcat6_version}/bin/apache-tomcat-${tomcat6_version}.tar.gz"/>
-    <target name="generate_sql">
+    <property name="tomcat_version" value="6.0.28"/>
+	<property name="tomcat_download" value="http://apache.copahost.com/tomcat/tomcat-6/v${tomcat_version}/bin/apache-tomcat-${tomcat_version}.tar.gz"/>
+	<property name="tomcat_filename" value="apache-tomcat-${tomcat_version}"/>
+	<target name="generate_sql">
         <unzip dest="${targetsql}">
             <patternset>
                 <include name="sql/**/*.sql"/>
@@ -72,7 +73,7 @@
         <delete dir="${targetsql}/sql/"/>
     </target>
     <!-- Create HSQL DB for quickstartup -->
-    <target name="generate_hsql">
+    <target name="generate_hsql" depends="generate_sql">
         <delete dir="target/hsql/"/>
         <mkdir dir="target/hsql/"/>
         <!-- Shut down DB if it runs from the tests-->
@@ -88,7 +89,7 @@
             <transaction src="../portal-bundle/target/sql/install_devproof_hsql.sql"/>
         </sql>
     </target>
-    <target name="bundle_war">
+    <target name="bundle_war" depends="generate_hsql">
         <delete dir="target/devproof-portal-${devproof.version}-war/"/>
         <mkdir dir="target/devproof-portal-${devproof.version}-war/"/>
         <delete dir="target/tmp/"/>
@@ -120,23 +121,40 @@
         <gzip destfile="target/devproof-portal-${devproof.version}-war.tar.gz"
               src="target/tmp/devproof-portal-${devproof.version}-war.tar"/>
     </target>
-
-    <target name="bundle_tomcat6">
+	
+	<target name="bundle_devproof" depends="download_tomcat,dont_download_tomcat"/> 
+	
+	<target name="check_tomcat" depends="bundle_war">
+		<available file="${java.io.tmpdir}/${tomcat_filename}.tar.gz" property="tomcat_local_available"/>
+		<echo>Local Tomcat available: ${tomcat_local_available}</echo>
+	</target>
+	
+	<target name="download_tomcat" depends="check_tomcat" unless="tomcat_local_available">
+		<echo>Downloading Tomcat</echo>
+		<get dest="${java.io.tmpdir}/${tomcat_filename}.tar.gz" src="${tomcat_download}"/>
+		<antcall target="bundle_tomcat"/>
+	</target>
+	
+	<target name="dont_download_tomcat" depends="check_tomcat" if="tomcat_local_available">
+		<echo>No Tomcat download required</echo>
+		<antcall target="bundle_tomcat"/>
+	</target>
+	
+    <target name="bundle_tomcat">
         <mkdir dir="target/devproof-portal-${devproof.version}-with-tomcat6/"/>
         <mkdir dir="target/tmp/"/>
-    	<get dest="target/tmp/apache-tomcat-${tomcat6_version}.tar.gz" src="${tomcat6_download}"/>
-        <gunzip src="target/tmp/apache-tomcat-${tomcat6_version}.tar.gz"
-                dest="target/tmp/apache-tomcat-${tomcat6_version}.tar"/>
-        <untar src="target/tmp/apache-tomcat-${tomcat6_version}.tar"
+        <gunzip src="${java.io.tmpdir}/${tomcat_filename}.tar.gz"
+                dest="target/tmp/${tomcat_filename}.tar"/>
+        <untar src="target/tmp/${tomcat_filename}.tar"
                dest="target/devproof-portal-${devproof.version}-with-tomcat6/"/>
         <copy file="CHANGES" tofile="target/devproof-portal-${devproof.version}-with-tomcat6/CHANGES"/>
         <copy file="README_TOMCAT6" tofile="target/devproof-portal-${devproof.version}-with-tomcat6/README"/>
         <filter token="devproof.version" value="${devproof.version}"/>
         <copy file="config/tomcat6/hsql/ROOT.xml"
-              tofile="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/conf/Catalina/localhost/ROOT.xml"
+              tofile="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat_version}/conf/Catalina/localhost/ROOT.xml"
               filtering="true"/>
-        <delete dir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/webapps/"/>
-        <mkdir dir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/webapps/"/>
+        <delete dir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat_version}/webapps/"/>
+        <mkdir dir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat_version}/webapps/"/>
         <copy file="../portal-webapp/target/portal-webapp-${devproof.version}.war"
               tofile="target/devproof-portal-${devproof.version}-with-tomcat6/war/devproof-portal-${devproof.version}.war"/>
         <copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/sql/">
@@ -155,7 +173,7 @@
         <copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/data/">
             <fileset dir="target/hsql/" excludes="**/*.lck"/>
         </copy>
-        <copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat6_version}/lib/">
+        <copy todir="target/devproof-portal-${devproof.version}-with-tomcat6/apache-tomcat-${tomcat_version}/lib/">
             <fileset dir="server/tomcat6/lib/"/>
         </copy>
         <tar destfile="target/tmp/devproof-portal-${devproof.version}-with-tomcat6.tar">
@@ -165,10 +183,5 @@
         </tar>
         <gzip destfile="target/devproof-portal-${devproof.version}-with-tomcat6.tar.gz"
               src="target/tmp/devproof-portal-${devproof.version}-with-tomcat6.tar"/>
-    </target>
-
-    <target name="cleanup">
-        <delete dir="target/tmp/"/>
-        <delete dir="true"/>
     </target>
 </project>
