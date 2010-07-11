@@ -83,8 +83,7 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean isInstantiationAuthorized(Class componentClass) {
+    public boolean isInstantiationAuthorized(@SuppressWarnings("rawtypes") Class componentClass) {
         // false means the whole page is blocked
         PortalSession session = ((PortalSession) Session.get());
         List<RightEntity> allRights = rightService.getAllRights();

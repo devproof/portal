@@ -104,14 +104,13 @@ public class DownloadFeedProviderImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
-        DownloadEntity bookmark = createDownload();
-        Iterator it = Arrays.asList(bookmark).iterator();
+        DownloadEntity download = createDownload();
+		Iterator<DownloadEntity> it = Arrays.asList(download).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());
-        assertEquals("http://url/" + bookmark.getId(), entry.getLink());
+        assertEquals("http://url/" + download.getId(), entry.getLink());
         assertEquals("world", entry.getDescription().getValue());
         assertEquals("text/plain", entry.getDescription().getType());
         assertEquals("maxpower", entry.getAuthor());
