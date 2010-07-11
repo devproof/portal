@@ -76,11 +76,12 @@ public class ArticleFeedProviderImplTest {
         assertEquals(ArticlePage.class, impl.getSupportedFeedPages().get(0));
     }
 
-    @Test
     @SuppressWarnings("unchecked")
+	@Test
     public void testGetArticleEntries() {
         ArticleEntity article = createArticle();
-        Iterator it = Arrays.asList(article).iterator();
+        @SuppressWarnings("rawtypes")
+		Iterator it = Arrays.asList(article).iterator();
         expect(configurationServiceMock.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);
@@ -104,10 +105,9 @@ public class ArticleFeedProviderImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
         ArticleEntity bookmark = createArticle();
-        Iterator it = Arrays.asList(bookmark).iterator();
+		Iterator<ArticleEntity> it = Arrays.asList(bookmark).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());

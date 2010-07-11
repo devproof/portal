@@ -49,7 +49,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		try {
 			Class<?> clazz = Class.forName(c.getType());
 			if (clazz.isEnum()) {
-				@SuppressWarnings("unchecked")
+				@SuppressWarnings({ "unchecked", "rawtypes" })
 				Enum<?> e = Enum.valueOf((Class) clazz, c.getValue());
 				return e;
 			} else {

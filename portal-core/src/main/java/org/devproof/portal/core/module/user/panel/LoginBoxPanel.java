@@ -95,7 +95,7 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
                     if (redirectUrl != null) {
                         setResponsePage(new RedirectPage(redirectUrl));
                     } else {
-                        @SuppressWarnings("unchecked") Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
+                    	Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
                         setResponsePage(homePage);
                     }
                 } else {

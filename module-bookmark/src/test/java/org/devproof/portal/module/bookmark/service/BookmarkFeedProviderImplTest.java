@@ -80,7 +80,8 @@ public class BookmarkFeedProviderImplTest {
     @SuppressWarnings("unchecked")
     public void testGetBookmarkEntries() {
         BookmarkEntity bookmark = createBookmark();
-        Iterator it = Arrays.asList(bookmark).iterator();
+        @SuppressWarnings("rawtypes")
+		Iterator it = Arrays.asList(bookmark).iterator();
         expect(configurationServiceMock.findAsInteger(BookmarkConstants.CONF_BOOKMARK_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);
@@ -104,10 +105,9 @@ public class BookmarkFeedProviderImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
         BookmarkEntity bookmark = createBookmark();
-        Iterator it = Arrays.asList(bookmark).iterator();
+        Iterator<BookmarkEntity> it = Arrays.asList(bookmark).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());

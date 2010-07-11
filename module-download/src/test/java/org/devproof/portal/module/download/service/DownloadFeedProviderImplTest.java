@@ -80,7 +80,8 @@ public class DownloadFeedProviderImplTest {
     @SuppressWarnings("unchecked")
     public void testGetDownloadEntries() {
         DownloadEntity download = createDownload();
-        Iterator it = Arrays.asList(download).iterator();
+        @SuppressWarnings("rawtypes")
+		Iterator it = Arrays.asList(download).iterator();
         expect(configurationServiceMock.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);

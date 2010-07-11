@@ -88,7 +88,7 @@ public class LoginPage extends TemplatePage {
                 boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
                 // production mode check is for unit tests
                 if (productionMode) {
-                    @SuppressWarnings("unchecked") Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
+                    Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
                     setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
                 }
             }

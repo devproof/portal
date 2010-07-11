@@ -80,7 +80,8 @@ public class BlogFeedProviderImplTest {
     @SuppressWarnings("unchecked")
     public void testGetBlogEntries() {
         BlogEntity blog = createBlog();
-        Iterator it = Arrays.asList(blog).iterator();
+        @SuppressWarnings("rawtypes")
+		Iterator it = Arrays.asList(blog).iterator();
         expect(configurationServiceMock.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);
@@ -104,10 +105,9 @@ public class BlogFeedProviderImplTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testGenerateFeedEntries() {
         BlogEntity blog = createBlog();
-        Iterator it = Arrays.asList(blog).iterator();
+        Iterator<BlogEntity> it = Arrays.asList(blog).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());

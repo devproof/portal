@@ -186,8 +186,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		};
 	}
 
-	@SuppressWarnings(value = "unchecked")
-	public Class getObjectType() {
+	public Class<?> getObjectType() {
 		return daoInterface;
 	}
 

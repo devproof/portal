@@ -117,8 +117,7 @@ public class PortalApplication extends WebApplication {
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
-    public Class getHomePage() {
+    public Class<? extends Page> getHomePage() {
         return startPage;
     }
 
