@@ -7,4 +7,5 @@ portal-bundle/true
 *.iml
 *.ipr
 *.iws
-*.ids                                                                                                      
+*.ids  
+.DS_Store
