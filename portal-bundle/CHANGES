@@ -1,3 +1,13 @@
+Devproof Portal 1.0.0
+---------------------
+- Final Release, no critical changes
+- Several exception fixes
+- Tomcat removed from repository (now downloaded and cached)
+- Make projects runnable on IntelliJ
+- Enable caching statistics by default
+- pom.xml cleanup, removed the redundant stuff
+- Tomcat version updated to 6.0.28
+
 Devproof Portal 1.0-rc4
 -----------------------
 - Caching algorithm changed from LFU to LRU
@@ -20,6 +30,7 @@ Features
 - Make default code style configurable (SyntaxHighlighter)
 - New KittenCaptcha
 - Nicer style and icons
+
 Technical
 - A lot of bugfixes
 - Caching added (Hibernate caching)
