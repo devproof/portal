@@ -28,7 +28,7 @@
     <version>FIXED</version>
 
     <properties>
-        <devproof.version>1.0-rc5-SNAPSHOT</devproof.version>
+        <devproof.version>1.0.0</devproof.version>
         <wicket.version>1.4.9</wicket.version>
 		<spring.version>3.0.2.RELEASE</spring.version>
 		<hibernate.version>3.5.1-Final</hibernate.version>
