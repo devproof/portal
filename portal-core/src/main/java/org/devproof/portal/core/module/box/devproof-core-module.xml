@@ -41,12 +41,12 @@
     </bean>
 
     <!--  Dao  -->
-    <bean id="boxDao" parent="baseGenericDao">
+    <!-- bean id="boxDao" parent="baseGenericDao">
         <property name="daoInterface"
                   value="org.devproof.portal.core.module.box.dao.BoxDao"/>
         <property name="entityClass"
                   value="org.devproof.portal.core.module.box.entity.BoxEntity"/>
-    </bean>
+    </bean -->
 
     <!--  Service  -->
     <!-- <bean id="boxService" class="org.devproof.portal.core.module.box.service.BoxServiceImpl">
