@@ -44,6 +44,8 @@
         </property>
     </bean>
 
+    <context:component-scan base-package="org.devproof.portal.core"/>
+
     <bean id="mailSenderService" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="session">
             <bean lazy-init="true" class="org.springframework.jndi.JndiObjectFactoryBean">

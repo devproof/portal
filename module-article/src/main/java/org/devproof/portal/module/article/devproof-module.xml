@@ -9,6 +9,7 @@
 
     <!-- Module configuration -->
     <bean class="org.devproof.portal.core.config.ModuleConfiguration">
+        <!-- TODO in properties file? -->
         <property name="name" value="Article"/>
         <property name="moduleVersion" value="${devproof.version}"/>
         <property name="portalVersion" value="${devproof.version}"/>
@@ -16,6 +17,7 @@
         <property name="url" value="http://devproof.org"/>
 
         <!-- Hibernate/JPA entities -->
+        <!-- TODO auto lookup -->
         <property name="entities">
             <list>
                 <value>org.devproof.portal.module.article.entity.ArticleEntity</value>
@@ -23,6 +25,7 @@
                 <value>org.devproof.portal.module.article.entity.ArticleTagEntity</value>
             </list>
         </property>
+        <!-- lookup with own annotations -->
         <property name="pages">
             <list>
                 <bean class="org.devproof.portal.core.config.PageConfiguration">
@@ -43,6 +46,7 @@
             </list>
         </property>
 
+        <!-- lookup with own annotations -->
         <!--  Register boxes -->
         <property name="boxes">
             <list>

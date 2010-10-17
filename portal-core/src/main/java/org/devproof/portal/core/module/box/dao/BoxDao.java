@@ -20,6 +20,7 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
