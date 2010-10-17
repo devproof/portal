@@ -5,7 +5,9 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import
             resource="classpath:/org/devproof/portal/core/module/box/devproof-core-module.xml"/>
@@ -120,4 +122,13 @@
             </map>
         </property>
     </bean>
+
+    <bean class="org.devproof.portal.core.module.SampleDefinitionParser"/>
+
+    <context:component-scan base-package="**" >
+        <!-- http://www.javaworld.com/javaworld/jw-02-2008/jw-02-springcomponents.html?page=3 -->
+        <!-- das ist org.springframework.context.annotation.ComponentScanBeanDefinitionParser -->
+        <!-- context:include-filter type="annotation"
+            expression="ch.elca.el4j.services.persistence.generic.dao.Auto collectedGenericDao" /-->    
+    </context:component-scan>
 </beans>

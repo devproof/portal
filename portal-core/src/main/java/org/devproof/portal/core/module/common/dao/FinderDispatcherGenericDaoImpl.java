@@ -29,6 +29,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -60,6 +61,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	private UsernameResolver usernameResolver;
 
 	public Object getObject() throws Exception {
+        ConfigurableApplicationContext ctx;
 		ProxyFactory result = new ProxyFactory();
 		GenericDao<T, PK> genericDao = createGenericHibernateDao();
 		result.setTarget(genericDao);

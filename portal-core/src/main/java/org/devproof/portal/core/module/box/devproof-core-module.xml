@@ -49,9 +49,9 @@
     </bean>
 
     <!--  Service  -->
-    <bean id="boxService" class="org.devproof.portal.core.module.box.service.BoxServiceImpl">
+    <!-- <bean id="boxService" class="org.devproof.portal.core.module.box.service.BoxServiceImpl">
         <property name="boxDao" ref="boxDao"/>
-    </bean>
+    </bean -->
 
     <!--  DataProvider  -->
     <bean id="boxDataProvider" parent="persistenceDataProvider" scope="prototype">
