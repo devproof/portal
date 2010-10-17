@@ -146,7 +146,7 @@ public class PortalTestUtil {
 					return System.getProperty("java.io.tmpdir");
 				}
 			};
-			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/devproof-portal-core.xml\n"
+			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/org/devproof/portal/core/devproof-portal-core.xml\n"
 					+ spring);
 			ContextLoader contextLoader = new ContextLoader();
 			contextLoader.initWebApplicationContext(sandbox);
