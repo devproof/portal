@@ -15,6 +15,7 @@ public class SamplePostProcessor implements BeanFactoryPostProcessor {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         Object bean = beanFactory.getBean("boxService");
+// http://www.carlobonamico.com/blog/2008/01/22/how-to-dynamicallyprogrammatically-define-spring-beans/
 //            <bean id="boxDao" parent="baseGenericDao">
 //        <property name="daoInterface"
 //                  value="org.devproof.portal.core.module.box.dao.BoxDao"/>
