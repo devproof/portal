@@ -63,9 +63,14 @@
             <bean factory-bean="jndiConfig" factory-method="resolveHibernateProperties"/>
         </property>
         <property name="dataSource" ref="dataSource"/>
-        <property name="annotatedClasses">
-            <bean factory-bean="entityLocator" factory-method="getEntities"/>
+        <property name="packagesToScan">
+            <list>
+                <value>org.devproof</value>
+            </list>
         </property>
+        <!--<property name="annotatedClasses">-->
+            <!--<bean factory-bean="entityLocator" factory-method="getEntities"/>-->
+        <!--</property>-->
     </bean>
 
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">

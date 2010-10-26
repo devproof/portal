@@ -20,8 +20,8 @@ In the main directory of the distribution, type the following to build the proje
 Oh, that's it! You will find the bundled version under *portal-bundle/target/*.
 Run the Apache Tomcat under 
 
-for Windows `portal-bundle/devproof-portal-1.0-rc4-with-tomcat6/apache-tomcat-6.x.x/bin/startup.bat`
+for Windows `portal-bundle/devproof-portal-1.0.0-with-tomcat6/apache-tomcat-6.x.x/bin/startup.bat`
 
-for Linux `portal-bundle/devproof-portal-1.0-rc4-with-tomcat6/apache-tomcat-6.x.x/bin/startup.sh`
+for Linux `portal-bundle/devproof-portal-1.0.0-with-tomcat6/apache-tomcat-6.x.x/bin/startup.sh`
 
 Find more information on http://www.devproof.org/article/portal_getting_started
