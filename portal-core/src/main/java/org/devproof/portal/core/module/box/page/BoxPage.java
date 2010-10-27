@@ -32,6 +32,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.annotation.DevproofPage;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.panel.BoxEditPanel;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
@@ -44,6 +45,7 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 /**
  * @author Carsten Hufe
  */
+@DevproofPage(mountPath = "/admin/boxes", registerGlobalAdminLink = true)
 public class BoxPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
