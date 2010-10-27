@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.box.service;
 
-import java.util.List;
-
 import org.devproof.portal.core.module.box.dao.BoxDao;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+simport javax.annotation.Resource;
 
 /**
  * @author Carsten Hufe

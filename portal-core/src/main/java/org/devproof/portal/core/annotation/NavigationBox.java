@@ -13,31 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.annotation;
+package org.devproof.portal.core.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * If annotation is present the query will be cached.
+ * Marks a class as navigation box
  *
  * @author Carsten Hufe
  */
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
-public @interface CacheQuery {
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface NavigationBox {
     /**
-     * @see org.hibernate.CacheMode
+     * Name of the navigation box
      */
-    String cacheMode() default "";
-
-    /**
-     * Cache region
-     */
-    String region() default "";
-
-    /**
-     * enables the caching
-     */
-    boolean enabled() default true;
+    String value();
 }

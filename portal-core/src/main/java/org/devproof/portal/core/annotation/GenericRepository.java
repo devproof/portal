@@ -13,31 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.annotation;
+package org.devproof.portal.core.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * If annotation is present the query will be cached.
+ * Marking the generic DAO interfaces
  *
  * @author Carsten Hufe
  */
 @Documented
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
-public @interface CacheQuery {
-    /**
-     * @see org.hibernate.CacheMode
-     */
-    String cacheMode() default "";
+@Target(TYPE)
+@Retention(RUNTIME)
+public @interface GenericRepository {
 
     /**
-     * Cache region
+     * Spring bean id
      */
-    String region() default "";
+    String name();
 
     /**
-     * enables the caching
+     * Entity class for the generic Repository
      */
-    boolean enabled() default true;
+    @Deprecated // wird das benoetigt oder laesst sich das aus dem generic part lesen?
+    Class<?> entityClass();
 }
