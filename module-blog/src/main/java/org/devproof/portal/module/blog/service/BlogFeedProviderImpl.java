@@ -28,7 +28,9 @@ import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.page.BlogPage;
 import org.devproof.portal.module.blog.query.BlogQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,6 +39,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Component
 public class BlogFeedProviderImpl implements FeedProvider {
     private SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
     private ConfigurationService configurationService;
@@ -108,12 +111,12 @@ public class BlogFeedProviderImpl implements FeedProvider {
         return pageTitle + " - " + feedName;
     }
 
-    @Required
+    @Autowired
     public void setBlogDataProvider(SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider) {
         this.blogDataProvider = blogDataProvider;
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

@@ -28,6 +28,7 @@ import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
@@ -53,6 +54,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/blog", registerMainNavigationLink = true, defaultStartPage = true)
 public class BlogPage extends BlogBasePage {
 
     private static final long serialVersionUID = 1L;

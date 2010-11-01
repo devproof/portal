@@ -19,17 +19,6 @@
             author="devproof - Carsten Hufe" author-url="http://devproof.org"
             module-version="${devproof.version}" portal-version="${devproof.version}"/>
 
-    <!--  Dao FIXME remove  -->
-    <bean id="baseTagDao" parent="baseGenericDao" abstract="true">
-        <property name="daoInterface"
-                  value="org.devproof.portal.core.module.tag.dao.TagDao"/>
-    </bean>
-
-    <!--  Service FIXME remove  -->
-    <bean id="baseTagService" class="org.devproof.portal.core.module.tag.service.TagServiceImpl" abstract="true">
-    </bean>
-
-
     <!--  Base generic DAO  -->
     <bean id="baseGenericDao"
           class="org.devproof.portal.core.module.common.dao.FinderDispatcherGenericDaoImpl"
@@ -48,6 +37,14 @@
         <property name="dataProviderDao" ref="dataProviderDao"/>
     </bean>
 
+    <bean id="baseTagDao" parent="baseGenericDao" abstract="true">
+        <property name="daoInterface"
+                  value="org.devproof.portal.core.module.tag.dao.TagDao"/>
+    </bean>
+
+    <bean id="baseTagService" class="org.devproof.portal.core.module.tag.service.TagServiceImpl" abstract="true">
+    </bean>
+
     <!-- Date Formater -->
     <bean id="inputDateFormat" factory-bean="dateFormatFactory" factory-method="createInputDateFormat"
           scope="prototype"/>
@@ -62,13 +59,6 @@
     <bean id="jndiConfig"
           class="org.devproof.portal.core.module.common.util.JndiConfiguration"/>
 
-    <bean id="dataSource" lazy-init="true"
-          class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName">
-            <bean factory-bean="jndiConfig" factory-method="getDataSourceJndiName"/>
-        </property>
-    </bean>
-
     <bean id="mailSenderService" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="session">
             <bean lazy-init="true" class="org.springframework.jndi.JndiObjectFactoryBean">
@@ -76,6 +66,13 @@
                     <bean factory-bean="jndiConfig" factory-method="getMailSessionJndiName"/>
                 </property>
             </bean>
+        </property>
+    </bean>
+
+    <bean id="dataSource" lazy-init="true"
+          class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <bean factory-bean="jndiConfig" factory-method="getDataSourceJndiName"/>
         </property>
     </bean>
 
@@ -145,11 +142,5 @@
                 <entry key="bean:name=hibernate" value-ref="hibernateStatisticsMBean"/>
             </map>
         </property>
-    </bean>
-
-
-        <!-- http://www.javaworld.com/javaworld/jw-02-2008/jw-02-springcomponents.html?page=3 -->
-        <!-- das ist org.springframework.context.annotation.ComponentScanBeanDefinitionParser -->
-        <!-- context:include-filter type="annotation"
-            expression="ch.elca.el4j.services.persistence.generic.dao.Auto collectedGenericDao" /-->    
+    </bean> 
 </beans>

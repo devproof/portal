@@ -38,9 +38,6 @@ public interface TagDao<T> extends GenericDao<T, String> {
     @Query(value = "select t from $TYPE t order by size(t.referencedObjects) desc", limitClause = true)
     List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
 
-//    @Query(value = "select distinct(t) from $TYPE t join t.referencedObjects ro join ro.allRights ar where " 
-//    	+ "ar in (select rt from RoleEntity r join r.rights rt where r = ? and rt.right like ?||'%') " +
-//    			"order by size(t.referencedObjects) desc", limitClause = true)
     @Query(value = "select t from $TYPE t where exists(from $TYPE et join et.referencedObjects ro left join ro.allRights ar "
 			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like ?||'%') and t = et) " +
     			"order by size(t.referencedObjects) desc", limitClause = true)

@@ -34,6 +34,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Scans and registers the devproof stuff in spring way
@@ -53,6 +54,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         addIncludeFilter(new AnnotationTypeFilter(NavigationBox.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericRepository.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericDataProvider.class));
+        addIncludeFilter(new AnnotationTypeFilter(GenericTagService.class));
         addIncludeFilter(new AnnotationTypeFilter(Entity.class));
         addIncludeFilter(new AnnotationTypeFilter(org.hibernate.annotations.Entity.class));
         registerModuleConfigurationAsSingleton();
@@ -78,6 +80,10 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
             else if (clazz.isAnnotationPresent(NavigationBox.class)) {
                 moduleConfiguration.addBox(new BoxConfiguration(clazz));
             }
+            else if (clazz.isAnnotationPresent(GenericTagService.class)) {
+                BeanDefinitionHolder serviceBeanDefinitionHolder = buildGenericTagServiceDefinition(clazz);
+                super.registerBeanDefinition(serviceBeanDefinitionHolder, registry);
+            }
             else if (clazz.isAnnotationPresent(GenericRepository.class)) {
                 BeanDefinitionHolder beanDefinitionHolder = buildGenericRepositoryDefinition(clazz);
                 super.registerBeanDefinition(beanDefinitionHolder, registry);
@@ -97,6 +103,23 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         } catch (ClassNotFoundException e) {
             logger.fatal(e);
         }
+    }
+
+    private BeanDefinitionHolder buildGenericTagDaoDefinition(Class<?> clazz) {
+        Class<?> entityClazz = getEntityClazz(clazz);
+        GenericTagService annotation = clazz.getAnnotation(GenericTagService.class);
+        BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("baseTagDao")
+                .addPropertyValue("entityClass", entityClazz).getBeanDefinition();
+        return new BeanDefinitionHolder(bd, UUID.randomUUID().toString());
+    }
+
+    private BeanDefinitionHolder buildGenericTagServiceDefinition(Class<?> clazz) {
+        Class<?> entityClazz = getEntityClazz(clazz);
+        GenericTagService annotation = clazz.getAnnotation(GenericTagService.class);
+        BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("baseTagService")
+                .addPropertyValue("relatedTagRight", annotation.relatedTagRight())
+                .addPropertyValue("tagDao", buildGenericTagDaoDefinition(clazz)).getBeanDefinition();
+        return new BeanDefinitionHolder(bd, annotation.value());
     }
 
     private BeanDefinitionHolder buildGenericRepositoryDefinition(Class<?> clazz) {
@@ -152,6 +175,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         try {
             Class<?> clazz = Class.forName(beanDefinition.getBeanClassName());
             return super.isCandidateComponent(beanDefinition)
+                    || clazz.isAnnotationPresent(GenericTagService.class)
                     || clazz.isAnnotationPresent(GenericRepository.class)
                     || clazz.isAnnotationPresent(GenericDataProvider.class);
         } catch (ClassNotFoundException e) {

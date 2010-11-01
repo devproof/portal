@@ -19,14 +19,17 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.dao.BlogDao;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Carsten Hufe
  */
+@Service("blogService")
 public class BlogServiceImpl implements BlogService {
     private BlogDao blogDao;
-    private TagService<BlogTagEntity> blogTagService;
+    private BlogTagService blogTagService;
 
     @Override
     public void delete(BlogEntity entity) {
@@ -57,8 +60,8 @@ public class BlogServiceImpl implements BlogService {
         this.blogDao = blogDao;
     }
 
-    @Required
-    public void setBlogTagService(TagService<BlogTagEntity> blogTagService) {
+    @Autowired
+    public void setBlogTagService(BlogTagService blogTagService) {
         this.blogTagService = blogTagService;
     }
 }

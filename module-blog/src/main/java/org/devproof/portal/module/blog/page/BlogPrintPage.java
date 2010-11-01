@@ -22,6 +22,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.print.page.PrintPage;
 import org.devproof.portal.module.blog.entity.BlogEntity;
@@ -31,6 +32,7 @@ import org.devproof.portal.module.blog.service.BlogService;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/print/blog", indexMountedPath = true)
 public class BlogPrintPage extends PrintPage {
     private static final long serialVersionUID = -861792869467871383L;
     @SpringBean(name = "blogService")
