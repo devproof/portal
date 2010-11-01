@@ -29,7 +29,6 @@ import java.util.List;
  */
 public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T> {
     private TagDao<T> tagDao;
-    private String relatedTagRight;
 
     @Override
     public void deleteUnusedTags() {
@@ -43,7 +42,7 @@ public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> impleme
 
     @Override
     public List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
-        return tagDao.findMostPopularTags(role, relatedTagRight, firstResult, maxResult);
+        return tagDao.findMostPopularTags(role, getRelatedTagRight(), firstResult, maxResult);
     }
 
     @Override
