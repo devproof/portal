@@ -20,10 +20,13 @@ import org.apache.wicket.Session;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.springframework.stereotype.Component;
 
 /**
+ * Resolves the username within a service. Callback.
  * @author Carsten Hufe
  */
+@Component("usernameResolver")
 public class UsernameResolverImpl implements UsernameResolver {
 
     @Override

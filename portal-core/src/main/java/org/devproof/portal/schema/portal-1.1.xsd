@@ -16,7 +16,7 @@
     </xsd:annotation>
 
 
-    <!-- this part is copied from spring-context.xsd, because it isn a complex-type definition, I cannot extend it.-->
+    <!-- this part is copied from spring-context.xsd, because it is not defined as complex-type, I cannot extend element.-->
     <xsd:element name="module-scan">
         <xsd:annotation>
             <xsd:documentation><![CDATA[
@@ -26,7 +26,7 @@
     Additionally it scans the mounted pages with the annotation @DevproofPage.
     It detects generic repositories with the annotaion @GenericRepository. At least
     it loads the Navigation Boxes with the annotation @NavigationBox.
-    Futhermore it detecs the @Entities.
+    Futhermore it detects @Entity and @GenericDataProvider.
 
     Every module must have an own package which you must add on the attribute base-package.
 

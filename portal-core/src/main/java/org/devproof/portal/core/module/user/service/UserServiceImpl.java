@@ -28,7 +28,9 @@ import org.devproof.portal.core.module.user.dao.UserDao;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ import java.util.UUID;
 /**
  * @author Carsten Hufe
  */
+@Service("userService")
 public class UserServiceImpl implements UserService {
     private static final Log LOG = LogFactory.getLog(UserServiceImpl.class);
     private UserDao userDao;
@@ -268,22 +271,22 @@ public class UserServiceImpl implements UserService {
         save(user);
     }
 
-    @Required
+    @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
     }
 
-    @Required
+    @Autowired
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
-    @Required
+    @Autowired
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }

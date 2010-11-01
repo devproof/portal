@@ -27,12 +27,14 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/login")
 public class LoginPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;

@@ -27,6 +27,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
@@ -37,6 +38,7 @@ import org.devproof.portal.core.module.user.page.RegisterPage;
 /**
  * @author Carsten Hufe
  */
+@NavigationBox("Login Box")
 public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 
     private static final long serialVersionUID = 1L;

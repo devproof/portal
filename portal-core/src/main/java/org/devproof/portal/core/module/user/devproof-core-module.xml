@@ -1,101 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:devproof="http://www.devproof.org/schema/devproof/portal"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.devproof.org/schema/devproof/portal
+        http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
-    <!-- Module configuration -->
-    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-        <property name="name" value="Core: User"/>
-        <property name="moduleVersion" value="core"/>
-        <property name="portalVersion" value="core"/>
-        <property name="author" value="devproof - Carsten Hufe"/>
-        <property name="url" value="http://devproof.org"/>
-
-        <!-- Hibernate/JPA entities -->
-        <property name="entities">
-            <list>
-                <value>org.devproof.portal.core.module.user.entity.UserEntity</value>
-            </list>
-        </property>
-        <!--  Register pages -->
-        <property name="pages">
-            <list>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/register"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.user.page.RegisterPage"/>
-                </bean>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/resetPassword"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.user.page.ResetPasswordPage"/>
-                </bean>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/settings"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.user.page.SettingsPage"/>
-                </bean>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/forgotPassword"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.user.page.ForgotPasswordPage"/>
-                </bean>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/login"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.user.page.LoginPage"/>
-                </bean>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/admin/users"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.user.page.UserPage"/>
-                    <property name="registerGlobalAdminLink" value="true"/>
-                </bean>
-            </list>
-        </property>
-        <!--  Register boxes -->
-        <property name="boxes">
-            <list>
-                <bean class="org.devproof.portal.core.config.BoxConfiguration">
-                    <property name="boxClass" value="org.devproof.portal.core.module.user.panel.UserBoxPanel"/>
-                    <property name="name" value="User Box"/>
-                </bean>
-                <bean class="org.devproof.portal.core.config.BoxConfiguration">
-                    <property name="boxClass" value="org.devproof.portal.core.module.user.panel.LoginBoxPanel"/>
-                    <property name="name" value="Login Box"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-
-
-    <!--  Dao  -->
-    <bean id="userDao" parent="baseGenericDao">
-        <property name="daoInterface"
-                  value="org.devproof.portal.core.module.user.dao.UserDao"/>
-        <property name="entityClass"
-                  value="org.devproof.portal.core.module.user.entity.UserEntity"/>
-    </bean>
-
-    <!--  Service  -->
-    <bean id="userService" class="org.devproof.portal.core.module.user.service.UserServiceImpl">
-        <property name="userDao" ref="userDao"/>
-        <property name="configurationService" ref="configurationService"/>
-        <property name="emailService" ref="emailService"/>
-        <property name="roleService" ref="roleService"/>
-    </bean>
-
-    <bean id="usernameResolver" class="org.devproof.portal.core.module.user.service.UsernameResolverImpl"/>
-
-
-    <!--  DataProvider  -->
-    <bean id="userDataProvider" parent="persistenceDataProvider" scope="prototype">
-        <property name="entityClass" value="org.devproof.portal.core.module.user.entity.UserEntity"/>
-        <property name="queryClass" value="org.devproof.portal.core.module.user.query.UserQuery"/>
-        <property name="sort">
-            <bean class="org.apache.wicket.extensions.markup.html.repeater.util.SortParam">
-                <constructor-arg value="username" index="0"/>
-                <constructor-arg value="true" index="1"/>
-            </bean>
-        </property>
-    </bean>
-
+    <devproof:module-scan
+            base-package="org.devproof.portal.core.module.user"
+            module-name="Core: User"
+            author="devproof - Carsten Hufe" author-url="http://devproof.org"
+            module-version="core" portal-version="core"/>
 </beans>

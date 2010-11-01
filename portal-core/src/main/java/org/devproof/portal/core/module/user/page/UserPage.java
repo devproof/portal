@@ -31,6 +31,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.component.TooltipLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -48,6 +49,7 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/admin/users", registerGlobalAdminLink = true)
 public class UserPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;

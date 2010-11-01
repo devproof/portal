@@ -21,6 +21,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.user.page.SettingsPage;
@@ -30,6 +31,7 @@ import org.devproof.portal.core.module.user.page.SettingsPage;
  *
  * @author Carsten Hufe
  */
+@NavigationBox("User Box")
 public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 
     private static final long serialVersionUID = 1L;

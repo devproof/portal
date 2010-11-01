@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -36,6 +37,7 @@ import java.io.Serializable;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/forgotPassword")
 public class ForgotPasswordPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;

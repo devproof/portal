@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.user.dao;
 
 import java.util.List;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
@@ -25,8 +26,11 @@ import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 
 /**
+ * Queries for user stuff
+ *
  * @author Carsten Hufe
  */
+@GenericRepository("userDao")
 @CacheQuery(region = UserConstants.QUERY_CACHE_REGION)
 public interface UserDao extends GenericDao<UserEntity, Integer> {
 	@Query("select u from UserEntity u join fetch u.role r join fetch r.rights where u.username like ?")

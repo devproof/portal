@@ -106,18 +106,40 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
 
     private BeanDefinitionHolder buildGenericDataProviderDefinition(Class<?> clazz) {
         Class<?> entityClazz = getEntityClazz(clazz);
+        Class<?> queryClazz = getQueryClazz(clazz);
         GenericDataProvider annotation = clazz.getAnnotation(GenericDataProvider.class);
         BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("persistenceDataProvider")
                 .setScope(BeanDefinition.SCOPE_PROTOTYPE)
                 .addPropertyValue("sort", new SortParam(annotation.sortProperty(), annotation.sortAscending()))
+                .addPropertyValue("queryClass", queryClazz)
                 .addPropertyValue("entityClass", entityClazz).getBeanDefinition();
         return new BeanDefinitionHolder(bd, annotation.value());
     }
 
+    /**
+     * Entity class is always the first generic type
+     * @param clazz type
+     * @return entity class
+     */
     private Class<?> getEntityClazz(Class<?> clazz) {
         Type[] types = clazz.getGenericInterfaces();
         ParameterizedType type = (ParameterizedType) types[0];
         return (Class<?>) type.getActualTypeArguments()[0];
+    }
+
+    /**
+     * Query class is always the second generic type
+     * @param clazz type
+     * @return query class
+     */
+    private Class<?> getQueryClazz(Class<?> clazz) {
+        Type[] types = clazz.getGenericInterfaces();
+        ParameterizedType type = (ParameterizedType) types[0];
+        Type[] actualTypeArguments = type.getActualTypeArguments();
+        if(actualTypeArguments.length >= 2) {
+            return (Class<?>) actualTypeArguments[1];
+        }
+        return null;
     }
 
     @Override
