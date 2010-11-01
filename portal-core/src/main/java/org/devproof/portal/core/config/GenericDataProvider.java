@@ -37,7 +37,23 @@ public @interface GenericDataProvider {
      */
     String value();
 
+    /**
+     * sort property
+     */
     String sortProperty();
 
+    /**
+     * sorting
+     */
     boolean sortAscending() default true;
+
+    /**
+     * hql count query e.g. count(*)
+     */
+    String countQuery() default "";
+
+    /**
+     * hqql prefetch query
+     */
+    String[] prefetch() default {};
 }

@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
@@ -59,7 +60,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
     @Override
     public int size() {
         SQ searchQuery = getSearchQueryModel().getObject();
-        if (countQuery != null) {
+        if (StringUtils.isNotBlank(countQuery)) {
             return dataProviderDao.getSize(entityClass, countQuery, searchQuery);
         } else {
             return dataProviderDao.getSize(entityClass, searchQuery);

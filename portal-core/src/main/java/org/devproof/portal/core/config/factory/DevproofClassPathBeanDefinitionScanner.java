@@ -32,6 +32,8 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import javax.persistence.Entity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Scans and registers the devproof stuff in spring way
@@ -112,7 +114,10 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
                 .setScope(BeanDefinition.SCOPE_PROTOTYPE)
                 .addPropertyValue("sort", new SortParam(annotation.sortProperty(), annotation.sortAscending()))
                 .addPropertyValue("queryClass", queryClazz)
-                .addPropertyValue("entityClass", entityClazz).getBeanDefinition();
+                .addPropertyValue("entityClass", entityClazz)
+                .addPropertyValue("countQuery", annotation.countQuery())
+                .addPropertyValue("prefetch", Arrays.asList(annotation.prefetch()))
+                .getBeanDefinition();
         return new BeanDefinitionHolder(bd, annotation.value());
     }
 

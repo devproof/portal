@@ -21,6 +21,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.component.TooltipLabel;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.modulemgmt.bean.ModuleBean;
@@ -32,6 +33,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/admin/modules", registerGlobalAdminLink = true)
 public class ModuleOverviewPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;

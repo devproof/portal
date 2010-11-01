@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.modulemgmt.page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
 import org.devproof.portal.core.module.modulemgmt.panel.ModuleLinkPanel;
@@ -25,6 +26,7 @@ import org.devproof.portal.core.module.modulemgmt.panel.ModuleLinkPanel;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/admin/modulenavigation", registerGlobalAdminLink = true)
 public class ModuleLinkPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;

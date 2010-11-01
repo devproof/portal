@@ -34,14 +34,19 @@ import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Carsten Hufe
  */
-public class ModuleServiceImpl implements ModuleService, ApplicationContextAware, InitializingBean {
+@Service("moduleService")
+public class ModuleServiceImpl implements ModuleService {
 	private ApplicationContext applicationContext;
 	private ModuleLinkDao moduleLinkDao;
 	private PageLocator pageLocator;
@@ -113,7 +118,7 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 		return moduleLinkDao.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION);
 	}
 
-	@Override
+	@PostConstruct
 	public void afterPropertiesSet() throws Exception {
 		rebuildModuleLinks();
 	}
@@ -121,7 +126,6 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 	/*
 	 * Rebuilds the module links in the database, protected for unit test
 	 */
-
 	protected void rebuildModuleLinks() {
 		for (LinkType type : LinkType.values()) {
 			ModuleLinkEntity startPage = null;
@@ -229,17 +233,17 @@ public class ModuleServiceImpl implements ModuleService, ApplicationContextAware
 		}
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	@Autowired
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
-	@Required
+	@Autowired
 	public void setModuleLinkDao(ModuleLinkDao moduleLinkDao) {
 		this.moduleLinkDao = moduleLinkDao;
 	}
 
-	@Required
+	@Autowired
 	public void setPageLocator(PageLocator pageLocator) {
 		this.pageLocator = pageLocator;
 	}
