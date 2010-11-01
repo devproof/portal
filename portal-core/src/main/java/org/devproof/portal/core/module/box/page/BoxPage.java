@@ -32,7 +32,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.devproof.portal.core.annotation.DevproofPage;
+import org.devproof.portal.core.config.DevproofPage;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.panel.BoxEditPanel;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
@@ -41,7 +41,6 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
-import org.springframework.stereotype.Repository;
 
 /**
  * @author Carsten Hufe

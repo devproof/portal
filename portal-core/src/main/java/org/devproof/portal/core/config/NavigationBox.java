@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.annotation;
+package org.devproof.portal.core.config;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -23,23 +23,16 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marking the generic DAO interfaces
+ * Marks a class as navigation box
  *
  * @author Carsten Hufe
  */
 @Documented
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface GenericRepository {
-
+public @interface NavigationBox {
     /**
-     * Spring bean id
+     * Name of the navigation box
      */
-    String name();
-
-    /**
-     * Entity class for the generic Repository
-     */
-    @Deprecated // wird das benoetigt oder laesst sich das aus dem generic part lesen?
-    Class<?> entityClass();
+    String value();
 }

@@ -15,13 +15,12 @@
  */
 package org.devproof.portal.core.module.box.dao;
 
-import org.devproof.portal.core.annotation.GenericRepository;
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

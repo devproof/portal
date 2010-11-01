@@ -1,0 +1,12 @@
+<xsd:schema xmlns="http://www.devproof.org/schema/devproof/portal"
+                   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://www.devproof.org/schema/devproof/portal"
+                 elementFormDefault="qualified"
+                 attributeFormDefault="unqualified">
+  <xsd:element name="component">
+    <xsd:complexType>
+      <xsd:attribute name="id" type="xsd:ID" use="required"/>
+      <xsd:attribute name="message" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
