@@ -35,6 +35,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -52,6 +53,7 @@ import org.devproof.portal.core.module.user.service.UserService;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/contact", indexMountedPath = true)
 public class ContactPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
