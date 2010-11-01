@@ -1,47 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:devproof="http://www.devproof.org/schema/devproof/portal"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd
-        http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+        http://www.devproof.org/schema/devproof/portal
+        http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
-    <import
-            resource="classpath:/org/devproof/portal/core/module/box/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/common/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/configuration/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/contact/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/email/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/feed/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/modulemgmt/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/print/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/right/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/role/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/tag/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/theme/devproof-core-module.xml"/>
-    <import
-            resource="classpath:/org/devproof/portal/core/module/user/devproof-core-module.xml"/>
 
     <bean id="devproofVersion" class="java.lang.String">
         <constructor-arg value="${devproof.version}"/>
     </bean>
+    
+    <devproof:module-scan
+            base-package="org.devproof.portal.core.module"
+            module-name="Devproof Core"
+            author="devproof - Carsten Hufe" author-url="http://devproof.org"
+            module-version="${devproof.version}" portal-version="${devproof.version}"/>
+
     <!--  Dao FIXME remove  -->
     <bean id="baseTagDao" parent="baseGenericDao" abstract="true">
         <property name="daoInterface"

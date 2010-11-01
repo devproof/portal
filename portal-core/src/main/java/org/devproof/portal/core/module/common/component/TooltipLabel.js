@@ -40,11 +40,15 @@ function xstooltip_show(tooltipId, parentId, posX, posY) {
 
         x = xstooltip_findPosX(img) + posX;
         y = xstooltip_findPosY(img) + posY;
+
         var docHeight = document.body.offsetHeight;
         if ((y + it.offsetHeight) > docHeight) {
             y -= it.offsetHeight + 30;
         } else {
             y -= 20;
+        }
+        if(y < 0) {
+            y = 0;
         }
 
         var docWidth = document.body.offsetWidth;
