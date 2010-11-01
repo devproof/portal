@@ -22,7 +22,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-simport javax.annotation.Resource;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

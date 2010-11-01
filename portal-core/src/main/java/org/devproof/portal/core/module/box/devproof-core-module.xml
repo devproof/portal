@@ -3,10 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:devproof="http://www.devproof.org/schema/devproof/portal"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.devproof.org/schema/devproof/portal
+        http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
+    <devproof:page-scan base-package="org.devproof.portal.core.module.box"/>
     <!-- Module configuration -->
     <bean class="org.devproof.portal.core.config.ModuleConfiguration">
         <property name="name" value="Core: Boxes/Site navigation"/>

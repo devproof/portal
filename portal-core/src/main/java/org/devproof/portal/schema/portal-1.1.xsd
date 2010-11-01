@@ -3,10 +3,15 @@
                   targetNamespace="http://www.devproof.org/schema/devproof/portal"
                  elementFormDefault="qualified"
                  attributeFormDefault="unqualified">
-  <xsd:element name="component">
+  <xsd:element name="page-scan">
     <xsd:complexType>
-      <xsd:attribute name="id" type="xsd:ID" use="required"/>
-      <xsd:attribute name="message" type="xsd:string"/>
+      <xsd:attribute name="base-package" type="xsd:string" use="required">
+        <xsd:annotation>
+        <xsd:documentation>
+            The comma-separated list of packages to scan for annotated pages.
+        </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
     </xsd:complexType>
   </xsd:element>
 </xsd:schema>

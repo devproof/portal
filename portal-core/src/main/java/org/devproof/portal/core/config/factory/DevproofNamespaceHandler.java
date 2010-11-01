@@ -6,21 +6,20 @@ import org.w3c.dom.Element;
 
 public class DevproofNamespaceHandler extends NamespaceHandlerSupport
 {
-  public DevproofNamespaceHandler()
-  {
-    registerBeanDefinitionParser("component", new FoobarBeanDefinitionParser());
+  public DevproofNamespaceHandler() {
+//    registerBeanDefinitionParser("component", new FoobarBeanDefinitionParser());
+      registerBeanDefinitionParser("page-scan", new PageScanBeanDefinitionParser());
   }
 
-  public void init()
-  {
+  public void init()  {
   }
 
-  private static class FoobarBeanDefinitionParser
-    extends AbstractSimpleBeanDefinitionParser
-  {
-    protected Class getBeanClass(Element element)
-    {
-      return null;
-    }
-  }
+//  private static class FoobarBeanDefinitionParser
+//    extends AbstractSimpleBeanDefinitionParser
+//  {
+//    protected Class getBeanClass(Element element)
+//    {
+//      return null;
+//    }
+//  }
 }

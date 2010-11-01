@@ -15,6 +15,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 /**
  * @author Carsten Hufe
  */
+// FIXME remove file
 public class SamplePostProcessor implements BeanFactoryPostProcessor {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
