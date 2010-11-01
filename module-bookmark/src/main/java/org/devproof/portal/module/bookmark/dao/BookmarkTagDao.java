@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.blog.dao;
+package org.devproof.portal.module.bookmark.dao;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.tag.dao.TagDao;
-import org.devproof.portal.module.blog.BlogConstants;
-import org.devproof.portal.module.blog.entity.BlogEntity;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.devproof.portal.module.bookmark.BookmarkConstants;
+import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("blogTagDao")
-@CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
-public interface BlogTagDao extends TagDao<BlogTagEntity> {
+@GenericRepository("bookmarkTagDao")
+@CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
+public interface BookmarkTagDao extends TagDao<BookmarkTagEntity> {
 }

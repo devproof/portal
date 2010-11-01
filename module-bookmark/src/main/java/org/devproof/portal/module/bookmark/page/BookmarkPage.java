@@ -35,6 +35,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.CaptchaRatingPanel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
@@ -57,6 +58,7 @@ import org.devproof.portal.module.bookmark.service.BookmarkService;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/bookmarks", registerMainNavigationLink = true)
 public class BookmarkPage extends BookmarkBasePage {
 
 	private static final long serialVersionUID = 1L;

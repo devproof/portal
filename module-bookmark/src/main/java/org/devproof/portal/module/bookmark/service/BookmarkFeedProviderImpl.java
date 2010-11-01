@@ -28,7 +28,9 @@ import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.page.BookmarkPage;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,6 +39,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Component
 public class BookmarkFeedProviderImpl implements FeedProvider {
     private SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider;
     private ConfigurationService configurationService;
@@ -110,12 +113,12 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
         return pageTitle + " - " + feedName;
     }
 
-    @Required
+    @Autowired
     public void setBookmarkDataProvider(SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider) {
         this.bookmarkDataProvider = bookmarkDataProvider;
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

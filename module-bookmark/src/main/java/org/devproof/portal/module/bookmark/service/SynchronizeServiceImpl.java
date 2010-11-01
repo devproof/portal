@@ -32,6 +32,8 @@ import org.devproof.portal.module.bookmark.bean.DeliciousPostBean;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ import java.util.StringTokenizer;
  *
  * @author Carsten Hufe
  */
+@Service("synchronizeService")
 public class SynchronizeServiceImpl implements SynchronizeService {
     private static final Log LOG = LogFactory.getLog(SynchronizeServiceImpl.class);
 
@@ -196,10 +199,12 @@ public class SynchronizeServiceImpl implements SynchronizeService {
         return false;
     }
 
+    @Autowired
     public void setBookmarkService(BookmarkService bookmarkService) {
         this.bookmarkService = bookmarkService;
     }
 
+    @Autowired
     public void setTagService(TagService<BookmarkTagEntity> tagService) {
         this.tagService = tagService;
     }

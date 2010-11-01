@@ -22,13 +22,16 @@ import org.devproof.portal.module.bookmark.dao.BookmarkDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
+@Service("bookmarkService")
 public class BookmarkServiceImpl implements BookmarkService {
     private BookmarkDao bookmarkDao;
     private TagService<BookmarkTagEntity> bookmarkTagService;
@@ -98,12 +101,12 @@ public class BookmarkServiceImpl implements BookmarkService {
         return bookmarkDao.findLastSelectedRights();
     }
 
-    @Required
+    @Autowired
     public void setBookmarkDao(BookmarkDao bookmarkDao) {
         this.bookmarkDao = bookmarkDao;
     }
 
-    @Required
+    @Autowired
     public void setBookmarkTagService(TagService<BookmarkTagEntity> bookmarkTagService) {
         this.bookmarkTagService = bookmarkTagService;
     }

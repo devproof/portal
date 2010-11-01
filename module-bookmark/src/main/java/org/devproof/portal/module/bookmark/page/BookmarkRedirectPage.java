@@ -20,12 +20,14 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/bookmark", indexMountedPath = true)
 public class BookmarkRedirectPage extends WebPage {
 
     private static final long serialVersionUID = 1L;
