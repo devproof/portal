@@ -22,6 +22,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.feed.FeedConstants;
 import org.devproof.portal.core.module.feed.page.Atom1FeedPage;
@@ -31,6 +32,7 @@ import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 /**
  * @author Carsten Hufe
  */
+@NavigationBox("Feed Box")
 public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
     private static final long serialVersionUID = 1L;
     private WebMarkupContainer titleContainer;

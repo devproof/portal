@@ -16,12 +16,14 @@
 package org.devproof.portal.core.module.feed.page;
 
 import org.apache.wicket.PageParameters;
+import org.devproof.portal.core.config.ModulePage;
 
 /**
  * Atom 1.0 Feed
  *
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/feed/atom1", indexMountedPath = true)
 public class Atom1FeedPage extends BaseFeedPage {
     private static final long serialVersionUID = -5992008202571741459L;
 

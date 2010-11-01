@@ -18,8 +18,10 @@ package org.devproof.portal.core.module.feed.locator;
 import java.util.Collection;
 import java.util.Map;
 
+import org.devproof.portal.core.config.Locator;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -28,7 +30,8 @@ import org.springframework.context.ApplicationContextAware;
  * 
  * @author Carsten Hufe
  */
-public class FeedProviderLocatorImpl implements ApplicationContextAware, FeedProviderLocator {
+@Locator("feedProviderLocator")
+public class FeedProviderLocatorImpl implements FeedProviderLocator {
 	private ApplicationContext context;
 
 	@Override
@@ -37,8 +40,8 @@ public class FeedProviderLocatorImpl implements ApplicationContextAware, FeedPro
 		return beans.values();
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	@Autowired
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		context = applicationContext;
 	}
 }

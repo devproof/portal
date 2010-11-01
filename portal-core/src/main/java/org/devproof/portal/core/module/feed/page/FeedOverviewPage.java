@@ -25,6 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
@@ -36,6 +37,7 @@ import java.util.Map;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/feeds")
 public class FeedOverviewPage extends TemplatePage {
     private static final long serialVersionUID = 3957452424603515088L;
     @SpringBean(name = "feedProviderRegistry")

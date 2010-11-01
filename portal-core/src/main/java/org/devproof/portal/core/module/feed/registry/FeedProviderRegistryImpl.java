@@ -17,12 +17,15 @@ package org.devproof.portal.core.module.feed.registry;
 
 import org.apache.wicket.Page;
 import org.devproof.portal.core.config.PageConfiguration;
+import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.feed.locator.FeedProviderLocator;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,7 +34,8 @@ import java.util.Map;
 /**
  * @author Carsten Hufe
  */
-public class FeedProviderRegistryImpl implements FeedProviderRegistry, InitializingBean {
+@Registry("feedProviderRegistry")
+public class FeedProviderRegistryImpl implements FeedProviderRegistry {
     private PageLocator pageLocator;
     private FeedProviderLocator feedProviderLocator;
     private final Map<String, FeedProvider> feedProviders = new HashMap<String, FeedProvider>();
@@ -82,8 +86,8 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
         return feedPaths.containsKey(pageClass);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    @PostConstruct
+    public void afterPropertiesSet() {
         Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
         Collection<FeedProvider> feeds = feedProviderLocator.getFeedProviders();
         for (FeedProvider feed : feeds) {
@@ -109,12 +113,12 @@ public class FeedProviderRegistryImpl implements FeedProviderRegistry, Initializ
         }
     }
 
-    @Required
+    @Autowired
     public void setPageLocator(PageLocator pageLocator) {
         this.pageLocator = pageLocator;
     }
 
-    @Required
+    @Autowired
     public void setFeedProviderLocator(FeedProviderLocator feedProviderLocator) {
         this.feedProviderLocator = feedProviderLocator;
     }
