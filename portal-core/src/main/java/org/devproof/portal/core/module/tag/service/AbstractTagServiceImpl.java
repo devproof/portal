@@ -91,7 +91,6 @@ public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> impleme
         return tag;
     }
 
-    @Autowired
     public void setTagDao(TagDao<T> tagDao) {
         this.tagDao = tagDao;
     }

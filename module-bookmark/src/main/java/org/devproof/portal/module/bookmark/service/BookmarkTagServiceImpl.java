@@ -16,7 +16,9 @@
 package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
+import org.devproof.portal.module.bookmark.dao.BookmarkTagDao;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,5 +29,10 @@ public class BookmarkTagServiceImpl extends AbstractTagServiceImpl<BookmarkTagEn
     @Override
     public String getRelatedTagRight() {
         return "bookmark.view";
+    }
+
+    @Autowired
+    public void setBookmarkTagDao(BookmarkTagDao bookmarkTagDao) {
+        setTagDao(bookmarkTagDao);
     }
 }

@@ -16,7 +16,9 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
+import org.devproof.portal.module.article.dao.ArticleTagDao;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,5 +29,10 @@ public class ArticleTagServiceImpl extends AbstractTagServiceImpl<ArticleTagEnti
     @Override
     public String getRelatedTagRight() {
         return "article.view";
+    }
+
+    @Autowired
+    public void setArticleTagDao(ArticleTagDao articleTagDao) {
+        setTagDao(articleTagDao);
     }
 }
