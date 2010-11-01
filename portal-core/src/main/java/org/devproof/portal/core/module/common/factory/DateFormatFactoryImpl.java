@@ -18,7 +18,10 @@ package org.devproof.portal.core.module.common.factory;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -26,6 +29,7 @@ import java.util.Locale;
 /**
  * @author Carsten Hufe
  */
+@Component("dateFormatFactory")
 public class DateFormatFactoryImpl implements DateFormatFactory {
     private ConfigurationService configurationService;
 
@@ -50,7 +54,7 @@ public class DateFormatFactoryImpl implements DateFormatFactory {
         return createDateFormat("input_date_time_format");
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

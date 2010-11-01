@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.config;
+package org.devproof.portal.core.module.common.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

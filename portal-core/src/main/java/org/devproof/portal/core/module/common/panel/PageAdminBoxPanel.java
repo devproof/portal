@@ -31,6 +31,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
@@ -40,6 +41,7 @@ import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
  * 
  * @author Carsten Hufe
  */
+@NavigationBox("Page Admin Box")
 public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
 	private static final long serialVersionUID = 1L;

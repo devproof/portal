@@ -36,6 +36,36 @@
     <import
             resource="classpath:/org/devproof/portal/core/module/user/devproof-core-module.xml"/>
 
+
+    <!--  Base generic DAO  -->
+    <bean id="baseGenericDao"
+          class="org.devproof.portal.core.module.common.dao.FinderDispatcherGenericDaoImpl"
+          parent="hibernateDaoSupport" abstract="true">
+        <property name="usernameResolver" ref="usernameResolver"/>
+    </bean>
+
+    <!-- Common data provider DAO -->
+    <bean id="dataProviderDao" class="org.devproof.portal.core.module.common.dao.DataProviderDaoImpl"
+          parent="hibernateDaoSupport"/>
+
+    <!-- Persistence data provider -->
+    <bean id="persistenceDataProvider"
+          class="org.devproof.portal.core.module.common.dataprovider.SortablePersistenceDataProviderImpl"
+          abstract="true" scope="prototype">
+        <property name="dataProviderDao" ref="dataProviderDao"/>
+    </bean>
+
+    <!-- Date Formater -->
+    <bean id="inputDateFormat" factory-bean="dateFormatFactory" factory-method="createInputDateFormat"
+          scope="prototype"/>
+    <bean id="inputDateTimeFormat" factory-bean="dateFormatFactory" factory-method="createInputDateTimeFormat"
+          scope="prototype"/>
+    <bean id="displayDateFormat" factory-bean="dateFormatFactory" factory-method="createDisplayDateFormat"
+          scope="prototype"/>
+    <bean id="displayDateTimeFormat" factory-bean="dateFormatFactory" factory-method="createDisplayDateTimeFormat"
+          scope="prototype"/>
+
+
     <bean id="jndiConfig"
           class="org.devproof.portal.core.module.common.util.JndiConfiguration"/>
 

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.devproof.portal.core.config.BoxConfiguration;
+import org.devproof.portal.core.config.Locator;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Carsten Hufe
  */
-@Component("boxLocator")
+@Locator("boxLocator")
 public class BoxLocatorImpl implements BoxLocator {
 	private ApplicationContext context;
 

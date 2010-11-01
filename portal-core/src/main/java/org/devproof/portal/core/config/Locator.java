@@ -13,28 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.panel;
+package org.devproof.portal.core.config;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.markup.MarkupStream;
-import org.devproof.portal.core.config.NavigationBox;
+import org.springframework.stereotype.Component;
+
+import java.lang.annotation.*;
 
 /**
- * Only a dummy class for search boxes
+ * Marks a locator
  *
  * @author Carsten Hufe
  */
-@NavigationBox("Search Box")
-public class SearchBoxPanel extends Component {
-
-    private static final long serialVersionUID = 1L;
-
-    public SearchBoxPanel(String id) {
-        super(id);
-    }
-
-    @Override
-    protected void onRender(MarkupStream markupStream) {
-
-    }
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface Locator {
+	String value() default "";
 }

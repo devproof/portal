@@ -19,6 +19,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 
@@ -27,6 +28,7 @@ import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
  *
  * @author Carsten Hufe
  */
+@NavigationBox("Other Box")
 public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
 
     private static final long serialVersionUID = 1L;

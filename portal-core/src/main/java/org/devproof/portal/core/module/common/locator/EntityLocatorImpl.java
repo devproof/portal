@@ -20,15 +20,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.devproof.portal.core.config.Locator;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Carsten Hufe
  */
-public class EntityLocatorImpl implements ApplicationContextAware, EntityLocator {
+@Locator("entityLocator")
+public class EntityLocatorImpl implements EntityLocator {
 	private ApplicationContext context;
 
 	@Override
@@ -41,8 +46,8 @@ public class EntityLocatorImpl implements ApplicationContextAware, EntityLocator
 		return back;
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    @Autowired
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		context = applicationContext;
 	}
 

@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.module.common.service;
 
+import org.springframework.stereotype.Service;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +25,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Service("fontService")
 public class FontServiceImpl implements FontService {
 
     @Override

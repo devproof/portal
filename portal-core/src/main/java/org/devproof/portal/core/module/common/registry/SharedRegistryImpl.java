@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.module.common.registry;
 
+import org.devproof.portal.core.config.Registry;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ import java.util.Map;
 /**
  * @author Carsten Hufe
  */
+@Registry("sharedRegistry")
 public class SharedRegistryImpl implements SharedRegistry {
 	private final Map<String, Object> resources = new HashMap<String, Object>();
 

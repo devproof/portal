@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.devproof.portal.core.config.DelegateRepositoryMethod;
+import org.devproof.portal.core.module.common.annotation.DelegateRepositoryMethod;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.user.service.UsernameResolver;

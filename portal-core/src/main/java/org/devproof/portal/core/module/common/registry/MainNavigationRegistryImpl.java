@@ -17,12 +17,15 @@ package org.devproof.portal.core.module.common.registry;
 
 import org.apache.wicket.Page;
 import org.devproof.portal.core.config.PageConfiguration;
+import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,7 +34,8 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-public class MainNavigationRegistryImpl implements MainNavigationRegistry, InitializingBean {
+@Registry("mainNavigationRegistry")
+public class MainNavigationRegistryImpl implements MainNavigationRegistry {
     private PageLocator pageLocator;
     private ModuleService moduleService;
 
@@ -78,15 +82,17 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry, Initi
         }
     }
 
-    @Override
+    @PostConstruct
     public void afterPropertiesSet() throws Exception {
         buildNavigation();
     }
 
+    @Autowired
     public void setPageLocator(PageLocator pageLocator) {
         this.pageLocator = pageLocator;
     }
 
+    @Autowired
     public void setModuleService(ModuleService moduleService) {
         this.moduleService = moduleService;
     }
