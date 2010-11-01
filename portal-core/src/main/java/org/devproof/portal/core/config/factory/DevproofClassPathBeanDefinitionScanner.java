@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.config.factory;
 
-import org.devproof.portal.core.config.DevproofPage;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.springframework.beans.MutablePropertyValues;
@@ -37,7 +37,7 @@ import java.lang.reflect.Type;
 public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
     public DevproofClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultFilters) {
         super(registry, useDefaultFilters);
-        addIncludeFilter(new AnnotationTypeFilter(DevproofPage.class));
+        addIncludeFilter(new AnnotationTypeFilter(ModulePage.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericRepository.class));
     }
 
@@ -45,8 +45,8 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
     protected void registerBeanDefinition(BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry) {
         try {
             Class<?> clazz = Class.forName(definitionHolder.getBeanDefinition().getBeanClassName());
-            if (clazz.isAnnotationPresent(DevproofPage.class)) {
-                DevproofPage annotation = clazz.getAnnotation(DevproofPage.class);
+            if (clazz.isAnnotationPresent(ModulePage.class)) {
+                ModulePage annotation = clazz.getAnnotation(ModulePage.class);
                 RootBeanDefinition rbd = new RootBeanDefinition(PageConfiguration.class);
                 MutablePropertyValues v = rbd.getPropertyValues();
                 v.addPropertyValue("mountPath", annotation.mountPath());
@@ -60,13 +60,19 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
                 Class<?> entityClazz = (Class<?>) type.getActualTypeArguments()[0];
                 GenericRepository annotation = clazz.getAnnotation(GenericRepository.class);
                 BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("baseGenericDao").addPropertyValue("daoInterface", clazz).addPropertyValue("entityClass", entityClazz).getBeanDefinition();
-                BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(bd, annotation.name());
+                BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(bd, annotation.value());
                 super.registerBeanDefinition(beanDefinitionHolder, registry);
             } else {
+                // TODO GenericDataProvoder
+                // TODO DelegateRepositoryMethod
+                // TODO ModulePage
+                // TODO build ModuleConfiguration
+                // TODO entites
                 super.registerBeanDefinition(definitionHolder, registry);
             }
 
         } catch (ClassNotFoundException e) {
+            // FIXME logger
             e.printStackTrace();
         }
     }

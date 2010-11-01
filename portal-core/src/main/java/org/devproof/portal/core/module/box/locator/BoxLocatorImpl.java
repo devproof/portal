@@ -23,13 +23,16 @@ import java.util.Map;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Carsten Hufe
  */
-public class BoxLocatorImpl implements ApplicationContextAware, BoxLocator {
+@Component("boxLocator")
+public class BoxLocatorImpl implements BoxLocator {
 	private ApplicationContext context;
 
 	@Override
@@ -42,9 +45,8 @@ public class BoxLocatorImpl implements ApplicationContextAware, BoxLocator {
 		return back;
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	@Autowired
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		context = applicationContext;
 	}
-
 }

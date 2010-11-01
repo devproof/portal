@@ -35,5 +35,5 @@ public @interface GenericRepository {
     /**
      * Spring bean id
      */
-    String name();
+    String value();
 }

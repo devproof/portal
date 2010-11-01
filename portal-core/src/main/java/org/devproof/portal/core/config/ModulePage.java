@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface DevproofPage {
+public @interface ModulePage {
     /**
      * Mount path
      */

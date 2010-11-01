@@ -17,15 +17,20 @@ package org.devproof.portal.core.module.box.registry;
 
 import org.apache.wicket.Component;
 import org.devproof.portal.core.config.BoxConfiguration;
+import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.box.locator.BoxLocator;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
  * @author Carsten Hufe
  */
-public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
+@Registry("boxRegistry")
+public class BoxRegistryImpl implements BoxRegistry {
     private BoxLocator boxLocator;
     private final Map<String, BoxConfiguration> boxes = new HashMap<String, BoxConfiguration>();
 
@@ -79,14 +84,15 @@ public class BoxRegistryImpl implements BoxRegistry, InitializingBean {
         return null;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    @PostConstruct
+    public void init() {
         Collection<BoxConfiguration> boxes = boxLocator.getBoxes();
         for (BoxConfiguration box : boxes) {
             registerBox(box);
         }
     }
 
+    @Autowired
     public void setBoxLocator(BoxLocator boxLocator) {
         this.boxLocator = boxLocator;
     }

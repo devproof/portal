@@ -36,5 +36,5 @@ public @interface DelegateRepositoryMethod {
     /**
      * Spring bean id
      */
-    String name();
+    String value();
 }

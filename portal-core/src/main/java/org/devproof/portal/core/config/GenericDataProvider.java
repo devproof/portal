@@ -35,5 +35,5 @@ public @interface GenericDataProvider {
     /**
      * Spring bean id
      */
-    String name();
+    String value();
 }

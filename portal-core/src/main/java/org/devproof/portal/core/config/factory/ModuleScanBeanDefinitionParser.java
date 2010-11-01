@@ -15,36 +15,9 @@
  */
 package org.devproof.portal.core.config.factory;
 
-import org.devproof.portal.core.config.DevproofPage;
-import org.devproof.portal.core.config.GenericRepository;
-import org.devproof.portal.core.config.PageConfiguration;
-import org.devproof.portal.core.module.box.dao.BoxDao;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinitionHolder;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.ChildBeanDefinition;
-import org.springframework.beans.factory.support.RootBeanDefinition;
-import org.springframework.beans.factory.xml.BeanDefinitionParser;
-import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.beans.factory.xml.XmlReaderContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ComponentScanBeanDefinitionParser;
-import org.springframework.core.type.classreading.MetadataReader;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.util.StringUtils;
-import org.w3c.dom.Element;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author Carsten Hufe
