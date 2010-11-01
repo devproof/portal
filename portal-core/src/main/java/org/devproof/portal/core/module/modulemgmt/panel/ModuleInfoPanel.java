@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.config.PageConfiguration;
@@ -38,9 +39,14 @@ public class ModuleInfoPanel extends Panel {
     public ModuleInfoPanel(String id, ModuleConfiguration module) {
         super(id);
         this.module = module;
+        add(basePackageLabel());
         add(createRepeatingPages());
         add(createRepeatingBoxes());
         add(createRepeatingEntities());
+    }
+
+    private Label basePackageLabel() {
+        return new Label("basePackage", new PropertyModel<String>(module, "basePackage"));
     }
 
     private RepeatingView createRepeatingEntities() {
