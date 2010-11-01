@@ -124,7 +124,7 @@ public class JndiConfiguration {
             return CommonConstants.EMAIL_DEFAULT_DISABLED;
         }
     }
-
+    
     /**
      * Returns all hibernate properties for the spring configuration
      */

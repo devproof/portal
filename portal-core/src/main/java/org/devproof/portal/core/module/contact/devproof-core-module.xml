@@ -9,7 +9,7 @@
         http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
     <devproof:module-scan
-            base-package="org.devproof.portal.core.module.box"
+            base-package="org.devproof.portal.core.module.contact"
             module-name="Core: Contact"
             author="devproof - Carsten Hufe" author-url="http://devproof.org"
             module-version="core" portal-version="core"/>

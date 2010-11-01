@@ -31,16 +31,21 @@ import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Carsten Hufe
  */
+@Service("emailService")
 public class EmailServiceImpl implements EmailService {
-    private static final Log LOG = LogFactory.getLog(EmailServiceImpl.class);
+    private final Log logger = LogFactory.getLog(EmailServiceImpl.class);
     private EmailTemplateDao emailTemplateDao;
     private ConfigurationService configurationService;
     private JavaMailSender javaMailSender;
@@ -114,7 +119,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject(replace(template.getSubject(), placeholder));
             helper.setText("<html><body>" + replace(template.getContent(), placeholder) + "</body></html>", true);
             javaMailSender.send(msg);
-            LOG.info("Send email to " + placeholder.getToEmail() + " " + template.getSubject());
+            logger.info("Send email to " + placeholder.getToEmail() + " " + template.getSubject());
         } catch (MailException e) {
             throw new UnhandledException(e);
         } catch (MessagingException e) {
@@ -159,27 +164,28 @@ public class EmailServiceImpl implements EmailService {
         return content;
     }
 
-    @Required
+    @Autowired
     public void setEmailTemplateDao(EmailTemplateDao emailTemplateDao) {
         this.emailTemplateDao = emailTemplateDao;
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
-    @Required
+    @Autowired
     public void setJavaMailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    @Required
+    @Autowired
+    @Qualifier("displayDateFormat")
     public void setDateFormat(SimpleDateFormat dateFormat) {
         this.dateFormat = dateFormat;
     }
 
-    @Required
+    @Value("#{jndiConfig.resolveEmailDisabled()}")
     public void setEmailDisabled(boolean emailDisabled) {
         this.emailDisabled = emailDisabled;
     }

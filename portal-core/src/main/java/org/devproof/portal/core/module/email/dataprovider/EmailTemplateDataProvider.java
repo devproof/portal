@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.email.dao;
+package org.devproof.portal.core.module.email.dataprovider;
 
-import java.util.List;
-
-import org.devproof.portal.core.config.GenericRepository;
-import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
+import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.module.box.entity.BoxEntity;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("emailTemplateDao")
-@CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface EmailTemplateDao extends GenericDao<EmailTemplateEntity, Integer> {
-    @Query("Select e from EmailTemplateEntity e")
-    List<EmailTemplateEntity> findAll();
+@GenericDataProvider(value = "emailTemplateDataProvider", sortProperty = "subject")
+public interface EmailTemplateDataProvider extends ISortableDataProvider<EmailTemplateEntity> {
 }

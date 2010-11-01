@@ -27,6 +27,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.devproof.portal.core.module.email.service.EmailService;
@@ -34,6 +35,7 @@ import org.devproof.portal.core.module.email.service.EmailService;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/admin/emails", registerGlobalAdminLink = true)
 public class EmailTemplatePage extends EmailTemplateBasePage {
 
     private static final long serialVersionUID = 1L;
