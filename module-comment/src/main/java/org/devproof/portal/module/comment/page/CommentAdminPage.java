@@ -20,6 +20,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.comment.CommentConstants;
@@ -31,6 +32,7 @@ import org.devproof.portal.module.comment.query.CommentQuery;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/admin/comments", registerGlobalAdminLink = true)
 public class CommentAdminPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;

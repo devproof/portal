@@ -23,7 +23,10 @@ import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.dao.CommentDao;
 import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -32,6 +35,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Service("commentService")
 public class CommentServiceImpl implements CommentService {
 
     private ConfigurationService configurationService;
@@ -129,22 +133,28 @@ public class CommentServiceImpl implements CommentService {
         return commentDao.findAllModuleNames();
     }
 
+    @Autowired
     public void setCommentDao(CommentDao commentDao) {
         this.commentDao = commentDao;
     }
 
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
+    @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    @Autowired
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
     }
 
+    @Autowired
+    @Qualifier("displayDateTimeFormat")
     public void setDisplayDateTimeFormat(DateFormat displayDateTimeFormat) {
         this.displayDateTimeFormat = displayDateTimeFormat;
     }
