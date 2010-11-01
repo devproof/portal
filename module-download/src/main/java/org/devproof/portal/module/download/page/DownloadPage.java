@@ -46,6 +46,7 @@ import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.CaptchaRatingPanel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
+import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -74,7 +75,7 @@ public class DownloadPage extends DownloadBasePage {
 	@SpringBean(name = "downloadService")
 	private DownloadService downloadService;
 	@SpringBean(name = "downloadDataProvider")
-	private DownloadDataProvider downloadDataProvider;
+	private SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
 	@SpringBean(name = "downloadTagService")
 	private DownloadTagService downloadTagService;
 	@SpringBean(name = "configurationService")

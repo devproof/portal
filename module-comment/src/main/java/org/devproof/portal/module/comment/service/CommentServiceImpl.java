@@ -133,7 +133,7 @@ public class CommentServiceImpl implements CommentService {
         return commentDao.findAllModuleNames();
     }
 
-    @Autowired
+    @Autowired(required = false) // required false for integration test
     public void setCommentDao(CommentDao commentDao) {
         this.commentDao = commentDao;
     }
