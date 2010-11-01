@@ -18,10 +18,8 @@ package org.devproof.portal.core.config.factory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Page;
-import org.devproof.portal.core.config.ModuleConfiguration;
-import org.devproof.portal.core.config.ModulePage;
-import org.devproof.portal.core.config.GenericRepository;
-import org.devproof.portal.core.config.PageConfiguration;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
+import org.devproof.portal.core.config.*;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -36,6 +34,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
+ * Scans and registers the devproof stuff in spring way
+ *
  * @author Carsten Hufe
  */
 public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
@@ -49,6 +49,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         this.moduleConfiguration = moduleConfiguration;
         addIncludeFilter(new AnnotationTypeFilter(ModulePage.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericRepository.class));
+        addIncludeFilter(new AnnotationTypeFilter(GenericDataProvider.class));
         addIncludeFilter(new AnnotationTypeFilter(Entity.class));
         addIncludeFilter(new AnnotationTypeFilter(org.hibernate.annotations.Entity.class));
         registerModuleConfigurationAsSingleton();
@@ -56,7 +57,11 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
 
     private void registerModuleConfigurationAsSingleton() {
         ConfigurableListableBeanFactory f = (ConfigurableListableBeanFactory)registry;
-        f.registerSingleton(moduleConfiguration.getBasePackage(), moduleConfiguration);
+         String basePackage = moduleConfiguration.getBasePackage();
+        if(f.containsBean(basePackage)) {
+            throw new IllegalStateException("You tried to register a devproof module twice with the same base-package: " + basePackage + "!");   
+        }
+        f.registerSingleton(basePackage, moduleConfiguration);
     }
 
     @Override
@@ -67,8 +72,15 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
             if (clazz.isAnnotationPresent(ModulePage.class)) {
                 moduleConfiguration.addPageConfiguration(new PageConfiguration(clazz));
             }
+            else if (clazz.isAnnotationPresent(NavigationBox.class)) {
+                moduleConfiguration.addBox(new BoxConfiguration(clazz));
+            }
             else if (clazz.isAnnotationPresent(GenericRepository.class)) {
                 BeanDefinitionHolder beanDefinitionHolder = buildGenericRepositoryDefinition(clazz);
+                super.registerBeanDefinition(beanDefinitionHolder, registry);
+            }
+            else if (clazz.isAnnotationPresent(GenericDataProvider.class)) {
+                BeanDefinitionHolder beanDefinitionHolder = buildGenericDataProviderDefinition(clazz);
                 super.registerBeanDefinition(beanDefinitionHolder, registry);
             }
             else if (clazz.isAnnotationPresent(Entity.class)
@@ -76,8 +88,6 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
                 moduleConfiguration.addEntity(clazz);
             }
             else {
-                // TODO GenericDataProvoder
-                // TODO DelegateRepositoryMethod
                 // TODO build BoxConfiguration
                 super.registerBeanDefinition(definitionHolder, registry);
             }
@@ -88,26 +98,35 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
     }
 
     private BeanDefinitionHolder buildGenericRepositoryDefinition(Class<?> clazz) {
-        // TODO DelegateREpositoryMethod
         Class<?> entityClazz = getEntityClazz(clazz);
         GenericRepository annotation = clazz.getAnnotation(GenericRepository.class);
         BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("baseGenericDao").addPropertyValue("daoInterface", clazz).addPropertyValue("entityClass", entityClazz).getBeanDefinition();
-        BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(bd, annotation.value());
-        return beanDefinitionHolder;
+        return new BeanDefinitionHolder(bd, annotation.value());
+    }
+
+    private BeanDefinitionHolder buildGenericDataProviderDefinition(Class<?> clazz) {
+        Class<?> entityClazz = getEntityClazz(clazz);
+        GenericDataProvider annotation = clazz.getAnnotation(GenericDataProvider.class);
+        BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("persistenceDataProvider")
+                .setScope(BeanDefinition.SCOPE_PROTOTYPE)
+                .addPropertyValue("sort", new SortParam(annotation.sortProperty(), annotation.sortAscending()))
+                .addPropertyValue("entityClass", entityClazz).getBeanDefinition();
+        return new BeanDefinitionHolder(bd, annotation.value());
     }
 
     private Class<?> getEntityClazz(Class<?> clazz) {
         Type[] types = clazz.getGenericInterfaces();
         ParameterizedType type = (ParameterizedType) types[0];
-        Class<?> entityClazz = (Class<?>) type.getActualTypeArguments()[0];
-        return entityClazz;
+        return (Class<?>) type.getActualTypeArguments()[0];
     }
 
     @Override
     protected boolean isCandidateComponent(AnnotatedBeanDefinition beanDefinition) {
         try {
             Class<?> clazz = Class.forName(beanDefinition.getBeanClassName());
-            return super.isCandidateComponent(beanDefinition) || clazz.isAnnotationPresent(GenericRepository.class);
+            return super.isCandidateComponent(beanDefinition)
+                    || clazz.isAnnotationPresent(GenericRepository.class)
+                    || clazz.isAnnotationPresent(GenericDataProvider.class);
         } catch (ClassNotFoundException e) {
             logger.fatal(e);
         }

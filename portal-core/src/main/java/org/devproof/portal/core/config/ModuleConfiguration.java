@@ -177,8 +177,22 @@ public class ModuleConfiguration implements Serializable {
         return pages.add(pageConfiguration);
     }
 
+    /**
+     * Adds a database entity
+     * @param aClass entity class
+     * @return true when added
+     */
     public boolean addEntity(Class<?> aClass) {
         return entities.add(aClass);
+    }
+
+    /**
+     * Adds a box configuration
+     * @param boxConfiguration box configuration
+     * @return true when added
+     */
+    public boolean addBox(BoxConfiguration boxConfiguration) {
+        return boxes.add(boxConfiguration);
     }
 
     @Override

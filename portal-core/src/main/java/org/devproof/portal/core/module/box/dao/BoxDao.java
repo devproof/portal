@@ -25,9 +25,10 @@ import org.devproof.portal.core.module.common.dao.GenericDao;
 import java.util.List;
 
 /**
+ * Generic Dao for the boxes
+ *
  * @author Carsten Hufe
  */
-
 @GenericRepository("boxDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface BoxDao extends GenericDao<BoxEntity, Integer> {

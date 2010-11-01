@@ -42,6 +42,16 @@ public class BoxConfiguration implements Serializable {
     }
 
     /**
+     * Gets the name from annotation
+     * @param boxClass Box class
+     */
+    public BoxConfiguration(Class<? extends Component> boxClass) {
+        NavigationBox annotation = boxClass.getAnnotation(NavigationBox.class);
+        this.name = annotation.value();
+        this.boxClass = boxClass;
+    }
+
+    /**
      * @return name of the box
      */
     public String getName() {

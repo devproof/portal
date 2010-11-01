@@ -24,7 +24,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Delegates the called method to the bean with the given name.
- * The method signature must be the same
+ * The method signature must be the same.
  *
  * @author Carsten Hufe
  */

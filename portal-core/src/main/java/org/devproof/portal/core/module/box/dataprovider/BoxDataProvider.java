@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.config;
+package org.devproof.portal.core.module.box.dataprovider;
 
-import org.springframework.stereotype.Component;
-
-import java.lang.annotation.*;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
+import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.module.box.entity.BoxEntity;
 
 /**
- * Marks a registry
- *
  * @author Carsten Hufe
  */
-@Target({ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Component
-public @interface Registry {
-	String value() default "";
+@GenericDataProvider(value = "boxDataProvider", sortProperty = "sort")
+public interface BoxDataProvider extends ISortableDataProvider<BoxEntity> {
 }

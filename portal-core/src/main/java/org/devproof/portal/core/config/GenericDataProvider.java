@@ -36,4 +36,8 @@ public @interface GenericDataProvider {
      * Spring bean id
      */
     String value();
+
+    String sortProperty();
+
+    boolean sortAscending() default true;
 }

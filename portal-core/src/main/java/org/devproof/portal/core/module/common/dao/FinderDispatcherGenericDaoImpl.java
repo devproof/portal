@@ -16,10 +16,12 @@
 package org.devproof.portal.core.module.common.dao;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.devproof.portal.core.config.DelegateRepositoryMethod;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
@@ -27,9 +29,11 @@ import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -51,7 +55,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  *            primary key type
  */
 public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements
-		FactoryBean<Object>, Serializable {
+		FactoryBean<Object>, Serializable, ApplicationContextAware {
 
 	private static final long serialVersionUID = -3752572093862325307L;
 
@@ -59,9 +63,9 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	private Class<T> entityClass;
 	private Class<?> daoInterface;
 	private UsernameResolver usernameResolver;
+    private ApplicationContext applicationContext;
 
-	public Object getObject() throws Exception {
-        ConfigurableApplicationContext ctx;
+    public Object getObject() throws Exception {
 		ProxyFactory result = new ProxyFactory();
 		GenericDao<T, PK> genericDao = createGenericHibernateDao();
 		result.setTarget(genericDao);
@@ -102,9 +106,14 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 				Method method = invocation.getMethod();
 				if (method.isAnnotationPresent(Query.class)) {
 					result = executeQuery(invocation);
-				} else if (method.isAnnotationPresent(BulkUpdate.class)) {
+				}
+                else if (method.isAnnotationPresent(BulkUpdate.class)) {
 					executeBulkUpdate(invocation);
-				} else {
+				}
+                else if(method.isAnnotationPresent(DelegateRepositoryMethod.class)) {
+                    result = delegateRepositoryMethod(invocation, method);
+                }
+                else {
 					result = delegateToServiceMethod(invocation);
 				}
 				return result;
@@ -188,7 +197,14 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 		};
 	}
 
-	public Class<?> getObjectType() {
+    private Object delegateRepositoryMethod(MethodInvocation invocation, Method method) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        DelegateRepositoryMethod annotation = method.getAnnotation(DelegateRepositoryMethod.class);
+        Object bean = applicationContext.getBean(annotation.value());
+        Method delegateMethod = bean.getClass().getMethod(method.getName(), method.getParameterTypes());
+        return delegateMethod.invoke(bean, invocation.getArguments());
+    }
+
+    public Class<?> getObjectType() {
 		return daoInterface;
 	}
 
@@ -226,4 +242,9 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 	public void setUsernameResolver(UsernameResolver usernameResolver) {
 		this.usernameResolver = usernameResolver;
 	}
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 }
