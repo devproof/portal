@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.blog.service;
+package org.devproof.portal.module.article.dataprovider;
 
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
+import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.query.ArticleQuery;
 
 /**
  * @author Carsten Hufe
  */
-public interface BlogTagService extends TagService<BlogTagEntity> {
+@GenericDataProvider(value = "articleDataProvider", sortProperty = "title", sortAscending = true)
+public interface ArticleDataProvider extends SortableQueryDataProvider<ArticleEntity, ArticleQuery> {
 }

@@ -13,13 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.blog.service;
+package org.devproof.portal.module.article.service;
 
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
+import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Carsten Hufe
  */
-public interface BlogTagService extends TagService<BlogTagEntity> {
+@Service("articleTagService")
+public class ArticleTagServiceImpl extends AbstractTagServiceImpl<ArticleTagEntity> implements ArticleTagService {
+    @Override
+    public String getRelatedTagRight() {
+        return "article.view";
+    }
 }

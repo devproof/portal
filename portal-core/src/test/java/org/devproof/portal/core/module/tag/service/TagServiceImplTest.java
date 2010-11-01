@@ -32,16 +32,20 @@ import static org.junit.Assert.assertNotNull;
  * @author Carsten Hufe
  */
 public class TagServiceImplTest {
-    private TagServiceImpl<DummyTagEntity> impl;
+    private AbstractTagServiceImpl<DummyTagEntity> impl;
     private TagDao<DummyTagEntity> mock;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(TagDao.class);
-        impl = new TagServiceImpl<DummyTagEntity>();
+        impl = new AbstractTagServiceImpl<DummyTagEntity>() {
+            @Override
+            public String getRelatedTagRight() {
+                return "testright";
+            }
+        };
         impl.setTagDao(mock);
-        impl.setRelatedTagRight("testright");
     }
 
     @Test

@@ -29,7 +29,9 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.page.ArticlePage;
 import org.devproof.portal.module.article.page.ArticleReadPage;
 import org.devproof.portal.module.article.query.ArticleQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,6 +40,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Component("articleFeedProvider")
 public class ArticleFeedProviderImpl implements FeedProvider {
     private SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
     private ConfigurationService configurationService;
@@ -112,12 +115,12 @@ public class ArticleFeedProviderImpl implements FeedProvider {
         return pageTitle + " - " + feedName;
     }
 
-    @Required
+    @Autowired
     public void setArticleDataProvider(SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider) {
         this.articleDataProvider = articleDataProvider;
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

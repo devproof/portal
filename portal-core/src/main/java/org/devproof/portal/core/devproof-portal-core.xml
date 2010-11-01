@@ -36,13 +36,6 @@
         <property name="dataProviderDao" ref="dataProviderDao"/>
     </bean>
 
-    <bean id="baseTagDao" parent="baseGenericDao" abstract="true">
-        <property name="daoInterface" value="org.devproof.portal.core.module.tag.dao.TagDao"/>
-    </bean>
-
-    <bean id="baseTagService" class="org.devproof.portal.core.module.tag.service.TagServiceImpl" abstract="true">
-    </bean>
-
     <!-- Date Formater -->
     <bean id="inputDateFormat" factory-bean="dateFormatFactory" factory-method="createInputDateFormat"
           scope="prototype"/>

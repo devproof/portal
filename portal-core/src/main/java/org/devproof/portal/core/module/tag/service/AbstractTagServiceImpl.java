@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T> {
+public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T> {
     private TagDao<T> tagDao;
     private String relatedTagRight;
 
@@ -65,10 +65,7 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
         return obj;
     }
 
-    @Override
-    public String getRelatedTagRight() {
-        return relatedTagRight;
-    }
+    public abstract String getRelatedTagRight();
 
     @Override
     public void delete(T entity) {
@@ -98,9 +95,5 @@ public class TagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T>
     @Autowired
     public void setTagDao(TagDao<T> tagDao) {
         this.tagDao = tagDao;
-    }
-
-    public void setRelatedTagRight(String relatedTagRight) {
-        this.relatedTagRight = relatedTagRight;
     }
 }

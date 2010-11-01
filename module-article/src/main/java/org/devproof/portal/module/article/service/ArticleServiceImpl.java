@@ -23,13 +23,16 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
+@Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
     private ArticlePageDao articlePageDao;
@@ -89,17 +92,17 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDao.findByContentId(contentId);
     }
 
-    @Required
+    @Autowired
     public void setArticleDao(ArticleDao articleDao) {
         this.articleDao = articleDao;
     }
 
-    @Required
+    @Autowired
     public void setArticlePageDao(ArticlePageDao articlePageDao) {
         this.articlePageDao = articlePageDao;
     }
 
-    @Required
+    @Autowired
     public void setArticleTagService(TagService<ArticleTagEntity> articleTagService) {
         this.articleTagService = articleTagService;
     }

@@ -34,6 +34,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
@@ -57,6 +58,7 @@ import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/articles", registerMainNavigationLink = true)
 public class ArticlePage extends ArticleBasePage {
 
 	private static final long serialVersionUID = 1L;
