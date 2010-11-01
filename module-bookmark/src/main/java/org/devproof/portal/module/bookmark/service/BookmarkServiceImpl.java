@@ -34,7 +34,7 @@ import java.util.List;
 @Service("bookmarkService")
 public class BookmarkServiceImpl implements BookmarkService {
     private BookmarkDao bookmarkDao;
-    private TagService<BookmarkTagEntity> bookmarkTagService;
+    private BookmarkTagService bookmarkTagService;
 
     @Override
     public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
@@ -107,7 +107,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Autowired
-    public void setBookmarkTagService(TagService<BookmarkTagEntity> bookmarkTagService) {
+    public void setBookmarkTagService(BookmarkTagService bookmarkTagService) {
         this.bookmarkTagService = bookmarkTagService;
     }
 }

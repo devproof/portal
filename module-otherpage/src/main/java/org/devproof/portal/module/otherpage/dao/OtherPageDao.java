@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.dao;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
@@ -27,6 +28,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@GenericRepository("otherPageDao")
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 public interface OtherPageDao extends GenericDao<OtherPageEntity, Integer> {
     @CacheQuery(enabled = false)

@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:devproof="http://www.devproof.org/schema/devproof/portal"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.devproof.org/schema/devproof/portal
+        http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
-    <!-- Module configuration -->
-    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-        <property name="name" value="Upload Center"/>
-        <property name="moduleVersion" value="${devproof.version}"/>
-        <property name="portalVersion" value="${devproof.version}"/>
-        <property name="author" value="devproof - Carsten Hufe"/>
-        <property name="url" value="http://devproof.org"/>
-
-        <property name="pages">
-            <list>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/uploadcenter"/>
-                    <property name="pageClass" value="org.devproof.portal.module.uploadcenter.page.UploadCenterPage"/>
-                    <property name="registerPageAdminLink" value="true"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
+    <devproof:module-scan
+            base-package="org.devproof.portal.module.uploadcenter"
+            module-name="Upload Center"
+            author="devproof - Carsten Hufe" author-url="http://devproof.org"
+            module-version="${devproof.version}" portal-version="${devproof.version}"/>
 </beans>

@@ -32,6 +32,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
 import org.devproof.portal.module.download.service.DownloadService;
+import org.devproof.portal.module.download.service.DownloadTagService;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class DownloadEditPage extends DownloadBasePage {
     @SpringBean(name = "downloadService")
     private DownloadService downloadService;
     @SpringBean(name = "downloadTagService")
-    private TagService<DownloadTagEntity> downloadTagService;
+    private DownloadTagService downloadTagService;
     private IModel<DownloadEntity> downloadModel;
 
     public DownloadEditPage(IModel<DownloadEntity> downloadModel) {

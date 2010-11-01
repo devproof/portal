@@ -36,7 +36,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
     private ArticleDao articleDao;
     private ArticlePageDao articlePageDao;
-    private TagService<ArticleTagEntity> articleTagService;
+    private ArticleTagService articleTagService;
 
     @Override
     public boolean existsContentId(String contentId) {
@@ -103,7 +103,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Autowired
-    public void setArticleTagService(TagService<ArticleTagEntity> articleTagService) {
+    public void setArticleTagService(ArticleTagService articleTagService) {
         this.articleTagService = articleTagService;
     }
 }

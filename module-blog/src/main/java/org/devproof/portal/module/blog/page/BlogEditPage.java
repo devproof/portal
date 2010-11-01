@@ -31,6 +31,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.devproof.portal.module.blog.service.BlogService;
+import org.devproof.portal.module.blog.service.BlogTagService;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class BlogEditPage extends BlogBasePage {
     @SpringBean(name = "blogService")
     private BlogService blogService;
     @SpringBean(name = "blogTagService")
-    private TagService<BlogTagEntity> blogTagService;
+    private BlogTagService blogTagService;
     private IModel<BlogEntity> blogModel;
 
     public BlogEditPage(IModel<BlogEntity> blogModel) {

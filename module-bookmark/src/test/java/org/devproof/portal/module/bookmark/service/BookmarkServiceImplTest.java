@@ -37,13 +37,13 @@ import static org.junit.Assert.*;
 public class BookmarkServiceImplTest {
     private BookmarkServiceImpl impl;
     private BookmarkDao mock;
-    private TagService<BookmarkTagEntity> mockTag;
+    private BookmarkTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(BookmarkDao.class);
-        mockTag = (TagService<BookmarkTagEntity>) createStrictMock(TagService.class);
+        mockTag = createStrictMock(BookmarkTagService.class);
         impl = new BookmarkServiceImpl();
         impl.setBookmarkDao(mock);
         impl.setBookmarkTagService(mockTag);

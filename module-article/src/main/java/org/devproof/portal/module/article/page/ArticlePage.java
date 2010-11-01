@@ -52,6 +52,7 @@ import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.panel.ArticleSearchBoxPanel;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.devproof.portal.module.article.service.ArticleService;
+import org.devproof.portal.module.article.service.ArticleTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
@@ -67,7 +68,7 @@ public class ArticlePage extends ArticleBasePage {
 	@SpringBean(name = "articleDataProvider")
 	private QueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
 	@SpringBean(name = "articleTagService")
-	private TagService<ArticleTagEntity> articleTagService;
+	private ArticleTagService articleTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 

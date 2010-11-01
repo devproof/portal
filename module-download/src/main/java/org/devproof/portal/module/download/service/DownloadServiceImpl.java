@@ -20,16 +20,19 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.download.dao.DownloadDao;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
+@Service("downloadService")
 public class DownloadServiceImpl implements DownloadService {
     private DownloadDao downloadDao;
-    private TagService<DownloadTagEntity> downloadTagService;
+    private DownloadTagService downloadTagService;
 
     @Override
     public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
@@ -86,13 +89,13 @@ public class DownloadServiceImpl implements DownloadService {
         downloadTagService.deleteUnusedTags();
     }
 
-    @Required
+    @Autowired
     public void setDownloadDao(DownloadDao downloadDao) {
         this.downloadDao = downloadDao;
     }
 
-    @Required
-    public void setDownloadTagService(TagService<DownloadTagEntity> downloadTagService) {
+    @Autowired
+    public void setDownloadTagService(DownloadTagService downloadTagService) {
         this.downloadTagService = downloadTagService;
     }
 }

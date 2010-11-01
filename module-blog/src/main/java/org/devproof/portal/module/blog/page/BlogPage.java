@@ -45,6 +45,7 @@ import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.devproof.portal.module.blog.panel.BlogSearchBoxPanel;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.devproof.portal.module.blog.service.BlogService;
+import org.devproof.portal.module.blog.service.BlogTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
@@ -63,7 +64,7 @@ public class BlogPage extends BlogBasePage {
     @SpringBean(name = "blogDataProvider")
     private QueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
     @SpringBean(name = "blogTagService")
-    private TagService<BlogTagEntity> blogTagService;
+    private BlogTagService blogTagService;
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
 

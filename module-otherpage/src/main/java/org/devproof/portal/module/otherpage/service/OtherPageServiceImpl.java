@@ -17,11 +17,14 @@ package org.devproof.portal.module.otherpage.service;
 
 import org.devproof.portal.module.otherpage.dao.OtherPageDao;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Carsten Hufe
  */
+@Service("otherPageService")
 public class OtherPageServiceImpl implements OtherPageService {
     private OtherPageDao otherPageDao;
 
@@ -57,7 +60,7 @@ public class OtherPageServiceImpl implements OtherPageService {
         otherPageDao.save(entity);
     }
 
-    @Required
+    @Autowired
     public void setOtherPageDao(OtherPageDao otherPageDao) {
         this.otherPageDao = otherPageDao;
     }

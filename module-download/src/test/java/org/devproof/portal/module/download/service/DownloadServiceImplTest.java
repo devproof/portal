@@ -38,13 +38,13 @@ import static org.junit.Assert.assertNotNull;
 public class DownloadServiceImplTest {
     private DownloadServiceImpl impl;
     private DownloadDao mock;
-    private TagService<DownloadTagEntity> mockTag;
+    private DownloadTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(DownloadDao.class);
-        mockTag = (TagService<DownloadTagEntity>) createStrictMock(TagService.class);
+        mockTag = createStrictMock(DownloadTagService.class);
         impl = new DownloadServiceImpl();
         impl.setDownloadDao(mock);
         impl.setDownloadTagService(mockTag);

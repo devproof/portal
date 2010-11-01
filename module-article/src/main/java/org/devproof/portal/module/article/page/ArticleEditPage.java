@@ -37,6 +37,7 @@ import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.service.ArticleService;
+import org.devproof.portal.module.article.service.ArticleTagService;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class ArticleEditPage extends ArticleBasePage {
     @SpringBean(name = "articleService")
     private ArticleService articleService;
     @SpringBean(name = "articleTagService")
-    private TagService<ArticleTagEntity> articleTagService;
+    private ArticleTagService articleTagService;
 
     private IModel<ArticleEntity> articleModel;
     private RequiredTextField<String> contentIdField;

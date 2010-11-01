@@ -22,6 +22,8 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.dao.DataProviderDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -89,6 +91,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
         this.entityClass = entityClass;
     }
 
+    @Autowired
     public void setDataProviderDao(DataProviderDao<T> dataProviderDao) {
         this.dataProviderDao = dataProviderDao;
     }
@@ -101,6 +104,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
         this.countQuery = countQuery;
     }
 
+    @Required
     public void setQueryClass(Class<T> queryClass) {
         this.queryClass = queryClass;
     }

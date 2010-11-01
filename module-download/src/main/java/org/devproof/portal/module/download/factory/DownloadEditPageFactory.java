@@ -23,7 +23,9 @@ import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.page.DownloadEditPage;
 import org.devproof.portal.module.download.service.DownloadService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
 /**
  * Shared resource: This factory is required for the upload center to create
@@ -31,6 +33,7 @@ import org.springframework.beans.factory.annotation.Required;
  *
  * @author Carsten Hufe
  */
+@Service
 public class DownloadEditPageFactory implements CommonPageFactory, InitializingBean {
     private SharedRegistry sharedRegistry;
     private DownloadService downloadService;
@@ -47,12 +50,12 @@ public class DownloadEditPageFactory implements CommonPageFactory, InitializingB
         sharedRegistry.registerResource("createDownloadPage", this);
     }
 
-    @Required
+    @Autowired
     public void setDownloadService(DownloadService downloadService) {
         this.downloadService = downloadService;
     }
 
-    @Required
+    @Autowired
     public void setSharedRegistry(SharedRegistry sharedRegistry) {
         this.sharedRegistry = sharedRegistry;
     }

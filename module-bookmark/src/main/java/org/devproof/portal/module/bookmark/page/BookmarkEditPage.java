@@ -32,6 +32,7 @@ import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
+import org.devproof.portal.module.bookmark.service.BookmarkTagService;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class BookmarkEditPage extends BookmarkBasePage {
     @SpringBean(name = "bookmarkService")
     private BookmarkService bookmarkService;
     @SpringBean(name = "bookmarkTagService")
-    private TagService<BookmarkTagEntity> bookmarkTagService;
+    private BookmarkTagService bookmarkTagService;
     private IModel<BookmarkEntity> bookmarkModel;
 
 

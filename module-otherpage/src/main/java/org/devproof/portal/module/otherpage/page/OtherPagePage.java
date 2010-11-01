@@ -29,6 +29,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
@@ -37,6 +38,7 @@ import org.devproof.portal.module.otherpage.service.OtherPageService;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/admin/others", registerGlobalAdminLink = true)
 public class OtherPagePage extends OtherPageBasePage {
 
     private static final long serialVersionUID = 1L;

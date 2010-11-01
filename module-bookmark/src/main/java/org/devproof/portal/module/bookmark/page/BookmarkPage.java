@@ -54,6 +54,7 @@ import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 import org.devproof.portal.module.bookmark.panel.BookmarkSearchBoxPanel;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
+import org.devproof.portal.module.bookmark.service.BookmarkTagService;
 
 /**
  * @author Carsten Hufe
@@ -67,7 +68,7 @@ public class BookmarkPage extends BookmarkBasePage {
 	@SpringBean(name = "bookmarkDataProvider")
 	private QueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider;
 	@SpringBean(name = "bookmarkTagService")
-	private TagService<BookmarkTagEntity> bookmarkTagService;
+	private BookmarkTagService bookmarkTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 

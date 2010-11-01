@@ -43,6 +43,7 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.service.ArticleService;
+import org.devproof.portal.module.article.service.ArticleTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
@@ -59,7 +60,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	@SpringBean(name = "articleService")
 	private ArticleService articleService;
 	@SpringBean(name = "articleTagService")
-	private TagService<ArticleTagEntity> articleTagService;
+	private ArticleTagService articleTagService;
 
 	private PageParameters params;
 	private IModel<ArticlePageEntity> displayedPageModel;

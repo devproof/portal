@@ -21,12 +21,15 @@ import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFacto
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.module.otherpage.page.OtherPageViewPage;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Factory to create the footer link
  *
  * @author Carsten Hufe
  */
+@Service
 public class FooterLinkFactory implements CommonMarkupContainerFactory, InitializingBean {
     private SharedRegistry sharedRegistry;
 
@@ -42,6 +45,7 @@ public class FooterLinkFactory implements CommonMarkupContainerFactory, Initiali
         sharedRegistry.registerResource("footerLink", this);
     }
 
+    @Autowired
     public void setSharedRegistry(SharedRegistry sharedRegistry) {
         this.sharedRegistry = sharedRegistry;
     }

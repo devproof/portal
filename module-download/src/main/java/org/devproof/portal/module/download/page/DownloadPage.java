@@ -41,6 +41,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.component.AutoPagingDataView;
 import org.devproof.portal.core.module.common.component.CaptchaRatingPanel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
@@ -54,25 +55,28 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.download.DownloadConstants;
+import org.devproof.portal.module.download.dataprovider.DownloadDataProvider;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
 import org.devproof.portal.module.download.panel.DownloadSearchBoxPanel;
 import org.devproof.portal.module.download.query.DownloadQuery;
 import org.devproof.portal.module.download.service.DownloadService;
+import org.devproof.portal.module.download.service.DownloadTagService;
 import org.springframework.util.ReflectionUtils;
 
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/downloads", registerMainNavigationLink = true)
 public class DownloadPage extends DownloadBasePage {
 
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "downloadService")
 	private DownloadService downloadService;
 	@SpringBean(name = "downloadDataProvider")
-	private QueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
+	private DownloadDataProvider downloadDataProvider;
 	@SpringBean(name = "downloadTagService")
-	private TagService<DownloadTagEntity> downloadTagService;
+	private DownloadTagService downloadTagService;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 

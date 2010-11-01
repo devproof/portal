@@ -21,6 +21,7 @@ import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.util.FileResourceStream;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.service.DownloadService;
@@ -33,6 +34,7 @@ import java.net.URISyntaxException;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/download", indexMountedPath = true)
 public class DownloadRedirectPage extends WebPage {
 
     private static final long serialVersionUID = 1L;

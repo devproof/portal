@@ -40,14 +40,14 @@ public class ArticleServiceImplTest {
     private ArticleServiceImpl impl;
     private ArticleDao mock;
     private ArticlePageDao mockPage;
-    private TagService<ArticleTagEntity> mockTag;
+    private ArticleTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(ArticleDao.class);
         mockPage = createStrictMock(ArticlePageDao.class);
-        mockTag = (TagService<ArticleTagEntity>) createStrictMock(TagService.class);
+        mockTag = createStrictMock(ArticleTagService.class);
         impl = new ArticleServiceImpl();
         impl.setArticleDao(mock);
         impl.setArticlePageDao(mockPage);

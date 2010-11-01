@@ -28,7 +28,9 @@ import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.page.DownloadPage;
 import org.devproof.portal.module.download.query.DownloadQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -37,6 +39,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Component
 public class DownloadFeedProviderImpl implements FeedProvider {
     private SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
     private ConfigurationService configurationService;
@@ -110,12 +113,12 @@ public class DownloadFeedProviderImpl implements FeedProvider {
         return pageTitle + " - " + feedName;
     }
 
-    @Required
+    @Autowired
     public void setDownloadDataProvider(SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider) {
         this.downloadDataProvider = downloadDataProvider;
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
