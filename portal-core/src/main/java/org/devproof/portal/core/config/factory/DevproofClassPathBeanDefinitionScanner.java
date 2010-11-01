@@ -48,6 +48,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         this.registry = registry;
         this.moduleConfiguration = moduleConfiguration;
         addIncludeFilter(new AnnotationTypeFilter(ModulePage.class));
+        addIncludeFilter(new AnnotationTypeFilter(NavigationBox.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericRepository.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericDataProvider.class));
         addIncludeFilter(new AnnotationTypeFilter(Entity.class));
@@ -88,7 +89,6 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
                 moduleConfiguration.addEntity(clazz);
             }
             else {
-                // TODO build BoxConfiguration
                 super.registerBeanDefinition(definitionHolder, registry);
             }
 
