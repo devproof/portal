@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:devproof="http://www.devproof.org/schema/devproof/portal"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.devproof.org/schema/devproof/portal
+        http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
-    <!-- Module configuration -->
-    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-        <property name="name" value="Core: Theme"/>
-        <property name="moduleVersion" value="core"/>
-        <property name="portalVersion" value="core"/>
-        <property name="author" value="devproof - Carsten Hufe"/>
-        <property name="url" value="http://devproof.org"/>
+    <devproof:module-scan
+            base-package="org.devproof.portal.core.module.theme"
+            module-name="Core: Theme"
+            author="devproof - Carsten Hufe" author-url="http://devproof.org"
+            module-version="core" portal-version="core"/>
 
-        <property name="pages">
-            <list>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/admin/themes"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.theme.page.ThemePage"/>
-                    <property name="registerGlobalAdminLink" value="true"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
 
 
     <!--  Service  -->

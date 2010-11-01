@@ -32,6 +32,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.TagConstants;
@@ -44,6 +45,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@NavigationBox("Tag Cloud Box")
 public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implements BoxTitleVisibility {
 
     private static final long serialVersionUID = 1L;

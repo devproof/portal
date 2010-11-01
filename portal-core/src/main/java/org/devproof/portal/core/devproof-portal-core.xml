@@ -3,11 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <import
             resource="classpath:/org/devproof/portal/core/module/box/devproof-core-module.xml"/>
@@ -35,6 +38,19 @@
             resource="classpath:/org/devproof/portal/core/module/theme/devproof-core-module.xml"/>
     <import
             resource="classpath:/org/devproof/portal/core/module/user/devproof-core-module.xml"/>
+
+    <bean id="devproofVersion" class="java.lang.String">
+        <constructor-arg value="${devproof.version}"/>
+    </bean>
+    <!--  Dao FIXME remove  -->
+    <bean id="baseTagDao" parent="baseGenericDao" abstract="true">
+        <property name="daoInterface"
+                  value="org.devproof.portal.core.module.tag.dao.TagDao"/>
+    </bean>
+
+    <!--  Service FIXME remove  -->
+    <bean id="baseTagService" class="org.devproof.portal.core.module.tag.service.TagServiceImpl" abstract="true">
+    </bean>
 
 
     <!--  Base generic DAO  -->

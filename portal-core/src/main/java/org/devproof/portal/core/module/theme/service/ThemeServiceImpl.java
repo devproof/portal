@@ -26,10 +26,13 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.devproof.portal.core.module.theme.bean.ThemeBean;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
@@ -44,6 +47,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+@Service("themeService")
 public class ThemeServiceImpl implements ThemeService, ServletContextAware, ApplicationContextAware {
     private static final Log LOG = LogFactory.getLog(ThemeServiceImpl.class);
     private ServletContext servletContext;
@@ -306,12 +310,12 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
         this.servletContext = servletContext;
     }
 
-    @Required
+    @Autowired
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
-    @Required
+    @Value("#{devproofVersion}")
     public void setThemeVersion(String themeVersion) {
         this.themeVersion = themeVersion;
     }
