@@ -32,13 +32,13 @@ import static org.junit.Assert.assertNotNull;
 public class BlogServiceImplTest {
     private BlogServiceImpl impl;
     private BlogDao mock;
-    private TagService<BlogTagEntity> mockTag;
+    private BlogTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(BlogDao.class);
-        mockTag = (TagService<BlogTagEntity>) createStrictMock(TagService.class);
+        mockTag = createStrictMock(BlogTagService.class);
         impl = new BlogServiceImpl();
         impl.setBlogDao(mock);
         impl.setBlogTagService(mockTag);

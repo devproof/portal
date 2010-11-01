@@ -7,6 +7,5 @@ import org.devproof.portal.module.blog.entity.BlogTagEntity;
 /**
  * @author Carsten Hufe
  */
-@GenericTagService(value = "blogTagService", relatedTagRight = "blog.view")
 public interface BlogTagService extends TagService<BlogTagEntity> {
 }

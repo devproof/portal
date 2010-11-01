@@ -8,16 +8,15 @@
         http://www.devproof.org/schema/devproof/portal
         http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
+    <devproof:module-scan
+        base-package="org.devproof.portal.core.module"
+        module-name="Devproof Core"
+        author="devproof - Carsten Hufe" author-url="http://devproof.org"
+        module-version="${devproof.version}" portal-version="${devproof.version}"/>
 
     <bean id="devproofVersion" class="java.lang.String">
         <constructor-arg value="${devproof.version}"/>
     </bean>
-    
-    <devproof:module-scan
-            base-package="org.devproof.portal.core.module"
-            module-name="Devproof Core"
-            author="devproof - Carsten Hufe" author-url="http://devproof.org"
-            module-version="${devproof.version}" portal-version="${devproof.version}"/>
 
     <!--  Base generic DAO  -->
     <bean id="baseGenericDao"
@@ -38,8 +37,7 @@
     </bean>
 
     <bean id="baseTagDao" parent="baseGenericDao" abstract="true">
-        <property name="daoInterface"
-                  value="org.devproof.portal.core.module.tag.dao.TagDao"/>
+        <property name="daoInterface" value="org.devproof.portal.core.module.tag.dao.TagDao"/>
     </bean>
 
     <bean id="baseTagService" class="org.devproof.portal.core.module.tag.service.TagServiceImpl" abstract="true">

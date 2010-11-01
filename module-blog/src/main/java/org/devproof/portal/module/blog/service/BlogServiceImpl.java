@@ -55,7 +55,7 @@ public class BlogServiceImpl implements BlogService {
         return blog;
     }
 
-    @Required
+    @Autowired
     public void setBlogDao(BlogDao blogDao) {
         this.blogDao = blogDao;
     }
