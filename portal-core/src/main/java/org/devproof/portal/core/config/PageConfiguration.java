@@ -36,6 +36,20 @@ public class PageConfiguration implements Serializable {
     private boolean registerPageAdminLink = false;
     private ModuleConfiguration module;
 
+    public PageConfiguration() {
+    }
+
+    public PageConfiguration(Class<? extends Page> pageClass) {
+        ModulePage annotation = pageClass.getAnnotation(ModulePage.class);
+        this.mountPath = annotation.mountPath();
+        this.pageClass = pageClass;
+        this.registerMainNavigationLink = annotation.registerMainNavigationLink();
+        this.registerGlobalAdminLink = annotation.registerGlobalAdminLink();
+        this.indexMountedPath = annotation.indexMountedPath();
+        this.defaultStartPage = annotation.defaultStartPage();
+        this.registerPageAdminLink = annotation.registerPageAdminLink();
+    }
+
     /**
      * @return the mount path of the page
      */

@@ -129,27 +129,22 @@ public class CommentServiceImpl implements CommentService {
         return commentDao.findAllModuleNames();
     }
 
-    @Required
     public void setCommentDao(CommentDao commentDao) {
         this.commentDao = commentDao;
     }
 
-    @Required
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
-    @Required
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    @Required
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
     }
 
-    @Required
     public void setDisplayDateTimeFormat(DateFormat displayDateTimeFormat) {
         this.displayDateTimeFormat = displayDateTimeFormat;
     }

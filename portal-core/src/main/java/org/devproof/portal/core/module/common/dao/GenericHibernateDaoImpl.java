@@ -42,13 +42,12 @@ import java.util.Collection;
  * primary key type
  */
 public class GenericHibernateDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericDao<T, PK> {
-    private static final Log LOG = LogFactory.getLog(GenericHibernateDaoImpl.class);
     private UsernameResolver usernameResolver;
     private Class<T> type;
 
     public GenericHibernateDaoImpl(Class<T> type) {
         this.type = type;
-        LOG.debug("Constructor GenericHibernateDaoImpl");
+        logger.debug("Constructor GenericHibernateDaoImpl");
     }
 
     @SuppressWarnings(value = "unchecked")
@@ -59,7 +58,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
     @SuppressWarnings("unchecked")
     public T save(T entity) {
         openTransaction();
-        LOG.debug("save " + type);
+        logger.debug("save " + type);
         updateModificationData(entity);
         return (T) getSession().merge(entity);
     }
@@ -70,7 +69,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
             // only works in the request
             if (base.isUpdateModificationData()) {
                 String username = usernameResolver.getUsername();
-                LOG.debug("BaseEntity " + entity + "set creation date and user");
+                logger.debug("BaseEntity " + entity + "set creation date and user");
                 if (base.getCreatedAt() == null) {
                     base.setCreatedAt(PortalUtil.now());
                 }
@@ -98,7 +97,7 @@ public class GenericHibernateDaoImpl<T, PK extends Serializable> extends Hiberna
     public void delete(T entity) throws DeleteFailedException {
         SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
         if (holder.getTransaction() == null) {
-            LOG.debug("No transaction found, start one.");
+            logger.debug("No transaction found, start one.");
             holder.setTransaction(holder.getSession().beginTransaction());
         }
         getSession().delete(entity);

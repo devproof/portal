@@ -44,8 +44,6 @@ public class PageLocatorImpl implements ApplicationContextAware, PageLocator {
 				page.setModule(module);
 			}
 		}
-        // FIXME just for test
-        Object bean = context.getBean("helloWorld");
         return back;
 	}
 

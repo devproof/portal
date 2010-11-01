@@ -166,6 +166,21 @@ public class ModuleConfiguration implements Serializable {
         this.basePackage = basePackage;
     }
 
+    /**
+     * Adds a page configuration
+     *
+     * @param pageConfiguration the page configuration to add
+     * @return true when added
+     */
+    public boolean addPageConfiguration(PageConfiguration pageConfiguration) {
+        pageConfiguration.setModule(this);
+        return pages.add(pageConfiguration);
+    }
+
+    public boolean addEntity(Class<?> aClass) {
+        return entities.add(aClass);
+    }
+
     @Override
 	public String toString() {
 		return name;

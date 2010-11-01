@@ -15,19 +15,23 @@
  */
 package org.devproof.portal.core.config.factory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.wicket.Page;
+import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.config.PageConfiguration;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 
+import javax.persistence.Entity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -35,46 +39,68 @@ import java.lang.reflect.Type;
  * @author Carsten Hufe
  */
 public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinitionScanner {
-    public DevproofClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultFilters) {
+    private final Log logger = LogFactory.getLog(getClass());
+    private BeanDefinitionRegistry registry;
+    private ModuleConfiguration moduleConfiguration;
+
+    public DevproofClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry, boolean useDefaultFilters, ModuleConfiguration moduleConfiguration) {
         super(registry, useDefaultFilters);
+        this.registry = registry;
+        this.moduleConfiguration = moduleConfiguration;
         addIncludeFilter(new AnnotationTypeFilter(ModulePage.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericRepository.class));
+        addIncludeFilter(new AnnotationTypeFilter(Entity.class));
+        addIncludeFilter(new AnnotationTypeFilter(org.hibernate.annotations.Entity.class));
+        registerModuleConfigurationAsSingleton();
+    }
+
+    private void registerModuleConfigurationAsSingleton() {
+        ConfigurableListableBeanFactory f = (ConfigurableListableBeanFactory)registry;
+        f.registerSingleton(moduleConfiguration.getBasePackage(), moduleConfiguration);
     }
 
     @Override
     protected void registerBeanDefinition(BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry) {
         try {
-            Class<?> clazz = Class.forName(definitionHolder.getBeanDefinition().getBeanClassName());
+            @SuppressWarnings({"unchecked"})
+            Class<? extends Page> clazz = (Class<? extends Page>) Class.forName(definitionHolder.getBeanDefinition().getBeanClassName());
             if (clazz.isAnnotationPresent(ModulePage.class)) {
-                ModulePage annotation = clazz.getAnnotation(ModulePage.class);
-                RootBeanDefinition rbd = new RootBeanDefinition(PageConfiguration.class);
-                MutablePropertyValues v = rbd.getPropertyValues();
-                v.addPropertyValue("mountPath", annotation.mountPath());
-                v.addPropertyValue("pageClass", clazz);
-                BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(rbd, "helloWorld");
+                moduleConfiguration.addPageConfiguration(new PageConfiguration(clazz));
+            }
+            else if (clazz.isAnnotationPresent(GenericRepository.class)) {
+                BeanDefinitionHolder beanDefinitionHolder = buildGenericRepositoryDefinition(clazz);
                 super.registerBeanDefinition(beanDefinitionHolder, registry);
-                System.out.println("Clazz found: " + clazz);
-            } else if (clazz.isAnnotationPresent(GenericRepository.class)) {
-                Type[] types = clazz.getGenericInterfaces();
-                ParameterizedType type = (ParameterizedType) types[0];
-                Class<?> entityClazz = (Class<?>) type.getActualTypeArguments()[0];
-                GenericRepository annotation = clazz.getAnnotation(GenericRepository.class);
-                BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("baseGenericDao").addPropertyValue("daoInterface", clazz).addPropertyValue("entityClass", entityClazz).getBeanDefinition();
-                BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(bd, annotation.value());
-                super.registerBeanDefinition(beanDefinitionHolder, registry);
-            } else {
+            }
+            else if (clazz.isAnnotationPresent(Entity.class)
+                    || clazz.isAnnotationPresent(org.hibernate.annotations.Entity.class)) {
+                moduleConfiguration.addEntity(clazz);
+            }
+            else {
                 // TODO GenericDataProvoder
                 // TODO DelegateRepositoryMethod
-                // TODO ModulePage
-                // TODO build ModuleConfiguration
-                // TODO entites
+                // TODO build BoxConfiguration
                 super.registerBeanDefinition(definitionHolder, registry);
             }
 
         } catch (ClassNotFoundException e) {
-            // FIXME logger
-            e.printStackTrace();
+            logger.fatal(e);
         }
+    }
+
+    private BeanDefinitionHolder buildGenericRepositoryDefinition(Class<?> clazz) {
+        // TODO DelegateREpositoryMethod
+        Class<?> entityClazz = getEntityClazz(clazz);
+        GenericRepository annotation = clazz.getAnnotation(GenericRepository.class);
+        BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("baseGenericDao").addPropertyValue("daoInterface", clazz).addPropertyValue("entityClass", entityClazz).getBeanDefinition();
+        BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(bd, annotation.value());
+        return beanDefinitionHolder;
+    }
+
+    private Class<?> getEntityClazz(Class<?> clazz) {
+        Type[] types = clazz.getGenericInterfaces();
+        ParameterizedType type = (ParameterizedType) types[0];
+        Class<?> entityClazz = (Class<?>) type.getActualTypeArguments()[0];
+        return entityClazz;
     }
 
     @Override
@@ -83,8 +109,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
             Class<?> clazz = Class.forName(beanDefinition.getBeanClassName());
             return super.isCandidateComponent(beanDefinition) || clazz.isAnnotationPresent(GenericRepository.class);
         } catch (ClassNotFoundException e) {
-            // FIXME logger
-            e.printStackTrace();
+            logger.fatal(e);
         }
         return super.isCandidateComponent(beanDefinition);
     }

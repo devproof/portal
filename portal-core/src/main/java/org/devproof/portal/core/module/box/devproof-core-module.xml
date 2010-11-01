@@ -13,52 +13,6 @@
             module-name="Core: Boxes/Site navigation"
             author="devproof - Carsten Hufe" author-url="http://devproof.org"
             module-version="core" portal-version="core"/>
-    
-    <!-- Module configuration -->
-    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-        <property name="name" value="Core: Boxes/Site navigation"/>
-        <property name="moduleVersion" value="core"/>
-        <property name="portalVersion" value="core"/>
-        <property name="author" value="devproof - Carsten Hufe"/>
-        <property name="url" value="http://devproof.org"/>
-
-
-        <!-- Hibernate/JPA entities -->
-        <property name="entities">
-            <list>
-                <value>org.devproof.portal.core.module.box.entity.BoxEntity</value>
-            </list>
-        </property>
-        <property name="pages">
-            <list>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/admin/boxes"/>
-                    <property name="pageClass" value="org.devproof.portal.core.module.box.page.BoxPage"/>
-                    <property name="registerGlobalAdminLink" value="true"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-
-    <!-- Box registry and locator -->
-    <!-- bean id="boxRegistry" class="org.devproof.portal.core.module.box.registry.BoxRegistryImpl">
-        <property name="boxLocator">
-            <bean id="boxLocator" class="org.devproof.portal.core.module.box.locator.BoxLocatorImpl"/>
-        </property>
-    </bean -->
-
-    <!--  Dao  -->
-    <!-- bean id="boxDao" parent="baseGenericDao">
-        <property name="daoInterface"
-                  value="org.devproof.portal.core.module.box.dao.BoxDao"/>
-        <property name="entityClass"
-                  value="org.devproof.portal.core.module.box.entity.BoxEntity"/>
-    </bean -->
-
-    <!--  Service  -->
-    <!-- bean id="boxService" class="org.devproof.portal.core.module.box.service.BoxServiceImpl">
-        <property name="boxDao" ref="boxDao"/>
-    </bean -->
 
     <!--  DataProvider  -->
     <bean id="boxDataProvider" parent="persistenceDataProvider" scope="prototype">

@@ -15,29 +15,46 @@
  */
 package org.devproof.portal.core.config.factory;
 
+import org.devproof.portal.core.config.ModuleConfiguration;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.beans.factory.xml.XmlReaderContext;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ComponentScanBeanDefinitionParser;
+import org.w3c.dom.Element;
 
 /**
  * @author Carsten Hufe
  */
 public class ModuleScanBeanDefinitionParser extends ComponentScanBeanDefinitionParser {
     private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
+    private static final String MODULE_NAME_ATTRIBUTE = "module-name";
+    private static final String AUTHOR_ATTRIBUTE = "author";
+    private static final String AUTHOR_URL_ATTRIBUTE = "author-url";
+    private static final String MODULE_VERSION_ATTRIBUTE = "module-version";
+    private static final String PORTAL_VERSION_ATTRIBUTE = "portal-version";
+    private ModuleConfiguration moduleConfiguration;
 
-//    @Override
-//    public BeanDefinition parse(Element element, ParserContext parserContext) {
-//        String[] basePackages = StringUtils.tokenizeToStringArray(element.getAttribute(BASE_PACKAGE_ATTRIBUTE),
-//				ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
-//
-//		// Actually scan for bean definitions and register them.
-//		ClassPathBeanDefinitionScanner scanner = configureScanner(parserContext, element);
-//		scanner.scan(basePackages);
-//        return null;
-//    }
+
+    @Override
+    public BeanDefinition parse(Element element, ParserContext parserContext) {
+        moduleConfiguration = createModuleConfiguration(element);
+        return super.parse(element, parserContext);
+    }
+
+    protected static ModuleConfiguration createModuleConfiguration(Element element) {
+        ModuleConfiguration c = new ModuleConfiguration();
+        c.setName(element.getAttribute(MODULE_NAME_ATTRIBUTE));
+        c.setAuthor(element.getAttribute(AUTHOR_ATTRIBUTE));
+        c.setUrl(element.getAttribute(AUTHOR_URL_ATTRIBUTE));
+        c.setModuleVersion(element.getAttribute(MODULE_VERSION_ATTRIBUTE));
+        c.setPortalVersion(element.getAttribute(PORTAL_VERSION_ATTRIBUTE));
+        c.setBasePackage(element.getAttribute(BASE_PACKAGE_ATTRIBUTE));
+        return c;
+    }
 
     @Override
     protected ClassPathBeanDefinitionScanner createScanner(XmlReaderContext readerContext, boolean useDefaultFilters) {
-        return new DevproofClassPathBeanDefinitionScanner(readerContext.getRegistry(), useDefaultFilters);
+        return new DevproofClassPathBeanDefinitionScanner(readerContext.getRegistry(), useDefaultFilters, moduleConfiguration);
     }
 }
