@@ -51,7 +51,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
     private static final Log LOG = LogFactory.getLog(SynchronizeServiceImpl.class);
 
     private BookmarkService bookmarkService;
-    private TagService<BookmarkTagEntity> tagService;
+    private BookmarkTagService bookmarkTagService;
 
     @Override
     public DeliciousBean getDataFromDelicious(String username, String password, String tags) {
@@ -160,7 +160,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
         List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(tokenizer.countTokens());
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken().trim();
-            BookmarkTagEntity tag = tagService.newTagEntity(token);
+            BookmarkTagEntity tag = bookmarkTagService.newTagEntity(token);
             newTags.add(tag);
         }
         return newTags;
@@ -205,7 +205,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
     }
 
     @Autowired
-    public void setTagService(TagService<BookmarkTagEntity> tagService) {
-        this.tagService = tagService;
+    public void setBookmarkTagService(BookmarkTagService bookmarkTagService) {
+        this.bookmarkTagService = bookmarkTagService;
     }
 }
