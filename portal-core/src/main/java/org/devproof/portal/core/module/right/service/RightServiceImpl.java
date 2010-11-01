@@ -17,18 +17,23 @@ package org.devproof.portal.core.module.right.service;
 
 import org.devproof.portal.core.module.right.dao.RightDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
+@Service("rightService")
 public class RightServiceImpl implements RightService {
     private List<RightEntity> allRights;
     private long dirtyTime = 0l;
     private RightDao rightDao;
 
+    @PostConstruct
     public void init() {
         refreshGlobalApplicationRights();
     }
@@ -89,7 +94,7 @@ public class RightServiceImpl implements RightService {
         rightDao.save(entity);
     }
 
-    @Required
+    @Autowired
     public void setRightDao(RightDao rightDao) {
         this.rightDao = rightDao;
     }
