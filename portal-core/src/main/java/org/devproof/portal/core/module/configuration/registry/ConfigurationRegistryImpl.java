@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.configuration.registry;
 
+import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.Map;
 /**
  * @author Carsten Hufe
  */
+@Registry("configurationRegistry")
 public class ConfigurationRegistryImpl implements ConfigurationRegistry {
     private final Map<String, ConfigurationEntity> configurations = new HashMap<String, ConfigurationEntity>();
 

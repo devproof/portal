@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.configuration.dao;
 
 import java.util.List;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
@@ -24,6 +25,7 @@ import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 /**
  * @author Carsten Hufe
  */
+@GenericRepository("configurationDao")
 public interface ConfigurationDao extends GenericDao<ConfigurationEntity, String> {
     @Query("Select c from ConfigurationEntity c")
     List<ConfigurationEntity> findAll();

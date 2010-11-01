@@ -1,54 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:devproof="http://www.devproof.org/schema/devproof/portal"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.devproof.org/schema/devproof/portal
+        http://www.devproof.org/schema/devproof/portal-1.1.xsd">
 
-    <!-- Module configuration -->
-    <bean class="org.devproof.portal.core.config.ModuleConfiguration">
-        <property name="name" value="Core: Configuration"/>
-        <property name="moduleVersion" value="core"/>
-        <property name="portalVersion" value="core"/>
-        <property name="author" value="devproof - Carsten Hufe"/>
-        <property name="url" value="http://devproof.org"/>
-
-        <!-- Hibernate/JPA entities -->
-        <property name="entities">
-            <list>
-                <value>org.devproof.portal.core.module.configuration.entity.ConfigurationEntity</value>
-            </list>
-        </property>
-        <property name="pages">
-            <list>
-                <bean class="org.devproof.portal.core.config.PageConfiguration">
-                    <property name="mountPath" value="/admin/configuration"/>
-                    <property name="pageClass"
-                              value="org.devproof.portal.core.module.configuration.page.ConfigurationPage"/>
-                    <property name="registerGlobalAdminLink" value="true"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-
-    <!--  Dao  -->
-    <bean id="configurationDao" parent="baseGenericDao">
-        <property name="daoInterface"
-                  value="org.devproof.portal.core.module.configuration.dao.ConfigurationDao"/>
-        <property name="entityClass"
-                  value="org.devproof.portal.core.module.configuration.entity.ConfigurationEntity"/>
-    </bean>
-
-    <!--  Service  -->
-    <bean id="configurationService"
-          class="org.devproof.portal.core.module.configuration.service.ConfigurationServiceImpl" init-method="init">
-        <property name="configurationDao" ref="configurationDao"/>
-        <property name="configurationRegistry" ref="configurationRegistry"/>
-    </bean>
-
-    <!-- Registry -->
-    <bean id="configurationRegistry"
-          class="org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl"/>
+    <devproof:module-scan
+            base-package="org.devproof.portal.core.module.configuration"
+            module-name="Core: Configuration"
+            author="devproof - Carsten Hufe" author-url="http://devproof.org"
+            module-version="core" portal-version="core"/>
 </beans>
