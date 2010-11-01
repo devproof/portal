@@ -32,6 +32,7 @@ public class ModuleConfiguration implements Serializable {
     private String author;
     private String portalVersion;
     private String url;
+    private String basePackage;
     private List<Class<?>> entities = new ArrayList<Class<?>>();
     // mounting etc
     private Collection<PageConfiguration> pages = new ArrayList<PageConfiguration>();
@@ -149,6 +150,20 @@ public class ModuleConfiguration implements Serializable {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * @return java base package of the module
+     */
+    public String getBasePackage() {
+        return basePackage;
+    }
+
+    /**
+     * @param basePackage javca base package of the module
+     */
+    public void setBasePackage(String basePackage) {
+        this.basePackage = basePackage;
     }
 
     @Override

@@ -63,14 +63,10 @@
             <bean factory-bean="jndiConfig" factory-method="resolveHibernateProperties"/>
         </property>
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan">
-            <list>
-                <value>org.devproof</value>
-            </list>
+
+        <property name="annotatedClasses">
+            <bean factory-bean="entityLocator" factory-method="getEntities"/>
         </property>
-        <!--<property name="annotatedClasses">-->
-            <!--<bean factory-bean="entityLocator" factory-method="getEntities"/>-->
-        <!--</property>-->
     </bean>
 
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
@@ -128,12 +124,9 @@
         </property>
     </bean>
 
-    <!-- bean class="org.devproof.portal.core.module.SamplePostProcessor"/ -->
 
-    <context:component-scan base-package="**" >
         <!-- http://www.javaworld.com/javaworld/jw-02-2008/jw-02-springcomponents.html?page=3 -->
         <!-- das ist org.springframework.context.annotation.ComponentScanBeanDefinitionParser -->
         <!-- context:include-filter type="annotation"
             expression="ch.elca.el4j.services.persistence.generic.dao.Auto collectedGenericDao" /-->    
-    </context:component-scan>
 </beans>

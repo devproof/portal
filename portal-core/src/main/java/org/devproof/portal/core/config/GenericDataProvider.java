@@ -23,14 +23,14 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marking the generic DAO interfaces
+ * Marking the generic dataprovider interfaces
  *
  * @author Carsten Hufe
  */
 @Documented
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface GenericRepository {
+public @interface GenericDataProvider {
 
     /**
      * Spring bean id

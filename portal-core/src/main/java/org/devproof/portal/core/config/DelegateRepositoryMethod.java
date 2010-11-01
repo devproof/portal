@@ -19,18 +19,19 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marking the generic DAO interfaces
+ * Delegates the called method to the bean with the given name.
+ * The method signature must be the same
  *
  * @author Carsten Hufe
  */
 @Documented
-@Target(TYPE)
+@Target(METHOD)
 @Retention(RUNTIME)
-public @interface GenericRepository {
+public @interface DelegateRepositoryMethod {
 
     /**
      * Spring bean id

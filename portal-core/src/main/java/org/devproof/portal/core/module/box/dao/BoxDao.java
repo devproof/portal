@@ -28,7 +28,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 
-@GenericRepository(name = "boxDao", entityClass = BoxEntity.class)
+@GenericRepository(name = "boxDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface BoxDao extends GenericDao<BoxEntity, Integer> {
     @Query("select max(b.sort) from BoxEntity b")

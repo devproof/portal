@@ -28,7 +28,6 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@Service("boxService")
 public class BoxServiceImpl implements BoxService {
 	private BoxDao boxDao;
 
