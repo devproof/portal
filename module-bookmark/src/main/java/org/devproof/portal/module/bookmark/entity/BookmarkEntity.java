@@ -15,9 +15,11 @@
  */
 package org.devproof.portal.module.bookmark.entity;
 
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
+import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -35,7 +37,8 @@ import java.util.List;
 @Table(name = "bookmark")
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
-final public class BookmarkEntity extends BaseLinkEntity {
+@RegisterGenericDataProvider(value = "bookmarkDataProvider", sortProperty = "title", sortAscending = true, queryClass = BookmarkQuery.class)
+public class BookmarkEntity extends BaseLinkEntity {
     private static final long serialVersionUID = 1L;
 
     public enum Source {

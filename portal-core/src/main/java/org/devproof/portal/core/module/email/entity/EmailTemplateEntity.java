@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.email.entity;
 
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
@@ -31,6 +32,7 @@ import javax.persistence.*;
 @Table(name = "core_email_tpl")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
+@RegisterGenericDataProvider(value = "emailTemplateDataProvider", sortProperty = "subject")
 public class EmailTemplateEntity extends BaseEntity implements EntityId {
 
     private static final long serialVersionUID = 1L;

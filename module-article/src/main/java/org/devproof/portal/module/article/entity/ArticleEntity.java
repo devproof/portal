@@ -35,11 +35,13 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang.StringUtils;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.common.model.EntityId;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.article.ArticleConstants;
+import org.devproof.portal.module.article.query.ArticleQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -52,7 +54,8 @@ import org.hibernate.annotations.FetchMode;
 @Table(name = "article", uniqueConstraints = @UniqueConstraint(columnNames = {"content_id"}))
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
-final public class ArticleEntity extends BaseEntity implements EntityId {
+@RegisterGenericDataProvider(value = "articleDataProvider", sortProperty = "title", sortAscending = true, queryClass = ArticleQuery.class)
+public class ArticleEntity extends BaseEntity implements EntityId {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

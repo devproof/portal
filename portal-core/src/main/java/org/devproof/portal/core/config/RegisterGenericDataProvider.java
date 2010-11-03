@@ -33,6 +33,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface RegisterGenericDataProvider {
 
     /**
+     * No query class
+     */
+    public static final class NO_QUERY {}
+
+    /**
      * Spring bean id
      */
     String value();
@@ -60,5 +65,5 @@ public @interface RegisterGenericDataProvider {
     /**
      * The query class if one exists
      */
-    Class<?> queryClass() default Object.class;
+    Class<?> queryClass() default NO_QUERY.class;
 }

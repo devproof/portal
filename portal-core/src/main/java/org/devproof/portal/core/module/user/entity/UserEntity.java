@@ -15,10 +15,12 @@
  */
 package org.devproof.portal.core.module.user.entity;
 
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.user.UserConstants;
+import org.devproof.portal.core.module.user.query.UserQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Index;
@@ -34,8 +36,8 @@ import java.util.Date;
 @Table(name = "core_user")
 @CacheQuery(region = UserConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = UserConstants.ENTITY_CACHE_REGION)
+@RegisterGenericDataProvider(value = "userDataProvider", sortProperty = "username", queryClass = UserQuery.class)
 public class UserEntity implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id

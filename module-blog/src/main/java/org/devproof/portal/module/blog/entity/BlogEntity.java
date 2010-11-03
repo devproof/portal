@@ -31,10 +31,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.blog.BlogConstants;
+import org.devproof.portal.module.blog.query.BlogQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -49,8 +51,8 @@ import org.hibernate.annotations.FetchMode;
 @Table(name = "blog")
 @CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BlogConstants.ENTITY_CACHE_REGION)
-final public class BlogEntity extends BaseEntity {
-
+@RegisterGenericDataProvider(value = "blogDataProvider", sortProperty = "createdAt", sortAscending = false, queryClass = BlogQuery.class)
+public class BlogEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

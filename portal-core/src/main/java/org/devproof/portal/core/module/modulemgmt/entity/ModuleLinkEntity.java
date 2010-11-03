@@ -15,9 +15,11 @@
  */
 package org.devproof.portal.core.module.modulemgmt.entity;
 
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.modulemgmt.query.ModuleLinkQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -35,6 +37,7 @@ import javax.persistence.*;
 @IdClass(ModuleLinkId.class)
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
+@RegisterGenericDataProvider(value = "moduleLinkDataProvider", sortProperty = "sort", countQuery = "count(*)", queryClass = ModuleLinkQuery.class)
 public class ModuleLinkEntity extends BaseEntity implements Comparable<ModuleLinkEntity> {
 
     private static final long serialVersionUID = 1L;

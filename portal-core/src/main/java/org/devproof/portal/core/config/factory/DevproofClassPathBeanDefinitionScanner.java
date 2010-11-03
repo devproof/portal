@@ -81,13 +81,13 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
                 BeanDefinitionHolder beanDefinitionHolder = buildGenericRepositoryDefinition(clazz);
                 super.registerBeanDefinition(beanDefinitionHolder, registry);
             }
-            else if (clazz.isAnnotationPresent(RegisterGenericDataProvider.class)) {
-                BeanDefinitionHolder beanDefinitionHolder = buildGenericDataProviderDefinition(clazz);
-                super.registerBeanDefinition(beanDefinitionHolder, registry);
-            }
             else if (clazz.isAnnotationPresent(Entity.class)
                     || clazz.isAnnotationPresent(org.hibernate.annotations.Entity.class)) {
                 moduleConfiguration.addEntity(clazz);
+                if (clazz.isAnnotationPresent(RegisterGenericDataProvider.class)) {
+                    BeanDefinitionHolder beanDefinitionHolder = buildGenericDataProviderDefinition(clazz);
+                    super.registerBeanDefinition(beanDefinitionHolder, registry);
+                }
             }
             else {
                 super.registerBeanDefinition(definitionHolder, registry);
@@ -106,9 +106,9 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
     }
 
     private BeanDefinitionHolder buildGenericDataProviderDefinition(Class<?> clazz) {
-        Class<?> entityClazz = clazz;
-        Class<?> queryClazz = getQueryClazz(clazz);
         RegisterGenericDataProvider annotation = clazz.getAnnotation(RegisterGenericDataProvider.class);
+        Class<?> entityClazz = clazz;
+        Class<?> queryClazz = annotation.queryClass();
         BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("persistenceDataProvider")
                 .setScope(BeanDefinition.SCOPE_PROTOTYPE)
                 .addPropertyValue("sort", new SortParam(annotation.sortProperty(), annotation.sortAscending()))
@@ -129,21 +129,6 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         Type[] types = clazz.getGenericInterfaces();
         ParameterizedType type = (ParameterizedType) types[0];
         return (Class<?>) type.getActualTypeArguments()[0];
-    }
-
-    /**
-     * Query class is always the second generic type
-     * @param clazz type
-     * @return query class
-     */
-    private Class<?> getQueryClazz(Class<?> clazz) {
-        Type[] types = clazz.getGenericInterfaces();
-        ParameterizedType type = (ParameterizedType) types[0];
-        Type[] actualTypeArguments = type.getActualTypeArguments();
-        if(actualTypeArguments.length >= 2) {
-            return (Class<?>) actualTypeArguments[1];
-        }
-        return null;
     }
 
     @Override

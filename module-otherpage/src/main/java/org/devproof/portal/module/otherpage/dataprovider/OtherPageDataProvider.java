@@ -22,6 +22,6 @@ import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 /**
  * @author Carsten Hufe
  */
-@RegisterGenericDataProvider(value = "otherPageDataProvider", sortProperty = "contentId", sortAscending = true)
+
 public interface OtherPageDataProvider extends ISortableDataProvider<OtherPageEntity> {
 }
