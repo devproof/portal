@@ -86,7 +86,7 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
     /**
      * Log object for this class.
      */
-    private final Log logger = LogFactory.getLog(EasySSLProtocolSocketFactory.class);
+    private static final Log logger = LogFactory.getLog(EasySSLProtocolSocketFactory.class);
 
     private SSLContext sslcontext = null;
 
