@@ -43,7 +43,7 @@ import java.io.IOException;
  */
 public abstract class UploadCenterPanel extends Panel {
     private static final long serialVersionUID = 1L;
-    private static final Log LOG = LogFactory.getLog(UploadCenterPanel.class);
+    private final Log logger = LogFactory.getLog(UploadCenterPanel.class);
 
     @SpringBean(name = "sharedRegistry")
     private SharedRegistry sharedRegistry;
@@ -93,7 +93,7 @@ public abstract class UploadCenterPanel extends Panel {
                             }
                         } else {
                             if (!file.delete()) {
-                                LOG.error("Error deleting file " + file);
+                                logger.error("Error deleting file " + file);
                             }
                         }
                         UploadCenterPanel.this.onDelete(target);

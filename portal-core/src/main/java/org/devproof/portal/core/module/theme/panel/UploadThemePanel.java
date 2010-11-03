@@ -43,7 +43,7 @@ import java.io.IOException;
  */
 public abstract class UploadThemePanel extends Panel {
     private static final long serialVersionUID = 1L;
-    private static final Log LOG = LogFactory.getLog(UploadThemePanel.class);
+    private final Log logger = LogFactory.getLog(UploadThemePanel.class);
 
     @SpringBean(name = "themeService")
     private ThemeService themeService;
@@ -87,7 +87,7 @@ public abstract class UploadThemePanel extends Panel {
                         handleErrorMessage(key);
                     }
                     if (!tmpFile.delete()) {
-                        LOG.error("Could not delete " + tmpFile);
+                        logger.error("Could not delete " + tmpFile);
                     }
                 } catch (IOException e) {
                     throw new UnhandledException(e);

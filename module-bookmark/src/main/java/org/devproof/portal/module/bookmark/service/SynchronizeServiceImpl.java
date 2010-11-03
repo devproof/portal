@@ -25,7 +25,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.tag.TagConstants;
-import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.bean.DeliciousBean;
 import org.devproof.portal.module.bookmark.bean.DeliciousPostBean;
@@ -48,14 +47,14 @@ import java.util.StringTokenizer;
  */
 @Service("synchronizeService")
 public class SynchronizeServiceImpl implements SynchronizeService {
-    private static final Log LOG = LogFactory.getLog(SynchronizeServiceImpl.class);
+    private final Log logger = LogFactory.getLog(SynchronizeServiceImpl.class);
 
     private BookmarkService bookmarkService;
     private BookmarkTagService bookmarkTagService;
 
     @Override
     public DeliciousBean getDataFromDelicious(String username, String password, String tags) {
-        LOG.debug("Retrieve data from delicious");
+        logger.debug("Retrieve data from delicious");
         HttpClient httpClient = new HttpClient();
         HttpClientParams httpClientParams = new HttpClientParams();
         DefaultHttpMethodRetryHandler defaultHttpMethodRetryHandler = new DefaultHttpMethodRetryHandler(0, false);
@@ -96,7 +95,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 
     @Override
     public List<BookmarkEntity> getModifiedDeliciousBookmarks(DeliciousBean bean) {
-        LOG.debug("Retrieve modified data from delicious");
+        logger.debug("Retrieve modified data from delicious");
         List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
         List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
         for (DeliciousPostBean post : bean.getPosts()) {
@@ -124,7 +123,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 
     @Override
     public List<BookmarkEntity> getNewDeliciousBookmarks(DeliciousBean bean) {
-        LOG.debug("Retrieve new data from delicious");
+        logger.debug("Retrieve new data from delicious");
         List<BookmarkEntity> bookmarks = bookmarkService.findAll();
         List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());
 
@@ -168,7 +167,7 @@ public class SynchronizeServiceImpl implements SynchronizeService {
 
     @Override
     public List<BookmarkEntity> getRemovedDeliciousBookmarks(DeliciousBean bean) {
-        LOG.debug("Retrieve removed data from delicious");
+        logger.debug("Retrieve removed data from delicious");
         List<BookmarkTagEntity> searchTags = getTagsFromString(bean.getTag());
         List<BookmarkEntity> bookmarks = bookmarkService.findBookmarksBySource(Source.DELICIOUS);
         List<BookmarkEntity> back = new ArrayList<BookmarkEntity>(bean.getPosts().size());

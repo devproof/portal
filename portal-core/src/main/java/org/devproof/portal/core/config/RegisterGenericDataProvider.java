@@ -30,7 +30,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Target(TYPE)
 @Retention(RUNTIME)
-public @interface GenericDataProvider {
+public @interface RegisterGenericDataProvider {
 
     /**
      * Spring bean id
@@ -56,4 +56,9 @@ public @interface GenericDataProvider {
      * hqql prefetch query
      */
     String[] prefetch() default {};
+
+    /**
+     * The query class if one exists
+     */
+    Class<?> queryClass() default Object.class;
 }

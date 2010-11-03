@@ -16,13 +16,12 @@
 package org.devproof.portal.core.module.email.dataprovider;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
-import org.devproof.portal.core.config.GenericDataProvider;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "emailTemplateDataProvider", sortProperty = "subject")
+@RegisterGenericDataProvider(value = "emailTemplateDataProvider", sortProperty = "subject")
 public interface EmailTemplateDataProvider extends ISortableDataProvider<EmailTemplateEntity> {
 }

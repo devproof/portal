@@ -15,16 +15,14 @@
  */
 package org.devproof.portal.core.module.modulemgmt.dataprovider;
 
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.query.ModuleLinkQuery;
-import org.devproof.portal.core.module.user.entity.UserEntity;
-import org.devproof.portal.core.module.user.query.UserQuery;
 
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "moduleLinkDataProvider", sortProperty = "sort", countQuery = "count(*)")
+@RegisterGenericDataProvider(value = "moduleLinkDataProvider", sortProperty = "sort", countQuery = "count(*)")
 public interface ModuleLinkDataProvider extends SortableQueryDataProvider<ModuleLinkEntity, ModuleLinkQuery> {
 }

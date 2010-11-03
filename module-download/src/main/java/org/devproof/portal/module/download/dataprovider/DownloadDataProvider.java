@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.download.dataprovider;
 
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.devproof.portal.module.download.query.DownloadQuery;
@@ -23,6 +23,6 @@ import org.devproof.portal.module.download.query.DownloadQuery;
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "downloadDataProvider", sortProperty = "title", sortAscending = true)
+@RegisterGenericDataProvider(value = "downloadDataProvider", sortProperty = "title", sortAscending = true)
 public interface DownloadDataProvider extends SortableQueryDataProvider<DownloadEntity, DownloadQuery> {
 }

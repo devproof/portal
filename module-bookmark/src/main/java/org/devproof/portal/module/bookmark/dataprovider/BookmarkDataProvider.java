@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.bookmark.dataprovider;
 
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
@@ -23,6 +23,6 @@ import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "bookmarkDataProvider", sortProperty = "title", sortAscending = true)
+@RegisterGenericDataProvider(value = "bookmarkDataProvider", sortProperty = "title", sortAscending = true)
 public interface BookmarkDataProvider extends SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> {
 }

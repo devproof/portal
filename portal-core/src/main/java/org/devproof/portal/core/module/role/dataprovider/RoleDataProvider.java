@@ -15,16 +15,14 @@
  */
 package org.devproof.portal.core.module.role.dataprovider;
 
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
-import org.devproof.portal.core.module.right.entity.RightEntity;
-import org.devproof.portal.core.module.right.query.RightQuery;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.query.RoleQuery;
 
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "roleDataProvider", sortProperty = "description")
+@RegisterGenericDataProvider(value = "roleDataProvider", sortProperty = "description")
 public interface RoleDataProvider extends SortableQueryDataProvider<RoleEntity, RoleQuery> {
 }

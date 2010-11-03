@@ -16,12 +16,12 @@
 package org.devproof.portal.core.module.box.dataprovider;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.box.entity.BoxEntity;
 
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "boxDataProvider", sortProperty = "sort")
+@RegisterGenericDataProvider(value = "boxDataProvider", sortProperty = "sort")
 public interface BoxDataProvider extends ISortableDataProvider<BoxEntity> {
 }

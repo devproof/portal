@@ -29,7 +29,6 @@ import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ import java.util.UUID;
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {
-    private static final Log LOG = LogFactory.getLog(UserServiceImpl.class);
+    private final Log logger = LogFactory.getLog(UserServiceImpl.class);
     private UserDao userDao;
     private RoleService roleService;
     private EmailService emailService;
@@ -190,16 +189,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException, AuthentificationFailedException {
         UserEntity user = findUserByUsername(username);
-        LOG.info("Authentificate user " + username);
+        logger.info("Authentificate user " + username);
         if (user != null && user.equalPassword(password)) {
             if (!user.getActive()) {
-                LOG.info("User account is inactive: " + username);
+                logger.info("User account is inactive: " + username);
                 throw new AuthentificationFailedException("user.account.inactivated");
             } else if (!user.getRole().getActive()) {
-                LOG.info("User account role is inactive: " + username);
+                logger.info("User account role is inactive: " + username);
                 throw new AuthentificationFailedException("user.role.inactivated");
             } else if (!user.getConfirmed()) {
-                LOG.info("User is not confirmed: " + username);
+                logger.info("User is not confirmed: " + username);
                 throw new UserNotConfirmedException();
             }
             user.setLastIp(ipAddress);
@@ -208,7 +207,7 @@ public class UserServiceImpl implements UserService {
             save(user);
             return user;
         }
-        LOG.info("Invalid user password: " + username);
+        logger.info("Invalid user password: " + username);
         throw new AuthentificationFailedException("user.password.not.found");
     }
 

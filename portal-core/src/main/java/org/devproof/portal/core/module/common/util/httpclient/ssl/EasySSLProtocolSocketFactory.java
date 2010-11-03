@@ -86,7 +86,7 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
     /**
      * Log object for this class.
      */
-    private static final Log LOG = LogFactory.getLog(EasySSLProtocolSocketFactory.class);
+    private final Log logger = LogFactory.getLog(EasySSLProtocolSocketFactory.class);
 
     private SSLContext sslcontext = null;
 
@@ -103,7 +103,7 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
             context.init(null, new TrustManager[]{new EasyX509TrustManager(null)}, null);
             return context;
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw new HttpClientError(e.toString());
         }
     }

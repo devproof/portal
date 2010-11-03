@@ -16,14 +16,12 @@
 package org.devproof.portal.module.otherpage.dataprovider;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
-import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
-import org.devproof.portal.core.config.GenericDataProvider;
-import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
 
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "otherPageDataProvider", sortProperty = "contentId", sortAscending = true)
+@RegisterGenericDataProvider(value = "otherPageDataProvider", sortProperty = "contentId", sortAscending = true)
 public interface OtherPageDataProvider extends ISortableDataProvider<OtherPageEntity> {
 }

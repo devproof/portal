@@ -27,7 +27,6 @@ import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.devproof.portal.core.module.theme.bean.ThemeBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -49,7 +48,7 @@ import java.util.zip.ZipOutputStream;
 
 @Service("themeService")
 public class ThemeServiceImpl implements ThemeService, ServletContextAware, ApplicationContextAware {
-    private static final Log LOG = LogFactory.getLog(ThemeServiceImpl.class);
+    private final Log logger = LogFactory.getLog(ThemeServiceImpl.class);
     private ServletContext servletContext;
     private ApplicationContext applicationContext;
     private ConfigurationService configurationService;
@@ -112,11 +111,11 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
                 }
             }
             zipFile.close();
-            LOG.info("New theme installed: " + uuid);
+            logger.info("New theme installed: " + uuid);
         } catch (MalformedURLException e) {
-            LOG.warn("Unknown error", e);
+            logger.warn("Unknown error", e);
         } catch (IOException e) {
-            LOG.warn("Unknown error", e);
+            logger.warn("Unknown error", e);
         }
     }
 
@@ -126,7 +125,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
         conf.setValue(theme.getUuid());
         configurationService.save(conf);
         configurationService.refreshGlobalConfiguration();
-        LOG.info("Another theme selected: " + theme.getUuid());
+        logger.info("Another theme selected: " + theme.getUuid());
     }
 
     @Override
@@ -141,11 +140,11 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
                 configurationService.save(conf);
                 configurationService.refreshGlobalConfiguration();
             }
-            LOG.info("Theme uninstalled: " + theme.getUuid());
+            logger.info("Theme uninstalled: " + theme.getUuid());
         } catch (MalformedURLException e) {
-            LOG.error("Mailformed URL on an installed theme", e);
+            logger.error("Mailformed URL on an installed theme", e);
         } catch (IOException e) {
-            LOG.error("Deletion on theme failed", e);
+            logger.error("Deletion on theme failed", e);
         }
     }
 
@@ -169,10 +168,10 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
             }
             return ValidationKey.MISSING_DESCRIPTOR_FILE;
         } catch (ZipException e) {
-            LOG.warn(themeArchive.toString() + " was not valid", e);
+            logger.warn(themeArchive.toString() + " was not valid", e);
             return ValidationKey.NOT_A_JARFILE;
         } catch (IOException e) {
-            LOG.warn(themeArchive.toString() + " was not valid", e);
+            logger.warn(themeArchive.toString() + " was not valid", e);
             return ValidationKey.NOT_A_JARFILE;
         }
     }
@@ -248,9 +247,9 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
             fos.close();
             return back;
         } catch (FileNotFoundException e) {
-            LOG.error("Unknown: ", e);
+            logger.error("Unknown: ", e);
         } catch (IOException e) {
-            LOG.error("Unknown: ", e);
+            logger.error("Unknown: ", e);
         }
         return null;
     }

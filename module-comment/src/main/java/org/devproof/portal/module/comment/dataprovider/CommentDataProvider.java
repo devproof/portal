@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.comment.dataprovider;
 
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.module.comment.entity.CommentEntity;
 import org.devproof.portal.module.comment.query.CommentQuery;
@@ -23,6 +23,6 @@ import org.devproof.portal.module.comment.query.CommentQuery;
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "commentDataProvider", sortProperty = "createdAt", sortAscending = false)
+@RegisterGenericDataProvider(value = "commentDataProvider", sortProperty = "createdAt", sortAscending = false)
 public interface CommentDataProvider extends SortableQueryDataProvider<CommentEntity, CommentQuery> {
 }

@@ -42,7 +42,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class PortalApplication extends WebApplication {
-    private static final Log LOG = LogFactory.getLog(PortalApplication.class);
+    private final Log logger = LogFactory.getLog(PortalApplication.class);
     private Class<? extends Page> startPage;
     private boolean productionMode = false;
 
@@ -52,7 +52,7 @@ public class PortalApplication extends WebApplication {
         configureWicket();
         mountPagesAndSetStartPage();
         loadTheme();
-        LOG.info("Portal is initialized!");
+        logger.info("Portal is initialized!");
     }
 
     private void loadTheme() {
@@ -104,7 +104,7 @@ public class PortalApplication extends WebApplication {
         PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings().getResourceStreamLocator();
         locator.setThemeUuid(themeUuid);
         getMarkupSettings().getMarkupCache().clear();
-        LOG.debug("Theme " + themeUuid + " selected.");
+        logger.debug("Theme " + themeUuid + " selected.");
     }
 
     /**
@@ -132,7 +132,7 @@ public class PortalApplication extends WebApplication {
 
     @Override
     public Session newSession(Request request, Response response) {
-        LOG.debug("New session created.");
+        logger.debug("New session created.");
         return new PortalSession(request);
     }
 

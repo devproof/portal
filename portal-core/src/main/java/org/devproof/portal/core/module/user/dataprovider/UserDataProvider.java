@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.core.module.user.dataprovider;
 
-import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
-import org.devproof.portal.core.config.GenericDataProvider;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.query.UserQuery;
@@ -25,6 +23,6 @@ import org.devproof.portal.core.module.user.query.UserQuery;
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "userDataProvider", sortProperty = "username")
+@RegisterGenericDataProvider(value = "userDataProvider", sortProperty = "username")
 public interface UserDataProvider extends SortableQueryDataProvider<UserEntity, UserQuery> {
 }

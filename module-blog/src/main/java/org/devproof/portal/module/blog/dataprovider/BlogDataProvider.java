@@ -15,16 +15,14 @@
  */
 package org.devproof.portal.module.blog.dataprovider;
 
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
-import org.devproof.portal.core.module.user.entity.UserEntity;
-import org.devproof.portal.core.module.user.query.UserQuery;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.query.BlogQuery;
 
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "blogDataProvider", sortProperty = "createdAt", sortAscending = false)
+@RegisterGenericDataProvider(value = "blogDataProvider", sortProperty = "createdAt", sortAscending = false)
 public interface BlogDataProvider extends SortableQueryDataProvider<BlogEntity, BlogQuery> {
 }

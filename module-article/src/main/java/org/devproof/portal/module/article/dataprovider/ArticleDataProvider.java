@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.article.dataprovider;
 
-import org.devproof.portal.core.config.GenericDataProvider;
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.query.ArticleQuery;
@@ -23,6 +23,6 @@ import org.devproof.portal.module.article.query.ArticleQuery;
 /**
  * @author Carsten Hufe
  */
-@GenericDataProvider(value = "articleDataProvider", sortProperty = "title", sortAscending = true)
+@RegisterGenericDataProvider(value = "articleDataProvider", sortProperty = "title", sortAscending = true)
 public interface ArticleDataProvider extends SortableQueryDataProvider<ArticleEntity, ArticleQuery> {
 }

@@ -32,9 +32,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import javax.persistence.Entity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.UUID;
 
 /**
  * Scans and registers the devproof stuff in spring way
@@ -53,7 +51,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         addIncludeFilter(new AnnotationTypeFilter(ModulePage.class));
         addIncludeFilter(new AnnotationTypeFilter(NavigationBox.class));
         addIncludeFilter(new AnnotationTypeFilter(GenericRepository.class));
-        addIncludeFilter(new AnnotationTypeFilter(GenericDataProvider.class));
+        addIncludeFilter(new AnnotationTypeFilter(RegisterGenericDataProvider.class));
         addIncludeFilter(new AnnotationTypeFilter(Entity.class));
         addIncludeFilter(new AnnotationTypeFilter(org.hibernate.annotations.Entity.class));
         registerModuleConfigurationAsSingleton();
@@ -83,7 +81,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
                 BeanDefinitionHolder beanDefinitionHolder = buildGenericRepositoryDefinition(clazz);
                 super.registerBeanDefinition(beanDefinitionHolder, registry);
             }
-            else if (clazz.isAnnotationPresent(GenericDataProvider.class)) {
+            else if (clazz.isAnnotationPresent(RegisterGenericDataProvider.class)) {
                 BeanDefinitionHolder beanDefinitionHolder = buildGenericDataProviderDefinition(clazz);
                 super.registerBeanDefinition(beanDefinitionHolder, registry);
             }
@@ -108,9 +106,9 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
     }
 
     private BeanDefinitionHolder buildGenericDataProviderDefinition(Class<?> clazz) {
-        Class<?> entityClazz = getEntityClazz(clazz);
+        Class<?> entityClazz = clazz;
         Class<?> queryClazz = getQueryClazz(clazz);
-        GenericDataProvider annotation = clazz.getAnnotation(GenericDataProvider.class);
+        RegisterGenericDataProvider annotation = clazz.getAnnotation(RegisterGenericDataProvider.class);
         BeanDefinition bd = BeanDefinitionBuilder.childBeanDefinition("persistenceDataProvider")
                 .setScope(BeanDefinition.SCOPE_PROTOTYPE)
                 .addPropertyValue("sort", new SortParam(annotation.sortProperty(), annotation.sortAscending()))
@@ -154,7 +152,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
             Class<?> clazz = Class.forName(beanDefinition.getBeanClassName());
             return super.isCandidateComponent(beanDefinition)
                     || clazz.isAnnotationPresent(GenericRepository.class)
-                    || clazz.isAnnotationPresent(GenericDataProvider.class);
+                    || clazz.isAnnotationPresent(RegisterGenericDataProvider.class);
         } catch (ClassNotFoundException e) {
             logger.fatal(e);
         }
