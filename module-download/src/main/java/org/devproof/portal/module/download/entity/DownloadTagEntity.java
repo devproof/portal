@@ -32,7 +32,7 @@ import java.util.List;
 @Entity
 @Table(name = "download_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = DownloadConstants.ENTITY_CACHE_REGION)
-final public class DownloadTagEntity extends BaseTagEntity<DownloadEntity> {
+public class DownloadTagEntity extends BaseTagEntity<DownloadEntity> {
     private static final long serialVersionUID = 1L;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")

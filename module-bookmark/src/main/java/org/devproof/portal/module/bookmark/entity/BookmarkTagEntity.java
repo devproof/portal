@@ -32,7 +32,7 @@ import java.util.List;
 @Entity
 @Table(name = "bookmark_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
-final public class BookmarkTagEntity extends BaseTagEntity<BookmarkEntity> {
+public class BookmarkTagEntity extends BaseTagEntity<BookmarkEntity> {
     private static final long serialVersionUID = 1L;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
