@@ -42,7 +42,7 @@ public class BlogQuery implements SearchQuery {
 		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
 	}
 
-	@BeanQuery("exists(from BlogEntity b left join b.allRights ar "
+	@BeanQuery("exists(from Blog b left join b.allRights ar "
 			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'blog.view%') and b = e)")
 	public RoleEntity getRole() {
 		if (role == null) {
@@ -54,7 +54,7 @@ public class BlogQuery implements SearchQuery {
 		return role;
 	}
 
-	@BeanQuery("exists(from BlogEntity b left join b.tags t where t.tagname = ? and b = e)")
+	@BeanQuery("exists(from Blog b left join b.tags t where t.tagname = ? and b = e)")
 	public String getTagname() {
 		return tagname;
 	}

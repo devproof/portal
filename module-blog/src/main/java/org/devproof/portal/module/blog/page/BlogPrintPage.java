@@ -25,7 +25,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.print.page.PrintPage;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.panel.BlogPrintPanel;
 import org.devproof.portal.module.blog.service.BlogService;
 
@@ -37,19 +37,19 @@ public class BlogPrintPage extends PrintPage {
     private static final long serialVersionUID = -861792869467871383L;
     @SpringBean(name = "blogService")
     private BlogService blogService;
-    private IModel<BlogEntity> blogModel;
+    private IModel<Blog> blogModel;
     private PageParameters params;
 
     public BlogPrintPage(PageParameters params) {
         super(params);
     }
 
-    private LoadableDetachableModel<BlogEntity> createBlogModel() {
-        return new LoadableDetachableModel<BlogEntity>() {
+    private LoadableDetachableModel<Blog> createBlogModel() {
+        return new LoadableDetachableModel<Blog>() {
             private static final long serialVersionUID = 2758949172939182113L;
 
             @Override
-            protected BlogEntity load() {
+            protected Blog load() {
                 Integer blogId = getBlogId();
                 return blogService.findById(blogId);
             }
@@ -62,7 +62,7 @@ public class BlogPrintPage extends PrintPage {
         super.onBeforeRender();
     }
 
-    private IModel<BlogEntity> getBlogModel() {
+    private IModel<Blog> getBlogModel() {
         if (blogModel == null) {
             blogModel = createBlogModel();
         }
@@ -84,13 +84,13 @@ public class BlogPrintPage extends PrintPage {
     }
 
     private void validateAccessRights() {
-        BlogEntity blog = getBlogModel().getObject();
+        Blog blog = getBlogModel().getObject();
         if (blog == null || !isAllowedToRead(blog)) {
             throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
         }
     }
 
-    private boolean isAllowedToRead(BlogEntity blog) {
+    private boolean isAllowedToRead(Blog blog) {
         PortalSession session = (PortalSession) getSession();
         return session.hasRight(blog.getViewRights()) || session.hasRight("blog.view");
     }

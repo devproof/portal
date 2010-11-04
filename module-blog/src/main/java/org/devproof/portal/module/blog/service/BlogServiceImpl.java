@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.module.blog.service;
 
+import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.repository.BlogRepository;
-import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,25 +29,25 @@ public class BlogServiceImpl implements BlogService {
     private BlogTagService blogTagService;
 
     @Override
-    public void delete(BlogEntity entity) {
+    public void delete(Blog entity) {
         blogRepository.delete(entity);
         blogTagService.deleteUnusedTags();
     }
 
     @Override
-    public BlogEntity findById(Integer id) {
+    public Blog findById(Integer id) {
         return blogRepository.findById(id);
     }
 
     @Override
-    public void save(BlogEntity entity) {
+    public void save(Blog entity) {
         blogRepository.save(entity);
         blogTagService.deleteUnusedTags();
     }
 
     @Override
-    public BlogEntity newBlogEntity() {
-        BlogEntity blog = new BlogEntity();
+    public Blog newBlogEntity() {
+        Blog blog = new Blog();
         blog.setAllRights(blogRepository.findLastSelectedRights());
         return blog;
     }

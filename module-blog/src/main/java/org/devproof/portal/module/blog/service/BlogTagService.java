@@ -16,10 +16,10 @@
 package org.devproof.portal.module.blog.service;
 
 import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.devproof.portal.module.blog.entity.BlogTag;
 
 /**
  * @author Carsten Hufe
  */
-public interface BlogTagService extends TagService<BlogTagEntity> {
+public interface BlogTagService extends TagService<BlogTag> {
 }

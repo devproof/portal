@@ -25,7 +25,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.module.blog.BlogConstants;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.service.BlogService;
 
 /**
@@ -63,7 +63,7 @@ public abstract class BlogBasePage extends TemplatePage {
 
             @Override
             public void onClick() {
-                BlogEntity newEntry = blogService.newBlogEntity();
+                Blog newEntry = blogService.newBlogEntity();
                 setResponsePage(new BlogEditPage(Model.of(newEntry)));
             }
         };

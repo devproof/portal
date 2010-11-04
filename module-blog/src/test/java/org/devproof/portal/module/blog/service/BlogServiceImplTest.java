@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.module.blog.service;
 
+import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.repository.BlogRepository;
-import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +44,7 @@ public class BlogServiceImplTest {
 
     @Test
     public void testSave() {
-        BlogEntity e = createBlogEntity();
+        Blog e = createBlogEntity();
         expect(mock.save(e)).andReturn(e);
         mockTag.deleteUnusedTags();
         replay(mock);
@@ -56,7 +56,7 @@ public class BlogServiceImplTest {
 
     @Test
     public void testDelete() {
-        BlogEntity e = createBlogEntity();
+        Blog e = createBlogEntity();
         mock.delete(e);
         mockTag.deleteUnusedTags();
         replay(mock);
@@ -68,7 +68,7 @@ public class BlogServiceImplTest {
 
     @Test
     public void testFindById() {
-        BlogEntity e = createBlogEntity();
+        Blog e = createBlogEntity();
         expect(mock.findById(1)).andReturn(e);
         replay(mock);
         assertEquals(impl.findById(1), e);
@@ -80,8 +80,8 @@ public class BlogServiceImplTest {
         assertNotNull(impl.newBlogEntity());
     }
 
-    private BlogEntity createBlogEntity() {
-        BlogEntity blog = new BlogEntity();
+    private Blog createBlogEntity() {
+        Blog blog = new Blog();
         blog.setId(1);
         return blog;
     }

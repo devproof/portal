@@ -18,7 +18,7 @@ package org.devproof.portal.module.blog.page;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Assert;
@@ -49,7 +49,7 @@ public class BlogEditPageTest {
     }
 
     private BlogEditPage createNewBlogEditPage() {
-        return new BlogEditPage(Model.of(new BlogEntity()));
+        return new BlogEditPage(Model.of(new Blog()));
     }
 
     @Test

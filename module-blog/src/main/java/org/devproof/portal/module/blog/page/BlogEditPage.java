@@ -27,9 +27,8 @@ import org.devproof.portal.core.module.common.component.richtext.FullRichTextAre
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.blog.entity.BlogEntity;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
+import org.devproof.portal.module.blog.entity.Blog;
+import org.devproof.portal.module.blog.entity.BlogTag;
 import org.devproof.portal.module.blog.service.BlogService;
 import org.devproof.portal.module.blog.service.BlogTagService;
 
@@ -45,16 +44,16 @@ public class BlogEditPage extends BlogBasePage {
     private BlogService blogService;
     @SpringBean(name = "blogTagService")
     private BlogTagService blogTagService;
-    private IModel<BlogEntity> blogModel;
+    private IModel<Blog> blogModel;
 
-    public BlogEditPage(IModel<BlogEntity> blogModel) {
+    public BlogEditPage(IModel<Blog> blogModel) {
         super(new PageParameters());
         this.blogModel = blogModel;
         add(createBlogEditForm());
     }
 
-    private Form<BlogEntity> createBlogEditForm() {
-        Form<BlogEntity> form = newBlogEditForm();
+    private Form<Blog> createBlogEditForm() {
+        Form<Blog> form = newBlogEditForm();
         form.add(createHeadlineField());
         form.add(createContentField());
         form.add(createTagField());
@@ -64,14 +63,14 @@ public class BlogEditPage extends BlogBasePage {
         return form;
     }
 
-    private Form<BlogEntity> newBlogEditForm() {
-        return new Form<BlogEntity>("form", new CompoundPropertyModel<BlogEntity>(blogModel)) {
+    private Form<Blog> newBlogEditForm() {
+        return new Form<Blog>("form", new CompoundPropertyModel<Blog>(blogModel)) {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onSubmit() {
                 BlogEditPage.this.setVisible(false);
-                BlogEntity blog = getModelObject();
+                Blog blog = getModelObject();
                 blogService.save(blog);
                 setRedirect(false);
                 setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));
@@ -90,9 +89,9 @@ public class BlogEditPage extends BlogBasePage {
         return new RightGridPanel("commentright", "blog.comment", allRightsModel);
     }
 
-    private TagField<BlogTagEntity> createTagField() {
-        IModel<List<BlogTagEntity>> blogListModel = new PropertyModel<List<BlogTagEntity>>(blogModel, "tags");
-        return new TagField<BlogTagEntity>("tags", blogListModel, blogTagService);
+    private TagField<BlogTag> createTagField() {
+        IModel<List<BlogTag>> blogListModel = new PropertyModel<List<BlogTag>>(blogModel, "tags");
+        return new TagField<BlogTag>("tags", blogListModel, blogTagService);
     }
 
     private FormComponent<String> createContentField() {

@@ -16,16 +16,16 @@
 package org.devproof.portal.module.blog.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.blog.entity.Blog;
 
 /**
  * @author Carsten Hufe
  */
-public interface BlogService extends CrudService<BlogEntity, Integer> {
+public interface BlogService extends CrudService<Blog, Integer> {
     /**
-     * Returns a new instance of BlogEntity
+     * Returns a new instance of Blog
      *
-     * @return new instance of {@link BlogEntity}
+     * @return new instance of {@link org.devproof.portal.module.blog.entity.Blog}
      */
-    BlogEntity newBlogEntity();
+    Blog newBlogEntity();
 }

@@ -21,7 +21,7 @@ import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.blog.BlogConstants;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.blog.entity.Blog;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ import java.util.List;
  */
 @GenericRepository("blogRepository")
 @CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
-public interface BlogRepository extends GenericDao<BlogEntity, Integer> {
+public interface BlogRepository extends GenericDao<Blog, Integer> {
     @CacheQuery(enabled = false)
-    @Query("select b.allRights from BlogEntity b where b.modifiedAt = (select max(modifiedAt) from BlogEntity)")
+    @Query("select b.allRights from Blog b where b.modifiedAt = (select max(modifiedAt) from Blog)")
     List<RightEntity> findLastSelectedRights();
 }

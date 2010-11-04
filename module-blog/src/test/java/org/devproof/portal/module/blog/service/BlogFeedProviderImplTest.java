@@ -23,7 +23,7 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.blog.BlogConstants;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.page.BlogPage;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
  */
 public class BlogFeedProviderImplTest {
     private BlogFeedProviderImpl impl;
-    private SortableQueryDataProvider<BlogEntity, BlogQuery> dataProviderMock;
+    private SortableQueryDataProvider<Blog, BlogQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
     @Before
@@ -54,8 +54,8 @@ public class BlogFeedProviderImplTest {
             }
 
             @Override
-            protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
-                return "http://url/" + blogEntity.getId();
+            protected String getUrl(RequestCycle rc, Blog blog) {
+                return "http://url/" + blog.getId();
             }
         };
         impl.setConfigurationService(configurationServiceMock);
@@ -79,14 +79,14 @@ public class BlogFeedProviderImplTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGetBlogEntries() {
-        BlogEntity blog = createBlog();
+        Blog blog = createBlog();
         @SuppressWarnings("rawtypes")
 		Iterator it = Arrays.asList(blog).iterator();
         expect(configurationServiceMock.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);
         replay(dataProviderMock);
-        Iterator<? extends BlogEntity> blogEntries = impl.getBlogEntries();
+        Iterator<? extends Blog> blogEntries = impl.getBlogEntries();
         assertSame(blogEntries, it);
         verify(configurationServiceMock);
         verify(dataProviderMock);
@@ -106,8 +106,8 @@ public class BlogFeedProviderImplTest {
 
     @Test
     public void testGenerateFeedEntries() {
-        BlogEntity blog = createBlog();
-        Iterator<BlogEntity> it = Arrays.asList(blog).iterator();
+        Blog blog = createBlog();
+        Iterator<Blog> it = Arrays.asList(blog).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());
@@ -130,13 +130,13 @@ public class BlogFeedProviderImplTest {
             }
 
             @Override
-            protected Iterator<? extends BlogEntity> getBlogEntries() {
+            protected Iterator<? extends Blog> getBlogEntries() {
                 callOrder.append("2");
                 return null;
             }
 
             @Override
-            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
+            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends Blog> iterator) {
                 callOrder.append("3");
                 return entries;
             }
@@ -150,8 +150,8 @@ public class BlogFeedProviderImplTest {
         assertEquals("123", callOrder.toString());
     }
 
-    private BlogEntity createBlog() {
-        BlogEntity blog = new BlogEntity();
+    private Blog createBlog() {
+        Blog blog = new Blog();
         blog.setId(1);
         blog.setHeadline("hello");
         blog.setContent("world");

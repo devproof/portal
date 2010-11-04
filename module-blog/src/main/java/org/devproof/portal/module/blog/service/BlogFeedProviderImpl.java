@@ -25,11 +25,10 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.module.blog.BlogConstants;
-import org.devproof.portal.module.blog.entity.BlogEntity;
+import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.page.BlogPage;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -41,19 +40,19 @@ import java.util.List;
  */
 @Component
 public class BlogFeedProviderImpl implements FeedProvider {
-    private SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider;
+    private SortableQueryDataProvider<Blog, BlogQuery> blogDataProvider;
     private ConfigurationService configurationService;
 
     @Override
     public SyndFeed getFeed(RequestCycle rc) {
         SyndFeed feed = generateFeed(rc);
-        Iterator<? extends BlogEntity> iterator = getBlogEntries();
+        Iterator<? extends Blog> iterator = getBlogEntries();
         List<SyndEntry> entries = generateFeedEntries(rc, iterator);
         feed.setEntries(entries);
         return feed;
     }
 
-    protected Iterator<? extends BlogEntity> getBlogEntries() {
+    protected Iterator<? extends Blog> getBlogEntries() {
         Integer maxNumber = configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_IN_FEED);
         return blogDataProvider.iterator(0, maxNumber);
     }
@@ -74,16 +73,16 @@ public class BlogFeedProviderImpl implements FeedProvider {
         return rc.urlFor(BlogPage.class, new PageParameters()).toString();
     }
 
-    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BlogEntity> iterator) {
+    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends Blog> iterator) {
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         while (iterator.hasNext()) {
-            BlogEntity blogEntity = iterator.next();
+            Blog blog = iterator.next();
             SyndEntry entry = new SyndEntryImpl();
-            entry.setTitle(blogEntity.getHeadline());
-            entry.setLink(getUrl(rc, blogEntity));
-            entry.setPublishedDate(blogEntity.getModifiedAt());
-            entry.setAuthor(blogEntity.getModifiedBy());
-            String content = blogEntity.getContent().replaceAll("<(.|\n)*?>", "");
+            entry.setTitle(blog.getHeadline());
+            entry.setLink(getUrl(rc, blog));
+            entry.setPublishedDate(blog.getModifiedAt());
+            entry.setAuthor(blog.getModifiedBy());
+            String content = blog.getContent().replaceAll("<(.|\n)*?>", "");
             SyndContent description = new SyndContentImpl();
             description.setType("text/plain");
             description.setValue(StringUtils.abbreviate(content, 200));
@@ -93,8 +92,8 @@ public class BlogFeedProviderImpl implements FeedProvider {
         return entries;
     }
 
-    protected String getUrl(RequestCycle rc, BlogEntity blogEntity) {
-        return rc.urlFor(BlogPage.class, new PageParameters("id=" + blogEntity.getId())).toString();
+    protected String getUrl(RequestCycle rc, Blog blog) {
+        return rc.urlFor(BlogPage.class, new PageParameters("id=" + blog.getId())).toString();
     }
 
     @Override
@@ -112,7 +111,7 @@ public class BlogFeedProviderImpl implements FeedProvider {
     }
 
     @Autowired
-    public void setBlogDataProvider(SortableQueryDataProvider<BlogEntity, BlogQuery> blogDataProvider) {
+    public void setBlogDataProvider(SortableQueryDataProvider<Blog, BlogQuery> blogDataProvider) {
         this.blogDataProvider = blogDataProvider;
     }
 
