@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
-import org.devproof.portal.core.module.configuration.dao.ConfigurationRepository;
+import org.devproof.portal.core.module.configuration.repository.ConfigurationRepository;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl;
 import org.junit.Before;

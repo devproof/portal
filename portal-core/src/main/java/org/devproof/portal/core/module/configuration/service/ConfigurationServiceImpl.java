@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.devproof.portal.core.module.configuration.dao.ConfigurationRepository;
+import org.devproof.portal.core.module.configuration.repository.ConfigurationRepository;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
