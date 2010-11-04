@@ -41,6 +41,6 @@ public class FontServiceImplTest {
     @Test
     public void testFindSyntaxHighlighterThemes() {
         assertNotNull(impl.findSyntaxHighlighterThemes());
-        assertTrue(impl.findSyntaxHighlighterThemes().size() == 7);
+        assertTrue(impl.findSyntaxHighlighterThemes().size() == 8);
     }
 }
