@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.configuration.registry;
 
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 
 /**
  * Configuration registry: Caches the database configuration entities
@@ -26,12 +26,12 @@ public interface ConfigurationRegistry {
     /**
      * Returns the configuration by key
      */
-    ConfigurationEntity getConfiguration(String key);
+    Configuration getConfiguration(String key);
 
     /**
      * Register a configuration value
      */
-    void registerConfiguration(String key, ConfigurationEntity configurationEntity);
+    void registerConfiguration(String key, Configuration configuration);
 
     /**
      * Removes the configuration

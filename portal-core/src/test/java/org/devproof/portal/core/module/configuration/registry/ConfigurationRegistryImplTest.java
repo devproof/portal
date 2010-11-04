@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.configuration.registry;
 
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class ConfigurationRegistryImplTest {
 
     @Test
     public void testGetConfiguration() {
-        ConfigurationEntity conf = new ConfigurationEntity();
+        Configuration conf = new Configuration();
         conf.setKey("foo");
         conf.setValue("bar");
         conf.setType(String.class.getName());
@@ -45,7 +45,7 @@ public class ConfigurationRegistryImplTest {
 
     @Test
     public void testRegisterConfiguration() {
-        ConfigurationEntity conf = new ConfigurationEntity();
+        Configuration conf = new Configuration();
         conf.setKey("foo");
         conf.setValue("bar");
         conf.setType(String.class.getName());
@@ -55,7 +55,7 @@ public class ConfigurationRegistryImplTest {
 
     @Test
     public void testRemoveConfiguration() {
-        ConfigurationEntity conf = new ConfigurationEntity();
+        Configuration conf = new Configuration();
         conf.setKey("foo");
         conf.setValue("bar");
         conf.setType(String.class.getName());

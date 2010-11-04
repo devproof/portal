@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.configuration.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 
 import java.io.File;
 import java.util.Date;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe Methods to load the configuration values
  */
-public interface ConfigurationService extends CrudService<ConfigurationEntity, String> {
+public interface ConfigurationService extends CrudService<Configuration, String> {
     /**
      * Returns a object (for everything else) from the configuration table
      *
@@ -95,7 +95,7 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
      *
      * @return all entries as list
      */
-    List<ConfigurationEntity> findAll();
+    List<Configuration> findAll();
 
     /**
      * Refresh the global configuration map / cache
@@ -110,11 +110,11 @@ public interface ConfigurationService extends CrudService<ConfigurationEntity, S
     List<String> findConfigurationGroups();
 
     /**
-     * Finds all {@link ConfigurationEntity} by group
+     * Finds all {@link org.devproof.portal.core.module.configuration.entity.Configuration} by group
      *
      * @param group configuration group
      * @return configuration entries filtered by group
      */
-	List<ConfigurationEntity> findConfigurationsByGroup(String group);
+	List<Configuration> findConfigurationsByGroup(String group);
 
 }

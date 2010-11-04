@@ -44,7 +44,7 @@ import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.ConfigurationConstants;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.springframework.context.ApplicationContext;
 
@@ -58,15 +58,15 @@ public class ConfigurationPage extends TemplatePage {
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
 
-	private List<ConfigurationEntity> allConfigurations = new ArrayList<ConfigurationEntity>();
+	private List<Configuration> allConfigurations = new ArrayList<Configuration>();
 
 	public ConfigurationPage(PageParameters params) {
 		super(params);
 		add(createConfigurationForm());
 	}
 
-	private Form<List<ConfigurationEntity>> createConfigurationForm() {
-		Form<List<ConfigurationEntity>> form = newConfigurationForm();
+	private Form<List<Configuration>> createConfigurationForm() {
+		Form<List<Configuration>> form = newConfigurationForm();
 		form.add(createRepeatingConfiguration());
 		return form;
 	}
@@ -76,8 +76,8 @@ public class ConfigurationPage extends TemplatePage {
 		RepeatingView table = new RepeatingView("repeatingConfiguration");
 		for (String group : groups) {
 			table.add(createGroupHeaderRowContainer(table.newChildId(), group));
-			List<ConfigurationEntity> configurations = configurationService.findConfigurationsByGroup(group);
-			for (ConfigurationEntity configuration : configurations) {
+			List<Configuration> configurations = configurationService.findConfigurationsByGroup(group);
+			for (Configuration configuration : configurations) {
 				table.add(createEditRowContainer(table.newChildId(), configuration));
 				allConfigurations.add(configuration);
 			}
@@ -85,14 +85,14 @@ public class ConfigurationPage extends TemplatePage {
 		return table;
 	}
 
-	private WebMarkupContainer createEditRowContainer(String id, ConfigurationEntity configuration) {
+	private WebMarkupContainer createEditRowContainer(String id, Configuration configuration) {
 		WebMarkupContainer row = new WebMarkupContainer(id);
 		row.add(createEditRowLabel(configuration));
 		row.add(createEditorForConfiguration(configuration));
 		return row;
 	}
 
-	private Label createEditRowLabel(ConfigurationEntity configuration) {
+	private Label createEditRowLabel(Configuration configuration) {
 		return new Label("description", configuration.getDescription());
 	}
 
@@ -111,13 +111,13 @@ public class ConfigurationPage extends TemplatePage {
 		return new GroupHeader("description", group);
 	}
 
-	private Form<List<ConfigurationEntity>> newConfigurationForm() {
-		return new Form<List<ConfigurationEntity>>("form") {
+	private Form<List<Configuration>> newConfigurationForm() {
+		return new Form<List<Configuration>>("form") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit() {
-				for (ConfigurationEntity configuration : allConfigurations) {
+				for (Configuration configuration : allConfigurations) {
 					configurationService.save(configuration);
 				}
 				configurationService.refreshGlobalConfiguration();
@@ -137,40 +137,40 @@ public class ConfigurationPage extends TemplatePage {
 	/**
 	 * Override this method to provide custom editors for your fields.
 	 * 
-	 * @param configurationEntity
-	 *            {@link ConfigurationEntity}
+	 * @param configuration
+	 *            {@link org.devproof.portal.core.module.configuration.entity.Configuration}
 	 * @return editor fragment for for the matching configuration type
 	 */
 
-	protected Component createEditorForConfiguration(ConfigurationEntity configurationEntity) {
-		if (configurationEntity.getKey().startsWith(ConfigurationConstants.SPRING_CONFIGURATION_PREFIX)) {
+	protected Component createEditorForConfiguration(Configuration configuration) {
+		if (configuration.getKey().startsWith(ConfigurationConstants.SPRING_CONFIGURATION_PREFIX)) {
 			// special case for accessing a spring dao
-			return new SpringBeanEditor("editor", configurationEntity);
+			return new SpringBeanEditor("editor", configuration);
 		} else {
 			Class<?> clazz;
 			try {
-				clazz = Class.forName(configurationEntity.getType());
+				clazz = Class.forName(configuration.getType());
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException(e);
 			}
 			if (Boolean.class.isAssignableFrom(clazz)) {
-				return new BooleanEditor("editor", configurationEntity);
+				return new BooleanEditor("editor", configuration);
 			} else if (clazz.isEnum()) {
-				return new EnumEditor("editor", configurationEntity);
+				return new EnumEditor("editor", configuration);
 
 			} else if (Date.class.isAssignableFrom(clazz)) {
-				return new DateEditor("editor", configurationEntity);
+				return new DateEditor("editor", configuration);
 			} else {
-				return new ValueEditor("editor", configurationEntity);
+				return new ValueEditor("editor", configuration);
 			}
 		}
 	}
 
 	private class ValueEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
-		private ConfigurationEntity configuration;
+		private Configuration configuration;
 
-		public ValueEditor(String id, ConfigurationEntity configuration) {
+		public ValueEditor(String id, Configuration configuration) {
 			super(id, "valueEditor", ConfigurationPage.this);
 			this.configuration = configuration;
 			add(createAppropriateValueTextField());
@@ -216,9 +216,9 @@ public class ConfigurationPage extends TemplatePage {
 
 	private class BooleanEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
-		private ConfigurationEntity configuration;
+		private Configuration configuration;
 
-		public BooleanEditor(String id, ConfigurationEntity configuration) {
+		public BooleanEditor(String id, Configuration configuration) {
 			super(id, "booleanEditor", ConfigurationPage.this);
 			this.configuration = configuration;
 			add(createCheckBox());
@@ -233,9 +233,9 @@ public class ConfigurationPage extends TemplatePage {
 
 	private class EnumEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
-		private ConfigurationEntity configuration;
+		private Configuration configuration;
 
-		public EnumEditor(String id, ConfigurationEntity configuration) {
+		public EnumEditor(String id, Configuration configuration) {
 			super(id, "enumEditor", ConfigurationPage.this);
 			this.configuration = configuration;
 			add(createEnumDropDownChoice());
@@ -264,27 +264,27 @@ public class ConfigurationPage extends TemplatePage {
 	private class SpringBeanEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
 
-		private ConfigurationEntity configuration;
-		private List<ConfigurationEntity> possibleSelectionValues;
+		private Configuration configuration;
+		private List<Configuration> possibleSelectionValues;
 
-		public SpringBeanEditor(String id, ConfigurationEntity configuration) {
+		public SpringBeanEditor(String id, Configuration configuration) {
 			super(id, "springBeanEditor", ConfigurationPage.this);
 			this.configuration = configuration;
 			this.possibleSelectionValues = createPossibleSelectionValues();
 			add(createSpringDropDownChoice());
 		}
 
-		private DropDownChoice<ConfigurationEntity> createSpringDropDownChoice() {
-			DropDownChoice<ConfigurationEntity> ddc = new DropDownChoice<ConfigurationEntity>("edit",
-					possibleSelectionValues, new ChoiceRenderer<ConfigurationEntity>("description", "value"));
+		private DropDownChoice<Configuration> createSpringDropDownChoice() {
+			DropDownChoice<Configuration> ddc = new DropDownChoice<Configuration>("edit",
+					possibleSelectionValues, new ChoiceRenderer<Configuration>("description", "value"));
 			ddc.setModel(newConfigurationModel());
 			ddc.setLabel(new PropertyModel<String>(configuration, "key"));
 			ddc.setRequired(true);
 			return ddc;
 		}
 
-		private List<ConfigurationEntity> createPossibleSelectionValues() {
-			List<ConfigurationEntity> possibleSelectionValues = new ArrayList<ConfigurationEntity>();
+		private List<Configuration> createPossibleSelectionValues() {
+			List<Configuration> possibleSelectionValues = new ArrayList<Configuration>();
 			String typeWithoutPrefix = configuration.getKey().substring(
 					ConfigurationConstants.SPRING_CONFIGURATION_PREFIX.length());
 			int index = typeWithoutPrefix.indexOf('.');
@@ -313,13 +313,13 @@ public class ConfigurationPage extends TemplatePage {
 						Method displayMethodToString = displayMethod.getReturnType().getMethod("toString");
 
 						for (Object result : results) {
-							ConfigurationEntity c = createConfigurationEntity(primaryKeyMethod, displayMethod,
+							Configuration c = createConfigurationEntity(primaryKeyMethod, displayMethod,
 									primaryKeyMethodToString, displayMethodToString, result);
 							possibleSelectionValues.add(c);
 						}
 					} else {
 						for (Object result : results) {
-							ConfigurationEntity c = new ConfigurationEntity();
+							Configuration c = new Configuration();
 							c.setDescription((String) result);
 							c.setValue((String) result);
 							possibleSelectionValues.add(c);
@@ -332,25 +332,25 @@ public class ConfigurationPage extends TemplatePage {
 			}
 		}
 
-		private ConfigurationEntity createConfigurationEntity(Method primaryKeyMethod, Method displayMethod,
+		private Configuration createConfigurationEntity(Method primaryKeyMethod, Method displayMethod,
 				Method primaryKeyMethodToString, Method displayMethodToString, Object tmp)
 				throws IllegalAccessException, InvocationTargetException {
-			ConfigurationEntity c = new ConfigurationEntity();
+			Configuration c = new Configuration();
 			c.setDescription((String) displayMethodToString.invoke(displayMethod.invoke(tmp)));
 			c.setValue((String) primaryKeyMethodToString.invoke(primaryKeyMethod.invoke(tmp)));
 			return c;
 		}
 
-		private IModel<ConfigurationEntity> newConfigurationModel() {
-			return new IModel<ConfigurationEntity>() {
+		private IModel<Configuration> newConfigurationModel() {
+			return new IModel<Configuration>() {
 
 				private static final long serialVersionUID = 1L;
 
-				public ConfigurationEntity getObject() {
+				public Configuration getObject() {
 					return configuration;
 				}
 
-				public void setObject(ConfigurationEntity object) {
+				public void setObject(Configuration object) {
 					configuration.setValue(object.getValue());
 				}
 
@@ -363,9 +363,9 @@ public class ConfigurationPage extends TemplatePage {
 
 	private class DateEditor extends Fragment {
 		private static final long serialVersionUID = 1L;
-		private ConfigurationEntity configuration;
+		private Configuration configuration;
 
-		public DateEditor(String id, ConfigurationEntity configuration) {
+		public DateEditor(String id, Configuration configuration) {
 			super(id, "dateEditor", ConfigurationPage.this);
 			this.configuration = configuration;
 			add(createDateField());

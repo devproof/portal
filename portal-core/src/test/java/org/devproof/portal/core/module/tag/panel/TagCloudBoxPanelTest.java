@@ -19,7 +19,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
@@ -65,16 +65,16 @@ public class TagCloudBoxPanelTest {
         };
     }
 
-    private static class TestTagEntity extends BaseTagEntity<ConfigurationEntity> {
+    private static class TestTagEntity extends BaseTagEntity<Configuration> {
         private static final long serialVersionUID = 1L;
 
         @Override
-        public List<ConfigurationEntity> getReferencedObjects() {
+        public List<Configuration> getReferencedObjects() {
             return null;
         }
 
         @Override
-        public void setReferencedObjects(List<ConfigurationEntity> refObjs) {
+        public void setReferencedObjects(List<Configuration> refObjs) {
         }
     }
 

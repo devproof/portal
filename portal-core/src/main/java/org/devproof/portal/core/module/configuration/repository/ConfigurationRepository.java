@@ -15,23 +15,24 @@
  */
 package org.devproof.portal.core.module.configuration.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("configurationRepository")
-public interface ConfigurationRepository extends CrudRepository<ConfigurationEntity, String> {
-    @Query("Select c from ConfigurationEntity c")
-    List<ConfigurationEntity> findAll();
+@GenericRepository("configurationRepository")
+public interface ConfigurationRepository extends CrudRepository<Configuration, String> {
+    @Query("Select c from Configuration c")
+    List<Configuration> findAll();
 
-    @Query("Select distinct(c.group) from ConfigurationEntity c where c.group not like 'hidden' order by c.group")
+    @Query("Select distinct(c.group) from Configuration c where c.group not like 'hidden' order by c.group")
     List<String> findConfigurationGroups();
 
-    @Query("Select c from ConfigurationEntity c where c.group = ? and c.key not like 'hidden.%' order by c.description")
-    List<ConfigurationEntity> findConfigurationsByGroup(String group);
+    @Query("Select c from Configuration c where c.group = ? and c.key not like 'hidden.%' order by c.description")
+    List<Configuration> findConfigurationsByGroup(String group);
 }

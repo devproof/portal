@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.configuration.repository.ConfigurationRepository;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +47,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Object findAsObject(String key) {
-		ConfigurationEntity c = configurationRegistry.getConfiguration(key);
+		Configuration c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
@@ -73,7 +73,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public Date findAsDate(String key) {
-		ConfigurationEntity c = configurationRegistry.getConfiguration(key);
+		Configuration c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
@@ -119,14 +119,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Override
 	public synchronized void refreshGlobalConfiguration() {
-		List<ConfigurationEntity> list = findAll();
-		for (ConfigurationEntity configuration : list) {
+		List<Configuration> list = findAll();
+		for (Configuration configuration : list) {
 			configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
 		}
 	}
 
 	@Override
-	public List<ConfigurationEntity> findAll() {
+	public List<Configuration> findAll() {
 		return configurationDao.findAll();
 	}
 
@@ -136,22 +136,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
-	public List<ConfigurationEntity> findConfigurationsByGroup(String group) {
+	public List<Configuration> findConfigurationsByGroup(String group) {
 		return configurationDao.findConfigurationsByGroup(group);
 	}
 
 	@Override
-	public void delete(ConfigurationEntity entity) {
+	public void delete(Configuration entity) {
 		configurationDao.delete(entity);
 	}
 
 	@Override
-	public ConfigurationEntity findById(String id) {
+	public Configuration findById(String id) {
 		return configurationDao.findById(id);
 	}
 
 	@Override
-	public void save(ConfigurationEntity entity) {
+	public void save(Configuration entity) {
 		configurationDao.save(entity);
 	}
 

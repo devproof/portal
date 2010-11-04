@@ -19,7 +19,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -48,9 +48,9 @@ public class ConfirmDeletePanelTest {
         tester.assertComponent("panel", TestConfirmDeletePanel.class);
     }
 
-    public static class TestConfirmDeletePanel extends ConfirmDeletePanel<ConfigurationEntity> {
+    public static class TestConfirmDeletePanel extends ConfirmDeletePanel<Configuration> {
         public TestConfirmDeletePanel(String id) {
-            super(id, Model.of(new ConfigurationEntity()), new BubblePanel("id"));
+            super(id, Model.of(new Configuration()), new BubblePanel("id"));
         }
 
         private static final long serialVersionUID = 1L;

@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.devproof.portal.core.module.theme.bean.ThemeBean;
@@ -121,7 +121,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
 
     @Override
     public void selectTheme(ThemeBean theme) {
-        ConfigurationEntity conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
+        Configuration conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
         conf.setValue(theme.getUuid());
         configurationService.save(conf);
         configurationService.refreshGlobalConfiguration();
@@ -135,7 +135,7 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
             FileUtils.deleteDirectory(folder);
             String uuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
             if (uuid.equals(theme.getUuid())) {
-                ConfigurationEntity conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
+                Configuration conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
                 conf.setValue(ThemeConstants.CONF_SELECTED_THEME_DEFAULT);
                 configurationService.save(conf);
                 configurationService.refreshGlobalConfiguration();

@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
+import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.configuration.repository.ConfigurationRepository;
-import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
 public class ConfigurationServiceImplTest {
     private ConfigurationServiceImpl impl;
     private ConfigurationRepository mock;
-    private List<ConfigurationEntity> list;
+    private List<Configuration> list;
 
     @Before
     public void setUp() throws Exception {
@@ -42,8 +42,8 @@ public class ConfigurationServiceImplTest {
         impl = new ConfigurationServiceImpl();
         impl.setConfigurationDao(mock);
         impl.setConfigurationRegistry(new ConfigurationRegistryImpl());
-        list = new ArrayList<ConfigurationEntity>();
-        ConfigurationEntity c = new ConfigurationEntity();
+        list = new ArrayList<Configuration>();
+        Configuration c = new Configuration();
         c.setKey("input_date_format");
         c.setValue("dd-mm-yyyy");
         c.setType(String.class.getName());
@@ -52,7 +52,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testSave() {
-        ConfigurationEntity e = new ConfigurationEntity();
+        Configuration e = new Configuration();
         e.setKey("foo");
         e.setValue("bar");
         expect(mock.save(e)).andReturn(e);
@@ -63,7 +63,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testDelete() {
-        ConfigurationEntity e = new ConfigurationEntity();
+        Configuration e = new Configuration();
         e.setKey("foo");
         e.setValue("bar");
         mock.delete(e);
@@ -74,7 +74,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindById() {
-        ConfigurationEntity e = new ConfigurationEntity();
+        Configuration e = new Configuration();
         e.setKey("foo");
         e.setValue("bar");
         expect(mock.findById("foo")).andReturn(e);
@@ -85,9 +85,9 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAll() {
-        List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
-        list.add(new ConfigurationEntity());
-        list.add(new ConfigurationEntity());
+        List<Configuration> list = new ArrayList<Configuration>();
+        list.add(new Configuration());
+        list.add(new Configuration());
         expect(mock.findAll()).andReturn(list);
         replay(mock);
         assertEquals(list, impl.findAll());
@@ -107,9 +107,9 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindConfigurationsByGroup() {
-        List<ConfigurationEntity> list = new ArrayList<ConfigurationEntity>();
-        list.add(new ConfigurationEntity());
-        list.add(new ConfigurationEntity());
+        List<Configuration> list = new ArrayList<Configuration>();
+        list.add(new Configuration());
+        list.add(new Configuration());
         expect(mock.findConfigurationsByGroup("group")).andReturn(list);
         replay(mock);
         assertEquals(list, impl.findConfigurationsByGroup("group"));
@@ -118,7 +118,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsObject() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("value");
         c.setType(String.class.getName());
@@ -132,7 +132,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsBoolean() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("true");
         c.setType(Boolean.class.getName());
@@ -146,7 +146,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsDate() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("15-01-2008");
         c.setType(Date.class.getName());
@@ -160,7 +160,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsDouble() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("12.34");
         c.setType(Double.class.getName());
@@ -175,7 +175,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsInteger() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("12");
         c.setType(Integer.class.getName());
@@ -189,7 +189,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsString() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("string");
         c.setType(String.class.getName());
@@ -203,7 +203,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsFile() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("java.io.tmpdir");
         c.setType(String.class.getName());
@@ -221,7 +221,7 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void testFindAsEnum() {
-        ConfigurationEntity c = new ConfigurationEntity();
+        Configuration c = new Configuration();
         c.setKey("key");
         c.setValue("TEST2");
         c.setType(TestEnum.class.getName());
