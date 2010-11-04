@@ -76,7 +76,7 @@ public class DataProviderDaoImplTest {
 	@Test
 	public void testFindAll_byClass() {
 		List<EmailTemplate> expectedTemplates = Arrays.asList(newEmailTemplate());
-		expect(session.createQuery("Select e from EmailTemplateEntity e")).andReturn(query);
+		expect(session.createQuery("Select e from EmailTemplate e")).andReturn(query);
 		expect(query.setCacheable(true)).andReturn(query);
 		expect(query.setCacheMode(null)).andReturn(query);
 		expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
@@ -90,7 +90,7 @@ public class DataProviderDaoImplTest {
 	@Test
 	public void testFindAll_byClassLimited() {
 		List<EmailTemplate> expectedTemplates = Arrays.asList(newEmailTemplate());
-		expect(session.createQuery("Select e from EmailTemplateEntity e")).andReturn(query);
+		expect(session.createQuery("Select e from EmailTemplate e")).andReturn(query);
 		expect(query.setCacheable(true)).andReturn(query);
 		expect(query.setCacheMode(null)).andReturn(query);
 		expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
@@ -110,7 +110,7 @@ public class DataProviderDaoImplTest {
 		testQuery.setAllTextFields("foobar");
 		List<String> prefetch = Arrays.asList("prefetched_field");
 		expect(
-				session.createQuery("Select e from EmailTemplateEntity e"
+				session.createQuery("Select e from EmailTemplate e"
 						+ "  left join fetch e.prefetched_field  left join e.allRights vr left join e.tags t"
 						+ "  where e.headline like ? order by e.subject ASC")).andReturn(query);
 		expect(query.setParameter(0, "foobar")).andReturn(query);
@@ -132,7 +132,7 @@ public class DataProviderDaoImplTest {
 		TestQuery testQuery = new TestQuery();
 		testQuery.setAllTextFields("foobar");
 		expect(
-				session.createQuery("Select count(e) from EmailTemplateEntity e"
+				session.createQuery("Select count(e) from EmailTemplate e"
 						+ "  left join e.allRights vr left join e.tags t" + "  where e.headline like ?")).andReturn(
 				query);
 		expect(query.setParameter(0, "foobar")).andReturn(query);
@@ -148,7 +148,7 @@ public class DataProviderDaoImplTest {
 		TestQuery testQuery = new TestQuery();
 		testQuery.setAllTextFields("foobar");
 		expect(
-				session.createQuery("Select count(something) from EmailTemplateEntity e"
+				session.createQuery("Select count(something) from EmailTemplate e"
 						+ "  left join e.allRights vr left join e.tags t" + "  where e.headline like ?")).andReturn(
 				query);
 		expect(query.setParameter(0, "foobar")).andReturn(query);

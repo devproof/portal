@@ -110,7 +110,7 @@ public class GenericHibernateDaoImplTest {
 	@Test
 	public void testExecuteFinder_UniqueResult() throws Exception {
 		EmailTemplate expectedTemplate = newEmailTemplate();
-		expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
+		expect(session.createQuery("Select e from EmailTemplate e where id = ?")).andReturn(query);
 		expect(query.setParameter(0, "fakeValue")).andReturn(query);
 		expect(query.setFirstResult(0)).andReturn(query);
 		expect(query.setMaxResults(10)).andReturn(query);
@@ -126,7 +126,7 @@ public class GenericHibernateDaoImplTest {
 	@Test
 	public void testExecuteFinder_ResultList() throws Exception {
 		List<EmailTemplate> expectedTemplates = Arrays.asList(newEmailTemplate());
-		expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
+		expect(session.createQuery("Select e from EmailTemplate e where id = ?")).andReturn(query);
 		expect(query.setParameter(0, "fakeValue")).andReturn(query);
 		expect(query.setFirstResult(0)).andReturn(query);
 		expect(query.setMaxResults(10)).andReturn(query);
@@ -141,7 +141,7 @@ public class GenericHibernateDaoImplTest {
 
 	@Test
 	public void testExecuteUpdate() {
-		expect(session.createQuery("update EmailTemplateEntity set id = 'someValue' where id = ?")).andReturn(query);
+		expect(session.createQuery("update EmailTemplate set id = 'someValue' where id = ?")).andReturn(query);
 		expect(query.setParameter(0, "fakeValue")).andReturn(query);
 		expect(query.executeUpdate()).andReturn(0);
 		replay(sessionFactory, session, query);
