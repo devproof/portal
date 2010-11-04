@@ -18,7 +18,7 @@ package org.devproof.portal.core.module.email.service;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
+import org.devproof.portal.core.module.email.dao.EmailTemplateRepository;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,13 +39,13 @@ import static org.junit.Assert.assertNotNull;
  */
 public class EmailServiceImplTest {
     private EmailServiceImpl impl;
-    private EmailTemplateDao daomock;
+    private EmailTemplateRepository daomock;
     private JavaMailSender emailmock;
     private ConfigurationService confservice;
 
     @Before
     public void setUp() throws Exception {
-        daomock = createStrictMock(EmailTemplateDao.class);
+        daomock = createStrictMock(EmailTemplateRepository.class);
         emailmock = createStrictMock(JavaMailSender.class);
         confservice = createNiceMock(ConfigurationService.class);
         impl = new EmailServiceImpl();

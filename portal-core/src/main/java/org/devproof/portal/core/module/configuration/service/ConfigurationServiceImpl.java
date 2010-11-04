@@ -23,11 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.devproof.portal.core.module.configuration.dao.ConfigurationDao;
+import org.devproof.portal.core.module.configuration.dao.ConfigurationRepository;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,7 +37,7 @@ import javax.annotation.PostConstruct;
 @Service("configurationService")
 public class ConfigurationServiceImpl implements ConfigurationService {
 	private ConfigurationRegistry configurationRegistry;
-	private ConfigurationDao configurationDao;
+	private ConfigurationRepository configurationDao;
 	private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @PostConstruct
@@ -157,7 +156,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Autowired
-	public void setConfigurationDao(ConfigurationDao configurationDao) {
+	public void setConfigurationDao(ConfigurationRepository configurationDao) {
 		this.configurationDao = configurationDao;
 	}
 

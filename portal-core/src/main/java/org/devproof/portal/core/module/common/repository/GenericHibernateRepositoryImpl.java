@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.repository;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -41,13 +39,13 @@ import java.util.Collection;
  * @param <PK>
  * primary key type
  */
-public class GenericHibernateDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericDao<T, PK> {
+public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericRepository<T, PK> {
     private UsernameResolver usernameResolver;
     private Class<T> type;
 
-    public GenericHibernateDaoImpl(Class<T> type) {
+    public GenericHibernateRepositoryImpl(Class<T> type) {
         this.type = type;
-        logger.debug("Constructor GenericHibernateDaoImpl");
+        logger.debug("Constructor GenericHibernateRepositoryImpl");
     }
 
     @SuppressWarnings(value = "unchecked")

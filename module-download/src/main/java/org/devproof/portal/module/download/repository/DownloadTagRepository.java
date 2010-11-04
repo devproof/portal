@@ -17,7 +17,7 @@ package org.devproof.portal.module.download.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.tag.dao.TagDao;
+import org.devproof.portal.core.module.tag.dao.TagRepository;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadTag;
 
@@ -26,5 +26,5 @@ import org.devproof.portal.module.download.entity.DownloadTag;
  */
 @GenericRepository("downloadTagRepository")
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
-public interface DownloadTagRepository extends TagDao<DownloadTag> {
+public interface DownloadTagRepository extends TagRepository<DownloadTag> {
 }

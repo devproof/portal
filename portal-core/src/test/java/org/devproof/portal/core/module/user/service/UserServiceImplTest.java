@@ -22,7 +22,7 @@ import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.dao.UserDao;
+import org.devproof.portal.core.module.user.dao.UserRepository;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
@@ -42,14 +42,14 @@ import static org.junit.Assert.*;
  */
 public class UserServiceImplTest {
     private UserServiceImpl impl;
-    private UserDao userDaoMock;
+    private UserRepository userDaoMock;
     private RoleService roleServiceMock;
     private EmailService emailServiceMock;
     private ConfigurationService configurationServiceMock;
 
     @Before
     public void setUp() throws Exception {
-        userDaoMock = createStrictMock(UserDao.class);
+        userDaoMock = createStrictMock(UserRepository.class);
         roleServiceMock = createMock(RoleService.class);
         emailServiceMock = createMock(EmailService.class);
         configurationServiceMock = createMock(ConfigurationService.class);

@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.tag.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.dao.TagDao;
+import org.devproof.portal.core.module.tag.dao.TagRepository;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +33,12 @@ import static org.junit.Assert.assertNotNull;
  */
 public class TagServiceImplTest {
     private AbstractTagServiceImpl<DummyTagEntity> impl;
-    private TagDao<DummyTagEntity> mock;
+    private TagRepository<DummyTagEntity> mock;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        mock = createStrictMock(TagDao.class);
+        mock = createStrictMock(TagRepository.class);
         impl = new AbstractTagServiceImpl<DummyTagEntity>() {
             @Override
             public String getRelatedTagRight() {

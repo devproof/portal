@@ -13,29 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.right.dao;
+package org.devproof.portal.core.module.email.dao;
 
 import java.util.List;
 
-import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("rightDao")
+@org.devproof.portal.core.config.GenericRepository("emailTemplateDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface RightDao extends GenericDao<RightEntity, String> {
-    @Query("Select r from RightEntity r")
-    List<RightEntity> findAll();
-
-    @Query("select r from RightEntity r where r.right like ?||'.%'")
-    List<RightEntity> findRightsStartingWith(String prefix);
-
-    @Query("select r from RightEntity r order by r.description asc")
-    List<RightEntity> findAllOrderByDescription();
+public interface EmailTemplateRepository extends GenericRepository<EmailTemplateEntity, Integer> {
+    @Query("Select e from EmailTemplateEntity e")
+    List<EmailTemplateEntity> findAll();
 }

@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.modulemgmt.service;
 
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
-import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkDao;
+import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkRepository;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
 import org.junit.Before;
@@ -37,12 +37,12 @@ import static org.junit.Assert.assertEquals;
  */
 public class ModuleServiceImplTest {
     private ModuleServiceImpl impl;
-    private ModuleLinkDao moduleLinkDaoMock;
+    private ModuleLinkRepository moduleLinkDaoMock;
     private ApplicationContext applicationContextMock;
 
     @Before
     public void setUp() throws Exception {
-        moduleLinkDaoMock = createStrictMock(ModuleLinkDao.class);
+        moduleLinkDaoMock = createStrictMock(ModuleLinkRepository.class);
         PageLocator pageLocatorMock = createStrictMock(PageLocator.class);
         applicationContextMock = createStrictMock(ApplicationContext.class);
         impl = new ModuleServiceImpl();

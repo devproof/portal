@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.repository;
 
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -34,29 +34,29 @@ import static org.junit.Assert.assertEquals;
  * @author Carsten Hufe
  */
 public class FinderDispatcherGenericDaoImplTest {
-    private FinderDispatcherGenericDaoImpl<TestEntity, Integer> impl;
-    private TestDao testDao;
-    private GenericDao<TestEntity, Integer> genericDao;
+    private FinderDispatcherGenericRepositoryImpl<TestEntity, Integer> impl;
+    private TestRepository testDao;
+    private GenericRepository<TestEntity, Integer> genericRepository;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         SessionFactory sessionFactory = createMock(SessionFactory.class);
         Session session = createMock(Session.class);
-        genericDao = createMock(GenericDao.class);
-        impl = new FinderDispatcherGenericDaoImpl<TestEntity, Integer>() {
+        genericRepository = createMock(GenericRepository.class);
+        impl = new FinderDispatcherGenericRepositoryImpl<TestEntity, Integer>() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            protected GenericDao<TestEntity, Integer> createGenericHibernateDao() {
-                return genericDao;
+            protected GenericRepository<TestEntity, Integer> createGenericHibernateDao() {
+                return genericRepository;
             }
 
         };
-        impl.setDaoInterface(TestDao.class);
+        impl.setDaoInterface(TestRepository.class);
         impl.setEntityClass(TestEntity.class);
         impl.setSessionFactory(sessionFactory);
-        testDao = (TestDao) impl.getObject();
+        testDao = (TestRepository) impl.getObject();
         expect(session.getSessionFactory()).andReturn(sessionFactory);
         expect(sessionFactory.openSession()).andReturn(session);
         SessionHolder sessionHolder = new SessionHolder(session);
@@ -68,66 +68,66 @@ public class FinderDispatcherGenericDaoImplTest {
     @Test
     public void testGetObject_delegateSave() {
         TestEntity entity = createEntity();
-        expect(genericDao.save(entity)).andReturn(entity);
-        replay(genericDao);
+        expect(genericRepository.save(entity)).andReturn(entity);
+        replay(genericRepository);
         testDao.save(entity);
-        verify(genericDao);
+        verify(genericRepository);
     }
 
     @Test
     public void testGetObject_delegateDelete() {
         TestEntity entity = createEntity();
-        genericDao.delete(entity);
-        replay(genericDao);
+        genericRepository.delete(entity);
+        replay(genericRepository);
         testDao.delete(entity);
-        verify(genericDao);
+        verify(genericRepository);
     }
 
     @Test
     public void testGetObject_delegateRefresh() {
         TestEntity entity = createEntity();
-        genericDao.refresh(entity);
-        replay(genericDao);
+        genericRepository.refresh(entity);
+        replay(genericRepository);
         testDao.refresh(entity);
-        verify(genericDao);
+        verify(genericRepository);
     }
 
     @Test
     public void testGetObject_delegateFindById() {
         TestEntity expectedEntity = createEntity();
-        expect(genericDao.findById(1)).andReturn(expectedEntity);
-        replay(genericDao);
+        expect(genericRepository.findById(1)).andReturn(expectedEntity);
+        replay(genericRepository);
         TestEntity entity = testDao.findById(1);
         assertEquals(expectedEntity, entity);
-        verify(genericDao);
+        verify(genericRepository);
     }
 
     @Test
     public void testGetObject_queryAnnotation() throws Exception {
         TestEntity expectedEntity = createEntity();
-        expect(genericDao.executeFinder(eq("select t from TestEntity t where t.contentId = ?"), (Object[]) anyObject(), (Method) anyObject(), (Integer) eq(null), (Integer) eq(null))).andReturn(expectedEntity);
-        replay(genericDao);
+        expect(genericRepository.executeFinder(eq("select t from TestEntity t where t.contentId = ?"), (Object[]) anyObject(), (Method) anyObject(), (Integer) eq(null), (Integer) eq(null))).andReturn(expectedEntity);
+        replay(genericRepository);
         TestEntity entity = testDao.findByContentId("foobar");
         assertEquals(expectedEntity, entity);
-        verify(genericDao);
+        verify(genericRepository);
     }
 
     @Test
     public void testGetObject_bulkUpdate() {
-        genericDao.executeUpdate(eq("update TestEntity with something where contentId = ?"), (Object[]) anyObject());
-        replay(genericDao);
+        genericRepository.executeUpdate(eq("update TestEntity with something where contentId = ?"), (Object[]) anyObject());
+        replay(genericRepository);
         testDao.updateWithSomething("foobar");
-        verify(genericDao);
+        verify(genericRepository);
     }
 
     @Test
     public void testGetObject_delegateToImplMethod() {
-        TestDao serviceImpl = createMock(TestDao.class);
+        TestRepository serviceImpl = createMock(TestRepository.class);
         impl.setServicesImpl(serviceImpl);
         serviceImpl.delegateToImpl();
-        replay(genericDao, serviceImpl);
+        replay(genericRepository, serviceImpl);
         testDao.delegateToImpl();
-        verify(genericDao, serviceImpl);
+        verify(genericRepository, serviceImpl);
     }
 
     private TestEntity createEntity() {
@@ -136,7 +136,7 @@ public class FinderDispatcherGenericDaoImplTest {
         return entity;
     }
 
-    public interface TestDao extends GenericDao<TestEntity, Integer> {
+    public interface TestRepository extends GenericRepository<TestEntity, Integer> {
         @Query("select t from TestEntity t where t.contentId = ?")
         public TestEntity findByContentId(String contentId);
 

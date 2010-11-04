@@ -17,10 +17,8 @@ package org.devproof.portal.core.module.tag.service;
 
 import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.dao.TagDao;
+import org.devproof.portal.core.module.tag.dao.TagRepository;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T> {
-    private TagDao<T> tagDao;
+    private TagRepository<T> tagDao;
 
     @Override
     public void deleteUnusedTags() {
@@ -91,7 +89,7 @@ public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> impleme
         return tag;
     }
 
-    public void setTagDao(TagDao<T> tagDao) {
+    public void setTagDao(TagRepository<T> tagDao) {
         this.tagDao = tagDao;
     }
 }

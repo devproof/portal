@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.role.service;
 
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.role.RoleConstants;
-import org.devproof.portal.core.module.role.dao.RoleDao;
+import org.devproof.portal.core.module.role.dao.RoleRepository;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,12 +34,12 @@ import static org.junit.Assert.assertNotNull;
  */
 public class RoleServiceImplTest {
     private RoleServiceImpl impl;
-    private RoleDao roleDaoMock;
+    private RoleRepository roleDaoMock;
     private ConfigurationService configurationServiceMock;
 
     @Before
     public void setUp() throws Exception {
-        roleDaoMock = createStrictMock(RoleDao.class);
+        roleDaoMock = createStrictMock(RoleRepository.class);
         configurationServiceMock = createStrictMock(ConfigurationService.class);
         impl = new RoleServiceImpl();
         impl.setRoleDao(roleDaoMock);

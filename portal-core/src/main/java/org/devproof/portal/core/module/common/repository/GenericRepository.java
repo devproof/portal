@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.repository;
 
 import java.io.Serializable;
 
 /**
- * GenericDao interface with CRUD methods
+ * GenericRepository interface with CRUD methods
  *
  * @author Carsten Hufe
  */
-public interface GenericDao<T, PK extends Serializable> extends FinderExecutor {
+public interface GenericRepository<T, PK extends Serializable> extends FinderExecutor {
     /**
      * Get an entity by id
      *

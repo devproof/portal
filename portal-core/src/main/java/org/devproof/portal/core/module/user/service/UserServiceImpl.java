@@ -24,7 +24,7 @@ import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.dao.UserDao;
+import org.devproof.portal.core.module.user.dao.UserRepository;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
@@ -41,7 +41,7 @@ import java.util.UUID;
 @Service("userService")
 public class UserServiceImpl implements UserService {
     private final Log logger = LogFactory.getLog(UserServiceImpl.class);
-    private UserDao userDao;
+    private UserRepository userDao;
     private RoleService roleService;
     private EmailService emailService;
     private ConfigurationService configurationService;
@@ -286,7 +286,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(UserRepository userDao) {
         this.userDao = userDao;
     }
 }

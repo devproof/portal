@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.repository;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -43,7 +43,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Carsten Hufe
  */
 public class DataProviderDaoImplTest {
-	private DataProviderDaoImpl<EmailTemplateEntity> impl;
+	private DataProviderRepositoryImpl<EmailTemplateEntity> impl;
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Query query;
@@ -52,7 +52,7 @@ public class DataProviderDaoImplTest {
 	public void setUp() throws Exception {
 		sessionFactory = createMock(SessionFactory.class);
 		session = createMock(Session.class);
-		impl = new DataProviderDaoImpl<EmailTemplateEntity>();
+		impl = new DataProviderRepositoryImpl<EmailTemplateEntity>();
 		impl.setSessionFactory(sessionFactory);
 		query = createMock(Query.class);
 		expect(session.getSessionFactory()).andReturn(sessionFactory);

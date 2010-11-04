@@ -17,10 +17,9 @@ package org.devproof.portal.core.module.role.service;
 
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.role.RoleConstants;
-import org.devproof.portal.core.module.role.dao.RoleDao;
+import org.devproof.portal.core.module.role.dao.RoleRepository;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.List;
 @Service("roleService")
 public class RoleServiceImpl implements RoleService {
     private ConfigurationService configurationService;
-    private RoleDao roleDao;
+    private RoleRepository roleDao;
 
     @Override
     public RoleEntity newRoleEntity() {
@@ -75,7 +74,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Autowired
-    public void setRoleDao(RoleDao roleDao) {
+    public void setRoleDao(RoleRepository roleDao) {
         this.roleDao = roleDao;
     }
 

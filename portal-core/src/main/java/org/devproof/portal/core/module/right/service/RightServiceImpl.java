@@ -15,10 +15,9 @@
  */
 package org.devproof.portal.core.module.right.service;
 
-import org.devproof.portal.core.module.right.dao.RightDao;
+import org.devproof.portal.core.module.right.dao.RightRepository;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +30,7 @@ import java.util.List;
 public class RightServiceImpl implements RightService {
     private List<RightEntity> allRights;
     private long dirtyTime = 0l;
-    private RightDao rightDao;
+    private RightRepository rightDao;
 
     @PostConstruct
     public void init() {
@@ -95,7 +94,7 @@ public class RightServiceImpl implements RightService {
     }
 
     @Autowired
-    public void setRightDao(RightDao rightDao) {
+    public void setRightDao(RightRepository rightDao) {
         this.rightDao = rightDao;
     }
 }

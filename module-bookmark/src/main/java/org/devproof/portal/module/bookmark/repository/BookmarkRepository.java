@@ -15,11 +15,10 @@
  */
 package org.devproof.portal.module.bookmark.repository;
 
-import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.core.module.common.repository.GenericRepository;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
@@ -31,9 +30,9 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("bookmarkRepository")
+@org.devproof.portal.core.config.GenericRepository("bookmarkRepository")
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
-public interface BookmarkRepository extends GenericDao<Bookmark, Integer> {
+public interface BookmarkRepository extends GenericRepository<Bookmark, Integer> {
     @Query("Select b from Bookmark b")
     List<Bookmark> findAll();
 

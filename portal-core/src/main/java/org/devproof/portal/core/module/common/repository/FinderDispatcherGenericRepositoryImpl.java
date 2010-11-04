@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.repository;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +54,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @param <PK>
  *            primary key type
  */
-public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends HibernateDaoSupport implements
+public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> extends HibernateDaoSupport implements
 		FactoryBean<Object>, Serializable, ApplicationContextAware {
 
 	private static final long serialVersionUID = -3752572093862325307L;
@@ -67,15 +67,15 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 
     public Object getObject() throws Exception {
 		ProxyFactory result = new ProxyFactory();
-		GenericDao<T, PK> genericDao = createGenericHibernateDao();
-		result.setTarget(genericDao);
+		GenericRepository<T, PK> genericRepository = createGenericHibernateDao();
+		result.setTarget(genericRepository);
 		result.setInterfaces(new Class[] { daoInterface });
 		result.addAdvice(createGenericDaoInterceptor());
 		return result.getProxy();
 	}
 
-	protected GenericDao<T, PK> createGenericHibernateDao() {
-		GenericHibernateDaoImpl<T, PK> genericDao = new GenericHibernateDaoImpl<T, PK>(entityClass);
+	protected GenericRepository<T, PK> createGenericHibernateDao() {
+		GenericHibernateRepositoryImpl<T, PK> genericDao = new GenericHibernateRepositoryImpl<T, PK>(entityClass);
 		genericDao.setSessionFactory(getSessionFactory());
 		genericDao.setHibernateTemplate(getHibernateTemplate());
 		genericDao.setUsernameResolver(usernameResolver);
@@ -120,12 +120,12 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 			}
 
 			private Object delegateToServiceMethod(MethodInvocation invocation) throws Throwable {
-				Method serviceMethod = FinderDispatcherGenericDaoImpl.this.servicesImpl != null ? FinderDispatcherGenericDaoImpl.this.servicesImpl
+				Method serviceMethod = FinderDispatcherGenericRepositoryImpl.this.servicesImpl != null ? FinderDispatcherGenericRepositoryImpl.this.servicesImpl
 						.getClass().getMethod(invocation.getMethod().getName(),
 								invocation.getMethod().getParameterTypes())
 						: null;
 				if (serviceMethod != null) {
-					return serviceMethod.invoke(FinderDispatcherGenericDaoImpl.this.servicesImpl, invocation
+					return serviceMethod.invoke(FinderDispatcherGenericRepositoryImpl.this.servicesImpl, invocation
 							.getArguments());
 				} else {
 					// should be only save, update, delete from the generic
@@ -143,12 +143,12 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 			}
 
 			private boolean isSessionAvailable() {
-				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
 				return TransactionSynchronizationManager.hasResource(sessionFactory);
 			}
 
 			private void openTransaction() {
-				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
 				SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
 				if (holder.getTransaction() == null) {
 					holder.setTransaction(holder.getSession().beginTransaction());
@@ -174,7 +174,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 			}
 
 			private void closeSession() {
-				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
 				SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
 						.unbindResource(sessionFactory);
 				commitTransaction(sessionHolder);
@@ -188,7 +188,7 @@ public class FinderDispatcherGenericDaoImpl<T, PK extends Serializable> extends 
 			}
 
 			private void openSession() {
-				SessionFactory sessionFactory = FinderDispatcherGenericDaoImpl.this.getSessionFactory();
+				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
 				Session session = SessionFactoryUtils.getSession(sessionFactory, true);
 				SessionHolder holder = new SessionHolder(session);
 				session.setFlushMode(FlushMode.AUTO);

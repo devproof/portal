@@ -13,26 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.role.dao;
+package org.devproof.portal.core.module.right.dao;
 
 import java.util.List;
 
-import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.right.entity.RightEntity;
 
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("roleDao")
+@org.devproof.portal.core.config.GenericRepository("rightDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface RoleDao extends GenericDao<RoleEntity, Integer> {
-    @Query("Select r from RoleEntity r")
-    List<RoleEntity> findAll();
+public interface RightRepository extends GenericRepository<RightEntity, String> {
+    @Query("Select r from RightEntity r")
+    List<RightEntity> findAll();
 
-    @Query("select r from RoleEntity r order by r.description asc")
-    List<RoleEntity> findAllOrderByDescription();
+    @Query("select r from RightEntity r where r.right like ?||'.%'")
+    List<RightEntity> findRightsStartingWith(String prefix);
+
+    @Query("select r from RightEntity r order by r.description asc")
+    List<RightEntity> findAllOrderByDescription();
 }

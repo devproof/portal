@@ -29,15 +29,11 @@ import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.bean.ModuleBean;
-import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkDao;
+import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkRepository;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -48,7 +44,7 @@ import javax.annotation.PostConstruct;
 @Service("moduleService")
 public class ModuleServiceImpl implements ModuleService {
 	private ApplicationContext applicationContext;
-	private ModuleLinkDao moduleLinkDao;
+	private ModuleLinkRepository moduleLinkDao;
 	private PageLocator pageLocator;
 
 	@Override
@@ -239,7 +235,7 @@ public class ModuleServiceImpl implements ModuleService {
 	}
 
 	@Autowired
-	public void setModuleLinkDao(ModuleLinkDao moduleLinkDao) {
+	public void setModuleLinkDao(ModuleLinkRepository moduleLinkDao) {
 		this.moduleLinkDao = moduleLinkDao;
 	}
 

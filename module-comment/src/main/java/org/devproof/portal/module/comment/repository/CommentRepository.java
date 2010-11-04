@@ -15,11 +15,10 @@
  */
 package org.devproof.portal.module.comment.repository;
 
-import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.core.module.common.repository.GenericRepository;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.entity.Comment;
 
@@ -28,9 +27,9 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("commentRepository")
+@org.devproof.portal.core.config.GenericRepository("commentRepository")
 @CacheQuery(region = CommentConstants.QUERY_CACHE_REGION)
-public interface CommentRepository extends GenericDao<Comment, Integer> {
+public interface CommentRepository extends GenericRepository<Comment, Integer> {
     @BulkUpdate("update Comment c set c.accepted = true, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
     void acceptComment(Comment comment);
 

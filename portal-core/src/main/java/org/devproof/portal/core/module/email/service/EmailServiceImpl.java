@@ -29,11 +29,10 @@ import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.dao.EmailTemplateDao;
+import org.devproof.portal.core.module.email.dao.EmailTemplateRepository;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,7 +45,7 @@ import org.springframework.stereotype.Service;
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
     private final Log logger = LogFactory.getLog(EmailServiceImpl.class);
-    private EmailTemplateDao emailTemplateDao;
+    private EmailTemplateRepository emailTemplateDao;
     private ConfigurationService configurationService;
     private JavaMailSender javaMailSender;
     private SimpleDateFormat dateFormat;
@@ -165,7 +164,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Autowired
-    public void setEmailTemplateDao(EmailTemplateDao emailTemplateDao) {
+    public void setEmailTemplateDao(EmailTemplateRepository emailTemplateDao) {
         this.emailTemplateDao = emailTemplateDao;
     }
 

@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.right.service;
 
-import org.devproof.portal.core.module.right.dao.RightDao;
+import org.devproof.portal.core.module.right.dao.RightRepository;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,11 +31,11 @@ import static org.junit.Assert.*;
  */
 public class RightServiceImplTest {
     private RightServiceImpl impl;
-    private RightDao mock;
+    private RightRepository mock;
 
     @Before
     public void setUp() throws Exception {
-        mock = createStrictMock(RightDao.class);
+        mock = createStrictMock(RightRepository.class);
         impl = new RightServiceImpl();
         impl.setRightDao(mock);
     }

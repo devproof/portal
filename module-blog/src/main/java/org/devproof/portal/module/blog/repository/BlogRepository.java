@@ -15,10 +15,9 @@
  */
 package org.devproof.portal.module.blog.repository;
 
-import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.core.module.common.repository.GenericRepository;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
@@ -28,9 +27,9 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("blogRepository")
+@org.devproof.portal.core.config.GenericRepository("blogRepository")
 @CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
-public interface BlogRepository extends GenericDao<Blog, Integer> {
+public interface BlogRepository extends GenericRepository<Blog, Integer> {
     @CacheQuery(enabled = false)
     @Query("select b.allRights from Blog b where b.modifiedAt = (select max(modifiedAt) from Blog)")
     List<RightEntity> findLastSelectedRights();

@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
-import org.devproof.portal.core.module.configuration.dao.ConfigurationDao;
+import org.devproof.portal.core.module.configuration.dao.ConfigurationRepository;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl;
 import org.junit.Before;
@@ -33,12 +33,12 @@ import static org.junit.Assert.*;
  */
 public class ConfigurationServiceImplTest {
     private ConfigurationServiceImpl impl;
-    private ConfigurationDao mock;
+    private ConfigurationRepository mock;
     private List<ConfigurationEntity> list;
 
     @Before
     public void setUp() throws Exception {
-        mock = createStrictMock(ConfigurationDao.class);
+        mock = createStrictMock(ConfigurationRepository.class);
         impl = new ConfigurationServiceImpl();
         impl.setConfigurationDao(mock);
         impl.setConfigurationRegistry(new ConfigurationRegistryImpl());

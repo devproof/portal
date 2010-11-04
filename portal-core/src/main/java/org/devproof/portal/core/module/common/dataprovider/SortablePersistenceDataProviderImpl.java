@@ -22,7 +22,7 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
-import org.devproof.portal.core.module.common.dao.DataProviderDao;
+import org.devproof.portal.core.module.common.repository.DataProviderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -43,7 +43,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
 
     private Class<T> entityClass;
     private Class<T> queryClass;
-    private DataProviderDao<T> dataProviderDao;
+    private DataProviderRepository<T> dataProviderRepository;
     private IModel<SQ> searchQueryModel;
     private List<String> prefetch;
     private String countQuery;
@@ -52,7 +52,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
     public Iterator<? extends T> iterator(int first, int count) {
         SortParam sp = getSort();
         SQ searchQuery = getSearchQueryModel().getObject();
-        List<T> list = dataProviderDao.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count, searchQuery, prefetch);
+        List<T> list = dataProviderRepository.findAllWithQuery(entityClass, sp.getProperty(), sp.isAscending(), first, count, searchQuery, prefetch);
         return list.iterator();
     }
 
@@ -64,9 +64,9 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
     public int size() {
         SQ searchQuery = getSearchQueryModel().getObject();
         if (StringUtils.isNotBlank(countQuery)) {
-            return dataProviderDao.getSize(entityClass, countQuery, searchQuery);
+            return dataProviderRepository.getSize(entityClass, countQuery, searchQuery);
         } else {
-            return dataProviderDao.getSize(entityClass, searchQuery);
+            return dataProviderRepository.getSize(entityClass, searchQuery);
         }
     }
 
@@ -93,8 +93,8 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
     }
 
     @Autowired
-    public void setDataProviderDao(DataProviderDao<T> dataProviderDao) {
-        this.dataProviderDao = dataProviderDao;
+    public void setDataProviderDao(DataProviderRepository<T> dataProviderRepository) {
+        this.dataProviderRepository = dataProviderRepository;
     }
 
     public void setPrefetch(List<String> prefetch) {

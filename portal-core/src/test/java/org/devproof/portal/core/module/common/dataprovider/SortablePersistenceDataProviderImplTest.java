@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.common.dataprovider;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.devproof.portal.core.module.common.dao.DataProviderDao;
+import org.devproof.portal.core.module.common.repository.DataProviderRepository;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 import org.junit.Before;
@@ -36,13 +36,13 @@ import static org.junit.Assert.assertNotNull;
  */
 public class SortablePersistenceDataProviderImplTest {
     private SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery> impl;
-    private DataProviderDao<EmailTemplateEntity> dataProviderDaoMock;
+    private DataProviderRepository<EmailTemplateEntity> dataProviderRepositoryMock;
     private SearchQuery queryMock;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        dataProviderDaoMock = createMock(DataProviderDao.class);
+        dataProviderRepositoryMock = createMock(DataProviderRepository.class);
         queryMock = createMock(SearchQuery.class);
         impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery>() {
             private static final long serialVersionUID = 1L;
@@ -54,7 +54,7 @@ public class SortablePersistenceDataProviderImplTest {
         };
         impl.setEntityClass(EmailTemplateEntity.class);
         impl.setSort("subject", true);
-        impl.setDataProviderDao(dataProviderDaoMock);
+        impl.setDataProviderDao(dataProviderRepositoryMock);
     }
 
     @Test
@@ -64,11 +64,11 @@ public class SortablePersistenceDataProviderImplTest {
         EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
         expectedTemplate.setId(5);
         List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-        expect(dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, prefetch)).andReturn(templates);
-        replay(dataProviderDaoMock, queryMock);
+        expect(dataProviderRepositoryMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, prefetch)).andReturn(templates);
+        replay(dataProviderRepositoryMock, queryMock);
         Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
         assertEquals(expectedTemplate.getId(), iterator.next().getId());
-        verify(dataProviderDaoMock, queryMock);
+        verify(dataProviderRepositoryMock, queryMock);
     }
 
     @Test
@@ -76,11 +76,11 @@ public class SortablePersistenceDataProviderImplTest {
         EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
         expectedTemplate.setId(5);
         List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-        expect(dataProviderDaoMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, null)).andReturn(templates);
-        replay(dataProviderDaoMock, queryMock);
+        expect(dataProviderRepositoryMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, null)).andReturn(templates);
+        replay(dataProviderRepositoryMock, queryMock);
         Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
         assertEquals(expectedTemplate.getId(), iterator.next().getId());
-        verify(dataProviderDaoMock, queryMock);
+        verify(dataProviderRepositoryMock, queryMock);
     }
 
     @Test
@@ -92,18 +92,18 @@ public class SortablePersistenceDataProviderImplTest {
 
     @Test
     public void testSize_WithCountQuery() {
-        expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, "count(something)", queryMock)).andReturn(4);
-        replay(dataProviderDaoMock, queryMock);
+        expect(dataProviderRepositoryMock.getSize(EmailTemplateEntity.class, "count(something)", queryMock)).andReturn(4);
+        replay(dataProviderRepositoryMock, queryMock);
         impl.setCountQuery("count(something)");
         assertEquals(4, impl.size());
-        verify(dataProviderDaoMock, queryMock);
+        verify(dataProviderRepositoryMock, queryMock);
     }
 
     @Test
     public void testSize_WithoutCountQuery() {
-        expect(dataProviderDaoMock.getSize(EmailTemplateEntity.class, queryMock)).andReturn(4);
-        replay(dataProviderDaoMock, queryMock);
+        expect(dataProviderRepositoryMock.getSize(EmailTemplateEntity.class, queryMock)).andReturn(4);
+        replay(dataProviderRepositoryMock, queryMock);
         assertEquals(4, impl.size());
-        verify(dataProviderDaoMock, queryMock);
+        verify(dataProviderRepositoryMock, queryMock);
     }
 }

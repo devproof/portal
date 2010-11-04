@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.repository;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -32,7 +32,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 /**
  * @author Carsten Hufe
  */
-public class DataProviderDaoImpl<T> extends HibernateDaoSupport implements DataProviderDao<T> {
+public class DataProviderRepositoryImpl<T> extends HibernateDaoSupport implements DataProviderRepository<T> {
 
 	@Override
 	@SuppressWarnings("unchecked")

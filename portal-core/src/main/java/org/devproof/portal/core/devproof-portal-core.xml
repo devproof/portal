@@ -20,20 +20,20 @@
 
     <!--  Base generic DAO  -->
     <bean id="baseGenericDao"
-          class="org.devproof.portal.core.module.common.dao.FinderDispatcherGenericDaoImpl"
+          class="org.devproof.portal.core.module.common.repository.FinderDispatcherGenericRepositoryImpl"
           parent="hibernateDaoSupport" abstract="true">
         <property name="usernameResolver" ref="usernameResolver"/>
     </bean>
 
     <!-- Common data provider DAO -->
-    <bean id="dataProviderDao" class="org.devproof.portal.core.module.common.dao.DataProviderDaoImpl"
+    <bean id="dataProviderRepository" class="org.devproof.portal.core.module.common.repository.DataProviderRepositoryImpl"
           parent="hibernateDaoSupport"/>
 
     <!-- Persistence data provider -->
     <bean id="persistenceDataProvider"
           class="org.devproof.portal.core.module.common.dataprovider.SortablePersistenceDataProviderImpl"
           abstract="true" scope="prototype">
-        <property name="dataProviderDao" ref="dataProviderDao"/>
+        <property name="dataProviderRepository" ref="dataProviderRepository"/>
     </bean>
 
     <!-- Date Formater -->

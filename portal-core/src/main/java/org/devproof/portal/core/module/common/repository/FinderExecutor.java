@@ -13,15 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.common.dao;
+package org.devproof.portal.core.module.common.repository;
+
+import java.lang.reflect.Method;
 
 /**
+ * Internal interface for generic dao
+ *
  * @author Carsten Hufe
  */
-public class DeleteFailedException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
+public interface FinderExecutor {
+    /**
+     * Execute generic query
+     */
+    Object executeFinder(String query, Object[] queryArgs, Method method, Integer firstResults, Integer maxResults);
 
-    public DeleteFailedException(Exception e) {
-        super(e);
-    }
+    /**
+     * Execute generic bulk update
+     */
+    void executeUpdate(String query, Object[] queryArgs);
 }

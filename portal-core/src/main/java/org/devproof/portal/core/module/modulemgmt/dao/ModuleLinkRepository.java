@@ -15,11 +15,10 @@
  */
 package org.devproof.portal.core.module.modulemgmt.dao;
 
-import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
+import org.devproof.portal.core.module.common.repository.GenericRepository;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
 
@@ -30,9 +29,9 @@ import java.util.List;
  *
  * @author Carsten Hufe
  */
-@GenericRepository("moduleLinkDao")
+@org.devproof.portal.core.config.GenericRepository("moduleLinkDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface ModuleLinkDao extends GenericDao<ModuleLinkEntity, Integer> {
+public interface ModuleLinkRepository extends GenericRepository<ModuleLinkEntity, Integer> {
     @Query("select m from ModuleLinkEntity m where m.linkType = ? order by m.sort")
     List<ModuleLinkEntity> findModuleLinks(LinkType type);
 

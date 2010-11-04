@@ -17,7 +17,7 @@ package org.devproof.portal.module.bookmark.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.tag.dao.TagDao;
+import org.devproof.portal.core.module.tag.dao.TagRepository;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkTag;
 
@@ -26,5 +26,5 @@ import org.devproof.portal.module.bookmark.entity.BookmarkTag;
  */
 @GenericRepository("bookmarkTagRepository")
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
-public interface BookmarkTagRepository extends TagDao<BookmarkTag> {
+public interface BookmarkTagRepository extends TagRepository<BookmarkTag> {
 }
