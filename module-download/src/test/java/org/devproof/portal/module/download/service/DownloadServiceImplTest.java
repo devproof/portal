@@ -44,7 +44,7 @@ public class DownloadServiceImplTest {
         mock = createStrictMock(DownloadRepository.class);
         mockTag = createStrictMock(DownloadTagService.class);
         impl = new DownloadServiceImpl();
-        impl.setDownloadDao(mock);
+        impl.setDownloadRepository(mock);
         impl.setDownloadTagService(mockTag);
     }
 

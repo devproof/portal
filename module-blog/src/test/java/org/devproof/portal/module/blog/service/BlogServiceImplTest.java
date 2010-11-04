@@ -38,7 +38,7 @@ public class BlogServiceImplTest {
         mock = createStrictMock(BlogRepository.class);
         mockTag = createStrictMock(BlogTagService.class);
         impl = new BlogServiceImpl();
-        impl.setBlogDao(mock);
+        impl.setBlogRepository(mock);
         impl.setBlogTagService(mockTag);
     }
 

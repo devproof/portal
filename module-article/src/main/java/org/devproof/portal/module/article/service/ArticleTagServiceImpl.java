@@ -32,7 +32,7 @@ public class ArticleTagServiceImpl extends AbstractTagServiceImpl<ArticleTag> im
     }
 
     @Autowired
-    public void setArticleTagDao(ArticleTagRepository articleTagRepository) {
+    public void setArticleTagRepository(ArticleTagRepository articleTagRepository) {
         setTagDao(articleTagRepository);
     }
 }

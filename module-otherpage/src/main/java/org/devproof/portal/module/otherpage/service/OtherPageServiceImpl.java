@@ -60,7 +60,7 @@ public class OtherPageServiceImpl implements OtherPageService {
     }
 
     @Autowired
-    public void setOtherPageDao(OtherPageRepository otherPageRepository) {
+    public void setOtherPageRepository(OtherPageRepository otherPageRepository) {
         this.otherPageRepository = otherPageRepository;
     }
 }

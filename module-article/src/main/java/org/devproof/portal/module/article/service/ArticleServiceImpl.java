@@ -90,12 +90,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Autowired
-    public void setArticleDao(ArticleRepository articleRepository) {
+    public void setArticleRepository(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
     @Autowired
-    public void setArticlePageDao(ArticlePageRepository articlePageRepository) {
+    public void setArticlePageRepository(ArticlePageRepository articlePageRepository) {
         this.articlePageRepository = articlePageRepository;
     }
 

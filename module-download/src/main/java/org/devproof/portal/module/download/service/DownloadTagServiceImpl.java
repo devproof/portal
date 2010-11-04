@@ -32,7 +32,7 @@ public class DownloadTagServiceImpl extends AbstractTagServiceImpl<DownloadTag> 
     }
 
     @Autowired
-    public void setDownloadTagDao(DownloadTagRepository downloadTagRepository) {
+    public void setDownloadTagRepository(DownloadTagRepository downloadTagRepository) {
         setTagDao(downloadTagRepository);
     }
 }

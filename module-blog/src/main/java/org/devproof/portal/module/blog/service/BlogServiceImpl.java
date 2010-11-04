@@ -53,7 +53,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Autowired
-    public void setBlogDao(BlogRepository blogRepository) {
+    public void setBlogRepository(BlogRepository blogRepository) {
         this.blogRepository = blogRepository;
     }
 

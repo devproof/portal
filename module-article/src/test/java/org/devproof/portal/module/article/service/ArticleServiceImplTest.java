@@ -47,8 +47,8 @@ public class ArticleServiceImplTest {
         mockPage = createStrictMock(ArticlePageRepository.class);
         mockTag = createStrictMock(ArticleTagService.class);
         impl = new ArticleServiceImpl();
-        impl.setArticleDao(mock);
-        impl.setArticlePageDao(mockPage);
+        impl.setArticleRepository(mock);
+        impl.setArticlePageRepository(mockPage);
         impl.setArticleTagService(mockTag);
     }
 

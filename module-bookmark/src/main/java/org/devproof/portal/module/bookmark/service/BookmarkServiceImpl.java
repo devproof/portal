@@ -99,7 +99,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Autowired
-    public void setBookmarkDao(BookmarkRepository bookmarkRepository) {
+    public void setBookmarkRepository(BookmarkRepository bookmarkRepository) {
         this.bookmarkRepository = bookmarkRepository;
     }
 

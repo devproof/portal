@@ -133,7 +133,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Autowired(required = false) // required false for integration test
-    public void setCommentDao(CommentRepository commentRepository) {
+    public void setCommentRepository(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
 

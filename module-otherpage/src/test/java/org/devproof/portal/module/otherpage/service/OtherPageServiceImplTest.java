@@ -38,7 +38,7 @@ public class OtherPageServiceImplTest {
     public void setUp() throws Exception {
         mock = createStrictMock(OtherPageRepository.class);
         impl = new OtherPageServiceImpl();
-        impl.setOtherPageDao(mock);
+        impl.setOtherPageRepository(mock);
     }
 
     @Test

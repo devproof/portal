@@ -87,7 +87,7 @@ public class DownloadServiceImpl implements DownloadService {
     }
 
     @Autowired
-    public void setDownloadDao(DownloadRepository downloadRepository) {
+    public void setDownloadRepository(DownloadRepository downloadRepository) {
         this.downloadRepository = downloadRepository;
     }
 

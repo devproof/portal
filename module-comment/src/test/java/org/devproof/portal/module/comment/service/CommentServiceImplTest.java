@@ -50,7 +50,7 @@ public class CommentServiceImplTest {
         configurationServiceMock = createStrictMock(ConfigurationService.class);
         userServiceMock = createStrictMock(UserService.class);
         impl = new CommentServiceImpl();
-        impl.setCommentDao(commentRepositoryMock);
+        impl.setCommentRepository(commentRepositoryMock);
         impl.setConfigurationService(configurationServiceMock);
         impl.setUserService(userServiceMock);
         impl.setDisplayDateTimeFormat(new SimpleDateFormat());
@@ -102,7 +102,7 @@ public class CommentServiceImplTest {
             }
         };
         impl.setConfigurationService(configurationServiceMock);
-        impl.setCommentDao(commentRepositoryMock);
+        impl.setCommentRepository(commentRepositoryMock);
         expect(commentRepositoryMock.save(e)).andReturn(e);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT)).andReturn(2);
         UrlCallback urlCallback = createUrlCallback();
@@ -173,7 +173,7 @@ public class CommentServiceImplTest {
             }
         };
         impl.setConfigurationService(configurationServiceMock);
-        impl.setCommentDao(commentRepositoryMock);
+        impl.setCommentRepository(commentRepositoryMock);
         expect(commentRepositoryMock.save(e)).andReturn(e);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(3);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED)).andReturn(2);
@@ -201,7 +201,7 @@ public class CommentServiceImplTest {
             }
         };
         impl.setConfigurationService(configurationServiceMock);
-        impl.setCommentDao(commentRepositoryMock);
+        impl.setCommentRepository(commentRepositoryMock);
         expect(commentRepositoryMock.save(e)).andReturn(e);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(5);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION)).andReturn(2);

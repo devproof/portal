@@ -43,7 +43,7 @@ public class BookmarkServiceImplTest {
         mock = createStrictMock(BookmarkRepository.class);
         mockTag = createStrictMock(BookmarkTagService.class);
         impl = new BookmarkServiceImpl();
-        impl.setBookmarkDao(mock);
+        impl.setBookmarkRepository(mock);
         impl.setBookmarkTagService(mockTag);
     }
 

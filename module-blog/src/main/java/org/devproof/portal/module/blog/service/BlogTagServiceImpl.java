@@ -32,7 +32,7 @@ public class BlogTagServiceImpl extends AbstractTagServiceImpl<BlogTag> implemen
     }
 
     @Autowired
-    public void setBlogTagDao(BlogTagRepository blogTagRepository) {
+    public void setBlogTagRepository(BlogTagRepository blogTagRepository) {
         setTagDao(blogTagRepository);
     }
 }
