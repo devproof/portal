@@ -37,7 +37,7 @@ import java.util.Date;
 @CacheQuery(region = UserConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = UserConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "userDataProvider", sortProperty = "username", queryClass = UserQuery.class)
-public class UserEntity implements Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -292,7 +292,7 @@ public class UserEntity implements Serializable {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        UserEntity other = (UserEntity) obj;
+        User other = (User) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

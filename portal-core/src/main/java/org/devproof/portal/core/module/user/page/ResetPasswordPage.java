@@ -29,7 +29,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -45,7 +45,7 @@ public class ResetPasswordPage extends TemplatePage {
     @SpringBean(name = "userService")
     private UserService userService;
     private PageParameters params;
-    private IModel<UserEntity> userModel;
+    private IModel<User> userModel;
     private PasswordTextField password1;
     private PasswordTextField password2;
 
@@ -57,8 +57,8 @@ public class ResetPasswordPage extends TemplatePage {
         add(createResetPasswordForm());
     }
 
-    private Form<UserEntity> createResetPasswordForm() {
-        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+    private Form<User> createResetPasswordForm() {
+        Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
         form.add(createUsernameField());
         form.add(createPasswordField1());
         form.add(createPasswordField2());
@@ -74,7 +74,7 @@ public class ResetPasswordPage extends TemplatePage {
 
             @Override
             public void onSubmit() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 if (params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode())) {
                     userService.saveNewPassword(user.getUsername(), password1.getValue());
                     setResponsePage(MessagePage.getMessagePage(getString("changed")));
@@ -111,13 +111,13 @@ public class ResetPasswordPage extends TemplatePage {
         return fc;
     }
 
-    private IModel<UserEntity> createUserModel() {
-        return new LoadableDetachableModel<UserEntity>() {
+    private IModel<User> createUserModel() {
+        return new LoadableDetachableModel<User>() {
             private static final long serialVersionUID = 4622636378084141707L;
 
             @Override
-            protected UserEntity load() {
-                UserEntity user = userService.findUserByUsername(params.getString(PARAM_USER));
+            protected User load() {
+                User user = userService.findUserByUsername(params.getString(PARAM_USER));
                 if (user == null) {
                     throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("user.notregistered")));
                 } else if (isConfirmationCodeNotCorrect(user)) {
@@ -127,7 +127,7 @@ public class ResetPasswordPage extends TemplatePage {
             }
 
 
-            private boolean isConfirmationCodeNotCorrect(UserEntity user) {
+            private boolean isConfirmationCodeNotCorrect(User user) {
                 return StringUtils.isNotEmpty(user.getForgotPasswordCode()) && !params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode());
             }
         };

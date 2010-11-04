@@ -24,8 +24,8 @@ import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.dao.UserRepository;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
+import org.devproof.portal.core.module.user.repository.UserRepository;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,37 +60,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> findUserByEmail(String email) {
+    public List<User> findUserByEmail(String email) {
         return userDao.findUserByEmail(email);
     }
 
     @Override
-    public UserEntity findUserBySessionId(String sessionId) {
+    public User findUserBySessionId(String sessionId) {
         return userDao.findUserBySessionId(sessionId);
     }
 
     @Override
-    public UserEntity findUserByUsername(String username) {
+    public User findUserByUsername(String username) {
         return userDao.findUserByUsername(username);
     }
 
     @Override
-    public List<UserEntity> findUserWithRight(String right) {
+    public List<User> findUserWithRight(String right) {
         return userDao.findUserWithRight(right);
     }
 
     @Override
-    public void delete(UserEntity entity) {
+    public void delete(User entity) {
         userDao.delete(entity);
     }
 
     @Override
-    public UserEntity findById(Integer id) {
+    public User findById(Integer id) {
         return userDao.findById(id);
     }
 
     @Override
-    public void save(UserEntity entity) {
+    public void save(User entity) {
         if (entity.getRegistrationDate() == null) {
             entity.setRegistrationDate(PortalUtil.now());
         }
@@ -99,14 +99,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity newUserEntity() {
-        return new UserEntity();
+    public User newUserEntity() {
+        return new User();
     }
 
     @Override
-    public UserEntity findGuestUser() {
+    public User findGuestUser() {
         Role guestRole = roleService.findGuestRole();
-        UserEntity user = newUserEntity();
+        User user = newUserEntity();
         user.setUsername(guestRole.getDescription());
         user.setRole(guestRole);
         user.setGuestRole(true);
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean activateUser(String username, String activationCode) {
-        UserEntity user = findUserByUsername(username);
+        User user = findUserByUsername(username);
         if (user != null && activationCode.equals(user.getConfirmationCode())) {
             user.setConfirmationApprovedAt(PortalUtil.now());
             user.setConfirmationCode(null);
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(UserEntity user, UrlCallback urlCallback) {
+    public void registerUser(User user, UrlCallback urlCallback) {
         user.setActive(Boolean.TRUE);
         user.setRole(roleService.findDefaultRegistrationRole());
         if (isConfirmationRequired()) {
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
         save(user);
     }
 
-    protected EmailPlaceholderBean generateEmailPlaceholderForConfirmation(UserEntity user, UrlCallback urlCallback) {
+    protected EmailPlaceholderBean generateEmailPlaceholderForConfirmation(User user, UrlCallback urlCallback) {
         EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
         placeholder.setConfirmationLink(urlCallback.getUrl(user.getConfirmationCode()));
         return placeholder;
@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
         emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_RECONFIRMATION_EMAIL), placeholder);
     }
 
-    protected void generateConfirmationCode(UserEntity user) {
+    protected void generateConfirmationCode(User user) {
         user.setConfirmationCode(generateCode());
         user.setConfirmationRequestedAt(PortalUtil.now());
         user.setConfirmed(false);
@@ -168,8 +168,8 @@ public class UserServiceImpl implements UserService {
 
     protected void sendEmailNotificationToAdmins(EmailPlaceholderBean placeholder) {
         Integer templateId = configurationService.findAsInteger(UserConstants.CONF_NOTIFY_USER_REGISTRATION);
-        List<UserEntity> notifyUsers = findUserWithRight("emailnotification.registered.user");
-        for (UserEntity notifyUser : notifyUsers) {
+        List<User> notifyUsers = findUserWithRight("emailnotification.registered.user");
+        for (User notifyUser : notifyUsers) {
             placeholder.setToUsername(notifyUser.getUsername());
             placeholder.setToFirstname(notifyUser.getFirstname());
             placeholder.setToLastname(notifyUser.getLastname());
@@ -180,15 +180,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveNewPassword(String username, String newPassword) {
-        UserEntity user = findUserByUsername(username);
+        User user = findUserByUsername(username);
         user.setPlainPassword(newPassword);
         user.setForgotPasswordCode(null);
         save(user);
     }
 
     @Override
-    public UserEntity authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException, AuthentificationFailedException {
-        UserEntity user = findUserByUsername(username);
+    public User authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException, AuthentificationFailedException {
+        User user = findUserByUsername(username);
         logger.info("Authentificate user " + username);
         if (user != null && user.equalPassword(password)) {
             if (!user.getActive()) {
@@ -212,8 +212,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity authentificate(String sessionId, String ipAddress) {
-        UserEntity user = findUserBySessionId(sessionId);
+    public User authentificate(String sessionId, String ipAddress) {
+        User user = findUserBySessionId(sessionId);
         if (user != null && user.getActive() && user.getRole().getActive() && user.getConfirmed()) {
             user.setLastIp(ipAddress);
             user.setLastLoginAt(PortalUtil.now());
@@ -230,14 +230,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback) {
-        List<UserEntity> users = generateForgotPasswordCode(usernameOrEmail);
-        for (UserEntity user : users) {
+        List<User> users = generateForgotPasswordCode(usernameOrEmail);
+        for (User user : users) {
             EmailPlaceholderBean placeholder = generateEmailPlaceholderForLostPassword(user, urlCallback);
             sendForgotPasswordEmail(placeholder);
         }
     }
 
-    protected EmailPlaceholderBean generateEmailPlaceholderForLostPassword(UserEntity user, UrlCallback urlCallback) {
+    protected EmailPlaceholderBean generateEmailPlaceholderForLostPassword(User user, UrlCallback urlCallback) {
         EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(user);
         placeholder.setResetPasswordLink(urlCallback.getUrl(user.getForgotPasswordCode()));
         return placeholder;
@@ -247,15 +247,15 @@ public class UserServiceImpl implements UserService {
         emailService.sendEmail(configurationService.findAsInteger(UserConstants.CONF_PASSWORDFORGOT_EMAIL), placeholder);
     }
 
-    protected List<UserEntity> generateForgotPasswordCode(String usernameOrEmail) {
-        UserEntity userByName = findUserByUsername(usernameOrEmail);
-        List<UserEntity> users = new ArrayList<UserEntity>();
+    protected List<User> generateForgotPasswordCode(String usernameOrEmail) {
+        User userByName = findUserByUsername(usernameOrEmail);
+        List<User> users = new ArrayList<User>();
         if (userByName != null) {
             users.add(userByName);
         } else {
             users = findUserByEmail(usernameOrEmail);
         }
-        for (UserEntity user : users) {
+        for (User user : users) {
             user.setForgotPasswordCode(generateCode());
             save(user);
         }
@@ -263,7 +263,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void resendConfirmationCode(UserEntity user, UrlCallback urlCallback) {
+    public void resendConfirmationCode(User user, UrlCallback urlCallback) {
         generateConfirmationCode(user);
         EmailPlaceholderBean placeholder = generateEmailPlaceholderForConfirmation(user, urlCallback);
         resendConfirmationEmail(placeholder);

@@ -44,7 +44,7 @@ import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
@@ -65,7 +65,7 @@ public class RegisterPage extends TemplatePage {
     @SpringBean(name = "sharedRegistry")
     private SharedRegistry sharedRegistry;
     private PageParameters params;
-    private IModel<UserEntity> userModel;
+    private IModel<User> userModel;
     private PasswordTextField password1;
     private PasswordTextField password2;
     private BubblePanel bubblePanel;
@@ -84,8 +84,8 @@ public class RegisterPage extends TemplatePage {
         return bubblePanel;
     }
 
-    private Form<UserEntity> createRegisterForm() {
-        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+    private Form<User> createRegisterForm() {
+        Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
         form.add(createUsernameField());
         form.add(createFirstnameField());
         form.add(createLastnameField());
@@ -142,7 +142,7 @@ public class RegisterPage extends TemplatePage {
 
             @Override
             public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 String msg = "success";
                 if (configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION)) {
                     msg = "confirm.email";
@@ -161,7 +161,7 @@ public class RegisterPage extends TemplatePage {
                 return new UrlCallback() {
                     @Override
                     public String getUrl(String generatedCode) {
-                        UserEntity user = userModel.getObject();
+                        User user = userModel.getObject();
                         String requestUrl = getRequestURL();
                         PageParameters param = new PageParameters();
                         param.add(PARAM_USER, user.getUsername());
@@ -251,7 +251,7 @@ public class RegisterPage extends TemplatePage {
         };
     }
 
-    private IModel<UserEntity> createUserModel() {
+    private IModel<User> createUserModel() {
         return Model.of(userService.newUserEntity());
     }
 

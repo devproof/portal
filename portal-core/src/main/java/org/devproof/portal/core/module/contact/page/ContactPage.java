@@ -47,7 +47,7 @@ import org.devproof.portal.core.module.contact.bean.ContactBean;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -65,7 +65,7 @@ public class ContactPage extends TemplatePage {
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
     private PageParameters params;
-    private IModel<UserEntity> toUserModel;
+    private IModel<User> toUserModel;
     private IModel<ContactBean> contactBeanModel;
     private BubblePanel bubblePanel;
 
@@ -133,7 +133,7 @@ public class ContactPage extends TemplatePage {
         ContactBean contactBean = new ContactBean();
         contactBean.setTouser(getToUsername());
         if (session.isSignedIn()) {
-            UserEntity user = session.getUser();
+            User user = session.getUser();
             if (isFullnameGiven(user)) {
                 contactBean.setFullname(user.getFirstname() + " " + user.getLastname());
             }
@@ -144,16 +144,16 @@ public class ContactPage extends TemplatePage {
         return Model.of(contactBean);
     }
 
-    private boolean isEmailGiven(UserEntity user) {
+    private boolean isEmailGiven(User user) {
         return user.getEmail() != null;
     }
 
-    private boolean isFullnameGiven(UserEntity user) {
+    private boolean isFullnameGiven(User user) {
         return user.getFirstname() != null && user.getLastname() != null;
     }
 
     private void validateToUser() {
-        UserEntity toUser = toUserModel.getObject();
+        User toUser = toUserModel.getObject();
         if (toUser == null) {
             throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.doesnotexist")));
         }
@@ -165,22 +165,22 @@ public class ContactPage extends TemplatePage {
         }
     }
 
-    private IModel<UserEntity> createToUserModel() {
-        return new LoadableDetachableModel<UserEntity>() {
+    private IModel<User> createToUserModel() {
+        return new LoadableDetachableModel<User>() {
             private static final long serialVersionUID = -1538236896675592045L;
 
             @Override
-            protected UserEntity load() {
+            protected User load() {
                 return userService.findUserByUsername(getToUsername());
             }
         };
     }
 
-    private boolean isRecipientContactFormEnabled(UserEntity touser) {
+    private boolean isRecipientContactFormEnabled(User touser) {
         return !Boolean.TRUE.equals(touser.getEnableContactForm());
     }
 
-    private boolean hasContactFormPermission(UserEntity touser) {
+    private boolean hasContactFormPermission(User touser) {
         return !touser.getRole().getRights().contains(new Right("contact.form.enable"));
     }
 
@@ -203,7 +203,7 @@ public class ContactPage extends TemplatePage {
             public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
                 // send notification
                 Integer templateId = configurationService.findAsInteger(ContactConstants.CONF_CONTACTFORM_EMAIL);
-                UserEntity toUser = toUserModel.getObject();
+                User toUser = toUserModel.getObject();
                 EmailPlaceholderBean placeholder = createEmailPlaceholderBean(toUser);
                 emailService.sendEmail(templateId, placeholder);
                 setResponsePage(MessagePage.getMessagePage(getString("mail.sent")));
@@ -214,7 +214,7 @@ public class ContactPage extends TemplatePage {
                 target.addComponent(getFeedback());
             }
 
-            private EmailPlaceholderBean createEmailPlaceholderBean(UserEntity touser) {
+            private EmailPlaceholderBean createEmailPlaceholderBean(User touser) {
                 EmailPlaceholderBean placeholder = PortalUtil.createEmailPlaceHolderByUser(touser);
                 ContactBean contactBean = contactBeanModel.getObject();
                 placeholder.setContactEmail(contactBean.getEmail());

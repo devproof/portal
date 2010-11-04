@@ -21,7 +21,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 
 import java.text.SimpleDateFormat;
 
@@ -36,10 +36,10 @@ public class UserInfoPanel extends Panel {
     private SimpleDateFormat dateFormat;
     @SpringBean(name = "displayDateTimeFormat")
     private SimpleDateFormat dateTimeFormat;
-    private IModel<UserEntity> userModel;
+    private IModel<User> userModel;
 
-    public UserInfoPanel(String id, IModel<UserEntity> userModel) {
-        super(id, new CompoundPropertyModel<UserEntity>(userModel));
+    public UserInfoPanel(String id, IModel<User> userModel) {
+        super(id, new CompoundPropertyModel<User>(userModel));
         this.userModel = userModel;
         add(createUsernameLabel());
         add(createFirstnameLabel());
@@ -68,7 +68,7 @@ public class UserInfoPanel extends Panel {
 
             @Override
             public String getObject() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 return user.getLastLoginAt() != null ? dateTimeFormat.format(user.getLastLoginAt()) : "";
             }
         };
@@ -84,7 +84,7 @@ public class UserInfoPanel extends Panel {
 
             @Override
             public String getObject() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 return user.getRegistrationDate() != null ? dateTimeFormat.format(user.getRegistrationDate()) : "";
             }
         };
@@ -100,7 +100,7 @@ public class UserInfoPanel extends Panel {
 
             @Override
             public String getObject() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 return user.getConfirmed() != null ? getString("confirmed." + user.getConfirmed().toString()) : "";
             }
         };
@@ -116,7 +116,7 @@ public class UserInfoPanel extends Panel {
 
             @Override
             public String getObject() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 return user.getActive() != null ? getString("active." + user.getActive().toString()) : "";
             }
         };
@@ -136,7 +136,7 @@ public class UserInfoPanel extends Panel {
 
             @Override
             public String getObject() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 return user.getBirthday() != null ? dateFormat.format(user.getBirthday()) : "";
             }
         };

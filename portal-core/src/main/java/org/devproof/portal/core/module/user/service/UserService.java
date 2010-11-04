@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.user.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.Role;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 
@@ -26,31 +26,31 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-public interface UserService extends CrudService<UserEntity, Integer> {
+public interface UserService extends CrudService<User, Integer> {
     /**
-     * Returns a new instance of the UserEntity
+     * Returns a new instance of the User
      */
-    UserEntity newUserEntity();
+    User newUserEntity();
 
     /**
      * Returns a user entity by the username
      */
-    UserEntity findUserByUsername(String username);
+    User findUserByUsername(String username);
 
     /**
      * Returns a user entity by the session id
      */
-    UserEntity findUserBySessionId(String sessionId);
+    User findUserBySessionId(String sessionId);
 
     /**
      * Returns the guest user
      */
-    UserEntity findGuestUser();
+    User findGuestUser();
 
     /**
      * Returns a list with users by the given email
      */
-    List<UserEntity> findUserByEmail(String email);
+    List<User> findUserByEmail(String email);
 
     /**
      * Test wether a user exist
@@ -65,12 +65,12 @@ public interface UserService extends CrudService<UserEntity, Integer> {
     /**
      * Returns all users with the given right
      */
-    List<UserEntity> findUserWithRight(String right);
+    List<User> findUserWithRight(String right);
 
     /**
      * Register a new user
      */
-    void registerUser(UserEntity user, UrlCallback urlCallback);
+    void registerUser(User user, UrlCallback urlCallback);
 
     /**
      * Activate user
@@ -90,22 +90,22 @@ public interface UserService extends CrudService<UserEntity, Integer> {
      * @param username  the username to login
      * @param password  the user password
      * @param ipAddress Current ip address (for logging)
-     * @return returns the UserEntity when the authentification was successful
+     * @return returns the User when the authentification was successful
      * @throws UserNotConfirmedException thrown when a user is not confirmed
      * @throws AuthentificationFailedException
      *                                   thrown when an authentification failed e.g. wrong password
      */
-    UserEntity authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException, AuthentificationFailedException;
+    User authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException, AuthentificationFailedException;
 
     /**
      * Re-Authentificates a user by tthe session id
      *
      * @param sessionId Session ID
      * @param ipAddress Current IP address for logging
-     * @return the authentificated UserEntity, if the authentification failes it
+     * @return the authentificated User, if the authentification failes it
      *         returns the guest user
      */
-    UserEntity authentificate(String sessionId, String ipAddress);
+    User authentificate(String sessionId, String ipAddress);
 
     /**
      * Sends the code for the lost password
@@ -121,5 +121,5 @@ public interface UserService extends CrudService<UserEntity, Integer> {
      * @param user        user
      * @param urlCallback callback to build the URLs
      */
-	void resendConfirmationCode(UserEntity user, UrlCallback urlCallback);
+	void resendConfirmationCode(User user, UrlCallback urlCallback);
 }

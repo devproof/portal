@@ -41,7 +41,7 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.bean.DeliciousBean;
 import org.devproof.portal.module.bookmark.bean.DeliciousFormBean;
@@ -151,7 +151,7 @@ public abstract class DeliciousSyncPanel extends Panel {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 // Start the progress bar, will set visibility to true
                 progressBar.start(target);
-                final UserEntity user = ((PortalSession) Session.get()).getUser();
+                final User user = ((PortalSession) Session.get()).getUser();
                 new Thread() {
                     @Override
                     public void run() {
@@ -180,7 +180,7 @@ public abstract class DeliciousSyncPanel extends Panel {
                         return bookmarksToSave;
                     }
 
-                    private void saveBookmarks(UserEntity user, Collection<Bookmark> bookmarksToSave) {
+                    private void saveBookmarks(User user, Collection<Bookmark> bookmarksToSave) {
                         for (Bookmark bookmark : bookmarksToSave) {
                             actualItem++;
                             bookmark.setAllRights(allSelectedRightsModel.getObject());

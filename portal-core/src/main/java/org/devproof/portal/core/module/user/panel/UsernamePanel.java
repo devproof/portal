@@ -26,7 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.contact.ContactConstants;
 import org.devproof.portal.core.module.contact.page.ContactPage;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -39,7 +39,7 @@ public class UsernamePanel extends Panel {
     @SpringBean(name = "userService")
     private UserService userService;
     private IModel<String> usernameModel;
-    private IModel<UserEntity> userModel;
+    private IModel<User> userModel;
 
     public UsernamePanel(String id, IModel<String> usernameModel) {
         super(id);
@@ -48,12 +48,12 @@ public class UsernamePanel extends Panel {
         add(createContactPageLink());
     }
 
-    private IModel<UserEntity> createUserModel() {
-        return new LoadableDetachableModel<UserEntity>() {
+    private IModel<User> createUserModel() {
+        return new LoadableDetachableModel<User>() {
             private static final long serialVersionUID = 5479671452769963088L;
 
             @Override
-            protected UserEntity load() {
+            protected User load() {
                 return userService.findUserByUsername(usernameModel.getObject());
             }
         };
@@ -73,7 +73,7 @@ public class UsernamePanel extends Panel {
             @Override
             public boolean isEnabled() {
                 PortalSession session = (PortalSession) getSession();
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 boolean exists = user != null;
                 return session.hasRight(ContactConstants.CONTACT_RIGHT) && exists && contactFormEnabled();
             }
@@ -92,7 +92,7 @@ public class UsernamePanel extends Panel {
             @Override
             protected String load() {
                 String username = usernameModel.getObject();
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 if (showRealName()) {
                     if (user != null && StringUtils.isNotBlank(user.getFirstname()) && StringUtils.isNotBlank(user.getLastname())) {
                         username = user.getFirstname() + " " + user.getLastname();

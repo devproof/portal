@@ -20,7 +20,7 @@ import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
@@ -87,7 +87,7 @@ public class PortalSessionTest {
 
     @Test
     public void testAuthenticate_success() throws Exception {
-        UserEntity user = createUserWithRights();
+        User user = createUserWithRights();
         expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andReturn(user);
         replay(portalSession.userService);
         assertNull(portalSession.authenticate("peter", "secretpasswd"));
@@ -125,21 +125,21 @@ public class PortalSessionTest {
 
     @Test
     public void testIsSignedIn_true() {
-        portalSession.user = new UserEntity();
+        portalSession.user = new User();
         portalSession.user.setGuestRole(false);
         assertTrue(portalSession.isSignedIn());
     }
 
     @Test
     public void testIsSignedIn_false() {
-        portalSession.user = new UserEntity();
+        portalSession.user = new User();
         portalSession.user.setGuestRole(true);
         assertFalse(portalSession.isSignedIn());
     }
 
     @Test
     public void testGetUser_loggedInUser() {
-        UserEntity user = createUserWithRights();
+        User user = createUserWithRights();
         portalSession.user = user;
         assertEquals(user, portalSession.getUser());
     }
@@ -147,7 +147,7 @@ public class PortalSessionTest {
     @Test
     public void testGetUser_automaticRelogin() {
         cookieSessionId = "testSessionId";
-        UserEntity user = createUserWithRights();
+        User user = createUserWithRights();
         expect(portalSession.userService.authentificate(cookieSessionId, "123.123.123.123")).andReturn(user);
         replay(portalSession.userService);
         assertEquals(user, portalSession.getUser());
@@ -156,7 +156,7 @@ public class PortalSessionTest {
 
     @Test
     public void testGetUser_guest() {
-        UserEntity guest = new UserEntity();
+        User guest = new User();
         guest.setId(1);
         guest.setGuestRole(true);
         guest.setUsername("guest");
@@ -174,14 +174,14 @@ public class PortalSessionTest {
 
     @Test
     public void testGetRole() {
-        UserEntity user = createUserWithRights();
+        User user = createUserWithRights();
         portalSession.user = user;
         assertEquals(user.getRole(), portalSession.getRole());
     }
 
     @Test
     public void testGetRights() {
-        UserEntity user = createUserWithRights();
+        User user = createUserWithRights();
         portalSession.user = user;
         assertEquals(user.getRole().getRights(), portalSession.getRights());
     }
@@ -222,7 +222,7 @@ public class PortalSessionTest {
 
     @Test
     public void testHasRightCollectionOfRightEntity_true() {
-        UserEntity user = createUserWithRights();
+        User user = createUserWithRights();
         portalSession.user = user;
         List<Right> rights = new ArrayList<Right>(user.getRole().getRights());
         rights.remove(1);
@@ -242,7 +242,7 @@ public class PortalSessionTest {
         expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new Right("adminright"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
         replay(portalSession.rightService);
-        UserEntity user = createUserWithRights();
+        User user = createUserWithRights();
         user.getRole().add(new Right("adminright"));
         portalSession.user = user;
         assertTrue(portalSession.hasRight("adminright", new ArrayList<Right>()));
@@ -259,13 +259,13 @@ public class PortalSessionTest {
         verify(portalSession.rightService);
     }
 
-    private UserEntity createUserWithRights() {
+    private User createUserWithRights() {
         Role role = new Role();
         role.setId(1);
         role.setDescription("roleName");
         role.getRights().add(new Right("sample1"));
         role.getRights().add(new Right("sample2"));
-        UserEntity user = new UserEntity();
+        User user = new User();
         user.setId(1);
         user.setUsername("auser");
         user.setRole(role);

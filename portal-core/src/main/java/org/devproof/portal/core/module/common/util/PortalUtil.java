@@ -37,7 +37,7 @@ import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 
 /**
  * @author Carsten Hufe
@@ -47,7 +47,7 @@ public class PortalUtil {
     /**
      * Converts user to email placeholder
      */
-    public static EmailPlaceholderBean createEmailPlaceHolderByUser(UserEntity user) {
+    public static EmailPlaceholderBean createEmailPlaceHolderByUser(User user) {
         EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
         placeholder.setBirthday(user.getBirthday());
         placeholder.setUsername(user.getUsername());

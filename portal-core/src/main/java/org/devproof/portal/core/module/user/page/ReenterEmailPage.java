@@ -27,7 +27,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
@@ -39,7 +39,7 @@ public class ReenterEmailPage extends TemplatePage {
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "userService")
     private UserService userService;
-    private IModel<UserEntity> userModel;
+    private IModel<User> userModel;
     private IModel<String> usernameModel;
 
     public ReenterEmailPage(IModel<String> usernameModel) {
@@ -49,8 +49,8 @@ public class ReenterEmailPage extends TemplatePage {
         add(createReenterEmailForm());
     }
 
-    private Form<UserEntity> createReenterEmailForm() {
-        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+    private Form<User> createReenterEmailForm() {
+        Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
         form.add(createEmailField());
         form.add(createRequestButton());
         form.setOutputMarkupId(true);
@@ -67,7 +67,7 @@ public class ReenterEmailPage extends TemplatePage {
 
             @Override
             public void onSubmit() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 userService.resendConfirmationCode(user, createConfirmationUrlCallback());
                 setResponsePage(MessagePage.getMessagePageWithLogout(getString("rerequest.email")));
             }
@@ -76,7 +76,7 @@ public class ReenterEmailPage extends TemplatePage {
                 return new UrlCallback() {
                     @Override
                     public String getUrl(String generatedCode) {
-                        UserEntity user = userModel.getObject();
+                        User user = userModel.getObject();
                         String requestUrl = getRequestURL();
                         PageParameters param = new PageParameters();
                         param.add(RegisterPage.PARAM_USER, user.getUsername());
@@ -90,12 +90,12 @@ public class ReenterEmailPage extends TemplatePage {
         };
     }
 
-    private IModel<UserEntity> createUserModel() {
-        return new LoadableDetachableModel<UserEntity>() {
+    private IModel<User> createUserModel() {
+        return new LoadableDetachableModel<User>() {
             private static final long serialVersionUID = 1627241792273434554L;
 
             @Override
-            protected UserEntity load() {
+            protected User load() {
                 return userService.findUserByUsername(usernameModel.getObject());
             }
         };

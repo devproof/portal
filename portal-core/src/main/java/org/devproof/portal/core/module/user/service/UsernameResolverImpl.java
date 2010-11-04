@@ -19,7 +19,7 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,7 +33,7 @@ public class UsernameResolverImpl implements UsernameResolver {
     public String getUsername() {
         if (RequestCycle.get() != null) {
             PortalSession session = ((PortalSession) Session.get());
-            UserEntity user = session.getUser();
+            User user = session.getUser();
             return user.getUsername();
         }
         return UserConstants.UNKNOWN_USERNAME;

@@ -19,7 +19,7 @@ package org.devproof.portal.module.comment.service;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.repository.CommentRepository;
@@ -238,7 +238,7 @@ public class CommentServiceImplTest {
         impl.setEmailService(emailServiceMock);
         Comment e = createCommentEntity();
         UrlCallback urlCallback = createUrlCallback();
-        List<UserEntity> users = createUsers();
+        List<User> users = createUsers();
         expect(userServiceMock.findUserWithRight("testright")).andReturn(users);
         replay(userServiceMock);
         impl.sendEmailNotificationToAdmins(e, 2, "testright", urlCallback, "123.123.123.123");
@@ -246,8 +246,8 @@ public class CommentServiceImplTest {
         verify(userServiceMock);
     }
 
-    private List<UserEntity> createUsers() {
-        UserEntity user = new UserEntity();
+    private List<User> createUsers() {
+        User user = new User();
         user.setFirstname("Peter");
         user.setLastname("Pan");
         user.setEmail("test@email.tld");

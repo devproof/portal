@@ -37,7 +37,7 @@ import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.panel.UserEditPanel;
 import org.devproof.portal.core.module.user.panel.UserInfoPanel;
 import org.devproof.portal.core.module.user.panel.UserSearchBoxPanel;
@@ -55,7 +55,7 @@ public class UserPage extends TemplatePage {
     private static final long serialVersionUID = 1L;
 
     @SpringBean(name = "userDataProvider")
-    private QueryDataProvider<UserEntity, UserQuery> userDataProvider;
+    private QueryDataProvider<User, UserQuery> userDataProvider;
     @SpringBean(name = "userService")
     private UserService userService;
     @SpringBean(name = "displayDateFormat")
@@ -74,8 +74,8 @@ public class UserPage extends TemplatePage {
         addPageAdminBoxLink(createCreateUserLink());
     }
 
-    private AjaxLink<UserEntity> createCreateUserLink() {
-        AjaxLink<UserEntity> createLink = newCreateUserLink();
+    private AjaxLink<User> createCreateUserLink() {
+        AjaxLink<User> createLink = newCreateUserLink();
         createLink.add(createCreateUserLinkLabel());
         return createLink;
     }
@@ -84,8 +84,8 @@ public class UserPage extends TemplatePage {
         return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
     }
 
-    private AjaxLink<UserEntity> newCreateUserLink() {
-        return new AjaxLink<UserEntity>(getPageAdminBoxLinkId()) {
+    private AjaxLink<User> newCreateUserLink() {
+        return new AjaxLink<User>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -95,7 +95,7 @@ public class UserPage extends TemplatePage {
             }
 
             private UserEditPanel createUserEditPanel() {
-                IModel<UserEntity> userModel = Model.of(userService.newUserEntity());
+                IModel<User> userModel = Model.of(userService.newUserEntity());
                 return new UserEditPanel(bubblePanel.getContentId(), userModel, true) {
                     private static final long serialVersionUID = 1L;
 
@@ -184,17 +184,17 @@ public class UserPage extends TemplatePage {
         };
     }
 
-    private class UserDataView extends DataView<UserEntity> {
+    private class UserDataView extends DataView<User> {
         private static final long serialVersionUID = 1L;
 
-        public UserDataView(String id, IDataProvider<UserEntity> dataProvider) {
+        public UserDataView(String id, IDataProvider<User> dataProvider) {
             super(id, dataProvider);
             setItemsPerPage(50);
         }
 
         @Override
-        protected void populateItem(Item<UserEntity> item) {
-            IModel<UserEntity> userModel = item.getModel();
+        protected void populateItem(Item<User> item) {
+            IModel<User> userModel = item.getModel();
             item.add(createToolTipLabel(userModel));
             item.add(createFirstnameLabel(userModel));
             item.add(createLastnameLabel(userModel));
@@ -205,26 +205,26 @@ public class UserPage extends TemplatePage {
             item.add(createAlternatingModifier(item));
         }
 
-        private Label createLastnameLabel(IModel<UserEntity> userModel) {
+        private Label createLastnameLabel(IModel<User> userModel) {
             IModel<String> lastnameModel = new PropertyModel<String>(userModel, "lastname");
             Label lastnameLabel = new Label("lastname", lastnameModel);
             lastnameLabel.add(createUnconfirmedAttributeModifier(userModel));
             return lastnameLabel;
         }
 
-        private AttributeModifier createUnconfirmedAttributeModifier(final IModel<UserEntity> userModel) {
+        private AttributeModifier createUnconfirmedAttributeModifier(final IModel<User> userModel) {
             return new AttributeModifier("style", true, new AbstractReadOnlyModel<Object>() {
                 private static final long serialVersionUID = -2152809502598433353L;
 
                 @Override
                 public Object getObject() {
-                    UserEntity user = userModel.getObject();
+                    User user = userModel.getObject();
                     return !user.getConfirmed() ? "text-decoration:line-through;" : "";
                 }
             });
         }
 
-        private Label createFirstnameLabel(IModel<UserEntity> userModel) {
+        private Label createFirstnameLabel(IModel<User> userModel) {
             IModel<String> firstnameModel = new PropertyModel<String>(userModel, "firstname");
             Label firstnameLabel = new Label("firstname", firstnameModel);
             firstnameLabel.add(createUnconfirmedAttributeModifier(userModel));
@@ -232,62 +232,62 @@ public class UserPage extends TemplatePage {
         }
 
 
-        private TooltipLabel createToolTipLabel(IModel<UserEntity> userModel) {
+        private TooltipLabel createToolTipLabel(IModel<User> userModel) {
             UserInfoPanel userInfo = createUserInfoPanel(userModel);
             Label usernameLabel = createUsernameLabel(userModel);
             return new TooltipLabel("username", usernameLabel, userInfo);
         }
 
-        private UserInfoPanel createUserInfoPanel(IModel<UserEntity> userModel) {
+        private UserInfoPanel createUserInfoPanel(IModel<User> userModel) {
             return new UserInfoPanel("tooltip", userModel);
         }
 
-        private Label createUsernameLabel(IModel<UserEntity> userModel) {
+        private Label createUsernameLabel(IModel<User> userModel) {
             IModel<String> usernameModel = new PropertyModel<String>(userModel, "username");
             Label usernameLabel = new Label("label", usernameModel);
             usernameLabel.add(createUnconfirmedAttributeModifier(userModel));
             return usernameLabel;
         }
 
-        private Label createRoleNameLabel(IModel<UserEntity> userModel) {
+        private Label createRoleNameLabel(IModel<User> userModel) {
             IModel<String> roleDescModel = new PropertyModel<String>(userModel, "role.description");
             return new Label("role", roleDescModel);
         }
 
-        private Label createUserRegistrationDateLabel(final IModel<UserEntity> userModel) {
+        private Label createUserRegistrationDateLabel(final IModel<User> userModel) {
             return new Label("registration", createRegistrationDateModel(userModel));
         }
 
-        private AbstractReadOnlyModel<String> createRegistrationDateModel(final IModel<UserEntity> userModel) {
+        private AbstractReadOnlyModel<String> createRegistrationDateModel(final IModel<User> userModel) {
             return new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = -6429266930696221446L;
 
                 @Override
                 public String getObject() {
-                    UserEntity user = userModel.getObject();
+                    User user = userModel.getObject();
                     return dateFormat.format(user.getRegistrationDate());
                 }
             };
         }
 
-        private Label createUserActiveLabel(IModel<UserEntity> userModel) {
+        private Label createUserActiveLabel(IModel<User> userModel) {
             return new Label("active", createActiveModel(userModel));
         }
 
-        private IModel<String> createActiveModel(final IModel<UserEntity> userModel) {
+        private IModel<String> createActiveModel(final IModel<User> userModel) {
             return new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 5831214219470331468L;
 
                 @Override
                 public String getObject() {
-                    UserEntity user = userModel.getObject();
+                    User user = userModel.getObject();
                     return user.getActive() != null ? getString("active." + user.getActive().toString()) : "";
                 }
             };
         }
 
-        private AuthorPanel<UserEntity> createAuthorPanel(final IModel<UserEntity> userModel) {
-            return new AuthorPanel<UserEntity>("authorButtons", userModel) {
+        private AuthorPanel<User> createAuthorPanel(final IModel<User> userModel) {
+            return new AuthorPanel<User>("authorButtons", userModel) {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -304,7 +304,7 @@ public class UserPage extends TemplatePage {
                     bubblePanel.showModal(target);
                 }
 
-                private UserEditPanel createUserEditPanel(final IModel<UserEntity> userModel) {
+                private UserEditPanel createUserEditPanel(final IModel<User> userModel) {
                     return new UserEditPanel(bubblePanel.getContentId(), userModel, false) {
                         private static final long serialVersionUID = 1L;
 
@@ -325,7 +325,7 @@ public class UserPage extends TemplatePage {
             };
         }
 
-        private AttributeModifier createAlternatingModifier(final Item<UserEntity> item) {
+        private AttributeModifier createAlternatingModifier(final Item<User> item) {
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 

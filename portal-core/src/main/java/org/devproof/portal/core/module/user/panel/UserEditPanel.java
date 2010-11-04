@@ -47,7 +47,7 @@ import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 
 /**
@@ -60,13 +60,13 @@ public abstract class UserEditPanel extends Panel {
     private RoleService roleService;
     @SpringBean(name = "userService")
     private UserService userService;
-    private IModel<UserEntity> userModel;
+    private IModel<User> userModel;
     private boolean creation;
     private FeedbackPanel feedback;
     private PasswordTextField password1;
     private PasswordTextField password2;
 
-    public UserEditPanel(String id, IModel<UserEntity> userModel, boolean creation) {
+    public UserEditPanel(String id, IModel<User> userModel, boolean creation) {
         super(id, userModel);
         this.userModel = userModel;
         this.creation = creation;
@@ -74,8 +74,8 @@ public abstract class UserEditPanel extends Panel {
         add(createUserEditForm());
     }
 
-    private Form<UserEntity> createUserEditForm() {
-        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+    private Form<User> createUserEditForm() {
+        Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
         form.add(createUsernameField());
         form.add(createFirstnameField());
         form.add(createLastnameField());
@@ -107,7 +107,7 @@ public abstract class UserEditPanel extends Panel {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                UserEntity user = (UserEntity) form.getModelObject();
+                User user = (User) form.getModelObject();
                 if (password1.getValue() != null && !"".equals(password1.getValue().trim())) {
                     user.setPlainPassword(password1.getValue());
                 }

@@ -19,7 +19,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.page.UserPage;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
@@ -70,7 +70,7 @@ public class UserEditPanelTest {
 
     public static class TestUserEditPanel extends UserEditPanel {
         public TestUserEditPanel(String id) {
-            super(id, Model.of(new UserEntity()), true);
+            super(id, Model.of(new User()), true);
         }
 
         private static final long serialVersionUID = 1L;

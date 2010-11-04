@@ -13,40 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.user.dao;
+package org.devproof.portal.core.module.user.repository;
 
-import java.util.List;
-
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
+
+import java.util.List;
 
 /**
  * Queries for user stuff
  *
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("userDao")
+@GenericRepository("userRepository")
 @CacheQuery(region = UserConstants.QUERY_CACHE_REGION)
-public interface UserRepository extends CrudRepository<UserEntity, Integer> {
-	@Query("select u from UserEntity u join fetch u.role r join fetch r.rights where u.username like ?")
-	UserEntity findUserByUsername(String username);
+public interface UserRepository extends CrudRepository<User, Integer> {
+	@Query("select u from User u join fetch u.role r join fetch r.rights where u.username like ?")
+    User findUserByUsername(String username);
 
-	@Query("select u from UserEntity u where u.sessionId = ?")
-	UserEntity findUserBySessionId(String sessionId);
+	@Query("select u from User u where u.sessionId = ?")
+    User findUserBySessionId(String sessionId);
 
-	@Query("select u from UserEntity u where u.email like ?")
-	List<UserEntity> findUserByEmail(String email);
+	@Query("select u from User u where u.email like ?")
+	List<User> findUserByEmail(String email);
 
-	@Query("select count(u) from UserEntity u where u.username like ?")
+	@Query("select count(u) from User u where u.username like ?")
 	long existsUsername(String username);
 
-	@Query("select count(u) from UserEntity u where u.role = ?")
+	@Query("select count(u) from User u where u.role = ?")
 	Long countUserForRole(Role role);
 
-	@Query(value = "from UserEntity u where exists (from UserEntity eu join eu.role.rights as r where r.right = ? and eu = u)")
-	List<UserEntity> findUserWithRight(String right);
+	@Query(value = "from User u where exists (from User eu join eu.role.rights as r where r.right = ? and eu = u)")
+	List<User> findUserWithRight(String right);
 }

@@ -30,7 +30,7 @@ import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
@@ -56,7 +56,7 @@ public class PortalSession extends WebSession {
     @SpringBean(name = "rightService")
     protected RightService rightService;
     protected long dirtyTime = 0l;
-    protected UserEntity user;
+    protected User user;
 
     public PortalSession(Request request) {
         super(request);
@@ -112,7 +112,7 @@ public class PortalSession extends WebSession {
      *
      * @return logged in user
      */
-    public UserEntity getUser() {
+    public User getUser() {
         if (user == null) {
             String sessionId = getSessionIdFromCookie();
             if (sessionId != null) {
@@ -207,7 +207,7 @@ public class PortalSession extends WebSession {
      * @return true if he has
      */
     public boolean hasRight(Right right) {
-        UserEntity user = getUser();
+        User user = getUser();
         return user.getRole().getRights().contains(right);
     }
 
@@ -218,7 +218,7 @@ public class PortalSession extends WebSession {
      * @return true if he has one right
      */
     public boolean hasRight(Collection<Right> rights) {
-        UserEntity user = getUser();
+        User user = getUser();
         Collection<Right> userRights = user.getRole().getRights();
         for (Right right : rights) {
             if (userRights.contains(right)) {

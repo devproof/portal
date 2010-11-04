@@ -25,7 +25,7 @@ import org.devproof.portal.core.module.common.page.UnsupportedOperationPage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
@@ -89,8 +89,8 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
     private void sendEmailToUsers(Integer templateId, String content) {
         EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
         placeholder.setContent(content);
-        List<UserEntity> users = userService.findUserWithRight("emailnotification.unknown.application.error");
-        for (UserEntity user : users) {
+        List<User> users = userService.findUserWithRight("emailnotification.unknown.application.error");
+        for (User user : users) {
             placeholder.setUsername(user.getUsername());
             placeholder.setFirstname(user.getFirstname());
             placeholder.setLastname(user.getLastname());

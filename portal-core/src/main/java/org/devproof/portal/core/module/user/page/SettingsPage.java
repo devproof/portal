@@ -37,7 +37,7 @@ import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.UserConstants;
-import org.devproof.portal.core.module.user.entity.UserEntity;
+import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UrlCallback;
 import org.devproof.portal.core.module.user.service.UserService;
 
@@ -53,7 +53,7 @@ public class SettingsPage extends TemplatePage {
     private UserService userService;
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
-    private IModel<UserEntity> userModel;
+    private IModel<User> userModel;
     private IModel<String> currentEmailModel;
     private PasswordTextField currentPassword;
     private PasswordTextField newPassword1;
@@ -66,8 +66,8 @@ public class SettingsPage extends TemplatePage {
         add(createSettingsForm());
     }
 
-    private Form<UserEntity> createSettingsForm() {
-        Form<UserEntity> form = new Form<UserEntity>("form", new CompoundPropertyModel<UserEntity>(userModel));
+    private Form<User> createSettingsForm() {
+        Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
         form.add(createUsernameField());
         form.add(createFirstnameField());
         form.add(createLastnameField());
@@ -90,7 +90,7 @@ public class SettingsPage extends TemplatePage {
 
             @Override
             public void onSubmit() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 if (StringUtils.isNotEmpty(newPassword1.getValue())) {
                     user.setPlainPassword(newPassword1.getValue());
                 }
@@ -104,7 +104,7 @@ public class SettingsPage extends TemplatePage {
             }
 
             private boolean isReconfirmationRequired() {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 String currentEmail = currentEmailModel.getObject();
                 return !currentEmail.equals(user.getEmail()) && configurationService.findAsBoolean(UserConstants.CONF_EMAIL_VALIDATION);
             }
@@ -113,7 +113,7 @@ public class SettingsPage extends TemplatePage {
                 return new UrlCallback() {
                     @Override
                     public String getUrl(String generatedCode) {
-                        UserEntity user = userModel.getObject();
+                        User user = userModel.getObject();
                         String requestUrl = getRequestURL();
                         PageParameters param = new PageParameters();
                         param.add(RegisterPage.PARAM_USER, user.getUsername());
@@ -156,7 +156,7 @@ public class SettingsPage extends TemplatePage {
 
             @Override
             protected void onValidate(IValidatable<String> ivalidatable) {
-                UserEntity user = userModel.getObject();
+                User user = userModel.getObject();
                 if (StringUtils.isNotEmpty(ivalidatable.getValue()) && !user.equalPassword(ivalidatable.getValue())) {
                     error(ivalidatable, "wrong.currentPassword");
                 }
@@ -226,12 +226,12 @@ public class SettingsPage extends TemplatePage {
         return Model.of(userModel.getObject().getEmail());
     }
 
-    private IModel<UserEntity> createUserModel() {
-        return new LoadableDetachableModel<UserEntity>() {
+    private IModel<User> createUserModel() {
+        return new LoadableDetachableModel<User>() {
             private static final long serialVersionUID = -3255916962719155935L;
 
             @Override
-            protected UserEntity load() {
+            protected User load() {
                 PortalSession session = (PortalSession) getSession();
                 return userService.findById(session.getUser().getId());
             }
