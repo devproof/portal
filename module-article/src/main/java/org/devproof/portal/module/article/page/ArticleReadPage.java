@@ -38,9 +38,8 @@ import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
-import org.devproof.portal.module.article.entity.Article;
-import org.devproof.portal.module.article.entity.ArticlePageEntity;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.devproof.portal.module.article.entity.*;
+import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.article.service.ArticleTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
@@ -62,7 +61,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	private ArticleTagService articleTagService;
 
 	private PageParameters params;
-	private IModel<ArticlePageEntity> displayedPageModel;
+	private IModel<ArticlePage> displayedPageModel;
 	private int currentPageNumber;
 	private int numberOfPages;
 	private String contentId;
@@ -104,7 +103,7 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	@Override
 	public String getPageTitle() {
-		ArticlePageEntity displayedPage = displayedPageModel.getObject();
+		ArticlePage displayedPage = displayedPageModel.getObject();
 		return displayedPage.getArticle().getTitle();
 	}
 
@@ -116,11 +115,11 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	private Component createCommentPanel() {
 		DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-		ArticlePageEntity articlePage = displayedPageModel.getObject();
+		org.devproof.portal.module.article.entity.ArticlePage articlePage = displayedPageModel.getObject();
 		if(articlePage != null) {
 			Article article = articlePage.getArticle();
 			conf.setModuleContentId(article.getId().toString());
-			conf.setModuleName(ArticlePage.class.getSimpleName());
+			conf.setModuleName(org.devproof.portal.module.article.page.ArticlePage.class.getSimpleName());
 			conf.setViewRights(article.getCommentViewRights());
 			conf.setWriteRights(article.getCommentWriteRights());
 			return new ExpandableCommentPanel("comments", conf);
@@ -128,23 +127,23 @@ public class ArticleReadPage extends ArticleBasePage {
 		return new WebMarkupContainer("comments");
 	}
 
-	private IModel<ArticlePageEntity> createDisplayedPageModel() {
-		return new LoadableDetachableModel<ArticlePageEntity>() {
+	private IModel<ArticlePage> createDisplayedPageModel() {
+		return new LoadableDetachableModel<ArticlePage>() {
 			private static final long serialVersionUID = 5844734752344587663L;
 
 			@Override
-			protected ArticlePageEntity load() {
+			protected ArticlePage load() {
 				return articleService.findArticlePageByContentIdAndPage(contentId, currentPageNumber);
 			}
 		};
 	}
 
 	private void addTagCloudBox() {
-		addTagCloudBox(articleTagService, ArticlePage.class);
+		addTagCloudBox(articleTagService, org.devproof.portal.module.article.page.ArticlePage.class);
 	}
 
 	private void validateAccessRights() {
-		ArticlePageEntity displayedPage = displayedPageModel.getObject();
+		ArticlePage displayedPage = displayedPageModel.getObject();
 		PortalSession session = (PortalSession) getSession();
 		if (displayedPage == null) {
 			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
@@ -185,7 +184,7 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	private Component createAuthorPanel() {
 		AuthorPanel<Article> authorPanel = newAuthorPanel();
-		authorPanel.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
+		authorPanel.setRedirectPage(org.devproof.portal.module.article.page.ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
 		return authorPanel;
 	}
 
@@ -234,7 +233,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	private TagContentPanel<ArticleTagEntity> createTagPanel() {
 		IModel<List<ArticleTagEntity>> tagModel = new PropertyModel<List<ArticleTagEntity>>(displayedPageModel,
 				"article.tags");
-		return new TagContentPanel<ArticleTagEntity>("tags", tagModel, ArticlePage.class);
+		return new TagContentPanel<ArticleTagEntity>("tags", tagModel, org.devproof.portal.module.article.page.ArticlePage.class);
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {

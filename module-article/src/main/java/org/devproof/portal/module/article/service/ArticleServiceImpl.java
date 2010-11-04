@@ -19,7 +19,7 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
-import org.devproof.portal.module.article.entity.ArticlePageEntity;
+import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +53,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticlePageEntity newArticlePageEntity(Article article, Integer page) {
+    public ArticlePage newArticlePageEntity(Article article, Integer page) {
         return article.newArticlePageEntity(page);
     }
 
@@ -80,7 +80,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page) {
+    public ArticlePage findArticlePageByContentIdAndPage(String contentId, Integer page) {
         return articlePageRepository.findById(new ArticlePageId(contentId, page));
     }
 

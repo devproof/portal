@@ -69,7 +69,7 @@ public class Article extends BaseEntity implements EntityId {
     @Column(name = "teaser")
     private String teaser;
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ArticlePageEntity> articlePages;
+    private List<ArticlePage> articlePages;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "article_right_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
     @Fetch(FetchMode.SUBSELECT)
@@ -131,14 +131,14 @@ public class Article extends BaseEntity implements EntityId {
         this.teaser = teaser;
     }
 
-    public List<ArticlePageEntity> getArticlePages() {
+    public List<ArticlePage> getArticlePages() {
         if (articlePages == null) {
-            articlePages = new ArrayList<ArticlePageEntity>();
+            articlePages = new ArrayList<ArticlePage>();
         }
         return articlePages;
     }
 
-    public void setArticlePages(List<ArticlePageEntity> articlePages) {
+    public void setArticlePages(List<ArticlePage> articlePages) {
         this.articlePages = articlePages;
     }
 
@@ -167,7 +167,7 @@ public class Article extends BaseEntity implements EntityId {
         if (articlePages != null) {
             StringBuilder buf = new StringBuilder();
             boolean firstArticlePage = true;
-            for (ArticlePageEntity page : articlePages) {
+            for (ArticlePage page : articlePages) {
                 if (firstArticlePage) {
                     firstArticlePage = false;
                 } else {
@@ -185,10 +185,10 @@ public class Article extends BaseEntity implements EntityId {
         if (fullArticle == null) {
             fullArticle = " ";
         }
-        List<ArticlePageEntity> pages = getArticlePages();
+        List<ArticlePage> pages = getArticlePages();
         List<String> splittedPages = getSplittedPages(fullArticle);
         for (int i = 0; i < splittedPages.size(); i++) {
-            final ArticlePageEntity page;
+            final ArticlePage page;
             boolean isUpdatablePageAvailable = articlePages != null && articlePages.size() > i;
             if (isUpdatablePageAvailable) {
                 page = articlePages.get(i);
@@ -206,8 +206,8 @@ public class Article extends BaseEntity implements EntityId {
     }
 
     @Transient
-    public ArticlePageEntity newArticlePageEntity(Integer page) {
-        ArticlePageEntity e = new ArticlePageEntity();
+    public ArticlePage newArticlePageEntity(Integer page) {
+        ArticlePage e = new ArticlePage();
         e.setArticle(this);
         e.setContentId(getContentId());
         e.setPage(page);

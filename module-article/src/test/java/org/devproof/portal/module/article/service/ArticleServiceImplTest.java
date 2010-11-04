@@ -17,9 +17,9 @@ package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.entity.Article;
+import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
-import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -97,7 +97,7 @@ public class ArticleServiceImplTest {
     public void testNewArticlePageEntity() {
         Article a = createArticleEntity();
         a.setId(1);
-        ArticlePageEntity ap = impl.newArticlePageEntity(a, 1);
+        ArticlePage ap = impl.newArticlePageEntity(a, 1);
         assertNotNull(ap);
         assertEquals(a, ap.getArticle());
     }

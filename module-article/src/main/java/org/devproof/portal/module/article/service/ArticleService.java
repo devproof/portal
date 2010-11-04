@@ -18,7 +18,7 @@ package org.devproof.portal.module.article.service;
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.entity.Article;
-import org.devproof.portal.module.article.entity.ArticlePageEntity;
+import org.devproof.portal.module.article.entity.ArticlePage;
 
 import java.util.List;
 
@@ -34,13 +34,13 @@ public interface ArticleService extends CrudService<Article, Integer> {
     Article newArticleEntity();
 
     /**
-     * Returns a new instance of ArticlePageEntity
+     * Returns a new instance of ArticlePage
      *
      * @param article Article
      * @param page    page number
      * @return new instance of {@link org.devproof.portal.module.article.entity.Article}
      */
-    ArticlePageEntity newArticlePageEntity(Article article, Integer page);
+    ArticlePage newArticlePageEntity(Article article, Integer page);
 
     /**
      * Returns a list with all articles allowed for the role
@@ -73,9 +73,9 @@ public interface ArticleService extends CrudService<Article, Integer> {
      *
      * @param contentId content id
      * @param page      page number
-     * @return {@link ArticlePageEntity}
+     * @return {@link org.devproof.portal.module.article.entity.ArticlePage}
      */
-    ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page);
+    ArticlePage findArticlePageByContentIdAndPage(String contentId, Integer page);
 
     /**
      * Returns the Article by content id

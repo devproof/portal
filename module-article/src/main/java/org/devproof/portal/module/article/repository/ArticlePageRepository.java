@@ -20,7 +20,7 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticlePageEntity;
+import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 
 /**
@@ -28,7 +28,7 @@ import org.devproof.portal.module.article.entity.ArticlePageId;
  */
 @GenericRepository("articlePageDao")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
-public interface ArticlePageRepository extends GenericDao<ArticlePageEntity, ArticlePageId> {
-    @Query("select count(ap.contentId) from ArticlePageEntity ap where ap.contentId like ?")
+public interface ArticlePageRepository extends GenericDao<ArticlePage, ArticlePageId> {
+    @Query("select count(ap.contentId) from ArticlePage ap where ap.contentId like ?")
     long getPageCount(String contentId);
 }
