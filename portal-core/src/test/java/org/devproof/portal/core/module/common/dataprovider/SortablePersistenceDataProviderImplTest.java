@@ -19,7 +19,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.repository.DataProviderRepository;
 import org.devproof.portal.core.module.common.query.SearchQuery;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,8 +35,8 @@ import static org.junit.Assert.assertNotNull;
  * @author Carsten Hufe
  */
 public class SortablePersistenceDataProviderImplTest {
-    private SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery> impl;
-    private DataProviderRepository<EmailTemplateEntity> dataProviderRepositoryMock;
+    private SortablePersistenceDataProviderImpl<EmailTemplate, SearchQuery> impl;
+    private DataProviderRepository<EmailTemplate> dataProviderRepositoryMock;
     private SearchQuery queryMock;
 
     @Before
@@ -44,7 +44,7 @@ public class SortablePersistenceDataProviderImplTest {
     public void setUp() throws Exception {
         dataProviderRepositoryMock = createMock(DataProviderRepository.class);
         queryMock = createMock(SearchQuery.class);
-        impl = new SortablePersistenceDataProviderImpl<EmailTemplateEntity, SearchQuery>() {
+        impl = new SortablePersistenceDataProviderImpl<EmailTemplate, SearchQuery>() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -52,7 +52,7 @@ public class SortablePersistenceDataProviderImplTest {
                 return Model.of(queryMock);
             }
         };
-        impl.setEntityClass(EmailTemplateEntity.class);
+        impl.setEntityClass(EmailTemplate.class);
         impl.setSort("subject", true);
         impl.setDataProviderRepository(dataProviderRepositoryMock);
     }
@@ -61,38 +61,38 @@ public class SortablePersistenceDataProviderImplTest {
     public void testIterator_WithPrefetch() {
         List<String> prefetch = Arrays.asList("prefetch");
         impl.setPrefetch(prefetch);
-        EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
+        EmailTemplate expectedTemplate = new EmailTemplate();
         expectedTemplate.setId(5);
-        List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-        expect(dataProviderRepositoryMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, prefetch)).andReturn(templates);
+        List<EmailTemplate> templates = Arrays.asList(expectedTemplate);
+        expect(dataProviderRepositoryMock.findAllWithQuery(EmailTemplate.class, "subject", true, 20, 10, queryMock, prefetch)).andReturn(templates);
         replay(dataProviderRepositoryMock, queryMock);
-        Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
+        Iterator<? extends EmailTemplate> iterator = impl.iterator(20, 10);
         assertEquals(expectedTemplate.getId(), iterator.next().getId());
         verify(dataProviderRepositoryMock, queryMock);
     }
 
     @Test
     public void testIterator_WithoutPrefetch() {
-        EmailTemplateEntity expectedTemplate = new EmailTemplateEntity();
+        EmailTemplate expectedTemplate = new EmailTemplate();
         expectedTemplate.setId(5);
-        List<EmailTemplateEntity> templates = Arrays.asList(expectedTemplate);
-        expect(dataProviderRepositoryMock.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10, queryMock, null)).andReturn(templates);
+        List<EmailTemplate> templates = Arrays.asList(expectedTemplate);
+        expect(dataProviderRepositoryMock.findAllWithQuery(EmailTemplate.class, "subject", true, 20, 10, queryMock, null)).andReturn(templates);
         replay(dataProviderRepositoryMock, queryMock);
-        Iterator<? extends EmailTemplateEntity> iterator = impl.iterator(20, 10);
+        Iterator<? extends EmailTemplate> iterator = impl.iterator(20, 10);
         assertEquals(expectedTemplate.getId(), iterator.next().getId());
         verify(dataProviderRepositoryMock, queryMock);
     }
 
     @Test
     public void testModel() {
-        IModel<EmailTemplateEntity> model = impl.model(new EmailTemplateEntity());
+        IModel<EmailTemplate> model = impl.model(new EmailTemplate());
         assertNotNull(model);
         assertNotNull(model.getObject());
     }
 
     @Test
     public void testSize_WithCountQuery() {
-        expect(dataProviderRepositoryMock.getSize(EmailTemplateEntity.class, "count(something)", queryMock)).andReturn(4);
+        expect(dataProviderRepositoryMock.getSize(EmailTemplate.class, "count(something)", queryMock)).andReturn(4);
         replay(dataProviderRepositoryMock, queryMock);
         impl.setCountQuery("count(something)");
         assertEquals(4, impl.size());
@@ -101,7 +101,7 @@ public class SortablePersistenceDataProviderImplTest {
 
     @Test
     public void testSize_WithoutCountQuery() {
-        expect(dataProviderRepositoryMock.getSize(EmailTemplateEntity.class, queryMock)).andReturn(4);
+        expect(dataProviderRepositoryMock.getSize(EmailTemplate.class, queryMock)).andReturn(4);
         replay(dataProviderRepositoryMock, queryMock);
         assertEquals(4, impl.size());
         verify(dataProviderRepositoryMock, queryMock);

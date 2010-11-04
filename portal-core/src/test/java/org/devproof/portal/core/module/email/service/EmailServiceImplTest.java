@@ -18,8 +18,8 @@ package org.devproof.portal.core.module.email.service;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.dao.EmailTemplateRepository;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
+import org.devproof.portal.core.module.email.repository.EmailTemplateRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -49,7 +49,7 @@ public class EmailServiceImplTest {
         emailmock = createStrictMock(JavaMailSender.class);
         confservice = createNiceMock(ConfigurationService.class);
         impl = new EmailServiceImpl();
-        impl.setEmailTemplateDao(daomock);
+        impl.setEmailTemplateRepository(daomock);
         impl.setConfigurationService(confservice);
         impl.setJavaMailSender(emailmock);
         impl.setDateFormat(new SimpleDateFormat("dd-mm-yyyy"));
@@ -57,7 +57,7 @@ public class EmailServiceImplTest {
 
     @Test
     public void testSave() {
-        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        EmailTemplate e = impl.newEmailTemplateEntity();
         e.setId(1);
         expect(daomock.save(e)).andReturn(e);
         replay(daomock);
@@ -67,7 +67,7 @@ public class EmailServiceImplTest {
 
     @Test
     public void testDelete() {
-        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        EmailTemplate e = impl.newEmailTemplateEntity();
         e.setId(1);
         daomock.delete(e);
         replay(daomock);
@@ -77,7 +77,7 @@ public class EmailServiceImplTest {
 
     @Test
     public void testFindAll() {
-        List<EmailTemplateEntity> list = new ArrayList<EmailTemplateEntity>();
+        List<EmailTemplate> list = new ArrayList<EmailTemplate>();
         list.add(impl.newEmailTemplateEntity());
         list.add(impl.newEmailTemplateEntity());
         expect(daomock.findAll()).andReturn(list);
@@ -88,7 +88,7 @@ public class EmailServiceImplTest {
 
     @Test
     public void testFindById() {
-        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        EmailTemplate e = impl.newEmailTemplateEntity();
         e.setId(1);
         expect(daomock.findById(1)).andReturn(e);
         replay(daomock);
@@ -103,7 +103,7 @@ public class EmailServiceImplTest {
 
     @Test
     public void testSendEmail1() {
-        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        EmailTemplate e = impl.newEmailTemplateEntity();
         e.setSubject("hello");
         e.setContent("world");
         EmailPlaceholderBean b = new EmailPlaceholderBean();
@@ -123,7 +123,7 @@ public class EmailServiceImplTest {
 
     @Test
     public void testSendEmail2() {
-        EmailTemplateEntity e = impl.newEmailTemplateEntity();
+        EmailTemplate e = impl.newEmailTemplateEntity();
         e.setSubject("hello");
         e.setContent("world");
         EmailPlaceholderBean b = new EmailPlaceholderBean();

@@ -46,7 +46,7 @@ INSERT INTO core_email_tpl (created_at,created_by,modified_at,modified_by,conten
 <p>Goto: #COMMENT_URL#</p>
 <p>Kind regards</p>
 <p>Your #PAGENAME# Team</p>','Admin: New comment');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateDao.findAll.subject.id.newcommentnotification','Notification email for new comments','Comments','java.lang.Integer',LAST_INSERT_ID());
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateRepository.findAll.subject.id.newcommentnotification','Notification email for new comments','Comments','java.lang.Integer',LAST_INSERT_ID());
 
 INSERT INTO core_email_tpl (created_at,created_by,modified_at,modified_by,content,subject) VALUES (null,null,{ts '2008-07-31 22:35:07.000'},'admin','<p>Hi,</p>
 <p>someone reported a violation on #PAGENAME#!</p>
@@ -56,7 +56,7 @@ INSERT INTO core_email_tpl (created_at,created_by,modified_at,modified_by,conten
 <p>Goto: #COMMENT_URL#</p>
 <p>Kind regards</p>
 <p>Your #PAGENAME# Team</p>','Admin: Comment - Reported violation');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateDao.findAll.subject.id.violationnotification','Notification email for reported violations on comments','Comments','java.lang.Integer',LAST_INSERT_ID());
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateRepository.findAll.subject.id.violationnotification','Notification email for reported violations on comments','Comments','java.lang.Integer',LAST_INSERT_ID());
 
 
 INSERT INTO core_email_tpl (created_at,created_by,modified_at,modified_by,content,subject) VALUES (null,null,{ts '2008-07-31 22:35:07.000'},'admin','<p>Hi,</p>
@@ -66,4 +66,4 @@ INSERT INTO core_email_tpl (created_at,created_by,modified_at,modified_by,conten
 <p>Goto: #COMMENT_URL#</p>
 <p>Kind regards</p>
 <p>Your #PAGENAME# Team</p>','Admin: Comment - Automatic blocked comment');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateDao.findAll.subject.id.autoblockednotification','Notification email for automatic blocked comments','Comments','java.lang.Integer',LAST_INSERT_ID());
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateRepository.findAll.subject.id.autoblockednotification','Notification email for automatic blocked comments','Comments','java.lang.Integer',LAST_INSERT_ID());

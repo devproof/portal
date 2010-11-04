@@ -23,7 +23,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.email.service.EmailService;
 
 /**
@@ -34,24 +34,24 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "emailService")
     private EmailService emailService;
-    private IModel<EmailTemplateEntity> emailTemplateModel;
+    private IModel<EmailTemplate> emailTemplateModel;
 
-    public EmailTemplateEditPage(IModel<EmailTemplateEntity> emailTemplateModel) {
+    public EmailTemplateEditPage(IModel<EmailTemplate> emailTemplateModel) {
         super(new PageParameters());
         this.emailTemplateModel = emailTemplateModel;
         add(createEditEmailTemplateForm());
     }
 
-    private Form<EmailTemplateEntity> createEditEmailTemplateForm() {
-        Form<EmailTemplateEntity> form = newEditEmailTemplateForm();
+    private Form<EmailTemplate> createEditEmailTemplateForm() {
+        Form<EmailTemplate> form = newEditEmailTemplateForm();
         form.add(createSubjectField());
         form.add(createContentField());
         form.setOutputMarkupId(true);
         return form;
     }
 
-    private Form<EmailTemplateEntity> newEditEmailTemplateForm() {
-        return new Form<EmailTemplateEntity>("form", new CompoundPropertyModel<EmailTemplateEntity>(emailTemplateModel)) {
+    private Form<EmailTemplate> newEditEmailTemplateForm() {
+        return new Form<EmailTemplate>("form", new CompoundPropertyModel<EmailTemplate>(emailTemplateModel)) {
             private static final long serialVersionUID = 1L;
 
             @Override

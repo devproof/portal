@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.email.dao;
+package org.devproof.portal.core.module.email.repository;
 
-import java.util.List;
-
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("emailTemplateDao")
+@GenericRepository("emailTemplateRepository")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface EmailTemplateRepository extends CrudRepository<EmailTemplateEntity, Integer> {
-    @Query("Select e from EmailTemplateEntity e")
-    List<EmailTemplateEntity> findAll();
+public interface EmailTemplateRepository extends CrudRepository<EmailTemplate, Integer> {
+    @Query("Select e from EmailTemplate e")
+    List<EmailTemplate> findAll();
 }

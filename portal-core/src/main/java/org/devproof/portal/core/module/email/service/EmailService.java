@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.email.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 
 import java.util.List;
 
@@ -26,21 +26,21 @@ import java.util.List;
  *
  * @author Carsten Hufe
  */
-public interface EmailService extends CrudService<EmailTemplateEntity, Integer> {
+public interface EmailService extends CrudService<EmailTemplate, Integer> {
     /**
      * Returns all email templates
      */
-    List<EmailTemplateEntity> findAll();
+    List<EmailTemplate> findAll();
 
     /**
-     * Returns a new {@link EmailTemplateEntity}
+     * Returns a new {@link org.devproof.portal.core.module.email.entity.EmailTemplate}
      */
-    EmailTemplateEntity newEmailTemplateEntity();
+    EmailTemplate newEmailTemplateEntity();
 
     /**
      * Send a email to a user
      */
-    void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder);
+    void sendEmail(EmailTemplate template, EmailPlaceholderBean placeholder);
 
     /**
      * Send a email to a user

@@ -15,13 +15,6 @@
  */
 package org.devproof.portal.core.module.email.service;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.commons.logging.Log;
@@ -29,8 +22,8 @@ import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.dao.EmailTemplateRepository;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
+import org.devproof.portal.core.module.email.repository.EmailTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,45 +32,51 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Carsten Hufe
  */
 @Service("emailService")
 public class EmailServiceImpl implements EmailService {
     private final Log logger = LogFactory.getLog(EmailServiceImpl.class);
-    private EmailTemplateRepository emailTemplateDao;
+    private EmailTemplateRepository emailTemplateRepository;
     private ConfigurationService configurationService;
     private JavaMailSender javaMailSender;
     private SimpleDateFormat dateFormat;
     private boolean emailDisabled;
 
     @Override
-    public EmailTemplateEntity newEmailTemplateEntity() {
-        return new EmailTemplateEntity();
+    public EmailTemplate newEmailTemplateEntity() {
+        return new EmailTemplate();
     }
 
     @Override
-    public void delete(EmailTemplateEntity entity) {
-        emailTemplateDao.delete(entity);
+    public void delete(EmailTemplate entity) {
+        emailTemplateRepository.delete(entity);
     }
 
     @Override
-    public List<EmailTemplateEntity> findAll() {
-        return emailTemplateDao.findAll();
+    public List<EmailTemplate> findAll() {
+        return emailTemplateRepository.findAll();
     }
 
     @Override
-    public EmailTemplateEntity findById(Integer id) {
-        return emailTemplateDao.findById(id);
+    public EmailTemplate findById(Integer id) {
+        return emailTemplateRepository.findById(id);
     }
 
     @Override
-    public void save(EmailTemplateEntity entity) {
-        emailTemplateDao.save(entity);
+    public void save(EmailTemplate entity) {
+        emailTemplateRepository.save(entity);
     }
 
     @Override
-    public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
+    public void sendEmail(EmailTemplate template, EmailPlaceholderBean placeholder) {
         if (emailDisabled) {
         	System.out.println("Sending Email <" + placeholder.getToEmail() + ">: " + template.getSubject());
             return;
@@ -128,7 +127,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
-        EmailTemplateEntity template = emailTemplateDao.findById(templateId);
+        EmailTemplate template = emailTemplateRepository.findById(templateId);
         this.sendEmail(template, placeholder);
     }
 
@@ -164,8 +163,8 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Autowired
-    public void setEmailTemplateDao(EmailTemplateRepository emailTemplateDao) {
-        this.emailTemplateDao = emailTemplateDao;
+    public void setEmailTemplateRepository(EmailTemplateRepository emailTemplateRepository) {
+        this.emailTemplateRepository = emailTemplateRepository;
     }
 
     @Autowired

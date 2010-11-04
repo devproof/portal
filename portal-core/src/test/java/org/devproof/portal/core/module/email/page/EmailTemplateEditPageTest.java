@@ -18,7 +18,7 @@ package org.devproof.portal.core.module.email.page;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -76,6 +76,6 @@ public class EmailTemplateEditPageTest {
     }
 
     private EmailTemplateEditPage createEmailTemplateEditPage() {
-        return new EmailTemplateEditPage(Model.of(new EmailTemplateEntity()));
+        return new EmailTemplateEditPage(Model.of(new EmailTemplate()));
     }
 }

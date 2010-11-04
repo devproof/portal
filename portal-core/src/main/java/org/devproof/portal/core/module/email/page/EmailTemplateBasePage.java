@@ -22,7 +22,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.email.service.EmailService;
 
 /**
@@ -38,8 +38,8 @@ public class EmailTemplateBasePage extends TemplatePage {
         addPageAdminBoxLink(createCreateEmailTemplateLink());
     }
 
-    private Link<EmailTemplateEntity> createCreateEmailTemplateLink() {
-        Link<EmailTemplateEntity> adminLink = newCreateEmailTemplateLink();
+    private Link<EmailTemplate> createCreateEmailTemplateLink() {
+        Link<EmailTemplate> adminLink = newCreateEmailTemplateLink();
         adminLink.add(createCreateEmailTemplateLinkLabel());
         return adminLink;
     }
@@ -48,14 +48,14 @@ public class EmailTemplateBasePage extends TemplatePage {
         return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
     }
 
-    private Link<EmailTemplateEntity> newCreateEmailTemplateLink() {
-        return new Link<EmailTemplateEntity>(getPageAdminBoxLinkId()) {
+    private Link<EmailTemplate> newCreateEmailTemplateLink() {
+        return new Link<EmailTemplate>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void onClick() {
-                EmailTemplateEntity newEmailTemplate = emailService.newEmailTemplateEntity();
-                IModel<EmailTemplateEntity> emailTemplateModel = Model.of(newEmailTemplate);
+                EmailTemplate newEmailTemplate = emailService.newEmailTemplateEntity();
+                IModel<EmailTemplate> emailTemplateModel = Model.of(newEmailTemplate);
                 setResponsePage(new EmailTemplateEditPage(emailTemplateModel));
             }
         };

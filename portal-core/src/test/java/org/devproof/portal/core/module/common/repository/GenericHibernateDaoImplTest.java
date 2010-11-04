@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -40,7 +40,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Carsten Hufe
  */
 public class GenericHibernateDaoImplTest {
-	private GenericHibernateRepositoryImpl<EmailTemplateEntity, Integer> impl;
+	private GenericHibernateRepositoryImpl<EmailTemplate, Integer> impl;
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Query query;
@@ -52,7 +52,7 @@ public class GenericHibernateDaoImplTest {
 		session = createMock(Session.class);
 		query = createMock(Query.class);
 		usernameResolver = createMock(UsernameResolver.class);
-		impl = new GenericHibernateRepositoryImpl<EmailTemplateEntity, Integer>(EmailTemplateEntity.class);
+		impl = new GenericHibernateRepositoryImpl<EmailTemplate, Integer>(EmailTemplate.class);
 		impl.setSessionFactory(sessionFactory);
 		impl.setUsernameResolver(usernameResolver);
 		expect(session.getSessionFactory()).andReturn(sessionFactory);
@@ -65,17 +65,17 @@ public class GenericHibernateDaoImplTest {
 
 	@Test
 	public void testFindById() {
-		EmailTemplateEntity expectedTemplates = newEmailTemplate();
-		expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
+		EmailTemplate expectedTemplates = newEmailTemplate();
+		expect(session.get(EmailTemplate.class, 1)).andReturn(expectedTemplates);
 		replay(sessionFactory, session);
-		EmailTemplateEntity newTemplate = impl.findById(1);
+		EmailTemplate newTemplate = impl.findById(1);
 		assertEquals(expectedTemplates, newTemplate);
 		verify(session, sessionFactory);
 	}
 
 	@Test
 	public void testSave() {
-		EmailTemplateEntity template = newEmailTemplate();
+		EmailTemplate template = newEmailTemplate();
 		expect(session.beginTransaction()).andReturn(null);
 		expect(session.merge(template)).andReturn(1);
 		expect(usernameResolver.getUsername()).andReturn("testuser");
@@ -90,7 +90,7 @@ public class GenericHibernateDaoImplTest {
 
 	@Test
 	public void testRefresh() {
-		EmailTemplateEntity template = newEmailTemplate();
+		EmailTemplate template = newEmailTemplate();
 		session.refresh(template);
 		replay(sessionFactory, session, query);
 		impl.refresh(template);
@@ -99,7 +99,7 @@ public class GenericHibernateDaoImplTest {
 
 	@Test
 	public void testDelete() {
-		EmailTemplateEntity template = newEmailTemplate();
+		EmailTemplate template = newEmailTemplate();
 		expect(session.beginTransaction()).andReturn(null);
 		session.delete(template);
 		replay(sessionFactory, session, query);
@@ -109,7 +109,7 @@ public class GenericHibernateDaoImplTest {
 
 	@Test
 	public void testExecuteFinder_UniqueResult() throws Exception {
-		EmailTemplateEntity expectedTemplate = newEmailTemplate();
+		EmailTemplate expectedTemplate = newEmailTemplate();
 		expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
 		expect(query.setParameter(0, "fakeValue")).andReturn(query);
 		expect(query.setFirstResult(0)).andReturn(query);
@@ -117,7 +117,7 @@ public class GenericHibernateDaoImplTest {
 		expect(query.uniqueResult()).andReturn(expectedTemplate);
 		replay(sessionFactory, session, query);
 		Method method = this.getClass().getMethod("methodObject");
-		Object template = impl.executeFinder("Select e from EmailTemplateEntity e where id = ?",
+		Object template = impl.executeFinder("Select e from EmailTemplate e where id = ?",
 				new Object[] { "fakeValue" }, method, 0, 10);
 		verify(session, sessionFactory, query);
 		assertEquals(expectedTemplate, template);
@@ -125,7 +125,7 @@ public class GenericHibernateDaoImplTest {
 
 	@Test
 	public void testExecuteFinder_ResultList() throws Exception {
-		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
+		List<EmailTemplate> expectedTemplates = Arrays.asList(newEmailTemplate());
 		expect(session.createQuery("Select e from EmailTemplateEntity e where id = ?")).andReturn(query);
 		expect(query.setParameter(0, "fakeValue")).andReturn(query);
 		expect(query.setFirstResult(0)).andReturn(query);
@@ -149,8 +149,8 @@ public class GenericHibernateDaoImplTest {
 		verify(session, sessionFactory, query);
 	}
 
-	private EmailTemplateEntity newEmailTemplate() {
-		EmailTemplateEntity expectedConfig = new EmailTemplateEntity();
+	private EmailTemplate newEmailTemplate() {
+		EmailTemplate expectedConfig = new EmailTemplate();
 		expectedConfig.setId(1);
 		return expectedConfig;
 	}
@@ -159,7 +159,7 @@ public class GenericHibernateDaoImplTest {
 		return null;
 	}
 
-	public EmailTemplateEntity methodObject() {
+	public EmailTemplate methodObject() {
 		return null;
 	}
 }

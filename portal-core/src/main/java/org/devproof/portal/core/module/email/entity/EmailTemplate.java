@@ -33,7 +33,7 @@ import javax.persistence.*;
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 @RegisterGenericDataProvider(value = "emailTemplateDataProvider", sortProperty = "subject")
-public class EmailTemplateEntity extends Modification implements EntityId {
+public class EmailTemplate extends Modification implements EntityId {
 
     private static final long serialVersionUID = 1L;
 
@@ -90,7 +90,7 @@ public class EmailTemplateEntity extends Modification implements EntityId {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        EmailTemplateEntity other = (EmailTemplateEntity) obj;
+        EmailTemplate other = (EmailTemplate) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

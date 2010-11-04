@@ -29,7 +29,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.email.service.EmailService;
 
 /**
@@ -42,7 +42,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
     @SpringBean(name = "emailService")
     private EmailService emailService;
     @SpringBean(name = "emailTemplateDataProvider")
-    private ISortableDataProvider<EmailTemplateEntity> emailTemplateDataProvider;
+    private ISortableDataProvider<EmailTemplate> emailTemplateDataProvider;
 
     public EmailTemplatePage(PageParameters params) {
         super(params);
@@ -63,7 +63,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
         return new EmailTemplateDataView("repeatingEmailTemplates");
     }
 
-    private class EmailTemplateDataView extends DataView<EmailTemplateEntity> {
+    private class EmailTemplateDataView extends DataView<EmailTemplate> {
         private static final long serialVersionUID = 1L;
 
         public EmailTemplateDataView(final String id) {
@@ -71,7 +71,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
         }
 
         @Override
-        protected void populateItem(Item<EmailTemplateEntity> item) {
+        protected void populateItem(Item<EmailTemplate> item) {
             item.add(createSubjectLabel(item));
             item.add(createModifiedByLabel(item));
             item.add(createAuthorPanel(item));
@@ -79,21 +79,21 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
             item.setOutputMarkupId(true);
         }
 
-        private Label createModifiedByLabel(Item<EmailTemplateEntity> item) {
+        private Label createModifiedByLabel(Item<EmailTemplate> item) {
             IModel<String> modifiedByModel = new PropertyModel<String>(item.getModel(), "modifiedBy");
             return new Label("modifiedBy", modifiedByModel);
         }
 
-        private Label createSubjectLabel(Item<EmailTemplateEntity> item) {
+        private Label createSubjectLabel(Item<EmailTemplate> item) {
             IModel<String> subjectModel = new PropertyModel<String>(item.getModel(), "subject");
             return new Label("subject", subjectModel);
         }
 
-        private AttributeModifier createAlternatingCssClassModifier(Item<EmailTemplateEntity> item) {
+        private AttributeModifier createAlternatingCssClassModifier(Item<EmailTemplate> item) {
             return new AttributeModifier("class", true, createAlternatingModel(item));
         }
 
-        private AbstractReadOnlyModel<String> createAlternatingModel(final Item<EmailTemplateEntity> item) {
+        private AbstractReadOnlyModel<String> createAlternatingModel(final Item<EmailTemplate> item) {
             return new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
@@ -104,8 +104,8 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
             };
         }
 
-        private AuthorPanel<EmailTemplateEntity> createAuthorPanel(final Item<EmailTemplateEntity> item) {
-            return new AuthorPanel<EmailTemplateEntity>("authorButtons", item.getModel()) {
+        private AuthorPanel<EmailTemplate> createAuthorPanel(final Item<EmailTemplate> item) {
+            return new AuthorPanel<EmailTemplate>("authorButtons", item.getModel()) {
                 private static final long serialVersionUID = 1L;
 
                 @Override

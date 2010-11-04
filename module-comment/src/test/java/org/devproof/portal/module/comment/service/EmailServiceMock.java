@@ -16,7 +16,7 @@
 package org.devproof.portal.module.comment.service;
 
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.email.service.EmailService;
 
 import java.io.Serializable;
@@ -34,12 +34,12 @@ public class EmailServiceMock implements EmailService, Serializable {
     }
 
     @Override
-    public EmailTemplateEntity newEmailTemplateEntity() {
+    public EmailTemplate newEmailTemplateEntity() {
         return null;
     }
 
     @Override
-    public void sendEmail(EmailTemplateEntity template, EmailPlaceholderBean placeholder) {
+    public void sendEmail(EmailTemplate template, EmailPlaceholderBean placeholder) {
         emailPlaceholderBean = placeholder;
     }
 
@@ -49,22 +49,22 @@ public class EmailServiceMock implements EmailService, Serializable {
     }
 
     @Override
-    public void delete(EmailTemplateEntity entity) {
+    public void delete(EmailTemplate entity) {
 
     }
 
     @Override
-    public List<EmailTemplateEntity> findAll() {
+    public List<EmailTemplate> findAll() {
         return null;
     }
 
     @Override
-    public EmailTemplateEntity findById(Integer id) {
+    public EmailTemplate findById(Integer id) {
         return null;
     }
 
     @Override
-    public void save(EmailTemplateEntity entity) {
+    public void save(EmailTemplate entity) {
 
     }
 }

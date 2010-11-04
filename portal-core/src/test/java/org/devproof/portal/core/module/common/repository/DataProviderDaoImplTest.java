@@ -29,7 +29,7 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
-import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
+import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -43,7 +43,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Carsten Hufe
  */
 public class DataProviderDaoImplTest {
-	private DataProviderRepositoryImpl<EmailTemplateEntity> impl;
+	private DataProviderRepositoryImpl<EmailTemplate> impl;
 	private SessionFactory sessionFactory;
 	private Session session;
 	private Query query;
@@ -52,7 +52,7 @@ public class DataProviderDaoImplTest {
 	public void setUp() throws Exception {
 		sessionFactory = createMock(SessionFactory.class);
 		session = createMock(Session.class);
-		impl = new DataProviderRepositoryImpl<EmailTemplateEntity>();
+		impl = new DataProviderRepositoryImpl<EmailTemplate>();
 		impl.setSessionFactory(sessionFactory);
 		query = createMock(Query.class);
 		expect(session.getSessionFactory()).andReturn(sessionFactory);
@@ -65,31 +65,31 @@ public class DataProviderDaoImplTest {
 
 	@Test
 	public void testFindById() {
-		EmailTemplateEntity expectedTemplates = newEmailTemplate();
-		expect(session.get(EmailTemplateEntity.class, 1)).andReturn(expectedTemplates);
+		EmailTemplate expectedTemplates = newEmailTemplate();
+		expect(session.get(EmailTemplate.class, 1)).andReturn(expectedTemplates);
 		replay(sessionFactory, session);
-		EmailTemplateEntity newTemplate = impl.findById(EmailTemplateEntity.class, 1);
+		EmailTemplate newTemplate = impl.findById(EmailTemplate.class, 1);
 		assertEquals(expectedTemplates, newTemplate);
 		verify(session, sessionFactory);
 	}
 
 	@Test
 	public void testFindAll_byClass() {
-		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
+		List<EmailTemplate> expectedTemplates = Arrays.asList(newEmailTemplate());
 		expect(session.createQuery("Select e from EmailTemplateEntity e")).andReturn(query);
 		expect(query.setCacheable(true)).andReturn(query);
 		expect(query.setCacheMode(null)).andReturn(query);
 		expect(query.setCacheRegion(CommonConstants.QUERY_CORE_CACHE_REGION)).andReturn(query);
 		expect(query.list()).andReturn(expectedTemplates);
 		replay(sessionFactory, session, query);
-		List<EmailTemplateEntity> templates = impl.findAll(EmailTemplateEntity.class);
+		List<EmailTemplate> templates = impl.findAll(EmailTemplate.class);
 		assertEquals(expectedTemplates.get(0).getId(), templates.get(0).getId());
 		verify(session, sessionFactory, query);
 	}
 
 	@Test
 	public void testFindAll_byClassLimited() {
-		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
+		List<EmailTemplate> expectedTemplates = Arrays.asList(newEmailTemplate());
 		expect(session.createQuery("Select e from EmailTemplateEntity e")).andReturn(query);
 		expect(query.setCacheable(true)).andReturn(query);
 		expect(query.setCacheMode(null)).andReturn(query);
@@ -98,14 +98,14 @@ public class DataProviderDaoImplTest {
 		expect(query.setMaxResults(10)).andReturn(query);
 		expect(query.list()).andReturn(expectedTemplates);
 		replay(sessionFactory, session, query);
-		List<EmailTemplateEntity> templates = impl.findAll(EmailTemplateEntity.class, 20, 10);
+		List<EmailTemplate> templates = impl.findAll(EmailTemplate.class, 20, 10);
 		assertEquals(expectedTemplates.get(0).getId(), templates.get(0).getId());
 		verify(session, sessionFactory, query);
 	}
 
 	@Test
 	public void testFindAllWithQuery() {
-		List<EmailTemplateEntity> expectedTemplates = Arrays.asList(newEmailTemplate());
+		List<EmailTemplate> expectedTemplates = Arrays.asList(newEmailTemplate());
 		TestQuery testQuery = new TestQuery();
 		testQuery.setAllTextFields("foobar");
 		List<String> prefetch = Arrays.asList("prefetched_field");
@@ -121,7 +121,7 @@ public class DataProviderDaoImplTest {
 		expect(query.setFirstResult(20)).andReturn(query);
 		expect(query.setMaxResults(10)).andReturn(query);
 		replay(sessionFactory, session, query);
-		List<EmailTemplateEntity> templates = impl.findAllWithQuery(EmailTemplateEntity.class, "subject", true, 20, 10,
+		List<EmailTemplate> templates = impl.findAllWithQuery(EmailTemplate.class, "subject", true, 20, 10,
 				testQuery, prefetch);
 		assertEquals(expectedTemplates.get(0).getId(), templates.get(0).getId());
 		verify(session, sessionFactory, query);
@@ -138,7 +138,7 @@ public class DataProviderDaoImplTest {
 		expect(query.setParameter(0, "foobar")).andReturn(query);
 		expect(query.uniqueResult()).andReturn(2l);
 		replay(sessionFactory, session, query);
-		long size = impl.getSize(EmailTemplateEntity.class, testQuery);
+		long size = impl.getSize(EmailTemplate.class, testQuery);
 		assertEquals(2, size);
 		verify(session, sessionFactory, query);
 	}
@@ -154,13 +154,13 @@ public class DataProviderDaoImplTest {
 		expect(query.setParameter(0, "foobar")).andReturn(query);
 		expect(query.uniqueResult()).andReturn(2l);
 		replay(sessionFactory, session, query);
-		long size = impl.getSize(EmailTemplateEntity.class, "count(something)", testQuery);
+		long size = impl.getSize(EmailTemplate.class, "count(something)", testQuery);
 		assertEquals(2, size);
 		verify(session, sessionFactory, query);
 	}
 
-	private EmailTemplateEntity newEmailTemplate() {
-		EmailTemplateEntity expectedConfig = new EmailTemplateEntity();
+	private EmailTemplate newEmailTemplate() {
+		EmailTemplate expectedConfig = new EmailTemplate();
 		expectedConfig.setId(1);
 		return expectedConfig;
 	}
