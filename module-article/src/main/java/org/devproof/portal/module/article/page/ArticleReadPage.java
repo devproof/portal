@@ -230,10 +230,10 @@ public class ArticleReadPage extends ArticleBasePage {
 		return new ExtendedLabel("content", contentModel);
 	}
 
-	private TagContentPanel<ArticleTagEntity> createTagPanel() {
-		IModel<List<ArticleTagEntity>> tagModel = new PropertyModel<List<ArticleTagEntity>>(displayedPageModel,
+	private TagContentPanel<ArticleTag> createTagPanel() {
+		IModel<List<ArticleTag>> tagModel = new PropertyModel<List<ArticleTag>>(displayedPageModel,
 				"article.tags");
-		return new TagContentPanel<ArticleTagEntity>("tags", tagModel, org.devproof.portal.module.article.page.ArticlePage.class);
+		return new TagContentPanel<ArticleTag>("tags", tagModel, org.devproof.portal.module.article.page.ArticlePage.class);
 	}
 
 	private BookmarkablePageLink<String> createForwardLink() {

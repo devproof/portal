@@ -77,7 +77,7 @@ public class Article extends BaseEntity implements EntityId {
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "article_tag_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
-    private List<ArticleTagEntity> tags;
+    private List<ArticleTag> tags;
 
     @Transient
     public List<RightEntity> getCommentViewRights() {
@@ -153,11 +153,11 @@ public class Article extends BaseEntity implements EntityId {
         this.allRights = allRights;
     }
 
-    public List<ArticleTagEntity> getTags() {
+    public List<ArticleTag> getTags() {
         return tags;
     }
 
-    public void setTags(List<ArticleTagEntity> tags) {
+    public void setTags(List<ArticleTag> tags) {
         this.tags = tags;
     }
 

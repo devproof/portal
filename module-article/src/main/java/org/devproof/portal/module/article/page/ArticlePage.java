@@ -47,7 +47,7 @@ import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.Article;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.devproof.portal.module.article.entity.ArticleTag;
 import org.devproof.portal.module.article.panel.ArticleSearchBoxPanel;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.devproof.portal.module.article.service.ArticleService;
@@ -217,9 +217,9 @@ public class ArticlePage extends ArticleBasePage {
 			};
 		}
 
-		private TagContentPanel<ArticleTagEntity> createTagPanel() {
-			IModel<List<ArticleTagEntity>> tagModel = new PropertyModel<List<ArticleTagEntity>>(articleModel, "tags");
-			return new TagContentPanel<ArticleTagEntity>("tags", tagModel, ArticlePage.class);
+		private TagContentPanel<ArticleTag> createTagPanel() {
+			IModel<List<ArticleTag>> tagModel = new PropertyModel<List<ArticleTag>>(articleModel, "tags");
+			return new TagContentPanel<ArticleTag>("tags", tagModel, ArticlePage.class);
 		}
 
 		private ExtendedLabel createTeaserLabel() {

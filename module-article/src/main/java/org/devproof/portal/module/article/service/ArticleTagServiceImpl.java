@@ -17,7 +17,7 @@ package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
 import org.devproof.portal.module.article.repository.ArticleTagRepository;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.devproof.portal.module.article.entity.ArticleTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @author Carsten Hufe
  */
 @Service("articleTagService")
-public class ArticleTagServiceImpl extends AbstractTagServiceImpl<ArticleTagEntity> implements ArticleTagService {
+public class ArticleTagServiceImpl extends AbstractTagServiceImpl<ArticleTag> implements ArticleTagService {
     @Override
     public String getRelatedTagRight() {
         return "article.view";

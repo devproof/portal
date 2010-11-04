@@ -34,7 +34,7 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
 import org.devproof.portal.module.article.entity.Article;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
+import org.devproof.portal.module.article.entity.ArticleTag;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.article.service.ArticleTagService;
 
@@ -89,9 +89,9 @@ public class ArticleEditPage extends ArticleBasePage {
         return new RightGridPanel("commentright", "article.comment", selectedRights);
     }
 
-    private TagField<ArticleTagEntity> createTagField() {
-        IModel<List<ArticleTagEntity>> tagsModel = new PropertyModel<List<ArticleTagEntity>>(articleModel, "tags");
-        return new TagField<ArticleTagEntity>("tags", tagsModel, articleTagService);
+    private TagField<ArticleTag> createTagField() {
+        IModel<List<ArticleTag>> tagsModel = new PropertyModel<List<ArticleTag>>(articleModel, "tags");
+        return new TagField<ArticleTag>("tags", tagsModel, articleTagService);
     }
 
     private RequiredTextField<String> createContentIdField() {
