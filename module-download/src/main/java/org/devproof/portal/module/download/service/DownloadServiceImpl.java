@@ -20,6 +20,7 @@ import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.repository.DownloadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,26 +33,31 @@ public class DownloadServiceImpl implements DownloadService {
     private DownloadTagService downloadTagService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Download> findAllDownloadsForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult) {
         return downloadRepository.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
+    @Transactional
     public void incrementHits(Download download) {
         downloadRepository.incrementHits(download);
     }
 
     @Override
+    @Transactional
     public void markBrokenDownload(Download download) {
         downloadRepository.markBrokenDownload(download);
     }
 
     @Override
+    @Transactional
     public void markValidDownload(Download download) {
         downloadRepository.markValidDownload(download);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Download newDownloadEntity() {
         Download download = new Download();
         download.setAllRights(downloadRepository.findLastSelectedRights());
@@ -59,28 +65,33 @@ public class DownloadServiceImpl implements DownloadService {
     }
 
     @Override
+    @Transactional
     public void rateDownload(Integer rating, Download download) {
         downloadRepository.rateDownload(rating, download);
         downloadRepository.refresh(download);
     }
 
     @Override
+    @Transactional
     public void delete(Download entity) {
         downloadRepository.delete(entity);
         downloadTagService.deleteUnusedTags();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Download> findAll() {
         return downloadRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Download findById(Integer id) {
         return downloadRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Download entity) {
         downloadRepository.save(entity);
         downloadTagService.deleteUnusedTags();

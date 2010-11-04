@@ -23,6 +23,7 @@ import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,16 +37,19 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleTagService articleTagService;
 
     @Override
+    @Transactional(readOnly = true)
     public boolean existsContentId(String contentId) {
         return articleRepository.existsContentId(contentId) > 0;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Article> findAllArticlesForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult) {
         return articleRepository.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Article newArticleEntity() {
         Article article = new Article();
         article.setAllRights(articleRepository.findLastSelectedRights());
@@ -53,38 +57,45 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ArticlePage newArticlePageEntity(Article article, Integer page) {
         return article.newArticlePageEntity(page);
     }
 
     @Override
+    @Transactional
     public void delete(Article entity) {
         articleRepository.delete(entity);
         articleTagService.deleteUnusedTags();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Article findById(Integer id) {
         return articleRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Article entity) {
         articleRepository.save(entity);
         articleTagService.deleteUnusedTags();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getPageCount(String contentId) {
         return articlePageRepository.getPageCount(contentId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ArticlePage findArticlePageByContentIdAndPage(String contentId, Integer page) {
         return articlePageRepository.findById(new ArticlePageId(contentId, page));
     }
 
     @Override
+    @Transactional(readOnly = true)    
     public Article findByContentId(String contentId) {
         return articleRepository.findByContentId(contentId);
     }

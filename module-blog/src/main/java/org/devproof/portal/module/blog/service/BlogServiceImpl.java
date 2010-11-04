@@ -19,6 +19,7 @@ import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Carsten Hufe
@@ -29,22 +30,26 @@ public class BlogServiceImpl implements BlogService {
     private BlogTagService blogTagService;
 
     @Override
+    @Transactional
     public void delete(Blog entity) {
         blogRepository.delete(entity);
         blogTagService.deleteUnusedTags();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Blog findById(Integer id) {
         return blogRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Blog entity) {
         blogRepository.save(entity);
         blogTagService.deleteUnusedTags();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Blog newBlogEntity() {
         Blog blog = new Blog();

@@ -19,6 +19,7 @@ import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.repository.OtherPageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Carsten Hufe
@@ -28,16 +29,19 @@ public class OtherPageServiceImpl implements OtherPageService {
     private OtherPageRepository otherPageRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public boolean existsContentId(String contentId) {
         return otherPageRepository.existsContentId(contentId) > 0;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OtherPage findOtherPageByContentId(String contentId) {
         return otherPageRepository.findOtherPageByContentId(contentId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OtherPage newOtherPageEntity() {
         OtherPage otherPage = new OtherPage();
         otherPage.setAllRights(otherPageRepository.findLastSelectedRights());
@@ -45,16 +49,19 @@ public class OtherPageServiceImpl implements OtherPageService {
     }
 
     @Override
+    @Transactional
     public void delete(OtherPage entity) {
         otherPageRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OtherPage findById(Integer id) {
         return otherPageRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(OtherPage entity) {
         otherPageRepository.save(entity);
     }

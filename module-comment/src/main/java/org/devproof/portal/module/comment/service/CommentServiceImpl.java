@@ -26,6 +26,7 @@ import org.devproof.portal.module.comment.entity.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -49,21 +50,25 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void delete(Comment entity) {
         commentRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Comment findById(Integer id) {
         return commentRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Comment entity) {
         commentRepository.save(entity);
     }
 
     @Override
+    @Transactional
     public void saveNewComment(Comment comment, UrlCallback urlCallback) {
         Comment saved = commentRepository.save(comment);
         Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT);
@@ -71,18 +76,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void rejectComment(Comment comment) {
         commentRepository.rejectComment(comment);
         commentRepository.refresh(comment);
     }
 
     @Override
+    @Transactional
     public void acceptComment(Comment comment) {
         commentRepository.acceptComment(comment);
         commentRepository.refresh(comment);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long findNumberOfComments(String moduleName, String moduleContentId) {
         boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
         if (showOnlyReviewed) {
@@ -93,6 +101,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void reportViolation(Comment comment, UrlCallback urlCallback, String reporterIp) {
         int maxNumberOfBlames = configurationService.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD);
         int blames = comment.getNumberOfBlames() + 1;
@@ -128,6 +137,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<String> findAllModuleNames() {
         return commentRepository.findAllModuleNames();
     }

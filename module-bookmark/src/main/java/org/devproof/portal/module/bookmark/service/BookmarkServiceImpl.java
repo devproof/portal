@@ -22,6 +22,7 @@ import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,31 +35,37 @@ public class BookmarkServiceImpl implements BookmarkService {
     private BookmarkTagService bookmarkTagService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult) {
         return bookmarkRepository.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Bookmark> findBookmarksBySource(Source source) {
         return bookmarkRepository.findBookmarksBySource(source);
     }
 
     @Override
+    @Transactional
     public void incrementHits(Bookmark bookmark) {
         bookmarkRepository.incrementHits(bookmark);
     }
 
     @Override
+    @Transactional
     public void markBrokenBookmark(Bookmark bookmark) {
         bookmarkRepository.markBrokenBookmark(bookmark);
     }
 
     @Override
+    @Transactional
     public void markValidBookmark(Bookmark bookmark) {
         bookmarkRepository.markValidBookmark(bookmark);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Bookmark newBookmarkEntity() {
         Bookmark bookmark = new Bookmark();
         bookmark.setAllRights(bookmarkRepository.findLastSelectedRights());
@@ -66,34 +73,40 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
+    @Transactional
     public void rateBookmark(Integer rating, Bookmark bookmark) {
         bookmarkRepository.rateBookmark(rating, bookmark);
         bookmarkRepository.refresh(bookmark);
     }
 
     @Override
+    @Transactional
     public void delete(Bookmark entity) {
         bookmarkRepository.delete(entity);
         bookmarkTagService.deleteUnusedTags();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Bookmark> findAll() {
         return bookmarkRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Bookmark findById(Integer id) {
         return bookmarkRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Bookmark entity) {
         bookmarkRepository.save(entity);
         bookmarkTagService.deleteUnusedTags();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Right> findLastSelectedRights() {
         return bookmarkRepository.findLastSelectedRights();
     }
