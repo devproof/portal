@@ -6,13 +6,8 @@
 
     <display-name>devproof portal</display-name>
 
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:/devproof-portal.xml</param-value>
-    </context-param>
-
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        <listener-class>org.devproof.portal.core.app.PortalContextLoaderListener</listener-class>
     </listener>
 
     <filter>
