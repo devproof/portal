@@ -20,10 +20,10 @@ package org.devproof.portal.core.module.user;
  */
 public interface UserConstants {
     String UNKNOWN_USERNAME = "unknown";
-    String CONF_REGISTRATION_EMAIL = "spring.emailTemplateRepository.findAll.subject.id.regemail";
-    String CONF_RECONFIRMATION_EMAIL = "spring.emailTemplateRepository.findAll.subject.id.reconfirmemail";
-    String CONF_PASSWORDFORGOT_EMAIL = "spring.emailTemplateRepository.findAll.subject.id.forgotemail";
-    String CONF_NOTIFY_USER_REGISTRATION = "spring.emailTemplateRepository.findAll.subject.id.registereduser";
+    String CONF_REGISTRATION_EMAIL = "spring.emailService.findAll.subject.id.regemail";
+    String CONF_RECONFIRMATION_EMAIL = "spring.emailService.findAll.subject.id.reconfirmemail";
+    String CONF_PASSWORDFORGOT_EMAIL = "spring.emailService.findAll.subject.id.forgotemail";
+    String CONF_NOTIFY_USER_REGISTRATION = "spring.emailService.findAll.subject.id.registereduser";
     String CONF_EMAIL_VALIDATION = "email_validation";
     String CONF_REGISTRATION_REQUIRED_NAME = "registration_required_name";
     String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";

@@ -19,6 +19,6 @@ package org.devproof.portal.core.module.role;
  * @author Carsten Hufe
  */
 public interface RoleConstants {
-    String CONF_DEFAULT_GUEST_ROLE = "spring.roleRepository.findAll.description.id.guestrole";
-    String CONF_DEFAULT_REGUSER_ROLE = "spring.roleRepository.findAll.description.id.registerrole";
+    String CONF_DEFAULT_GUEST_ROLE = "spring.roleService.findAll.description.id.guestrole";
+    String CONF_DEFAULT_REGUSER_ROLE = "spring.roleService.findAll.description.id.registerrole";
 }
