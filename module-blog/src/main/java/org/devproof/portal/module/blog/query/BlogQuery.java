@@ -21,7 +21,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.TagConstants;
 
 /**
@@ -32,7 +32,7 @@ public class BlogQuery implements SearchQuery {
 	private static final String ID_PARAM = "id";
 	private static final String SEARCH_PARAM = "search";
 	private Integer id;
-	private RoleEntity role;
+	private Role role;
 	private String tagname;
 	private String allTextFields;
 
@@ -44,7 +44,7 @@ public class BlogQuery implements SearchQuery {
 
 	@BeanQuery("exists(from Blog b left join b.allRights ar "
 			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'blog.view%') and b = e)")
-	public RoleEntity getRole() {
+	public Role getRole() {
 		if (role == null) {
 			PortalSession session = PortalSession.get();
 			if (!session.hasRight("blog.view")) {

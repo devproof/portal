@@ -21,7 +21,7 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.dao.UserRepository;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     private ConfigurationService configurationService;
 
     @Override
-    public long countUserForRole(RoleEntity role) {
+    public long countUserForRole(Role role) {
         return userDao.countUserForRole(role);
     }
 
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findGuestUser() {
-        RoleEntity guestRole = roleService.findGuestRole();
+        Role guestRole = roleService.findGuestRole();
         UserEntity user = newUserEntity();
         user.setUsername(guestRole.getDescription());
         user.setRole(guestRole);

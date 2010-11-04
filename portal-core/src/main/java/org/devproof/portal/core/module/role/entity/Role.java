@@ -39,7 +39,7 @@ import java.util.List;
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 @RegisterGenericDataProvider(value = "roleDataProvider", sortProperty = "description", queryClass = RoleQuery.class)
-public class RoleEntity extends Modification {
+public class Role extends Modification {
 
     private static final long serialVersionUID = 1L;
 
@@ -121,7 +121,7 @@ public class RoleEntity extends Modification {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        RoleEntity other = (RoleEntity) obj;
+        Role other = (Role) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

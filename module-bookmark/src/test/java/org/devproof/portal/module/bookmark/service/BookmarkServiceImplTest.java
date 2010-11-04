@@ -16,7 +16,7 @@
 package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
@@ -104,7 +104,7 @@ public class BookmarkServiceImplTest {
         List<Bookmark> list = new ArrayList<Bookmark>();
         list.add(createBookmarkEntity());
         list.add(createBookmarkEntity());
-        RoleEntity role = new RoleEntity();
+        Role role = new Role();
         role.setId(1);
         expect(mock.findAllBookmarksForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
         replay(mock);

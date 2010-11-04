@@ -17,7 +17,7 @@ package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 
@@ -42,7 +42,7 @@ public interface BookmarkService extends CrudService<Bookmark, Integer> {
      * @param maxResult   maximum result
      * @return list with bookmarks
      */
-    List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult);
 
     /**
      * Returns all bookmarks

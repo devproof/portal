@@ -16,36 +16,36 @@
 package org.devproof.portal.core.module.role.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-public interface RoleService extends CrudService<RoleEntity, Integer> {
+public interface RoleService extends CrudService<Role, Integer> {
     /**
      * Returns all roles
      */
-    List<RoleEntity> findAll();
+    List<Role> findAll();
 
     /**
      * Returns a new instance of role
      */
-    RoleEntity newRoleEntity();
+    Role newRoleEntity();
 
     /**
      * Returns all roles ordered by description
      */
-    List<RoleEntity> findAllOrderByDescription();
+    List<Role> findAllOrderByDescription();
 
     /**
      * returns the guest role
      */
-    RoleEntity findGuestRole();
+    Role findGuestRole();
 
     /**
      * returns the default registration role
      */
-    RoleEntity findDefaultRegistrationRole();
+    Role findDefaultRegistrationRole();
 }

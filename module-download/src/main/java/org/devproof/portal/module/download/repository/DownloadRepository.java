@@ -21,7 +21,7 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
 
@@ -43,7 +43,7 @@ public interface DownloadRepository extends CrudRepository<Download, Integer> {
     @Query(value = "select d from Download d where exists(from Download ed left join ed.allRights ar "
 			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'download.view%') and d = ed)" +
 					" order by d.modifiedAt desc", limitClause = true)
-    List<Download> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Download> findAllDownloadsForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult);
 
     @BulkUpdate("update Download d set d.hits = (d.hits + 1) where d = ?")
     void incrementHits(Download download);

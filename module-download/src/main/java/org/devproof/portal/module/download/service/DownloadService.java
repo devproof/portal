@@ -16,7 +16,7 @@
 package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.download.entity.Download;
 
 import java.util.List;
@@ -40,12 +40,12 @@ public interface DownloadService extends CrudService<Download, Integer> {
     /**
      * Finds all downloads filtered by role
      *
-     * @param role        {@link RoleEntity} to filter
+     * @param role        {@link org.devproof.portal.core.module.role.entity.Role} to filter
      * @param firstResult first result
      * @param maxResult   maximum result
      * @return list with downloads
      */
-    List<Download> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Download> findAllDownloadsForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult);
 
     /**
      * Increments the number of downloads by one

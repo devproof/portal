@@ -30,7 +30,7 @@ import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.email.entity.EmailTemplate;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
@@ -169,15 +169,15 @@ public class DataProviderDaoImplTest {
 	public static class TestQuery implements SearchQuery {
 		private static final long serialVersionUID = 1L;
 		private Integer id;
-		private RoleEntity role;
+		private Role role;
 		private String allTextFields;
 
-		@BeanQuery("vr in(select rt from RoleEntity r join r.rights rt where r = ?)")
-		public RoleEntity getRole() {
+		@BeanQuery("vr in(select rt from Role r join r.rights rt where r = ?)")
+		public Role getRole() {
 			return role;
 		}
 
-		public void setRole(RoleEntity role) {
+		public void setRole(Role role) {
 			this.role = role;
 		}
 

@@ -16,7 +16,7 @@
 package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
@@ -34,7 +34,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     private BookmarkTagService bookmarkTagService;
 
     @Override
-    public List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+    public List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult) {
         return bookmarkRepository.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 

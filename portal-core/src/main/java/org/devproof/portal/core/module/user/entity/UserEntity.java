@@ -18,7 +18,7 @@ package org.devproof.portal.core.module.user.entity;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.query.UserQuery;
 import org.hibernate.annotations.Cache;
@@ -84,7 +84,7 @@ public class UserEntity implements Serializable {
     private Date confirmationApprovedAt;
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
-    private RoleEntity role;
+    private Role role;
     @Transient
     private boolean guestRole = false;
 
@@ -249,11 +249,11 @@ public class UserEntity implements Serializable {
         this.sessionId = sessionId;
     }
 
-    public RoleEntity getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(RoleEntity role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

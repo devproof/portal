@@ -45,7 +45,7 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.service.UserService;
@@ -150,20 +150,20 @@ public abstract class UserEditPanel extends Panel {
     }
 
     private DropDownChoice<?> createRoleDropDown() {
-        IChoiceRenderer<RoleEntity> renderer = new ChoiceRenderer<RoleEntity>("description", "id");
-        IModel<RoleEntity> roleModel = new PropertyModel<RoleEntity>(userModel, "role");
-        IModel<List<RoleEntity>> availableRolesModel = createAvailableRolesModel();
-        DropDownChoice<?> role = new DropDownChoice<RoleEntity>("role", roleModel, availableRolesModel, renderer);
+        IChoiceRenderer<Role> renderer = new ChoiceRenderer<Role>("description", "id");
+        IModel<Role> roleModel = new PropertyModel<Role>(userModel, "role");
+        IModel<List<Role>> availableRolesModel = createAvailableRolesModel();
+        DropDownChoice<?> role = new DropDownChoice<Role>("role", roleModel, availableRolesModel, renderer);
         role.setRequired(true);
         return role;
     }
 
-    private IModel<List<RoleEntity>> createAvailableRolesModel() {
-        return new LoadableDetachableModel<List<RoleEntity>>() {
+    private IModel<List<Role>> createAvailableRolesModel() {
+        return new LoadableDetachableModel<List<Role>>() {
             private static final long serialVersionUID = 6780212125058885884L;
 
             @Override
-            protected List<RoleEntity> load() {
+            protected List<Role> load() {
                 return roleService.findAll();
             }
         };

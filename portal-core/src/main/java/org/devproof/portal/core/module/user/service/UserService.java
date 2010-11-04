@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.user.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
@@ -60,7 +60,7 @@ public interface UserService extends CrudService<UserEntity, Integer> {
     /**
      * Returns the number of users for the given role
      */
-    long countUserForRole(RoleEntity role);
+    long countUserForRole(Role role);
 
     /**
      * Returns all users with the given right

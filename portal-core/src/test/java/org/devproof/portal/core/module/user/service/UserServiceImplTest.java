@@ -19,7 +19,7 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.dao.UserRepository;
@@ -97,7 +97,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testCountUserForRole() {
-        RoleEntity role = createTestRole();
+        Role role = createTestRole();
         expect(userDaoMock.countUserForRole(role)).andReturn(4l);
         replay(userDaoMock);
         assertEquals(impl.countUserForRole(role), 4l);
@@ -157,7 +157,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testFindGuestUser() {
-        RoleEntity role = createTestRole();
+        Role role = createTestRole();
         role.setDescription("Test Guest");
         expect(roleServiceMock.findGuestRole()).andReturn(role);
         replay(userDaoMock);
@@ -450,7 +450,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testAuthentificate_withSessionId_nonExistingSessionId() {
-        RoleEntity expectedGuestRole = createTestRole();
+        Role expectedGuestRole = createTestRole();
         expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(null);
         expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
         replay(userDaoMock, roleServiceMock);
@@ -465,7 +465,7 @@ public class UserServiceImplTest {
     public void testAuthentificate_withSessionId_userInactive() {
         UserEntity expectedUser = createTestUser(true);
         expectedUser.setActive(Boolean.FALSE);
-        RoleEntity expectedGuestRole = createTestRole();
+        Role expectedGuestRole = createTestRole();
         expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
         expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
         replay(userDaoMock, roleServiceMock);
@@ -480,7 +480,7 @@ public class UserServiceImplTest {
     public void testAuthentificate_withSessionId_roleInactive() {
         UserEntity expectedUser = createTestUser(true);
         expectedUser.getRole().setActive(Boolean.FALSE);
-        RoleEntity expectedGuestRole = createTestRole();
+        Role expectedGuestRole = createTestRole();
         expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
         expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
         replay(userDaoMock, roleServiceMock);
@@ -494,7 +494,7 @@ public class UserServiceImplTest {
     @Test
     public void testAuthentificate_withSessionId_notConfirmed() {
         UserEntity expectedUser = createTestUser(false);
-        RoleEntity expectedGuestRole = createTestRole();
+        Role expectedGuestRole = createTestRole();
         expect(userDaoMock.findUserBySessionId("sessionId")).andReturn(expectedUser);
         expect(roleServiceMock.findGuestRole()).andReturn(expectedGuestRole);
         replay(userDaoMock, roleServiceMock);
@@ -632,8 +632,8 @@ public class UserServiceImplTest {
         return user;
     }
 
-    private RoleEntity createTestRole() {
-        RoleEntity role = new RoleEntity();
+    private Role createTestRole() {
+        Role role = new Role();
         role.setId(1);
         role.setActive(true);
         return role;

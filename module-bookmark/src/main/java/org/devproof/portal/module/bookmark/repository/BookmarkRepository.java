@@ -21,7 +21,7 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
@@ -44,7 +44,7 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Integer> {
     @Query(value = "select b from Bookmark b where exists(from Bookmark eb left join eb.allRights ar "
 			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = eb)" +
 					" order by b.modifiedAt desc", limitClause = true)
-    List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult);
 
     @Query("select b from Bookmark b where b.source = ?")
     List<Bookmark> findBookmarksBySource(Source source);

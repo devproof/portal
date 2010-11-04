@@ -16,7 +16,7 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticlePage;
 
@@ -50,7 +50,7 @@ public interface ArticleService extends CrudService<Article, Integer> {
      * @param maxResult   maximum result number
      * @return list with article entities
      */
-    List<Article> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Article> findAllArticlesForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult);
 
     /**
      * Returns true if a content id exists

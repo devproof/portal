@@ -41,7 +41,7 @@ import org.devproof.portal.core.module.common.panel.ConfirmDeletePanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.RoleConstants;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.panel.RoleEditPanel;
 import org.devproof.portal.core.module.role.panel.RoleSearchBoxPanel;
 import org.devproof.portal.core.module.role.query.RoleQuery;
@@ -57,7 +57,7 @@ public class RolePage extends TemplatePage {
     private static final long serialVersionUID = 1L;
 
     @SpringBean(name = "roleDataProvider")
-    private QueryDataProvider<RoleEntity, RoleQuery> roleDataProvider;
+    private QueryDataProvider<Role, RoleQuery> roleDataProvider;
     @SpringBean(name = "roleService")
     private RoleService roleService;
     @SpringBean(name = "userService")
@@ -116,8 +116,8 @@ public class RolePage extends TemplatePage {
         };
     }
 
-    private AjaxLink<RoleEntity> createCreateRoleLink() {
-        AjaxLink<RoleEntity> link = newCreateRoleLink();
+    private AjaxLink<Role> createCreateRoleLink() {
+        AjaxLink<Role> link = newCreateRoleLink();
         link.add(createCreateRoleLinkLabel());
         return link;
     }
@@ -126,8 +126,8 @@ public class RolePage extends TemplatePage {
         return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
     }
 
-    private AjaxLink<RoleEntity> newCreateRoleLink() {
-        return new AjaxLink<RoleEntity>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Role> newCreateRoleLink() {
+        return new AjaxLink<Role>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -137,7 +137,7 @@ public class RolePage extends TemplatePage {
             }
 
             private RoleEditPanel createRoleEditPanel() {
-                IModel<RoleEntity> roleModel = Model.of(roleService.newRoleEntity());
+                IModel<Role> roleModel = Model.of(roleService.newRoleEntity());
                 return new RoleEditPanel(bubblePanel.getContentId(), roleModel) {
                     private static final long serialVersionUID = 1L;
 
@@ -159,15 +159,15 @@ public class RolePage extends TemplatePage {
         };
     }
 
-    private class RoleDataView extends DataView<RoleEntity> {
+    private class RoleDataView extends DataView<Role> {
         private static final long serialVersionUID = 1L;
 
-        public RoleDataView(String id, IDataProvider<RoleEntity> dataProvider) {
+        public RoleDataView(String id, IDataProvider<Role> dataProvider) {
             super(id, dataProvider);
         }
 
         @Override
-        protected void populateItem(Item<RoleEntity> item) {
+        protected void populateItem(Item<Role> item) {
 
             item.add(createRoleDescriptionLabel(item));
             item.add(createRoleActiveLabel(item));
@@ -176,20 +176,20 @@ public class RolePage extends TemplatePage {
             item.add(createAlternatingModifier(item));
         }
 
-        private Label createRoleDescriptionLabel(Item<RoleEntity> item) {
+        private Label createRoleDescriptionLabel(Item<Role> item) {
             return new Label("description", item.getModelObject().getDescription());
         }
 
-        private Label createRoleActiveLabel(Item<RoleEntity> item) {
+        private Label createRoleActiveLabel(Item<Role> item) {
             return new Label("active", getActiveString(item));
         }
 
-        private String getActiveString(Item<RoleEntity> item) {
+        private String getActiveString(Item<Role> item) {
             return item.getModelObject().getActive() ? getString("status.active") : this.getString("status.inactive");
         }
 
-        private AjaxLink<RoleEntity> createDeleteLink(final Item<RoleEntity> item) {
-            AjaxLink<RoleEntity> deleteLink = newDeleteLink(item);
+        private AjaxLink<Role> createDeleteLink(final Item<Role> item) {
+            AjaxLink<Role> deleteLink = newDeleteLink(item);
             deleteLink.add(createDeleteLinkImage());
             deleteLink.setOutputMarkupId(true);
             return deleteLink;
@@ -199,13 +199,13 @@ public class RolePage extends TemplatePage {
             return new Image("deleteImage", CommonConstants.REF_DELETE_IMG);
         }
 
-        private AjaxLink<RoleEntity> newDeleteLink(final Item<RoleEntity> item) {
-            return new AjaxLink<RoleEntity>("deleteLink") {
+        private AjaxLink<Role> newDeleteLink(final Item<Role> item) {
+            return new AjaxLink<Role>("deleteLink") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
                 public void onClick(AjaxRequestTarget target) {
-                    IModel<RoleEntity> roleModel = item.getModel();
+                    IModel<Role> roleModel = item.getModel();
                     String validationMessage = validateRoleForDeletion(roleModel);
                     if (validationMessage != null) {
                         bubblePanel.showMessage(getMarkupId(), target, validationMessage);
@@ -215,8 +215,8 @@ public class RolePage extends TemplatePage {
                     }
                 }
 
-                private String validateRoleForDeletion(IModel<RoleEntity> roleModel) {
-                    RoleEntity role = roleModel.getObject();
+                private String validateRoleForDeletion(IModel<Role> roleModel) {
+                    Role role = roleModel.getObject();
                     long numberOfUserInRole = userService.countUserForRole(role);
                     String msg = null;
                     if (isGuestRole(role)) {
@@ -229,12 +229,12 @@ public class RolePage extends TemplatePage {
                     return msg;
                 }
 
-                private boolean isGuestRole(RoleEntity role) {
+                private boolean isGuestRole(Role role) {
                     Integer guestRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
                     return guestRoleId.equals(role.getId());
                 }
 
-                private boolean isRegistrationRole(RoleEntity role) {
+                private boolean isRegistrationRole(Role role) {
                     Integer reguserRoleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE);
                     return reguserRoleId.equals(role.getId());
                 }
@@ -243,13 +243,13 @@ public class RolePage extends TemplatePage {
                     return new StringResourceModel(key, this, null, new Object[]{numUser}).getString();
                 }
 
-                private ConfirmDeletePanel<RoleEntity> createConfirmDeletePanel(final IModel<RoleEntity> roleModel) {
-                    return new ConfirmDeletePanel<RoleEntity>(bubblePanel.getContentId(), roleModel, bubblePanel) {
+                private ConfirmDeletePanel<Role> createConfirmDeletePanel(final IModel<Role> roleModel) {
+                    return new ConfirmDeletePanel<Role>(bubblePanel.getContentId(), roleModel, bubblePanel) {
                         private static final long serialVersionUID = 1L;
 
                         @Override
                         public void onDelete(AjaxRequestTarget target, Form<?> form) {
-                            RoleEntity role = roleModel.getObject();
+                            Role role = roleModel.getObject();
                             roleService.delete(role);
                             rightService.refreshGlobalApplicationRights();
                             bubblePanel.hide(target);
@@ -263,8 +263,8 @@ public class RolePage extends TemplatePage {
             };
         }
 
-        private AjaxLink<RoleEntity> createEditLink(Item<RoleEntity> item) {
-            AjaxLink<RoleEntity> editLink = newRoleEditLink(item);
+        private AjaxLink<Role> createEditLink(Item<Role> item) {
+            AjaxLink<Role> editLink = newRoleEditLink(item);
             editLink.add(createEditLinkImage());
             return editLink;
         }
@@ -273,8 +273,8 @@ public class RolePage extends TemplatePage {
             return new Image("editImage", CommonConstants.REF_EDIT_IMG);
         }
 
-        private AjaxLink<RoleEntity> newRoleEditLink(final Item<RoleEntity> item) {
-            return new AjaxLink<RoleEntity>("editLink", item.getModel()) {
+        private AjaxLink<Role> newRoleEditLink(final Item<Role> item) {
+            return new AjaxLink<Role>("editLink", item.getModel()) {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -283,7 +283,7 @@ public class RolePage extends TemplatePage {
                     bubblePanel.showModal(target);
                 }
 
-                private RoleEditPanel createRoleEditPanel(IModel<RoleEntity> roleModel) {
+                private RoleEditPanel createRoleEditPanel(IModel<Role> roleModel) {
                     return new RoleEditPanel(bubblePanel.getContentId(), roleModel) {
                         private static final long serialVersionUID = 6979098758367103659L;
 
@@ -305,7 +305,7 @@ public class RolePage extends TemplatePage {
             };
         }
 
-        private AttributeModifier createAlternatingModifier(final Item<RoleEntity> item) {
+        private AttributeModifier createAlternatingModifier(final Item<Role> item) {
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 

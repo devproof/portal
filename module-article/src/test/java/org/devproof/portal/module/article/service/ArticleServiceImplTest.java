@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.article.service;
 
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
@@ -120,7 +120,7 @@ public class ArticleServiceImplTest {
 
     @Test
     public void testFindAllArticlesForRoleOrderedByDateDesc() {
-        RoleEntity role = new RoleEntity();
+        Role role = new Role();
         List<Article> list = new ArrayList<Article>();
         list.add(createArticleEntity());
         list.add(createArticleEntity());

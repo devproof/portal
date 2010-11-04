@@ -18,7 +18,7 @@ package org.devproof.portal.core.app;
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
@@ -260,7 +260,7 @@ public class PortalSessionTest {
     }
 
     private UserEntity createUserWithRights() {
-        RoleEntity role = new RoleEntity();
+        Role role = new Role();
         role.setId(1);
         role.setDescription("roleName");
         role.getRights().add(new Right("sample1"));

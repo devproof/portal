@@ -24,7 +24,7 @@ import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 
@@ -40,7 +40,7 @@ public class BookmarkQuery implements SearchQuery {
 	private static final String BROKEN_PARAM = "broken";
 	private static final String ID_PARAM = "id";
 	private Integer id;
-	private RoleEntity role;
+	private Role role;
 	private String tagname;
 	private String allTextFields;
 	private Boolean broken;
@@ -77,7 +77,7 @@ public class BookmarkQuery implements SearchQuery {
 
 	@BeanQuery("exists(from Bookmark b left join b.allRights ar "
 			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = e)")
-	public RoleEntity getRole() {
+	public Role getRole() {
 		if (role == null) {
 			PortalSession session = PortalSession.get();
 			if (!session.hasRight("bookmark.view")) {

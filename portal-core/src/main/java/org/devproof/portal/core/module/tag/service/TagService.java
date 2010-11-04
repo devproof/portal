@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.tag.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public interface TagService<T> extends CrudService<T, String> {
     /**
      * Returns the most popular blog tags filtered by role
      */
-    List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<T> findMostPopularTags(Role role, Integer firstResult, Integer maxResult);
 
     /**
      * Returns a new instance of the tag

@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.download.service;
 
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.repository.DownloadRepository;
 import org.junit.Before;
@@ -102,7 +102,7 @@ public class DownloadServiceImplTest {
         List<Download> list = new ArrayList<Download>();
         list.add(createDownloadEntity());
         list.add(createDownloadEntity());
-        RoleEntity role = new RoleEntity();
+        Role role = new Role();
         role.setId(1);
         expect(mock.findAllDownloadsForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
         replay(mock);

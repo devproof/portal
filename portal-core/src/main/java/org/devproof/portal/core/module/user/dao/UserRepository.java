@@ -20,7 +20,7 @@ import java.util.List;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 
@@ -45,7 +45,7 @@ public interface UserRepository extends CrudRepository<UserEntity, Integer> {
 	long existsUsername(String username);
 
 	@Query("select count(u) from UserEntity u where u.role = ?")
-	Long countUserForRole(RoleEntity role);
+	Long countUserForRole(Role role);
 
 	@Query(value = "from UserEntity u where exists (from UserEntity eu join eu.role.rights as r where r.right = ? and eu = u)")
 	List<UserEntity> findUserWithRight(String right);

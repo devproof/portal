@@ -21,7 +21,7 @@ import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.TagConstants;
 
 /**
@@ -41,5 +41,5 @@ public interface TagRepository<T> extends CrudRepository<T, String> {
     @Query(value = "select t from $TYPE t where exists(from $TYPE et join et.referencedObjects ro left join ro.allRights ar "
 			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like ?||'%') and t = et) " +
     			"order by size(t.referencedObjects) desc", limitClause = true)
-    List<T> findMostPopularTags(RoleEntity role, String viewRight, Integer firstResult, Integer maxResult);
+    List<T> findMostPopularTags(Role role, String viewRight, Integer firstResult, Integer maxResult);
 }

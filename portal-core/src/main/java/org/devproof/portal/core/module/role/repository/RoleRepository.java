@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.role.dao;
+package org.devproof.portal.core.module.role.repository;
 
-import java.util.List;
-
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("roleDao")
+@GenericRepository("roleRepository")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface RoleRepository extends CrudRepository<RoleEntity, Integer> {
-    @Query("Select r from RoleEntity r")
-    List<RoleEntity> findAll();
+public interface RoleRepository extends CrudRepository<Role, Integer> {
+    @Query("Select r from Role r")
+    List<Role> findAll();
 
-    @Query("select r from RoleEntity r order by r.description asc")
-    List<RoleEntity> findAllOrderByDescription();
+    @Query("select r from Role r order by r.description asc")
+    List<Role> findAllOrderByDescription();
 }

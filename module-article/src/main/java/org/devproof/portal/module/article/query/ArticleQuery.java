@@ -21,7 +21,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.TagConstants;
 
 /**
@@ -32,7 +32,7 @@ public class ArticleQuery implements SearchQuery {
 	private static final String ID_PARAM = "id";
 	private static final String SEARCH_PARAM = "search";
 	private Integer id;
-	private RoleEntity role;
+	private Role role;
 	private String allTextFields;
 	private String tagname;
 
@@ -44,7 +44,7 @@ public class ArticleQuery implements SearchQuery {
 
 	@BeanQuery("exists(from Article a left join a.allRights ar "
 			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'article.view%') and a = e)")
-	public RoleEntity getRole() {
+	public Role getRole() {
 		if (role == null) {
 			PortalSession session = PortalSession.get();
 			if (!session.hasRight("article.view")) {

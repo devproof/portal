@@ -17,8 +17,8 @@ package org.devproof.portal.core.module.role.service;
 
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.role.RoleConstants;
-import org.devproof.portal.core.module.role.dao.RoleRepository;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
+import org.devproof.portal.core.module.role.repository.RoleRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -42,13 +42,13 @@ public class RoleServiceImplTest {
         roleDaoMock = createStrictMock(RoleRepository.class);
         configurationServiceMock = createStrictMock(ConfigurationService.class);
         impl = new RoleServiceImpl();
-        impl.setRoleDao(roleDaoMock);
+        impl.setRoleRepository(roleDaoMock);
         impl.setConfigurationService(configurationServiceMock);
     }
 
     @Test
     public void testSave() {
-        RoleEntity e = impl.newRoleEntity();
+        Role e = impl.newRoleEntity();
         e.setId(1);
         expect(roleDaoMock.save(e)).andReturn(e);
         replay(roleDaoMock);
@@ -58,7 +58,7 @@ public class RoleServiceImplTest {
 
     @Test
     public void testDelete() {
-        RoleEntity e = impl.newRoleEntity();
+        Role e = impl.newRoleEntity();
         e.setId(1);
         roleDaoMock.delete(e);
         replay(roleDaoMock);
@@ -68,7 +68,7 @@ public class RoleServiceImplTest {
 
     @Test
     public void testFindAll() {
-        List<RoleEntity> list = new ArrayList<RoleEntity>();
+        List<Role> list = new ArrayList<Role>();
         list.add(impl.newRoleEntity());
         list.add(impl.newRoleEntity());
         expect(roleDaoMock.findAll()).andReturn(list);
@@ -79,7 +79,7 @@ public class RoleServiceImplTest {
 
     @Test
     public void testFindById() {
-        RoleEntity e = impl.newRoleEntity();
+        Role e = impl.newRoleEntity();
         e.setId(1);
         expect(roleDaoMock.findById(1)).andReturn(e);
         replay(roleDaoMock);
@@ -94,13 +94,13 @@ public class RoleServiceImplTest {
 
     @Test
     public void testGetDefaultRegistrationRole() {
-        RoleEntity e = impl.newRoleEntity();
+        Role e = impl.newRoleEntity();
         e.setId(1);
         expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE)).andReturn(1);
         expect(roleDaoMock.findById(1)).andReturn(e);
         replay(configurationServiceMock);
         replay(roleDaoMock);
-        RoleEntity defaultRegistrationRole = impl.findDefaultRegistrationRole();
+        Role defaultRegistrationRole = impl.findDefaultRegistrationRole();
         assertNotNull(defaultRegistrationRole);
         assertEquals(e.getId(), defaultRegistrationRole.getId());
         verify(configurationServiceMock);
@@ -109,7 +109,7 @@ public class RoleServiceImplTest {
 
     @Test
     public void testFindAllOrderByDescription() {
-        List<RoleEntity> list = new ArrayList<RoleEntity>();
+        List<Role> list = new ArrayList<Role>();
         list.add(impl.newRoleEntity());
         list.add(impl.newRoleEntity());
         expect(roleDaoMock.findAllOrderByDescription()).andReturn(list);
@@ -120,7 +120,7 @@ public class RoleServiceImplTest {
 
     @Test
     public void testFindGuestRole() {
-        RoleEntity role = impl.newRoleEntity();
+        Role role = impl.newRoleEntity();
         expect(configurationServiceMock.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE)).andReturn(1);
         expect(roleDaoMock.findById(1)).andReturn(role);
         replay(configurationServiceMock);

@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.download.service;
 
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.repository.DownloadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class DownloadServiceImpl implements DownloadService {
     private DownloadTagService downloadTagService;
 
     @Override
-    public List<Download> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+    public List<Download> findAllDownloadsForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult) {
         return downloadRepository.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 

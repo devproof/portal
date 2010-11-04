@@ -20,7 +20,7 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.Article;
 
@@ -42,7 +42,7 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
     @Query(value = "select a from Article a where " +
     		"exists(from Article ea left join ea.allRights ar where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'article.view%') and a = ea) " +
 					"order by a.modifiedAt desc", limitClause = true)
-    List<Article> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Article> findAllArticlesForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult);
 
     @Query("select count(a) from Article a where a.contentId like ?")
     long existsContentId(String contentId);

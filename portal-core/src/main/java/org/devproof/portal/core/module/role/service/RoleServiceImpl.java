@@ -17,8 +17,8 @@ package org.devproof.portal.core.module.role.service;
 
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.role.RoleConstants;
-import org.devproof.portal.core.module.role.dao.RoleRepository;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
+import org.devproof.portal.core.module.role.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,52 +30,52 @@ import java.util.List;
 @Service("roleService")
 public class RoleServiceImpl implements RoleService {
     private ConfigurationService configurationService;
-    private RoleRepository roleDao;
+    private RoleRepository roleRepository;
 
     @Override
-    public RoleEntity newRoleEntity() {
-        return new RoleEntity();
+    public Role newRoleEntity() {
+        return new Role();
     }
 
     @Override
-    public List<RoleEntity> findAllOrderByDescription() {
-        return roleDao.findAllOrderByDescription();
+    public List<Role> findAllOrderByDescription() {
+        return roleRepository.findAllOrderByDescription();
     }
 
     @Override
-    public void delete(RoleEntity entity) {
-        roleDao.delete(entity);
+    public void delete(Role entity) {
+        roleRepository.delete(entity);
     }
 
     @Override
-    public List<RoleEntity> findAll() {
-        return roleDao.findAll();
+    public List<Role> findAll() {
+        return roleRepository.findAll();
     }
 
     @Override
-    public RoleEntity findById(Integer id) {
-        return roleDao.findById(id);
+    public Role findById(Integer id) {
+        return roleRepository.findById(id);
     }
 
     @Override
-    public void save(RoleEntity entity) {
-        roleDao.save(entity);
+    public void save(Role entity) {
+        roleRepository.save(entity);
     }
 
     @Override
-    public RoleEntity findGuestRole() {
+    public Role findGuestRole() {
         Integer roleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
         return findById(roleId);
     }
 
     @Override
-    public RoleEntity findDefaultRegistrationRole() {
+    public Role findDefaultRegistrationRole() {
         return findById(configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE));
     }
 
     @Autowired
-    public void setRoleDao(RoleRepository roleDao) {
-        this.roleDao = roleDao;
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Autowired

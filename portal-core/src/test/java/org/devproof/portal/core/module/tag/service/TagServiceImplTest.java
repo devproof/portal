@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.tag.service;
 
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.dao.TagRepository;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.junit.Before;
@@ -101,7 +101,7 @@ public class TagServiceImplTest {
         List<DummyTagEntity> list = new ArrayList<DummyTagEntity>();
         list.add(new DummyTagEntity());
         list.add(new DummyTagEntity());
-        RoleEntity role = new RoleEntity();
+        Role role = new Role();
         expect(mock.findMostPopularTags(role, "testright", 0, 2)).andReturn(list);
         replay(mock);
         assertEquals(list, impl.findMostPopularTags(role, 0, 2));

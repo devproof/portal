@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.tag.service;
 
 import org.apache.commons.lang.UnhandledException;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.dao.TagRepository;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 
@@ -39,7 +39,7 @@ public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> impleme
     }
 
     @Override
-    public List<T> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
+    public List<T> findMostPopularTags(Role role, Integer firstResult, Integer maxResult) {
         return tagDao.findMostPopularTags(role, getRelatedTagRight(), firstResult, maxResult);
     }
 

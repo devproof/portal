@@ -28,7 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
@@ -144,7 +144,7 @@ public class PortalSession extends WebSession {
         long appDirtyTime = rightService.getDirtyTime();
         if (appDirtyTime != dirtyTime) {
             dirtyTime = appDirtyTime;
-            RoleEntity role = roleService.findById(user.getRole().getId());
+            Role role = roleService.findById(user.getRole().getId());
             user.setRole(role);
         }
     }
@@ -176,7 +176,7 @@ public class PortalSession extends WebSession {
      *
      * @return the role of the user
      */
-    public RoleEntity getRole() {
+    public Role getRole() {
         return getUser().getRole();
     }
 

@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.article.service;
 
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
@@ -41,7 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+    public List<Article> findAllArticlesForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult) {
         return articleRepository.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 

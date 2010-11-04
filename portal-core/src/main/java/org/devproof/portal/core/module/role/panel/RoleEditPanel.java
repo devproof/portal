@@ -32,7 +32,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 
 import java.util.Collection;
@@ -49,17 +49,17 @@ public abstract class RoleEditPanel extends Panel {
     @SpringBean(name = "rightService")
     private RightService rightService;
     private FeedbackPanel feedback;
-    private IModel<RoleEntity> roleModel;
+    private IModel<Role> roleModel;
 
-    public RoleEditPanel(String id, IModel<RoleEntity> roleModel) {
+    public RoleEditPanel(String id, IModel<Role> roleModel) {
         super(id, roleModel);
         this.roleModel = roleModel;
         add(createFeedbackPanel());
         add(createRoleEditForm());
     }
 
-    private Form<RoleEntity> createRoleEditForm() {
-        Form<RoleEntity> form = new Form<RoleEntity>("form", new CompoundPropertyModel<RoleEntity>(roleModel));
+    private Form<Role> createRoleEditForm() {
+        Form<Role> form = new Form<Role>("form", new CompoundPropertyModel<Role>(roleModel));
         form.add(createRoleDescriptionField());
         form.add(createActiveCheckBox());
         form.add(createRightPalette());
@@ -125,7 +125,7 @@ public abstract class RoleEditPanel extends Panel {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                roleService.save((RoleEntity) form.getModelObject());
+                roleService.save((Role) form.getModelObject());
                 RoleEditPanel.this.onSave(target);
             }
 

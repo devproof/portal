@@ -20,7 +20,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.Configuration;
-import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.test.PortalTestUtil;
@@ -96,7 +96,7 @@ public class TagCloudBoxPanelTest {
         }
 
         @Override
-        public List<TestTagEntity> findMostPopularTags(RoleEntity role, Integer firstResult, Integer maxResult) {
+        public List<TestTagEntity> findMostPopularTags(Role role, Integer firstResult, Integer maxResult) {
             return new ArrayList<TestTagEntity>();
         }
 
