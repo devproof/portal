@@ -93,7 +93,7 @@ public class SortablePersistenceDataProviderImpl<T extends Serializable, SQ exte
     }
 
     @Autowired
-    public void setDataProviderDao(DataProviderRepository<T> dataProviderRepository) {
+    public void setDataProviderRepository(DataProviderRepository<T> dataProviderRepository) {
         this.dataProviderRepository = dataProviderRepository;
     }
 

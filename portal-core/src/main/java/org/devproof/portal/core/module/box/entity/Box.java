@@ -18,7 +18,7 @@ package org.devproof.portal.core.module.box.entity;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,7 +32,7 @@ import javax.persistence.*;
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 @RegisterGenericDataProvider(value = "boxDataProvider", sortProperty = "sort")
-public class Box extends BaseEntity {
+public class Box extends Modification {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

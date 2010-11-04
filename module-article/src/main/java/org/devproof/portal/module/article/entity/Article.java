@@ -18,7 +18,7 @@ package org.devproof.portal.module.article.entity;
 import org.apache.commons.lang.StringUtils;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.common.model.EntityId;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.article.ArticleConstants;
@@ -40,7 +40,7 @@ import java.util.List;
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "articleDataProvider", sortProperty = "title", sortAscending = true, queryClass = ArticleQuery.class)
-public class Article extends BaseEntity implements EntityId {
+public class Article extends Modification implements EntityId {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

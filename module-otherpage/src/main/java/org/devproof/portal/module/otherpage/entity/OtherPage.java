@@ -17,7 +17,7 @@ package org.devproof.portal.module.otherpage.entity;
 
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.hibernate.annotations.Cache;
@@ -35,7 +35,7 @@ import java.util.List;
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = OtherPageConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "otherPageDataProvider", sortProperty = "contentId", sortAscending = true)
-public class OtherPage extends BaseEntity {
+public class OtherPage extends Modification {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

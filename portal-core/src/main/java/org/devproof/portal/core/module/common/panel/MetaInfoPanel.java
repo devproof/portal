@@ -26,7 +26,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.panel.UsernamePanel;
 
@@ -35,7 +35,7 @@ import org.devproof.portal.core.module.user.panel.UsernamePanel;
  * 
  * @author Carsten Hufe
  */
-public class MetaInfoPanel<T extends BaseEntity> extends Panel {
+public class MetaInfoPanel<T extends Modification> extends Panel {
 	private static final long serialVersionUID = 1L;
 	@SpringBean(name = "displayDateFormat")
 	private SimpleDateFormat dateFormat;
@@ -71,12 +71,12 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
 	}
 
 	private boolean isSameAuthor() {
-		BaseEntity entity = entityModel.getObject();
+		Modification entity = entityModel.getObject();
 		return entity.getCreatedBy().equals(entity.getModifiedBy());
 	}
 
 	private boolean isNotEqualCreationModificationTime() {
-		BaseEntity entity = entityModel.getObject();
+		Modification entity = entityModel.getObject();
 		return !entity.getCreatedAt().equals(entity.getModifiedAt());
 	}
 
@@ -91,7 +91,7 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
 
 			@Override
 			protected String load() {
-				BaseEntity entity = entityModel.getObject();
+				Modification entity = entityModel.getObject();
 				return dateFormat.format(entity.getModifiedAt());
 			}
 		};
@@ -157,7 +157,7 @@ public class MetaInfoPanel<T extends BaseEntity> extends Panel {
 
 			@Override
 			protected String load() {
-				BaseEntity entity = entityModel.getObject();
+				Modification entity = entityModel.getObject();
 				Date created = showModifiedAtAsCreatedAt() ? entity.getModifiedAt() : entity.getCreatedAt();
 				return dateFormat.format(created);
 			}

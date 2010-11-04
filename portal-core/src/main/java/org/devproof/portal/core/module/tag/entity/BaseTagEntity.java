@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.tag.entity;
 
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 @MappedSuperclass
-public abstract class BaseTagEntity<T> extends BaseEntity {
+public abstract class BaseTagEntity<T> extends Modification {
 
     private static final long serialVersionUID = 1L;
     @Id

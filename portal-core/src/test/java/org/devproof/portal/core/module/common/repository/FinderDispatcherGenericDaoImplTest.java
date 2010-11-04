@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.common.repository;
 
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.junit.Before;
@@ -146,7 +146,7 @@ public class FinderDispatcherGenericDaoImplTest {
         public void delegateToImpl();
     }
 
-    public static class TestEntity extends BaseEntity {
+    public static class TestEntity extends Modification {
         private static final long serialVersionUID = 1L;
         private Integer id;
 

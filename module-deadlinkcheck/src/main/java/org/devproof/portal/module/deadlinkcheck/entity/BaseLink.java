@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.deadlinkcheck.entity;
 
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 
 import javax.persistence.*;
 
@@ -25,7 +25,7 @@ import javax.persistence.*;
  * @author Carsten Hufe
  */
 @MappedSuperclass
-public abstract class BaseLink extends BaseEntity {
+public abstract class BaseLink extends Modification {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

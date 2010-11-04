@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.common.repository;
 
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.CacheMode;
@@ -62,12 +62,12 @@ public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends 
     }
 
     private void updateModificationData(T entity) {
-        if (entity instanceof BaseEntity) {
-            BaseEntity base = (BaseEntity) entity;
+        if (entity instanceof Modification) {
+            Modification base = (Modification) entity;
             // only works in the request
             if (base.isUpdateModificationData()) {
                 String username = usernameResolver.getUsername();
-                logger.debug("BaseEntity " + entity + "set creation date and user");
+                logger.debug("Modification " + entity + "set creation date and user");
                 if (base.getCreatedAt() == null) {
                     base.setCreatedAt(PortalUtil.now());
                 }

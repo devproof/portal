@@ -18,9 +18,8 @@ package org.devproof.portal.core.module.role.entity;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.right.entity.RightEntity;
-import org.devproof.portal.core.module.right.query.RightQuery;
 import org.devproof.portal.core.module.role.query.RoleQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -40,7 +39,7 @@ import java.util.List;
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 @RegisterGenericDataProvider(value = "roleDataProvider", sortProperty = "description", queryClass = RoleQuery.class)
-public class RoleEntity extends BaseEntity {
+public class RoleEntity extends Modification {
 
     private static final long serialVersionUID = 1L;
 

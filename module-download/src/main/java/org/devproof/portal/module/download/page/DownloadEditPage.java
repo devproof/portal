@@ -136,7 +136,7 @@ public class DownloadEditPage extends DownloadBasePage {
             @Override
             protected void onSubmit() {
                 DownloadEditPage.this.setVisible(false);
-                DownloadEntity download = downloadModel.getObject();
+                Download download = downloadModel.getObject();
                 download.setBroken(Boolean.FALSE);
                 downloadService.save(download);
                 setRedirect(false);

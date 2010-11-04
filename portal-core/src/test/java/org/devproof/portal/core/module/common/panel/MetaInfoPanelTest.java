@@ -19,7 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.common.entity.BaseEntity;
+import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -66,7 +66,7 @@ public class MetaInfoPanelTest {
         };
     }
 
-    private static class TestEntity extends BaseEntity {
+    private static class TestEntity extends Modification {
         private static final long serialVersionUID = 1L;
     }
 }

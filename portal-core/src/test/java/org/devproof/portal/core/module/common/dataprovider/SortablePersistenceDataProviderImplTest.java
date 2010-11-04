@@ -54,7 +54,7 @@ public class SortablePersistenceDataProviderImplTest {
         };
         impl.setEntityClass(EmailTemplateEntity.class);
         impl.setSort("subject", true);
-        impl.setDataProviderDao(dataProviderRepositoryMock);
+        impl.setDataProviderRepository(dataProviderRepositoryMock);
     }
 
     @Test
