@@ -19,6 +19,7 @@ import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.repository.BoxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,17 +30,20 @@ import java.util.List;
 public class BoxServiceImpl implements BoxService {
 	private BoxRepository boxRepository;
 
-	@Override
-	public List<Box> findAllOrderedBySort() {
-		return boxRepository.findAllOrderedBySort();
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<Box> findAllOrderedBySort() {
+        return boxRepository.findAllOrderedBySort();
+    }
 
-	@Override
+    @Override
+    @Transactional(readOnly = true)
 	public Box findBoxBySort(Integer sort) {
 		return boxRepository.findBoxBySort(sort);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Integer getMaxSortNum() {
 		Integer sort = boxRepository.getMaxSortNum();
 		if (sort == null) {
@@ -53,7 +57,8 @@ public class BoxServiceImpl implements BoxService {
 		return new Box();
 	}
 
-	@Override
+    @Override
+    @Transactional
 	public void delete(Box entity) {
 		int maxSort = boxRepository.getMaxSortNum();
 		int deleteSort = entity.getSort();
@@ -69,16 +74,19 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Box findById(Integer id) {
 		return boxRepository.findById(id);
 	}
 
 	@Override
+    @Transactional
 	public void save(Box entity) {
 		boxRepository.save(entity);
 	}
 
 	@Override
+    @Transactional
 	public void moveDown(Box box) {
 		int maxSort = boxRepository.getMaxSortNum();
 		boolean isNotLowestBox = box.getSort() < maxSort;
@@ -93,6 +101,7 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
+    @Transactional
 	public void moveUp(Box box) {
 		boolean isNotHighestBox = box.getSort() > 1;
 		if (isNotHighestBox) {
