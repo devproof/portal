@@ -31,6 +31,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -56,26 +57,31 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @Transactional
     public void delete(EmailTemplate entity) {
         emailTemplateRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EmailTemplate> findAll() {
         return emailTemplateRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EmailTemplate findById(Integer id) {
         return emailTemplateRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(EmailTemplate entity) {
         emailTemplateRepository.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void sendEmail(EmailTemplate template, EmailPlaceholderBean placeholder) {
         if (emailDisabled) {
         	System.out.println("Sending Email <" + placeholder.getToEmail() + ">: " + template.getSubject());
@@ -126,6 +132,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void sendEmail(Integer templateId, EmailPlaceholderBean placeholder) {
         EmailTemplate template = emailTemplateRepository.findById(templateId);
         this.sendEmail(template, placeholder);

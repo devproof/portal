@@ -19,6 +19,7 @@ import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.repository.RightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -54,11 +55,13 @@ public class RightServiceImpl implements RightService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Right> findAllOrderByDescription() {
         return rightRepository.findAllOrderByDescription();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Right> findRightsStartingWith(String prefix) {
         return rightRepository.findRightsStartingWith(prefix);
     }
@@ -74,21 +77,25 @@ public class RightServiceImpl implements RightService {
     }
 
     @Override
+    @Transactional
     public void delete(Right entity) {
         rightRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Right> findAll() {
         return rightRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Right findById(String id) {
         return rightRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Right entity) {
         rightRepository.save(entity);
     }

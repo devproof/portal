@@ -45,7 +45,7 @@ public class TagServiceImplTest {
                 return "testright";
             }
         };
-        impl.setTagDao(mock);
+        impl.setTagRepository(mock);
     }
 
     @Test

@@ -21,6 +21,7 @@ import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,37 +39,44 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Role> findAllOrderByDescription() {
         return roleRepository.findAllOrderByDescription();
     }
 
     @Override
+    @Transactional
     public void delete(Role entity) {
         roleRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Role> findAll() {
         return roleRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role findById(Integer id) {
         return roleRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Role entity) {
         roleRepository.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role findGuestRole() {
         Integer roleId = configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_GUEST_ROLE);
         return findById(roleId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Role findDefaultRegistrationRole() {
         return findById(configurationService.findAsInteger(RoleConstants.CONF_DEFAULT_REGUSER_ROLE));
     }

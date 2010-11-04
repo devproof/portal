@@ -27,6 +27,7 @@ import org.devproof.portal.core.module.modulemgmt.repository.ModuleLinkRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.net.URL;
@@ -42,6 +43,7 @@ public class ModuleServiceImpl implements ModuleService {
 	private PageLocator pageLocator;
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<ModuleBean> findModules() {
 		List<ModuleBean> coreModules = new ArrayList<ModuleBean>();
 		List<ModuleBean> otherModules = new ArrayList<ModuleBean>();
@@ -64,6 +66,7 @@ public class ModuleServiceImpl implements ModuleService {
 	}
 
 	@Override
+    @Transactional
 	public void moveDown(ModuleLink link) {
 		int maxSort = moduleLinkRepository.getMaxSortNum(link.getLinkType());
 		if (link.getSort() < maxSort) {
@@ -77,6 +80,7 @@ public class ModuleServiceImpl implements ModuleService {
 	}
 
 	@Override
+    @Transactional
 	public void moveUp(ModuleLink link) {
 		if (link.getSort() > 1) {
 			ModuleLink moveUp = link;
@@ -89,21 +93,25 @@ public class ModuleServiceImpl implements ModuleService {
 	}
 
 	@Override
+    @Transactional
 	public void save(ModuleLink link) {
 		moduleLinkRepository.save(link);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<ModuleLink> findAllVisibleGlobalAdministrationLinks() {
 		return moduleLinkRepository.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<ModuleLink> findAllVisibleMainNavigationLinks() {
 		return moduleLinkRepository.findVisibleModuleLinks(LinkType.TOP_NAVIGATION);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<ModuleLink> findAllVisiblePageAdministrationLinks() {
 		return moduleLinkRepository.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION);
 	}

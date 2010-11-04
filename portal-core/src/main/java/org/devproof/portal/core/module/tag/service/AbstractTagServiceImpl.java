@@ -19,6 +19,7 @@ import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.repository.TagRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,33 +27,37 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implements TagService<T> {
-    private TagRepository<T> tagDao;
+    private TagRepository<T> tagRepository;
 
     @Override
+    @Transactional
     public void deleteUnusedTags() {
-        tagDao.deleteUnusedTags();
+        tagRepository.deleteUnusedTags();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<T> findMostPopularTags(Integer firstResult, Integer maxResult) {
-        return tagDao.findMostPopularTags(firstResult, maxResult);
+        return tagRepository.findMostPopularTags(firstResult, maxResult);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<T> findMostPopularTags(Role role, Integer firstResult, Integer maxResult) {
-        return tagDao.findMostPopularTags(role, getRelatedTagRight(), firstResult, maxResult);
+        return tagRepository.findMostPopularTags(role, getRelatedTagRight(), firstResult, maxResult);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<T> findTagsStartingWith(String prefix) {
-        return tagDao.findTagsStartingWith(prefix);
+        return tagRepository.findTagsStartingWith(prefix);
     }
 
     @Override
     public T newTagEntity(String tag) {
         T obj;
         try {
-            obj = tagDao.getType().newInstance();
+            obj = tagRepository.getType().newInstance();
         } catch (InstantiationException e) {
             throw new UnhandledException(e);
         } catch (IllegalAccessException e) {
@@ -65,21 +70,25 @@ public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implement
     public abstract String getRelatedTagRight();
 
     @Override
+    @Transactional
     public void delete(T entity) {
-        tagDao.delete(entity);
+        tagRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public T findById(String id) {
-        return tagDao.findById(id);
+        return tagRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(T entity) {
-        tagDao.save(entity);
+        tagRepository.save(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public T findByIdAndCreateIfNotExists(String tagName) {
         T tag = findById(tagName);
         if (tag == null) {
@@ -89,7 +98,7 @@ public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implement
         return tag;
     }
 
-    public void setTagDao(TagRepository<T> tagDao) {
-        this.tagDao = tagDao;
+    public void setTagRepository(TagRepository<T> tagRepository) {
+        this.tagRepository = tagRepository;
     }
 }

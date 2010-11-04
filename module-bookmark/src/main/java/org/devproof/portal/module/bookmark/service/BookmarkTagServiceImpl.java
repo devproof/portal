@@ -33,6 +33,6 @@ public class BookmarkTagServiceImpl extends AbstractTagServiceImpl<BookmarkTag> 
 
     @Autowired
     public void setBookmarkTagRepository(BookmarkTagRepository bookmarkTagRepository) {
-        setTagDao(bookmarkTagRepository);
+        setTagRepository(bookmarkTagRepository);
     }
 }

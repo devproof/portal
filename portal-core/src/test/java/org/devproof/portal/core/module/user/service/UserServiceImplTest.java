@@ -54,7 +54,7 @@ public class UserServiceImplTest {
         emailServiceMock = createMock(EmailService.class);
         configurationServiceMock = createMock(ConfigurationService.class);
         impl = new UserServiceImpl();
-        impl.setUserDao(userDaoMock);
+        impl.setUserRepository(userDaoMock);
         impl.setRoleService(roleServiceMock);
         impl.setEmailService(emailServiceMock);
         impl.setConfigurationService(configurationServiceMock);

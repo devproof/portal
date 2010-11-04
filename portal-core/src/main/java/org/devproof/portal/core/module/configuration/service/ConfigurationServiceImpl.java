@@ -20,6 +20,7 @@ import org.devproof.portal.core.module.configuration.registry.ConfigurationRegis
 import org.devproof.portal.core.module.configuration.repository.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -45,6 +46,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Object findAsObject(String key) {
 		Configuration c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
@@ -66,11 +68,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Boolean findAsBoolean(String key) {
 		return (Boolean) findAsObject(key);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Date findAsDate(String key) {
 		Configuration c = configurationRegistry.getConfiguration(key);
 		if (c == null) {
@@ -88,26 +92,31 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Double findAsDouble(String key) {
 		return (Double) findAsObject(key);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Enum<?> findAsEnum(String key) {
 		return (Enum<?>) findAsObject(key);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Integer findAsInteger(String key) {
 		return (Integer) findAsObject(key);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public String findAsString(String key) {
 		return (String) findAsObject(key);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public File findAsFile(String key) {
 		String path = findAsString(key);
 		if (path.equals("java.io.tmpdir")) {
@@ -125,31 +134,37 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<Configuration> findAll() {
 		return configurationDao.findAll();
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<String> findConfigurationGroups() {
 		return configurationDao.findConfigurationGroups();
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<Configuration> findConfigurationsByGroup(String group) {
 		return configurationDao.findConfigurationsByGroup(group);
 	}
 
 	@Override
+    @Transactional
 	public void delete(Configuration entity) {
 		configurationDao.delete(entity);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public Configuration findById(String id) {
 		return configurationDao.findById(id);
 	}
 
 	@Override
+    @Transactional
 	public void save(Configuration entity) {
 		configurationDao.save(entity);
 	}

@@ -28,6 +28,7 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Carsten Hufe
@@ -36,12 +37,14 @@ public class DataProviderRepositoryImpl<T> extends HibernateDaoSupport implement
 
 	@Override
 	@SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
 	public T findById(Class<T> clazz, Serializable id) {
 		return (T) this.getSession().get(clazz, id);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
 	public List<T> findAll(Class<T> clazz) {
 		Query q = getSession().createQuery("Select e from " + clazz.getSimpleName() + " e");
 		setCacheConfiguration(q, clazz);
@@ -50,6 +53,7 @@ public class DataProviderRepositoryImpl<T> extends HibernateDaoSupport implement
 
 	@Override
 	@SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
 	public List<T> findAll(Class<T> clazz, int first, int count) {
 		Query q = this.getSession().createQuery("Select e from " + clazz.getSimpleName() + " e");
 		setCacheConfiguration(q, clazz);
@@ -157,6 +161,7 @@ public class DataProviderRepositoryImpl<T> extends HibernateDaoSupport implement
 
 	@Override
 	@SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
 	public List<T> findAllWithQuery(Class<T> clazz, String sortParam, boolean ascending, int first, int count,
 			Serializable beanQuery, List<String> prefetch) {
 		Query q = createHibernateQuery("e", clazz, sortParam, ascending, beanQuery, prefetch);
@@ -167,11 +172,13 @@ public class DataProviderRepositoryImpl<T> extends HibernateDaoSupport implement
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public int getSize(Class<T> clazz, Serializable beanQuery) {
 		return getSize(clazz, "count(e)", beanQuery);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public int getSize(Class<T> clazz, String countQuery, Serializable beanQuery) {
 		Long count = (Long) createHibernateQuery(countQuery, clazz, null, false, beanQuery, null).uniqueResult();
 		return count.intValue();

@@ -30,6 +30,7 @@ import org.devproof.portal.core.module.user.exception.AuthentificationFailedExce
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,61 +42,70 @@ import java.util.UUID;
 @Service("userService")
 public class UserServiceImpl implements UserService {
     private final Log logger = LogFactory.getLog(UserServiceImpl.class);
-    private UserRepository userDao;
+    private UserRepository userRepository;
     private RoleService roleService;
     private EmailService emailService;
     private ConfigurationService configurationService;
 
     @Override
+    @Transactional(readOnly = true)
     public long countUserForRole(Role role) {
-        return userDao.countUserForRole(role);
+        return userRepository.countUserForRole(role);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean existsUsername(String username) {
         if (UserConstants.UNKNOWN_USERNAME.equalsIgnoreCase(username)) {
             return true;
         }
-        return userDao.existsUsername(username) > 0;
+        return userRepository.existsUsername(username) > 0;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> findUserByEmail(String email) {
-        return userDao.findUserByEmail(email);
+        return userRepository.findUserByEmail(email);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findUserBySessionId(String sessionId) {
-        return userDao.findUserBySessionId(sessionId);
+        return userRepository.findUserBySessionId(sessionId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findUserByUsername(String username) {
-        return userDao.findUserByUsername(username);
+        return userRepository.findUserByUsername(username);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> findUserWithRight(String right) {
-        return userDao.findUserWithRight(right);
+        return userRepository.findUserWithRight(right);
     }
 
     @Override
+    @Transactional
     public void delete(User entity) {
-        userDao.delete(entity);
+        userRepository.delete(entity);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findById(Integer id) {
-        return userDao.findById(id);
+        return userRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(User entity) {
         if (entity.getRegistrationDate() == null) {
             entity.setRegistrationDate(PortalUtil.now());
         }
         entity.setChangedAt(PortalUtil.now());
-        userDao.save(entity);
+        userRepository.save(entity);
     }
 
     @Override
@@ -104,6 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User findGuestUser() {
         Role guestRole = roleService.findGuestRole();
         User user = newUserEntity();
@@ -114,6 +125,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public boolean activateUser(String username, String activationCode) {
         User user = findUserByUsername(username);
         if (user != null && activationCode.equals(user.getConfirmationCode())) {
@@ -127,6 +139,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void registerUser(User user, UrlCallback urlCallback) {
         user.setActive(Boolean.TRUE);
         user.setRole(roleService.findDefaultRegistrationRole());
@@ -179,6 +192,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void saveNewPassword(String username, String newPassword) {
         User user = findUserByUsername(username);
         user.setPlainPassword(newPassword);
@@ -187,6 +201,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User authentificate(String username, String password, String ipAddress) throws UserNotConfirmedException, AuthentificationFailedException {
         User user = findUserByUsername(username);
         logger.info("Authentificate user " + username);
@@ -212,6 +227,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User authentificate(String sessionId, String ipAddress) {
         User user = findUserBySessionId(sessionId);
         if (user != null && user.getActive() && user.getRole().getActive() && user.getConfirmed()) {
@@ -229,6 +245,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void sendForgotPasswordCode(String usernameOrEmail, UrlCallback urlCallback) {
         List<User> users = generateForgotPasswordCode(usernameOrEmail);
         for (User user : users) {
@@ -263,6 +280,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void resendConfirmationCode(User user, UrlCallback urlCallback) {
         generateConfirmationCode(user);
         EmailPlaceholderBean placeholder = generateEmailPlaceholderForConfirmation(user, urlCallback);
@@ -286,7 +304,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Autowired
-    public void setUserDao(UserRepository userDao) {
-        this.userDao = userDao;
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

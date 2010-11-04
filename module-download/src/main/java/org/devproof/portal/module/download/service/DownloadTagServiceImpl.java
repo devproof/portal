@@ -33,6 +33,6 @@ public class DownloadTagServiceImpl extends AbstractTagServiceImpl<DownloadTag> 
 
     @Autowired
     public void setDownloadTagRepository(DownloadTagRepository downloadTagRepository) {
-        setTagDao(downloadTagRepository);
+        setTagRepository(downloadTagRepository);
     }
 }
