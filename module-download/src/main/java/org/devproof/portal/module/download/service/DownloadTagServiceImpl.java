@@ -16,7 +16,7 @@
 package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
-import org.devproof.portal.module.download.dao.DownloadTagDao;
+import org.devproof.portal.module.download.repository.DownloadTagRepository;
 import org.devproof.portal.module.download.entity.DownloadTagEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class DownloadTagServiceImpl extends AbstractTagServiceImpl<DownloadTagEn
     }
 
     @Autowired
-    public void setDownloadTagDao(DownloadTagDao downloadTagDao) {
-        setTagDao(downloadTagDao);
+    public void setDownloadTagDao(DownloadTagRepository downloadTagRepository) {
+        setTagDao(downloadTagRepository);
     }
 }

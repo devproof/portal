@@ -16,12 +16,9 @@
 package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.download.dao.DownloadDao;
+import org.devproof.portal.module.download.repository.DownloadRepository;
 import org.devproof.portal.module.download.entity.DownloadEntity;
-import org.devproof.portal.module.download.entity.DownloadTagEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,67 +28,67 @@ import java.util.List;
  */
 @Service("downloadService")
 public class DownloadServiceImpl implements DownloadService {
-    private DownloadDao downloadDao;
+    private DownloadRepository downloadRepository;
     private DownloadTagService downloadTagService;
 
     @Override
     public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
-        return downloadDao.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
+        return downloadRepository.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
     public void incrementHits(DownloadEntity download) {
-        downloadDao.incrementHits(download);
+        downloadRepository.incrementHits(download);
     }
 
     @Override
     public void markBrokenDownload(DownloadEntity download) {
-        downloadDao.markBrokenDownload(download);
+        downloadRepository.markBrokenDownload(download);
     }
 
     @Override
     public void markValidDownload(DownloadEntity download) {
-        downloadDao.markValidDownload(download);
+        downloadRepository.markValidDownload(download);
     }
 
     @Override
     public DownloadEntity newDownloadEntity() {
         DownloadEntity download = new DownloadEntity();
-        download.setAllRights(downloadDao.findLastSelectedRights());
+        download.setAllRights(downloadRepository.findLastSelectedRights());
         return download;
     }
 
     @Override
     public void rateDownload(Integer rating, DownloadEntity download) {
-        downloadDao.rateDownload(rating, download);
-        downloadDao.refresh(download);
+        downloadRepository.rateDownload(rating, download);
+        downloadRepository.refresh(download);
     }
 
     @Override
     public void delete(DownloadEntity entity) {
-        downloadDao.delete(entity);
+        downloadRepository.delete(entity);
         downloadTagService.deleteUnusedTags();
     }
 
     @Override
     public List<DownloadEntity> findAll() {
-        return downloadDao.findAll();
+        return downloadRepository.findAll();
     }
 
     @Override
     public DownloadEntity findById(Integer id) {
-        return downloadDao.findById(id);
+        return downloadRepository.findById(id);
     }
 
     @Override
     public void save(DownloadEntity entity) {
-        downloadDao.save(entity);
+        downloadRepository.save(entity);
         downloadTagService.deleteUnusedTags();
     }
 
     @Autowired
-    public void setDownloadDao(DownloadDao downloadDao) {
-        this.downloadDao = downloadDao;
+    public void setDownloadDao(DownloadRepository downloadRepository) {
+        this.downloadRepository = downloadRepository;
     }
 
     @Autowired

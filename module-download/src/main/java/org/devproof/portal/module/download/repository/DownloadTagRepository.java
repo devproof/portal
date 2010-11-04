@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.download.dao;
+package org.devproof.portal.module.download.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
@@ -26,5 +26,5 @@ import org.devproof.portal.module.download.entity.DownloadTagEntity;
  */
 @GenericRepository("downloadTagDao")
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
-public interface DownloadTagDao extends TagDao<DownloadTagEntity> {
+public interface DownloadTagRepository extends TagDao<DownloadTagEntity> {
 }

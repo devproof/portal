@@ -16,10 +16,8 @@
 package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.download.dao.DownloadDao;
+import org.devproof.portal.module.download.repository.DownloadRepository;
 import org.devproof.portal.module.download.entity.DownloadEntity;
-import org.devproof.portal.module.download.entity.DownloadTagEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,13 +35,13 @@ import static org.junit.Assert.assertNotNull;
  */
 public class DownloadServiceImplTest {
     private DownloadServiceImpl impl;
-    private DownloadDao mock;
+    private DownloadRepository mock;
     private DownloadTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        mock = createStrictMock(DownloadDao.class);
+        mock = createStrictMock(DownloadRepository.class);
         mockTag = createStrictMock(DownloadTagService.class);
         impl = new DownloadServiceImpl();
         impl.setDownloadDao(mock);

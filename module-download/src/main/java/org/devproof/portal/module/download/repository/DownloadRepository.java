@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.download.dao;
-
-import java.util.List;
+package org.devproof.portal.module.download.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
@@ -27,12 +25,14 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.DownloadEntity;
 
+import java.util.List;
+
 /**
  * @author Carsten Hufe
  */
 @GenericRepository("downloadDao")
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
-public interface DownloadDao extends GenericDao<DownloadEntity, Integer> {
+public interface DownloadRepository extends GenericDao<DownloadEntity, Integer> {
     @Query("Select d from DownloadEntity d")
     List<DownloadEntity> findAll();
 
