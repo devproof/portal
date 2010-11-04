@@ -18,7 +18,7 @@ package org.devproof.portal.module.deadlinkcheck.panel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+import org.devproof.portal.module.deadlinkcheck.entity.BaseLink;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -69,7 +69,7 @@ public class DeadLinkCheckPanelTest {
         }
     }
 
-    private static class TestLinkEntity extends BaseLinkEntity {
+    private static class TestLinkEntity extends BaseLink {
         private static final long serialVersionUID = 1L;
     }
 }

@@ -40,14 +40,14 @@ import org.devproof.portal.core.module.common.component.ProgressBar;
 import org.devproof.portal.core.module.common.component.Progression;
 import org.devproof.portal.core.module.common.component.ProgressionModel;
 import org.devproof.portal.core.module.common.util.httpclient.ssl.EasySSLProtocolSocketFactory;
-import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+import org.devproof.portal.module.deadlinkcheck.entity.BaseLink;
 
 /**
  * Panel for checking deadlinks (bookmarks and downloads)
  *
  * @author Carsten Hufe
  */
-public abstract class DeadlinkCheckPanel<T extends BaseLinkEntity> extends Panel {
+public abstract class DeadlinkCheckPanel<T extends BaseLink> extends Panel {
 
     private static final long serialVersionUID = 1L;
 

@@ -20,7 +20,7 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
-import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+import org.devproof.portal.module.deadlinkcheck.entity.BaseLink;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -38,7 +38,7 @@ import java.util.List;
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "bookmarkDataProvider", sortProperty = "title", sortAscending = true, queryClass = BookmarkQuery.class)
-public class Bookmark extends BaseLinkEntity {
+public class Bookmark extends BaseLink {
     private static final long serialVersionUID = 1L;
 
     public enum Source {

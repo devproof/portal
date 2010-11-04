@@ -30,7 +30,7 @@ import javax.persistence.Transient;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.right.entity.RightEntity;
-import org.devproof.portal.module.deadlinkcheck.entity.BaseLinkEntity;
+import org.devproof.portal.module.deadlinkcheck.entity.BaseLink;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.query.DownloadQuery;
 import org.hibernate.annotations.Cache;
@@ -46,7 +46,7 @@ import org.hibernate.annotations.FetchMode;
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = DownloadConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "downloadDataProvider", sortProperty = "title", sortAscending = true, queryClass = DownloadQuery.class)
-public class DownloadEntity extends BaseLinkEntity {
+public class DownloadEntity extends BaseLink {
 
     private static final long serialVersionUID = 1L;
     @Column(name = "software_version")
