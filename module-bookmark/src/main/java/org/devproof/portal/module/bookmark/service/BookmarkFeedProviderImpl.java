@@ -25,11 +25,10 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.page.BookmarkPage;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -41,19 +40,19 @@ import java.util.List;
  */
 @Component
 public class BookmarkFeedProviderImpl implements FeedProvider {
-    private SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider;
+    private SortableQueryDataProvider<Bookmark, BookmarkQuery> bookmarkDataProvider;
     private ConfigurationService configurationService;
 
     @Override
     public SyndFeed getFeed(RequestCycle rc) {
         SyndFeed feed = generateFeed(rc);
-        Iterator<? extends BookmarkEntity> iterator = getBookmarkEntries();
+        Iterator<? extends Bookmark> iterator = getBookmarkEntries();
         List<SyndEntry> entries = generateFeedEntries(rc, iterator);
         feed.setEntries(entries);
         return feed;
     }
 
-    protected Iterator<? extends BookmarkEntity> getBookmarkEntries() {
+    protected Iterator<? extends Bookmark> getBookmarkEntries() {
         Integer maxNumber = configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARK_ENTRIES_IN_FEED);
         return bookmarkDataProvider.iterator(0, maxNumber);
     }
@@ -74,16 +73,16 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
         return rc.urlFor(BookmarkPage.class, new PageParameters()).toString();
     }
 
-    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BookmarkEntity> iterator) {
+    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends Bookmark> iterator) {
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         while (iterator.hasNext()) {
-            BookmarkEntity bookmarkEntity = iterator.next();
+            Bookmark bookmark = iterator.next();
             SyndEntry entry = new SyndEntryImpl();
-            entry.setTitle(bookmarkEntity.getTitle());
-            entry.setLink(getUrl(rc, bookmarkEntity));
-            entry.setPublishedDate(bookmarkEntity.getModifiedAt());
-            entry.setAuthor(bookmarkEntity.getModifiedBy());
-            String content = bookmarkEntity.getDescription();
+            entry.setTitle(bookmark.getTitle());
+            entry.setLink(getUrl(rc, bookmark));
+            entry.setPublishedDate(bookmark.getModifiedAt());
+            entry.setAuthor(bookmark.getModifiedBy());
+            String content = bookmark.getDescription();
             content = content != null ? content : "";
             content = content.replaceAll("<(.|\n)*?>", "");
             SyndContent description = new SyndContentImpl();
@@ -95,8 +94,8 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
         return entries;
     }
 
-    protected String getUrl(RequestCycle rc, BookmarkEntity BookmarkEntity) {
-        return rc.urlFor(BookmarkPage.class, new PageParameters("id=" + BookmarkEntity.getId())).toString();
+    protected String getUrl(RequestCycle rc, Bookmark bookmark) {
+        return rc.urlFor(BookmarkPage.class, new PageParameters("id=" + bookmark.getId())).toString();
     }
 
     @Override
@@ -114,7 +113,7 @@ public class BookmarkFeedProviderImpl implements FeedProvider {
     }
 
     @Autowired
-    public void setBookmarkDataProvider(SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider) {
+    public void setBookmarkDataProvider(SortableQueryDataProvider<Bookmark, BookmarkQuery> bookmarkDataProvider) {
         this.bookmarkDataProvider = bookmarkDataProvider;
     }
 

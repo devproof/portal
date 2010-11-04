@@ -16,7 +16,7 @@
 package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.module.bookmark.bean.DeliciousBean;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public interface SynchronizeService {
      * @param bean DeliciousBean from getDataFromDelicious
      * @return List with new bookmarks
      */
-    List<BookmarkEntity> getNewDeliciousBookmarks(DeliciousBean bean);
+    List<Bookmark> getNewDeliciousBookmarks(DeliciousBean bean);
 
     /**
      * Returns a list with updated delicious bookmarks
@@ -49,7 +49,7 @@ public interface SynchronizeService {
      * @param bean DeliciousBean from getDataFromDelicious
      * @return List with modified bookmarks
      */
-    List<BookmarkEntity> getModifiedDeliciousBookmarks(DeliciousBean bean);
+    List<Bookmark> getModifiedDeliciousBookmarks(DeliciousBean bean);
 
     /**
      * Returns a list with delicious bookmarks which were removed
@@ -57,5 +57,5 @@ public interface SynchronizeService {
      * @param bean DeliciousBean from getDataFromDelicious
      * @return List with removed bookmarks
      */
-    List<BookmarkEntity> getRemovedDeliciousBookmarks(DeliciousBean bean);
+    List<Bookmark> getRemovedDeliciousBookmarks(DeliciousBean bean);
 }

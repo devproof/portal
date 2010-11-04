@@ -18,21 +18,21 @@ package org.devproof.portal.module.bookmark.service;
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
+import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
+public interface BookmarkService extends CrudService<Bookmark, Integer> {
     /**
-     * Returns a new instance of BookmarkEntity
+     * Returns a new instance of Bookmark
      *
-     * @return new instance of {@link BookmarkEntity}
+     * @return new instance of {@link org.devproof.portal.module.bookmark.entity.Bookmark}
      */
-    BookmarkEntity newBookmarkEntity();
+    Bookmark newBookmarkEntity();
 
     /**
      * Returns all bookmarks which are available for the given role
@@ -42,12 +42,12 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
      * @param maxResult   maximum result
      * @return list with bookmarks
      */
-    List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
     /**
      * Returns all bookmarks
      */
-    List<BookmarkEntity> findAll();
+    List<Bookmark> findAll();
 
     /**
      * Returns all bookmarks with the given source
@@ -55,14 +55,14 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
      * @param source manual/delicious
      * @return list with bookmarks
      */
-    List<BookmarkEntity> findBookmarksBySource(Source source);
+    List<Bookmark> findBookmarksBySource(Source source);
 
     /**
      * Increments the hits by 1
      *
      * @param bookmark bookmark
      */
-    void incrementHits(BookmarkEntity bookmark);
+    void incrementHits(Bookmark bookmark);
 
     /**
      * Rates a bookmark
@@ -70,21 +70,21 @@ public interface BookmarkService extends CrudService<BookmarkEntity, Integer> {
      * @param rating   rating value 1 to 5
      * @param bookmark bookmark
      */
-    void rateBookmark(Integer rating, BookmarkEntity bookmark);
+    void rateBookmark(Integer rating, Bookmark bookmark);
 
     /**
      * Marks a the given bookmark as broken
      *
      * @param bookmark bookmark
      */
-    void markBrokenBookmark(BookmarkEntity bookmark);
+    void markBrokenBookmark(Bookmark bookmark);
 
     /**
      * Marks a the given bookmark as valid
      *
      * @param bookmark bookmark
      */
-    void markValidBookmark(BookmarkEntity bookmark);
+    void markValidBookmark(Bookmark bookmark);
 
     /**
      * Returns the rights from the last editited bookmark

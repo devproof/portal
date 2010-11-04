@@ -23,7 +23,7 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.page.BookmarkPage;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
  */
 public class BookmarkFeedProviderImplTest {
     private BookmarkFeedProviderImpl impl;
-    private SortableQueryDataProvider<BookmarkEntity, BookmarkQuery> dataProviderMock;
+    private SortableQueryDataProvider<Bookmark, BookmarkQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
     @Before
@@ -54,8 +54,8 @@ public class BookmarkFeedProviderImplTest {
             }
 
             @Override
-            protected String getUrl(RequestCycle rc, BookmarkEntity bookmarkEntity) {
-                return "http://url/" + bookmarkEntity.getId();
+            protected String getUrl(RequestCycle rc, Bookmark bookmark) {
+                return "http://url/" + bookmark.getId();
             }
         };
         impl.setConfigurationService(configurationServiceMock);
@@ -79,14 +79,14 @@ public class BookmarkFeedProviderImplTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGetBookmarkEntries() {
-        BookmarkEntity bookmark = createBookmark();
+        Bookmark bookmark = createBookmark();
         @SuppressWarnings("rawtypes")
 		Iterator it = Arrays.asList(bookmark).iterator();
         expect(configurationServiceMock.findAsInteger(BookmarkConstants.CONF_BOOKMARK_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);
         replay(dataProviderMock);
-        Iterator<? extends BookmarkEntity> bookmarkEntries = impl.getBookmarkEntries();
+        Iterator<? extends Bookmark> bookmarkEntries = impl.getBookmarkEntries();
         assertSame(bookmarkEntries, it);
         verify(configurationServiceMock);
         verify(dataProviderMock);
@@ -106,8 +106,8 @@ public class BookmarkFeedProviderImplTest {
 
     @Test
     public void testGenerateFeedEntries() {
-        BookmarkEntity bookmark = createBookmark();
-        Iterator<BookmarkEntity> it = Arrays.asList(bookmark).iterator();
+        Bookmark bookmark = createBookmark();
+        Iterator<Bookmark> it = Arrays.asList(bookmark).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());
@@ -130,13 +130,13 @@ public class BookmarkFeedProviderImplTest {
             }
 
             @Override
-            protected Iterator<? extends BookmarkEntity> getBookmarkEntries() {
+            protected Iterator<? extends Bookmark> getBookmarkEntries() {
                 callOrder.append("2");
                 return null;
             }
 
             @Override
-            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends BookmarkEntity> iterator) {
+            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends Bookmark> iterator) {
                 callOrder.append("3");
                 return entries;
             }
@@ -150,8 +150,8 @@ public class BookmarkFeedProviderImplTest {
         assertEquals("123", callOrder.toString());
     }
 
-    private BookmarkEntity createBookmark() {
-        BookmarkEntity bookmark = new BookmarkEntity();
+    private Bookmark createBookmark() {
+        Bookmark bookmark = new Bookmark();
         bookmark.setId(1);
         bookmark.setTitle("hello");
         bookmark.setDescription("world");

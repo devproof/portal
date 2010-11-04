@@ -31,7 +31,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.panel.DeliciousSyncPanel;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 import org.devproof.portal.module.deadlinkcheck.panel.DeadlinkCheckPanel;
@@ -78,14 +78,14 @@ public abstract class BookmarkBasePage extends TemplatePage {
         }
     }
 
-    private AjaxLink<BookmarkEntity> createDeliciousSyncLink() {
-        AjaxLink<BookmarkEntity> syncLink = newDeliciousSyncLink();
+    private AjaxLink<Bookmark> createDeliciousSyncLink() {
+        AjaxLink<Bookmark> syncLink = newDeliciousSyncLink();
         syncLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("syncLink")));
         return syncLink;
     }
 
-    private AjaxLink<BookmarkEntity> newDeliciousSyncLink() {
-        return new AjaxLink<BookmarkEntity>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Bookmark> newDeliciousSyncLink() {
+        return new AjaxLink<Bookmark>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -139,15 +139,15 @@ public abstract class BookmarkBasePage extends TemplatePage {
 
             @Override
             public void onClick() {
-                BookmarkEntity newBookmark = bookmarkService.newBookmarkEntity();
-                IModel<BookmarkEntity> bookmarkModel = Model.of(newBookmark);
+                Bookmark newBookmark = bookmarkService.newBookmarkEntity();
+                IModel<Bookmark> bookmarkModel = Model.of(newBookmark);
                 setResponsePage(new BookmarkEditPage(bookmarkModel));
             }
         };
     }
 
-    private AjaxLink<BookmarkEntity> createDeadlinkCheckLink() {
-        AjaxLink<BookmarkEntity> deadlinkCheckLink = newDeadlinkCheckLink();
+    private AjaxLink<Bookmark> createDeadlinkCheckLink() {
+        AjaxLink<Bookmark> deadlinkCheckLink = newDeadlinkCheckLink();
         deadlinkCheckLink.add(createDeadlinkCheckLabel());
         return deadlinkCheckLink;
     }
@@ -156,31 +156,31 @@ public abstract class BookmarkBasePage extends TemplatePage {
         return new Label(getPageAdminBoxLinkLabelId(), getString("deadlinkCheckLink"));
     }
 
-    private AjaxLink<BookmarkEntity> newDeadlinkCheckLink() {
-        return new AjaxLink<BookmarkEntity>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Bookmark> newDeadlinkCheckLink() {
+        return new AjaxLink<Bookmark>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void onClick(AjaxRequestTarget target) {
                 BubblePanel panel = (BubblePanel) bubblePanel;
-                DeadlinkCheckPanel<BookmarkEntity> deadlinkCheckPanel = createDeadlinkCheckPanel(panel.getContentId());
+                DeadlinkCheckPanel<Bookmark> deadlinkCheckPanel = createDeadlinkCheckPanel(panel.getContentId());
                 panel.setContent(deadlinkCheckPanel);
                 panel.showModal(target);
             }
 
-            private DeadlinkCheckPanel<BookmarkEntity> createDeadlinkCheckPanel(String id) {
-                IModel<List<BookmarkEntity>> allBookmarksModel = createAllBookmarksModel();
-                return new DeadlinkCheckPanel<BookmarkEntity>(id, "bookmark", allBookmarksModel) {
+            private DeadlinkCheckPanel<Bookmark> createDeadlinkCheckPanel(String id) {
+                IModel<List<Bookmark>> allBookmarksModel = createAllBookmarksModel();
+                return new DeadlinkCheckPanel<Bookmark>(id, "bookmark", allBookmarksModel) {
                     private static final long serialVersionUID = 1L;
 
                     @Override
-                    public void onBroken(BookmarkEntity brokenEntity) {
-                        bookmarkService.markBrokenBookmark(brokenEntity);
+                    public void onBroken(Bookmark broken) {
+                        bookmarkService.markBrokenBookmark(broken);
                     }
 
                     @Override
-                    public void onValid(BookmarkEntity validEntity) {
-                        bookmarkService.markValidBookmark(validEntity);
+                    public void onValid(Bookmark valid) {
+                        bookmarkService.markValidBookmark(valid);
                     }
 
                     @Override
@@ -194,12 +194,12 @@ public abstract class BookmarkBasePage extends TemplatePage {
         };
     }
 
-    private IModel<List<BookmarkEntity>> createAllBookmarksModel() {
-        return new LoadableDetachableModel<List<BookmarkEntity>>() {
+    private IModel<List<Bookmark>> createAllBookmarksModel() {
+        return new LoadableDetachableModel<List<Bookmark>>() {
             private static final long serialVersionUID = 4970818389582121112L;
 
             @Override
-            protected List<BookmarkEntity> load() {
+            protected List<Bookmark> load() {
                 return bookmarkService.findAll();
             }
         };

@@ -16,10 +16,10 @@
 package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.devproof.portal.module.bookmark.entity.BookmarkTag;
 
 /**
  * @author Carsten Hufe
  */
-public interface BookmarkTagService extends TagService<BookmarkTagEntity> {
+public interface BookmarkTagService extends TagService<BookmarkTag> {
 }

@@ -27,10 +27,9 @@ import org.devproof.portal.core.module.common.component.richtext.FullRichTextAre
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
+import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
+import org.devproof.portal.module.bookmark.entity.BookmarkTag;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 import org.devproof.portal.module.bookmark.service.BookmarkTagService;
 
@@ -46,17 +45,17 @@ public class BookmarkEditPage extends BookmarkBasePage {
     private BookmarkService bookmarkService;
     @SpringBean(name = "bookmarkTagService")
     private BookmarkTagService bookmarkTagService;
-    private IModel<BookmarkEntity> bookmarkModel;
+    private IModel<Bookmark> bookmarkModel;
 
 
-    public BookmarkEditPage(IModel<BookmarkEntity> bookmarkModel) {
+    public BookmarkEditPage(IModel<Bookmark> bookmarkModel) {
         super(new PageParameters());
         this.bookmarkModel = bookmarkModel;
         add(createBookmarkEditForm());
     }
 
-    private Form<BookmarkEntity> createBookmarkEditForm() {
-        Form<BookmarkEntity> form = newBookmarkEditForm();
+    private Form<Bookmark> createBookmarkEditForm() {
+        Form<Bookmark> form = newBookmarkEditForm();
         form.add(createTitleField());
         form.add(createDescriptionField());
         form.add(createUrlField());
@@ -110,20 +109,20 @@ public class BookmarkEditPage extends BookmarkBasePage {
         return new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
     }
 
-    private TagField<BookmarkTagEntity> createTagField() {
-        IModel<List<BookmarkTagEntity>> listModel = new PropertyModel<List<BookmarkTagEntity>>(bookmarkModel, "tags");
-        return new TagField<BookmarkTagEntity>("tags", listModel, bookmarkTagService);
+    private TagField<BookmarkTag> createTagField() {
+        IModel<List<BookmarkTag>> listModel = new PropertyModel<List<BookmarkTag>>(bookmarkModel, "tags");
+        return new TagField<BookmarkTag>("tags", listModel, bookmarkTagService);
     }
 
-    private Form<BookmarkEntity> newBookmarkEditForm() {
-        IModel<BookmarkEntity> compoundModel = new CompoundPropertyModel<BookmarkEntity>(bookmarkModel);
-        return new Form<BookmarkEntity>("form", compoundModel) {
+    private Form<Bookmark> newBookmarkEditForm() {
+        IModel<Bookmark> compoundModel = new CompoundPropertyModel<Bookmark>(bookmarkModel);
+        return new Form<Bookmark>("form", compoundModel) {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onSubmit() {
                 BookmarkEditPage.this.setVisible(false);
-                BookmarkEntity bookmark = getModelObject();
+                Bookmark bookmark = getModelObject();
                 bookmark.setBroken(Boolean.FALSE);
                 bookmark.setSource(Source.MANUAL);
                 bookmarkService.save(bookmark);

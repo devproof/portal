@@ -17,9 +17,9 @@ package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,7 +49,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testSave() {
-        BookmarkEntity e = createBookmarkEntity();
+        Bookmark e = createBookmarkEntity();
         e.setId(1);
         expect(mock.save(e)).andReturn(e);
         mockTag.deleteUnusedTags();
@@ -62,7 +62,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testDelete() {
-        BookmarkEntity e = createBookmarkEntity();
+        Bookmark e = createBookmarkEntity();
         e.setId(1);
         mock.delete(e);
         mockTag.deleteUnusedTags();
@@ -75,7 +75,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testFindAll() {
-        List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
+        List<Bookmark> list = new ArrayList<Bookmark>();
         list.add(createBookmarkEntity());
         list.add(createBookmarkEntity());
         expect(mock.findAll()).andReturn(list);
@@ -86,7 +86,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testFindById() {
-        BookmarkEntity e = createBookmarkEntity();
+        Bookmark e = createBookmarkEntity();
         e.setId(1);
         expect(mock.findById(1)).andReturn(e);
         replay(mock);
@@ -101,7 +101,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testFindAllBookmarksForRoleOrderedByDateDesc() {
-        List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
+        List<Bookmark> list = new ArrayList<Bookmark>();
         list.add(createBookmarkEntity());
         list.add(createBookmarkEntity());
         RoleEntity role = new RoleEntity();
@@ -114,7 +114,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testFindBookmarksBySource() {
-        List<BookmarkEntity> list = new ArrayList<BookmarkEntity>();
+        List<Bookmark> list = new ArrayList<Bookmark>();
         list.add(createBookmarkEntity());
         list.add(createBookmarkEntity());
         expect(mock.findBookmarksBySource(Source.DELICIOUS)).andReturn(list);
@@ -125,7 +125,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testIncrementHits() {
-        BookmarkEntity e = createBookmarkEntity();
+        Bookmark e = createBookmarkEntity();
         e.setId(1);
         mock.incrementHits(e);
         replay(mock);
@@ -135,7 +135,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testMarkBrokenBookmark() {
-        BookmarkEntity e = createBookmarkEntity();
+        Bookmark e = createBookmarkEntity();
         e.setId(1);
         mock.markBrokenBookmark(e);
         replay(mock);
@@ -145,7 +145,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testMarkValidBookmark() {
-        BookmarkEntity e = createBookmarkEntity();
+        Bookmark e = createBookmarkEntity();
         e.setId(1);
         mock.markValidBookmark(e);
         replay(mock);
@@ -155,7 +155,7 @@ public class BookmarkServiceImplTest {
 
     @Test
     public void testRateBookmark() {
-        BookmarkEntity e = createBookmarkEntity();
+        Bookmark e = createBookmarkEntity();
         e.setId(1);
         mock.rateBookmark(5, e);
         mock.refresh(e);
@@ -173,7 +173,7 @@ public class BookmarkServiceImplTest {
         verify(mock);
     }
 
-    private BookmarkEntity createBookmarkEntity() {
-        return new BookmarkEntity();
+    private Bookmark createBookmarkEntity() {
+        return new Bookmark();
     }
 }

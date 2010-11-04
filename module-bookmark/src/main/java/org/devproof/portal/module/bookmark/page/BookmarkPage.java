@@ -46,11 +46,10 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
-import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
+import org.devproof.portal.module.bookmark.entity.BookmarkTag;
+import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 import org.devproof.portal.module.bookmark.panel.BookmarkSearchBoxPanel;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
@@ -66,7 +65,7 @@ public class BookmarkPage extends BookmarkBasePage {
 	@SpringBean(name = "bookmarkService")
 	private BookmarkService bookmarkService;
 	@SpringBean(name = "bookmarkDataProvider")
-	private QueryDataProvider<BookmarkEntity, BookmarkQuery> bookmarkDataProvider;
+	private QueryDataProvider<Bookmark, BookmarkQuery> bookmarkDataProvider;
 	@SpringBean(name = "bookmarkTagService")
 	private BookmarkTagService bookmarkTagService;
 	@SpringBean(name = "configurationService")
@@ -113,8 +112,8 @@ public class BookmarkPage extends BookmarkBasePage {
 	@Override
 	public String getPageTitle() {
 		if (bookmarkDataProvider.size() == 1) {
-			Iterator<? extends BookmarkEntity> it = bookmarkDataProvider.iterator(0, 1);
-			BookmarkEntity bookmark = it.next();
+			Iterator<? extends Bookmark> it = bookmarkDataProvider.iterator(0, 1);
+			Bookmark bookmark = it.next();
 			return bookmark.getTitle();
 		}
 		return "";
@@ -125,7 +124,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		return dataView;
 	}
 
-	private class BookmarkDataView extends AutoPagingDataView<BookmarkEntity> {
+	private class BookmarkDataView extends AutoPagingDataView<Bookmark> {
 		private static final long serialVersionUID = 1L;
 
 		public BookmarkDataView(String id) {
@@ -135,12 +134,12 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		@Override
-		protected void populateItem(Item<BookmarkEntity> item) {
+		protected void populateItem(Item<Bookmark> item) {
 			item.add(createBookmarkView(item));
 			item.setOutputMarkupId(true);
 		}
 
-		private BookmarkView createBookmarkView(Item<BookmarkEntity> item) {
+		private BookmarkView createBookmarkView(Item<Bookmark> item) {
 			return new BookmarkView("bookmarkView", item);
 		}
 	}
@@ -148,9 +147,9 @@ public class BookmarkPage extends BookmarkBasePage {
 	private class BookmarkView extends Fragment {
 		private static final long serialVersionUID = 1L;
 		private IModel<Boolean> hasVoted;
-		private IModel<BookmarkEntity> bookmarkModel;
+		private IModel<Bookmark> bookmarkModel;
 
-		public BookmarkView(String id, Item<BookmarkEntity> item) {
+		public BookmarkView(String id, Item<Bookmark> item) {
 			super(id, "bookmarkView", BookmarkPage.this);
 			bookmarkModel = item.getModel();
 			hasVoted = Model.of(!isAllowedToVote());
@@ -167,7 +166,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private BookmarkablePageLink<?> createVisitLink() {
-			BookmarkEntity bookmark = bookmarkModel.getObject();
+			Bookmark bookmark = bookmarkModel.getObject();
 			BookmarkablePageLink<?> visitLink = newVisitLink();
 			visitLink.add(createVisitLinkImage());
 			visitLink.add(createVisitLinkLabel());
@@ -216,13 +215,13 @@ public class BookmarkPage extends BookmarkBasePage {
 
 				@Override
 				protected boolean onIsStarActive(int star) {
-					BookmarkEntity bookmark = bookmarkModel.getObject();
+					Bookmark bookmark = bookmarkModel.getObject();
 					return star < ((int) (bookmark.getCalculatedRating() + 0.5));
 				}
 
 				@Override
 				protected void onRatedAndCaptchaValidated(int rating, AjaxRequestTarget target) {
-					BookmarkEntity bookmark = bookmarkModel.getObject();
+					Bookmark bookmark = bookmarkModel.getObject();
 					hasVoted.setObject(Boolean.TRUE);
 					bookmarkService.rateBookmark(rating, bookmark);
 				}
@@ -240,7 +239,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private boolean isAllowedToVote() {
-			BookmarkEntity bookmark = bookmarkModel.getObject();
+			Bookmark bookmark = bookmarkModel.getObject();
 			PortalSession session = (PortalSession) getSession();
 			return session.hasRight("bookmark.vote", bookmark.getVoteRights());
 		}
@@ -249,10 +248,10 @@ public class BookmarkPage extends BookmarkBasePage {
 			return configurationService.findAsBoolean(BookmarkConstants.CONF_BOOKMARK_VOTE_ENABLED);
 		}
 
-		private TagContentPanel<BookmarkTagEntity> createTagPanel() {
-			IModel<List<BookmarkTagEntity>> tagsModel = new PropertyModel<List<BookmarkTagEntity>>(bookmarkModel,
+		private TagContentPanel<BookmarkTag> createTagPanel() {
+			IModel<List<BookmarkTag>> tagsModel = new PropertyModel<List<BookmarkTag>>(bookmarkModel,
 					"tags");
-			return new TagContentPanel<BookmarkTagEntity>("tags", tagsModel, BookmarkPage.class);
+			return new TagContentPanel<BookmarkTag>("tags", tagsModel, BookmarkPage.class);
 		}
 
 		private Label createHitsLabel() {
@@ -266,7 +265,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private Component createDeliciousSourceImage() {
-			BookmarkEntity bookmark = bookmarkModel.getObject();
+			Bookmark bookmark = bookmarkModel.getObject();
 			if (isAuthor() && bookmark.getSource() == Source.DELICIOUS) {
 				// be aware... images are stateful
 				return new Image("delicious", BookmarkConstants.REF_DELICIOUS_IMG);
@@ -277,12 +276,12 @@ public class BookmarkPage extends BookmarkBasePage {
 			}
 		}
 
-		private MetaInfoPanel<BookmarkEntity> createMetaInfoPanel() {
-			return new MetaInfoPanel<BookmarkEntity>("metaInfo", bookmarkModel);
+		private MetaInfoPanel<Bookmark> createMetaInfoPanel() {
+			return new MetaInfoPanel<Bookmark>("metaInfo", bookmarkModel);
 		}
 
 		private BookmarkablePageLink<BookmarkRedirectPage> createTitleLink() {
-			BookmarkEntity bookmark = bookmarkModel.getObject();
+			Bookmark bookmark = bookmarkModel.getObject();
 			BookmarkablePageLink<BookmarkRedirectPage> titleLink = newTitleLink();
 			titleLink.setParameter("0", bookmark.getId());
 			titleLink.add(createTitleLabel());
@@ -305,7 +304,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private boolean isAllowedToVisit() {
-			BookmarkEntity bookmark = bookmarkModel.getObject();
+			Bookmark bookmark = bookmarkModel.getObject();
 			PortalSession session = (PortalSession) getSession();
 			return session.hasRight("bookmark.visit", bookmark.getVisitRights());
 		}
@@ -316,13 +315,13 @@ public class BookmarkPage extends BookmarkBasePage {
 
 				@Override
 				public boolean isVisible() {
-					BookmarkEntity bookmark = bookmarkModel.getObject();
+					Bookmark bookmark = bookmarkModel.getObject();
 					return bookmark.getBroken() != null && bookmark.getBroken();
 				}
 			};
 		}
 
-		private Component createAppropriateAuthorPanel(Item<BookmarkEntity> item) {
+		private Component createAppropriateAuthorPanel(Item<Bookmark> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
 			} else {
@@ -330,8 +329,8 @@ public class BookmarkPage extends BookmarkBasePage {
 			}
 		}
 
-		private AuthorPanel<BookmarkEntity> createAuthorPanel(final Item<BookmarkEntity> item) {
-			return new AuthorPanel<BookmarkEntity>("authorButtons", bookmarkModel) {
+		private AuthorPanel<Bookmark> createAuthorPanel(final Item<Bookmark> item) {
+			return new AuthorPanel<Bookmark>("authorButtons", bookmarkModel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -345,19 +344,19 @@ public class BookmarkPage extends BookmarkBasePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					IModel<BookmarkEntity> bookmarkModel = createBookmarkModel();
+					IModel<Bookmark> bookmarkModel = createBookmarkModel();
 					setResponsePage(new BookmarkEditPage(bookmarkModel));
 				}
 			};
 		}
 
-		private IModel<BookmarkEntity> createBookmarkModel() {
-			return new LoadableDetachableModel<BookmarkEntity>() {
+		private IModel<Bookmark> createBookmarkModel() {
+			return new LoadableDetachableModel<Bookmark>() {
 				private static final long serialVersionUID = 8475595194139413544L;
 
 				@Override
-				protected BookmarkEntity load() {
-					BookmarkEntity bookmark = bookmarkModel.getObject();
+				protected Bookmark load() {
+					Bookmark bookmark = bookmarkModel.getObject();
 					return bookmarkService.findById(bookmark.getId());
 				}
 			};

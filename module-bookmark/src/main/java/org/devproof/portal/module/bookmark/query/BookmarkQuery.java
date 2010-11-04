@@ -75,7 +75,7 @@ public class BookmarkQuery implements SearchQuery {
 		this.id = id;
 	}
 
-	@BeanQuery("exists(from BookmarkEntity b left join b.allRights ar "
+	@BeanQuery("exists(from Bookmark b left join b.allRights ar "
 			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = e)")
 	public RoleEntity getRole() {
 		if (role == null) {
@@ -87,7 +87,7 @@ public class BookmarkQuery implements SearchQuery {
 		return role;
 	}
 
-	@BeanQuery("exists(from BookmarkEntity b left join b.tags t where t.tagname = ? and b = e)")
+	@BeanQuery("exists(from Bookmark b left join b.tags t where t.tagname = ? and b = e)")
 	public String getTagname() {
 		return tagname;
 	}
