@@ -16,8 +16,8 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.module.article.dao.ArticlePageRepository;
-import org.devproof.portal.module.article.dao.ArticleRepository;
+import org.devproof.portal.module.article.repository.ArticlePageRepository;
+import org.devproof.portal.module.article.repository.ArticleRepository;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.junit.Before;

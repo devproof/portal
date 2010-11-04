@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.article.service;
+package org.devproof.portal.module.article.repository;
 
-import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
-import org.devproof.portal.module.article.repository.ArticleTagRepository;
+import org.devproof.portal.core.config.GenericRepository;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
+import org.devproof.portal.core.module.tag.dao.TagDao;
+import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Carsten Hufe
  */
-@Service("articleTagService")
-public class ArticleTagServiceImpl extends AbstractTagServiceImpl<ArticleTagEntity> implements ArticleTagService {
-    @Override
-    public String getRelatedTagRight() {
-        return "article.view";
-    }
-
-    @Autowired
-    public void setArticleTagDao(ArticleTagRepository articleTagRepository) {
-        setTagDao(articleTagRepository);
-    }
+@GenericRepository("articleTagDao")
+@CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
+public interface ArticleTagRepository extends TagDao<ArticleTagEntity> {
 }

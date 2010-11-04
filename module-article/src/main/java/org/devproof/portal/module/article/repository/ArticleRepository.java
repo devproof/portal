@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.article.dao;
+package org.devproof.portal.module.article.repository;
+
+import java.util.List;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
@@ -21,17 +23,27 @@ import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.dao.TagDao;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticleEntity;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
-
-import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("articleTagDao")
+@GenericRepository("articleDao")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
-public interface ArticleTagRepository extends TagDao<ArticleTagEntity> {
+public interface ArticleRepository extends GenericDao<ArticleEntity, Integer> {
+    @CacheQuery(enabled = false)
+    @Query("select a.allRights from ArticleEntity a where a.modifiedAt = (select max(modifiedAt) from ArticleEntity)")
+    List<RightEntity> findLastSelectedRights();
+
+    @Query("select a from ArticleEntity a where a.contentId = ?")
+    ArticleEntity findByContentId(String contentId);
+
+    @Query(value = "select a from ArticleEntity a where " +
+    		"exists(from ArticleEntity ea left join ea.allRights ar where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'article.view%') and a = ea) " +
+					"order by a.modifiedAt desc", limitClause = true)
+    List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+
+    @Query("select count(a) from ArticleEntity a where a.contentId like ?")
+    long existsContentId(String contentId);
 }
