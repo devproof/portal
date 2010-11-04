@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.comment.service;
 
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.entity.Comment;
 
 /**
  * Builds URLs in the service layer
@@ -29,5 +29,5 @@ public interface UrlCallback {
      * @param comment
      * @return Full URL
      */
-    String getUrl(CommentEntity comment);
+    String getUrl(Comment comment);
 }

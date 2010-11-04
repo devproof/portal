@@ -27,7 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.panel.UsernamePanel;
 import org.devproof.portal.module.comment.CommentConstants;
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.entity.Comment;
 
 /**
  * @author Carsten Hufe
@@ -38,9 +38,9 @@ public class CommentInfoPanel extends Panel {
 	private SimpleDateFormat dateFormat;
 	@SpringBean(name = "configurationService")
 	private ConfigurationService configurationService;
-	private IModel<CommentEntity> commentModel;
+	private IModel<Comment> commentModel;
 
-	public CommentInfoPanel(String id, IModel<CommentEntity> commentModel) {
+	public CommentInfoPanel(String id, IModel<Comment> commentModel) {
 		super(id);
 		this.commentModel = commentModel;
 		add(createCreatedContainer());
@@ -64,7 +64,7 @@ public class CommentInfoPanel extends Panel {
 
 			@Override
 			protected boolean contactFormEnabled() {
-				CommentEntity comment = commentModel.getObject();
+				Comment comment = commentModel.getObject();
 				return StringUtils.isBlank(comment.getGuestName());
 			}
 		};
@@ -81,7 +81,7 @@ public class CommentInfoPanel extends Panel {
 
 			@Override
 			public Object getObject() {
-				CommentEntity comment = commentModel.getObject();
+				Comment comment = commentModel.getObject();
 				return dateFormat.format(comment.getCreatedAt());
 			}
 		};
@@ -97,7 +97,7 @@ public class CommentInfoPanel extends Panel {
 
 			@Override
 			public String getObject() {
-				CommentEntity comment = commentModel.getObject();
+				Comment comment = commentModel.getObject();
 				if (StringUtils.isBlank(comment.getGuestName())) {
 					return comment.getCreatedBy();
 				} else {

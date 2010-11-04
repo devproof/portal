@@ -15,14 +15,6 @@
  */
 package org.devproof.portal.module.comment.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.BaseEntity;
@@ -30,6 +22,8 @@ import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.query.CommentQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
 
 /**
  * @author Carsten Hufe
@@ -39,7 +33,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @CacheQuery(region = CommentConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommentConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "commentDataProvider", sortProperty = "createdAt", sortAscending = false, queryClass = CommentQuery.class)
-public class CommentEntity extends BaseEntity {
+public class Comment extends BaseEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

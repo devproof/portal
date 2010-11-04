@@ -21,11 +21,10 @@ import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
-import org.devproof.portal.module.comment.dao.CommentDao;
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.repository.CommentRepository;
+import org.devproof.portal.module.comment.entity.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -41,60 +40,60 @@ public class CommentServiceImpl implements CommentService {
     private ConfigurationService configurationService;
     private UserService userService;
     private EmailService emailService;
-    private CommentDao commentDao;
+    private CommentRepository commentRepository;
     private DateFormat displayDateTimeFormat;
 
     @Override
-    public CommentEntity newCommentEntity() {
-        return new CommentEntity();
+    public Comment newCommentEntity() {
+        return new Comment();
     }
 
     @Override
-    public void delete(CommentEntity entity) {
-        commentDao.delete(entity);
+    public void delete(Comment entity) {
+        commentRepository.delete(entity);
     }
 
     @Override
-    public CommentEntity findById(Integer id) {
-        return commentDao.findById(id);
+    public Comment findById(Integer id) {
+        return commentRepository.findById(id);
     }
 
     @Override
-    public void save(CommentEntity entity) {
-        commentDao.save(entity);
+    public void save(Comment entity) {
+        commentRepository.save(entity);
     }
 
     @Override
-    public void saveNewComment(CommentEntity comment, UrlCallback urlCallback) {
-        CommentEntity saved = commentDao.save(comment);
+    public void saveNewComment(Comment comment, UrlCallback urlCallback) {
+        Comment saved = commentRepository.save(comment);
         Integer templateId = configurationService.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT);
         sendEmailNotificationToAdmins(saved, templateId, "comment.notify.newcomment", urlCallback, saved.getIpAddress());
     }
 
     @Override
-    public void rejectComment(CommentEntity comment) {
-        commentDao.rejectComment(comment);
-        commentDao.refresh(comment);
+    public void rejectComment(Comment comment) {
+        commentRepository.rejectComment(comment);
+        commentRepository.refresh(comment);
     }
 
     @Override
-    public void acceptComment(CommentEntity comment) {
-        commentDao.acceptComment(comment);
-        commentDao.refresh(comment);
+    public void acceptComment(Comment comment) {
+        commentRepository.acceptComment(comment);
+        commentRepository.refresh(comment);
     }
 
     @Override
     public long findNumberOfComments(String moduleName, String moduleContentId) {
         boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
         if (showOnlyReviewed) {
-            return commentDao.findNumberOfReviewedComments(moduleName, moduleContentId);
+            return commentRepository.findNumberOfReviewedComments(moduleName, moduleContentId);
         } else {
-            return commentDao.findNumberOfComments(moduleName, moduleContentId);
+            return commentRepository.findNumberOfComments(moduleName, moduleContentId);
         }
     }
 
     @Override
-    public void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp) {
+    public void reportViolation(Comment comment, UrlCallback urlCallback, String reporterIp) {
         int maxNumberOfBlames = configurationService.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD);
         int blames = comment.getNumberOfBlames() + 1;
         comment.setNumberOfBlames(blames);
@@ -111,7 +110,7 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
-    protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+    protected void sendEmailNotificationToAdmins(Comment comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
         EmailPlaceholderBean placeholder = new EmailPlaceholderBean();
         List<UserEntity> notifyUsers = userService.findUserWithRight(right);
         for (UserEntity notifyUser : notifyUsers) {
@@ -130,12 +129,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<String> findAllModuleNames() {
-        return commentDao.findAllModuleNames();
+        return commentRepository.findAllModuleNames();
     }
 
     @Autowired(required = false) // required false for integration test
-    public void setCommentDao(CommentDao commentDao) {
-        this.commentDao = commentDao;
+    public void setCommentDao(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 
     @Autowired

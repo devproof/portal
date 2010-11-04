@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.comment.dao;
-
-import java.util.List;
+package org.devproof.portal.module.comment.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
@@ -23,26 +21,28 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.module.comment.CommentConstants;
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.entity.Comment;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("commentDao")
+@GenericRepository("commentRepository")
 @CacheQuery(region = CommentConstants.QUERY_CACHE_REGION)
-public interface CommentDao extends GenericDao<CommentEntity, Integer> {
-    @BulkUpdate("update CommentEntity c set c.accepted = true, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
-    void acceptComment(CommentEntity comment);
+public interface CommentRepository extends GenericDao<Comment, Integer> {
+    @BulkUpdate("update Comment c set c.accepted = true, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
+    void acceptComment(Comment comment);
 
-    @BulkUpdate("update CommentEntity c set c.accepted = false, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
-    void rejectComment(CommentEntity comment);
+    @BulkUpdate("update Comment c set c.accepted = false, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")
+    void rejectComment(Comment comment);
 
-    @Query("select count(c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.accepted = true and c.reviewed = true and c.automaticBlocked = false")
+    @Query("select count(c) from Comment c where c.moduleName = ? and c.moduleContentId = ? and c.accepted = true and c.reviewed = true and c.automaticBlocked = false")
     long findNumberOfReviewedComments(String moduleName, String moduleContentId);
 
-    @Query("select count(c) from CommentEntity c where c.moduleName = ? and c.moduleContentId = ? and c.automaticBlocked = false and ((c.accepted = true and c.reviewed = true) or c.reviewed = false)")
+    @Query("select count(c) from Comment c where c.moduleName = ? and c.moduleContentId = ? and c.automaticBlocked = false and ((c.accepted = true and c.reviewed = true) or c.reviewed = false)")
     long findNumberOfComments(String moduleName, String moduleContentId);
 
-    @Query("select distinct c.moduleName from CommentEntity c")
+    @Query("select distinct c.moduleName from Comment c")
     List<String> findAllModuleNames();
 }

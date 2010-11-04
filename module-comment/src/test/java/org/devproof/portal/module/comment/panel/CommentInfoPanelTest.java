@@ -19,7 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.entity.Comment;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -55,7 +55,7 @@ public class CommentInfoPanelTest {
 
             @Override
             public Panel getTestPanel(String panelId) {
-                CommentEntity comment = new CommentEntity();
+                Comment comment = new Comment();
                 comment.setCreatedAt(new Date());
                 comment.setModifiedAt(new Date());
                 return new CommentInfoPanel(panelId, Model.of(comment));

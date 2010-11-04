@@ -22,8 +22,8 @@ import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
-import org.devproof.portal.module.comment.dao.CommentDao;
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.repository.CommentRepository;
+import org.devproof.portal.module.comment.entity.Comment;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,17 +40,17 @@ import static org.junit.Assert.assertNotNull;
  */
 public class CommentServiceImplTest {
     private CommentServiceImpl impl;
-    private CommentDao commentDaoMock;
+    private CommentRepository commentRepositoryMock;
     private ConfigurationService configurationServiceMock;
     private UserService userServiceMock;
 
     @Before
     public void setUp() throws Exception {
-        commentDaoMock = createStrictMock(CommentDao.class);
+        commentRepositoryMock = createStrictMock(CommentRepository.class);
         configurationServiceMock = createStrictMock(ConfigurationService.class);
         userServiceMock = createStrictMock(UserService.class);
         impl = new CommentServiceImpl();
-        impl.setCommentDao(commentDaoMock);
+        impl.setCommentDao(commentRepositoryMock);
         impl.setConfigurationService(configurationServiceMock);
         impl.setUserService(userServiceMock);
         impl.setDisplayDateTimeFormat(new SimpleDateFormat());
@@ -63,38 +63,38 @@ public class CommentServiceImplTest {
 
     @Test
     public void testDelete() {
-        CommentEntity e = new CommentEntity();
-        commentDaoMock.delete(e);
-        replay(commentDaoMock);
+        Comment e = new Comment();
+        commentRepositoryMock.delete(e);
+        replay(commentRepositoryMock);
         impl.delete(e);
-        verify(commentDaoMock);
+        verify(commentRepositoryMock);
     }
 
     @Test
     public void testFindById() {
-        CommentEntity e = createCommentEntity();
-        expect(commentDaoMock.findById(1)).andReturn(e);
-        replay(commentDaoMock);
+        Comment e = createCommentEntity();
+        expect(commentRepositoryMock.findById(1)).andReturn(e);
+        replay(commentRepositoryMock);
         assertEquals(impl.findById(1), e);
-        verify(commentDaoMock);
+        verify(commentRepositoryMock);
     }
 
     @Test
     public void testSave() {
-        CommentEntity e = createCommentEntity();
-        expect(commentDaoMock.save(e)).andReturn(e);
-        replay(commentDaoMock);
+        Comment e = createCommentEntity();
+        expect(commentRepositoryMock.save(e)).andReturn(e);
+        replay(commentRepositoryMock);
         impl.save(e);
-        verify(commentDaoMock);
+        verify(commentRepositoryMock);
     }
 
     @Test
     public void testSaveNewComment() {
         final StringBuilder called = new StringBuilder();
-        final CommentEntity e = createCommentEntity();
+        final Comment e = createCommentEntity();
         impl = new CommentServiceImpl() {
             @Override
-            protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+            protected void sendEmailNotificationToAdmins(Comment comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
                 called.append("sendEmailNotificationToAdmins");
                 assertEquals(2, templateId.intValue());
                 assertEquals(e, comment);
@@ -102,69 +102,69 @@ public class CommentServiceImplTest {
             }
         };
         impl.setConfigurationService(configurationServiceMock);
-        impl.setCommentDao(commentDaoMock);
-        expect(commentDaoMock.save(e)).andReturn(e);
+        impl.setCommentDao(commentRepositoryMock);
+        expect(commentRepositoryMock.save(e)).andReturn(e);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_NEW_COMMENT)).andReturn(2);
         UrlCallback urlCallback = createUrlCallback();
-        replay(commentDaoMock, configurationServiceMock);
+        replay(commentRepositoryMock, configurationServiceMock);
         impl.saveNewComment(e, urlCallback);
         assertEquals("sendEmailNotificationToAdmins", called.toString());
-        verify(commentDaoMock, configurationServiceMock);
+        verify(commentRepositoryMock, configurationServiceMock);
     }
 
     @Test
     public void testRejectComment() {
-        CommentEntity e = createCommentEntity();
-        commentDaoMock.rejectComment(e);
-        commentDaoMock.refresh(e);
-        replay(commentDaoMock);
+        Comment e = createCommentEntity();
+        commentRepositoryMock.rejectComment(e);
+        commentRepositoryMock.refresh(e);
+        replay(commentRepositoryMock);
         impl.rejectComment(e);
-        verify(commentDaoMock);
+        verify(commentRepositoryMock);
     }
 
     @Test
     public void testAcceptComment() {
-        CommentEntity e = createCommentEntity();
-        commentDaoMock.acceptComment(e);
-        commentDaoMock.refresh(e);
-        replay(commentDaoMock);
+        Comment e = createCommentEntity();
+        commentRepositoryMock.acceptComment(e);
+        commentRepositoryMock.refresh(e);
+        replay(commentRepositoryMock);
         impl.acceptComment(e);
-        verify(commentDaoMock);
+        verify(commentRepositoryMock);
     }
 
     @Test
     public void testFindNumberOfComments_showAll() {
         expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(Boolean.FALSE);
-        expect(commentDaoMock.findNumberOfComments("moduleName", "contentId")).andReturn(3l);
-        replay(commentDaoMock, configurationServiceMock);
+        expect(commentRepositoryMock.findNumberOfComments("moduleName", "contentId")).andReturn(3l);
+        replay(commentRepositoryMock, configurationServiceMock);
         impl.findNumberOfComments("moduleName", "contentId");
-        verify(commentDaoMock, configurationServiceMock);
+        verify(commentRepositoryMock, configurationServiceMock);
     }
 
     @Test
     public void testFindNumberOfComments_reviewed() {
         expect(configurationServiceMock.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED)).andReturn(Boolean.TRUE);
-        expect(commentDaoMock.findNumberOfReviewedComments("moduleName", "contentId")).andReturn(3l);
-        replay(commentDaoMock, configurationServiceMock);
+        expect(commentRepositoryMock.findNumberOfReviewedComments("moduleName", "contentId")).andReturn(3l);
+        replay(commentRepositoryMock, configurationServiceMock);
         assertEquals(3l, impl.findNumberOfComments("moduleName", "contentId"));
-        verify(commentDaoMock, configurationServiceMock);
+        verify(commentRepositoryMock, configurationServiceMock);
     }
 
     @Test
     public void testFindAllModuleNames() {
-        expect(commentDaoMock.findAllModuleNames()).andReturn(Arrays.asList("aaa", "bbb"));
-        replay(commentDaoMock);
+        expect(commentRepositoryMock.findAllModuleNames()).andReturn(Arrays.asList("aaa", "bbb"));
+        replay(commentRepositoryMock);
         assertNotNull(impl.findAllModuleNames());
-        verify(commentDaoMock);
+        verify(commentRepositoryMock);
     }
 
     @Test
     public void testReportViolation_thresholdReached() {
         final StringBuilder called = new StringBuilder();
-        final CommentEntity e = createCommentEntity();
+        final Comment e = createCommentEntity();
         impl = new CommentServiceImpl() {
             @Override
-            protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+            protected void sendEmailNotificationToAdmins(Comment comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
                 called.append("sendEmailNotificationToAdmins");
                 assertEquals(2, templateId.intValue());
                 assertEquals(e, comment);
@@ -173,26 +173,26 @@ public class CommentServiceImplTest {
             }
         };
         impl.setConfigurationService(configurationServiceMock);
-        impl.setCommentDao(commentDaoMock);
-        expect(commentDaoMock.save(e)).andReturn(e);
+        impl.setCommentDao(commentRepositoryMock);
+        expect(commentRepositoryMock.save(e)).andReturn(e);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(3);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_AUTOBLOCKED)).andReturn(2);
         UrlCallback urlCallback = createUrlCallback();
-        replay(commentDaoMock, configurationServiceMock);
+        replay(commentRepositoryMock, configurationServiceMock);
         impl.reportViolation(e, urlCallback, "123.123.123.123");
         assertEquals("sendEmailNotificationToAdmins", called.toString());
         assertEquals(3, e.getNumberOfBlames().intValue());
         assertEquals(Boolean.TRUE, e.getAutomaticBlocked());
-        verify(commentDaoMock, configurationServiceMock);
+        verify(commentRepositoryMock, configurationServiceMock);
     }
 
     @Test
     public void testReportViolation_thresholdNotReached() {
         final StringBuilder called = new StringBuilder();
-        final CommentEntity e = createCommentEntity();
+        final Comment e = createCommentEntity();
         impl = new CommentServiceImpl() {
             @Override
-            protected void sendEmailNotificationToAdmins(CommentEntity comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
+            protected void sendEmailNotificationToAdmins(Comment comment, Integer templateId, String right, UrlCallback urlCallback, String reporterIp) {
                 called.append("sendEmailNotificationToAdmins");
                 assertEquals(2, templateId.intValue());
                 assertEquals(e, comment);
@@ -201,17 +201,17 @@ public class CommentServiceImplTest {
             }
         };
         impl.setConfigurationService(configurationServiceMock);
-        impl.setCommentDao(commentDaoMock);
-        expect(commentDaoMock.save(e)).andReturn(e);
+        impl.setCommentDao(commentRepositoryMock);
+        expect(commentRepositoryMock.save(e)).andReturn(e);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_COMMENT_BLAMED_THRESHOLD)).andReturn(5);
         expect(configurationServiceMock.findAsInteger(CommentConstants.CONF_NOTIFY_VIOLATION)).andReturn(2);
         UrlCallback urlCallback = createUrlCallback();
-        replay(commentDaoMock, configurationServiceMock);
+        replay(commentRepositoryMock, configurationServiceMock);
         impl.reportViolation(e, urlCallback, "123.123.123.123");
         assertEquals("sendEmailNotificationToAdmins", called.toString());
         assertEquals(3, e.getNumberOfBlames().intValue());
         assertEquals(Boolean.FALSE, e.getAutomaticBlocked());
-        verify(commentDaoMock, configurationServiceMock);
+        verify(commentRepositoryMock, configurationServiceMock);
     }
 
     @Test
@@ -236,7 +236,7 @@ public class CommentServiceImplTest {
             }
         };
         impl.setEmailService(emailServiceMock);
-        CommentEntity e = createCommentEntity();
+        Comment e = createCommentEntity();
         UrlCallback urlCallback = createUrlCallback();
         List<UserEntity> users = createUsers();
         expect(userServiceMock.findUserWithRight("testright")).andReturn(users);
@@ -258,14 +258,14 @@ public class CommentServiceImplTest {
     private UrlCallback createUrlCallback() {
         return new UrlCallback() {
             @Override
-            public String getUrl(CommentEntity comment) {
+            public String getUrl(Comment comment) {
                 return "testurl";
             }
         };
     }
 
-    private CommentEntity createCommentEntity() {
-        CommentEntity comment = new CommentEntity();
+    private Comment createCommentEntity() {
+        Comment comment = new Comment();
         comment.setId(1);
         comment.setComment("hello world");
         comment.setCreatedBy("testcreator");

@@ -49,7 +49,7 @@ import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxLink;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.entity.Comment;
 import org.devproof.portal.module.comment.page.CommentAdminPage;
 import org.devproof.portal.module.comment.query.CommentQuery;
 import org.devproof.portal.module.comment.service.CommentService;
@@ -65,7 +65,7 @@ public class CommentPanel extends Panel {
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
     @SpringBean(name = "commentDataProvider")
-    private QueryDataProvider<CommentEntity, CommentQuery> commentDataProvider;
+    private QueryDataProvider<Comment, CommentQuery> commentDataProvider;
     @SpringBean(name = "commentService")
     private CommentService commentService;
     private IModel<CommentQuery> queryModel;
@@ -73,7 +73,7 @@ public class CommentPanel extends Panel {
 
     private CommentDataView repeatingComments;
     private CommentConfiguration configuration;
-    private IModel<CommentEntity> commentModel;
+    private IModel<Comment> commentModel;
     private boolean hasSubmitted = false;
 
     public CommentPanel(String id, CommentConfiguration configuration) {
@@ -101,8 +101,8 @@ public class CommentPanel extends Panel {
         return searchQueryModel;
     }
 
-    private Form<CommentEntity> createCommentForm() {
-        Form<CommentEntity> form = newCommentForm();
+    private Form<Comment> createCommentForm() {
+        Form<Comment> form = newCommentForm();
         form.add(createGuestNameContainer());
         form.add(createGuestEmailContainer());
         form.add(createCommentField());
@@ -151,7 +151,7 @@ public class CommentPanel extends Panel {
             @Override
             public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
                 hasSubmitted = true;
-                CommentEntity comment = commentModel.getObject();
+                Comment comment = commentModel.getObject();
                 String commentStr = comment.getComment();
                 commentStr = StringEscapeUtils.escapeHtml(commentStr).replace("\n", "<br />");
                 comment.setComment(commentStr);
@@ -181,9 +181,9 @@ public class CommentPanel extends Panel {
         };
     }
 
-    private Form<CommentEntity> newCommentForm() {
-        CompoundPropertyModel<CommentEntity> compoundModel = new CompoundPropertyModel<CommentEntity>(commentModel);
-        return new Form<CommentEntity>("form", compoundModel) {
+    private Form<Comment> newCommentForm() {
+        CompoundPropertyModel<Comment> compoundModel = new CompoundPropertyModel<Comment>(commentModel);
+        return new Form<Comment>("form", compoundModel) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -193,8 +193,8 @@ public class CommentPanel extends Panel {
         };
     }
 
-    private IModel<CommentEntity> createNewCommentModelForForm() {
-        CommentEntity comment = new CommentEntity();
+    private IModel<Comment> createNewCommentModelForForm() {
+        Comment comment = new Comment();
         comment.setModuleName(configuration.getModuleName());
         comment.setModuleContentId(configuration.getModuleContentId());
         return Model.of(comment);
@@ -266,7 +266,7 @@ public class CommentPanel extends Panel {
         return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
     }
 
-    private class CommentDataView extends DataView<CommentEntity> {
+    private class CommentDataView extends DataView<Comment> {
         private static final long serialVersionUID = 1L;
 
         public CommentDataView(String id) {
@@ -275,12 +275,12 @@ public class CommentPanel extends Panel {
         }
 
         @Override
-        protected void populateItem(Item<CommentEntity> item) {
+        protected void populateItem(Item<Comment> item) {
             item.add(createCommentView(item));
             item.setOutputMarkupId(true);
         }
 
-        private CommentView createCommentView(Item<CommentEntity> item) {
+        private CommentView createCommentView(Item<Comment> item) {
             return new CommentView("commentView", item);
         }
     }
@@ -296,9 +296,9 @@ public class CommentPanel extends Panel {
     public class CommentView extends Fragment {
 
         private static final long serialVersionUID = 1L;
-        private Item<CommentEntity> item;
+        private Item<Comment> item;
 
-        public CommentView(String id, Item<CommentEntity> item) {
+        public CommentView(String id, Item<Comment> item) {
             super(id, "commentView", CommentPanel.this);
             this.item = item;
             add(createCommentView());
@@ -314,7 +314,7 @@ public class CommentPanel extends Panel {
 
                 @Override
                 public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-                    CommentEntity comment = item.getModelObject();
+                    Comment comment = item.getModelObject();
                     commentService.reportViolation(comment, getUrlCallback(), PortalSession.get().getIpAddress());
                     bubblePanel.showMessage(getMarkupId(), target, getString("reported"));
                 }
@@ -350,9 +350,9 @@ public class CommentPanel extends Panel {
 
         private static final long serialVersionUID = 1L;
 
-        private Item<CommentEntity> item;
+        private Item<Comment> item;
 
-        public CommentAdminView(String id, Item<CommentEntity> item) {
+        public CommentAdminView(String id, Item<Comment> item) {
             super(id, "commentAdminView", CommentPanel.this);
             this.item = item;
             add(createIpAddressLabel());
@@ -416,7 +416,7 @@ public class CommentPanel extends Panel {
 
                 @Override
                 public boolean isVisible() {
-                    CommentEntity comment = item.getModelObject();
+                    Comment comment = item.getModelObject();
                     return comment.getReviewed() || comment.getAutomaticBlocked();
                 }
 
@@ -429,7 +429,7 @@ public class CommentPanel extends Panel {
 
                 @Override
                 public String getObject() {
-                    CommentEntity comment = item.getModelObject();
+                    Comment comment = item.getModelObject();
                     if (comment.getAutomaticBlocked()) {
                         return getString("stateBlocked");
                     }
@@ -440,7 +440,7 @@ public class CommentPanel extends Panel {
         }
 
         private AttributeModifier createStyleModifier() {
-            final CommentEntity comment = item.getModelObject();
+            final Comment comment = item.getModelObject();
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
@@ -455,7 +455,7 @@ public class CommentPanel extends Panel {
         }
 
         private Label createNumberOfBlamesLabel() {
-            CommentEntity comment = item.getModelObject();
+            Comment comment = item.getModelObject();
             return new Label("numberOfBlames", String.valueOf(comment.getNumberOfBlames()));
         }
     }
@@ -463,7 +463,7 @@ public class CommentPanel extends Panel {
     protected UrlCallback getUrlCallback() {
         return new UrlCallback() {
             @Override
-            public String getUrl(CommentEntity comment) {
+            public String getUrl(Comment comment) {
                 String requestUrl = getWebRequest().getHttpServletRequest().getRequestURL().toString();
                 PageParameters param = new PageParameters();
                 param.add(CommentAdminPage.PARAM_ID, String.valueOf(comment.getId()));

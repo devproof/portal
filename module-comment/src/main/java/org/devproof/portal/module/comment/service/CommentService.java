@@ -16,35 +16,35 @@
 package org.devproof.portal.module.comment.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.module.comment.entity.CommentEntity;
+import org.devproof.portal.module.comment.entity.Comment;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-public interface CommentService extends CrudService<CommentEntity, Integer> {
+public interface CommentService extends CrudService<Comment, Integer> {
     /**
-     * Returns a new instance of CommentEntity
+     * Returns a new instance of Comment
      *
-     * @return new instance of {@link CommentEntity}
+     * @return new instance of {@link org.devproof.portal.module.comment.entity.Comment}
      */
-    CommentEntity newCommentEntity();
+    Comment newCommentEntity();
 
     /**
      * Marks the comment as deleted (visible = false)
      */
-    void rejectComment(CommentEntity comment);
+    void rejectComment(Comment comment);
 
     /**
      * Marks the comment as reviewed
      */
-    void acceptComment(CommentEntity comment);
+    void acceptComment(Comment comment);
 
     /**
      * Saves a new comment and sends notification emails
      */
-    void saveNewComment(CommentEntity comment, UrlCallback urlCallback);
+    void saveNewComment(Comment comment, UrlCallback urlCallback);
 
     /**
      * Returns the number of comments for the given module and module content id
@@ -54,7 +54,7 @@ public interface CommentService extends CrudService<CommentEntity, Integer> {
     /**
      * Report a violation
      */
-    void reportViolation(CommentEntity comment, UrlCallback urlCallback, String reporterIp);
+    void reportViolation(Comment comment, UrlCallback urlCallback, String reporterIp);
 
     /**
      * Finds all available module names 
