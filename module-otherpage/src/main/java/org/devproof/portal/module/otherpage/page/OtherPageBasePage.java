@@ -25,7 +25,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
 
 /**
@@ -61,8 +61,8 @@ public class OtherPageBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				OtherPageEntity newOtherPage = otherPageService.newOtherPageEntity();
-				IModel<OtherPageEntity> otherPageModel = Model.of(newOtherPage);
+				OtherPage newOtherPage = otherPageService.newOtherPageEntity();
+				IModel<OtherPage> otherPageModel = Model.of(newOtherPage);
 				setResponsePage(new OtherPageEditPage(otherPageModel));
 			}
 		};

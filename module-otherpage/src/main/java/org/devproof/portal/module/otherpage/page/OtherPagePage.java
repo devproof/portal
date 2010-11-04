@@ -32,7 +32,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
 
 /**
@@ -45,7 +45,7 @@ public class OtherPagePage extends OtherPageBasePage {
     @SpringBean(name = "otherPageService")
     private OtherPageService otherPageService;
     @SpringBean(name = "otherPageDataProvider")
-    private ISortableDataProvider<OtherPageEntity> otherPageDataProvider;
+    private ISortableDataProvider<OtherPage> otherPageDataProvider;
 
     public OtherPagePage(PageParameters params) {
         super(params);
@@ -66,7 +66,7 @@ public class OtherPagePage extends OtherPageBasePage {
         return new OtherPageDataView("repeatingOtherPages");
     }
 
-    private class OtherPageDataView extends DataView<OtherPageEntity> {
+    private class OtherPageDataView extends DataView<OtherPage> {
         private static final long serialVersionUID = 1L;
 
         public OtherPageDataView(String id) {
@@ -74,8 +74,8 @@ public class OtherPagePage extends OtherPageBasePage {
         }
 
         @Override
-        protected void populateItem(Item<OtherPageEntity> item) {
-            IModel<OtherPageEntity> otherPageModel = item.getModel();
+        protected void populateItem(Item<OtherPage> item) {
+            IModel<OtherPage> otherPageModel = item.getModel();
             item.add(createContentIdLabel(otherPageModel));
             item.add(createModifiedByLabel(otherPageModel));
             item.add(createViewLink(otherPageModel));
@@ -84,8 +84,8 @@ public class OtherPagePage extends OtherPageBasePage {
             item.setOutputMarkupId(true);
         }
 
-        private BookmarkablePageLink<OtherPageViewPage> createViewLink(IModel<OtherPageEntity> otherPageModel) {
-            OtherPageEntity otherPage = otherPageModel.getObject();
+        private BookmarkablePageLink<OtherPageViewPage> createViewLink(IModel<OtherPage> otherPageModel) {
+            OtherPage otherPage = otherPageModel.getObject();
             BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink", OtherPageViewPage.class);
             viewLink.add(createViewLinkImage());
             viewLink.setParameter("0", otherPage.getContentId());
@@ -98,7 +98,7 @@ public class OtherPagePage extends OtherPageBasePage {
             return viewImage;
         }
 
-        private AttributeModifier createEvenOddModifier(final Item<OtherPageEntity> item) {
+        private AttributeModifier createEvenOddModifier(final Item<OtherPage> item) {
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
@@ -109,9 +109,9 @@ public class OtherPagePage extends OtherPageBasePage {
             });
         }
 
-        private AuthorPanel<OtherPageEntity> createAuthorPanel(final Item<OtherPageEntity> item) {
-            final IModel<OtherPageEntity> otherPageModel = item.getModel();
-            return new AuthorPanel<OtherPageEntity>("authorButtons", otherPageModel) {
+        private AuthorPanel<OtherPage> createAuthorPanel(final Item<OtherPage> item) {
+            final IModel<OtherPage> otherPageModel = item.getModel();
+            return new AuthorPanel<OtherPage>("authorButtons", otherPageModel) {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -130,12 +130,12 @@ public class OtherPagePage extends OtherPageBasePage {
             };
         }
 
-        private Label createModifiedByLabel(IModel<OtherPageEntity> otherPageModel) {
+        private Label createModifiedByLabel(IModel<OtherPage> otherPageModel) {
             IModel<String> modifiedByModel = new PropertyModel<String>(otherPageModel, "modifiedBy");
             return new Label("modifiedBy", modifiedByModel);
         }
 
-        private Label createContentIdLabel(IModel<OtherPageEntity> otherPageModel) {
+        private Label createContentIdLabel(IModel<OtherPage> otherPageModel) {
             IModel<String> contentIdModel = new PropertyModel<String>(otherPageModel, "contentId");
             return new Label("contentId", contentIdModel);
         }

@@ -35,7 +35,7 @@ import java.util.List;
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = OtherPageConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "otherPageDataProvider", sortProperty = "contentId", sortAscending = true)
-public class OtherPageEntity extends BaseEntity {
+public class OtherPage extends BaseEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -109,7 +109,7 @@ public class OtherPageEntity extends BaseEntity {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        OtherPageEntity other = (OtherPageEntity) obj;
+        OtherPage other = (OtherPage) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

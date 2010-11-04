@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.otherpage.dao;
+package org.devproof.portal.module.otherpage.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
@@ -21,7 +21,7 @@ import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 
 import java.util.List;
 
@@ -30,14 +30,14 @@ import java.util.List;
  */
 @GenericRepository("otherPageDao")
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
-public interface OtherPageDao extends GenericDao<OtherPageEntity, Integer> {
+public interface OtherPageRepository extends GenericDao<OtherPage, Integer> {
     @CacheQuery(enabled = false)
-    @Query("select op.allRights from OtherPageEntity op where op.modifiedAt = (select max(modifiedAt) from OtherPageEntity)")
+    @Query("select op.allRights from OtherPage op where op.modifiedAt = (select max(modifiedAt) from OtherPage)")
     List<RightEntity> findLastSelectedRights();
 
-    @Query("select count(op.contentId) from OtherPageEntity op where op.contentId like ?")
+    @Query("select count(op.contentId) from OtherPage op where op.contentId like ?")
     long existsContentId(String contentId);
 
-    @Query("select op from OtherPageEntity op where op.contentId like ?")
-    OtherPageEntity findOtherPageByContentId(String contentId);
+    @Query("select op from OtherPage op where op.contentId like ?")
+    OtherPage findOtherPageByContentId(String contentId);
 }

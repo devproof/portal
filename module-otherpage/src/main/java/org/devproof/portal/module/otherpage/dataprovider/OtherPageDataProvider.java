@@ -16,12 +16,11 @@
 package org.devproof.portal.module.otherpage.dataprovider;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
-import org.devproof.portal.core.config.RegisterGenericDataProvider;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 
 /**
  * @author Carsten Hufe
  */
 
-public interface OtherPageDataProvider extends ISortableDataProvider<OtherPageEntity> {
+public interface OtherPageDataProvider extends ISortableDataProvider<OtherPage> {
 }

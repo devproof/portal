@@ -15,10 +15,9 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
-import org.devproof.portal.module.otherpage.dao.OtherPageDao;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
+import org.devproof.portal.module.otherpage.repository.OtherPageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,42 +25,42 @@ import org.springframework.stereotype.Service;
  */
 @Service("otherPageService")
 public class OtherPageServiceImpl implements OtherPageService {
-    private OtherPageDao otherPageDao;
+    private OtherPageRepository otherPageRepository;
 
     @Override
     public boolean existsContentId(String contentId) {
-        return otherPageDao.existsContentId(contentId) > 0;
+        return otherPageRepository.existsContentId(contentId) > 0;
     }
 
     @Override
-    public OtherPageEntity findOtherPageByContentId(String contentId) {
-        return otherPageDao.findOtherPageByContentId(contentId);
+    public OtherPage findOtherPageByContentId(String contentId) {
+        return otherPageRepository.findOtherPageByContentId(contentId);
     }
 
     @Override
-    public OtherPageEntity newOtherPageEntity() {
-        OtherPageEntity otherPage = new OtherPageEntity();
-        otherPage.setAllRights(otherPageDao.findLastSelectedRights());
+    public OtherPage newOtherPageEntity() {
+        OtherPage otherPage = new OtherPage();
+        otherPage.setAllRights(otherPageRepository.findLastSelectedRights());
         return otherPage;
     }
 
     @Override
-    public void delete(OtherPageEntity entity) {
-        otherPageDao.delete(entity);
+    public void delete(OtherPage entity) {
+        otherPageRepository.delete(entity);
     }
 
     @Override
-    public OtherPageEntity findById(Integer id) {
-        return otherPageDao.findById(id);
+    public OtherPage findById(Integer id) {
+        return otherPageRepository.findById(id);
     }
 
     @Override
-    public void save(OtherPageEntity entity) {
-        otherPageDao.save(entity);
+    public void save(OtherPage entity) {
+        otherPageRepository.save(entity);
     }
 
     @Autowired
-    public void setOtherPageDao(OtherPageDao otherPageDao) {
-        this.otherPageDao = otherPageDao;
+    public void setOtherPageDao(OtherPageRepository otherPageRepository) {
+        this.otherPageRepository = otherPageRepository;
     }
 }

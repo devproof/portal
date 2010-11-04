@@ -16,18 +16,18 @@
 package org.devproof.portal.module.otherpage.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 
 /**
  * @author Carsten Hufe
  */
-public interface OtherPageService extends CrudService<OtherPageEntity, Integer> {
+public interface OtherPageService extends CrudService<OtherPage, Integer> {
     /**
-     * Returns a new instance of {@link OtherPageEntity}
+     * Returns a new instance of {@link org.devproof.portal.module.otherpage.entity.OtherPage}
      *
-     * @return new instance of {@link OtherPageEntity}
+     * @return new instance of {@link org.devproof.portal.module.otherpage.entity.OtherPage}
      */
-    OtherPageEntity newOtherPageEntity();
+    OtherPage newOtherPageEntity();
 
     /**
      * Tests if a content id does exist
@@ -38,10 +38,10 @@ public interface OtherPageService extends CrudService<OtherPageEntity, Integer> 
     boolean existsContentId(String contentId);
 
     /**
-     * finds the {@link OtherPageEntity} by the contend id
+     * finds the {@link org.devproof.portal.module.otherpage.entity.OtherPage} by the contend id
      *
      * @param contentId content id
      * @return other page
      */
-    OtherPageEntity findOtherPageByContentId(String contentId);
+    OtherPage findOtherPageByContentId(String contentId);
 }

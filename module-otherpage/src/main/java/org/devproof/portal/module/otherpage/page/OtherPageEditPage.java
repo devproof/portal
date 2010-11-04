@@ -29,7 +29,7 @@ import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
 
 import java.util.List;
@@ -42,16 +42,16 @@ public class OtherPageEditPage extends OtherPageBasePage {
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "otherPageService")
     private OtherPageService otherPageService;
-    private IModel<OtherPageEntity> otherPageModel;
+    private IModel<OtherPage> otherPageModel;
 
-    public OtherPageEditPage(IModel<OtherPageEntity> otherPageModel) {
+    public OtherPageEditPage(IModel<OtherPage> otherPageModel) {
         super(new PageParameters());
         this.otherPageModel = otherPageModel;
         add(createOtherPageEditForm());
     }
 
-    private Form<OtherPageEntity> createOtherPageEditForm() {
-        Form<OtherPageEntity> form = newOtherPageEditForm();
+    private Form<OtherPage> createOtherPageEditForm() {
+        Form<OtherPage> form = newOtherPageEditForm();
         form.add(createContentIdField());
         form.add(createContentField());
         form.add(createViewRightPanel());
@@ -80,7 +80,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
             @Override
             protected void onValidate(IValidatable<String> ivalidatable) {
-                OtherPageEntity otherPage = otherPageModel.getObject();
+                OtherPage otherPage = otherPageModel.getObject();
                 if (otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
                     error(ivalidatable);
                 }
@@ -98,14 +98,14 @@ public class OtherPageEditPage extends OtherPageBasePage {
         return new RightGridPanel("viewright", "otherPage.view", allRightsModel);
     }
 
-    private Form<OtherPageEntity> newOtherPageEditForm() {
-        IModel<OtherPageEntity> compoundModel = new CompoundPropertyModel<OtherPageEntity>(otherPageModel);
-        return new Form<OtherPageEntity>("form", compoundModel) {
+    private Form<OtherPage> newOtherPageEditForm() {
+        IModel<OtherPage> compoundModel = new CompoundPropertyModel<OtherPage>(otherPageModel);
+        return new Form<OtherPage>("form", compoundModel) {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void onSubmit() {
-                OtherPageEntity otherPage = otherPageModel.getObject();
+                OtherPage otherPage = otherPageModel.getObject();
                 otherPageService.save(otherPage);
                 setRedirect(false);
                 info(OtherPageEditPage.this.getString("msg.saved"));

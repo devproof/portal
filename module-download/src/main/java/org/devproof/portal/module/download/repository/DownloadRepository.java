@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("downloadDao")
+@GenericRepository("downloadRepository")
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
 public interface DownloadRepository extends GenericDao<Download, Integer> {
     @Query("Select d from Download d")

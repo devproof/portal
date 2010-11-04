@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
-import org.devproof.portal.module.otherpage.dao.OtherPageDao;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
+import org.devproof.portal.module.otherpage.repository.OtherPageRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,18 +32,18 @@ import static org.junit.Assert.assertTrue;
  */
 public class OtherPageServiceImplTest {
     private OtherPageServiceImpl impl;
-    private OtherPageDao mock;
+    private OtherPageRepository mock;
 
     @Before
     public void setUp() throws Exception {
-        mock = createStrictMock(OtherPageDao.class);
+        mock = createStrictMock(OtherPageRepository.class);
         impl = new OtherPageServiceImpl();
         impl.setOtherPageDao(mock);
     }
 
     @Test
     public void testSave() {
-        OtherPageEntity e = createOtherPageEntity();
+        OtherPage e = createOtherPageEntity();
         expect(mock.save(e)).andReturn(e);
         replay(mock);
         impl.save(e);
@@ -52,7 +52,7 @@ public class OtherPageServiceImplTest {
 
     @Test
     public void testDelete() {
-        OtherPageEntity e = createOtherPageEntity();
+        OtherPage e = createOtherPageEntity();
         e.setId(1);
         mock.delete(e);
         replay(mock);
@@ -62,7 +62,7 @@ public class OtherPageServiceImplTest {
 
     @Test
     public void testFindById() {
-        OtherPageEntity e = createOtherPageEntity();
+        OtherPage e = createOtherPageEntity();
         expect(mock.findById(1)).andReturn(e);
         replay(mock);
         assertEquals(impl.findById(1), e);
@@ -82,8 +82,8 @@ public class OtherPageServiceImplTest {
         verify(mock);
     }
 
-    private OtherPageEntity createOtherPageEntity() {
-        OtherPageEntity e = new OtherPageEntity();
+    private OtherPage createOtherPageEntity() {
+        OtherPage e = new OtherPage();
         e.setId(1);
         return e;
     }

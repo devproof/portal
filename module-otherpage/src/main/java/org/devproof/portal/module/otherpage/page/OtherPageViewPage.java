@@ -31,7 +31,7 @@ import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
 
 /**
@@ -44,7 +44,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
     @SpringBean(name = "otherPageService")
     private OtherPageService otherPageService;
     private PageParameters params;
-    private IModel<OtherPageEntity> otherPageModel;
+    private IModel<OtherPage> otherPageModel;
 
     public OtherPageViewPage(PageParameters params) {
         super(params);
@@ -60,14 +60,14 @@ public class OtherPageViewPage extends OtherPageBasePage {
         super.onBeforeRender();
     }
 
-    private IModel<OtherPageEntity> createOtherPageModel() {
-        return new LoadableDetachableModel<OtherPageEntity>() {
+    private IModel<OtherPage> createOtherPageModel() {
+        return new LoadableDetachableModel<OtherPage>() {
             private static final long serialVersionUID = 1722157251195970885L;
 
             @Override
-            protected OtherPageEntity load() {
+            protected OtherPage load() {
                 String contentId = getContentId();
-                OtherPageEntity otherPage = otherPageService.findOtherPageByContentId(contentId);
+                OtherPage otherPage = otherPageService.findOtherPageByContentId(contentId);
                 if (otherPage == null) {
                     otherPage = otherPageService.newOtherPageEntity();
                     otherPage.setCreatedAt(PortalUtil.now());
@@ -105,19 +105,19 @@ public class OtherPageViewPage extends OtherPageBasePage {
     }
 
     private Component createMetaInfoPanel() {
-        return new MetaInfoPanel<OtherPageEntity>("metaInfo", otherPageModel) {
+        return new MetaInfoPanel<OtherPage>("metaInfo", otherPageModel) {
             private static final long serialVersionUID = -1832624008608526956L;
 
             @Override
             public boolean isVisible() {
-                OtherPageEntity otherPage = otherPageModel.getObject();
+                OtherPage otherPage = otherPageModel.getObject();
                 return otherPage.getId() != null;
             }
         };
     }
 
     private void redirectToErrorPageIfHasNoRights() {
-        OtherPageEntity otherPage = otherPageModel.getObject();
+        OtherPage otherPage = otherPageModel.getObject();
         if (otherPage != null && hasRightToViewOtherPage(otherPage)) {
             throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"), getRequestURL()));
         }
@@ -137,14 +137,14 @@ public class OtherPageViewPage extends OtherPageBasePage {
         return authorPanel;
     }
 
-    private AuthorPanel<OtherPageEntity> createAuthorPanel() {
-        AuthorPanel<OtherPageEntity> authorPanel = newAuthorPanel();
+    private AuthorPanel<OtherPage> createAuthorPanel() {
+        AuthorPanel<OtherPage> authorPanel = newAuthorPanel();
         authorPanel.setRedirectPage(OtherPagePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
         return authorPanel;
     }
 
-    private AuthorPanel<OtherPageEntity> newAuthorPanel() {
-        return new AuthorPanel<OtherPageEntity>("authorButtons", otherPageModel) {
+    private AuthorPanel<OtherPage> newAuthorPanel() {
+        return new AuthorPanel<OtherPage>("authorButtons", otherPageModel) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -159,13 +159,13 @@ public class OtherPageViewPage extends OtherPageBasePage {
 
             @Override
             public boolean isDeleteButtonVisible() {
-                OtherPageEntity otherPage = otherPageModel.getObject();
+                OtherPage otherPage = otherPageModel.getObject();
                 return otherPage.getId() != null;
             }
         };
     }
 
-    private boolean hasRightToViewOtherPage(OtherPageEntity page) {
+    private boolean hasRightToViewOtherPage(OtherPage page) {
         PortalSession session = (PortalSession) getSession();
         return !session.hasRight("otherPage.view") && !session.hasRight(page.getViewRights());
     }

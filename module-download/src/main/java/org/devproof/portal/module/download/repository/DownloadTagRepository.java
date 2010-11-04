@@ -24,7 +24,7 @@ import org.devproof.portal.module.download.entity.DownloadTag;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("downloadTagDao")
+@GenericRepository("downloadTagRepository")
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
 public interface DownloadTagRepository extends TagDao<DownloadTag> {
 }

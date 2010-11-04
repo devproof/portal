@@ -19,7 +19,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.module.otherpage.entity.OtherPageEntity;
+import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -61,7 +61,7 @@ public class OtherPageEditPageTest {
     }
 
     private OtherPageEditPage createNewOtherPageEditPage() {
-        return new OtherPageEditPage(Model.of(new OtherPageEntity()));
+        return new OtherPageEditPage(Model.of(new OtherPage()));
     }
 
     private void assertOtherPageViewPage() {
