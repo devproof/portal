@@ -16,12 +16,10 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.article.dao.ArticleDao;
-import org.devproof.portal.module.article.dao.ArticlePageDao;
+import org.devproof.portal.module.article.dao.ArticlePageRepository;
+import org.devproof.portal.module.article.dao.ArticleRepository;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,15 +36,15 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ArticleServiceImplTest {
     private ArticleServiceImpl impl;
-    private ArticleDao mock;
-    private ArticlePageDao mockPage;
+    private ArticleRepository mock;
+    private ArticlePageRepository mockPage;
     private ArticleTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        mock = createStrictMock(ArticleDao.class);
-        mockPage = createStrictMock(ArticlePageDao.class);
+        mock = createStrictMock(ArticleRepository.class);
+        mockPage = createStrictMock(ArticlePageRepository.class);
         mockTag = createStrictMock(ArticleTagService.class);
         impl = new ArticleServiceImpl();
         impl.setArticleDao(mock);

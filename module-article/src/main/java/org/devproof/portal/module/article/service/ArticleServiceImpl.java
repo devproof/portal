@@ -16,15 +16,12 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.article.dao.ArticleDao;
-import org.devproof.portal.module.article.dao.ArticlePageDao;
+import org.devproof.portal.module.article.dao.ArticlePageRepository;
+import org.devproof.portal.module.article.dao.ArticleRepository;
 import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticlePageId;
-import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,24 +31,24 @@ import java.util.List;
  */
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
-    private ArticleDao articleDao;
-    private ArticlePageDao articlePageDao;
+    private ArticleRepository articleRepository;
+    private ArticlePageRepository articlePageRepository;
     private ArticleTagService articleTagService;
 
     @Override
     public boolean existsContentId(String contentId) {
-        return articleDao.existsContentId(contentId) > 0;
+        return articleRepository.existsContentId(contentId) > 0;
     }
 
     @Override
     public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
-        return articleDao.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
+        return articleRepository.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
     public ArticleEntity newArticleEntity() {
         ArticleEntity article = new ArticleEntity();
-        article.setAllRights(articleDao.findLastSelectedRights());
+        article.setAllRights(articleRepository.findLastSelectedRights());
         return article;
     }
 
@@ -62,44 +59,44 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void delete(ArticleEntity entity) {
-        articleDao.delete(entity);
+        articleRepository.delete(entity);
         articleTagService.deleteUnusedTags();
     }
 
     @Override
     public ArticleEntity findById(Integer id) {
-        return articleDao.findById(id);
+        return articleRepository.findById(id);
     }
 
     @Override
     public void save(ArticleEntity entity) {
-        articleDao.save(entity);
+        articleRepository.save(entity);
         articleTagService.deleteUnusedTags();
     }
 
     @Override
     public long getPageCount(String contentId) {
-        return articlePageDao.getPageCount(contentId);
+        return articlePageRepository.getPageCount(contentId);
     }
 
     @Override
     public ArticlePageEntity findArticlePageByContentIdAndPage(String contentId, Integer page) {
-        return articlePageDao.findById(new ArticlePageId(contentId, page));
+        return articlePageRepository.findById(new ArticlePageId(contentId, page));
     }
 
     @Override
     public ArticleEntity findByContentId(String contentId) {
-        return articleDao.findByContentId(contentId);
+        return articleRepository.findByContentId(contentId);
     }
 
     @Autowired
-    public void setArticleDao(ArticleDao articleDao) {
-        this.articleDao = articleDao;
+    public void setArticleDao(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
     @Autowired
-    public void setArticlePageDao(ArticlePageDao articlePageDao) {
-        this.articlePageDao = articlePageDao;
+    public void setArticlePageDao(ArticlePageRepository articlePageRepository) {
+        this.articlePageRepository = articlePageRepository;
     }
 
     @Autowired
