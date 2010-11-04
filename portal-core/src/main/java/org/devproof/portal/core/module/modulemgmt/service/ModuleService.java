@@ -26,6 +26,10 @@ import java.util.List;
  * @author carsten
  */
 public interface ModuleService {
+    /*
+	 * Rebuilds the module links in the database, protected for unit test
+	 */
+	public void rebuildModuleLinks();
     /**
      * Finds all modules, the list starts with the core modules
      */

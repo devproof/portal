@@ -116,15 +116,9 @@ public class ModuleServiceImpl implements ModuleService {
 		return moduleLinkRepository.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION);
 	}
 
-	@PostConstruct
-	public void afterPropertiesSet() throws Exception {
-		rebuildModuleLinks();
-	}
-
-	/*
-	 * Rebuilds the module links in the database, protected for unit test
-	 */
-	protected void rebuildModuleLinks() {
+    @Override
+    @Transactional
+	public void rebuildModuleLinks() {
 		for (LinkType type : LinkType.values()) {
 			ModuleLink startPage = null;
 			List<ModuleLink> toAddSelected = new ArrayList<ModuleLink>();
