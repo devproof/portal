@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.bookmark.dao;
-
-import java.util.List;
+package org.devproof.portal.module.bookmark.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
@@ -28,12 +26,14 @@ import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
 
+import java.util.List;
+
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("bookmarkDao")
+@GenericRepository("bookmarkRepository")
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
-public interface BookmarkDao extends GenericDao<BookmarkEntity, Integer> {
+public interface BookmarkRepository extends GenericDao<BookmarkEntity, Integer> {
     @Query("Select b from BookmarkEntity b")
     List<BookmarkEntity> findAll();
 

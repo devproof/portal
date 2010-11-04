@@ -17,13 +17,10 @@ package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.bookmark.dao.BookmarkDao;
+import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,77 +30,77 @@ import java.util.List;
  */
 @Service("bookmarkService")
 public class BookmarkServiceImpl implements BookmarkService {
-    private BookmarkDao bookmarkDao;
+    private BookmarkRepository bookmarkRepository;
     private BookmarkTagService bookmarkTagService;
 
     @Override
     public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
-        return bookmarkDao.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
+        return bookmarkRepository.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
     public List<BookmarkEntity> findBookmarksBySource(Source source) {
-        return bookmarkDao.findBookmarksBySource(source);
+        return bookmarkRepository.findBookmarksBySource(source);
     }
 
     @Override
     public void incrementHits(BookmarkEntity bookmark) {
-        bookmarkDao.incrementHits(bookmark);
+        bookmarkRepository.incrementHits(bookmark);
     }
 
     @Override
     public void markBrokenBookmark(BookmarkEntity bookmark) {
-        bookmarkDao.markBrokenBookmark(bookmark);
+        bookmarkRepository.markBrokenBookmark(bookmark);
     }
 
     @Override
     public void markValidBookmark(BookmarkEntity bookmark) {
-        bookmarkDao.markValidBookmark(bookmark);
+        bookmarkRepository.markValidBookmark(bookmark);
     }
 
     @Override
     public BookmarkEntity newBookmarkEntity() {
         BookmarkEntity bookmark = new BookmarkEntity();
-        bookmark.setAllRights(bookmarkDao.findLastSelectedRights());
+        bookmark.setAllRights(bookmarkRepository.findLastSelectedRights());
         return bookmark;
     }
 
     @Override
     public void rateBookmark(Integer rating, BookmarkEntity bookmark) {
-        bookmarkDao.rateBookmark(rating, bookmark);
-        bookmarkDao.refresh(bookmark);
+        bookmarkRepository.rateBookmark(rating, bookmark);
+        bookmarkRepository.refresh(bookmark);
     }
 
     @Override
     public void delete(BookmarkEntity entity) {
-        bookmarkDao.delete(entity);
+        bookmarkRepository.delete(entity);
         bookmarkTagService.deleteUnusedTags();
     }
 
     @Override
     public List<BookmarkEntity> findAll() {
-        return bookmarkDao.findAll();
+        return bookmarkRepository.findAll();
     }
 
     @Override
     public BookmarkEntity findById(Integer id) {
-        return bookmarkDao.findById(id);
+        return bookmarkRepository.findById(id);
     }
 
     @Override
     public void save(BookmarkEntity entity) {
-        bookmarkDao.save(entity);
+        bookmarkRepository.save(entity);
         bookmarkTagService.deleteUnusedTags();
     }
 
     @Override
     public List<RightEntity> findLastSelectedRights() {
-        return bookmarkDao.findLastSelectedRights();
+        return bookmarkRepository.findLastSelectedRights();
     }
 
     @Autowired
-    public void setBookmarkDao(BookmarkDao bookmarkDao) {
-        this.bookmarkDao = bookmarkDao;
+    public void setBookmarkDao(BookmarkRepository bookmarkRepository) {
+        this.bookmarkRepository = bookmarkRepository;
     }
 
     @Autowired

@@ -17,11 +17,9 @@ package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.bookmark.dao.BookmarkDao;
+import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
 import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,13 +34,13 @@ import static org.junit.Assert.*;
  */
 public class BookmarkServiceImplTest {
     private BookmarkServiceImpl impl;
-    private BookmarkDao mock;
+    private BookmarkRepository mock;
     private BookmarkTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        mock = createStrictMock(BookmarkDao.class);
+        mock = createStrictMock(BookmarkRepository.class);
         mockTag = createStrictMock(BookmarkTagService.class);
         impl = new BookmarkServiceImpl();
         impl.setBookmarkDao(mock);
