@@ -19,7 +19,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.page.BoxPage;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
@@ -72,7 +72,7 @@ public class BoxEditPanelTest {
         private static final long serialVersionUID = 1L;
 
         public TestBoxEditPanel(String id) {
-            super(id, Model.of(new BoxEntity()));
+            super(id, Model.of(new Box()));
         }
 
         @Override

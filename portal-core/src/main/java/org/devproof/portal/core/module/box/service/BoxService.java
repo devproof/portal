@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.box.service;
 
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.common.service.CrudService;
 
 import java.util.List;
@@ -23,13 +23,13 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-public interface BoxService extends CrudService<BoxEntity, Integer> {
+public interface BoxService extends CrudService<Box, Integer> {
     /**
-     * Returns a new instance of BoxEntity
+     * Returns a new instance of Box
      *
-     * @return new instance of {@link BoxEntity}
+     * @return new instance of {@link org.devproof.portal.core.module.box.entity.Box}
      */
-    BoxEntity newBoxEntity();
+    Box newBoxEntity();
 
     /**
      * Returns the highest sort number
@@ -43,24 +43,24 @@ public interface BoxService extends CrudService<BoxEntity, Integer> {
      *
      * @param sort order number
      */
-    BoxEntity findBoxBySort(Integer sort);
+    Box findBoxBySort(Integer sort);
 
     /**
      * Returns all boxes ordered by sort number
      */
-    List<BoxEntity> findAllOrderedBySort();
+    List<Box> findAllOrderedBySort();
 
     /**
      * Moves the box down
      *
      * @param box box to move
      */
-    void moveDown(BoxEntity box);
+    void moveDown(Box box);
 
     /**
      * Moves the box up
      *
      * @param box box to move
      */
-	void moveUp(BoxEntity box);
+	void moveUp(Box box);
 }

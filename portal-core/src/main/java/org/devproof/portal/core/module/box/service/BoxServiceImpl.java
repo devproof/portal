@@ -15,14 +15,11 @@
  */
 package org.devproof.portal.core.module.box.service;
 
-import org.devproof.portal.core.module.box.dao.BoxDao;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
+import org.devproof.portal.core.module.box.repository.BoxRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -30,21 +27,21 @@ import java.util.List;
  */
 @Service("boxService")
 public class BoxServiceImpl implements BoxService {
-	private BoxDao boxDao;
+	private BoxRepository boxRepository;
 
 	@Override
-	public List<BoxEntity> findAllOrderedBySort() {
-		return boxDao.findAllOrderedBySort();
+	public List<Box> findAllOrderedBySort() {
+		return boxRepository.findAllOrderedBySort();
 	}
 
 	@Override
-	public BoxEntity findBoxBySort(Integer sort) {
-		return boxDao.findBoxBySort(sort);
+	public Box findBoxBySort(Integer sort) {
+		return boxRepository.findBoxBySort(sort);
 	}
 
 	@Override
 	public Integer getMaxSortNum() {
-		Integer sort = boxDao.getMaxSortNum();
+		Integer sort = boxRepository.getMaxSortNum();
 		if (sort == null) {
 			return 1;
 		}
@@ -52,64 +49,64 @@ public class BoxServiceImpl implements BoxService {
 	}
 
 	@Override
-	public BoxEntity newBoxEntity() {
-		return new BoxEntity();
+	public Box newBoxEntity() {
+		return new Box();
 	}
 
 	@Override
-	public void delete(BoxEntity entity) {
-		int maxSort = boxDao.getMaxSortNum();
+	public void delete(Box entity) {
+		int maxSort = boxRepository.getMaxSortNum();
 		int deleteSort = entity.getSort();
-		boxDao.delete(entity);
+		boxRepository.delete(entity);
 		if (maxSort > deleteSort) {
 			for (int i = deleteSort + 1; i <= maxSort; i++) {
-				BoxEntity box = boxDao.findBoxBySort(i);
+				Box box = boxRepository.findBoxBySort(i);
 				box.setSort(box.getSort() - 1);
-				boxDao.save(box);
+				boxRepository.save(box);
 			}
 		}
 
 	}
 
 	@Override
-	public BoxEntity findById(Integer id) {
-		return boxDao.findById(id);
+	public Box findById(Integer id) {
+		return boxRepository.findById(id);
 	}
 
 	@Override
-	public void save(BoxEntity entity) {
-		boxDao.save(entity);
+	public void save(Box entity) {
+		boxRepository.save(entity);
 	}
 
 	@Override
-	public void moveDown(BoxEntity box) {
-		int maxSort = boxDao.getMaxSortNum();
+	public void moveDown(Box box) {
+		int maxSort = boxRepository.getMaxSortNum();
 		boolean isNotLowestBox = box.getSort() < maxSort;
 		if (isNotLowestBox) {
-			BoxEntity moveDown = box;
-			BoxEntity moveUp = boxDao.findBoxBySort(box.getSort() + 1);
+			Box moveDown = box;
+			Box moveUp = boxRepository.findBoxBySort(box.getSort() + 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			boxDao.save(moveUp);
-			boxDao.save(moveDown);
+			boxRepository.save(moveUp);
+			boxRepository.save(moveDown);
 		}
 	}
 
 	@Override
-	public void moveUp(BoxEntity box) {
+	public void moveUp(Box box) {
 		boolean isNotHighestBox = box.getSort() > 1;
 		if (isNotHighestBox) {
-			BoxEntity moveUp = box;
-			BoxEntity moveDown = boxDao.findBoxBySort(box.getSort() - 1);
+			Box moveUp = box;
+			Box moveDown = boxRepository.findBoxBySort(box.getSort() - 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			boxDao.save(moveUp);
-			boxDao.save(moveDown);
+			boxRepository.save(moveUp);
+			boxRepository.save(moveDown);
 		}
 	}
 
     @Autowired
-	public void setBoxDao(BoxDao boxDao) {
-		this.boxDao = boxDao;
+	public void setBoxRepository(BoxRepository boxRepository) {
+		this.boxRepository = boxRepository;
 	}
 }

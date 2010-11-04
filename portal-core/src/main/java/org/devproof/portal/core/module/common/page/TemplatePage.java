@@ -39,7 +39,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
@@ -268,14 +268,14 @@ public abstract class TemplatePage extends WebPage {
      */
     private RepeatingView createRepeatingBoxes() {
         RepeatingView repeating = new RepeatingView("repeatingSideNav");
-        List<BoxEntity> boxes = boxService.findAllOrderedBySort();
-        for (BoxEntity box : boxes) {
+        List<Box> boxes = boxService.findAllOrderedBySort();
+        for (Box box : boxes) {
             repeating.add(createBoxItem(repeating.newChildId(), box));
         }
         return repeating;
     }
 
-    private WebMarkupContainer createBoxItem(String id, BoxEntity box) {
+    private WebMarkupContainer createBoxItem(String id, Box box) {
         WebMarkupContainer item = new WebMarkupContainer(id);
         Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
         Component boxInstance = null;
@@ -339,7 +339,7 @@ public abstract class TemplatePage extends WebPage {
         return null;
     }
 
-    private void setBoxTitleVisibility(BoxEntity box, Component boxInstance) {
+    private void setBoxTitleVisibility(Box box, Component boxInstance) {
         if (boxInstance instanceof BoxTitleVisibility) {
             ((BoxTitleVisibility) boxInstance).setTitleVisible(!box.getHideTitle());
         }
@@ -357,13 +357,13 @@ public abstract class TemplatePage extends WebPage {
         return new PageAdminBoxPanel("box");
     }
 
-    private OtherBoxPanel createOtherBox(BoxEntity box) {
+    private OtherBoxPanel createOtherBox(Box box) {
         return new OtherBoxPanel("box", Model.of(box));
     }
 
     private Component createBoxNotFoundPanel() {
         Component boxInstance;
-        BoxEntity error = new BoxEntity();
+        Box error = new Box();
         error.setTitle("!Error!");
         error.setContent("Box type is not available!");
         boxInstance = createOtherBox(error);

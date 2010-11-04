@@ -32,7 +32,7 @@ import javax.persistence.*;
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 @RegisterGenericDataProvider(value = "boxDataProvider", sortProperty = "sort")
-public class BoxEntity extends BaseEntity {
+public class Box extends BaseEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -117,7 +117,7 @@ public class BoxEntity extends BaseEntity {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        BoxEntity other = (BoxEntity) obj;
+        Box other = (Box) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;

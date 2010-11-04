@@ -27,7 +27,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.config.BoxConfiguration;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
 
@@ -45,9 +45,9 @@ public abstract class BoxEditPanel extends Panel {
     private BoxRegistry boxRegistry;
     private FeedbackPanel feedback;
     private IModel<BoxConfiguration> boxSelectionModel;
-    private IModel<BoxEntity> boxModel;
+    private IModel<Box> boxModel;
 
-    public BoxEditPanel(String id, IModel<BoxEntity> boxModel) {
+    public BoxEditPanel(String id, IModel<Box> boxModel) {
         super(id);
         this.boxModel = boxModel;
         this.boxSelectionModel = createBoxSelectionModel();
@@ -60,9 +60,9 @@ public abstract class BoxEditPanel extends Panel {
         return Model.of(boxRegistry.getBoxConfigurationBySimpleClassName(boxType));
     }
 
-    private Form<BoxEntity> createBoxEditForm() {
-        CompoundPropertyModel<BoxEntity> formModel = new CompoundPropertyModel<BoxEntity>(boxModel);
-        Form<BoxEntity> form = new Form<BoxEntity>("form", formModel);
+    private Form<Box> createBoxEditForm() {
+        CompoundPropertyModel<Box> formModel = new CompoundPropertyModel<Box>(boxModel);
+        Form<Box> form = new Form<Box>("form", formModel);
         form.add(createContentField());
         form.add(createBoxTypeChoice());
         form.add(createTitleField());
@@ -97,7 +97,7 @@ public abstract class BoxEditPanel extends Panel {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                BoxEntity box = boxModel.getObject();
+                Box box = boxModel.getObject();
                 if (box.getSort() == null) {
                     Integer sort = boxService.getMaxSortNum();
                     box.setSort(sort);

@@ -33,7 +33,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.panel.BoxEditPanel;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
@@ -51,7 +51,7 @@ public class BoxPage extends TemplatePage {
     private static final long serialVersionUID = 1L;
 
     @SpringBean(name = "boxDataProvider")
-    private SortableDataProvider<BoxEntity> boxDataProvider;
+    private SortableDataProvider<Box> boxDataProvider;
     @SpringBean(name = "boxService")
     private BoxService boxService;
     @SpringBean(name = "boxRegistry")
@@ -75,8 +75,8 @@ public class BoxPage extends TemplatePage {
         return bubblePanel;
     }
 
-    private AjaxLink<BoxEntity> createCreateBoxLink() {
-        AjaxLink<BoxEntity> createLink = newCreateBoxLink();
+    private AjaxLink<Box> createCreateBoxLink() {
+        AjaxLink<Box> createLink = newCreateBoxLink();
         createLink.add(createBoxLinkLabel());
         return createLink;
     }
@@ -85,8 +85,8 @@ public class BoxPage extends TemplatePage {
         return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
     }
 
-    private AjaxLink<BoxEntity> newCreateBoxLink() {
-        return new AjaxLink<BoxEntity>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Box> newCreateBoxLink() {
+        return new AjaxLink<Box>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -96,7 +96,7 @@ public class BoxPage extends TemplatePage {
             }
 
             private BoxEditPanel newBoxEditPanel() {
-                IModel<BoxEntity> boxModel = Model.of(boxService.newBoxEntity());
+                IModel<Box> boxModel = Model.of(boxService.newBoxEntity());
                 return new BoxEditPanel(bubblePanel.getContentId(), boxModel) {
                     private static final long serialVersionUID = 1L;
 
@@ -129,7 +129,7 @@ public class BoxPage extends TemplatePage {
         return repeatingBoxesInRefreshContainer;
     }
 
-    private class BoxDataView extends DataView<BoxEntity> {
+    private class BoxDataView extends DataView<Box> {
         private static final long serialVersionUID = 1L;
 
         public BoxDataView(String id) {
@@ -137,8 +137,8 @@ public class BoxPage extends TemplatePage {
         }
 
         @Override
-        protected void populateItem(Item<BoxEntity> item) {
-            IModel<BoxEntity> boxModel = item.getModel();
+        protected void populateItem(Item<Box> item) {
+            IModel<Box> boxModel = item.getModel();
             item.add(createSortLabel(boxModel));
             item.add(createTypeLabel(boxModel));
             item.add(createTitleLabel(boxModel));
@@ -148,7 +148,7 @@ public class BoxPage extends TemplatePage {
             item.add(createClassEvenOddModifier(item));
         }
 
-        private AttributeModifier createClassEvenOddModifier(final Item<BoxEntity> item) {
+        private AttributeModifier createClassEvenOddModifier(final Item<Box> item) {
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
@@ -159,8 +159,8 @@ public class BoxPage extends TemplatePage {
             });
         }
 
-        private MarkupContainer createMoveDownLink(IModel<BoxEntity> boxModel) {
-            AjaxLink<BoxEntity> moveDownLink = newMoveDownLink(boxModel);
+        private MarkupContainer createMoveDownLink(IModel<Box> boxModel) {
+            AjaxLink<Box> moveDownLink = newMoveDownLink(boxModel);
             moveDownLink.add(createMoveDownLinkImage());
             return moveDownLink;
         }
@@ -169,8 +169,8 @@ public class BoxPage extends TemplatePage {
             return new Image("downImage", CommonConstants.REF_DOWN_IMG);
         }
 
-        private AjaxLink<BoxEntity> newMoveDownLink(final IModel<BoxEntity> boxModel) {
-            return new AjaxLink<BoxEntity>("downLink") {
+        private AjaxLink<Box> newMoveDownLink(final IModel<Box> boxModel) {
+            return new AjaxLink<Box>("downLink") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -181,8 +181,8 @@ public class BoxPage extends TemplatePage {
             };
         }
 
-        private MarkupContainer createMoveUpLink(IModel<BoxEntity> boxModel) {
-            AjaxLink<BoxEntity> moveUpLink = newMoveUpLink(boxModel);
+        private MarkupContainer createMoveUpLink(IModel<Box> boxModel) {
+            AjaxLink<Box> moveUpLink = newMoveUpLink(boxModel);
             moveUpLink.add(createMoveUpLinkImage());
             return moveUpLink;
         }
@@ -191,8 +191,8 @@ public class BoxPage extends TemplatePage {
             return new Image("upImage", CommonConstants.REF_UP_IMG);
         }
 
-        private AjaxLink<BoxEntity> newMoveUpLink(final IModel<BoxEntity> boxModel) {
-            return new AjaxLink<BoxEntity>("upLink") {
+        private AjaxLink<Box> newMoveUpLink(final IModel<Box> boxModel) {
+            return new AjaxLink<Box>("upLink") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -203,8 +203,8 @@ public class BoxPage extends TemplatePage {
             };
         }
 
-        private AuthorPanel<BoxEntity> createAuthorPanel(final IModel<BoxEntity> boxModel) {
-            return new AuthorPanel<BoxEntity>("authorButtons", boxModel) {
+        private AuthorPanel<Box> createAuthorPanel(final IModel<Box> boxModel) {
+            return new AuthorPanel<Box>("authorButtons", boxModel) {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -241,29 +241,29 @@ public class BoxPage extends TemplatePage {
             };
         }
 
-        private Label createTitleLabel(IModel<BoxEntity> boxModel) {
+        private Label createTitleLabel(IModel<Box> boxModel) {
             IModel<String> titleModel = new PropertyModel<String>(boxModel, "title");
             return new Label("title", titleModel);
         }
 
-        private Label createTypeLabel(IModel<BoxEntity> boxModel) {
+        private Label createTypeLabel(IModel<Box> boxModel) {
             IModel<String> typeModel = typeModel(boxModel);
             return new Label("type", typeModel);
         }
 
-        private IModel<String> typeModel(final IModel<BoxEntity> boxModel) {
+        private IModel<String> typeModel(final IModel<Box> boxModel) {
             return new LoadableDetachableModel<String>() {
                 private static final long serialVersionUID = 3674902001006638462L;
 
                 @Override
                 protected String load() {
-                    BoxEntity box = boxModel.getObject();
+                    Box box = boxModel.getObject();
                     return boxRegistry.getNameBySimpleClassName(box.getBoxType());
                 }
             };
         }
 
-        private Label createSortLabel(IModel<BoxEntity> boxModel) {
+        private Label createSortLabel(IModel<Box> boxModel) {
             IModel<Integer> sortModel = new PropertyModel<Integer>(boxModel, "title");
             return new Label("sort", sortModel);
         }

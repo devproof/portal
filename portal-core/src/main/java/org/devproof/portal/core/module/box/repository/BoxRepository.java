@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.box.dao;
+package org.devproof.portal.core.module.box.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -29,15 +29,15 @@ import java.util.List;
  *
  * @author Carsten Hufe
  */
-@GenericRepository("boxDao")
+@GenericRepository("boxRepository")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface BoxDao extends GenericDao<BoxEntity, Integer> {
-    @Query("select max(b.sort) from BoxEntity b")
+public interface BoxRepository extends GenericDao<Box, Integer> {
+    @Query("select max(b.sort) from Box b")
     Integer getMaxSortNum();
 
-    @Query("select b from BoxEntity b where b.sort = ?")
-    BoxEntity findBoxBySort(Integer sort);
+    @Query("select b from Box b where b.sort = ?")
+    Box findBoxBySort(Integer sort);
 
-    @Query("select b from BoxEntity b order by b.sort")
-    List<BoxEntity> findAllOrderedBySort();
+    @Query("select b from Box b order by b.sort")
+    List<Box> findAllOrderedBySort();
 }

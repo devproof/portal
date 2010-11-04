@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.box.service;
 
-import org.devproof.portal.core.module.box.dao.BoxDao;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
+import org.devproof.portal.core.module.box.repository.BoxRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,18 +32,18 @@ import static org.junit.Assert.assertNotNull;
  */
 public class BoxServiceImplTest {
     private BoxServiceImpl impl;
-    private BoxDao mock;
+    private BoxRepository mock;
 
     @Before
     public void setUp() throws Exception {
-        mock = createStrictMock(BoxDao.class);
+        mock = createStrictMock(BoxRepository.class);
         impl = new BoxServiceImpl();
-        impl.setBoxDao(mock);
+        impl.setBoxRepository(mock);
     }
 
     @Test
     public void testSave() {
-        BoxEntity e = impl.newBoxEntity();
+        Box e = impl.newBoxEntity();
         e.setId(1);
         expect(mock.save(e)).andReturn(e);
         replay(mock);
@@ -53,7 +53,7 @@ public class BoxServiceImplTest {
 
     @Test
     public void testDelete() {
-        BoxEntity e = impl.newBoxEntity();
+        Box e = impl.newBoxEntity();
         e.setId(1);
         e.setSort(1);
         expect(mock.getMaxSortNum()).andReturn(1);
@@ -65,7 +65,7 @@ public class BoxServiceImplTest {
 
     @Test
     public void testFindById() {
-        BoxEntity e = impl.newBoxEntity();
+        Box e = impl.newBoxEntity();
         e.setId(1);
         expect(mock.findById(1)).andReturn(e);
         replay(mock);
@@ -80,7 +80,7 @@ public class BoxServiceImplTest {
 
     @Test
     public void testFindAllOrderedBySort() {
-        List<BoxEntity> list = new ArrayList<BoxEntity>();
+        List<Box> list = new ArrayList<Box>();
         list.add(impl.newBoxEntity());
         list.add(impl.newBoxEntity());
         expect(mock.findAllOrderedBySort()).andReturn(list);
@@ -91,7 +91,7 @@ public class BoxServiceImplTest {
 
     @Test
     public void testFindBoxBySort() {
-        BoxEntity e = impl.newBoxEntity();
+        Box e = impl.newBoxEntity();
         e.setId(1);
         expect(mock.findBoxBySort(5)).andReturn(e);
         replay(mock);
@@ -109,10 +109,10 @@ public class BoxServiceImplTest {
 
     @Test
     public void testMoveDown() {
-        BoxEntity e1 = impl.newBoxEntity();
+        Box e1 = impl.newBoxEntity();
         e1.setId(1);
         e1.setSort(1);
-        BoxEntity e2 = impl.newBoxEntity();
+        Box e2 = impl.newBoxEntity();
         e2.setId(2);
         e2.setSort(2);
         expect(mock.getMaxSortNum()).andReturn(2);
@@ -128,10 +128,10 @@ public class BoxServiceImplTest {
 
     @Test
     public void testMoveUp() {
-        BoxEntity e1 = impl.newBoxEntity();
+        Box e1 = impl.newBoxEntity();
         e1.setId(1);
         e1.setSort(1);
-        BoxEntity e2 = impl.newBoxEntity();
+        Box e2 = impl.newBoxEntity();
         e2.setId(2);
         e2.setSort(2);
         expect(mock.findBoxBySort(1)).andReturn(e1);

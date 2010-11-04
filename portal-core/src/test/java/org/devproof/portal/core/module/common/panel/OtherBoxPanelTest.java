@@ -19,7 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.box.entity.BoxEntity;
+import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -54,7 +54,7 @@ public class OtherBoxPanelTest {
 
             @Override
             public Panel getTestPanel(String panelId) {
-                return new OtherBoxPanel(panelId, Model.of(new BoxEntity()));
+                return new OtherBoxPanel(panelId, Model.of(new Box()));
             }
         };
     }
