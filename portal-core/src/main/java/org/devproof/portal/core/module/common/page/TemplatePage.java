@@ -56,7 +56,7 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.feed.component.Atom1Link;
 import org.devproof.portal.core.module.feed.component.Rss2Link;
 import org.devproof.portal.core.module.feed.panel.FeedBoxPanel;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.core.module.user.page.LoginPage;
@@ -386,7 +386,7 @@ public abstract class TemplatePage extends WebPage {
     /**
      * Set the TagCloud Box e.g. search or tags
      */
-    public <T extends BaseTagEntity<?>> void addTagCloudBox(TagService<T> tagService, Class<? extends Page> page) {
+    public <T extends AbstractTag<?>> void addTagCloudBox(TagService<T> tagService, Class<? extends Page> page) {
         TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, page);
         newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
         tagCloudBox.replaceWith(newTagCloudBox);

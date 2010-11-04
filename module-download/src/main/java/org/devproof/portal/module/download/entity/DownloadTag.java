@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.download.entity;
 
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,7 +32,7 @@ import java.util.List;
 @Entity
 @Table(name = "download_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = DownloadConstants.ENTITY_CACHE_REGION)
-public class DownloadTag extends BaseTagEntity<Download> {
+public class DownloadTag extends AbstractTag<Download> {
     private static final long serialVersionUID = 1L;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")

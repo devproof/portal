@@ -21,7 +21,7 @@ import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.role.entity.Role;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
@@ -60,12 +60,12 @@ public class TagCloudBoxPanelTest {
 
             @Override
             public Panel getTestPanel(String panelId) {
-                return new TagCloudBoxPanel<TestTagEntity>(panelId, new TestTagService(), WebPage.class);
+                return new TagCloudBoxPanel<TestTag>(panelId, new TestTagService(), WebPage.class);
             }
         };
     }
 
-    private static class TestTagEntity extends BaseTagEntity<Configuration> {
+    private static class TestTag extends AbstractTag<Configuration> {
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -78,7 +78,7 @@ public class TagCloudBoxPanelTest {
         }
     }
 
-    private static class TestTagService implements TagService<TestTagEntity>, Serializable {
+    private static class TestTagService implements TagService<TestTag>, Serializable {
         private static final long serialVersionUID = 1L;
 
         @Override
@@ -86,23 +86,23 @@ public class TagCloudBoxPanelTest {
         }
 
         @Override
-        public TestTagEntity findByIdAndCreateIfNotExists(String tagName) {
+        public TestTag findByIdAndCreateIfNotExists(String tagName) {
             return null;
         }
 
         @Override
-        public List<TestTagEntity> findMostPopularTags(Integer firstResult, Integer maxResult) {
-            return new ArrayList<TestTagEntity>();
+        public List<TestTag> findMostPopularTags(Integer firstResult, Integer maxResult) {
+            return new ArrayList<TestTag>();
         }
 
         @Override
-        public List<TestTagEntity> findMostPopularTags(Role role, Integer firstResult, Integer maxResult) {
-            return new ArrayList<TestTagEntity>();
+        public List<TestTag> findMostPopularTags(Role role, Integer firstResult, Integer maxResult) {
+            return new ArrayList<TestTag>();
         }
 
         @Override
-        public List<TestTagEntity> findTagsStartingWith(String prefix) {
-            return new ArrayList<TestTagEntity>();
+        public List<TestTag> findTagsStartingWith(String prefix) {
+            return new ArrayList<TestTag>();
         }
 
         @Override
@@ -111,21 +111,21 @@ public class TagCloudBoxPanelTest {
         }
 
         @Override
-        public TestTagEntity newTagEntity(String tag) {
+        public TestTag newTagEntity(String tag) {
             return null;
         }
 
         @Override
-        public void delete(TestTagEntity entity) {
+        public void delete(TestTag entity) {
         }
 
         @Override
-        public TestTagEntity findById(String id) {
+        public TestTag findById(String id) {
             return null;
         }
 
         @Override
-        public void save(TestTagEntity entity) {
+        public void save(TestTag entity) {
         }
     }
 }

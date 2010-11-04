@@ -17,15 +17,15 @@ package org.devproof.portal.core.module.tag.service;
 
 import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.role.entity.Role;
-import org.devproof.portal.core.module.tag.dao.TagRepository;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
+import org.devproof.portal.core.module.tag.repository.TagRepository;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-public abstract class AbstractTagServiceImpl<T extends BaseTagEntity<?>> implements TagService<T> {
+public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implements TagService<T> {
     private TagRepository<T> tagDao;
 
     @Override

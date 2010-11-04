@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.blog.entity;
 
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,7 +32,7 @@ import java.util.List;
 @Entity
 @Table(name = "blog_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BlogConstants.ENTITY_CACHE_REGION)
-public class BlogTag extends BaseTagEntity<Blog> {
+public class BlogTag extends AbstractTag<Blog> {
     private static final long serialVersionUID = 1L;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")

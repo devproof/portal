@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.bookmark.entity;
 
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,7 +32,7 @@ import java.util.List;
 @Entity
 @Table(name = "bookmark_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
-public class BookmarkTag extends BaseTagEntity<Bookmark> {
+public class BookmarkTag extends AbstractTag<Bookmark> {
     private static final long serialVersionUID = 1L;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")

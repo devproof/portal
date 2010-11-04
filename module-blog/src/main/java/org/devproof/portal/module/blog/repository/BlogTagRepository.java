@@ -17,7 +17,7 @@ package org.devproof.portal.module.blog.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.tag.dao.TagRepository;
+import org.devproof.portal.core.module.tag.repository.TagRepository;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.BlogTag;
 

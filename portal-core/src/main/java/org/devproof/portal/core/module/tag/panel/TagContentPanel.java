@@ -31,14 +31,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.core.module.tag.TagUtils;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 
 /**
  * For displaying the tags and mark if one is selected
  *
  * @author Carsten Hufe
  */
-public class TagContentPanel<T extends BaseTagEntity<?>> extends Panel {
+public class TagContentPanel<T extends AbstractTag<?>> extends Panel {
     private static final long serialVersionUID = 1L;
 
     private IModel<List<T>> tagModel;

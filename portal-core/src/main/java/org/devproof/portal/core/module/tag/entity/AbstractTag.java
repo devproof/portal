@@ -28,7 +28,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 @MappedSuperclass
-public abstract class BaseTagEntity<T> extends Modification {
+public abstract class AbstractTag<T> extends Modification {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -71,7 +71,7 @@ public abstract class BaseTagEntity<T> extends Modification {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        BaseTagEntity<?> other = (BaseTagEntity<?>) obj;
+        AbstractTag<?> other = (AbstractTag<?>) obj;
         if (this.tagname == null) {
             if (other.tagname != null) {
                 return false;

@@ -21,7 +21,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.Configuration;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -59,16 +59,16 @@ public class TagContentPanelTest {
 
             @Override
             public Panel getTestPanel(String panelId) {
-                List<TestTagEntity> tags = new ArrayList<TestTagEntity>();
-                TestTagEntity tag = new TestTagEntity();
+                List<TestTag> tags = new ArrayList<TestTag>();
+                TestTag tag = new TestTag();
                 tag.setTagname("foobar");
                 tags.add(tag);
-                return new TagContentPanel<TestTagEntity>(panelId, new ListModel<TestTagEntity>(tags), WebPage.class);
+                return new TagContentPanel<TestTag>(panelId, new ListModel<TestTag>(tags), WebPage.class);
             }
         };
     }
 
-    private static class TestTagEntity extends BaseTagEntity<Configuration> {
+    private static class TestTag extends AbstractTag<Configuration> {
         private static final long serialVersionUID = 1L;
 
         @Override

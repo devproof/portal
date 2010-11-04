@@ -37,7 +37,7 @@ import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.core.module.tag.TagUtils;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.service.TagService;
 
 import java.util.List;
@@ -46,7 +46,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 @NavigationBox("Tag Cloud Box")
-public class TagCloudBoxPanel<T extends BaseTagEntity<?>> extends Panel implements BoxTitleVisibility {
+public class TagCloudBoxPanel<T extends AbstractTag<?>> extends Panel implements BoxTitleVisibility {
 
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "configurationService")

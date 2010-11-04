@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.tag.dao;
-
-import java.util.List;
+package org.devproof.portal.core.module.tag.repository;
 
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
@@ -23,6 +21,8 @@ import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.TagConstants;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

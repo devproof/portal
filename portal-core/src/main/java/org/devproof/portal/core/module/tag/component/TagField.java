@@ -22,7 +22,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.string.Strings;
 import org.devproof.portal.core.module.tag.TagConstants;
-import org.devproof.portal.core.module.tag.entity.BaseTagEntity;
+import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.service.TagService;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.StringTokenizer;
  *
  * @author Carsten Hufe
  */
-public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<String> implements IFormModelUpdateListener {
+public class TagField<T extends AbstractTag<?>> extends AutoCompleteTextField<String> implements IFormModelUpdateListener {
     private static final long serialVersionUID = 1L;
     private TagService<T> tagService;
     private IModel<List<T>> originalTagsModel = null;
@@ -47,7 +47,7 @@ public class TagField<T extends BaseTagEntity<?>> extends AutoCompleteTextField<
         this.tagService = tagService;
     }
 
-    private static <T extends BaseTagEntity<?>> String createModelString(List<T> tags) {
+    private static <T extends AbstractTag<?>> String createModelString(List<T> tags) {
         StringBuilder concat = new StringBuilder();
         if (tags != null) {
             for (T tag : tags) {
