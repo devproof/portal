@@ -39,7 +39,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * @author Carsten Hufe
  */
-public class GenericHibernateDaoImplTest {
+public class GenericHibernateRepositoryImplTest {
 	private GenericHibernateRepositoryImpl<EmailTemplate, Integer> impl;
 	private SessionFactory sessionFactory;
 	private Session session;
