@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.modulemgmt.service;
 
 import org.devproof.portal.core.module.modulemgmt.bean.ModuleBean;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
 
 import java.util.List;
 
@@ -34,30 +34,30 @@ public interface ModuleService {
     /**
      * Moves the link down
      */
-    void moveDown(ModuleLinkEntity link);
+    void moveDown(ModuleLink link);
 
     /**
      * Moves the link up
      */
-    void moveUp(ModuleLinkEntity link);
+    void moveUp(ModuleLink link);
 
     /**
      * Save the module link
      */
-    void save(ModuleLinkEntity link);
+    void save(ModuleLink link);
 
     /**
      * @return all visible main/top navigation links
      */
-    List<ModuleLinkEntity> findAllVisibleMainNavigationLinks();
+    List<ModuleLink> findAllVisibleMainNavigationLinks();
 
     /**
      * @return all visible global administration links
      */
-    List<ModuleLinkEntity> findAllVisibleGlobalAdministrationLinks();
+    List<ModuleLink> findAllVisibleGlobalAdministrationLinks();
 
     /**
      * @return all visible page administration links
      */
-    List<ModuleLinkEntity> findAllVisiblePageAdministrationLinks();
+    List<ModuleLink> findAllVisiblePageAdministrationLinks();
 }

@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.modulemgmt.query;
 
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 
 import java.io.Serializable;
 

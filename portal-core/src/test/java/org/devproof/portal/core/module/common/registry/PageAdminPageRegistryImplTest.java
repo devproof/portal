@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.common.registry;
 
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 import org.devproof.portal.core.module.right.page.RightPage;
 import org.junit.Before;
@@ -60,8 +60,8 @@ public class PageAdminPageRegistryImplTest {
         conf.setPageClass(RightPage.class);
         confs.add(conf);
         expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
-        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-        ModuleLinkEntity link = new ModuleLinkEntity();
+        List<ModuleLink> links = new ArrayList<ModuleLink>();
+        ModuleLink link = new ModuleLink();
         link.setPageName(RightPage.class.getSimpleName());
         links.add(link);
         expect(moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);
@@ -78,8 +78,8 @@ public class PageAdminPageRegistryImplTest {
         conf.setPageClass(RightPage.class);
         confs.add(conf);
         expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
-        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-        ModuleLinkEntity link = new ModuleLinkEntity();
+        List<ModuleLink> links = new ArrayList<ModuleLink>();
+        ModuleLink link = new ModuleLink();
         link.setPageName(RightPage.class.getSimpleName());
         links.add(link);
         expect(moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);

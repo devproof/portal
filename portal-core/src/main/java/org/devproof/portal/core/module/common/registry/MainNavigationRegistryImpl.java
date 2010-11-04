@@ -20,9 +20,8 @@ import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -73,8 +72,8 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry {
     public void buildNavigation() {
         clearRegistry();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
-        List<ModuleLinkEntity> links = moduleService.findAllVisibleMainNavigationLinks();
-        for (ModuleLinkEntity link : links) {
+        List<ModuleLink> links = moduleService.findAllVisibleMainNavigationLinks();
+        for (ModuleLink link : links) {
             PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
             if (conf != null) {
                 registerPage(conf.getPageClass());

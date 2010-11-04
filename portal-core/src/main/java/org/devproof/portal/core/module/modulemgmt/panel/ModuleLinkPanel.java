@@ -34,8 +34,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.service.RegistryService;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 import org.devproof.portal.core.module.modulemgmt.query.ModuleLinkQuery;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 
@@ -47,7 +47,7 @@ public class ModuleLinkPanel extends Panel {
     private static final long serialVersionUID = 1L;
 
     @SpringBean(name = "moduleLinkDataProvider")
-    private QueryDataProvider<ModuleLinkEntity, ModuleLinkQuery> moduleLinkDataProvider;
+    private QueryDataProvider<ModuleLink, ModuleLinkQuery> moduleLinkDataProvider;
     @SpringBean(name = "moduleService")
     private ModuleService moduleService;
     @SpringBean(name = "registryService")
@@ -81,8 +81,8 @@ public class ModuleLinkPanel extends Panel {
         return refreshTable;
     }
 
-    private Form<ModuleLinkEntity> createModuleLinkForm() {
-        Form<ModuleLinkEntity> form = new Form<ModuleLinkEntity>("form");
+    private Form<ModuleLink> createModuleLinkForm() {
+        Form<ModuleLink> form = new Form<ModuleLink>("form");
         form.add(createModuleLinkView());
         return form;
     }
@@ -91,15 +91,15 @@ public class ModuleLinkPanel extends Panel {
         return new ModuleLinkView("tableRow", moduleLinkDataProvider);
     }
 
-    private class ModuleLinkView extends DataView<ModuleLinkEntity> {
+    private class ModuleLinkView extends DataView<ModuleLink> {
         private static final long serialVersionUID = 1L;
 
-        public ModuleLinkView(String id, IDataProvider<ModuleLinkEntity> dataProvider) {
+        public ModuleLinkView(String id, IDataProvider<ModuleLink> dataProvider) {
             super(id, dataProvider);
         }
 
         @Override
-        protected void populateItem(Item<ModuleLinkEntity> item) {
+        protected void populateItem(Item<ModuleLink> item) {
             item.add(createSortLabel(item));
             item.add(createPageNameLabel(item));
             item.add(createModuleNameLabel(item));
@@ -109,8 +109,8 @@ public class ModuleLinkPanel extends Panel {
             item.add(createAlternatingModifier(item));
         }
 
-        private AjaxLink<ModuleLinkEntity> createMoveUpLink(Item<ModuleLinkEntity> item) {
-            AjaxLink<ModuleLinkEntity> upLink = newUpLink(item);
+        private AjaxLink<ModuleLink> createMoveUpLink(Item<ModuleLink> item) {
+            AjaxLink<ModuleLink> upLink = newUpLink(item);
             upLink.add(createUpLinkImage());
             return upLink;
         }
@@ -119,8 +119,8 @@ public class ModuleLinkPanel extends Panel {
             return new Image("upImage", CommonConstants.REF_UP_IMG);
         }
 
-        private AjaxLink<ModuleLinkEntity> newUpLink(final Item<ModuleLinkEntity> item) {
-            return new AjaxLink<ModuleLinkEntity>("upLink") {
+        private AjaxLink<ModuleLink> newUpLink(final Item<ModuleLink> item) {
+            return new AjaxLink<ModuleLink>("upLink") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -132,8 +132,8 @@ public class ModuleLinkPanel extends Panel {
             };
         }
 
-        private AjaxLink<ModuleLinkEntity> createMoveDownLink(Item<ModuleLinkEntity> item) {
-            AjaxLink<ModuleLinkEntity> downLink = newDownLink(item);
+        private AjaxLink<ModuleLink> createMoveDownLink(Item<ModuleLink> item) {
+            AjaxLink<ModuleLink> downLink = newDownLink(item);
             downLink.add(createDownLinkImage());
             return downLink;
         }
@@ -142,8 +142,8 @@ public class ModuleLinkPanel extends Panel {
             return new Image("downImage", CommonConstants.REF_DOWN_IMG);
         }
 
-        private AjaxLink<ModuleLinkEntity> newDownLink(final Item<ModuleLinkEntity> item) {
-            return new AjaxLink<ModuleLinkEntity>("downLink") {
+        private AjaxLink<ModuleLink> newDownLink(final Item<ModuleLink> item) {
+            return new AjaxLink<ModuleLink>("downLink") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
@@ -155,19 +155,19 @@ public class ModuleLinkPanel extends Panel {
             };
         }
 
-        private Label createSortLabel(Item<ModuleLinkEntity> item) {
+        private Label createSortLabel(Item<ModuleLink> item) {
             return new Label("sort", Integer.toString(item.getModelObject().getSort()));
         }
 
-        private Label createPageNameLabel(Item<ModuleLinkEntity> item) {
+        private Label createPageNameLabel(Item<ModuleLink> item) {
             return new Label("pageName", item.getModelObject().getPageName());
         }
 
-        private Label createModuleNameLabel(Item<ModuleLinkEntity> item) {
+        private Label createModuleNameLabel(Item<ModuleLink> item) {
             return new Label("moduleName", item.getModelObject().getModuleName());
         }
 
-        private CheckBox createVisibleCheckBox(final Item<ModuleLinkEntity> item) {
+        private CheckBox createVisibleCheckBox(final Item<ModuleLink> item) {
             return new CheckBox("visible", new PropertyModel<Boolean>(item.getModelObject(), "visible")) {
                 private static final long serialVersionUID = 1L;
 
@@ -194,7 +194,7 @@ public class ModuleLinkPanel extends Panel {
             };
         }
 
-        private AttributeModifier createAlternatingModifier(final Item<ModuleLinkEntity> item) {
+        private AttributeModifier createAlternatingModifier(final Item<ModuleLink> item) {
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 

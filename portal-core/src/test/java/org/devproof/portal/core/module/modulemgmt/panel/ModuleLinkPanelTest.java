@@ -18,7 +18,7 @@ package org.devproof.portal.core.module.modulemgmt.panel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;

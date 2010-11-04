@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.common.service;
 
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 
 /**
  * @author Carsten Hufe

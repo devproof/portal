@@ -19,7 +19,7 @@ import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
 import org.devproof.portal.core.module.common.service.RegistryServiceImpl;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 import org.junit.Before;
 import org.junit.Test;
 

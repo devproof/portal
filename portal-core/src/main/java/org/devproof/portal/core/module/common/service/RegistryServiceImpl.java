@@ -18,9 +18,8 @@ package org.devproof.portal.core.module.common.service;
 import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 /**

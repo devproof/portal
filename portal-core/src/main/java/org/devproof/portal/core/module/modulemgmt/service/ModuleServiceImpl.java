@@ -15,28 +15,22 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.apache.commons.lang.StringUtils;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.modulemgmt.bean.ModuleBean;
-import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkRepository;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
+import org.devproof.portal.core.module.modulemgmt.repository.ModuleLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author Carsten Hufe
@@ -44,7 +38,7 @@ import javax.annotation.PostConstruct;
 @Service("moduleService")
 public class ModuleServiceImpl implements ModuleService {
 	private ApplicationContext applicationContext;
-	private ModuleLinkRepository moduleLinkDao;
+	private ModuleLinkRepository moduleLinkRepository;
 	private PageLocator pageLocator;
 
 	@Override
@@ -70,48 +64,48 @@ public class ModuleServiceImpl implements ModuleService {
 	}
 
 	@Override
-	public void moveDown(ModuleLinkEntity link) {
-		int maxSort = moduleLinkDao.getMaxSortNum(link.getLinkType());
+	public void moveDown(ModuleLink link) {
+		int maxSort = moduleLinkRepository.getMaxSortNum(link.getLinkType());
 		if (link.getSort() < maxSort) {
-			ModuleLinkEntity moveDown = link;
-			ModuleLinkEntity moveUp = moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() + 1);
+			ModuleLink moveDown = link;
+			ModuleLink moveUp = moduleLinkRepository.findModuleLinkBySort(link.getLinkType(), link.getSort() + 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			moduleLinkDao.save(moveUp);
-			moduleLinkDao.save(moveDown);
+			moduleLinkRepository.save(moveUp);
+			moduleLinkRepository.save(moveDown);
 		}
 	}
 
 	@Override
-	public void moveUp(ModuleLinkEntity link) {
+	public void moveUp(ModuleLink link) {
 		if (link.getSort() > 1) {
-			ModuleLinkEntity moveUp = link;
-			ModuleLinkEntity moveDown = moduleLinkDao.findModuleLinkBySort(link.getLinkType(), link.getSort() - 1);
+			ModuleLink moveUp = link;
+			ModuleLink moveDown = moduleLinkRepository.findModuleLinkBySort(link.getLinkType(), link.getSort() - 1);
 			moveUp.setSort(moveUp.getSort() - 1);
 			moveDown.setSort(moveDown.getSort() + 1);
-			moduleLinkDao.save(moveUp);
-			moduleLinkDao.save(moveDown);
+			moduleLinkRepository.save(moveUp);
+			moduleLinkRepository.save(moveDown);
 		}
 	}
 
 	@Override
-	public void save(ModuleLinkEntity link) {
-		moduleLinkDao.save(link);
+	public void save(ModuleLink link) {
+		moduleLinkRepository.save(link);
 	}
 
 	@Override
-	public List<ModuleLinkEntity> findAllVisibleGlobalAdministrationLinks() {
-		return moduleLinkDao.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION);
+	public List<ModuleLink> findAllVisibleGlobalAdministrationLinks() {
+		return moduleLinkRepository.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION);
 	}
 
 	@Override
-	public List<ModuleLinkEntity> findAllVisibleMainNavigationLinks() {
-		return moduleLinkDao.findVisibleModuleLinks(LinkType.TOP_NAVIGATION);
+	public List<ModuleLink> findAllVisibleMainNavigationLinks() {
+		return moduleLinkRepository.findVisibleModuleLinks(LinkType.TOP_NAVIGATION);
 	}
 
 	@Override
-	public List<ModuleLinkEntity> findAllVisiblePageAdministrationLinks() {
-		return moduleLinkDao.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION);
+	public List<ModuleLink> findAllVisiblePageAdministrationLinks() {
+		return moduleLinkRepository.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION);
 	}
 
 	@PostConstruct
@@ -124,14 +118,14 @@ public class ModuleServiceImpl implements ModuleService {
 	 */
 	protected void rebuildModuleLinks() {
 		for (LinkType type : LinkType.values()) {
-			ModuleLinkEntity startPage = null;
-			List<ModuleLinkEntity> toAddSelected = new ArrayList<ModuleLinkEntity>();
-			List<ModuleLinkEntity> toAddNotSelected = new ArrayList<ModuleLinkEntity>();
-			Set<ModuleLinkEntity> toRemove = new HashSet<ModuleLinkEntity>();
-			List<ModuleLinkEntity> allLinks = moduleLinkDao.findModuleLinks(type);
+			ModuleLink startPage = null;
+			List<ModuleLink> toAddSelected = new ArrayList<ModuleLink>();
+			List<ModuleLink> toAddNotSelected = new ArrayList<ModuleLink>();
+			Set<ModuleLink> toRemove = new HashSet<ModuleLink>();
+			List<ModuleLink> allLinks = moduleLinkRepository.findModuleLinks(type);
 			toRemove.addAll(allLinks);
 			for (PageConfiguration page : pageLocator.getPageConfigurations()) {
-				ModuleLinkEntity link = mapTo(page, type);
+				ModuleLink link = mapTo(page, type);
 				// new link
 				if (!allLinks.contains(link)) {
 					if (page.isDefaultStartPage() && link.getLinkType() == LinkType.TOP_NAVIGATION) {
@@ -146,39 +140,39 @@ public class ModuleServiceImpl implements ModuleService {
 				toRemove.remove(link);
 			}
 			// remove links which was not found
-			for (ModuleLinkEntity link : toRemove) {
-				moduleLinkDao.delete(link);
+			for (ModuleLink link : toRemove) {
+				moduleLinkRepository.delete(link);
 			}
-			Integer maxSort = moduleLinkDao.getMaxSortNum(type);
+			Integer maxSort = moduleLinkRepository.getMaxSortNum(type);
 			if (maxSort == null) {
 				maxSort = 1;
 			} else {
 				maxSort++;
 			}
 			// save new links, add visible links at first
-			List<ModuleLinkEntity> toAdd = new ArrayList<ModuleLinkEntity>();
+			List<ModuleLink> toAdd = new ArrayList<ModuleLink>();
 			if (startPage != null) {
 				toAdd.add(startPage);
 			}
 			toAdd.addAll(toAddSelected);
 			toAdd.addAll(toAddNotSelected);
 
-			for (ModuleLinkEntity link : toAdd) {
+			for (ModuleLink link : toAdd) {
 				link.setSort(maxSort++);
-				moduleLinkDao.save(link);
+				moduleLinkRepository.save(link);
 			}
 			// make the sort order consistent (remove sort gaps)
-			Set<ModuleLinkEntity> sortedLinks = new TreeSet<ModuleLinkEntity>(moduleLinkDao.findModuleLinks(type));
+			Set<ModuleLink> sortedLinks = new TreeSet<ModuleLink>(moduleLinkRepository.findModuleLinks(type));
 			int i = 1;
-			for (ModuleLinkEntity link : sortedLinks) {
+			for (ModuleLink link : sortedLinks) {
 				link.setSort(i++);
-				moduleLinkDao.save(link);
+				moduleLinkRepository.save(link);
 			}
 		}
 	}
 
-	private ModuleLinkEntity mapTo(PageConfiguration configuration, LinkType linkType) {
-		ModuleLinkEntity link = new ModuleLinkEntity();
+	private ModuleLink mapTo(PageConfiguration configuration, LinkType linkType) {
+		ModuleLink link = new ModuleLink();
 		link.setLinkType(linkType);
 		// link.setModuleName(configuration.)
 		link.setPageName(configuration.getPageClass().getSimpleName());
@@ -235,8 +229,8 @@ public class ModuleServiceImpl implements ModuleService {
 	}
 
 	@Autowired
-	public void setModuleLinkDao(ModuleLinkRepository moduleLinkDao) {
-		this.moduleLinkDao = moduleLinkDao;
+	public void setModuleLinkRepository(ModuleLinkRepository moduleLinkRepository) {
+		this.moduleLinkRepository = moduleLinkRepository;
 	}
 
 	@Autowired

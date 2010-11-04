@@ -17,9 +17,9 @@ package org.devproof.portal.core.module.modulemgmt.service;
 
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
-import org.devproof.portal.core.module.modulemgmt.dao.ModuleLinkRepository;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
+import org.devproof.portal.core.module.modulemgmt.repository.ModuleLinkRepository;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -46,14 +46,14 @@ public class ModuleServiceImplTest {
         PageLocator pageLocatorMock = createStrictMock(PageLocator.class);
         applicationContextMock = createStrictMock(ApplicationContext.class);
         impl = new ModuleServiceImpl();
-        impl.setModuleLinkDao(moduleLinkDaoMock);
+        impl.setModuleLinkRepository(moduleLinkDaoMock);
         impl.setPageLocator(pageLocatorMock);
         impl.setApplicationContext(applicationContextMock);
     }
 
     @Test
     public void testSave() {
-        ModuleLinkEntity e = new ModuleLinkEntity();
+        ModuleLink e = new ModuleLink();
         e.setPageName("hello");
         e.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
         expect(moduleLinkDaoMock.save(e)).andReturn(e);
@@ -64,11 +64,11 @@ public class ModuleServiceImplTest {
 
     @Test
     public void testMoveDown() {
-        ModuleLinkEntity e1 = new ModuleLinkEntity();
+        ModuleLink e1 = new ModuleLink();
         e1.setPageName("hello1");
         e1.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
         e1.setSort(1);
-        ModuleLinkEntity e2 = new ModuleLinkEntity();
+        ModuleLink e2 = new ModuleLink();
         e2.setPageName("hello2");
         e2.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
         e2.setSort(2);
@@ -85,11 +85,11 @@ public class ModuleServiceImplTest {
 
     @Test
     public void testMoveUp() {
-        ModuleLinkEntity e1 = new ModuleLinkEntity();
+        ModuleLink e1 = new ModuleLink();
         e1.setPageName("hello1");
         e1.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
         e1.setSort(1);
-        ModuleLinkEntity e2 = new ModuleLinkEntity();
+        ModuleLink e2 = new ModuleLink();
         e2.setPageName("hello2");
         e2.setLinkType(LinkType.GLOBAL_ADMINISTRATION);
         e2.setSort(2);
@@ -110,8 +110,8 @@ public class ModuleServiceImplTest {
 
     @Test
     public void testFindAllVisibleGlobalAdministrationLinks() {
-        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-        links.add(new ModuleLinkEntity());
+        List<ModuleLink> links = new ArrayList<ModuleLink>();
+        links.add(new ModuleLink());
         expect(moduleLinkDaoMock.findVisibleModuleLinks(LinkType.GLOBAL_ADMINISTRATION)).andReturn(links);
         replay(moduleLinkDaoMock);
         impl.findAllVisibleGlobalAdministrationLinks();
@@ -120,8 +120,8 @@ public class ModuleServiceImplTest {
 
     @Test
     public void testFindAllVisibleMainNavigationLinks() {
-        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-        links.add(new ModuleLinkEntity());
+        List<ModuleLink> links = new ArrayList<ModuleLink>();
+        links.add(new ModuleLink());
         expect(moduleLinkDaoMock.findVisibleModuleLinks(LinkType.TOP_NAVIGATION)).andReturn(links);
         replay(moduleLinkDaoMock);
         impl.findAllVisibleMainNavigationLinks();
@@ -130,8 +130,8 @@ public class ModuleServiceImplTest {
 
     @Test
     public void testFindAllVisiblePageAdministrationLinks() {
-        List<ModuleLinkEntity> links = new ArrayList<ModuleLinkEntity>();
-        links.add(new ModuleLinkEntity());
+        List<ModuleLink> links = new ArrayList<ModuleLink>();
+        links.add(new ModuleLink());
         expect(moduleLinkDaoMock.findVisibleModuleLinks(LinkType.PAGE_ADMINISTRATION)).andReturn(links);
         replay(moduleLinkDaoMock);
         impl.findAllVisiblePageAdministrationLinks();

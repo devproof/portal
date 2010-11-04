@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.modulemgmt.dao;
+package org.devproof.portal.core.module.modulemgmt.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity.LinkType;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 
 import java.util.List;
 
@@ -29,18 +30,18 @@ import java.util.List;
  *
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("moduleLinkDao")
+@GenericRepository("moduleLinkRepository")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface ModuleLinkRepository extends CrudRepository<ModuleLinkEntity, Integer> {
-    @Query("select m from ModuleLinkEntity m where m.linkType = ? order by m.sort")
-    List<ModuleLinkEntity> findModuleLinks(LinkType type);
+public interface ModuleLinkRepository extends CrudRepository<ModuleLink, Integer> {
+    @Query("select m from ModuleLink m where m.linkType = ? order by m.sort")
+    List<ModuleLink> findModuleLinks(LinkType type);
 
-    @Query("select m from ModuleLinkEntity m where m.linkType = ? and m.visible = true order by m.sort")
-    List<ModuleLinkEntity> findVisibleModuleLinks(LinkType type);
+    @Query("select m from ModuleLink m where m.linkType = ? and m.visible = true order by m.sort")
+    List<ModuleLink> findVisibleModuleLinks(LinkType type);
 
-    @Query("select max(m.sort) from ModuleLinkEntity m where m.linkType = ?")
+    @Query("select max(m.sort) from ModuleLink m where m.linkType = ?")
     Integer getMaxSortNum(LinkType type);
 
-    @Query("select m from ModuleLinkEntity m where m.linkType = ? and m.sort = ?")
-    ModuleLinkEntity findModuleLinkBySort(LinkType linkType, Integer sort);
+    @Query("select m from ModuleLink m where m.linkType = ? and m.sort = ?")
+    ModuleLink findModuleLinkBySort(LinkType linkType, Integer sort);
 }

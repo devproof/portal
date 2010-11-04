@@ -38,7 +38,7 @@ import javax.persistence.*;
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 @RegisterGenericDataProvider(value = "moduleLinkDataProvider", sortProperty = "sort", countQuery = "count(*)", queryClass = ModuleLinkQuery.class)
-public class ModuleLinkEntity extends Modification implements Comparable<ModuleLinkEntity> {
+public class ModuleLink extends Modification implements Comparable<ModuleLink> {
 
     private static final long serialVersionUID = 1L;
 
@@ -120,7 +120,7 @@ public class ModuleLinkEntity extends Modification implements Comparable<ModuleL
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        ModuleLinkEntity other = (ModuleLinkEntity) obj;
+        ModuleLink other = (ModuleLink) obj;
         if (linkType == null) {
             if (other.linkType != null) {
                 return false;
@@ -139,7 +139,7 @@ public class ModuleLinkEntity extends Modification implements Comparable<ModuleL
     }
 
     @Override
-    public int compareTo(ModuleLinkEntity arg0) {
+    public int compareTo(ModuleLink arg0) {
         return sort.compareTo(arg0.getSort());
     }
 }

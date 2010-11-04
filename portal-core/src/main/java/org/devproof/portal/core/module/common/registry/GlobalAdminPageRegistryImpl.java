@@ -20,9 +20,8 @@ import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLinkEntity;
+import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -60,8 +59,8 @@ public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry {
     public void buildNavigation() {
         adminPages.clear();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
-        List<ModuleLinkEntity> links = moduleService.findAllVisibleGlobalAdministrationLinks();
-        for (ModuleLinkEntity link : links) {
+        List<ModuleLink> links = moduleService.findAllVisibleGlobalAdministrationLinks();
+        for (ModuleLink link : links) {
             PageConfiguration conf = PortalUtil.getConfigurationByPageName(confs, link.getPageName());
             if (conf != null) {
                 registerGlobalAdminPage(conf.getPageClass());
