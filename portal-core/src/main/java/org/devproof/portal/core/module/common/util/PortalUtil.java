@@ -152,8 +152,9 @@ public class PortalUtil {
     public static void addSyntaxHightlighter(Component component, String theme) {
         component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shCore.js"));
         component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shAutoloader.js"));
-        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shCore.css"));
-        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shTheme" + theme + ".css"));
+//        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shCore.css"));
+        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shCore" + theme + ".css"));
+//        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shTheme" + theme + ".css"));
         Map<String, Object> values = new MiniMap<String, Object>(1);
         CharSequence urlWithShCore = RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_JS);
         CharSequence urlWithoutShCore = StringUtils.removeEnd(urlWithShCore.toString(), "shCore.js");
