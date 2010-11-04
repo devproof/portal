@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import org.devproof.portal.module.blog.dao.BlogRepository;
+import org.devproof.portal.module.blog.repository.BlogRepository;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.junit.Before;
 import org.junit.Test;

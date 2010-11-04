@@ -24,7 +24,7 @@ import org.devproof.portal.module.article.entity.ArticleTag;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("articleTagDao")
+@GenericRepository("articleTagRepository")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 public interface ArticleTagRepository extends TagDao<ArticleTag> {
 }

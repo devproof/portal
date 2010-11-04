@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import org.devproof.portal.module.blog.dao.BlogRepository;
+import org.devproof.portal.module.blog.repository.BlogRepository;
 import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

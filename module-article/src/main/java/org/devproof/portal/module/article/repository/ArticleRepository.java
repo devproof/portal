@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.article.repository;
 
-import java.util.List;
-
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -26,10 +24,12 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.Article;
 
+import java.util.List;
+
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("articleDao")
+@GenericRepository("articleRepository")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 public interface ArticleRepository extends GenericDao<Article, Integer> {
     @CacheQuery(enabled = false)

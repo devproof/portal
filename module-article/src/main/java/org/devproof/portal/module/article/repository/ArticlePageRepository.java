@@ -26,7 +26,7 @@ import org.devproof.portal.module.article.entity.ArticlePageId;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("articlePageDao")
+@GenericRepository("articlePageRepository")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 public interface ArticlePageRepository extends GenericDao<ArticlePage, ArticlePageId> {
     @Query("select count(ap.contentId) from ArticlePage ap where ap.contentId like ?")
