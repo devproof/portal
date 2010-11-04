@@ -98,11 +98,6 @@ public interface ConfigurationService extends CrudService<Configuration, String>
     List<Configuration> findAll();
 
     /**
-     * Refresh the global configuration map / cache
-     */
-    void refreshGlobalConfiguration();
-
-    /**
      * Returns all configuration groups
      *
      * @return configuration groups in a list

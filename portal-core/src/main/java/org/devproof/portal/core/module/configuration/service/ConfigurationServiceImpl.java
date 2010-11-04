@@ -16,13 +16,11 @@
 package org.devproof.portal.core.module.configuration.service;
 
 import org.devproof.portal.core.module.configuration.entity.Configuration;
-import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistry;
 import org.devproof.portal.core.module.configuration.repository.ConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.ParseException;
@@ -36,19 +34,13 @@ import java.util.NoSuchElementException;
  */
 @Service("configurationService")
 public class ConfigurationServiceImpl implements ConfigurationService {
-	private ConfigurationRegistry configurationRegistry;
-	private ConfigurationRepository configurationDao;
+	private ConfigurationRepository configurationRepository;
 	private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-    @PostConstruct
-	public void init() {
-		refreshGlobalConfiguration();
-	}
 
 	@Override
     @Transactional(readOnly = true)
 	public Object findAsObject(String key) {
-		Configuration c = configurationRegistry.getConfiguration(key);
+		Configuration c = configurationRepository.findById(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
@@ -76,7 +68,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	@Override
     @Transactional(readOnly = true)
 	public Date findAsDate(String key) {
-		Configuration c = configurationRegistry.getConfiguration(key);
+		Configuration c = configurationRepository.findById(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
@@ -126,56 +118,43 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
-	public synchronized void refreshGlobalConfiguration() {
-		List<Configuration> list = findAll();
-		for (Configuration configuration : list) {
-			configurationRegistry.registerConfiguration(configuration.getKey(), configuration);
-		}
-	}
-
-	@Override
     @Transactional(readOnly = true)
 	public List<Configuration> findAll() {
-		return configurationDao.findAll();
+		return configurationRepository.findAll();
 	}
 
 	@Override
     @Transactional(readOnly = true)
 	public List<String> findConfigurationGroups() {
-		return configurationDao.findConfigurationGroups();
+		return configurationRepository.findConfigurationGroups();
 	}
 
 	@Override
     @Transactional(readOnly = true)
 	public List<Configuration> findConfigurationsByGroup(String group) {
-		return configurationDao.findConfigurationsByGroup(group);
+		return configurationRepository.findConfigurationsByGroup(group);
 	}
 
 	@Override
     @Transactional
 	public void delete(Configuration entity) {
-		configurationDao.delete(entity);
+		configurationRepository.delete(entity);
 	}
 
 	@Override
     @Transactional(readOnly = true)
 	public Configuration findById(String id) {
-		return configurationDao.findById(id);
+		return configurationRepository.findById(id);
 	}
 
 	@Override
     @Transactional
 	public void save(Configuration entity) {
-		configurationDao.save(entity);
+		configurationRepository.save(entity);
 	}
 
 	@Autowired
-	public void setConfigurationDao(ConfigurationRepository configurationDao) {
-		this.configurationDao = configurationDao;
-	}
-
-	@Autowired
-	public void setConfigurationRegistry(ConfigurationRegistry configurationRegistry) {
-		this.configurationRegistry = configurationRegistry;
+	public void setConfigurationRepository(ConfigurationRepository configurationRepository) {
+		this.configurationRepository = configurationRepository;
 	}
 }

@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.configuration.service;
 
 import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.configuration.repository.ConfigurationRepository;
-import org.devproof.portal.core.module.configuration.registry.ConfigurationRegistryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,8 +39,7 @@ public class ConfigurationServiceImplTest {
     public void setUp() throws Exception {
         mock = createStrictMock(ConfigurationRepository.class);
         impl = new ConfigurationServiceImpl();
-        impl.setConfigurationDao(mock);
-        impl.setConfigurationRegistry(new ConfigurationRegistryImpl());
+        impl.setConfigurationRepository(mock);
         list = new ArrayList<Configuration>();
         Configuration c = new Configuration();
         c.setKey("input_date_format");
@@ -125,7 +123,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         assertNotNull(impl.findAsObject("key"));
         verify(mock);
     }
@@ -139,7 +136,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         assertTrue(impl.findAsBoolean("key"));
         verify(mock);
     }
@@ -153,7 +149,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         assertNotNull(impl.findAsDate("key"));
         verify(mock);
     }
@@ -167,7 +162,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         double d = impl.findAsDouble("key");
         assertEquals(d, 12.34, 0.05);
         verify(mock);
@@ -182,7 +176,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         assertEquals(impl.findAsInteger("key"), Integer.valueOf(12));
         verify(mock);
     }
@@ -196,7 +189,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         assertEquals(impl.findAsString("key"), "string");
         verify(mock);
     }
@@ -210,7 +202,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         assertNotNull(impl.findAsFile("key"));
         verify(mock);
     }
@@ -228,7 +219,6 @@ public class ConfigurationServiceImplTest {
         list.add(c);
         expect(mock.findAll()).andReturn(list);
         replay(mock);
-        impl.init();
         assertEquals(impl.findAsEnum("key"), TestEnum.TEST2);
         verify(mock);
     }

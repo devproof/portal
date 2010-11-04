@@ -78,11 +78,6 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
             sendEmailToUsers(templateId, content.toString());
 
         }
-        // does the rollback if there is a runtime exception
-        SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
-        if (holder.getTransaction() != null) {
-            holder.getTransaction().rollback();
-        }
         return super.onRuntimeException(page, e);
     }
 

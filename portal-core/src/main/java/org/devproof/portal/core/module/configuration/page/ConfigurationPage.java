@@ -120,7 +120,6 @@ public class ConfigurationPage extends TemplatePage {
 				for (Configuration configuration : allConfigurations) {
 					configurationService.save(configuration);
 				}
-				configurationService.refreshGlobalConfiguration();
 				info(getString("msg.saved"));
 			}
 		};

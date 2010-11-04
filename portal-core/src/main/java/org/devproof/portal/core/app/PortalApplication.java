@@ -136,8 +136,8 @@ public class PortalApplication extends WebApplication {
         return new PortalSession(request);
     }
 
-    @Override
-    public RequestCycle newRequestCycle(Request request, Response response) {
-        return new PortalWebRequestCycle(this, (WebRequest) request, response, getSpringContext());
-    }
+//    @Override
+//    public RequestCycle newRequestCycle(Request request, Response response) {
+//        return new PortalWebRequestCycle(this, (WebRequest) request, response, getSpringContext());
+//    }
 }

@@ -29,8 +29,11 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * Hibernate transaction and session management
  *
+ * Use real transactions instead! 
+ *
  * @author Carsten Hufe
  */
+@Deprecated
 public class PortalWebRequestCycle extends WebRequestCycle {
 
     private SessionFactory sessionFactory;

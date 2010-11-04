@@ -124,7 +124,6 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
         Configuration conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
         conf.setValue(theme.getUuid());
         configurationService.save(conf);
-        configurationService.refreshGlobalConfiguration();
         logger.info("Another theme selected: " + theme.getUuid());
     }
 
@@ -138,7 +137,6 @@ public class ThemeServiceImpl implements ThemeService, ServletContextAware, Appl
                 Configuration conf = configurationService.findById(ThemeConstants.CONF_SELECTED_THEME_UUID);
                 conf.setValue(ThemeConstants.CONF_SELECTED_THEME_DEFAULT);
                 configurationService.save(conf);
-                configurationService.refreshGlobalConfiguration();
             }
             logger.info("Theme uninstalled: " + theme.getUuid());
         } catch (MalformedURLException e) {

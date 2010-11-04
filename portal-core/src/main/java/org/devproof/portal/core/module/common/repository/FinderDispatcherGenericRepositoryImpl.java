@@ -85,19 +85,7 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 	private MethodInterceptor createGenericDaoInterceptor() {
 		return new MethodInterceptor() {
 			public Object invoke(MethodInvocation invocation) throws Throwable {
-				/*
-				 * If the session will be opened at this place, the same method
-				 * closes the session and transaction
-				 */
-				boolean isSessionAvailable = isSessionAvailable();
-				if (!isSessionAvailable) {
-					openSession();
-				}
-				Object result = evaluateMethodInvocation(invocation);
-				if (!isSessionAvailable) {
-					closeSession();
-				}
-				return result;
+				return evaluateMethodInvocation(invocation);
 
 			}
 
@@ -135,24 +123,11 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 			}
 
 			private void executeBulkUpdate(MethodInvocation invocation) {
-				openTransaction();
+//				openTransaction();
 				Method method = invocation.getMethod();
 				BulkUpdate bulkUpdate = method.getAnnotation(BulkUpdate.class);
 				FinderExecutor target = (FinderExecutor) invocation.getThis();
 				target.executeUpdate(bulkUpdate.value(), invocation.getArguments());
-			}
-
-			private boolean isSessionAvailable() {
-				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
-				return TransactionSynchronizationManager.hasResource(sessionFactory);
-			}
-
-			private void openTransaction() {
-				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
-				SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory);
-				if (holder.getTransaction() == null) {
-					holder.setTransaction(holder.getSession().beginTransaction());
-				}
 			}
 
 			private Object executeQuery(MethodInvocation invocation) {
@@ -171,28 +146,6 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 				} else {
 					return target.executeFinder(query.value(), invocation.getArguments(), method, null, null);
 				}
-			}
-
-			private void closeSession() {
-				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
-				SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager
-						.unbindResource(sessionFactory);
-				commitTransaction(sessionHolder);
-				SessionFactoryUtils.closeSession(sessionHolder.getSession());
-			}
-
-			private void commitTransaction(SessionHolder sessionHolder) {
-				if (sessionHolder.getTransaction() != null && !sessionHolder.getTransaction().wasRolledBack()) {
-					sessionHolder.getTransaction().commit();
-				}
-			}
-
-			private void openSession() {
-				SessionFactory sessionFactory = FinderDispatcherGenericRepositoryImpl.this.getSessionFactory();
-				Session session = SessionFactoryUtils.getSession(sessionFactory, true);
-				SessionHolder holder = new SessionHolder(session);
-				session.setFlushMode(FlushMode.AUTO);
-				TransactionSynchronizationManager.bindResource(sessionFactory, holder);
 			}
 		};
 	}

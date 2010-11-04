@@ -16,9 +16,14 @@
 package org.devproof.portal.core.module.configuration.entity;
 
 import org.apache.commons.lang.UnhandledException;
+import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.configuration.ConfigurationConstants;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
@@ -28,7 +33,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "core_configuration")
-// selfcached
+@CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 public class Configuration implements Serializable {
 
     private static final long serialVersionUID = 1L;

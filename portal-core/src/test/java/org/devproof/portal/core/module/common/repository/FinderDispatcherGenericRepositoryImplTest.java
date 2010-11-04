@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Carsten Hufe
  */
-public class FinderDispatcherGenericDaoImplTest {
+public class FinderDispatcherGenericRepositoryImplTest {
     private FinderDispatcherGenericRepositoryImpl<TestEntity, Integer> impl;
     private TestRepository testDao;
     private CrudRepository<TestEntity, Integer> crudRepository;
