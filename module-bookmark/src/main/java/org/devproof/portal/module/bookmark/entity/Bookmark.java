@@ -17,7 +17,7 @@ package org.devproof.portal.module.bookmark.entity;
 
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLink;
@@ -55,35 +55,35 @@ public class Bookmark extends BaseLink {
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "bookmark_right_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-    private List<RightEntity> allRights;
+    private List<Right> allRights;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "bookmark_tag_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
     private List<BookmarkTag> tags;
 
     @Transient
-    public List<RightEntity> getVoteRights() {
+    public List<Right> getVoteRights() {
         return getRightsStartingWith(allRights, "bookmark.vote");
     }
 
     @Transient
-    public List<RightEntity> getVisitRights() {
+    public List<Right> getVisitRights() {
         return getRightsStartingWith(allRights, "bookmark.visit");
     }
 
     @Transient
-    public List<RightEntity> getViewRights() {
+    public List<Right> getViewRights() {
         return getRightsStartingWith(allRights, "bookmark.view");
     }
 
-    public List<RightEntity> getAllRights() {
+    public List<Right> getAllRights() {
         if (allRights == null) {
-            allRights = new ArrayList<RightEntity>();
+            allRights = new ArrayList<Right>();
         }
         return allRights;
     }
 
-    public void setAllRights(List<RightEntity> allRights) {
+    public void setAllRights(List<Right> allRights) {
         this.allRights = allRights;
     }
 

@@ -34,7 +34,7 @@ import javax.persistence.Transient;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.hibernate.annotations.Cache;
@@ -66,7 +66,7 @@ public class Blog extends Modification {
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "blog_right_xref", joinColumns = @JoinColumn(name = "blog_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-    private List<RightEntity> allRights;
+    private List<Right> allRights;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "blog_tag_xref", joinColumns = @JoinColumn(name = "blog_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
@@ -98,29 +98,29 @@ public class Blog extends Modification {
         this.content = content;
     }
 
-    public List<RightEntity> getAllRights() {
+    public List<Right> getAllRights() {
         if (allRights == null) {
-            allRights = new ArrayList<RightEntity>();
+            allRights = new ArrayList<Right>();
         }
         return allRights;
     }
 
-    public void setAllRights(List<RightEntity> allRights) {
+    public void setAllRights(List<Right> allRights) {
         this.allRights = allRights;
     }
 
     @Transient
-    public List<RightEntity> getViewRights() {
+    public List<Right> getViewRights() {
         return getRightsStartingWith(allRights, "blog.view");
     }
 
     @Transient
-    public List<RightEntity> getCommentViewRights() {
+    public List<Right> getCommentViewRights() {
         return getRightsStartingWith(allRights, "blog.comment.view");
     }
 
     @Transient
-    public List<RightEntity> getCommentWriteRights() {
+    public List<Right> getCommentWriteRights() {
         return getRightsStartingWith(allRights, "blog.comment.write");
     }
 

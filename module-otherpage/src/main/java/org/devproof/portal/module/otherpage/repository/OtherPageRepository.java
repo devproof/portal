@@ -19,7 +19,7 @@ import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
 
@@ -33,7 +33,7 @@ import java.util.List;
 public interface OtherPageRepository extends CrudRepository<OtherPage, Integer> {
     @CacheQuery(enabled = false)
     @Query("select op.allRights from OtherPage op where op.modifiedAt = (select max(modifiedAt) from OtherPage)")
-    List<RightEntity> findLastSelectedRights();
+    List<Right> findLastSelectedRights();
 
     @Query("select count(op.contentId) from OtherPage op where op.contentId like ?")
     long existsContentId(String contentId);

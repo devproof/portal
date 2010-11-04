@@ -30,7 +30,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
@@ -69,26 +69,26 @@ public abstract class RoleEditPanel extends Panel {
         return form;
     }
 
-    private Palette<RightEntity> createRightPalette() {
-        IChoiceRenderer<RightEntity> renderer = new ChoiceRenderer<RightEntity>("description", "right");
-        IModel<Collection<RightEntity>> allRights = createAllRightsModel();
-        IModel<List<RightEntity>> roleRights = new PropertyModel<List<RightEntity>>(roleModel, "rights");
+    private Palette<Right> createRightPalette() {
+        IChoiceRenderer<Right> renderer = new ChoiceRenderer<Right>("description", "right");
+        IModel<Collection<Right>> allRights = createAllRightsModel();
+        IModel<List<Right>> roleRights = new PropertyModel<List<Right>>(roleModel, "rights");
         return newRightsPalette(renderer, allRights, roleRights);
     }
 
-    private IModel<Collection<RightEntity>> createAllRightsModel() {
-        return new LoadableDetachableModel<Collection<RightEntity>>() {
+    private IModel<Collection<Right>> createAllRightsModel() {
+        return new LoadableDetachableModel<Collection<Right>>() {
             private static final long serialVersionUID = 8162794261959630483L;
 
             @Override
-            protected Collection<RightEntity> load() {
+            protected Collection<Right> load() {
                 return rightService.findAllOrderByDescription();
             }
         };
     }
 
-    private Palette<RightEntity> newRightsPalette(IChoiceRenderer<RightEntity> renderer, IModel<Collection<RightEntity>> allRights, IModel<List<RightEntity>> roleRights) {
-        return new Palette<RightEntity>("rights", roleRights, allRights, renderer, 10, false) {
+    private Palette<Right> newRightsPalette(IChoiceRenderer<Right> renderer, IModel<Collection<Right>> allRights, IModel<List<Right>> roleRights) {
+        return new Palette<Right>("rights", roleRights, allRights, renderer, 10, false) {
             private static final long serialVersionUID = 1L;
 
             @Override

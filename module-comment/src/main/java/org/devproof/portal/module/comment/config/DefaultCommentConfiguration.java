@@ -16,7 +16,7 @@
 package org.devproof.portal.module.comment.config;
 
 import org.devproof.portal.core.app.PortalSession;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 
 import java.util.Collection;
 
@@ -27,22 +27,22 @@ public class DefaultCommentConfiguration implements CommentConfiguration {
     private static final long serialVersionUID = 1L;
     private String moduleName;
     private String moduleContentId;
-    private Collection<RightEntity> viewRights;
-    private Collection<RightEntity> writeRights;
+    private Collection<Right> viewRights;
+    private Collection<Right> writeRights;
 
-    public Collection<RightEntity> getViewRights() {
+    public Collection<Right> getViewRights() {
         return viewRights;
     }
 
-    public void setViewRights(Collection<RightEntity> viewRights) {
+    public void setViewRights(Collection<Right> viewRights) {
         this.viewRights = viewRights;
     }
 
-    public Collection<RightEntity> getWriteRights() {
+    public Collection<Right> getWriteRights() {
         return writeRights;
     }
 
-    public void setWriteRights(Collection<RightEntity> writeRights) {
+    public void setWriteRights(Collection<Right> writeRights) {
         this.writeRights = writeRights;
     }
 

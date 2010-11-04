@@ -39,7 +39,7 @@ public interface TagRepository<T> extends CrudRepository<T, String> {
     List<T> findMostPopularTags(Integer firstResult, Integer maxResult);
 
     @Query(value = "select t from $TYPE t where exists(from $TYPE et join et.referencedObjects ro left join ro.allRights ar "
-			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like ?||'%') and t = et) " +
+			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like ?||'%') and t = et) " +
     			"order by size(t.referencedObjects) desc", limitClause = true)
     List<T> findMostPopularTags(RoleEntity role, String viewRight, Integer firstResult, Integer maxResult);
 }

@@ -46,7 +46,7 @@ import org.devproof.portal.core.module.contact.ContactConstants;
 import org.devproof.portal.core.module.contact.bean.ContactBean;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.core.module.user.service.UserService;
 
@@ -181,7 +181,7 @@ public class ContactPage extends TemplatePage {
     }
 
     private boolean hasContactFormPermission(UserEntity touser) {
-        return !touser.getRole().getRights().contains(new RightEntity("contact.form.enable"));
+        return !touser.getRole().getRights().contains(new Right("contact.form.enable"));
     }
 
     private HeaderContributor createCSSHeaderContributor() {

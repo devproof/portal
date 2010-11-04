@@ -16,7 +16,7 @@
 package org.devproof.portal.core.app;
 
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
@@ -188,7 +188,7 @@ public class PortalSessionTest {
 
     @Test
     public void testHasRightString_true() {
-        expect(portalSession.rightService.newRightEntity("sample1")).andReturn(new RightEntity("sample1"));
+        expect(portalSession.rightService.newRightEntity("sample1")).andReturn(new Right("sample1"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
         replay(portalSession.rightService);
         portalSession.user = createUserWithRights();
@@ -198,7 +198,7 @@ public class PortalSessionTest {
 
     @Test
     public void testHasRightString_false() {
-        expect(portalSession.rightService.newRightEntity("notexisting")).andReturn(new RightEntity("notexisting"));
+        expect(portalSession.rightService.newRightEntity("notexisting")).andReturn(new Right("notexisting"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
         replay(portalSession.rightService);
         portalSession.user = createUserWithRights();
@@ -209,14 +209,14 @@ public class PortalSessionTest {
     @Test
     public void testHasRightRightEntity_true() {
         portalSession.user = createUserWithRights();
-        RightEntity right = new RightEntity("sample1");
+        Right right = new Right("sample1");
         assertTrue(portalSession.hasRight(right));
     }
 
     @Test
     public void testHasRightRightEntity_false() {
         portalSession.user = createUserWithRights();
-        RightEntity right = new RightEntity("notexisting");
+        Right right = new Right("notexisting");
         assertFalse(portalSession.hasRight(right));
     }
 
@@ -224,7 +224,7 @@ public class PortalSessionTest {
     public void testHasRightCollectionOfRightEntity_true() {
         UserEntity user = createUserWithRights();
         portalSession.user = user;
-        List<RightEntity> rights = new ArrayList<RightEntity>(user.getRole().getRights());
+        List<Right> rights = new ArrayList<Right>(user.getRole().getRights());
         rights.remove(1);
         assertTrue(portalSession.hasRight(rights));
     }
@@ -232,30 +232,30 @@ public class PortalSessionTest {
     @Test
     public void testHasRightCollectionOfRightEntity_false() {
         portalSession.user = createUserWithRights();
-        List<RightEntity> rights = new ArrayList<RightEntity>();
-        rights.add(new RightEntity("notexisting"));
+        List<Right> rights = new ArrayList<Right>();
+        rights.add(new Right("notexisting"));
         assertFalse(portalSession.hasRight(rights));
     }
 
     @Test
     public void testHasRightStringCollectionOfRightEntity_matchingadminright() {
-        expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new RightEntity("adminright"));
+        expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new Right("adminright"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l);
         replay(portalSession.rightService);
         UserEntity user = createUserWithRights();
-        user.getRole().add(new RightEntity("adminright"));
+        user.getRole().add(new Right("adminright"));
         portalSession.user = user;
-        assertTrue(portalSession.hasRight("adminright", new ArrayList<RightEntity>()));
+        assertTrue(portalSession.hasRight("adminright", new ArrayList<Right>()));
         verify(portalSession.rightService);
     }
 
     @Test
     public void testHasRightStringCollectionOfRightEntity_noadminright() {
-        expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new RightEntity("adminright"));
+        expect(portalSession.rightService.newRightEntity("adminright")).andReturn(new Right("adminright"));
         expect(portalSession.rightService.getDirtyTime()).andReturn(0l).times(2);
         replay(portalSession.rightService);
         portalSession.user = createUserWithRights();
-        assertFalse(portalSession.hasRight("adminright", new ArrayList<RightEntity>()));
+        assertFalse(portalSession.hasRight("adminright", new ArrayList<Right>()));
         verify(portalSession.rightService);
     }
 
@@ -263,8 +263,8 @@ public class PortalSessionTest {
         RoleEntity role = new RoleEntity();
         role.setId(1);
         role.setDescription("roleName");
-        role.getRights().add(new RightEntity("sample1"));
-        role.getRights().add(new RightEntity("sample2"));
+        role.getRights().add(new Right("sample1"));
+        role.getRights().add(new Right("sample2"));
         UserEntity user = new UserEntity();
         user.setId(1);
         user.setUsername("auser");

@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.common.entity;
 
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -87,9 +87,9 @@ public abstract class Modification implements Serializable {
     }
 
     @Transient
-    protected List<RightEntity> getRightsStartingWith(List<RightEntity> rights, String prefix) {
-        List<RightEntity> back = new ArrayList<RightEntity>();
-        for (RightEntity right : rights) {
+    protected List<Right> getRightsStartingWith(List<Right> rights, String prefix) {
+        List<Right> back = new ArrayList<Right>();
+        for (Right right : rights) {
             if (right.getRight().startsWith(prefix)) {
                 back.add(right);
             }

@@ -20,7 +20,7 @@ import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.common.model.EntityId;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.hibernate.annotations.Cache;
@@ -58,29 +58,29 @@ public class Article extends Modification implements EntityId {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "article_right_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
     @Fetch(FetchMode.SUBSELECT)
-    private List<RightEntity> allRights;
+    private List<Right> allRights;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "article_tag_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
     private List<ArticleTag> tags;
 
     @Transient
-    public List<RightEntity> getCommentViewRights() {
+    public List<Right> getCommentViewRights() {
         return getRightsStartingWith(allRights, "article.comment.view");
     }
 
     @Transient
-    public List<RightEntity> getCommentWriteRights() {
+    public List<Right> getCommentWriteRights() {
         return getRightsStartingWith(allRights, "article.comment.write");
     }
 
     @Transient
-    public List<RightEntity> getViewRights() {
+    public List<Right> getViewRights() {
         return getRightsStartingWith(allRights, "article.view");
     }
 
     @Transient
-    public List<RightEntity> getReadRights() {
+    public List<Right> getReadRights() {
         return getRightsStartingWith(allRights, "article.read");
     }
 
@@ -127,14 +127,14 @@ public class Article extends Modification implements EntityId {
         this.articlePages = articlePages;
     }
 
-    public List<RightEntity> getAllRights() {
+    public List<Right> getAllRights() {
         if (allRights == null) {
-            allRights = new ArrayList<RightEntity>();
+            allRights = new ArrayList<Right>();
         }
         return allRights;
     }
 
-    public void setAllRights(List<RightEntity> allRights) {
+    public void setAllRights(List<Right> allRights) {
         this.allRights = allRights;
     }
 

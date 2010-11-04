@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.right.service;
 
-import org.devproof.portal.core.module.right.dao.RightRepository;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
+import org.devproof.portal.core.module.right.repository.RightRepository;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,12 +37,12 @@ public class RightServiceImplTest {
     public void setUp() throws Exception {
         mock = createStrictMock(RightRepository.class);
         impl = new RightServiceImpl();
-        impl.setRightDao(mock);
+        impl.setRightRepository(mock);
     }
 
     @Test
     public void testSave() {
-        RightEntity e = impl.newRightEntity();
+        Right e = impl.newRightEntity();
         e.setRight("right");
         expect(mock.save(e)).andReturn(e);
         replay(mock);
@@ -52,7 +52,7 @@ public class RightServiceImplTest {
 
     @Test
     public void testDelete() {
-        RightEntity e = impl.newRightEntity();
+        Right e = impl.newRightEntity();
         e.setRight("right");
         mock.delete(e);
         replay(mock);
@@ -62,7 +62,7 @@ public class RightServiceImplTest {
 
     @Test
     public void testFindAll() {
-        List<RightEntity> list = new ArrayList<RightEntity>();
+        List<Right> list = new ArrayList<Right>();
         list.add(impl.newRightEntity());
         list.add(impl.newRightEntity());
         expect(mock.findAll()).andReturn(list);
@@ -73,7 +73,7 @@ public class RightServiceImplTest {
 
     @Test
     public void testFindById() {
-        RightEntity e = impl.newRightEntity();
+        Right e = impl.newRightEntity();
         e.setRight("right");
         expect(mock.findById("right")).andReturn(e);
         replay(mock);
@@ -88,7 +88,7 @@ public class RightServiceImplTest {
 
     @Test
     public void testNewRightEntityParam() {
-        RightEntity r = impl.newRightEntity("hello");
+        Right r = impl.newRightEntity("hello");
         assertNotNull(r);
         assertNotNull(r.getRight());
     }
@@ -101,7 +101,7 @@ public class RightServiceImplTest {
 
     @Test
     public void testFindAllOrderByDescription() {
-        List<RightEntity> list = new ArrayList<RightEntity>();
+        List<Right> list = new ArrayList<Right>();
         list.add(impl.newRightEntity());
         list.add(impl.newRightEntity());
         expect(mock.findAllOrderByDescription()).andReturn(list);
@@ -112,7 +112,7 @@ public class RightServiceImplTest {
 
     @Test
     public void testFindRightsStartingWith() {
-        List<RightEntity> list = new ArrayList<RightEntity>();
+        List<Right> list = new ArrayList<Right>();
         list.add(impl.newRightEntity());
         list.add(impl.newRightEntity());
         expect(mock.findRightsStartingWith("prefix")).andReturn(list);
@@ -123,7 +123,7 @@ public class RightServiceImplTest {
 
     @Test
     public void testGetAllRights() {
-        List<RightEntity> list = new ArrayList<RightEntity>();
+        List<Right> list = new ArrayList<Right>();
         list.add(impl.newRightEntity());
         list.add(impl.newRightEntity());
         expect(mock.findAll()).andReturn(list);

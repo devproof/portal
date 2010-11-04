@@ -27,7 +27,7 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
@@ -94,7 +94,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
     }
 
     private RightGridPanel createViewRightPanel() {
-        IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(otherPageModel, "allRights");
+        IModel<List<Right>> allRightsModel = new PropertyModel<List<Right>>(otherPageModel, "allRights");
         return new RightGridPanel("viewright", "otherPage.view", allRightsModel);
     }
 

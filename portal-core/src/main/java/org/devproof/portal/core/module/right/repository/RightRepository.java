@@ -13,28 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.right.dao;
+package org.devproof.portal.core.module.right.repository;
 
-import java.util.List;
-
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("rightDao")
+@GenericRepository("rightRepository")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface RightRepository extends CrudRepository<RightEntity, String> {
-    @Query("Select r from RightEntity r")
-    List<RightEntity> findAll();
+public interface RightRepository extends CrudRepository<Right, String> {
+    @Query("Select r from Right r")
+    List<Right> findAll();
 
-    @Query("select r from RightEntity r where r.right like ?||'.%'")
-    List<RightEntity> findRightsStartingWith(String prefix);
+    @Query("select r from Right r where r.right like ?||'.%'")
+    List<Right> findRightsStartingWith(String prefix);
 
-    @Query("select r from RightEntity r order by r.description asc")
-    List<RightEntity> findAllOrderByDescription();
+    @Query("select r from Right r order by r.description asc")
+    List<Right> findAllOrderByDescription();
 }

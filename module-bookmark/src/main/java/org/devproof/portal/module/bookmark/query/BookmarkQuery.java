@@ -76,7 +76,7 @@ public class BookmarkQuery implements SearchQuery {
 	}
 
 	@BeanQuery("exists(from Bookmark b left join b.allRights ar "
-			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = e)")
+			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = e)")
 	public RoleEntity getRole() {
 		if (role == null) {
 			PortalSession session = PortalSession.get();

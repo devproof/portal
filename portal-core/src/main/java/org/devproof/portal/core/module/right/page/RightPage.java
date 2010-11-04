@@ -35,7 +35,7 @@ import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightEditPanel;
 import org.devproof.portal.core.module.right.panel.RightSearchBoxPanel;
 import org.devproof.portal.core.module.right.query.RightQuery;
@@ -50,7 +50,7 @@ public class RightPage extends TemplatePage {
     private static final long serialVersionUID = 1L;
 
     @SpringBean(name = "rightDataProvider")
-    private QueryDataProvider<RightEntity, RightQuery> rightDataProvider;
+    private QueryDataProvider<Right, RightQuery> rightDataProvider;
     @SpringBean(name = "rightService")
     private RightService rightService;
     private WebMarkupContainer refreshTable;
@@ -124,7 +124,7 @@ public class RightPage extends TemplatePage {
             }
 
             private RightEditPanel createRightEditPanel() {
-                IModel<RightEntity> rightModel = Model.of(rightService.newRightEntity());
+                IModel<Right> rightModel = Model.of(rightService.newRightEntity());
                 return new RightEditPanel(bubblePanel.getContentId(), rightModel, true) {
                     private static final long serialVersionUID = 1L;
 
@@ -146,37 +146,37 @@ public class RightPage extends TemplatePage {
         };
     }
 
-    private class RightDataView extends DataView<RightEntity> {
+    private class RightDataView extends DataView<Right> {
         private static final long serialVersionUID = 1L;
 
-        public RightDataView(String id, IDataProvider<RightEntity> dataProvider) {
+        public RightDataView(String id, IDataProvider<Right> dataProvider) {
             super(id, dataProvider);
         }
 
         @Override
-        protected void populateItem(Item<RightEntity> item) {
+        protected void populateItem(Item<Right> item) {
             item.add(createRightNameLabel(item));
             item.add(createRightDescriptionLabel(item));
             item.add(createAuthorPanel(item));
             item.add(createAlternatingModifier(item));
         }
 
-        private Label createRightDescriptionLabel(Item<RightEntity> item) {
+        private Label createRightDescriptionLabel(Item<Right> item) {
             return new Label("description", item.getModelObject().getDescription());
         }
 
-        private Label createRightNameLabel(Item<RightEntity> item) {
+        private Label createRightNameLabel(Item<Right> item) {
             return new Label("right", item.getModelObject().getRight());
         }
 
-        private AuthorPanel<RightEntity> createAuthorPanel(final Item<RightEntity> item) {
-            return new AuthorPanel<RightEntity>("authorButtons", item.getModel()) {
+        private AuthorPanel<Right> createAuthorPanel(final Item<Right> item) {
+            return new AuthorPanel<Right>("authorButtons", item.getModel()) {
                 private static final long serialVersionUID = 1L;
 
                 @Override
                 public void onDelete(AjaxRequestTarget target) {
                     try {
-                        RightEntity right = item.getModelObject();
+                        Right right = item.getModelObject();
                         rightService.delete(right);
                         rightService.refreshGlobalApplicationRights();
                         target.addComponent(refreshTable);
@@ -193,7 +193,7 @@ public class RightPage extends TemplatePage {
                     bubblePanel.showModal(target);
                 }
 
-                private RightEditPanel createRightEditPanel(final IModel<RightEntity> rightModel) {
+                private RightEditPanel createRightEditPanel(final IModel<Right> rightModel) {
                     return new RightEditPanel(bubblePanel.getContentId(), rightModel, false) {
                         private static final long serialVersionUID = 1L;
 
@@ -216,7 +216,7 @@ public class RightPage extends TemplatePage {
             };
         }
 
-        private AttributeModifier createAlternatingModifier(final Item<RightEntity> item) {
+        private AttributeModifier createAlternatingModifier(final Item<Right> item) {
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 

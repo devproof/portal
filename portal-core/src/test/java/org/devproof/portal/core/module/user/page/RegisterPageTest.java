@@ -20,7 +20,7 @@ import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.MessagePage;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class RegisterPageTest {
     public void testRegistration() {
         Page page = tester.startPage(RegisterPage.class);
         tester.assertRenderedPage(RegisterPage.class);
-        PortalSession.get().getRights().add(new RightEntity("captcha.disabled"));
+        PortalSession.get().getRights().add(new Right("captcha.disabled"));
         FormTester ft = tester.newFormTester("form");
         ft.setValue("username", "peterpan");
         ft.setValue("firstname", "mike");

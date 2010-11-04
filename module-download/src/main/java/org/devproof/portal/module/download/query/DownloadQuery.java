@@ -68,7 +68,7 @@ public class DownloadQuery implements SearchQuery {
 	}
 
 	@BeanQuery("exists(from Download d left join d.allRights ar "
-			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'download.view%') and d = e)")
+			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'download.view%') and d = e)")
 	public RoleEntity getRole() {
 		if (role == null) {
 			PortalSession session = PortalSession.get();

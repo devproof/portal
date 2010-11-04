@@ -30,7 +30,7 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
 import org.devproof.portal.module.article.entity.Article;
@@ -75,17 +75,17 @@ public class ArticleEditPage extends ArticleBasePage {
     }
 
     private RightGridPanel createReadRightPanel() {
-        IModel<List<RightEntity>> selectedRights = new PropertyModel<List<RightEntity>>(articleModel, "allRights");
+        IModel<List<Right>> selectedRights = new PropertyModel<List<Right>>(articleModel, "allRights");
         return new RightGridPanel("readright", "article.read", selectedRights);
     }
 
     private RightGridPanel createViewRightPanel() {
-        IModel<List<RightEntity>> selectedRights = new PropertyModel<List<RightEntity>>(articleModel, "allRights");
+        IModel<List<Right>> selectedRights = new PropertyModel<List<Right>>(articleModel, "allRights");
         return new RightGridPanel("viewright", "article.view", selectedRights);
     }
 
     private RightGridPanel createCommentRightPanel() {
-        IModel<List<RightEntity>> selectedRights = new PropertyModel<List<RightEntity>>(articleModel, "allRights");
+        IModel<List<Right>> selectedRights = new PropertyModel<List<Right>>(articleModel, "allRights");
         return new RightGridPanel("commentright", "article.comment", selectedRights);
     }
 

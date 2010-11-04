@@ -20,7 +20,7 @@ import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
@@ -39,10 +39,10 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Integer> {
 
     @CacheQuery(enabled = false)
     @Query("select b.allRights from Bookmark b where b.modifiedAt = (select max(modifiedAt) from Bookmark)")
-    List<RightEntity> findLastSelectedRights();
+    List<Right> findLastSelectedRights();
 
     @Query(value = "select b from Bookmark b where exists(from Bookmark eb left join eb.allRights ar "
-			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = eb)" +
+			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = eb)" +
 					" order by b.modifiedAt desc", limitClause = true)
     List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 

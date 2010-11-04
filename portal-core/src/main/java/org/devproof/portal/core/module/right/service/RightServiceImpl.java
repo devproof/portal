@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.right.service;
 
-import org.devproof.portal.core.module.right.dao.RightRepository;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
+import org.devproof.portal.core.module.right.repository.RightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +28,9 @@ import java.util.List;
  */
 @Service("rightService")
 public class RightServiceImpl implements RightService {
-    private List<RightEntity> allRights;
+    private List<Right> allRights;
     private long dirtyTime = 0l;
-    private RightRepository rightDao;
+    private RightRepository rightRepository;
 
     @PostConstruct
     public void init() {
@@ -38,7 +38,7 @@ public class RightServiceImpl implements RightService {
     }
 
     @Override
-    public List<RightEntity> getAllRights() {
+    public List<Right> getAllRights() {
         return allRights;
     }
 
@@ -49,52 +49,52 @@ public class RightServiceImpl implements RightService {
 
     @Override
     public void refreshGlobalApplicationRights() {
-        allRights = rightDao.findAll();
+        allRights = rightRepository.findAll();
         dirtyTime = System.currentTimeMillis();
     }
 
     @Override
-    public List<RightEntity> findAllOrderByDescription() {
-        return rightDao.findAllOrderByDescription();
+    public List<Right> findAllOrderByDescription() {
+        return rightRepository.findAllOrderByDescription();
     }
 
     @Override
-    public List<RightEntity> findRightsStartingWith(String prefix) {
-        return rightDao.findRightsStartingWith(prefix);
+    public List<Right> findRightsStartingWith(String prefix) {
+        return rightRepository.findRightsStartingWith(prefix);
     }
 
     @Override
-    public RightEntity newRightEntity() {
-        return new RightEntity();
+    public Right newRightEntity() {
+        return new Right();
     }
 
     @Override
-    public RightEntity newRightEntity(String right) {
-        return new RightEntity(right);
+    public Right newRightEntity(String right) {
+        return new Right(right);
     }
 
     @Override
-    public void delete(RightEntity entity) {
-        rightDao.delete(entity);
+    public void delete(Right entity) {
+        rightRepository.delete(entity);
     }
 
     @Override
-    public List<RightEntity> findAll() {
-        return rightDao.findAll();
+    public List<Right> findAll() {
+        return rightRepository.findAll();
     }
 
     @Override
-    public RightEntity findById(String id) {
-        return rightDao.findById(id);
+    public Right findById(String id) {
+        return rightRepository.findById(id);
     }
 
     @Override
-    public void save(RightEntity entity) {
-        rightDao.save(entity);
+    public void save(Right entity) {
+        rightRepository.save(entity);
     }
 
     @Autowired
-    public void setRightDao(RightRepository rightDao) {
-        this.rightDao = rightDao;
+    public void setRightRepository(RightRepository rightRepository) {
+        this.rightRepository = rightRepository;
     }
 }

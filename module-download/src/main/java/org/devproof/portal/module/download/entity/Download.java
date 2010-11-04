@@ -17,7 +17,7 @@ package org.devproof.portal.module.download.entity;
 
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.deadlinkcheck.entity.BaseLink;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.query.DownloadQuery;
@@ -56,24 +56,24 @@ public class Download extends BaseLink {
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "download_right_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-    private List<RightEntity> allRights;
+    private List<Right> allRights;
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "download_tag_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
     private List<DownloadTag> tags;
 
     @Transient
-    public List<RightEntity> getVoteRights() {
+    public List<Right> getVoteRights() {
         return getRightsStartingWith(allRights, "download.vote");
     }
 
     @Transient
-    public List<RightEntity> getDownloadRights() {
+    public List<Right> getDownloadRights() {
         return getRightsStartingWith(allRights, "download.download");
     }
 
     @Transient
-    public List<RightEntity> getViewRights() {
+    public List<Right> getViewRights() {
         return getRightsStartingWith(allRights, "download.view");
     }
 
@@ -125,14 +125,14 @@ public class Download extends BaseLink {
         this.manufacturer = manufacturer;
     }
 
-    public List<RightEntity> getAllRights() {
+    public List<Right> getAllRights() {
         if (allRights == null) {
-            allRights = new ArrayList<RightEntity>();
+            allRights = new ArrayList<Right>();
         }
         return allRights;
     }
 
-    public void setAllRights(List<RightEntity> allRights) {
+    public void setAllRights(List<Right> allRights) {
         this.allRights = allRights;
     }
 

@@ -19,7 +19,7 @@ import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.role.query.RoleQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -55,7 +55,7 @@ public class RoleEntity extends Modification {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "core_role_right_xref", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
     @OrderBy("description asc")
-    private List<RightEntity> rights;
+    private List<Right> rights;
 
     // Generated stuff
 
@@ -83,22 +83,22 @@ public class RoleEntity extends Modification {
         this.active = active;
     }
 
-    public List<RightEntity> getRights() {
+    public List<Right> getRights() {
         if (rights == null) {
-            rights = new ArrayList<RightEntity>();
+            rights = new ArrayList<Right>();
         }
         return rights;
     }
 
-    public void setRights(List<RightEntity> rights) {
+    public void setRights(List<Right> rights) {
         this.rights = rights;
     }
 
-    public boolean add(RightEntity e) {
+    public boolean add(Right e) {
         return rights.add(e);
     }
 
-    public boolean addAll(Collection<? extends RightEntity> c) {
+    public boolean addAll(Collection<? extends Right> c) {
         return rights.addAll(c);
     }
 

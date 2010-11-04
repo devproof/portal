@@ -43,7 +43,7 @@ public class ArticleQuery implements SearchQuery {
 	}
 
 	@BeanQuery("exists(from Article a left join a.allRights ar "
-			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'article.view%') and a = e)")
+			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'article.view%') and a = e)")
 	public RoleEntity getRole() {
 		if (role == null) {
 			PortalSession session = PortalSession.get();

@@ -20,7 +20,7 @@ import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
@@ -38,10 +38,10 @@ public interface DownloadRepository extends CrudRepository<Download, Integer> {
 
     @CacheQuery(enabled = false)
     @Query("select d.allRights from Download d where d.modifiedAt = (select max(modifiedAt) from Download)")
-    List<RightEntity> findLastSelectedRights();
+    List<Right> findLastSelectedRights();
 
     @Query(value = "select d from Download d where exists(from Download ed left join ed.allRights ar "
-			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'download.view%') and d = ed)" +
+			+ "where ar in(select r from Right r join r.roles rt where rt = ? and r.right like 'download.view%') and d = ed)" +
 					" order by d.modifiedAt desc", limitClause = true)
     List<Download> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 

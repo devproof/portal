@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
@@ -94,7 +94,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     }
 
     @Override
-    public List<RightEntity> findLastSelectedRights() {
+    public List<Right> findLastSelectedRights() {
         return bookmarkRepository.findLastSelectedRights();
     }
 

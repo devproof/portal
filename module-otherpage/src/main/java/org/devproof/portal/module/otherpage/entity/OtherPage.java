@@ -18,7 +18,7 @@ package org.devproof.portal.module.otherpage.entity;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -48,7 +48,7 @@ public class OtherPage extends Modification {
     private String content;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "other_page_right_xref", joinColumns = @JoinColumn(name = "other_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
-    private List<RightEntity> allRights;
+    private List<Right> allRights;
 
     public Integer getId() {
         return id;
@@ -74,19 +74,19 @@ public class OtherPage extends Modification {
         this.content = content;
     }
 
-    public List<RightEntity> getAllRights() {
+    public List<Right> getAllRights() {
         if (allRights == null) {
-            allRights = new ArrayList<RightEntity>();
+            allRights = new ArrayList<Right>();
         }
         return allRights;
     }
 
-    public void setAllRights(List<RightEntity> allRights) {
+    public void setAllRights(List<Right> allRights) {
         this.allRights = allRights;
     }
 
     @Transient
-    public List<RightEntity> getViewRights() {
+    public List<Right> getViewRights() {
         return getRightsStartingWith(allRights, "otherPage.view");
     }
 

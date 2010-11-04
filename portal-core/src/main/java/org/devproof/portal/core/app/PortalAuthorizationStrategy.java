@@ -23,7 +23,7 @@ import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.extensions.markup.html.tree.table.TreeTable;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.devproof.portal.core.module.right.RightConstants;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
 import org.devproof.portal.core.module.user.panel.UserBoxPanel;
@@ -46,7 +46,7 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
     public boolean isActionAuthorized(Component component, Action action) {
         // false means the component will not be rendered
         PortalSession session = ((PortalSession) Session.get());
-        List<RightEntity> allRights = rightService.getAllRights();
+        List<Right> allRights = rightService.getAllRights();
         if (component instanceof LoginBoxPanel) {
             return !session.isSignedIn();
         } else if (component instanceof UserBoxPanel) {
@@ -60,7 +60,7 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
             BookmarkablePageLink<?> l = (BookmarkablePageLink<?>) component;
             Class<?> pageClazz = l.getPageClass();
             String rightName = RightConstants.PAGE_RIGHT_PREFIX + pageClazz.getSimpleName();
-            RightEntity right = rightService.newRightEntity(rightName);
+            Right right = rightService.newRightEntity(rightName);
             if (allRights.contains(right)) {
                 return session.hasRight(right);
             }
@@ -69,7 +69,7 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
         // problem with tree table, i dont know why
         else if (!(component instanceof TreeTable)) {
             String rightName = RightConstants.COMPONENT_RIGHT_PREFIX + component.getPage().getClass().getSimpleName() + "." + component.getId();
-            RightEntity right = rightService.newRightEntity(rightName);
+            Right right = rightService.newRightEntity(rightName);
             if (allRights.contains(right)) {
                 return session.hasRight(right);
             }
@@ -86,10 +86,10 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
     public boolean isInstantiationAuthorized(@SuppressWarnings("rawtypes") Class componentClass) {
         // false means the whole page is blocked
         PortalSession session = ((PortalSession) Session.get());
-        List<RightEntity> allRights = rightService.getAllRights();
+        List<Right> allRights = rightService.getAllRights();
         if (Page.class.isAssignableFrom(componentClass)) {
             String rightName = RightConstants.PAGE_RIGHT_PREFIX + componentClass.getSimpleName();
-            RightEntity right = rightService.newRightEntity(rightName);
+            Right right = rightService.newRightEntity(rightName);
             if (allRights.contains(right)) {
                 return session.hasRight(right);
             }

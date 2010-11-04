@@ -31,7 +31,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
@@ -49,10 +49,10 @@ public abstract class RightEditPanel extends Panel {
     @SpringBean(name = "rightService")
     private RightService rightService;
     private FeedbackPanel feedback;
-    private IModel<RightEntity> rightModel;
+    private IModel<Right> rightModel;
     private boolean rightNameEditable;
 
-    public RightEditPanel(String id, IModel<RightEntity> rightModel, boolean rightNameEditable) {
+    public RightEditPanel(String id, IModel<Right> rightModel, boolean rightNameEditable) {
         super(id, rightModel);
         this.rightModel = rightModel;
         this.rightNameEditable = rightNameEditable;
@@ -60,8 +60,8 @@ public abstract class RightEditPanel extends Panel {
         add(createRightEditForm());
     }
 
-    private Form<RightEntity> createRightEditForm() {
-        Form<RightEntity> form = new Form<RightEntity>("form", new CompoundPropertyModel<RightEntity>(rightModel));
+    private Form<Right> createRightEditForm() {
+        Form<Right> form = new Form<Right>("form", new CompoundPropertyModel<Right>(rightModel));
         form.add(createRightNameField());
         form.add(createDescriptionField());
         form.add(createRolesPalette());
@@ -77,7 +77,7 @@ public abstract class RightEditPanel extends Panel {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                rightService.save((RightEntity) form.getModelObject());
+                rightService.save((Right) form.getModelObject());
                 RightEditPanel.this.onSave(target);
             }
 

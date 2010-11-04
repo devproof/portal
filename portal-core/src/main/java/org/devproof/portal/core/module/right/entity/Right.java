@@ -39,7 +39,7 @@ import java.util.List;
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 @RegisterGenericDataProvider(value = "rightDataProvider", sortProperty = "description", queryClass = RightQuery.class)
-public class RightEntity extends Modification {
+public class Right extends Modification {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,10 +57,10 @@ public class RightEntity extends Modification {
     @Transient
     private boolean selected = false;
 
-    public RightEntity() {
+    public Right() {
     }
 
-    public RightEntity(String right) {
+    public Right(String right) {
         this.right = right;
     }
 
@@ -128,7 +128,7 @@ public class RightEntity extends Modification {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        RightEntity other = (RightEntity) obj;
+        Right other = (Right) obj;
         if (right == null) {
             if (other.right != null) {
                 return false;

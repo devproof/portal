@@ -19,7 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -56,7 +56,7 @@ public class RightGridPanelTest {
 
             @Override
             public Panel getTestPanel(String panelId) {
-                return new RightGridPanel(panelId, "", new ListModel<RightEntity>(new ArrayList<RightEntity>()));
+                return new RightGridPanel(panelId, "", new ListModel<Right>(new ArrayList<Right>()));
             }
         };
     }

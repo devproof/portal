@@ -26,7 +26,7 @@ import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.core.module.role.service.RoleService;
@@ -185,7 +185,7 @@ public class PortalSession extends WebSession {
      *
      * @return user rights
      */
-    public List<RightEntity> getRights() {
+    public List<Right> getRights() {
         return getRole().getRights();
     }
 
@@ -196,7 +196,7 @@ public class PortalSession extends WebSession {
      * @return true if he has the right
      */
     public boolean hasRight(String rightName) {
-        RightEntity right = rightService.newRightEntity(rightName);
+        Right right = rightService.newRightEntity(rightName);
         return this.hasRight(right);
     }
 
@@ -206,7 +206,7 @@ public class PortalSession extends WebSession {
      * @param right right entity
      * @return true if he has
      */
-    public boolean hasRight(RightEntity right) {
+    public boolean hasRight(Right right) {
         UserEntity user = getUser();
         return user.getRole().getRights().contains(right);
     }
@@ -217,10 +217,10 @@ public class PortalSession extends WebSession {
      * @param rights collection with rights
      * @return true if he has one right
      */
-    public boolean hasRight(Collection<RightEntity> rights) {
+    public boolean hasRight(Collection<Right> rights) {
         UserEntity user = getUser();
-        Collection<RightEntity> userRights = user.getRole().getRights();
-        for (RightEntity right : rights) {
+        Collection<Right> userRights = user.getRole().getRights();
+        for (Right right : rights) {
             if (userRights.contains(right)) {
                 return true;
             }
@@ -235,7 +235,7 @@ public class PortalSession extends WebSession {
      * @param rights     collection with rights
      * @return true if he has one right
      */
-    public boolean hasRight(String adminRight, Collection<RightEntity> rights) {
+    public boolean hasRight(String adminRight, Collection<Right> rights) {
         if (hasRight(adminRight)) {
             return true;
 		}

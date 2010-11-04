@@ -38,7 +38,7 @@ import org.devproof.portal.core.module.common.component.ProgressBar;
 import org.devproof.portal.core.module.common.component.Progression;
 import org.devproof.portal.core.module.common.component.ProgressionModel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.core.module.user.entity.UserEntity;
@@ -75,7 +75,7 @@ public abstract class DeliciousSyncPanel extends Panel {
     private int modifiedBookmarksCount = 0;
     private int deletedBookmarksCount = 0;
     private DeliciousBean deliciousBean;
-    private IModel<List<RightEntity>> allSelectedRightsModel;
+    private IModel<List<Right>> allSelectedRightsModel;
     private ProgressBar progressBar;
     private DeliciousFormBean deliciousFormBean = new DeliciousFormBean();
     private FeedbackPanel feedbackPanel;
@@ -89,12 +89,12 @@ public abstract class DeliciousSyncPanel extends Panel {
         add(createDeliciousSyncForm());
     }
 
-    private IModel<List<RightEntity>> createAllSelectedRightsModel() {
-        return new LoadableDetachableModel<List<RightEntity>>() {
+    private IModel<List<Right>> createAllSelectedRightsModel() {
+        return new LoadableDetachableModel<List<Right>>() {
             private static final long serialVersionUID = -3952424378430843342L;
 
             @Override
-            protected List<RightEntity> load() {
+            protected List<Right> load() {
                 return bookmarkService.findLastSelectedRights();
             }
         };

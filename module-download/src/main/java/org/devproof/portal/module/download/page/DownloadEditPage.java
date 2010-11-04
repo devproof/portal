@@ -25,7 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
 import org.devproof.portal.module.download.entity.Download;
@@ -147,17 +147,17 @@ public class DownloadEditPage extends DownloadBasePage {
     }
 
     private RightGridPanel createVoteRightPanel() {
-        IModel<List<RightEntity>> rightsModel = new PropertyModel<List<RightEntity>>(downloadModel, "allRights");
+        IModel<List<Right>> rightsModel = new PropertyModel<List<Right>>(downloadModel, "allRights");
         return new RightGridPanel("voteRights", "download.vote", rightsModel);
     }
 
     private RightGridPanel createDownloadRightPanel() {
-        IModel<List<RightEntity>> rightsModel = new PropertyModel<List<RightEntity>>(downloadModel, "allRights");
+        IModel<List<Right>> rightsModel = new PropertyModel<List<Right>>(downloadModel, "allRights");
         return new RightGridPanel("downloadRights", "download.download", rightsModel);
     }
 
     private RightGridPanel createViewRightPanel() {
-        IModel<List<RightEntity>> rightsModel = new PropertyModel<List<RightEntity>>(downloadModel, "allRights");
+        IModel<List<Right>> rightsModel = new PropertyModel<List<Right>>(downloadModel, "allRights");
         return new RightGridPanel("viewRights", "download.view", rightsModel);
     }
 }

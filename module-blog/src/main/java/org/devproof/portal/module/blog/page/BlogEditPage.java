@@ -24,7 +24,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
 import org.devproof.portal.module.blog.entity.Blog;
@@ -80,12 +80,12 @@ public class BlogEditPage extends BlogBasePage {
     }
 
     private RightGridPanel createViewRightPanel() {
-        IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(blogModel, "allRights");
+        IModel<List<Right>> allRightsModel = new PropertyModel<List<Right>>(blogModel, "allRights");
         return new RightGridPanel("viewright", "blog.view", allRightsModel);
     }
 
     private RightGridPanel createCommentRightPanel() {
-        IModel<List<RightEntity>> allRightsModel = new PropertyModel<List<RightEntity>>(blogModel, "allRights");
+        IModel<List<Right>> allRightsModel = new PropertyModel<List<Right>>(blogModel, "allRights");
         return new RightGridPanel("commentright", "blog.comment", allRightsModel);
     }
 

@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.right.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 
 import java.util.List;
 
@@ -25,11 +25,11 @@ import java.util.List;
  *
  * @author Carsten Hufe
  */
-public interface RightService extends CrudService<RightEntity, String> {
+public interface RightService extends CrudService<Right, String> {
     /**
      * Returns all rights
      */
-    List<RightEntity> findAll();
+    List<Right> findAll();
 
     /**
      * Returns the dirty time
@@ -48,7 +48,7 @@ public interface RightService extends CrudService<RightEntity, String> {
      *
      * @return list with all rights
      */
-    List<RightEntity> getAllRights();
+    List<Right> getAllRights();
 
     /**
      * Returns all rights starting with the given prefix
@@ -56,27 +56,27 @@ public interface RightService extends CrudService<RightEntity, String> {
      * @param prefix right prefix
      * @return list with matching rights
      */
-    List<RightEntity> findRightsStartingWith(String prefix);
+    List<Right> findRightsStartingWith(String prefix);
 
     /**
      * Returns all rights ordered by description
      *
      * @return list with rights
      */
-    List<RightEntity> findAllOrderByDescription();
+    List<Right> findAllOrderByDescription();
 
     /**
-     * Returns a new instance of RightEntity
+     * Returns a new instance of Right
      *
-     * @return new instance of RightEntity
+     * @return new instance of Right
      */
-    RightEntity newRightEntity();
+    Right newRightEntity();
 
     /**
-     * Returns a new instance of RightEntity
+     * Returns a new instance of Right
      *
      * @param right right key
-     * @return new instance of RightEntity
+     * @return new instance of Right
      */
-	RightEntity newRightEntity(String right);
+	Right newRightEntity(String right);
 }

@@ -24,7 +24,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
-import org.devproof.portal.core.module.right.entity.RightEntity;
+import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
@@ -95,17 +95,17 @@ public class BookmarkEditPage extends BookmarkBasePage {
     }
 
     private RightGridPanel createViewRightPanel() {
-        IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
+        IModel<List<Right>> rightsListModel = new PropertyModel<List<Right>>(bookmarkModel, "allRights");
         return new RightGridPanel("viewRights", "bookmark.view", rightsListModel);
     }
 
     private RightGridPanel createVisitRightPanel() {
-        IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
+        IModel<List<Right>> rightsListModel = new PropertyModel<List<Right>>(bookmarkModel, "allRights");
         return new RightGridPanel("visitRights", "bookmark.visit", rightsListModel);
     }
 
     private RightGridPanel createVoteRightPanel() {
-        IModel<List<RightEntity>> rightsListModel = new PropertyModel<List<RightEntity>>(bookmarkModel, "allRights");
+        IModel<List<Right>> rightsListModel = new PropertyModel<List<Right>>(bookmarkModel, "allRights");
         return new RightGridPanel("voteRights", "bookmark.vote", rightsListModel);
     }
 
