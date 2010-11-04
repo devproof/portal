@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.comment.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("commentRepository")
+@GenericRepository("commentRepository")
 @CacheQuery(region = CommentConstants.QUERY_CACHE_REGION)
 public interface CommentRepository extends CrudRepository<Comment, Integer> {
     @BulkUpdate("update Comment c set c.accepted = true, c.reviewed = true, c.automaticBlocked = false, c.numberOfBlames = 0 where c = ?")

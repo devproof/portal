@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.blog.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("blogRepository")
+@GenericRepository("blogRepository")
 @CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
 public interface BlogRepository extends CrudRepository<Blog, Integer> {
     @CacheQuery(enabled = false)

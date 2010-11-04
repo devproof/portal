@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
@@ -25,7 +26,7 @@ import org.devproof.portal.module.article.entity.ArticlePageId;
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("articlePageRepository")
+@GenericRepository("articlePageRepository")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 public interface ArticlePageRepository extends CrudRepository<ArticlePage, ArticlePageId> {
     @Query("select count(ap.contentId) from ArticlePage ap where ap.contentId like ?")

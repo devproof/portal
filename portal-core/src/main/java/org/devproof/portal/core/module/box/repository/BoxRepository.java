@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.box.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
@@ -28,7 +29,7 @@ import java.util.List;
  *
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("boxRepository")
+@GenericRepository("boxRepository")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface BoxRepository extends CrudRepository<Box, Integer> {
     @Query("select max(b.sort) from Box b")

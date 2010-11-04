@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.bookmark.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
@@ -30,7 +31,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("bookmarkRepository")
+@GenericRepository("bookmarkRepository")
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
 public interface BookmarkRepository extends CrudRepository<Bookmark, Integer> {
     @Query("Select b from Bookmark b")

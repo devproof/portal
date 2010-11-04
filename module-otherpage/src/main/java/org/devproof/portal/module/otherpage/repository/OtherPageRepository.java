@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@org.devproof.portal.core.config.GenericRepository("otherPageDao")
+@GenericRepository("otherPageDao")
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 public interface OtherPageRepository extends CrudRepository<OtherPage, Integer> {
     @CacheQuery(enabled = false)
