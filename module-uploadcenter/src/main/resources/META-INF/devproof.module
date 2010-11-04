@@ -1,0 +1,1 @@
+spring.context.file=classpath:/org/devproof/portal/module/uploadcenter/devproof-module.xml

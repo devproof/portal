@@ -15,15 +15,18 @@
  */
 package org.devproof.portal.core.app;
 
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 
 import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Set;
+import java.net.URLConnection;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -38,24 +41,13 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
     @Override
     protected void customizeContext(ServletContext servletContext, ConfigurableWebApplicationContext applicationContext) {
         List<String> modules = new ArrayList<String>();
-        modules.add("classpath:/org/devproof/portal/core/devproof-portal-core.xml");
         try {
-            // Prod modules
-            @SuppressWarnings("unchecked") Set<String> libs = servletContext.getResourcePaths("/WEB-INF/lib");
-            for (String lib : libs) {
-                URL url = servletContext.getResource(lib);
-                JarFile file = new JarFile(url.getFile());
-                Enumeration<JarEntry> entries = file.entries();
-                while (entries.hasMoreElements()) {
-                    JarEntry jarEntry = entries.nextElement();
-                    if (jarEntry.getName().endsWith(DEVPROOF_MODULE_XML)) {
-                        modules.add("classpath:/" + jarEntry.getName());
-                    }
+            List<Properties> propertiesList = loadAllProperties("META-INF/devproof.module", null);
+            for(Properties properties : propertiesList) {
+                Set<Map.Entry<Object, Object>> entries = properties.entrySet();
+                for(Map.Entry<Object, Object> entry : entries) {
+                    modules.add((String)entry.getValue());
                 }
-            }
-            // For development mode when the lib and classes dir is empty
-            if (libs.isEmpty()) {
-                modules.add("classpath*:**/devproof-module.xml");
             }
             String[] configs = convertListToArray(modules);
             applicationContext.setConfigLocations(configs);
@@ -64,6 +56,34 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
             throw new IllegalStateException(e);
         }
     }
+
+    private static List<Properties> loadAllProperties(String resourceName, ClassLoader classLoader) throws IOException {
+		Assert.notNull(resourceName, "Resource name must not be null");
+		ClassLoader clToUse = classLoader;
+		if (clToUse == null) {
+			clToUse = ClassUtils.getDefaultClassLoader();
+		}
+		List<Properties> properties = new ArrayList<Properties>();
+		Enumeration urls = clToUse.getResources(resourceName);
+		while (urls.hasMoreElements()) {
+			URL url = (URL) urls.nextElement();
+			InputStream is = null;
+			try {
+				URLConnection con = url.openConnection();
+				con.setUseCaches(false);
+				is = con.getInputStream();
+                Properties prop = new Properties();
+				prop.load(is);
+                properties.add(prop);
+			}
+			finally {
+				if (is != null) {
+					is.close();
+				}
+			}
+		}
+		return properties;
+	}
 
     private String[] convertListToArray(List<String> modules) {
         String[] configs = new String[modules.size()];
