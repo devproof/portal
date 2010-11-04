@@ -23,7 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.util.FileResourceStream;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.service.DownloadService;
 
 import java.io.File;
@@ -51,7 +51,7 @@ public class DownloadRedirectPage extends WebPage {
     @Override
     protected void onBeforeRender() {
         if (hasFirstParameter()) {
-            DownloadEntity download = downloadService.findById(getDownloadIdParam());
+            Download download = downloadService.findById(getDownloadIdParam());
             if (hasDownloadRight(download)) {
                 downloadService.incrementHits(download);
                 if (isLocalFile(download)) {
@@ -64,11 +64,11 @@ public class DownloadRedirectPage extends WebPage {
         super.onBeforeRender();
     }
 
-    private boolean isLocalFile(DownloadEntity download) {
+    private boolean isLocalFile(Download download) {
         return download.getUrl().startsWith("file:/");
     }
 
-    private void startDownloadStream(DownloadEntity download) {
+    private void startDownloadStream(Download download) {
         try {
             URI uri = new URI(download.getUrl());
             final File downloadFile = new File(uri);
@@ -87,11 +87,11 @@ public class DownloadRedirectPage extends WebPage {
         }
     }
 
-    private void redirectTo(DownloadEntity download) {
+    private void redirectTo(Download download) {
         getRequestCycle().setRequestTarget(new RedirectRequestTarget(download.getUrl()));
     }
 
-    private boolean hasDownloadRight(DownloadEntity download) {
+    private boolean hasDownloadRight(Download download) {
         if (download == null) {
             return false;
         }

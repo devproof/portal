@@ -16,10 +16,10 @@
 package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.download.entity.DownloadTagEntity;
+import org.devproof.portal.module.download.entity.DownloadTag;
 
 /**
  * @author Carsten Hufe
  */
-public interface DownloadTagService extends TagService<DownloadTagEntity> {
+public interface DownloadTagService extends TagService<DownloadTag> {
 }

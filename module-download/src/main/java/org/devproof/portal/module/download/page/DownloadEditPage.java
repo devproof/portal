@@ -28,9 +28,8 @@ import org.devproof.portal.core.module.common.component.richtext.FullRichTextAre
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.download.entity.DownloadEntity;
-import org.devproof.portal.module.download.entity.DownloadTagEntity;
+import org.devproof.portal.module.download.entity.Download;
+import org.devproof.portal.module.download.entity.DownloadTag;
 import org.devproof.portal.module.download.service.DownloadService;
 import org.devproof.portal.module.download.service.DownloadTagService;
 
@@ -46,16 +45,16 @@ public class DownloadEditPage extends DownloadBasePage {
     private DownloadService downloadService;
     @SpringBean(name = "downloadTagService")
     private DownloadTagService downloadTagService;
-    private IModel<DownloadEntity> downloadModel;
+    private IModel<Download> downloadModel;
 
-    public DownloadEditPage(IModel<DownloadEntity> downloadModel) {
+    public DownloadEditPage(IModel<Download> downloadModel) {
         super(new PageParameters());
         this.downloadModel = downloadModel;
         add(createDownloadEditForm());
     }
 
-    private Form<DownloadEntity> createDownloadEditForm() {
-        Form<DownloadEntity> form = newDownloadEditForm();
+    private Form<Download> createDownloadEditForm() {
+        Form<Download> form = newDownloadEditForm();
         form.add(createTitleField());
         form.add(createDescriptionField());
         form.add(createUrlField());
@@ -124,14 +123,14 @@ public class DownloadEditPage extends DownloadBasePage {
         return new TextField<String>("price");
     }
 
-    private TagField<DownloadTagEntity> createTagField() {
-        IModel<List<DownloadTagEntity>> downloadListModel = new PropertyModel<List<DownloadTagEntity>>(downloadModel, "tags");
-        return new TagField<DownloadTagEntity>("tags", downloadListModel, downloadTagService);
+    private TagField<DownloadTag> createTagField() {
+        IModel<List<DownloadTag>> downloadListModel = new PropertyModel<List<DownloadTag>>(downloadModel, "tags");
+        return new TagField<DownloadTag>("tags", downloadListModel, downloadTagService);
     }
 
-    private Form<DownloadEntity> newDownloadEditForm() {
-        IModel<DownloadEntity> compoundModel = new CompoundPropertyModel<DownloadEntity>(downloadModel);
-        return new Form<DownloadEntity>("form", compoundModel) {
+    private Form<Download> newDownloadEditForm() {
+        IModel<Download> compoundModel = new CompoundPropertyModel<Download>(downloadModel);
+        return new Form<Download>("form", compoundModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

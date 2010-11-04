@@ -23,7 +23,7 @@ import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.download.DownloadConstants;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 
 import java.util.List;
 
@@ -32,28 +32,28 @@ import java.util.List;
  */
 @GenericRepository("downloadDao")
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
-public interface DownloadRepository extends GenericDao<DownloadEntity, Integer> {
-    @Query("Select d from DownloadEntity d")
-    List<DownloadEntity> findAll();
+public interface DownloadRepository extends GenericDao<Download, Integer> {
+    @Query("Select d from Download d")
+    List<Download> findAll();
 
     @CacheQuery(enabled = false)
-    @Query("select d.allRights from DownloadEntity d where d.modifiedAt = (select max(modifiedAt) from DownloadEntity)")
+    @Query("select d.allRights from Download d where d.modifiedAt = (select max(modifiedAt) from Download)")
     List<RightEntity> findLastSelectedRights();
 
-    @Query(value = "select d from DownloadEntity d where exists(from DownloadEntity ed left join ed.allRights ar "
+    @Query(value = "select d from Download d where exists(from Download ed left join ed.allRights ar "
 			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'download.view%') and d = ed)" +
 					" order by d.modifiedAt desc", limitClause = true)
-    List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Download> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-    @BulkUpdate("update DownloadEntity d set d.hits = (d.hits + 1) where d = ?")
-    void incrementHits(DownloadEntity download);
+    @BulkUpdate("update Download d set d.hits = (d.hits + 1) where d = ?")
+    void incrementHits(Download download);
 
-    @BulkUpdate("update DownloadEntity d set d.numberOfVotes = (d.numberOfVotes + 1), d.sumOfRating = (d.sumOfRating + ?) where d = ?")
-    void rateDownload(Integer rating, DownloadEntity download);
+    @BulkUpdate("update Download d set d.numberOfVotes = (d.numberOfVotes + 1), d.sumOfRating = (d.sumOfRating + ?) where d = ?")
+    void rateDownload(Integer rating, Download download);
 
-    @BulkUpdate("update DownloadEntity d set d.broken = true where d = ?")
-    void markBrokenDownload(DownloadEntity download);
+    @BulkUpdate("update Download d set d.broken = true where d = ?")
+    void markBrokenDownload(Download download);
 
-    @BulkUpdate("update DownloadEntity d set d.broken = false where d = ?")
-    void markValidDownload(DownloadEntity download);
+    @BulkUpdate("update Download d set d.broken = false where d = ?")
+    void markValidDownload(Download download);
 }

@@ -19,12 +19,11 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.factory.CommonPageFactory;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.page.DownloadEditPage;
 import org.devproof.portal.module.download.service.DownloadService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,7 +39,7 @@ public class DownloadEditPageFactory implements CommonPageFactory, InitializingB
 
     @Override
     public Page newInstance(Object... obj) {
-        DownloadEntity download = downloadService.newDownloadEntity();
+        Download download = downloadService.newDownloadEntity();
         download.setUrl((String) obj[0]);
         return new DownloadEditPage(Model.of(download));
     }

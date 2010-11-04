@@ -16,8 +16,8 @@
 package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.repository.DownloadRepository;
-import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testSave() {
-        DownloadEntity e = createDownloadEntity();
+        Download e = createDownloadEntity();
         expect(mock.save(e)).andReturn(e);
         mockTag.deleteUnusedTags();
         replay(mock);
@@ -62,7 +62,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testDelete() {
-        DownloadEntity e = createDownloadEntity();
+        Download e = createDownloadEntity();
         mock.delete(e);
         mockTag.deleteUnusedTags();
         replay(mock);
@@ -74,7 +74,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testFindAll() {
-        List<DownloadEntity> list = new ArrayList<DownloadEntity>();
+        List<Download> list = new ArrayList<Download>();
         list.add(createDownloadEntity());
         list.add(createDownloadEntity());
         expect(mock.findAll()).andReturn(list);
@@ -85,7 +85,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testFindById() {
-        DownloadEntity e = createDownloadEntity();
+        Download e = createDownloadEntity();
         expect(mock.findById(1)).andReturn(e);
         replay(mock);
         assertEquals(impl.findById(1), e);
@@ -99,7 +99,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testFindAllDownloadsForRoleOrderedByDateDesc() {
-        List<DownloadEntity> list = new ArrayList<DownloadEntity>();
+        List<Download> list = new ArrayList<Download>();
         list.add(createDownloadEntity());
         list.add(createDownloadEntity());
         RoleEntity role = new RoleEntity();
@@ -112,7 +112,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testIncrementHits() {
-        DownloadEntity e = createDownloadEntity();
+        Download e = createDownloadEntity();
         mock.incrementHits(e);
         replay(mock);
         impl.incrementHits(e);
@@ -121,7 +121,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testMarkBrokenDownload() {
-        DownloadEntity e = createDownloadEntity();
+        Download e = createDownloadEntity();
         mock.markBrokenDownload(e);
         replay(mock);
         impl.markBrokenDownload(e);
@@ -130,7 +130,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testMarkValidDownload() {
-        DownloadEntity e = createDownloadEntity();
+        Download e = createDownloadEntity();
         mock.markValidDownload(e);
         replay(mock);
         impl.markValidDownload(e);
@@ -139,7 +139,7 @@ public class DownloadServiceImplTest {
 
     @Test
     public void testRateDownload() {
-        DownloadEntity e = createDownloadEntity();
+        Download e = createDownloadEntity();
         mock.rateDownload(5, e);
         mock.refresh(e);
         replay(mock);
@@ -147,8 +147,8 @@ public class DownloadServiceImplTest {
         verify(mock);
     }
 
-    private DownloadEntity createDownloadEntity() {
-        DownloadEntity download = new DownloadEntity();
+    private Download createDownloadEntity() {
+        Download download = new Download();
         download.setId(1);
         return download;
     }

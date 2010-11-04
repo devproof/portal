@@ -23,7 +23,7 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.download.DownloadConstants;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.page.DownloadPage;
 import org.devproof.portal.module.download.query.DownloadQuery;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
  */
 public class DownloadFeedProviderImplTest {
     private DownloadFeedProviderImpl impl;
-    private SortableQueryDataProvider<DownloadEntity, DownloadQuery> dataProviderMock;
+    private SortableQueryDataProvider<Download, DownloadQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
     @Before
@@ -54,8 +54,8 @@ public class DownloadFeedProviderImplTest {
             }
 
             @Override
-            protected String getUrl(RequestCycle rc, DownloadEntity downloadEntity) {
-                return "http://url/" + downloadEntity.getId();
+            protected String getUrl(RequestCycle rc, Download download) {
+                return "http://url/" + download.getId();
             }
         };
         impl.setConfigurationService(configurationServiceMock);
@@ -79,14 +79,14 @@ public class DownloadFeedProviderImplTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testGetDownloadEntries() {
-        DownloadEntity download = createDownload();
+        Download download = createDownload();
         @SuppressWarnings("rawtypes")
 		Iterator it = Arrays.asList(download).iterator();
         expect(configurationServiceMock.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);
         replay(dataProviderMock);
-        Iterator<? extends DownloadEntity> bookmarkEntries = impl.getDownloadEntries();
+        Iterator<? extends Download> bookmarkEntries = impl.getDownloadEntries();
         assertSame(bookmarkEntries, it);
         verify(configurationServiceMock);
         verify(dataProviderMock);
@@ -106,8 +106,8 @@ public class DownloadFeedProviderImplTest {
 
     @Test
     public void testGenerateFeedEntries() {
-        DownloadEntity download = createDownload();
-		Iterator<DownloadEntity> it = Arrays.asList(download).iterator();
+        Download download = createDownload();
+		Iterator<Download> it = Arrays.asList(download).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());
@@ -130,13 +130,13 @@ public class DownloadFeedProviderImplTest {
             }
 
             @Override
-            protected Iterator<? extends DownloadEntity> getDownloadEntries() {
+            protected Iterator<? extends Download> getDownloadEntries() {
                 callOrder.append("2");
                 return null;
             }
 
             @Override
-            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
+            protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends Download> iterator) {
                 callOrder.append("3");
                 return entries;
             }
@@ -150,8 +150,8 @@ public class DownloadFeedProviderImplTest {
         assertEquals("123", callOrder.toString());
     }
 
-    private DownloadEntity createDownload() {
-        DownloadEntity download = new DownloadEntity();
+    private Download createDownload() {
+        Download download = new Download();
         download.setId(1);
         download.setTitle("hello");
         download.setDescription("world");

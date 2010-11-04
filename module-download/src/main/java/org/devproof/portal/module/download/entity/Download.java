@@ -38,7 +38,7 @@ import java.util.List;
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = DownloadConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "downloadDataProvider", sortProperty = "title", sortAscending = true, queryClass = DownloadQuery.class)
-public class DownloadEntity extends BaseLink {
+public class Download extends BaseLink {
 
     private static final long serialVersionUID = 1L;
     @Column(name = "software_version")
@@ -60,7 +60,7 @@ public class DownloadEntity extends BaseLink {
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "download_tag_xref", joinColumns = @JoinColumn(name = "download_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
-    private List<DownloadTagEntity> tags;
+    private List<DownloadTag> tags;
 
     @Transient
     public List<RightEntity> getVoteRights() {
@@ -136,11 +136,11 @@ public class DownloadEntity extends BaseLink {
         this.allRights = allRights;
     }
 
-    public List<DownloadTagEntity> getTags() {
+    public List<DownloadTag> getTags() {
         return tags;
     }
 
-    public void setTags(List<DownloadTagEntity> tags) {
+    public void setTags(List<DownloadTag> tags) {
         this.tags = tags;
     }
 }

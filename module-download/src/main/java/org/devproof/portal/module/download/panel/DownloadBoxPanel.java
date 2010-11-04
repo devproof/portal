@@ -30,7 +30,7 @@ import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.download.DownloadConstants;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.page.DownloadPage;
 import org.devproof.portal.module.download.service.DownloadService;
 
@@ -49,7 +49,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
     private WebMarkupContainer titleContainer;
-    private IModel<List<DownloadEntity>> latestDownloadsModel;
+    private IModel<List<Download>> latestDownloadsModel;
 
     public DownloadBoxPanel(String id) {
         super(id);
@@ -60,7 +60,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
 
     @Override
     public boolean isVisible() {
-        List<DownloadEntity> latestDownloads = latestDownloadsModel.getObject();
+        List<Download> latestDownloads = latestDownloadsModel.getObject();
         return latestDownloads.size() > 0;
     }
 
@@ -69,36 +69,36 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
         return titleContainer;
     }
 
-    private ListView<DownloadEntity> createRepeatingDownloads() {
-        return new ListView<DownloadEntity>("repeatingDownloads", latestDownloadsModel) {
+    private ListView<Download> createRepeatingDownloads() {
+        return new ListView<Download>("repeatingDownloads", latestDownloadsModel) {
             private static final long serialVersionUID = -1523488276282233553L;
 
             @Override
-            protected void populateItem(ListItem<DownloadEntity> item) {
+            protected void populateItem(ListItem<Download> item) {
                 item.add(createLinkToDownload(item.getModel()));
             }
         };
     }
 
-    private BookmarkablePageLink<DownloadPage> createLinkToDownload(IModel<DownloadEntity> downloadModel) {
-        DownloadEntity download = downloadModel.getObject();
+    private BookmarkablePageLink<DownloadPage> createLinkToDownload(IModel<Download> downloadModel) {
+        Download download = downloadModel.getObject();
         BookmarkablePageLink<DownloadPage> link = new BookmarkablePageLink<DownloadPage>("link", DownloadPage.class);
         link.setParameter("id", download.getId());
         link.add(createLinkToDownloadLabel(downloadModel));
         return link;
     }
 
-    private Label createLinkToDownloadLabel(IModel<DownloadEntity> downloadModel) {
+    private Label createLinkToDownloadLabel(IModel<Download> downloadModel) {
         IModel<Object> titleModel = new PropertyModel<Object>(downloadModel, "title");
         return new Label("linkName", titleModel);
     }
 
-    private IModel<List<DownloadEntity>> createLatestDownloadsModel() {
-        return new LoadableDetachableModel<List<DownloadEntity>>() {
+    private IModel<List<Download>> createLatestDownloadsModel() {
+        return new LoadableDetachableModel<List<Download>>() {
             private static final long serialVersionUID = 7003739130115325197L;
 
             @Override
-            protected List<DownloadEntity> load() {
+            protected List<Download> load() {
                 PortalSession session = (PortalSession) getSession();
                 Integer num = configurationService.findAsInteger(DownloadConstants.CONF_BOX_NUM_LATEST_DOWNLOADS);
                 return downloadService.findAllDownloadsForRoleOrderedByDateDesc(session.getRole(), 0, num);

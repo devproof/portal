@@ -16,8 +16,8 @@
 package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.repository.DownloadRepository;
-import org.devproof.portal.module.download.entity.DownloadEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,56 +32,56 @@ public class DownloadServiceImpl implements DownloadService {
     private DownloadTagService downloadTagService;
 
     @Override
-    public List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+    public List<Download> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
         return downloadRepository.findAllDownloadsForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
-    public void incrementHits(DownloadEntity download) {
+    public void incrementHits(Download download) {
         downloadRepository.incrementHits(download);
     }
 
     @Override
-    public void markBrokenDownload(DownloadEntity download) {
+    public void markBrokenDownload(Download download) {
         downloadRepository.markBrokenDownload(download);
     }
 
     @Override
-    public void markValidDownload(DownloadEntity download) {
+    public void markValidDownload(Download download) {
         downloadRepository.markValidDownload(download);
     }
 
     @Override
-    public DownloadEntity newDownloadEntity() {
-        DownloadEntity download = new DownloadEntity();
+    public Download newDownloadEntity() {
+        Download download = new Download();
         download.setAllRights(downloadRepository.findLastSelectedRights());
         return download;
     }
 
     @Override
-    public void rateDownload(Integer rating, DownloadEntity download) {
+    public void rateDownload(Integer rating, Download download) {
         downloadRepository.rateDownload(rating, download);
         downloadRepository.refresh(download);
     }
 
     @Override
-    public void delete(DownloadEntity entity) {
+    public void delete(Download entity) {
         downloadRepository.delete(entity);
         downloadTagService.deleteUnusedTags();
     }
 
     @Override
-    public List<DownloadEntity> findAll() {
+    public List<Download> findAll() {
         return downloadRepository.findAll();
     }
 
     @Override
-    public DownloadEntity findById(Integer id) {
+    public Download findById(Integer id) {
         return downloadRepository.findById(id);
     }
 
     @Override
-    public void save(DownloadEntity entity) {
+    public void save(Download entity) {
         downloadRepository.save(entity);
         downloadTagService.deleteUnusedTags();
     }

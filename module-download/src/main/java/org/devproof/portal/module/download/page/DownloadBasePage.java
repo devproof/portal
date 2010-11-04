@@ -32,7 +32,7 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.module.deadlinkcheck.panel.DeadlinkCheckPanel;
 import org.devproof.portal.module.download.DownloadConstants;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.service.DownloadService;
 
 import java.util.List;
@@ -82,37 +82,37 @@ public abstract class DownloadBasePage extends TemplatePage {
         return bubblePanel;
     }
 
-    private AjaxLink<DownloadEntity> createDeadlinkCheckLink() {
-        AjaxLink<DownloadEntity> deadlinkCheckLink = newDeadlinkCheckLink();
+    private AjaxLink<Download> createDeadlinkCheckLink() {
+        AjaxLink<Download> deadlinkCheckLink = newDeadlinkCheckLink();
         deadlinkCheckLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("deadlinkCheckLink")));
         return deadlinkCheckLink;
     }
 
-    private AjaxLink<DownloadEntity> newDeadlinkCheckLink() {
-        return new AjaxLink<DownloadEntity>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Download> newDeadlinkCheckLink() {
+        return new AjaxLink<Download>(getPageAdminBoxLinkId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void onClick(AjaxRequestTarget target) {
                 BubblePanel panel = (BubblePanel) DownloadBasePage.this.bubblePanel;
-                DeadlinkCheckPanel<DownloadEntity> deadlinkPanel = createDeadlinkCheckPanel(panel.getContentId());
+                DeadlinkCheckPanel<Download> deadlinkPanel = createDeadlinkCheckPanel(panel.getContentId());
                 panel.setContent(deadlinkPanel);
                 panel.showModal(target);
             }
 
-            private DeadlinkCheckPanel<DownloadEntity> createDeadlinkCheckPanel(String id) {
-                IModel<List<DownloadEntity>> allDownloadsModel = createAllDownloadsModel();
-                return new DeadlinkCheckPanel<DownloadEntity>(id, "download", allDownloadsModel) {
+            private DeadlinkCheckPanel<Download> createDeadlinkCheckPanel(String id) {
+                IModel<List<Download>> allDownloadsModel = createAllDownloadsModel();
+                return new DeadlinkCheckPanel<Download>(id, "download", allDownloadsModel) {
                     private static final long serialVersionUID = 1L;
 
                     @Override
-                    public void onBroken(DownloadEntity brokenEntity) {
-                        downloadService.markBrokenDownload(brokenEntity);
+                    public void onBroken(Download broken) {
+                        downloadService.markBrokenDownload(broken);
                     }
 
                     @Override
-                    public void onValid(DownloadEntity validEntity) {
-                        downloadService.markValidDownload(validEntity);
+                    public void onValid(Download valid) {
+                        downloadService.markValidDownload(valid);
                     }
 
                     @Override
@@ -127,12 +127,12 @@ public abstract class DownloadBasePage extends TemplatePage {
         };
     }
 
-    private IModel<List<DownloadEntity>> createAllDownloadsModel() {
-        return new LoadableDetachableModel<List<DownloadEntity>>() {
+    private IModel<List<Download>> createAllDownloadsModel() {
+        return new LoadableDetachableModel<List<Download>>() {
             private static final long serialVersionUID = -3648230899434788060L;
 
             @Override
-            protected List<DownloadEntity> load() {
+            protected List<Download> load() {
                 return downloadService.findAll();
             }
         };
@@ -150,8 +150,8 @@ public abstract class DownloadBasePage extends TemplatePage {
 
             @Override
             public void onClick() {
-                DownloadEntity newDownload = downloadService.newDownloadEntity();
-                IModel<DownloadEntity> downloadModel = Model.of(newDownload);
+                Download newDownload = downloadService.newDownloadEntity();
+                IModel<Download> downloadModel = Model.of(newDownload);
                 setResponsePage(new DownloadEditPage(downloadModel));
             }
         };

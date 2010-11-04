@@ -17,25 +17,25 @@ package org.devproof.portal.module.download.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-public interface DownloadService extends CrudService<DownloadEntity, Integer> {
+public interface DownloadService extends CrudService<Download, Integer> {
     /**
-     * Returns a new instance of {@link DownloadEntity}
+     * Returns a new instance of {@link org.devproof.portal.module.download.entity.Download}
      *
-     * @return new instance of {@link DownloadEntity}
+     * @return new instance of {@link org.devproof.portal.module.download.entity.Download}
      */
-    DownloadEntity newDownloadEntity();
+    Download newDownloadEntity();
 
     /**
      * Returns all downloads
      */
-    List<DownloadEntity> findAll();
+    List<Download> findAll();
 
     /**
      * Finds all downloads filtered by role
@@ -45,34 +45,34 @@ public interface DownloadService extends CrudService<DownloadEntity, Integer> {
      * @param maxResult   maximum result
      * @return list with downloads
      */
-    List<DownloadEntity> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Download> findAllDownloadsForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
     /**
      * Increments the number of downloads by one
      *
-     * @param download {@link DownloadEntity}to increment
+     * @param download {@link org.devproof.portal.module.download.entity.Download}to increment
      */
-    void incrementHits(DownloadEntity download);
+    void incrementHits(Download download);
 
     /**
-     * Rates a {@link DownloadEntity}
+     * Rates a {@link org.devproof.portal.module.download.entity.Download}
      *
      * @param rating   a value from 1 to 5
      * @param download the download to rate
      */
-    void rateDownload(Integer rating, DownloadEntity download);
+    void rateDownload(Integer rating, Download download);
 
     /**
      * Marks a download as broken
      *
-     * @param download {@link DownloadEntity} to mark
+     * @param download {@link org.devproof.portal.module.download.entity.Download} to mark
      */
-    void markBrokenDownload(DownloadEntity download);
+    void markBrokenDownload(Download download);
 
     /**
      * Marks a download as valid
      *
-     * @param download {@link DownloadEntity} to mark
+     * @param download {@link org.devproof.portal.module.download.entity.Download} to mark
      */
-	void markValidDownload(DownloadEntity download);
+	void markValidDownload(Download download);
 }

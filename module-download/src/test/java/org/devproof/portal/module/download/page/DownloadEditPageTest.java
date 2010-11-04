@@ -18,7 +18,7 @@ package org.devproof.portal.module.download.page;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +45,7 @@ public class DownloadEditPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        tester.startPage(new DownloadEditPage(Model.of(new DownloadEntity())));
+        tester.startPage(new DownloadEditPage(Model.of(new Download())));
         tester.assertRenderedPage(DownloadEditPage.class);
     }
 
@@ -70,7 +70,7 @@ public class DownloadEditPageTest {
     }
 
     private DownloadEditPage getNewDownloadEditPage() {
-        return new DownloadEditPage(Model.of(new DownloadEntity()));
+        return new DownloadEditPage(Model.of(new Download()));
     }
 
     private void submitDownloadForm() {

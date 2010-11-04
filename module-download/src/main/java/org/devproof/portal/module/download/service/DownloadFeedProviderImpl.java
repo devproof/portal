@@ -25,11 +25,10 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.module.download.DownloadConstants;
-import org.devproof.portal.module.download.entity.DownloadEntity;
+import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.page.DownloadPage;
 import org.devproof.portal.module.download.query.DownloadQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -41,19 +40,19 @@ import java.util.List;
  */
 @Component
 public class DownloadFeedProviderImpl implements FeedProvider {
-    private SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider;
+    private SortableQueryDataProvider<Download, DownloadQuery> downloadDataProvider;
     private ConfigurationService configurationService;
 
     @Override
     public SyndFeed getFeed(RequestCycle rc) {
         SyndFeed feed = generateFeed(rc);
-        Iterator<? extends DownloadEntity> iterator = getDownloadEntries();
+        Iterator<? extends Download> iterator = getDownloadEntries();
         List<SyndEntry> entries = generateFeedEntries(rc, iterator);
         feed.setEntries(entries);
         return feed;
     }
 
-    protected Iterator<? extends DownloadEntity> getDownloadEntries() {
+    protected Iterator<? extends Download> getDownloadEntries() {
         Integer maxNumber = configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOAD_ENTRIES_IN_FEED);
         return downloadDataProvider.iterator(0, maxNumber);
     }
@@ -74,16 +73,16 @@ public class DownloadFeedProviderImpl implements FeedProvider {
         return rc.urlFor(DownloadPage.class, new PageParameters()).toString();
     }
 
-    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends DownloadEntity> iterator) {
+    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends Download> iterator) {
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         while (iterator.hasNext()) {
-            DownloadEntity downloadEntity = iterator.next();
+            Download download = iterator.next();
             SyndEntry entry = new SyndEntryImpl();
-            entry.setTitle(downloadEntity.getTitle());
-            entry.setLink(getUrl(rc, downloadEntity));
-            entry.setPublishedDate(downloadEntity.getModifiedAt());
-            entry.setAuthor(downloadEntity.getModifiedBy());
-            String content = downloadEntity.getDescription();
+            entry.setTitle(download.getTitle());
+            entry.setLink(getUrl(rc, download));
+            entry.setPublishedDate(download.getModifiedAt());
+            entry.setAuthor(download.getModifiedBy());
+            String content = download.getDescription();
             content = content != null ? content : "";
             content = content.replaceAll("<(.|\n)*?>", "");
             SyndContent description = new SyndContentImpl();
@@ -95,8 +94,8 @@ public class DownloadFeedProviderImpl implements FeedProvider {
         return entries;
     }
 
-    protected String getUrl(RequestCycle rc, DownloadEntity DownloadEntity) {
-        return rc.urlFor(DownloadPage.class, new PageParameters("id=" + DownloadEntity.getId())).toString();
+    protected String getUrl(RequestCycle rc, Download download) {
+        return rc.urlFor(DownloadPage.class, new PageParameters("id=" + download.getId())).toString();
     }
 
     @Override
@@ -114,7 +113,7 @@ public class DownloadFeedProviderImpl implements FeedProvider {
     }
 
     @Autowired
-    public void setDownloadDataProvider(SortableQueryDataProvider<DownloadEntity, DownloadQuery> downloadDataProvider) {
+    public void setDownloadDataProvider(SortableQueryDataProvider<Download, DownloadQuery> downloadDataProvider) {
         this.downloadDataProvider = downloadDataProvider;
     }
 

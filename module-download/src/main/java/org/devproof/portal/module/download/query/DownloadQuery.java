@@ -67,7 +67,7 @@ public class DownloadQuery implements SearchQuery {
 		return author;
 	}
 
-	@BeanQuery("exists(from DownloadEntity d left join d.allRights ar "
+	@BeanQuery("exists(from Download d left join d.allRights ar "
 			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'download.view%') and d = e)")
 	public RoleEntity getRole() {
 		if (role == null) {
@@ -79,7 +79,7 @@ public class DownloadQuery implements SearchQuery {
 		return role;
 	}
 
-	@BeanQuery("exists(from DownloadEntity d left join d.tags t where t.tagname = ? and d = e)")
+	@BeanQuery("exists(from Download d left join d.tags t where t.tagname = ? and d = e)")
 	public String getTagname() {
 		return tagname;
 	}
