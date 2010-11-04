@@ -13,9 +13,9 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.notify.vi
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.notify.newcomment','Comment: New comment notification email',null,null,null,null);
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.notify.newcomment');
 
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateRepository.findAll.subject.id.newcommentnotification','Notification email for new comments','Comments','java.lang.Integer','7');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateRepository.findAll.subject.id.autoblockednotification','Notification email for automatic blocked comments','Comments','java.lang.Integer','9');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailTemplateRepository.findAll.subject.id.violationnotification','Notification email for reported violations on comments','Comments','java.lang.Integer','8');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailService.findAll.subject.id.newcommentnotification','Notification email for new comments','Comments','java.lang.Integer','7');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailService.findAll.subject.id.autoblockednotification','Notification email for automatic blocked comments','Comments','java.lang.Integer','9');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.emailService.findAll.subject.id.violationnotification','Notification email for reported violations on comments','Comments','java.lang.Integer','8');
 
 INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,content,subject) VALUES (7,null,null,{ts '2008-07-31 22:35:07.000'},'admin','<p>Hi,</p>
 <p>there is a new comment on #PAGENAME#!</p>

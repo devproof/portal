@@ -33,13 +33,12 @@ public class RightServiceImpl implements RightService {
     private long dirtyTime = 0l;
     private RightRepository rightRepository;
 
-    @PostConstruct
-    public void init() {
-        refreshGlobalApplicationRights();
-    }
-
     @Override
+    @Transactional(readOnly = true)
     public List<Right> getAllRights() {
+        if(allRights == null) {
+            refreshGlobalApplicationRights();
+        }
         return allRights;
     }
 
@@ -49,6 +48,7 @@ public class RightServiceImpl implements RightService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public void refreshGlobalApplicationRights() {
         allRights = rightRepository.findAll();
         dirtyTime = System.currentTimeMillis();
