@@ -30,7 +30,7 @@ import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.page.BookmarkPage;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 
@@ -49,7 +49,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
     private WebMarkupContainer titleContainer;
-    private IModel<List<BookmarkEntity>> latestBookmarksModel;
+    private IModel<List<Bookmark>> latestBookmarksModel;
 
     public BookmarkBoxPanel(String id) {
         super(id);
@@ -60,40 +60,40 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
 
     @Override
     public boolean isVisible() {
-        List<BookmarkEntity> latestBookmarks = latestBookmarksModel.getObject();
+        List<Bookmark> latestBookmarks = latestBookmarksModel.getObject();
         return latestBookmarks.size() > 0;
     }
 
-    private ListView<BookmarkEntity> createRepeatingBookmarks() {
-        return new ListView<BookmarkEntity>("repeatingBookmarks", latestBookmarksModel) {
+    private ListView<Bookmark> createRepeatingBookmarks() {
+        return new ListView<Bookmark>("repeatingBookmarks", latestBookmarksModel) {
             private static final long serialVersionUID = 6603619378248308439L;
 
             @Override
-            protected void populateItem(ListItem<BookmarkEntity> item) {
+            protected void populateItem(ListItem<Bookmark> item) {
                 item.add(createLinkToBookmark(item.getModel()));
             }
         };
     }
 
-    private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(IModel<BookmarkEntity> bookmarkModel) {
+    private BookmarkablePageLink<BookmarkPage> createLinkToBookmark(IModel<Bookmark> bookmarkModel) {
         BookmarkablePageLink<BookmarkPage> link = new BookmarkablePageLink<BookmarkPage>("link", BookmarkPage.class);
-        BookmarkEntity bookmark = bookmarkModel.getObject();
+        Bookmark bookmark = bookmarkModel.getObject();
         link.setParameter("id", bookmark.getId());
         link.add(createLinkNameLabel(bookmarkModel));
         return link;
     }
 
-    private Label createLinkNameLabel(IModel<BookmarkEntity> bookmarkModel) {
+    private Label createLinkNameLabel(IModel<Bookmark> bookmarkModel) {
         IModel<String> titleModel = new PropertyModel<String>(bookmarkModel, "title");
         return new Label("linkName", titleModel);
     }
 
-    private IModel<List<BookmarkEntity>> createLatestBookmarksModel() {
-        return new LoadableDetachableModel<List<BookmarkEntity>>() {
+    private IModel<List<Bookmark>> createLatestBookmarksModel() {
+        return new LoadableDetachableModel<List<Bookmark>>() {
             private static final long serialVersionUID = 6940753456307593228L;
 
             @Override
-            protected List<BookmarkEntity> load() {
+            protected List<Bookmark> load() {
                 PortalSession session = (PortalSession) getSession();
                 Integer num = configurationService.findAsInteger(BookmarkConstants.CONF_BOX_NUM_LATEST_BOOKMARKS);
                 return bookmarkService.findAllBookmarksForRoleOrderedByDateDesc(session.getRole(), 0, num);

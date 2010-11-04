@@ -38,7 +38,7 @@ import java.util.List;
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BookmarkConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "bookmarkDataProvider", sortProperty = "title", sortAscending = true, queryClass = BookmarkQuery.class)
-public class BookmarkEntity extends BaseLinkEntity {
+public class Bookmark extends BaseLinkEntity {
     private static final long serialVersionUID = 1L;
 
     public enum Source {
@@ -59,7 +59,7 @@ public class BookmarkEntity extends BaseLinkEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "bookmark_tag_xref", joinColumns = @JoinColumn(name = "bookmark_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
-    private List<BookmarkTagEntity> tags;
+    private List<BookmarkTag> tags;
 
     @Transient
     public List<RightEntity> getVoteRights() {
@@ -87,11 +87,11 @@ public class BookmarkEntity extends BaseLinkEntity {
         this.allRights = allRights;
     }
 
-    public List<BookmarkTagEntity> getTags() {
+    public List<BookmarkTag> getTags() {
         return tags;
     }
 
-    public void setTags(List<BookmarkTagEntity> tags) {
+    public void setTags(List<BookmarkTag> tags) {
         this.tags = tags;
     }
 

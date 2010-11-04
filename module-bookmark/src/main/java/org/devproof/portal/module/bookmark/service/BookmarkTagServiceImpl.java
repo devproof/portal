@@ -17,7 +17,7 @@ package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
 import org.devproof.portal.module.bookmark.repository.BookmarkTagRepository;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.devproof.portal.module.bookmark.entity.BookmarkTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @author Carsten Hufe
  */
 @Service("bookmarkTagService")
-public class BookmarkTagServiceImpl extends AbstractTagServiceImpl<BookmarkTagEntity> implements BookmarkTagService {
+public class BookmarkTagServiceImpl extends AbstractTagServiceImpl<BookmarkTag> implements BookmarkTagService {
     @Override
     public String getRelatedTagRight() {
         return "bookmark.view";

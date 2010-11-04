@@ -23,8 +23,8 @@ import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
+import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 
 import java.util.List;
 
@@ -33,31 +33,31 @@ import java.util.List;
  */
 @GenericRepository("bookmarkRepository")
 @CacheQuery(region = BookmarkConstants.QUERY_CACHE_REGION)
-public interface BookmarkRepository extends GenericDao<BookmarkEntity, Integer> {
-    @Query("Select b from BookmarkEntity b")
-    List<BookmarkEntity> findAll();
+public interface BookmarkRepository extends GenericDao<Bookmark, Integer> {
+    @Query("Select b from Bookmark b")
+    List<Bookmark> findAll();
 
     @CacheQuery(enabled = false)
-    @Query("select b.allRights from BookmarkEntity b where b.modifiedAt = (select max(modifiedAt) from BookmarkEntity)")
+    @Query("select b.allRights from Bookmark b where b.modifiedAt = (select max(modifiedAt) from Bookmark)")
     List<RightEntity> findLastSelectedRights();
 
-    @Query(value = "select b from BookmarkEntity b where exists(from BookmarkEntity eb left join eb.allRights ar "
+    @Query(value = "select b from Bookmark b where exists(from Bookmark eb left join eb.allRights ar "
 			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'bookmark.view%') and b = eb)" +
 					" order by b.modifiedAt desc", limitClause = true)
-    List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-    @Query("select b from BookmarkEntity b where b.source = ?")
-    List<BookmarkEntity> findBookmarksBySource(Source source);
+    @Query("select b from Bookmark b where b.source = ?")
+    List<Bookmark> findBookmarksBySource(Source source);
 
-    @BulkUpdate("update BookmarkEntity b set b.hits = (b.hits + 1) where b = ?")
-    void incrementHits(BookmarkEntity bookmark);
+    @BulkUpdate("update Bookmark b set b.hits = (b.hits + 1) where b = ?")
+    void incrementHits(Bookmark bookmark);
 
-    @BulkUpdate("update BookmarkEntity b set b.numberOfVotes = (b.numberOfVotes + 1), b.sumOfRating = (b.sumOfRating + ?) where b = ?")
-    void rateBookmark(Integer rating, BookmarkEntity bookmark);
+    @BulkUpdate("update Bookmark b set b.numberOfVotes = (b.numberOfVotes + 1), b.sumOfRating = (b.sumOfRating + ?) where b = ?")
+    void rateBookmark(Integer rating, Bookmark bookmark);
 
-    @BulkUpdate("update BookmarkEntity b set b.broken = true where b = ?")
-    void markBrokenBookmark(BookmarkEntity bookmark);
+    @BulkUpdate("update Bookmark b set b.broken = true where b = ?")
+    void markBrokenBookmark(Bookmark bookmark);
 
-    @BulkUpdate("update BookmarkEntity b set b.broken = false where b = ?")
-    void markValidBookmark(BookmarkEntity bookmark);
+    @BulkUpdate("update Bookmark b set b.broken = false where b = ?")
+    void markValidBookmark(Bookmark bookmark);
 }

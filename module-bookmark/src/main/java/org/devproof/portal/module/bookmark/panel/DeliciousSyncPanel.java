@@ -45,8 +45,8 @@ import org.devproof.portal.core.module.user.entity.UserEntity;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.bean.DeliciousBean;
 import org.devproof.portal.module.bookmark.bean.DeliciousFormBean;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkTagEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
+import org.devproof.portal.module.bookmark.entity.BookmarkTag;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 import org.devproof.portal.module.bookmark.service.SynchronizeService;
 
@@ -64,7 +64,7 @@ public abstract class DeliciousSyncPanel extends Panel {
     @SpringBean(name = "synchronizeService")
     private SynchronizeService synchronizeService;
     @SpringBean(name = "bookmarkTagService")
-    private TagService<BookmarkTagEntity> tagService;
+    private TagService<BookmarkTag> tagService;
     @SpringBean(name = "bookmarkService")
     private BookmarkService bookmarkService;
 
@@ -162,26 +162,26 @@ public abstract class DeliciousSyncPanel extends Panel {
                         if (bean.hasError() && !threadActive) {
                             return;
                         }
-                        Collection<BookmarkEntity> bookmarksToSave = retrieveBookmarks(bean);
+                        Collection<Bookmark> bookmarksToSave = retrieveBookmarks(bean);
                         saveBookmarks(user, bookmarksToSave);
                         deleteBookmarks(bean, bookmarksToSave);
                     }
 
-                    private Collection<BookmarkEntity> retrieveBookmarks(DeliciousBean bean) {
-                        List<BookmarkEntity> newBookmarks = synchronizeService.getNewDeliciousBookmarks(bean);
+                    private Collection<Bookmark> retrieveBookmarks(DeliciousBean bean) {
+                        List<Bookmark> newBookmarks = synchronizeService.getNewDeliciousBookmarks(bean);
                         newBookmarksCount = newBookmarks.size();
-                        List<BookmarkEntity> modifiedBookmarks = synchronizeService.getModifiedDeliciousBookmarks(bean);
+                        List<Bookmark> modifiedBookmarks = synchronizeService.getModifiedDeliciousBookmarks(bean);
                         modifiedBookmarksCount = modifiedBookmarks.size();
                         maxItem = bean.getPosts().size();
                         fetching = false;
-                        Collection<BookmarkEntity> bookmarksToSave = new ArrayList<BookmarkEntity>(newBookmarksCount + modifiedBookmarksCount);
+                        Collection<Bookmark> bookmarksToSave = new ArrayList<Bookmark>(newBookmarksCount + modifiedBookmarksCount);
                         bookmarksToSave.addAll(newBookmarks);
                         bookmarksToSave.addAll(modifiedBookmarks);
                         return bookmarksToSave;
                     }
 
-                    private void saveBookmarks(UserEntity user, Collection<BookmarkEntity> bookmarksToSave) {
-                        for (BookmarkEntity bookmark : bookmarksToSave) {
+                    private void saveBookmarks(UserEntity user, Collection<Bookmark> bookmarksToSave) {
+                        for (Bookmark bookmark : bookmarksToSave) {
                             actualItem++;
                             bookmark.setAllRights(allSelectedRightsModel.getObject());
                             if (bookmark.getCreatedAt() == null) {
@@ -194,9 +194,9 @@ public abstract class DeliciousSyncPanel extends Panel {
                             bookmark.setModifiedAt(PortalUtil.now());
                             bookmark.setModifiedBy(user.getUsername());
                             bookmark.setUpdateModificationData(false);
-                            List<BookmarkTagEntity> newTags = new ArrayList<BookmarkTagEntity>(bookmark.getTags().size());
-                            for (BookmarkTagEntity tag : bookmark.getTags()) {
-                                BookmarkTagEntity refreshedTag = tagService.findById(tag.getTagname());
+                            List<BookmarkTag> newTags = new ArrayList<BookmarkTag>(bookmark.getTags().size());
+                            for (BookmarkTag tag : bookmark.getTags()) {
+                                BookmarkTag refreshedTag = tagService.findById(tag.getTagname());
                                 if (refreshedTag == null) {
                                     newTags.add(tag);
                                     tagService.save(tag);
@@ -209,13 +209,13 @@ public abstract class DeliciousSyncPanel extends Panel {
                         }
                     }
 
-                    private void deleteBookmarks(DeliciousBean bean, Collection<BookmarkEntity> bookmarksToSave) {
-                        List<BookmarkEntity> deletedBookmarks = synchronizeService.getRemovedDeliciousBookmarks(bean);
+                    private void deleteBookmarks(DeliciousBean bean, Collection<Bookmark> bookmarksToSave) {
+                        List<Bookmark> deletedBookmarks = synchronizeService.getRemovedDeliciousBookmarks(bean);
                         // set to 100% the counter does not work perfect, when a
                         // user has manual edited delious bookmarks
                         maxItem = deletedBookmarks.size() + bookmarksToSave.size();
                         deletedBookmarksCount = deletedBookmarks.size();
-                        for (BookmarkEntity bookmark : deletedBookmarks) {
+                        for (Bookmark bookmark : deletedBookmarks) {
                             actualItem++;
                             bookmarkService.delete(bookmark);
                         }

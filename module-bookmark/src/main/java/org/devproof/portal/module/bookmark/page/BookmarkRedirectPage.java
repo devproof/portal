@@ -21,7 +21,7 @@ import org.apache.wicket.request.target.basic.RedirectRequestTarget;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 
 /**
@@ -44,7 +44,7 @@ public class BookmarkRedirectPage extends WebPage {
     @Override
     protected void onBeforeRender() {
         if (hasFirstParameter()) {
-            BookmarkEntity bookmark = bookmarkService.findById(getBookmarkIdParam());
+            Bookmark bookmark = bookmarkService.findById(getBookmarkIdParam());
             if (hasVisitRight(bookmark)) {
                 bookmarkService.incrementHits(bookmark);
                 redirectTo(bookmark);
@@ -57,7 +57,7 @@ public class BookmarkRedirectPage extends WebPage {
         return params.getAsInteger("0", 0);
     }
 
-    private void redirectTo(BookmarkEntity bookmark) {
+    private void redirectTo(Bookmark bookmark) {
         getRequestCycle().setRequestTarget(new RedirectRequestTarget(bookmark.getUrl()));
     }
 
@@ -65,7 +65,7 @@ public class BookmarkRedirectPage extends WebPage {
         return params.containsKey("0");
     }
 
-    private boolean hasVisitRight(BookmarkEntity bookmark) {
+    private boolean hasVisitRight(Bookmark bookmark) {
         if (bookmark == null) {
             return false;
         }

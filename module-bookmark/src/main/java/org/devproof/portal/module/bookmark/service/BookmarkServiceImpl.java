@@ -17,9 +17,9 @@ package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity;
-import org.devproof.portal.module.bookmark.entity.BookmarkEntity.Source;
+import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,61 +34,61 @@ public class BookmarkServiceImpl implements BookmarkService {
     private BookmarkTagService bookmarkTagService;
 
     @Override
-    public List<BookmarkEntity> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+    public List<Bookmark> findAllBookmarksForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
         return bookmarkRepository.findAllBookmarksForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
-    public List<BookmarkEntity> findBookmarksBySource(Source source) {
+    public List<Bookmark> findBookmarksBySource(Source source) {
         return bookmarkRepository.findBookmarksBySource(source);
     }
 
     @Override
-    public void incrementHits(BookmarkEntity bookmark) {
+    public void incrementHits(Bookmark bookmark) {
         bookmarkRepository.incrementHits(bookmark);
     }
 
     @Override
-    public void markBrokenBookmark(BookmarkEntity bookmark) {
+    public void markBrokenBookmark(Bookmark bookmark) {
         bookmarkRepository.markBrokenBookmark(bookmark);
     }
 
     @Override
-    public void markValidBookmark(BookmarkEntity bookmark) {
+    public void markValidBookmark(Bookmark bookmark) {
         bookmarkRepository.markValidBookmark(bookmark);
     }
 
     @Override
-    public BookmarkEntity newBookmarkEntity() {
-        BookmarkEntity bookmark = new BookmarkEntity();
+    public Bookmark newBookmarkEntity() {
+        Bookmark bookmark = new Bookmark();
         bookmark.setAllRights(bookmarkRepository.findLastSelectedRights());
         return bookmark;
     }
 
     @Override
-    public void rateBookmark(Integer rating, BookmarkEntity bookmark) {
+    public void rateBookmark(Integer rating, Bookmark bookmark) {
         bookmarkRepository.rateBookmark(rating, bookmark);
         bookmarkRepository.refresh(bookmark);
     }
 
     @Override
-    public void delete(BookmarkEntity entity) {
+    public void delete(Bookmark entity) {
         bookmarkRepository.delete(entity);
         bookmarkTagService.deleteUnusedTags();
     }
 
     @Override
-    public List<BookmarkEntity> findAll() {
+    public List<Bookmark> findAll() {
         return bookmarkRepository.findAll();
     }
 
     @Override
-    public BookmarkEntity findById(Integer id) {
+    public Bookmark findById(Integer id) {
         return bookmarkRepository.findById(id);
     }
 
     @Override
-    public void save(BookmarkEntity entity) {
+    public void save(Bookmark entity) {
         bookmarkRepository.save(entity);
         bookmarkTagService.deleteUnusedTags();
     }
