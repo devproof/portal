@@ -16,9 +16,9 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
-import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,35 +41,35 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
+    public List<Article> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult) {
         return articleRepository.findAllArticlesForRoleOrderedByDateDesc(role, firstResult, maxResult);
     }
 
     @Override
-    public ArticleEntity newArticleEntity() {
-        ArticleEntity article = new ArticleEntity();
+    public Article newArticleEntity() {
+        Article article = new Article();
         article.setAllRights(articleRepository.findLastSelectedRights());
         return article;
     }
 
     @Override
-    public ArticlePageEntity newArticlePageEntity(ArticleEntity article, Integer page) {
+    public ArticlePageEntity newArticlePageEntity(Article article, Integer page) {
         return article.newArticlePageEntity(page);
     }
 
     @Override
-    public void delete(ArticleEntity entity) {
+    public void delete(Article entity) {
         articleRepository.delete(entity);
         articleTagService.deleteUnusedTags();
     }
 
     @Override
-    public ArticleEntity findById(Integer id) {
+    public Article findById(Integer id) {
         return articleRepository.findById(id);
     }
 
     @Override
-    public void save(ArticleEntity entity) {
+    public void save(Article entity) {
         articleRepository.save(entity);
         articleTagService.deleteUnusedTags();
     }
@@ -85,7 +85,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleEntity findByContentId(String contentId) {
+    public Article findByContentId(String contentId) {
         return articleRepository.findByContentId(contentId);
     }
 

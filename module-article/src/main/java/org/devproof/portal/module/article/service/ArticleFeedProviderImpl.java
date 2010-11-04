@@ -25,12 +25,11 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.page.ArticlePage;
 import org.devproof.portal.module.article.page.ArticleReadPage;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -42,19 +41,19 @@ import java.util.List;
  */
 @Component("articleFeedProvider")
 public class ArticleFeedProviderImpl implements FeedProvider {
-    private SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
+    private SortableQueryDataProvider<Article, ArticleQuery> articleDataProvider;
     private ConfigurationService configurationService;
 
     @Override
     public SyndFeed getFeed(RequestCycle rc) {
         SyndFeed feed = generateFeed(rc);
-        Iterator<? extends ArticleEntity> iterator = getArticleEntries();
+        Iterator<? extends Article> iterator = getArticleEntries();
         List<SyndEntry> entries = generateFeedEntries(rc, iterator);
         feed.setEntries(entries);
         return feed;
     }
 
-    protected Iterator<? extends ArticleEntity> getArticleEntries() {
+    protected Iterator<? extends Article> getArticleEntries() {
         Integer maxNumber = configurationService.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED);
         return articleDataProvider.iterator(0, maxNumber);
     }
@@ -75,16 +74,16 @@ public class ArticleFeedProviderImpl implements FeedProvider {
         return rc.urlFor(ArticlePage.class, new PageParameters()).toString();
     }
 
-    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends ArticleEntity> iterator) {
+    protected List<SyndEntry> generateFeedEntries(RequestCycle rc, Iterator<? extends Article> iterator) {
         List<SyndEntry> entries = new ArrayList<SyndEntry>();
         while (iterator.hasNext()) {
-            ArticleEntity articleEntity = iterator.next();
+            Article article = iterator.next();
             SyndEntry entry = new SyndEntryImpl();
-            entry.setTitle(articleEntity.getTitle());
-            entry.setLink(getUrl(rc, articleEntity));
-            entry.setPublishedDate(articleEntity.getModifiedAt());
-            entry.setAuthor(articleEntity.getModifiedBy());
-            String content = articleEntity.getTeaser();
+            entry.setTitle(article.getTitle());
+            entry.setLink(getUrl(rc, article));
+            entry.setPublishedDate(article.getModifiedAt());
+            entry.setAuthor(article.getModifiedBy());
+            String content = article.getTeaser();
             content = content != null ? content : "";
             content = content.replaceAll("<(.|\n)*?>", "");
             SyndContent description = new SyndContentImpl();
@@ -96,8 +95,8 @@ public class ArticleFeedProviderImpl implements FeedProvider {
         return entries;
     }
 
-    protected String getUrl(RequestCycle rc, ArticleEntity ArticleEntity) {
-        return rc.urlFor(ArticlePage.class, new PageParameters("id=" + ArticleEntity.getId())).toString();
+    protected String getUrl(RequestCycle rc, Article article) {
+        return rc.urlFor(ArticlePage.class, new PageParameters("id=" + article.getId())).toString();
     }
 
     @Override
@@ -116,7 +115,7 @@ public class ArticleFeedProviderImpl implements FeedProvider {
     }
 
     @Autowired
-    public void setArticleDataProvider(SortableQueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider) {
+    public void setArticleDataProvider(SortableQueryDataProvider<Article, ArticleQuery> articleDataProvider) {
         this.articleDataProvider = articleDataProvider;
     }
 

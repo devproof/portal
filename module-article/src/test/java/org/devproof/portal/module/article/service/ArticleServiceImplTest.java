@@ -16,9 +16,9 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.RoleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
-import org.devproof.portal.module.article.entity.ArticleEntity;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +54,7 @@ public class ArticleServiceImplTest {
 
     @Test
     public void testSave() {
-        ArticleEntity e = createArticleEntity();
+        Article e = createArticleEntity();
         e.setId(1);
         expect(mock.save(e)).andReturn(e);
         mockTag.deleteUnusedTags();
@@ -67,7 +67,7 @@ public class ArticleServiceImplTest {
 
     @Test
     public void testDelete() {
-        ArticleEntity e = createArticleEntity();
+        Article e = createArticleEntity();
         e.setId(1);
         mock.delete(e);
         mockTag.deleteUnusedTags();
@@ -80,7 +80,7 @@ public class ArticleServiceImplTest {
 
     @Test
     public void testFindById() {
-        ArticleEntity e = createArticleEntity();
+        Article e = createArticleEntity();
         e.setId(1);
         expect(mock.findById(1)).andReturn(e);
         replay(mock);
@@ -95,7 +95,7 @@ public class ArticleServiceImplTest {
 
     @Test
     public void testNewArticlePageEntity() {
-        ArticleEntity a = createArticleEntity();
+        Article a = createArticleEntity();
         a.setId(1);
         ArticlePageEntity ap = impl.newArticlePageEntity(a, 1);
         assertNotNull(ap);
@@ -121,7 +121,7 @@ public class ArticleServiceImplTest {
     @Test
     public void testFindAllArticlesForRoleOrderedByDateDesc() {
         RoleEntity role = new RoleEntity();
-        List<ArticleEntity> list = new ArrayList<ArticleEntity>();
+        List<Article> list = new ArrayList<Article>();
         list.add(createArticleEntity());
         list.add(createArticleEntity());
         expect(mock.findAllArticlesForRoleOrderedByDateDesc(role, 0, 2)).andReturn(list);
@@ -130,7 +130,7 @@ public class ArticleServiceImplTest {
         verify(mock);
     }
 
-    private ArticleEntity createArticleEntity() {
-        return new ArticleEntity();
+    private Article createArticleEntity() {
+        return new Article();
     }
 }

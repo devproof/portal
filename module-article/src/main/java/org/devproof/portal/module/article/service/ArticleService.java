@@ -17,7 +17,7 @@ package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 
 import java.util.List;
@@ -25,22 +25,22 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-public interface ArticleService extends CrudService<ArticleEntity, Integer> {
+public interface ArticleService extends CrudService<Article, Integer> {
     /**
-     * Returns a new instance of ArticleEntity
+     * Returns a new instance of Article
      *
-     * @return new instance of {@link ArticleEntity}
+     * @return new instance of {@link org.devproof.portal.module.article.entity.Article}
      */
-    ArticleEntity newArticleEntity();
+    Article newArticleEntity();
 
     /**
      * Returns a new instance of ArticlePageEntity
      *
-     * @param article ArticleEntity
+     * @param article Article
      * @param page    page number
-     * @return new instance of {@link ArticleEntity}
+     * @return new instance of {@link org.devproof.portal.module.article.entity.Article}
      */
-    ArticlePageEntity newArticlePageEntity(ArticleEntity article, Integer page);
+    ArticlePageEntity newArticlePageEntity(Article article, Integer page);
 
     /**
      * Returns a list with all articles allowed for the role
@@ -50,7 +50,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
      * @param maxResult   maximum result number
      * @return list with article entities
      */
-    List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Article> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
     /**
      * Returns true if a content id exists
@@ -81,7 +81,7 @@ public interface ArticleService extends CrudService<ArticleEntity, Integer> {
      * Returns the Article by content id
      *
      * @param contentId content id
-     * @return {@link ArticleEntity}
+     * @return {@link org.devproof.portal.module.article.entity.Article}
      */
-	ArticleEntity findByContentId(String contentId);
+	Article findByContentId(String contentId);
 }

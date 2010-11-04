@@ -19,7 +19,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -95,7 +95,7 @@ public class ArticleEditPageTest {
     }
 
     private ArticleEditPage getNewArticleEditPage() {
-        return new ArticleEditPage(Model.of(new ArticleEntity()));
+        return new ArticleEditPage(Model.of(new Article()));
     }
 
     private void submitArticleForm() {

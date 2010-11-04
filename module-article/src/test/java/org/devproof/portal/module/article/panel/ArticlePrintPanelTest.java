@@ -19,7 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -55,7 +55,7 @@ public class ArticlePrintPanelTest {
 
             @Override
             public Panel getTestPanel(String panelId) {
-                ArticleEntity article = new ArticleEntity();
+                Article article = new Article();
                 article.setTitle("foo");
                 article.setTeaser("bar");
                 article.setCreatedAt(new Date());

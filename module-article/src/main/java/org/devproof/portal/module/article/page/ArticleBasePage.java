@@ -25,7 +25,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.service.ArticleService;
 
 /**
@@ -67,7 +67,7 @@ public class ArticleBasePage extends TemplatePage {
 
 			@Override
 			public void onClick() {
-				ArticleEntity newEntry = articleService.newArticleEntity();
+				Article newEntry = articleService.newArticleEntity();
 				setResponsePage(new ArticleEditPage(Model.of(newEntry)));
 			}
 		};

@@ -32,17 +32,17 @@ import java.util.List;
 @Entity
 @Table(name = "article_tag")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
-public class ArticleTagEntity extends BaseTagEntity<ArticleEntity> {
+public class ArticleTagEntity extends BaseTagEntity<Article> {
     private static final long serialVersionUID = 1L;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tags")
-    private List<ArticleEntity> referencedObjects;
+    private List<Article> referencedObjects;
 
     /**
      * @return the referencedObjects
      */
     @Override
-    public List<ArticleEntity> getReferencedObjects() {
+    public List<Article> getReferencedObjects() {
         return referencedObjects;
     }
 
@@ -50,7 +50,7 @@ public class ArticleTagEntity extends BaseTagEntity<ArticleEntity> {
      * @param referencedObjects the referencedObjects to set
      */
     @Override
-    public void setReferencedObjects(List<ArticleEntity> referencedObjects) {
+    public void setReferencedObjects(List<Article> referencedObjects) {
         this.referencedObjects = referencedObjects;
     }
 

@@ -30,7 +30,7 @@ import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.page.ArticlePage;
 import org.devproof.portal.module.article.service.ArticleService;
 
@@ -50,7 +50,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
     private WebMarkupContainer titleContainer;
-    private IModel<List<ArticleEntity>> latestArticlesModel;
+    private IModel<List<Article>> latestArticlesModel;
 
     public ArticleBoxPanel(String id) {
         super(id);
@@ -61,7 +61,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
 
     @Override
     public boolean isVisible() {
-        List<ArticleEntity> articles = latestArticlesModel.getObject();
+        List<Article> articles = latestArticlesModel.getObject();
         return articles.size() > 0;
     }
 
@@ -70,12 +70,12 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
         return titleContainer;
     }
 
-    private IModel<List<ArticleEntity>> createLatestArticlesModel() {
-        return new LoadableDetachableModel<List<ArticleEntity>>() {
+    private IModel<List<Article>> createLatestArticlesModel() {
+        return new LoadableDetachableModel<List<Article>>() {
             private static final long serialVersionUID = -8763260134372373780L;
 
             @Override
-            protected List<ArticleEntity> load() {
+            protected List<Article> load() {
                 Integer numberOfLatestArticles = configurationService.findAsInteger(ArticleConstants.CONF_BOX_NUM_LATEST_ARTICLES);
                 PortalSession session = (PortalSession) getSession();
                 return articleService.findAllArticlesForRoleOrderedByDateDesc(session.getRole(), 0, numberOfLatestArticles);
@@ -83,26 +83,26 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
         };
     }
 
-    private ListView<ArticleEntity> createRepeatingArticles() {
-        return new ListView<ArticleEntity>("repeatingArticles", latestArticlesModel) {
+    private ListView<Article> createRepeatingArticles() {
+        return new ListView<Article>("repeatingArticles", latestArticlesModel) {
             private static final long serialVersionUID = 3388745835706671920L;
 
             @Override
-            protected void populateItem(ListItem<ArticleEntity> item) {
+            protected void populateItem(ListItem<Article> item) {
                 item.add(createLinkToArticle(item.getModel()));
             }
         };
     }
 
-    private BookmarkablePageLink<ArticlePage> createLinkToArticle(IModel<ArticleEntity> articleModel) {
-        ArticleEntity article = articleModel.getObject();
+    private BookmarkablePageLink<ArticlePage> createLinkToArticle(IModel<Article> articleModel) {
+        Article article = articleModel.getObject();
         BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
         link.setParameter("id", article.getId());
         link.add(createLinkToArticleLabel(articleModel));
         return link;
     }
 
-    private Label createLinkToArticleLabel(IModel<ArticleEntity> articleModel) {
+    private Label createLinkToArticleLabel(IModel<Article> articleModel) {
         return new Label("linkName", new PropertyModel<String>(articleModel, "title"));
     }
 

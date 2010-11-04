@@ -42,7 +42,7 @@ public class ArticleQuery implements SearchQuery {
 		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
 	}
 
-	@BeanQuery("exists(from ArticleEntity a left join a.allRights ar "
+	@BeanQuery("exists(from Article a left join a.allRights ar "
 			+ "where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'article.view%') and a = e)")
 	public RoleEntity getRole() {
 		if (role == null) {
@@ -54,7 +54,7 @@ public class ArticleQuery implements SearchQuery {
 		return role;
 	}
 
-	@BeanQuery("exists(from ArticleEntity a left join a.tags t where t.tagname = ? and a = e)")
+	@BeanQuery("exists(from Article a left join a.tags t where t.tagname = ? and a = e)")
 	public String getTagname() {
 		return tagname;
 	}

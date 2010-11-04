@@ -25,7 +25,7 @@ import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.print.page.PrintPage;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.panel.ArticlePrintPanel;
 import org.devproof.portal.module.article.service.ArticleService;
 
@@ -37,26 +37,26 @@ public class ArticlePrintPage extends PrintPage {
     private static final long serialVersionUID = 3988970146526291830L;
     @SpringBean(name = "articleService")
     private ArticleService articleService;
-    private IModel<ArticleEntity> articleModel;
+    private IModel<Article> articleModel;
     private PageParameters params;
 
     public ArticlePrintPage(PageParameters params) {
         super(params);
     }
 
-    private LoadableDetachableModel<ArticleEntity> createArticleModel() {
-        return new LoadableDetachableModel<ArticleEntity>() {
+    private LoadableDetachableModel<Article> createArticleModel() {
+        return new LoadableDetachableModel<Article>() {
             private static final long serialVersionUID = 1826109490689274522L;
 
             @Override
-            protected ArticleEntity load() {
+            protected Article load() {
                 String contentId = getContentId();
                 return articleService.findByContentId(contentId);
             }
         };
     }
 
-    private IModel<ArticleEntity> getArticleModel() {
+    private IModel<Article> getArticleModel() {
         if (articleModel == null) {
             articleModel = createArticleModel();
         }
@@ -84,13 +84,13 @@ public class ArticlePrintPage extends PrintPage {
     }
 
     private void validateAccessRights() {
-        ArticleEntity article = getArticleModel().getObject();
+        Article article = getArticleModel().getObject();
         if (article == null || !isAllowedToRead(article)) {
             throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
         }
     }
 
-    private boolean isAllowedToRead(ArticleEntity article) {
+    private boolean isAllowedToRead(Article article) {
         PortalSession session = (PortalSession) getSession();
         return session.hasRight(article.getReadRights()) || session.hasRight("article.read");
     }

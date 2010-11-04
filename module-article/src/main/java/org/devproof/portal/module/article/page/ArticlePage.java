@@ -45,9 +45,8 @@ import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
-import org.devproof.portal.core.module.tag.service.TagService;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.panel.ArticleSearchBoxPanel;
 import org.devproof.portal.module.article.query.ArticleQuery;
@@ -66,7 +65,7 @@ public class ArticlePage extends ArticleBasePage {
 	@SpringBean(name = "articleService")
 	private ArticleService articleService;
 	@SpringBean(name = "articleDataProvider")
-	private QueryDataProvider<ArticleEntity, ArticleQuery> articleDataProvider;
+	private QueryDataProvider<Article, ArticleQuery> articleDataProvider;
 	@SpringBean(name = "articleTagService")
 	private ArticleTagService articleTagService;
 	@SpringBean(name = "configurationService")
@@ -104,14 +103,14 @@ public class ArticlePage extends ArticleBasePage {
 	@Override
 	public String getPageTitle() {
 		if (articleDataProvider.size() == 1) {
-			Iterator<? extends ArticleEntity> it = articleDataProvider.iterator(0, 1);
-			ArticleEntity article = it.next();
+			Iterator<? extends Article> it = articleDataProvider.iterator(0, 1);
+			Article article = it.next();
 			return article.getTitle();
 		}
 		return "";
 	}
 
-	private class ArticleDataView extends AutoPagingDataView<ArticleEntity> {
+	private class ArticleDataView extends AutoPagingDataView<Article> {
 		private static final long serialVersionUID = 1L;
 
 		public ArticleDataView(String id) {
@@ -121,12 +120,12 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		@Override
-		protected void populateItem(Item<ArticleEntity> item) {
+		protected void populateItem(Item<Article> item) {
 			item.add(createArticleView(item));
 			item.setOutputMarkupId(true);
 		}
 
-		private ArticleView createArticleView(Item<ArticleEntity> item) {
+		private ArticleView createArticleView(Item<Article> item) {
 			return new ArticleView("articleView", item);
 		}
 	}
@@ -137,10 +136,10 @@ public class ArticlePage extends ArticleBasePage {
 	private class ArticleView extends Fragment {
 
 		private static final long serialVersionUID = 1L;
-		private IModel<ArticleEntity> articleModel;
+		private IModel<Article> articleModel;
 		private boolean allowedToRead = false;
 
-		public ArticleView(String id, Item<ArticleEntity> item) {
+		public ArticleView(String id, Item<Article> item) {
 			super(id, "articleView", ArticlePage.this);
 			articleModel = item.getModel();
 			allowedToRead = isAllowedToRead(articleModel);
@@ -155,7 +154,7 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private Component createCommentPanel() {
-			ArticleEntity article = articleModel.getObject();
+			Article article = articleModel.getObject();
 			DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
 			conf.setModuleContentId(article.getId().toString());
 			conf.setModuleName(ArticlePage.class.getSimpleName());
@@ -165,7 +164,7 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private Component createPrintLink() {
-			ArticleEntity article = articleModel.getObject();
+			Article article = articleModel.getObject();
 			PageParameters params = new PageParameters("0=" + article.getContentId());
 			BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
 					ArticlePrintPage.class, params);
@@ -178,7 +177,7 @@ public class ArticlePage extends ArticleBasePage {
 			return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
 		}
 
-		private Component createAppropriateAuthorPanel(Item<ArticleEntity> item) {
+		private Component createAppropriateAuthorPanel(Item<Article> item) {
 			if (isAuthor()) {
 				return createAuthorPanel(item);
 			} else {
@@ -187,7 +186,7 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink() {
-			ArticleEntity article = articleModel.getObject();
+			Article article = articleModel.getObject();
 			BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
 					"readMoreLink", ArticleReadPage.class);
 			readMoreLink.add(createReadMoreImage());
@@ -229,21 +228,21 @@ public class ArticlePage extends ArticleBasePage {
 		}
 
 		private MetaInfoPanel<?> createMetaInfoPanel() {
-			return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
+			return new MetaInfoPanel<Article>("metaInfo", articleModel);
 		}
 
 		private WebMarkupContainer createEmptyAuthorPanel() {
 			return new WebMarkupContainer("authorButtons");
 		}
 
-		private boolean isAllowedToRead(IModel<ArticleEntity> articleModel) {
-			ArticleEntity article = articleModel.getObject();
+		private boolean isAllowedToRead(IModel<Article> articleModel) {
+			Article article = articleModel.getObject();
 			PortalSession session = (PortalSession) getSession();
 			return session.hasRight("article.read") || session.hasRight(article.getReadRights());
 		}
 
 		private BookmarkablePageLink<ArticleReadPage> createTitleLink() {
-			ArticleEntity article = articleModel.getObject();
+			Article article = articleModel.getObject();
 			BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>("titleLink",
 					ArticleReadPage.class);
 			titleLink.add(createTitleLabel());
@@ -257,8 +256,8 @@ public class ArticlePage extends ArticleBasePage {
 			return new Label("titleLabel", titleModel);
 		}
 
-		private AuthorPanel<ArticleEntity> createAuthorPanel(final Item<ArticleEntity> item) {
-			return new AuthorPanel<ArticleEntity>("authorButtons", articleModel) {
+		private AuthorPanel<Article> createAuthorPanel(final Item<Article> item) {
+			return new AuthorPanel<Article>("authorButtons", articleModel) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -272,17 +271,17 @@ public class ArticlePage extends ArticleBasePage {
 
 				@Override
 				public void onEdit(AjaxRequestTarget target) {
-					IModel<ArticleEntity> articleModel = createArticleModel();
+					IModel<Article> articleModel = createArticleModel();
 					setResponsePage(new ArticleEditPage(articleModel));
 				}
 
-				private IModel<ArticleEntity> createArticleModel() {
-					return new LoadableDetachableModel<ArticleEntity>() {
+				private IModel<Article> createArticleModel() {
+					return new LoadableDetachableModel<Article>() {
 						private static final long serialVersionUID = 1L;
 
 						@Override
-						protected ArticleEntity load() {
-							ArticleEntity article = articleModel.getObject();
+						protected Article load() {
+							Article article = articleModel.getObject();
 							return articleService.findById(article.getId());
 						}
 					};

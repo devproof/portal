@@ -23,7 +23,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 
 /**
  * @author Carsten Hufe
@@ -31,9 +31,9 @@ import org.devproof.portal.module.article.entity.ArticleEntity;
 public class ArticlePrintPanel extends Panel {
 
     private static final long serialVersionUID = 1L;
-    private IModel<ArticleEntity> articleModel;
+    private IModel<Article> articleModel;
 
-    public ArticlePrintPanel(String id, IModel<ArticleEntity> articleModel) {
+    public ArticlePrintPanel(String id, IModel<Article> articleModel) {
         super(id, articleModel);
         this.articleModel = articleModel;
         add(createTitle());
@@ -46,8 +46,8 @@ public class ArticlePrintPanel extends Panel {
         return new Label("title", titleModel);
     }
 
-    private MetaInfoPanel<ArticleEntity> createMetaInfoPanel() {
-        return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
+    private MetaInfoPanel<Article> createMetaInfoPanel() {
+        return new MetaInfoPanel<Article>("metaInfo", articleModel);
     }
 
     private ExtendedLabel createContentLabel() {
@@ -60,7 +60,7 @@ public class ArticlePrintPanel extends Panel {
             private static final long serialVersionUID = -3133650134418166946L;
             @Override
             public String getObject() {
-                ArticleEntity article = articleModel.getObject();
+                Article article = articleModel.getObject();
                 String content = article.getFullArticle();
                 content = content.replace(ArticleConstants.PAGEBREAK, "<br/><br/>");
                 return content;

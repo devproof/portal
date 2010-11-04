@@ -23,7 +23,7 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.page.ArticlePage;
 import org.devproof.portal.module.article.query.ArticleQuery;
 import org.junit.Before;
@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
  */
 public class ArticleFeedProviderImplTest {
     private ArticleFeedProviderImpl impl;
-    private SortableQueryDataProvider<ArticleEntity, ArticleQuery> dataProviderMock;
+    private SortableQueryDataProvider<Article, ArticleQuery> dataProviderMock;
     private ConfigurationService configurationServiceMock;
 
     @Before
@@ -54,8 +54,8 @@ public class ArticleFeedProviderImplTest {
             }
 
             @Override
-            protected String getUrl(RequestCycle rc, ArticleEntity articleEntity) {
-                return "http://url/" + articleEntity.getId();
+            protected String getUrl(RequestCycle rc, Article article) {
+                return "http://url/" + article.getId();
             }
         };
         impl.setConfigurationService(configurationServiceMock);
@@ -79,14 +79,14 @@ public class ArticleFeedProviderImplTest {
     @SuppressWarnings("unchecked")
 	@Test
     public void testGetArticleEntries() {
-        ArticleEntity article = createArticle();
+        Article article = createArticle();
         @SuppressWarnings("rawtypes")
 		Iterator it = Arrays.asList(article).iterator();
         expect(configurationServiceMock.findAsInteger(ArticleConstants.CONF_ARTICLE_ENTRIES_IN_FEED)).andReturn(10);
         expect(dataProviderMock.iterator(0, 10)).andReturn(it);
         replay(configurationServiceMock);
         replay(dataProviderMock);
-        Iterator<? extends ArticleEntity> bookmarkEntries = impl.getArticleEntries();
+        Iterator<? extends Article> bookmarkEntries = impl.getArticleEntries();
         assertSame(bookmarkEntries, it);
         verify(configurationServiceMock);
         verify(dataProviderMock);
@@ -106,8 +106,8 @@ public class ArticleFeedProviderImplTest {
 
     @Test
     public void testGenerateFeedEntries() {
-        ArticleEntity bookmark = createArticle();
-		Iterator<ArticleEntity> it = Arrays.asList(bookmark).iterator();
+        Article bookmark = createArticle();
+		Iterator<Article> it = Arrays.asList(bookmark).iterator();
         List<SyndEntry> generateFeedEntries = impl.generateFeedEntries(null, it);
         SyndEntry entry = generateFeedEntries.get(0);
         assertEquals("hello", entry.getTitle());
@@ -130,13 +130,13 @@ public class ArticleFeedProviderImplTest {
             }
 
             @Override
-            protected Iterator<? extends ArticleEntity> getArticleEntries() {
+            protected Iterator<? extends Article> getArticleEntries() {
                 callOrder.append("2");
                 return null;
             }
 
             @Override
-            protected List<SyndEntry> generateFeedEntries(final RequestCycle rc, final Iterator<? extends ArticleEntity> iterator) {
+            protected List<SyndEntry> generateFeedEntries(final RequestCycle rc, final Iterator<? extends Article> iterator) {
                 callOrder.append("3");
                 return entries;
             }
@@ -150,8 +150,8 @@ public class ArticleFeedProviderImplTest {
         assertEquals("123", callOrder.toString());
     }
 
-    private ArticleEntity createArticle() {
-        ArticleEntity article = new ArticleEntity();
+    private Article createArticle() {
+        Article article = new Article();
         article.setId(1);
         article.setTitle("hello");
         article.setTeaser("world");

@@ -42,7 +42,7 @@ public class ArticlePageEntity implements Serializable {
     private String content;
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "article_id")
-    private ArticleEntity article;
+    private Article article;
 
     public String getContent() {
         return content;
@@ -52,11 +52,11 @@ public class ArticlePageEntity implements Serializable {
         this.content = content;
     }
 
-    public ArticleEntity getArticle() {
+    public Article getArticle() {
         return article;
     }
 
-    public void setArticle(ArticleEntity article) {
+    public void setArticle(Article article) {
         this.article = article;
     }
 

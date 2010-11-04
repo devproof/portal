@@ -24,26 +24,26 @@ import org.devproof.portal.core.module.common.dao.GenericDao;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 
 /**
  * @author Carsten Hufe
  */
 @GenericRepository("articleDao")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
-public interface ArticleRepository extends GenericDao<ArticleEntity, Integer> {
+public interface ArticleRepository extends GenericDao<Article, Integer> {
     @CacheQuery(enabled = false)
-    @Query("select a.allRights from ArticleEntity a where a.modifiedAt = (select max(modifiedAt) from ArticleEntity)")
+    @Query("select a.allRights from Article a where a.modifiedAt = (select max(modifiedAt) from Article)")
     List<RightEntity> findLastSelectedRights();
 
-    @Query("select a from ArticleEntity a where a.contentId = ?")
-    ArticleEntity findByContentId(String contentId);
+    @Query("select a from Article a where a.contentId = ?")
+    Article findByContentId(String contentId);
 
-    @Query(value = "select a from ArticleEntity a where " +
-    		"exists(from ArticleEntity ea left join ea.allRights ar where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'article.view%') and a = ea) " +
+    @Query(value = "select a from Article a where " +
+    		"exists(from Article ea left join ea.allRights ar where ar in(select r from RightEntity r join r.roles rt where rt = ? and r.right like 'article.view%') and a = ea) " +
 					"order by a.modifiedAt desc", limitClause = true)
-    List<ArticleEntity> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
+    List<Article> findAllArticlesForRoleOrderedByDateDesc(RoleEntity role, Integer firstResult, Integer maxResult);
 
-    @Query("select count(a) from ArticleEntity a where a.contentId like ?")
+    @Query("select count(a) from Article a where a.contentId like ?")
     long existsContentId(String contentId);
 }

@@ -38,8 +38,7 @@ import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticlePageEntity;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.service.ArticleService;
@@ -119,7 +118,7 @@ public class ArticleReadPage extends ArticleBasePage {
 		DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
 		ArticlePageEntity articlePage = displayedPageModel.getObject();
 		if(articlePage != null) {
-			ArticleEntity article = articlePage.getArticle();
+			Article article = articlePage.getArticle();
 			conf.setModuleContentId(article.getId().toString());
 			conf.setModuleName(ArticlePage.class.getSimpleName());
 			conf.setViewRights(article.getCommentViewRights());
@@ -161,8 +160,8 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private MetaInfoPanel<?> createMetaInfoPanel() {
-		IModel<ArticleEntity> articleModel = new PropertyModel<ArticleEntity>(displayedPageModel, "article");
-		return new MetaInfoPanel<ArticleEntity>("metaInfo", articleModel);
+		IModel<Article> articleModel = new PropertyModel<Article>(displayedPageModel, "article");
+		return new MetaInfoPanel<Article>("metaInfo", articleModel);
 	}
 
 	private Component createPrintLink() {
@@ -185,35 +184,35 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private Component createAuthorPanel() {
-		AuthorPanel<ArticleEntity> authorPanel = newAuthorPanel();
+		AuthorPanel<Article> authorPanel = newAuthorPanel();
 		authorPanel.setRedirectPage(ArticlePage.class, new PageParameters("infoMsg=" + getString("msg.deleted")));
 		return authorPanel;
 	}
 
-	private AuthorPanel<ArticleEntity> newAuthorPanel() {
-		final IModel<ArticleEntity> articleModel = new PropertyModel<ArticleEntity>(displayedPageModel, "article");
-		return new AuthorPanel<ArticleEntity>("authorButtons", articleModel) {
+	private AuthorPanel<Article> newAuthorPanel() {
+		final IModel<Article> articleModel = new PropertyModel<Article>(displayedPageModel, "article");
+		return new AuthorPanel<Article>("authorButtons", articleModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onDelete(AjaxRequestTarget target) {
-				ArticleEntity article = articleModel.getObject();
+				Article article = articleModel.getObject();
 				articleService.delete(article);
 			}
 
 			@Override
 			public void onEdit(AjaxRequestTarget target) {
-				IModel<ArticleEntity> articleModel = createArticleModel();
+				IModel<Article> articleModel = createArticleModel();
 				setResponsePage(new ArticleEditPage(articleModel));
 			}
 
-			private IModel<ArticleEntity> createArticleModel() {
-				return new LoadableDetachableModel<ArticleEntity>() {
+			private IModel<Article> createArticleModel() {
+				return new LoadableDetachableModel<Article>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected ArticleEntity load() {
-						ArticleEntity article = articleModel.getObject();
+					protected Article load() {
+						Article article = articleModel.getObject();
 						return articleService.findById(article.getId());
 					}
 				};

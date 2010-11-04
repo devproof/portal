@@ -33,8 +33,7 @@ import org.devproof.portal.core.module.common.component.richtext.FullRichTextAre
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.article.entity.ArticleEntity;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleTagEntity;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.article.service.ArticleTagService;
@@ -52,17 +51,17 @@ public class ArticleEditPage extends ArticleBasePage {
     @SpringBean(name = "articleTagService")
     private ArticleTagService articleTagService;
 
-    private IModel<ArticleEntity> articleModel;
+    private IModel<Article> articleModel;
     private RequiredTextField<String> contentIdField;
 
-    public ArticleEditPage(IModel<ArticleEntity> articleModel) {
+    public ArticleEditPage(IModel<Article> articleModel) {
         super(new PageParameters());
         this.articleModel = articleModel;
         add(createArticleEditForm());
     }
 
-    private Form<ArticleEntity> createArticleEditForm() {
-        Form<ArticleEntity> form = newArticleEditForm();
+    private Form<Article> createArticleEditForm() {
+        Form<Article> form = newArticleEditForm();
         form.add(createContentIdField());
         form.add(createTitleField());
         form.add(createTeaserField());
@@ -171,13 +170,13 @@ public class ArticleEditPage extends ArticleBasePage {
         };
     }
 
-    private Form<ArticleEntity> newArticleEditForm() {
-        return new Form<ArticleEntity>("form", new CompoundPropertyModel<ArticleEntity>(articleModel)) {
+    private Form<Article> newArticleEditForm() {
+        return new Form<Article>("form", new CompoundPropertyModel<Article>(articleModel)) {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onSubmit() {
-                ArticleEntity article = articleModel.getObject();
+                Article article = articleModel.getObject();
                 articleService.save(article);
                 setRedirect(false);
                 setResponsePage(ArticleReadPage.class, new PageParameters("0=" + article.getContentId()));
