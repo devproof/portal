@@ -39,7 +39,7 @@ import java.util.Collection;
  * @param <PK>
  * primary key type
  */
-public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends HibernateDaoSupport implements GenericRepository<T, PK> {
+public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends HibernateDaoSupport implements CrudRepository<T, PK> {
     private UsernameResolver usernameResolver;
     private Class<T> type;
 

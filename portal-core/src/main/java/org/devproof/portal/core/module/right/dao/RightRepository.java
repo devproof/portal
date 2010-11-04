@@ -20,7 +20,7 @@ import java.util.List;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 
 /**
@@ -28,7 +28,7 @@ import org.devproof.portal.core.module.right.entity.RightEntity;
  */
 @org.devproof.portal.core.config.GenericRepository("rightDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface RightRepository extends GenericRepository<RightEntity, String> {
+public interface RightRepository extends CrudRepository<RightEntity, String> {
     @Query("Select r from RightEntity r")
     List<RightEntity> findAll();
 

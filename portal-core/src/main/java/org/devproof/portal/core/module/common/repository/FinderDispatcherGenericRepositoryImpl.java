@@ -67,14 +67,14 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 
     public Object getObject() throws Exception {
 		ProxyFactory result = new ProxyFactory();
-		GenericRepository<T, PK> genericRepository = createGenericHibernateDao();
-		result.setTarget(genericRepository);
+		CrudRepository<T, PK> crudRepository = createGenericHibernateDao();
+		result.setTarget(crudRepository);
 		result.setInterfaces(new Class[] { daoInterface });
 		result.addAdvice(createGenericDaoInterceptor());
 		return result.getProxy();
 	}
 
-	protected GenericRepository<T, PK> createGenericHibernateDao() {
+	protected CrudRepository<T, PK> createGenericHibernateDao() {
 		GenericHibernateRepositoryImpl<T, PK> genericDao = new GenericHibernateRepositoryImpl<T, PK>(entityClass);
 		genericDao.setSessionFactory(getSessionFactory());
 		genericDao.setHibernateTemplate(getHibernateTemplate());

@@ -20,7 +20,7 @@ import java.util.List;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
 
 /**
@@ -28,7 +28,7 @@ import org.devproof.portal.core.module.email.entity.EmailTemplateEntity;
  */
 @org.devproof.portal.core.config.GenericRepository("emailTemplateDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface EmailTemplateRepository extends GenericRepository<EmailTemplateEntity, Integer> {
+public interface EmailTemplateRepository extends CrudRepository<EmailTemplateEntity, Integer> {
     @Query("Select e from EmailTemplateEntity e")
     List<EmailTemplateEntity> findAll();
 }

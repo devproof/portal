@@ -36,20 +36,20 @@ import static org.junit.Assert.assertEquals;
 public class FinderDispatcherGenericDaoImplTest {
     private FinderDispatcherGenericRepositoryImpl<TestEntity, Integer> impl;
     private TestRepository testDao;
-    private GenericRepository<TestEntity, Integer> genericRepository;
+    private CrudRepository<TestEntity, Integer> crudRepository;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         SessionFactory sessionFactory = createMock(SessionFactory.class);
         Session session = createMock(Session.class);
-        genericRepository = createMock(GenericRepository.class);
+        crudRepository = createMock(CrudRepository.class);
         impl = new FinderDispatcherGenericRepositoryImpl<TestEntity, Integer>() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            protected GenericRepository<TestEntity, Integer> createGenericHibernateDao() {
-                return genericRepository;
+            protected CrudRepository<TestEntity, Integer> createGenericHibernateDao() {
+                return crudRepository;
             }
 
         };
@@ -68,56 +68,56 @@ public class FinderDispatcherGenericDaoImplTest {
     @Test
     public void testGetObject_delegateSave() {
         TestEntity entity = createEntity();
-        expect(genericRepository.save(entity)).andReturn(entity);
-        replay(genericRepository);
+        expect(crudRepository.save(entity)).andReturn(entity);
+        replay(crudRepository);
         testDao.save(entity);
-        verify(genericRepository);
+        verify(crudRepository);
     }
 
     @Test
     public void testGetObject_delegateDelete() {
         TestEntity entity = createEntity();
-        genericRepository.delete(entity);
-        replay(genericRepository);
+        crudRepository.delete(entity);
+        replay(crudRepository);
         testDao.delete(entity);
-        verify(genericRepository);
+        verify(crudRepository);
     }
 
     @Test
     public void testGetObject_delegateRefresh() {
         TestEntity entity = createEntity();
-        genericRepository.refresh(entity);
-        replay(genericRepository);
+        crudRepository.refresh(entity);
+        replay(crudRepository);
         testDao.refresh(entity);
-        verify(genericRepository);
+        verify(crudRepository);
     }
 
     @Test
     public void testGetObject_delegateFindById() {
         TestEntity expectedEntity = createEntity();
-        expect(genericRepository.findById(1)).andReturn(expectedEntity);
-        replay(genericRepository);
+        expect(crudRepository.findById(1)).andReturn(expectedEntity);
+        replay(crudRepository);
         TestEntity entity = testDao.findById(1);
         assertEquals(expectedEntity, entity);
-        verify(genericRepository);
+        verify(crudRepository);
     }
 
     @Test
     public void testGetObject_queryAnnotation() throws Exception {
         TestEntity expectedEntity = createEntity();
-        expect(genericRepository.executeFinder(eq("select t from TestEntity t where t.contentId = ?"), (Object[]) anyObject(), (Method) anyObject(), (Integer) eq(null), (Integer) eq(null))).andReturn(expectedEntity);
-        replay(genericRepository);
+        expect(crudRepository.executeFinder(eq("select t from TestEntity t where t.contentId = ?"), (Object[]) anyObject(), (Method) anyObject(), (Integer) eq(null), (Integer) eq(null))).andReturn(expectedEntity);
+        replay(crudRepository);
         TestEntity entity = testDao.findByContentId("foobar");
         assertEquals(expectedEntity, entity);
-        verify(genericRepository);
+        verify(crudRepository);
     }
 
     @Test
     public void testGetObject_bulkUpdate() {
-        genericRepository.executeUpdate(eq("update TestEntity with something where contentId = ?"), (Object[]) anyObject());
-        replay(genericRepository);
+        crudRepository.executeUpdate(eq("update TestEntity with something where contentId = ?"), (Object[]) anyObject());
+        replay(crudRepository);
         testDao.updateWithSomething("foobar");
-        verify(genericRepository);
+        verify(crudRepository);
     }
 
     @Test
@@ -125,9 +125,9 @@ public class FinderDispatcherGenericDaoImplTest {
         TestRepository serviceImpl = createMock(TestRepository.class);
         impl.setServicesImpl(serviceImpl);
         serviceImpl.delegateToImpl();
-        replay(genericRepository, serviceImpl);
+        replay(crudRepository, serviceImpl);
         testDao.delegateToImpl();
-        verify(genericRepository, serviceImpl);
+        verify(crudRepository, serviceImpl);
     }
 
     private TestEntity createEntity() {
@@ -136,7 +136,7 @@ public class FinderDispatcherGenericDaoImplTest {
         return entity;
     }
 
-    public interface TestRepository extends GenericRepository<TestEntity, Integer> {
+    public interface TestRepository extends CrudRepository<TestEntity, Integer> {
         @Query("select t from TestEntity t where t.contentId = ?")
         public TestEntity findByContentId(String contentId);
 

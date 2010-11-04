@@ -17,7 +17,7 @@ package org.devproof.portal.module.otherpage.repository;
 
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 @org.devproof.portal.core.config.GenericRepository("otherPageDao")
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
-public interface OtherPageRepository extends GenericRepository<OtherPage, Integer> {
+public interface OtherPageRepository extends CrudRepository<OtherPage, Integer> {
     @CacheQuery(enabled = false)
     @Query("select op.allRights from OtherPage op where op.modifiedAt = (select max(modifiedAt) from OtherPage)")
     List<RightEntity> findLastSelectedRights();

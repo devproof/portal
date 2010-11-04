@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.configuration.repository;
 
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.configuration.entity.ConfigurationEntity;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 @org.devproof.portal.core.config.GenericRepository("configurationRepository")
-public interface ConfigurationRepository extends GenericRepository<ConfigurationEntity, String> {
+public interface ConfigurationRepository extends CrudRepository<ConfigurationEntity, String> {
     @Query("Select c from ConfigurationEntity c")
     List<ConfigurationEntity> findAll();
 

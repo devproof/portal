@@ -18,7 +18,7 @@ package org.devproof.portal.module.download.repository;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 import org.devproof.portal.module.download.DownloadConstants;
@@ -31,7 +31,7 @@ import java.util.List;
  */
 @org.devproof.portal.core.config.GenericRepository("downloadRepository")
 @CacheQuery(region = DownloadConstants.QUERY_CACHE_REGION)
-public interface DownloadRepository extends GenericRepository<Download, Integer> {
+public interface DownloadRepository extends CrudRepository<Download, Integer> {
     @Query("Select d from Download d")
     List<Download> findAll();
 

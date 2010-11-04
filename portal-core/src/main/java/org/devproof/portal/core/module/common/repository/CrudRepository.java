@@ -18,11 +18,11 @@ package org.devproof.portal.core.module.common.repository;
 import java.io.Serializable;
 
 /**
- * GenericRepository interface with CRUD methods
+ * CrudRepository interface with CRUD methods
  *
  * @author Carsten Hufe
  */
-public interface GenericRepository<T, PK extends Serializable> extends FinderExecutor {
+public interface CrudRepository<T, PK extends Serializable> extends FinderExecutor {
     /**
      * Get an entity by id
      *

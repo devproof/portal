@@ -20,7 +20,7 @@ import java.util.List;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.repository.GenericRepository;
+import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.role.entity.RoleEntity;
 
 /**
@@ -28,7 +28,7 @@ import org.devproof.portal.core.module.role.entity.RoleEntity;
  */
 @org.devproof.portal.core.config.GenericRepository("roleDao")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-public interface RoleRepository extends GenericRepository<RoleEntity, Integer> {
+public interface RoleRepository extends CrudRepository<RoleEntity, Integer> {
     @Query("Select r from RoleEntity r")
     List<RoleEntity> findAll();
 
