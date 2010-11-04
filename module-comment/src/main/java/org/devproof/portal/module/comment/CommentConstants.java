@@ -33,9 +33,9 @@ public interface CommentConstants {
     String CONF_COMMENT_NUMBER_PER_PAGE = "comment_number_per_page";
     String CONF_COMMENT_NUMBER_PER_PAGE_ADMIN = "comment_number_per_page_admin";
     String CONF_COMMENT_SHOW_ONLY_REVIEWED = "comment_show_only_reviewed";
-    String CONF_NOTIFY_NEW_COMMENT = "spring.emailTemplateDao.findAll.subject.id.newcommentnotification";
-    String CONF_NOTIFY_AUTOBLOCKED = "spring.emailTemplateDao.findAll.subject.id.autoblockednotification";
-    String CONF_NOTIFY_VIOLATION = "spring.emailTemplateDao.findAll.subject.id.violationnotification";
+    String CONF_NOTIFY_NEW_COMMENT = "spring.emailTemplateRepository.findAll.subject.id.newcommentnotification";
+    String CONF_NOTIFY_AUTOBLOCKED = "spring.emailTemplateRepository.findAll.subject.id.autoblockednotification";
+    String CONF_NOTIFY_VIOLATION = "spring.emailTemplateRepository.findAll.subject.id.violationnotification";
     String ENTITY_CACHE_REGION = "entity.usercontent";
     String QUERY_CACHE_REGION = "query.usercontent";
     String AUTHOR_RIGHT = "page." + CommentAdminPage.class.getSimpleName();
