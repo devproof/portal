@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
@@ -150,27 +151,13 @@ public class PortalUtil {
 
     public static void addSyntaxHightlighter(Component component, String theme) {
         component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shCore.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushJava.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushSql.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushBash.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushXml.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushJScript.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCpp.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCSharp.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushCss.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushDelphi.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushDiff.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushPhp.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushPython.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushRuby.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushVb.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushScala.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushPlain.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shBrushGroovy.js"));
+        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shAutoloader.js"));
         component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shCore.css"));
         component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shTheme" + theme + ".css"));
         Map<String, Object> values = new MiniMap<String, Object>(1);
-        values.put("swfPath", RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_SWF));
+        CharSequence urlWithShCore = RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_JS);
+        CharSequence urlWithoutShCore = StringUtils.removeEnd(urlWithShCore.toString(), "shCore.js");
+        values.put("jsPath", urlWithoutShCore);
         component.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class, "js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
     }
 

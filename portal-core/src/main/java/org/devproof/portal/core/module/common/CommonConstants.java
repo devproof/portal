@@ -50,8 +50,7 @@ public interface CommonConstants {
 
     String CONF_GOOGLE_ANALYTICS_ENABLED = "google_analytics_enabled";
     String CONF_GOOGLE_WEBPROPERTY_ID = "google_webproperty_id";
-    ResourceReference REF_SYNTAXHIGHLIGHTER_SWF = new ResourceReference(CommonConstants.class, "js/SyntaxHighlighter/clipboard.swf");
-
+    ResourceReference REF_SYNTAXHIGHLIGHTER_JS = new ResourceReference(CommonConstants.class, "js/SyntaxHighlighter/shCore.js");
     String GLOBAL_ADMIN_BOX_LINK_LABEL = "adminLinkLabel";
     String MAIN_NAVIGATION_LINK_LABEL = "mainNavigationLinkLabel";
     String CONTENT_TITLE_LABEL = "contentTitle";

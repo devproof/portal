@@ -41,6 +41,6 @@ public class FontServiceImpl implements FontService {
 
     @Override
     public List<String> findSyntaxHighlighterThemes() {
-        return Arrays.asList("Default", "Django", "Eclipse", "Emacs", "FadeToGrey", "Midnight", "RDark");
+        return Arrays.asList("Default", "Django", "Eclipse", "Emacs", "FadeToGrey", "MDUltra", "Midnight", "RDark");
     }
 }
