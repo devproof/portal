@@ -15,12 +15,9 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.blog.dao.BlogDao;
+import org.devproof.portal.module.blog.dao.BlogRepository;
 import org.devproof.portal.module.blog.entity.BlogEntity;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,36 +25,36 @@ import org.springframework.stereotype.Service;
  */
 @Service("blogService")
 public class BlogServiceImpl implements BlogService {
-    private BlogDao blogDao;
+    private BlogRepository blogRepository;
     private BlogTagService blogTagService;
 
     @Override
     public void delete(BlogEntity entity) {
-        blogDao.delete(entity);
+        blogRepository.delete(entity);
         blogTagService.deleteUnusedTags();
     }
 
     @Override
     public BlogEntity findById(Integer id) {
-        return blogDao.findById(id);
+        return blogRepository.findById(id);
     }
 
     @Override
     public void save(BlogEntity entity) {
-        blogDao.save(entity);
+        blogRepository.save(entity);
         blogTagService.deleteUnusedTags();
     }
 
     @Override
     public BlogEntity newBlogEntity() {
         BlogEntity blog = new BlogEntity();
-        blog.setAllRights(blogDao.findLastSelectedRights());
+        blog.setAllRights(blogRepository.findLastSelectedRights());
         return blog;
     }
 
     @Autowired
-    public void setBlogDao(BlogDao blogDao) {
-        this.blogDao = blogDao;
+    public void setBlogDao(BlogRepository blogRepository) {
+        this.blogRepository = blogRepository;
     }
 
     @Autowired

@@ -17,20 +17,14 @@ package org.devproof.portal.module.blog.dao;
 
 import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.annotation.Query;
-import org.devproof.portal.core.module.common.dao.GenericDao;
-import org.devproof.portal.core.module.right.entity.RightEntity;
 import org.devproof.portal.core.module.tag.dao.TagDao;
 import org.devproof.portal.module.blog.BlogConstants;
-import org.devproof.portal.module.blog.entity.BlogEntity;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
-
-import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
 @GenericRepository("blogTagDao")
 @CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
-public interface BlogTagDao extends TagDao<BlogTagEntity> {
+public interface BlogTagRepository extends TagDao<BlogTagEntity> {
 }

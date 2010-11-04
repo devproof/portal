@@ -16,7 +16,7 @@
 package org.devproof.portal.module.blog.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
-import org.devproof.portal.module.blog.dao.BlogTagDao;
+import org.devproof.portal.module.blog.dao.BlogTagRepository;
 import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class BlogTagServiceImpl extends AbstractTagServiceImpl<BlogTagEntity> im
     }
 
     @Autowired
-    public void setBlogTagDao(BlogTagDao blogTagDao) {
-        setTagDao(blogTagDao);
+    public void setBlogTagDao(BlogTagRepository blogTagRepository) {
+        setTagDao(blogTagRepository);
     }
 }

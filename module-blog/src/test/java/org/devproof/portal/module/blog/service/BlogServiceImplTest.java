@@ -15,10 +15,8 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.module.blog.dao.BlogDao;
+import org.devproof.portal.module.blog.dao.BlogRepository;
 import org.devproof.portal.module.blog.entity.BlogEntity;
-import org.devproof.portal.module.blog.entity.BlogTagEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,13 +29,13 @@ import static org.junit.Assert.assertNotNull;
  */
 public class BlogServiceImplTest {
     private BlogServiceImpl impl;
-    private BlogDao mock;
+    private BlogRepository mock;
     private BlogTagService mockTag;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
-        mock = createStrictMock(BlogDao.class);
+        mock = createStrictMock(BlogRepository.class);
         mockTag = createStrictMock(BlogTagService.class);
         impl = new BlogServiceImpl();
         impl.setBlogDao(mock);
