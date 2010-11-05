@@ -1,4 +1,5 @@
 target/
+build/
 portal-bundle/true
 .project
 .settings/
@@ -9,3 +10,4 @@ portal-bundle/true
 *.iws
 *.ids  
 .DS_Store
+.gradle
