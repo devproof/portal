@@ -88,7 +88,7 @@ public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implement
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public T findByIdAndCreateIfNotExists(String tagName) {
         T tag = findById(tagName);
         if (tag == null) {
