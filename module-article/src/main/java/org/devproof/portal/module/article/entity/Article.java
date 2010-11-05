@@ -53,7 +53,7 @@ public class Article extends Modification implements EntityId {
     @Lob
     @Column(name = "teaser")
     private String teaser;
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticlePage> articlePages;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "article_right_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "right_id", referencedColumnName = "right_id"))
