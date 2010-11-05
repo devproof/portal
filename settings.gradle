@@ -1,1 +1,3 @@
-include 'portal-core', 'module-blog', 'module-comment'
+include 'portal-core'
+include 'module-blog'
+include 'module-comment'

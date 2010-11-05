@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        mavenRepo urls: 'http://gradle.artifactoryonline.com/gradle/plugins'
+    }
+    dependencies {
+        classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
+    }
+}
+
+apply plugin: 'org.gradle.idea'
+
 allprojects {
     task hello << {task -> println "I'm $task.project.name" }
 }
