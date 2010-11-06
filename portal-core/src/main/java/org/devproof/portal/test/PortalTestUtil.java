@@ -166,7 +166,6 @@ public class PortalTestUtil {
 	/**
 	 * Create database and spring context
 	 */
-    @Deprecated
 	public static WicketTester createWicketTesterWithSpringAndDatabase(String... sqlFiles) throws SQLException,
 			IOException {
 		return createWicketTesterWithCustomSpringAndDatabase("classpath*:/**/devproof-module.xml", sqlFiles);
