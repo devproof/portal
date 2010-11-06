@@ -19,21 +19,34 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.blog.entity.Blog;
+import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author Carsten Hufe
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = MockContextLoader.class,
+        locations = {"classpath:/org/devproof/portal/module/blog/test-datasource.xml" })
 public class BlogEditPageTest {
+    @Autowired
+    private ServletContext servletContext;
     private WicketTester tester;
 
     @Before
     public void setUp() throws Exception {
-        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql", "insert_blog.sql");
+        tester = PortalTestUtil.createWicketTester(servletContext);
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
@@ -69,14 +82,15 @@ public class BlogEditPageTest {
         navigateToBlogEditPage();
         submitBlogForm();
         assertBlogPage();
-        Assert.assertFalse(tester.getServletResponse().getDocument().contains("This is a sample blog entry."));
+        String s = tester.getServletResponse().getDocument();
+        Assert.assertFalse(s.contains("This is a sample blog entry."));
     }
 
     private void navigateToBlogEditPage() {
         tester.startPage(BlogPage.class);
         tester.assertRenderedPage(BlogPage.class);
         tester.assertContains("This is a sample blog entry.");
-        tester.clickLink("repeatingBlogEntries:1:blogView:authorButtons:editLink");
+        tester.clickLink("repeatingBlogEntries:2:blogView:authorButtons:editLink");
         tester.assertRenderedPage(BlogEditPage.class);
     }
 

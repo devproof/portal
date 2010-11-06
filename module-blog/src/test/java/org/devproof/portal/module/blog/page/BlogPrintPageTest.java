@@ -17,22 +17,34 @@ package org.devproof.portal.module.blog.page;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.servlet.ServletContext;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * @author Carsten Hufe
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = MockContextLoader.class,
+        locations = {"classpath:/org/devproof/portal/module/blog/test-datasource.xml" })
 public class BlogPrintPageTest {
+    @Autowired
+    private ServletContext servletContext;
     private WicketTester tester;
 
     @Before
     public void setUp() throws Exception {
-        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_blog.sql", "insert_blog.sql");
+        tester = PortalTestUtil.createWicketTester(servletContext);
     }
 
     @After
