@@ -1,5 +1,6 @@
 include 'portal-core'
 include 'module-comment'
+include 'module-deadlinkcheck'
 include 'module-otherpage'
 include 'module-blog'
 include 'module-uploadcenter'

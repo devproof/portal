@@ -10,7 +10,5 @@
     <jdbc:embedded-database id="dataSource" type="HSQL">
         <jdbc:script location="classpath:sql/create/create_tables_hsql_core.sql"/>
         <jdbc:script location="classpath:sql/create/insert_core.sql"/>
-        <jdbc:script location="classpath:sql/create/create_tables_hsql_otherpage.sql"/>
-        <jdbc:script location="classpath:sql/create/insert_otherpage.sql"/>
     </jdbc:embedded-database>
 </beans>
