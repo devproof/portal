@@ -3,5 +3,9 @@ apply plugin: 'war'
 dependencies {
   compile project(':portal-core')
   compile project(':module-blog')
+  compile project(':module-article')
+  compile project(':module-bookmark')
+  compile project(':module-download')
+  compile project(':module-otherpage')
   compile project(':module-uploadcenter')
 }
