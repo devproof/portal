@@ -12,6 +12,6 @@
             base-package="org.devproof.portal.module.article"
             module-name="Article"
             author="devproof - Carsten Hufe" author-url="http://devproof.org"
-            module-version="${devproof.version}" portal-version="${devproof.version}"/>
+            module-version="@devproofVersion@" portal-version="@devproofVersion@"/>
 
 </beans>

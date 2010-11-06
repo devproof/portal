@@ -15,10 +15,10 @@
         base-package="org.devproof.portal.core.module"
         module-name="Devproof Core"
         author="devproof - Carsten Hufe" author-url="http://devproof.org"
-        module-version="${devproof.version}" portal-version="${devproof.version}"/>
+        module-version="@devproofVersion@" portal-version="@devproofVersion@"/>
 
     <bean id="devproofVersion" class="java.lang.String">
-        <constructor-arg value="${devproof.version}"/>
+        <constructor-arg value="@devproofVersion@"/>
     </bean>
 
     <!--  Base generic DAO  -->

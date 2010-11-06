@@ -1,26 +1,18 @@
-defaultTasks "build" 
+import org.apache.tools.ant.filters.*
 
-version = '1.1-rc1-SNAPSHOT'
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+defaultTasks "build" // and dist
 
-buildscript {
-    repositories {
-        mavenRepo urls: 'http://gradle.artifactoryonline.com/gradle/plugins'
-    }
-    dependencies {
-        classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
-    }
-}
-                                
 allprojects {
 	apply plugin: 'org.gradle.idea'
 }
 
 subprojects {
+    defaultTasks "build"  // and dist bei root project
     apply plugin: 'java'
     apply plugin: 'project-reports'
-    version = '1.1-rc1-SNAPSHOT'
+    version = '1.1-rc1-DEVELOPMENT'
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
     group = 'org.devproof.portal'
 
     configurations {
@@ -104,5 +96,27 @@ subprojects {
         compile  'mysql:mysql-connector-java:5.1.12'
         compile  'javax.mail:mail:1.4'
     }
+
+    // filtering resources
+    afterEvaluate {
+        filterResources = sourceSets.all.processResourcesTaskName.collect {
+          tasks[it]
+        }
+        configure(filterResources) {
+            filter(ReplaceTokens,
+                   tokens: [devproofVersion: project.version])
+        }
+    }
 }
+
+// load IDEA plugin
+buildscript {
+    repositories {
+        mavenRepo urls: 'http://gradle.artifactoryonline.com/gradle/plugins'
+    }
+    dependencies {
+        classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
+    }
+}
+
 
