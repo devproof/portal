@@ -16,20 +16,32 @@
 package org.devproof.portal.module.bookmark.page;
 
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author Carsten Hufe
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = MockContextLoader.class,
+        locations = {"classpath:/org/devproof/portal/module/bookmark/test-datasource.xml" })
 public class BookmarkPageTest {
+    @Autowired
+    private ServletContext servletContext;
     private WicketTester tester;
 
     @Before
     public void setUp() throws Exception {
-        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase("create_tables_hsql_bookmark.sql", "insert_bookmark.sql");
+        tester = PortalTestUtil.createWicketTester(servletContext);
     }
 
     @After
