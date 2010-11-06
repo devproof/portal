@@ -1,0 +1,7 @@
+apply plugin: 'war'
+
+dependencies {
+  compile project(':portal-core')
+  compile project(':module-blog')
+  compile project(':module-uploadcenter')
+}
