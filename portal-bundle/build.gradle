@@ -1,0 +1,98 @@
+import groovy.sql.Sql
+
+bundlePath = "$buildDir/bundle/"
+bundleTmpPath = "$bundlePath/tmp/"
+warTmpPath = "$bundleTmpPath/war/"
+sqlTmpPath = "$bundleTmpPath/sql/"
+sqlPath = "$bundlePath/sql/"
+hsqlPath = "$bundlePath/hsql/"
+
+dependencies {
+  compile project(':portal-webapp')
+}
+
+task bundle() {
+  println "task bundle"
+  cleanBundle()
+  extractWar()
+  extractSql()
+  concatSqlAndCreateFile('hsql')
+  concatSqlAndCreateFile('mysql')
+  concatSqlAndCreateFile('oracle')
+  createHsqlDBFiles()
+}
+
+def createHsqlDBFiles() {
+  mkdir(hsqlPath)
+  def source = new org.hsqldb.jdbc.jdbcDataSource()
+  source.database = "jdbc:hsqldb:file:$hsqlPath/devproof_data"
+  source.user = 'sa'
+  source.password = ''
+  def sql = new Sql(source)
+  def creationScript = file(sqlPath + '/install_devproof_hsql.sql').text
+  sql.execute(creationScript);
+}
+
+def cleanBundle() {
+  println "cleanBundle"
+  file(bundlePath).deleteDir()
+}
+
+def extractWar() {
+  println "extractWar"
+  copy {
+    p = project(':portal-webapp')
+    warfile = p.buildDir.path + '/libs/' + p.name + '-' + version + '.war'
+    from zipTree(warfile)
+    into warTmpPath
+  }
+}
+
+def extractSql() {
+  println "extractSql"
+  copy {
+    jars = "$warTmpPath/WEB-INF/lib/"
+    fileTree(jars).each{
+      jarFile ->
+      include 'sql/*/*.sql'
+      from zipTree(jarFile)
+      into bundleTmpPath
+    }
+  }
+}
+
+def concatSqlAndCreateFile(type) {
+  println "concatSql $type"
+  mkdir(sqlPath)
+  File outputFile = file(sqlPath + '/install_devproof_' + type + '.sql')
+  outputFile.append(file(sqlTmpPath + '/create/create_tables_' + type + '_core.sql').text + '\n');
+  outputFile.append(file(sqlTmpPath + '/create/insert_core.sql').text + '\n');
+  def sqlFiles = file(sqlTmpPath + '/create').listFiles().sort()
+  // create* files
+  sqlFiles.each { File file ->
+    def createCore = 'create_tables_' + type + '_core.sql'
+    if(file.name.startsWith("create_tables_$type") &&
+      file.name != createCore) {
+      outputFile.append(file.text + '\n');
+    }
+  }
+  // insert* files
+  sqlFiles.each { File file ->
+    def insertCore = 'insert_core.sql'
+    if(file.name.startsWith('insert_') &&
+      file.name != insertCore) {
+      outputFile.append(file.text + '\n');
+    }
+  }
+}
+
+//task hello(type: Copy) {
+//  download('http://www.eu.apache.org/dist/tomcat/tomcat-6/v6.0.29/bin/apache-tomcat-6.0.29.tar.gz')
+//}
+
+def download(address) {
+    def file = new FileOutputStream("$buildDirName/" + address.tokenize("/")[-1])
+    def out = new BufferedOutputStream(file)
+    out << new URL(address).openStream()
+    out.close()
+}

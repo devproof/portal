@@ -119,6 +119,7 @@ buildscript {
     }
     dependencies {
         classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
+        classpath "hsqldb:hsqldb:1.8.0.10"
     }
 }
 
