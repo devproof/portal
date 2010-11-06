@@ -1,5 +1,6 @@
-CrudRepository -> CrudRepository
+GenericDao -> CrudRepository
 achtung SQL:
 emailTemplateDao to emailTemplateRepository
 roleDao to roleRepository in DB
-
+maven to gradle
+PortalTestUtil methods

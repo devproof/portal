@@ -1,0 +1,4 @@
+dependencies {
+  compile project(':portal-core')
+  compile project(':module-deadlinkcheck')
+}
