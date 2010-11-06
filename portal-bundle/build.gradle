@@ -2,6 +2,8 @@ import groovy.sql.Sql
 
 bundlePath = "$buildDir/bundle/"
 bundleTmpPath = "$bundlePath/tmp/"
+bundleWarPath = "$bundlePath/devproof-portal-${version}-war"
+bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat6"
 warTmpPath = "$bundleTmpPath/war/"
 sqlTmpPath = "$bundleTmpPath/sql/"
 sqlPath = "$bundlePath/sql/"
@@ -13,6 +15,9 @@ dependencies {
 
 task bundle() {
   println "task bundle"
+  mkdir(bundleWarPath)
+  mkdir(bundleTomcatPath)
+
   cleanBundle()
   extractWar()
   extractSql()
