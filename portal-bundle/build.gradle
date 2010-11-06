@@ -22,6 +22,7 @@ def bundleWar() {
   def bundleWarPath = "$bundlePath/devproof-portal-${version}-war"
   mkdir(bundleWarPath)
   copyLicences(bundleWarPath)
+  copyWar(bundleWarPath)
   concatCreateSqlAndWriteFile('hsql', bundleWarPath)
   concatCreateSqlAndWriteFile('mysql', bundleWarPath)
   concatCreateSqlAndWriteFile('oracle', bundleWarPath)
@@ -31,10 +32,19 @@ def bundleTomcat() {
   def bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat6"
   mkdir(bundleTomcatPath)
   copyLicences(bundleTomcatPath)
+  copyWar(bundleTomcatPath)
   concatCreateSqlAndWriteFile('hsql', bundleTomcatPath)
   concatCreateSqlAndWriteFile('mysql', bundleTomcatPath)
   concatCreateSqlAndWriteFile('oracle', bundleTomcatPath)
   createHsqlDBFiles(bundleTomcatPath)
+}
+
+def copyWar(bundlePath) {
+  println "copyWar"
+  copy {
+    from locateWarPath()
+    into bundlePath + '/war/'
+  }
 }
 
 def copyLicences(bundlePath) {
@@ -73,12 +83,15 @@ def cleanTmpFolder() {
   file(bundlePath + '/tmp/').deleteDir()
 }
 
+def locateWarPath() {
+  def p = project(':portal-webapp')
+  p.buildDir.path + '/libs/' + p.name + '-' + version + '.war'
+}
+
 def extractWar() {
   println "extractWar"
   copy {
-    p = project(':portal-webapp')
-    warfile = p.buildDir.path + '/libs/' + p.name + '-' + version + '.war'
-    from zipTree(warfile)
+    from zipTree(locateWarPath())
     into warTmpPath
   }
 }
