@@ -1,5 +1,6 @@
 include 'portal-core'
-include 'module-blog'
 include 'module-comment'
+include 'module-otherpage'
+include 'module-blog'
 include 'module-uploadcenter'
 include 'portal-webapp'
