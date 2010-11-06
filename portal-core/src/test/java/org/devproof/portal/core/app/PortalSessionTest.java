@@ -24,10 +24,14 @@ import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
+import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +42,9 @@ import static org.junit.Assert.*;
 /**
  * @author Carsten Hufe
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = MockContextLoader.class,
+        locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class PortalSessionTest {
 
     private PortalSession portalSession;
@@ -50,7 +57,6 @@ public class PortalSessionTest {
         cookieStored = false;
         cookieCleaned = false;
         cookieSessionId = null;
-        PortalTestUtil.createWicketTesterWithSpringAndDatabase();
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
         ServletWebRequest servletWebRequest = new ServletWebRequest(mockHttpServletRequest);
         portalSession = new PortalSession(servletWebRequest) {
