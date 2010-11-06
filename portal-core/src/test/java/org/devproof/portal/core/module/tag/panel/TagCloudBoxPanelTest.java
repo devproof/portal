@@ -23,11 +23,17 @@ import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.service.TagService;
+import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.servlet.ServletContext;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +41,17 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = MockContextLoader.class,
+        locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class TagCloudBoxPanelTest {
+    @Autowired
+    private ServletContext servletContext;
     private WicketTester tester;
 
     @Before
     public void setUp() throws Exception {
-        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        tester = PortalTestUtil.createWicketTester(servletContext);
     }
 
     @After

@@ -136,6 +136,15 @@ public class PortalTestUtil {
 		return new WicketTester(app);
 	}
 
+    public static WicketTester createWicketTester(ServletContext servletContext) {
+		PortalApplication app = new TestPortalApplication(servletContext);
+
+		// Workaround for bug in WicketTester, mounted url does not work
+		// with stateless form
+		app.unmount("/login");
+		return new WicketTester(app);
+	}
+
 	private static MockServletContext getSandbox(String spring) {
 		if (sandbox == null) {
 			sandbox = new MockServletContext("") {
@@ -157,6 +166,7 @@ public class PortalTestUtil {
 	/**
 	 * Create database and spring context
 	 */
+    @Deprecated
 	public static WicketTester createWicketTesterWithSpringAndDatabase(String... sqlFiles) throws SQLException,
 			IOException {
 		return createWicketTesterWithCustomSpringAndDatabase("classpath*:/**/devproof-module.xml", sqlFiles);
@@ -235,14 +245,15 @@ public class PortalTestUtil {
 	}
 
 	@SuppressWarnings("unchecked")
+    @Deprecated
 	public static <T> T getBean(String beanName) {
 		return (T) ContextLoader.getCurrentWebApplicationContext().getBean(beanName);
 	}
 
 	private static class TestPortalApplication extends PortalApplication {
-		private final MockServletContext sandbox;
+		private final ServletContext sandbox;
 
-		public TestPortalApplication(MockServletContext sandbox) {
+		public TestPortalApplication(ServletContext sandbox) {
 			this.sandbox = sandbox;
 		}
 

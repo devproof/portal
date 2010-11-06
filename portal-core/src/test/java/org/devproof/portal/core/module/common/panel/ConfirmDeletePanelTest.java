@@ -20,20 +20,32 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.Configuration;
+import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author Carsten Hufe
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = MockContextLoader.class,
+        locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class ConfirmDeletePanelTest {
+    @Autowired
+    private ServletContext servletContext;
     private WicketTester tester;
 
     @Before
     public void setUp() throws Exception {
-        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
+        tester = PortalTestUtil.createWicketTester(servletContext);
         PortalTestUtil.loginDefaultAdminUser(tester);
     }
 

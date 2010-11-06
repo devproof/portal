@@ -40,8 +40,13 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 
     @Override
     protected void customizeContext(ServletContext servletContext, ConfigurableWebApplicationContext applicationContext) {
-        List<String> modules = new ArrayList<String>();
+        String[] configs = locateConfigLocations();
+        applicationContext.setConfigLocations(configs);
+    }
+
+    public static String[] locateConfigLocations(String... additionalContexts)  {
         try {
+            List<String> modules = new ArrayList<String>();
             List<Properties> propertiesList = loadAllProperties("META-INF/devproof.module", null);
             for(Properties properties : propertiesList) {
                 Set<Map.Entry<Object, Object>> entries = properties.entrySet();
@@ -49,8 +54,10 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
                     modules.add((String)entry.getValue());
                 }
             }
-            String[] configs = convertListToArray(modules);
-            applicationContext.setConfigLocations(configs);
+            for(String additionalContext : additionalContexts) {
+                modules.add(additionalContext);
+            }
+            return convertListToArray(modules);
         }
         catch(Exception e) {
             throw new IllegalStateException(e);
@@ -85,7 +92,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
 		return properties;
 	}
 
-    private String[] convertListToArray(List<String> modules) {
+    private static String[] convertListToArray(List<String> modules) {
         String[] configs = new String[modules.size()];
         int i = 0;
         for (String module : modules) {

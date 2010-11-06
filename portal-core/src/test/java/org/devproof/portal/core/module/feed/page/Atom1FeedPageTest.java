@@ -19,21 +19,36 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.feed.DummyFeedProviderImpl;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
+import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author Carsten Hufe
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader = MockContextLoader.class,
+        locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class Atom1FeedPageTest {
+    @Autowired
+    private ServletContext servletContext;
+    @Autowired
+    private ApplicationContext applicationContext;
     private WicketTester tester;
 
     @Before
     public void setUp() throws Exception {
-        tester = PortalTestUtil.createWicketTesterWithSpringAndDatabase();
-        FeedProviderRegistry registry = PortalTestUtil.getBean("feedProviderRegistry");
+        tester = PortalTestUtil.createWicketTester(servletContext);
+        FeedProviderRegistry registry = (FeedProviderRegistry) applicationContext.getBean("feedProviderRegistry");
         registry.removeFeedProvider("dummy");
         registry.registerFeedProvider("dummy", new DummyFeedProviderImpl());
     }
