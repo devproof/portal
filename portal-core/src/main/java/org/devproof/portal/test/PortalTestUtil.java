@@ -57,85 +57,6 @@ import org.springframework.web.context.ContextLoader;
  * @author Carsten Hufe
  */
 public class PortalTestUtil {
-	public final static String SQL_FILES[] = { "create_tables_hsql_core.sql", "insert_core.sql" };
-	private static MockServletContext sandbox = null;
-
-	/**
-	 * Returns the content of a file as String
-	 */
-	public static String getFileContent(String file) throws IOException {
-		ResourceLoader resourceLoader = new DefaultResourceLoader();
-		final Resource r;
-		if (file.startsWith("file:/")) {
-			r = resourceLoader.getResource(file);
-		} else {
-			r = resourceLoader.getResource("classpath:/sql/create/" + file);
-		}
-		InputStream is = r.getInputStream();
-		byte buffer[] = new byte[is.available()];
-		is.read(buffer);
-		is.close();
-		String str = new String(buffer);
-		str = StringUtils.remove(str, "\\n\n");
-		return StringUtils.remove(str, "\\n");
-	}
-
-	/**
-	 * Creates the data structure with the sql files Uses the default from
-	 * spring-test-datasource.xml
-	 */
-	public static void createDataStructure(List<String> files) throws SQLException, IOException {
-		try {
-			DataSource ds = (DataSource) new JndiTemplate().lookup(CommonConstants.JNDI_DATASOURCE);
-			Connection connection = ds.getConnection();
-			Statement stmt = connection.createStatement();
-			// clean db
-			stmt.execute("SHUTDOWN;");
-			stmt.close();
-			connection.close();
-			connection = ds.getConnection();
-			for (String file : files) {
-				stmt = connection.createStatement();
-				stmt.addBatch(PortalTestUtil.getFileContent(file));
-				stmt.executeBatch();
-				stmt.close();
-			}
-			connection.close();
-		} catch (NamingException e) {
-			throw new UnhandledException(e);
-		}
-	}
-
-	/**
-	 * Creates the data structure with the sql files Uses the default from
-	 * spring-test-datasource.xml
-	 */
-	public static void createDefaultDataStructure(String[] sqlFiles) throws SQLException, IOException {
-		List<String> files = new ArrayList<String>();
-		for (String file : SQL_FILES) {
-			files.add(file);
-		}
-		if (sqlFiles != null) {
-			for (String file : sqlFiles) {
-				files.add(file);
-			}
-		}
-		createDataStructure(files);
-	}
-
-	/**
-	 * Returns the wicket tester instance for PortalApplication
-	 */
-	public static WicketTester createWicketTesterWithSpring(String spring) {
-		MockServletContext sandbox = getSandbox(spring);
-		PortalApplication app = new TestPortalApplication(sandbox);
-
-		// Workaround for bug in WicketTester, mounted url does not work
-		// with stateless form
-		app.unmount("/login");
-		return new WicketTester(app);
-	}
-
     public static WicketTester createWicketTester(ServletContext servletContext) {
 		PortalApplication app = new TestPortalApplication(servletContext);
 
@@ -145,64 +66,6 @@ public class PortalTestUtil {
 		return new WicketTester(app);
 	}
 
-	private static MockServletContext getSandbox(String spring) {
-		if (sandbox == null) {
-			sandbox = new MockServletContext("") {
-
-				// this is for the theme page test
-				@Override
-				public String getRealPath(String arg0) {
-					return System.getProperty("java.io.tmpdir");
-				}
-			};
-			sandbox.addInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, "classpath:/org/devproof/portal/core/devproof-portal-core.xml\n"
-					+ spring);
-			ContextLoader contextLoader = new ContextLoader();
-			contextLoader.initWebApplicationContext(sandbox);
-		}
-		return sandbox;
-	}
-
-	/**
-	 * Create database and spring context
-	 */
-    @Deprecated
-	public static WicketTester createWicketTesterWithSpringAndDatabase(String... sqlFiles) throws SQLException,
-			IOException {
-		return createWicketTesterWithCustomSpringAndDatabase("classpath*:/**/devproof-module.xml", sqlFiles);
-	}
-
-	public static WicketTester createWicketTesterWithCustomSpringAndDatabase(String spring, String... sqlFiles)
-			throws SQLException, IOException {
-		registerJndiBindings();
-		createDefaultDataStructure(sqlFiles);
-		return createWicketTesterWithSpring(spring);
-	}
-
-	/**
-	 * Registers JNDI bindings
-	 */
-	public static void registerJndiBindings() {
-		SimpleDriverDataSource datasource = new SimpleDriverDataSource();
-		datasource.setUrl("jdbc:hsqldb:mem:testdb");
-		datasource.setUsername("sa");
-		datasource.setPassword("");
-		datasource.setDriverClass(org.hsqldb.jdbcDriver.class);
-		registerResource(CommonConstants.JNDI_DATASOURCE, datasource);
-		registerResource(CommonConstants.JNDI_MAIL_SESSION, Session.getDefaultInstance(new Properties()));
-		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, "org.hibernate.dialect.HSQLDialect");
-		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE, "false");
-		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_QUERY_CACHE, "false");
-		registerResource(CommonConstants.JNDI_PROP_EMAIL_DISABLED, "true");
-	}
-
-	public static void registerResource(String jndiName, Object jndiObj) {
-		try {
-			new org.mortbay.jetty.plus.naming.Resource(jndiName, jndiObj);
-		} catch (NamingException e) {
-			throw new UnhandledException(e);
-		}
-	}
 
 	public static void destroy(WicketTester tester) {
 		tester.destroy();
@@ -242,12 +105,6 @@ public class PortalTestUtil {
 			throw new UnhandledException(e);
 		}
 
-	}
-
-	@SuppressWarnings("unchecked")
-    @Deprecated
-	public static <T> T getBean(String beanName) {
-		return (T) ContextLoader.getCurrentWebApplicationContext().getBean(beanName);
 	}
 
 	private static class TestPortalApplication extends PortalApplication {
