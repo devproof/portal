@@ -98,15 +98,34 @@ subprojects {
     }
 
     // filtering resources
-    afterEvaluate {
-        filterResources = sourceSets.all.processResourcesTaskName.collect {
-          tasks[it]
+    processResources {
+        // copy images
+        from(sourceSets.main.resources.srcDirs) {
+            include '**/*.png'
+            include '**/*.jpg'
+            include '**/*.gif'
         }
-        configure(filterResources) {
-            filter(ReplaceTokens,
-                   tokens: [devproofVersion: project.version])
+        from(sourceSets.main.resources.srcDirs) {
+            filter(ReplaceTokens, tokens: [devproofVersion: project.version])
         }
     }
+
+//
+//    afterEvaluate {
+//        filterResources = sourceSets.all.processResourcesTaskName.collect {
+//          tasks[it]
+//        }
+//        configure(filterResources) {
+//            filter { line ->
+//              if(line.contains('CaptchaPanel')) {
+//                println line
+//              }
+//              line
+//            }
+//            filter(ReplaceTokens,
+//                   tokens: [devproofVersion: project.version])
+//        }
+//    }
 }
 
 // load IDEA plugin
