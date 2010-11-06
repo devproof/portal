@@ -66,7 +66,7 @@ public class RegisterPageTest {
         tester.assertRenderedPage(RegisterPage.class);
         PortalSession.get().getRights().add(new Right("captcha.disabled"));
         FormTester ft = tester.newFormTester("form");
-        ft.setValue("username", "peterpan");
+        ft.setValue("username", "peterpan123");
         ft.setValue("firstname", "mike");
         ft.setValue("lastname", "jack");
         ft.setValue("email", "mike.jack@email.tld");
