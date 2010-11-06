@@ -2,12 +2,8 @@ import groovy.sql.Sql
 
 bundlePath = "$buildDir/bundle/"
 bundleTmpPath = "$bundlePath/tmp/"
-bundleWarPath = "$bundlePath/devproof-portal-${version}-war"
-bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat6"
 warTmpPath = "$bundleTmpPath/war/"
 sqlTmpPath = "$bundleTmpPath/sql/"
-sqlPath = "$bundlePath/sql/"
-hsqlPath = "$bundlePath/hsql/"
 
 dependencies {
   compile project(':portal-webapp')
@@ -15,32 +11,66 @@ dependencies {
 
 task bundle() {
   println "task bundle"
-  mkdir(bundleWarPath)
-  mkdir(bundleTomcatPath)
-
   cleanBundle()
-  extractWar()
-  extractSql()
-  concatSqlAndCreateFile('hsql')
-  concatSqlAndCreateFile('mysql')
-  concatSqlAndCreateFile('oracle')
-  createHsqlDBFiles()
+  sqlPreparation()
+  bundleWar()
+  bundleTomcat()
+  cleanTmpFolder()
 }
 
-def createHsqlDBFiles() {
-  mkdir(hsqlPath)
+def bundleWar() {
+  def bundleWarPath = "$bundlePath/devproof-portal-${version}-war"
+  mkdir(bundleWarPath)
+  copyLicences(bundleWarPath)
+  concatCreateSqlAndWriteFile('hsql', bundleWarPath)
+  concatCreateSqlAndWriteFile('mysql', bundleWarPath)
+  concatCreateSqlAndWriteFile('oracle', bundleWarPath)
+}
+
+def bundleTomcat() {
+  def bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat6"
+  mkdir(bundleTomcatPath)
+  copyLicences(bundleTomcatPath)
+  concatCreateSqlAndWriteFile('hsql', bundleTomcatPath)
+  concatCreateSqlAndWriteFile('mysql', bundleTomcatPath)
+  concatCreateSqlAndWriteFile('oracle', bundleTomcatPath)
+  createHsqlDBFiles(bundleTomcatPath)
+}
+
+def copyLicences(bundlePath) {
+  println "copyLicences"
+  copy {
+    from '/licenses/'
+    into bundlePath + '/licenses/'
+  }
+}
+
+def sqlPreparation() {
+  extractWar()
+  extractSql()
+}
+
+def createHsqlDBFiles(bundlePath) {
+  def bundleTomcatHsqlPath = "$bundlePath/hsql/"
+  mkdir(bundleTomcatHsqlPath)
   def source = new org.hsqldb.jdbc.jdbcDataSource()
-  source.database = "jdbc:hsqldb:file:$hsqlPath/devproof_data"
+  source.database = "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data"
   source.user = 'sa'
   source.password = ''
   def sql = new Sql(source)
-  def creationScript = file(sqlPath + '/install_devproof_hsql.sql').text
+  def creationScript = file("$bundlePath/sql/install_devproof_hsql.sql").text
   sql.execute(creationScript);
+  sql.close()
 }
 
 def cleanBundle() {
   println "cleanBundle"
   file(bundlePath).deleteDir()
+}
+
+def cleanTmpFolder() {
+  println "clean tmp"
+  file(bundlePath + '/tmp/').deleteDir()
 }
 
 def extractWar() {
@@ -66,8 +96,9 @@ def extractSql() {
   }
 }
 
-def concatSqlAndCreateFile(type) {
+def concatCreateSqlAndWriteFile(type, bundlePath) {
   println "concatSql $type"
+  def sqlPath = "$bundlePath/sql/"
   mkdir(sqlPath)
   File outputFile = file(sqlPath + '/install_devproof_' + type + '.sql')
   outputFile.append(file(sqlTmpPath + '/create/create_tables_' + type + '_core.sql').text + '\n');
