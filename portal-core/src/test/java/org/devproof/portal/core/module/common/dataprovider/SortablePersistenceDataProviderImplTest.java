@@ -17,8 +17,8 @@ package org.devproof.portal.core.module.common.dataprovider;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.devproof.portal.core.module.common.repository.DataProviderRepository;
 import org.devproof.portal.core.module.common.query.SearchQuery;
+import org.devproof.portal.core.module.common.repository.DataProviderRepository;
 import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.junit.Before;
 import org.junit.Test;

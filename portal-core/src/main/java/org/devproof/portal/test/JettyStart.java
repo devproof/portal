@@ -28,15 +28,12 @@ import org.mortbay.jetty.plus.naming.Resource;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.management.MBeanContainer;
-import org.springframework.web.context.ContextLoaderListener;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.management.MBeanServer;
 import java.lang.management.ManagementFactory;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 /**

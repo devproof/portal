@@ -18,20 +18,15 @@ package org.devproof.portal.test;
 import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.app.PortalContextLoaderListener;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigUtils;
-import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextLoader;
-import org.springframework.test.context.support.AbstractContextLoader;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import javax.mail.Session;
 import javax.naming.NamingException;
-import javax.servlet.ServletContext;
 import java.util.Properties;
 
 /**

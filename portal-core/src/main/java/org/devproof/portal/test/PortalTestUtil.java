@@ -15,23 +15,6 @@
  */
 package org.devproof.portal.test;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-
-import javax.mail.Session;
-import javax.naming.NamingException;
-import javax.servlet.ServletContext;
-import javax.sql.DataSource;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
@@ -41,15 +24,13 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.app.PortalApplication;
-import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.user.page.LoginPage;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.jndi.JndiTemplate;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.web.context.ContextLoader;
+
+import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Class contains stuff for testing convience

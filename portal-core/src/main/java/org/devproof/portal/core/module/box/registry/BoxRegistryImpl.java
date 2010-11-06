@@ -19,9 +19,7 @@ import org.apache.wicket.Component;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.box.locator.BoxLocator;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;

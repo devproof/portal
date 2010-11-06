@@ -15,11 +15,6 @@
  */
 package org.devproof.portal.core.module.common.repository;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
@@ -29,6 +24,11 @@ import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

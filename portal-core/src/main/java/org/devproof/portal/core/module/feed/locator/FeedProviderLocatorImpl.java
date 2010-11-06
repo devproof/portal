@@ -15,15 +15,13 @@
  */
 package org.devproof.portal.core.module.feed.locator;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.devproof.portal.core.config.Locator;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Locates the pages of all modules

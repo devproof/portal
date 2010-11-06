@@ -15,9 +15,10 @@
  */
 package org.devproof.portal.core.module.feed.page;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.synd.SyndFeedImpl;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedOutput;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.MarkupStream;
@@ -26,10 +27,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.feed.synd.SyndFeedImpl;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedOutput;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author Carsten Hufe

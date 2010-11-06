@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.comment.panel;
 
-import java.text.SimpleDateFormat;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,6 +26,8 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.user.panel.UsernamePanel;
 import org.devproof.portal.module.comment.CommentConstants;
 import org.devproof.portal.module.comment.entity.Comment;
+
+import java.text.SimpleDateFormat;
 
 /**
  * @author Carsten Hufe

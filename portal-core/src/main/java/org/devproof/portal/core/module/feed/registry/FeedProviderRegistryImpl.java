@@ -21,9 +21,7 @@ import org.devproof.portal.core.config.Registry;
 import org.devproof.portal.core.module.common.locator.PageLocator;
 import org.devproof.portal.core.module.feed.locator.FeedProviderLocator;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;

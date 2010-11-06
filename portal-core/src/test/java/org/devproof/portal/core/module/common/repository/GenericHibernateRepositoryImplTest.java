@@ -15,17 +15,6 @@
  */
 package org.devproof.portal.core.module.common.repository;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-
 import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.Query;
@@ -35,6 +24,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Carsten Hufe

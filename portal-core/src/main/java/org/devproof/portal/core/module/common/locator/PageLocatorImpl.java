@@ -15,18 +15,16 @@
  */
 package org.devproof.portal.core.module.common.locator;
 
+import org.devproof.portal.core.config.Locator;
+import org.devproof.portal.core.config.ModuleConfiguration;
+import org.devproof.portal.core.config.PageConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.devproof.portal.core.config.Locator;
-import org.devproof.portal.core.config.ModuleConfiguration;
-import org.devproof.portal.core.config.PageConfiguration;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * Locates the pages of all modules

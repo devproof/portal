@@ -18,8 +18,8 @@ package org.devproof.portal.module.bookmark.service;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
-import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
+import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
 import org.junit.Before;
 import org.junit.Test;
 

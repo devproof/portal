@@ -22,8 +22,8 @@ import org.devproof.portal.core.module.email.service.EmailService;
 import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.module.comment.CommentConstants;
-import org.devproof.portal.module.comment.repository.CommentRepository;
 import org.devproof.portal.module.comment.entity.Comment;
+import org.devproof.portal.module.comment.repository.CommentRepository;
 import org.junit.Before;
 import org.junit.Test;
 

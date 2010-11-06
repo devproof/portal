@@ -16,8 +16,8 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
-import org.devproof.portal.module.article.repository.ArticleTagRepository;
 import org.devproof.portal.module.article.entity.ArticleTag;
+import org.devproof.portal.module.article.repository.ArticleTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

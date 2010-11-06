@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.module.article.page;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -54,6 +51,9 @@ import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.article.service.ArticleTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

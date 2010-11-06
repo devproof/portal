@@ -15,13 +15,10 @@
  */
 package org.devproof.portal.core.module.modulemgmt.service;
 
-import org.devproof.portal.core.config.PageConfiguration;
-import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
 
 /**
  * Initializes the modules stuff and writes it to the db

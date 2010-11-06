@@ -15,29 +15,23 @@
  */
 package org.devproof.portal.core.module.common.repository;
 
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.devproof.portal.core.module.common.annotation.DelegateRepositoryMethod;
 import org.devproof.portal.core.module.common.annotation.BulkUpdate;
+import org.devproof.portal.core.module.common.annotation.DelegateRepositoryMethod;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
-import org.hibernate.FlushMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * The executing class for the generic dao:

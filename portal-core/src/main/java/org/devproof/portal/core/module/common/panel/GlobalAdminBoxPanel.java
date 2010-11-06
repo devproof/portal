@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -34,6 +32,8 @@ import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
+
+import java.util.List;
 
 /**
  * @author Carsten Hufe

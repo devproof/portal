@@ -17,10 +17,10 @@ package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
-import org.devproof.portal.module.article.repository.ArticlePageRepository;
-import org.devproof.portal.module.article.repository.ArticleRepository;
 import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.entity.ArticlePageId;
+import org.devproof.portal.module.article.repository.ArticlePageRepository;
+import org.devproof.portal.module.article.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

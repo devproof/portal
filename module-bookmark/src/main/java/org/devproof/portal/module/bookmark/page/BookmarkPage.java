@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.module.bookmark.page;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -28,11 +25,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
@@ -48,12 +41,15 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
-import org.devproof.portal.module.bookmark.entity.BookmarkTag;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
+import org.devproof.portal.module.bookmark.entity.BookmarkTag;
 import org.devproof.portal.module.bookmark.panel.BookmarkSearchBoxPanel;
 import org.devproof.portal.module.bookmark.query.BookmarkQuery;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 import org.devproof.portal.module.bookmark.service.BookmarkTagService;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Carsten Hufe

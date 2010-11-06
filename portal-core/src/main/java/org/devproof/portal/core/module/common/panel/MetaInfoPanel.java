@@ -15,9 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -29,6 +26,9 @@ import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.user.panel.UsernamePanel;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * the part in blogs downloads, etc "created by [name] at [date]

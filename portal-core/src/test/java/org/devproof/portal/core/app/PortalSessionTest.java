@@ -25,7 +25,6 @@ import org.devproof.portal.core.module.user.exception.AuthentificationFailedExce
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.devproof.portal.test.MockContextLoader;
-import org.devproof.portal.test.PortalTestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

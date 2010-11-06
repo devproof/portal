@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.module.article.page;
 
-import java.util.List;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
@@ -38,12 +36,15 @@ import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
-import org.devproof.portal.module.article.entity.*;
+import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticlePage;
+import org.devproof.portal.module.article.entity.ArticleTag;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.article.service.ArticleTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
+
+import java.util.List;
 
 /**
  * Article overview page

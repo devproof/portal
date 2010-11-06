@@ -15,19 +15,16 @@
  */
 package org.devproof.portal.core.module.box.locator;
 
+import org.devproof.portal.core.config.BoxConfiguration;
+import org.devproof.portal.core.config.Locator;
+import org.devproof.portal.core.config.ModuleConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.devproof.portal.core.config.BoxConfiguration;
-import org.devproof.portal.core.config.Locator;
-import org.devproof.portal.core.config.ModuleConfiguration;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Carsten Hufe

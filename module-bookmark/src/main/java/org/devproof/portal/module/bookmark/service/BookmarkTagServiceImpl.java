@@ -16,8 +16,8 @@
 package org.devproof.portal.module.bookmark.service;
 
 import org.devproof.portal.core.module.tag.service.AbstractTagServiceImpl;
-import org.devproof.portal.module.bookmark.repository.BookmarkTagRepository;
 import org.devproof.portal.module.bookmark.entity.BookmarkTag;
+import org.devproof.portal.module.bookmark.repository.BookmarkTagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

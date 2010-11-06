@@ -19,9 +19,7 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
