@@ -142,7 +142,7 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findAllModuleNames();
     }
 
-    @Autowired(required = false) // required false for integration test
+    @Autowired
     public void setCommentRepository(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
