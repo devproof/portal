@@ -10,7 +10,7 @@
               removeAbandoned="true" removeAbandonedTimeout="300" logAbandoned="true"
               testWhileIdle="true" timeBetweenEvictionRunsMillis="3600000"
               username="sa" password="" driverClassName="org.hsqldb.jdbcDriver"
-              url="jdbc:hsqldb:file:../../data/devproof_data"/>
+              url="jdbc:hsqldb:file:../data/devproof_data"/>
 
     <Resource name="mail/Session" auth="Container" type="javax.mail.Session"
               mail.smtp.host="localhost" mail.smtp.auth="false"

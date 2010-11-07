@@ -1,5 +1,5 @@
-import groovy.sql.Sql
 import org.apache.tools.ant.filters.*
+import groovy.sql.Sql
 
 bundlePath = "$buildDir/dist/"
 bundleTmpPath = "$bundlePath/tmp/"
@@ -47,7 +47,7 @@ def bundleTomcat() {
   mkdir("$tomcatPath/webapps")
   copyLibsForTomcat(tomcatPath)
   copyConfigForTomcat(tomcatPath)
-  createHsqlDBFiles(bundleTomcatPath)
+  createHsqlDBFiles(bundleTomcatPath, tomcatPath)
   tarGz(bundleTomcatPath)
 }
 
@@ -147,16 +147,31 @@ def sqlPreparation() {
   extractSql()
 }
 
-def createHsqlDBFiles(bundlePath) {
-  def bundleTomcatHsqlPath = "$bundlePath/data/"
+def createHsqlDBFiles(bundleTomcatPath, tomcatPath) {
+  def bundleTomcatHsqlPath = "$tomcatPath/data/"
   mkdir(bundleTomcatHsqlPath)
+//  java.sql.DriverManager.registerDriver (new org.hsqldb.jdbcDriver ());
+//  ant.sql(
+//      driver: "org.hsqldb.jdbcDriver",
+//      url: "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data",
+//      userid: "sa",
+//      password: "",
+//      delimiter: "dummy_delimiter_for_one_commit",
+//      output: "true",
+//      keepformat: "true",
+//      autocommit: "true",
+//      classpath: classpath
+//
+//  ) {
+//    transaction(src: "$bundleTomcatPath/sql/install_devproof_hsql.sql")
+//  }
   def source = new org.hsqldb.jdbc.jdbcDataSource()
   source.database = "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data"
   source.user = 'sa'
   source.password = ''
   def sql = new Sql(source)
-  def creationScript = file("$bundlePath/sql/install_devproof_hsql.sql").text
-  sql.execute(creationScript);
+  def creationScript = file("$bundleTomcatPath/sql/install_devproof_hsql.sql").text
+  sql.executeBatch(creationScript);
   sql.close()
 }
 
