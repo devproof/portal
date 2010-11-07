@@ -150,30 +150,19 @@ def sqlPreparation() {
 def createHsqlDBFiles(bundleTomcatPath, tomcatPath) {
   def bundleTomcatHsqlPath = "$tomcatPath/data/"
   mkdir(bundleTomcatHsqlPath)
-//  java.sql.DriverManager.registerDriver (new org.hsqldb.jdbcDriver ());
-//  ant.sql(
-//      driver: "org.hsqldb.jdbcDriver",
-//      url: "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data",
-//      userid: "sa",
-//      password: "",
-//      delimiter: "dummy_delimiter_for_one_commit",
-//      output: "true",
-//      keepformat: "true",
-//      autocommit: "true",
-//      classpath: classpath
-//
-//  ) {
-//    transaction(src: "$bundleTomcatPath/sql/install_devproof_hsql.sql")
-//  }
-  def source = new org.hsqldb.jdbc.jdbcDataSource()
-  source.database = "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data"
-  source.user = 'sa'
-  source.password = ''
-  def creationScript = file("$bundleTomcatPath/sql/install_devproof_hsql.sql").text
-
-  def sql = new Sql(source)
-  sql.execute(creationScript);
-  sql.close()
+  ant.sql(
+      driver: "org.hsqldb.jdbcDriver",
+      url: "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data",
+      userid: "sa",
+      password: "",
+      delimiter: "dummy_delimiter_for_one_commit",
+      output: "true",
+      keepformat: "true",
+      autocommit: "true",
+      classpath: configurations.compile.asPath
+  ) {
+    transaction(src: "$bundleTomcatPath/sql/install_devproof_hsql.sql")
+  }
 }
 
 def cleanBundle() {
