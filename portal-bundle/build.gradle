@@ -15,8 +15,8 @@ task dist << {
   cleanBundle()
   sqlPreparation()
   bundleWar()
-  bundleTomcat()
-  cleanTmpFolder()
+//  bundleTomcat()
+//  cleanTmpFolder()
 }
 
 def bundleWar() {
@@ -26,9 +26,7 @@ def bundleWar() {
   copyLicences(bundleWarPath)
   copyWar(bundleWarPath)
   copyConfigFiles(bundleWarPath)
-  concatCreateSqlAndWriteFile('hsql', bundleWarPath)
-  concatCreateSqlAndWriteFile('mysql', bundleWarPath)
-  concatCreateSqlAndWriteFile('oracle', bundleWarPath)
+  concatAllSqlScriptsAndWrite(bundleWarPath)
   tarGz(bundleWarPath)
 }
 
@@ -39,9 +37,7 @@ def bundleTomcat() {
   copyLicences(bundleTomcatPath)
   copyWar(bundleTomcatPath)
   copyConfigFiles(bundleTomcatPath)
-  concatCreateSqlAndWriteFile('hsql', bundleTomcatPath)
-  concatCreateSqlAndWriteFile('mysql', bundleTomcatPath)
-  concatCreateSqlAndWriteFile('oracle', bundleTomcatPath)
+  concatAllSqlScriptsAndWrite(bundleTomcatPath)
   def tomcatPath = downloadTomcatAndExtract(bundleTomcatPath)
   deleteDir("$tomcatPath/webapps")
   mkdir("$tomcatPath/webapps")
@@ -49,6 +45,15 @@ def bundleTomcat() {
   copyConfigForTomcat(tomcatPath)
   createHsqlDBFiles(bundleTomcatPath, tomcatPath)
   tarGz(bundleTomcatPath)
+}
+
+def concatAllSqlScriptsAndWrite(bundlePath) {
+  concatCreateSqlAndWriteFile('hsql', bundlePath)
+  concatCreateSqlAndWriteFile('mysql', bundlePath)
+  concatCreateSqlAndWriteFile('oracle', bundlePath)
+  concatUpdateSqlAndWriteFile('hsql', bundlePath)
+  concatUpdateSqlAndWriteFile('mysql', bundlePath)
+  concatUpdateSqlAndWriteFile('oracle', bundlePath)
 }
 
 def tarGz(bundlePath) {
@@ -207,7 +212,7 @@ def extractSql() {
 }
 
 def concatCreateSqlAndWriteFile(type, bundlePath) {
-  println "concatSql $type"
+  println "concatCreateSqlAndWriteFile $type"
   def sqlPath = "$bundlePath/sql/"
   mkdir(sqlPath)
   File outputFile = file(sqlPath + '/install_devproof_' + type + '.sql')
@@ -228,6 +233,27 @@ def concatCreateSqlAndWriteFile(type, bundlePath) {
     if(file.name.startsWith('insert_') &&
       file.name != insertCore) {
       outputFile.append("\n" + file.text);
+    }
+  }
+}
+
+def concatUpdateSqlAndWriteFile(type, bundlePath) {
+  println "concatUpdateSqlAndWriteFile $type"
+  def sqlPath = "$bundlePath/sql/update/"
+  def filePrefix = "update_from_"
+
+  mkdir(sqlPath)
+  def sqlFiles = file(sqlTmpPath + '/update').listFiles().sort()
+
+  // update* files
+  sqlFiles.each { File file ->
+    if(file.name.contains("_${type}_")) {
+      tmp = file.name.minus("update_from_")
+      index = tmp.lastIndexOf("_${type}_")
+      def sqlVersion = tmp.substring(0, index)
+      def outputFilePath = "$sqlPath/update_from_${sqlVersion}_${type}.sql"
+      File outputFile = new File(outputFilePath)
+      outputFile.append(file.text + "\n");
     }
   }
 }
