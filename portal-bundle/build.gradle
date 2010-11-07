@@ -1,4 +1,5 @@
 import groovy.sql.Sql
+import org.apache.tools.ant.filters.*
 
 bundlePath = "$buildDir/bundle/"
 bundleTmpPath = "$bundlePath/tmp/"
@@ -9,8 +10,8 @@ dependencies {
   compile project(':portal-webapp')
 }
 
-task bundle() {
-  println "task bundle"
+task dist << {
+  println "task bundle dist"
   cleanBundle()
   sqlPreparation()
   bundleWar()
@@ -21,29 +22,115 @@ task bundle() {
 def bundleWar() {
   def bundleWarPath = "$bundlePath/devproof-portal-${version}-war"
   mkdir(bundleWarPath)
+  copyReadmeAndChanges(bundleWarPath, 'TOMCAT6')
   copyLicences(bundleWarPath)
   copyWar(bundleWarPath)
+  copyConfigFiles(bundleWarPath)
   concatCreateSqlAndWriteFile('hsql', bundleWarPath)
   concatCreateSqlAndWriteFile('mysql', bundleWarPath)
   concatCreateSqlAndWriteFile('oracle', bundleWarPath)
+  tarGz(bundleWarPath)
 }
 
 def bundleTomcat() {
   def bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat6"
   mkdir(bundleTomcatPath)
+  copyReadmeAndChanges(bundleTomcatPath, 'WAR')
   copyLicences(bundleTomcatPath)
   copyWar(bundleTomcatPath)
+  copyConfigFiles(bundleTomcatPath)
   concatCreateSqlAndWriteFile('hsql', bundleTomcatPath)
   concatCreateSqlAndWriteFile('mysql', bundleTomcatPath)
   concatCreateSqlAndWriteFile('oracle', bundleTomcatPath)
+  def tomcatPath = downloadTomcatAndExtract(bundleTomcatPath)
+  deleteDir("$tomcatPath/webapps")
+  mkdir("$tomcatPath/webapps")
+  copyLibsForTomcat(tomcatPath)
+  copyConfigForTomcat(tomcatPath)
   createHsqlDBFiles(bundleTomcatPath)
+  tarGz(bundleTomcatPath)
+}
+
+def tarGz(bundlePath) {
+  ant.tar(
+      destfile: bundlePath + '.tar',
+      basedir: bundlePath
+  )
+  def bundlePathTarGz = bundlePath + '.tar.gz'
+  ant.gzip(
+      destfile: bundlePathTarGz,
+      src: bundlePath + '.tar'
+  )
+  delete(bundlePath + '.tar')
+  println "Devproof bundled distribution: $bundlePathTarGz"
+}
+
+def copyConfigForTomcat(tomcatPath) {
+  copy {
+    from ('config/tomcat6/hsql/ROOT.xml') {
+      filter(ReplaceTokens, tokens: [devproofVersion: project.version])
+    }
+    into "$tomcatPath/conf/Catalina/localhost/"
+  }
+}
+
+def copyLibsForTomcat(tomcatPath) {
+  copy {
+    from 'server/tomcat6/lib/'
+    into "$tomcatPath/lib/"
+  }
+}
+
+def downloadTomcatAndExtract(bundlePath) {
+  // url is in root build.gradle
+  def downloadedFile = download(bundlePath, tomcatUrl)
+  def tarFile = downloadedFile[0..-4]
+  def folder = downloadedFile[0..-8]
+  ant.gunzip(
+    src: downloadedFile,
+    dest: tarFile
+  )
+
+  ant.untar(
+    src: tarFile,
+    dest: bundlePath
+  )
+  delete(downloadedFile)
+  delete(tarFile)
+  folder  // removes .tar.gz
 }
 
 def copyWar(bundlePath) {
   println "copyWar"
   copy {
     from locateWarPath()
-    into bundlePath + '/war/'
+    into bundlePath + "/war/"
+    rename { String fileName ->
+        "devproof-portal-${version}.war"
+    }
+  }
+}
+
+def copyConfigFiles(bundlePath) {
+  println "copyConfig"
+  copy {
+    from 'config'
+    into "$bundlePath/config"
+  }
+}
+
+def copyReadmeAndChanges(bundlePath, readmePostfix) {
+  println "copyReadmeAndChanges"
+  copy {
+    from "README_$readmePostfix"
+    into bundlePath
+    rename { String fileName ->
+        "README"
+    }
+  }
+  copy {
+    from "CHANGES"
+    into bundlePath
   }
 }
 
@@ -61,7 +148,7 @@ def sqlPreparation() {
 }
 
 def createHsqlDBFiles(bundlePath) {
-  def bundleTomcatHsqlPath = "$bundlePath/hsql/"
+  def bundleTomcatHsqlPath = "$bundlePath/data/"
   mkdir(bundleTomcatHsqlPath)
   def source = new org.hsqldb.jdbc.jdbcDataSource()
   source.database = "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data"
@@ -75,7 +162,12 @@ def createHsqlDBFiles(bundlePath) {
 
 def cleanBundle() {
   println "cleanBundle"
-  file(bundlePath).deleteDir()
+  deleteDir(bundlePath)
+}
+
+def deleteDir(dir) {
+  println "cleanBundle"
+  file(dir).deleteDir()
 }
 
 def cleanTmpFolder() {
@@ -135,13 +227,13 @@ def concatCreateSqlAndWriteFile(type, bundlePath) {
   }
 }
 
-//task hello(type: Copy) {
-//  download('http://www.eu.apache.org/dist/tomcat/tomcat-6/v6.0.29/bin/apache-tomcat-6.0.29.tar.gz')
-//}
-
-def download(address) {
-    def file = new FileOutputStream("$buildDirName/" + address.tokenize("/")[-1])
-    def out = new BufferedOutputStream(file)
-    out << new URL(address).openStream()
-    out.close()
+def download(folder, address) {
+  println "Downloading... $address"
+  def filename = address.tokenize("/")[-1]
+  def localFilePath = folder + '/' + filename
+  def file = new FileOutputStream(localFilePath)
+  def out = new BufferedOutputStream(file)
+  out << new URL(address).openStream()
+  out.close()
+  localFilePath
 }

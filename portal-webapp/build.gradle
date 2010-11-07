@@ -8,4 +8,5 @@ dependencies {
   compile project(':module-download')
   compile project(':module-otherpage')
   compile project(':module-uploadcenter')
+  providedCompile providedDeps
 }

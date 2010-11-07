@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!-- The contents of this file will be loaded for each web application -->
-<Context docBase="../../war/devproof-portal-@devproof.version@.war">
+<Context docBase="../../war/devproof-portal-@devproofVersion@.war">
     <Environment name="/config/devproof/hibernate_dialect" value="org.hibernate.dialect.HSQLDialect"
                  type="java.lang.String"/>
     <Environment name="/config/devproof/disable_email" value="true" type="java.lang.String"/>
