@@ -102,7 +102,7 @@ subprojects {
            "org.mortbay.jetty:jetty-management:$jettyVersion",
            "org.mortbay.jetty:jetty-naming:$jettyVersion",
            "org.mortbay.jetty:jetty-plus:$jettyVersion",
-           'mysql:mysql-connector-java:5.1.12',
+           'mysql:mysql-connector-java:5.1.13',
            'javax.mail:mail:1.4'
         ]
         compile providedDeps
