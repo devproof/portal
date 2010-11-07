@@ -55,7 +55,7 @@ public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry {
 
     }
 
-    @Override
+    @PostConstruct
     public void buildNavigation() {
         adminPages.clear();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
@@ -66,11 +66,7 @@ public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry {
                 registerGlobalAdminPage(conf.getPageClass());
             }
         }
-    }
-
-    @PostConstruct
-    public void afterPropertiesSet() {
-        buildNavigation();
+        moduleService.rebuildModuleLinks();
     }
 
     @Autowired

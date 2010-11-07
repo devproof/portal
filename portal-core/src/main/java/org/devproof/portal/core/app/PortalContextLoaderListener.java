@@ -48,6 +48,7 @@ public class PortalContextLoaderListener extends ContextLoaderListener {
             for(Properties properties : propertiesList) {
                 Set<Map.Entry<Object, Object>> entries = properties.entrySet();
                 for(Map.Entry<Object, Object> entry : entries) {
+                    System.out.println("context found: " + entry);
                     modules.add((String)entry.getValue());
                 }
             }

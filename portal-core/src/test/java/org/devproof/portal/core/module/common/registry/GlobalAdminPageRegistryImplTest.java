@@ -85,7 +85,7 @@ public class GlobalAdminPageRegistryImplTest {
         links.add(link);
         expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
         replay(pageLocatorMock, moduleServiceMock);
-        impl.afterPropertiesSet();
+        impl.buildNavigation();
         verify(pageLocatorMock, moduleServiceMock);
         assertEquals(RightPage.class, impl.getRegisteredGlobalAdminPages().get(0));
     }

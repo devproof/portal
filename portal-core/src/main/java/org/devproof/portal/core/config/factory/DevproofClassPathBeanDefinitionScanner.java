@@ -63,6 +63,7 @@ public class DevproofClassPathBeanDefinitionScanner extends ClassPathBeanDefinit
         if(f.containsBean(basePackage)) {
             throw new IllegalStateException("You tried to register a devproof module twice with the same base-package: " + basePackage + "!");   
         }
+        System.out.println("Register module: " + basePackage + " - " + moduleConfiguration.getName());
         f.registerSingleton(basePackage, moduleConfiguration);
     }
 

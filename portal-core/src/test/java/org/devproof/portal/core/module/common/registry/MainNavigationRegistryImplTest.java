@@ -85,7 +85,7 @@ public class MainNavigationRegistryImplTest {
         links.add(link);
         expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
         replay(pageLocatorMock, moduleServiceMock);
-        impl.afterPropertiesSet();
+        impl.buildNavigation();
         verify(pageLocatorMock, moduleServiceMock);
         assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
     }

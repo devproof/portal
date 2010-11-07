@@ -84,7 +84,7 @@ public class PageAdminPageRegistryImplTest {
         links.add(link);
         expect(moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);
         replay(pageLocatorMock, moduleServiceMock);
-        impl.afterPropertiesSet();
+        impl.buildNavigation();
         verify(pageLocatorMock, moduleServiceMock);
         assertEquals(RightPage.class, impl.getRegisteredPageAdminPages().get(0));
     }

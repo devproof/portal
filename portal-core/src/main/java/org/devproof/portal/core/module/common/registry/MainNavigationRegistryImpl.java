@@ -68,7 +68,7 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry {
         pages.remove(page);
     }
 
-    @Override
+    @PostConstruct
     public void buildNavigation() {
         clearRegistry();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
@@ -79,11 +79,7 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry {
                 registerPage(conf.getPageClass());
             }
         }
-    }
-
-    @PostConstruct
-    public void afterPropertiesSet() throws Exception {
-        buildNavigation();
+        moduleService.rebuildModuleLinks();
     }
 
     @Autowired

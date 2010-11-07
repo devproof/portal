@@ -55,11 +55,6 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry {
     }
 
     @PostConstruct
-    public void afterPropertiesSet() {
-        buildNavigation();
-    }
-
-    @Override
     public void buildNavigation() {
         adminPages.clear();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
@@ -70,6 +65,7 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry {
                 registerPageAdminPage(conf.getPageClass());
             }
         }
+        moduleService.rebuildModuleLinks();
     }
 
     @Autowired
