@@ -222,15 +222,15 @@ def concatCreateSqlAndWriteFile(type, bundlePath) {
   def sqlPath = "$bundlePath/sql/"
   mkdir(sqlPath)
   File outputFile = file(sqlPath + '/install_devproof_' + type + '.sql')
-  outputFile.append(file(sqlTmpPath + '/create/create_tables_' + type + '_core.sql').text + '\n');
-  outputFile.append(file(sqlTmpPath + '/create/insert_core.sql').text + '\n');
+  outputFile.append(file(sqlTmpPath + '/create/create_tables_' + type + '_core.sql').text);
+  outputFile.append("\n" + file(sqlTmpPath + '/create/insert_core.sql').text);
   def sqlFiles = file(sqlTmpPath + '/create').listFiles().sort()
   // create* files
   sqlFiles.each { File file ->
     def createCore = 'create_tables_' + type + '_core.sql'
     if(file.name.startsWith("create_tables_$type") &&
       file.name != createCore) {
-      outputFile.append(file.text + '\n');
+      outputFile.append("\n" + file.text);
     }
   }
   // insert* files
@@ -238,7 +238,7 @@ def concatCreateSqlAndWriteFile(type, bundlePath) {
     def insertCore = 'insert_core.sql'
     if(file.name.startsWith('insert_') &&
       file.name != insertCore) {
-      outputFile.append('\n' + file.text + '\n');
+      outputFile.append("\n" + file.text);
     }
   }
 }
