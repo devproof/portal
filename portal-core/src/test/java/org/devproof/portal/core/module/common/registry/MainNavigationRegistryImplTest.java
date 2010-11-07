@@ -66,24 +66,7 @@ public class MainNavigationRegistryImplTest {
         link.setPageName(LoginPage.class.getSimpleName());
         links.add(link);
         expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-        replay(pageLocatorMock, moduleServiceMock);
-        impl.buildNavigation();
-        verify(pageLocatorMock, moduleServiceMock);
-        assertEquals(LoginPage.class, impl.getRegisteredPages().get(0));
-    }
-
-    @Test
-    public void testAfterPropertiesSet() throws Exception {
-        Collection<PageConfiguration> confs = new ArrayList<PageConfiguration>();
-        PageConfiguration conf = new PageConfiguration();
-        conf.setPageClass(LoginPage.class);
-        confs.add(conf);
-        expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
-        List<ModuleLink> links = new ArrayList<ModuleLink>();
-        ModuleLink link = new ModuleLink();
-        link.setPageName(LoginPage.class.getSimpleName());
-        links.add(link);
-        expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
+        moduleServiceMock.rebuildModuleLinks();
         replay(pageLocatorMock, moduleServiceMock);
         impl.buildNavigation();
         verify(pageLocatorMock, moduleServiceMock);
