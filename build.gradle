@@ -4,12 +4,13 @@ defaultTasks "build"
 
 allprojects {
 	apply plugin: 'org.gradle.idea'
-    apply plugin: 'eclipse'
 }
 
 subprojects {
     apply plugin: 'java'
     apply plugin: 'project-reports'
+    apply plugin: 'eclipse'
+  
     version = '1.1-rc1-DEVELOPMENT'
   
     springVersion = '3.0.4.RELEASE'
