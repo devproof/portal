@@ -4,6 +4,7 @@ defaultTasks "build"
 
 allprojects {
 	apply plugin: 'org.gradle.idea'
+    apply plugin: 'eclipse'
 }
 
 subprojects {
