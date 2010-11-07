@@ -39,7 +39,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Carsten Hufe
  */
-public class DataProviderDaoImplTest {
+public class DataProviderRepositoryImplTest {
 	private DataProviderRepositoryImpl<EmailTemplate> impl;
 	private SessionFactory sessionFactory;
 	private Session session;
