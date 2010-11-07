@@ -1,6 +1,6 @@
 import org.apache.tools.ant.filters.*
 
-defaultTasks "build" 
+defaultTasks "build"
 
 allprojects {
 	apply plugin: 'org.gradle.idea'
@@ -16,7 +16,6 @@ subprojects {
     hibernateVersion = '3.5.1-Final'
     wicketVersion = '1.4.12'
     jettyVersion = '6.1.19'
-    hsqldbVersion = '1.8.0.10'
 
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
@@ -96,7 +95,7 @@ subprojects {
         // provided
         providedDeps = [
            'javax.servlet:servlet-api:2.5',
-           "hsqldb:hsqldb:$hsqldbVersion",
+           'hsqldb:hsqldb:1.8.0.10',
            "org.mortbay.jetty:jetty:$jettyVersion",
            "org.mortbay.jetty:jetty-util:$jettyVersion",
            "org.mortbay.jetty:jetty-management:$jettyVersion",
@@ -130,7 +129,7 @@ buildscript {
     }
     dependencies {
         classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
-        classpath "hsqldb:hsqldb:$hsqldbVersion"
+        classpath "hsqldb:hsqldb:1.8.0.10"
     }
 }
 
