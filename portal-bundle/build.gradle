@@ -229,11 +229,11 @@ def concatCreateSqlAndWriteFile(type, bundlePath) {
 
 def download(folder, address) {
   println "Downloading... $address"
+  ant.get(
+    dest: folder,
+    src: address
+  )
   def filename = address.tokenize("/")[-1]
   def localFilePath = folder + '/' + filename
-  def file = new FileOutputStream(localFilePath)
-  def out = new BufferedOutputStream(file)
-  out << new URL(address).openStream()
-  out.close()
   localFilePath
 }
