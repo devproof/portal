@@ -15,8 +15,8 @@ task dist << {
   cleanBundle()
   sqlPreparation()
   bundleWar()
-//  bundleTomcat()
-//  cleanTmpFolder()
+  bundleTomcat()
+  cleanTmpFolder()
 }
 
 def bundleWar() {
