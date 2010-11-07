@@ -23,8 +23,7 @@ Project structure
 
 package *org.devproof.portal.module.yourmodule*
 
-* repository contains the generic rep
- ository/DAOinterfaces
+* repository contains the generic repository/DAOinterfaces
 * entity contains the JPA/Hibernate entities
 * page contains the wicket pages
 * panel contains subpanels
