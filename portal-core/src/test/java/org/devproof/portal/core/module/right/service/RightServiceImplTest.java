@@ -128,6 +128,7 @@ public class RightServiceImplTest {
         list.add(impl.newRightEntity());
         expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationRights();
         assertEquals(impl.getAllRights(), list);
         verify(mock);
     }
