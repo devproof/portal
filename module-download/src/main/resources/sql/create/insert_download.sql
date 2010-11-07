@@ -51,7 +51,6 @@ INSERT INTO download_right_xref (download_id,right_id) VALUES (1,'download.vote.
 INSERT INTO download_tag (tagname,created_at,created_by,modified_at,modified_by) VALUES ('sample',{ts '2009-01-06 19:28:56.000'},'admin',{ts '2009-01-06 19:28:56.000'},'admin');
 INSERT INTO download_tag_xref (download_id,tagname) VALUES (1,'sample');
 
--- since 1.0-rc3
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('download_entries_in_feed','Download entries in feed','Downloads','java.lang.Integer','10');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('download_feed_title','Download feed title','Downloads','java.lang.String','Downloads');
 
