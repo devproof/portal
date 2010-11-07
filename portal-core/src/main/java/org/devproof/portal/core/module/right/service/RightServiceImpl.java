@@ -45,7 +45,7 @@ public class RightServiceImpl implements RightService {
 
     @Override
     @Transactional(readOnly = true)
-    public void refreshGlobalApplicationRights() {
+    public synchronized void refreshGlobalApplicationRights() {
         allRights = rightRepository.findAll();
         dirtyTime = System.currentTimeMillis();
     }
