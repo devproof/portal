@@ -169,9 +169,10 @@ def createHsqlDBFiles(bundleTomcatPath, tomcatPath) {
   source.database = "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data"
   source.user = 'sa'
   source.password = ''
-  def sql = new Sql(source)
   def creationScript = file("$bundleTomcatPath/sql/install_devproof_hsql.sql").text
-  sql.executeBatch(creationScript);
+
+  def sql = new Sql(source)
+  sql.execute(creationScript);
   sql.close()
 }
 
@@ -237,7 +238,7 @@ def concatCreateSqlAndWriteFile(type, bundlePath) {
     def insertCore = 'insert_core.sql'
     if(file.name.startsWith('insert_') &&
       file.name != insertCore) {
-      outputFile.append(file.text + '\n');
+      outputFile.append('\n' + file.text + '\n');
     }
   }
 }
