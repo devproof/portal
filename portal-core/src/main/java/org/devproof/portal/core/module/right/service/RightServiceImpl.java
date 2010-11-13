@@ -104,8 +104,11 @@ public class RightServiceImpl implements RightService {
     public List<Right> findWhitespaceSeparatedRights(String rights) {
         String[] rightsSplitted = StringUtils.split(rights, " ");
         List<Right> convertedRights = new ArrayList<Right>();
-        for(String right : rightsSplitted) {
-            convertedRights.add(findById(right));
+        for(String rightName : rightsSplitted) {
+            Right right = findById(rightName);
+            if(right != null) {
+                convertedRights.add(right);
+            }
         }
         return convertedRights;
     }

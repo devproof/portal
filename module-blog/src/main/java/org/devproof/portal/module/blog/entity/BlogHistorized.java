@@ -17,6 +17,7 @@ package org.devproof.portal.module.blog.entity;
 
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
+import org.devproof.portal.core.module.historization.interceptor.Action;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.query.BlogQuery;
@@ -39,6 +40,9 @@ import java.util.List;
 @RegisterGenericDataProvider(value = "blogHistorizedDataProvider", sortProperty = "modifiedAt", sortAscending = false)
 public class BlogHistorized extends BaseBlog {
     private static final long serialVersionUID = 1L;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "action")
+    private Action action;
 
     @Lob
     @Column(name = "rights")
@@ -46,6 +50,10 @@ public class BlogHistorized extends BaseBlog {
     @Lob
     @Column(name = "tags")
     private String tags;
+
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "blog_id")
+    private Blog blog;
 
     // Generated stuff
     public String getRights() {
@@ -62,5 +70,21 @@ public class BlogHistorized extends BaseBlog {
 
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
+
+    public Action getAction() {
+        return action;
     }
 }

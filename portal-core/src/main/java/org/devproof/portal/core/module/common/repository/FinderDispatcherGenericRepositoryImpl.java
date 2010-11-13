@@ -69,11 +69,12 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 	}
 
 	protected CrudRepository<T, PK> createGenericHibernateDao() {
-		GenericHibernateRepositoryImpl<T, PK> genericDao = new GenericHibernateRepositoryImpl<T, PK>(entityClass);
-		genericDao.setSessionFactory(getSessionFactory());
-		genericDao.setHibernateTemplate(getHibernateTemplate());
-		genericDao.setUsernameResolver(usernameResolver);
-		return genericDao;
+		GenericHibernateRepositoryImpl<T, PK> genericRepository = new GenericHibernateRepositoryImpl<T, PK>(entityClass);
+		genericRepository.setSessionFactory(getSessionFactory());
+		genericRepository.setHibernateTemplate(getHibernateTemplate());
+		genericRepository.setUsernameResolver(usernameResolver);
+        genericRepository.setApplicationContext(applicationContext);
+		return genericRepository;
 	}
 
 	private MethodInterceptor createGenericDaoInterceptor() {

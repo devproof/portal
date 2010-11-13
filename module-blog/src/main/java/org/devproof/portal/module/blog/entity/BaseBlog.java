@@ -78,6 +78,10 @@ public class BaseBlog extends Modification {
     public void setContent(String content) {
         this.content = content;
     }
+    
+    public boolean isTransient() {
+        return id == null;
+    }
 
     @Override
     public int hashCode() {

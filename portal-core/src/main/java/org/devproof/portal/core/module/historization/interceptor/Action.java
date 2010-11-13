@@ -15,27 +15,9 @@
  */
 package org.devproof.portal.core.module.historization.interceptor;
 
-import org.springframework.stereotype.Component;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 /**
- * Annotate an entity with it to historize it
- *
  * @author Carsten Hufe
  */
-@Documented
-@Target(TYPE)
-@Retention(RUNTIME)
-// TODO remove
-public @interface Historize {
-    /**
-     * Historizer to use
-     */
-    Class<? extends Historizer> value();
+public enum Action {
+    CREATED, MODIFIED, RESTORED
 }

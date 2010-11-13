@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.blog.service;
 
+import org.devproof.portal.core.module.historization.interceptor.Action;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlogServiceImpl implements BlogService {
     private BlogRepository blogRepository;
     private BlogTagService blogTagService;
+    private BlogHistorizer blogHistorizer;
 
     @Override
     @Transactional
     public void delete(Blog entity) {
+        blogHistorizer.deleteHistory(entity);
         blogRepository.delete(entity);
         blogTagService.deleteUnusedTags();
     }
@@ -45,8 +48,10 @@ public class BlogServiceImpl implements BlogService {
     @Override
     @Transactional
     public void save(Blog entity) {
+        Action action = entity.isTransient() ? Action.CREATED : Action.MODIFIED;
         blogRepository.save(entity);
         blogTagService.deleteUnusedTags();
+        blogHistorizer.historize(entity, action);
     }
 
     @Transactional(readOnly = true)
@@ -65,5 +70,10 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     public void setBlogTagService(BlogTagService blogTagService) {
         this.blogTagService = blogTagService;
+    }
+
+    @Autowired
+    public void setBlogHistorizer(BlogHistorizer blogHistorizer) {
+        this.blogHistorizer = blogHistorizer;
     }
 }

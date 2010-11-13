@@ -24,14 +24,18 @@ public interface Historizer<ENTITY, HISTORIZED> {
     /**
      * Creates the history object
      * @param entity entity to historize
-     * @return historiy object
+     * @return history object
      */
-    HISTORIZED historize(ENTITY entity);
+    void historize(ENTITY entity, Action action);
 
     /**
      * Restores the entity, copies the values from historized to entity
      * @param historized history object
-     * @param entity entity to restore, values get copied into this object
      */
-    void restore(HISTORIZED historized, ENTITY entity);
+    ENTITY restore(HISTORIZED historized);
+
+    /**
+     * Cleans the history, when the entity is deleted
+     */
+    void deleteHistory(ENTITY entity);
 }

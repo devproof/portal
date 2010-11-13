@@ -16,59 +16,85 @@
 package org.devproof.portal.core.module.historization.interceptor;
 
 import org.hibernate.EmptyInterceptor;
+import org.hibernate.Transaction;
 import org.hibernate.type.Type;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 /**
  * @author Carsten Hufe
  */
-// TODO unit test
+// TODO remove
 public class HistorizationInterceptor extends EmptyInterceptor {
     private ApplicationContext applicationContext;
-    private HibernateTemplate hibernateTemplate;
+
+//    @Override
+//    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
+//        resolveAndHistorize(entity);
+//        return false;
+//    }
+
+
+
+
+//    @Override
+//    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+//        resolveAndHistorize(entity);
+//        return false;
+//    }
+//
+//    @Override
+//    public void postFlush(Iterator entities) {
+//        while(entities.hasNext()) {
+//            Object entity = entities.next();
+//            Class<? extends Object> clazz = entity.getClass();
+//            if(clazz.isAnnotationPresent(Historize.class)) {
+//                System.out.println("postFlush" + entity);
+//                Historizer<Object, Object> historizer = resolveHistorizer(clazz);
+//                historizer.historize(entity);
+//            }
+//        }
+//        super.postFlush(entities);
+//    }
+
     
-    @Override
-    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
-        System.out.println("dirty " + entity + " " + currentState[0]);
-        Class<? extends Object> clazz = entity.getClass();
-        if(clazz.isAnnotationPresent(Historize.class)) {
-            Class<? extends Historizer> historizerType = clazz.getAnnotation(Historize.class).value();
-            @SuppressWarnings({"unchecked"})
-            Historizer<Object, Object>  historizer = applicationContext.getBean(historizerType);
-            Object o = historizer.historize(entity);
-            hibernateTemplate.save(o);
-        }
-        return super.onFlushDirty(entity, id, currentState, previousState, propertyNames, types);
-    }
 
     @Override
-    public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-        // TODO
-        System.out.println("saved " + entity);
-        return super.onSave(entity, id, state, propertyNames, types);
+    public void afterTransactionCompletion(Transaction tx) {
+        // TODO check caching for COnfiguration and remove hibernate chaching
+//        System.out.println("transaction" + tx);
     }
-
-    
 
     @Override
     public void onDelete(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-        // TODO delete history
-        super.onDelete(entity, id, state, propertyNames, types);
+        Class<? extends Object> clazz = entity.getClass();
+        if(clazz.isAnnotationPresent(Historize.class)) {
+            Historizer<Object, Object> historizer = resolveHistorizer(clazz);
+            historizer.deleteHistory(entity);
+        }
+    }
+    
+    private void resolveAndHistorize(Object entity) {
+        Class<? extends Object> clazz = entity.getClass();
+        if(clazz.isAnnotationPresent(Historize.class)) {
+            Historizer<Object, Object> historizer = resolveHistorizer(clazz);
+            historizer.historize(entity, null);
+        }
+    }
+
+    @SuppressWarnings({"unchecked"})
+    private Historizer<Object, Object> resolveHistorizer(Class<? extends Object> clazz) {
+        Class<? extends Historizer> historizerType = clazz.getAnnotation(Historize.class).value();
+        return (Historizer<Object, Object>) applicationContext.getBean(historizerType);
     }
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-    }
-
-    @Autowired
-    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
     }
 }
 
