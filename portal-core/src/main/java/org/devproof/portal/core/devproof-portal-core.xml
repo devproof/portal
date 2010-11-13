@@ -97,7 +97,10 @@
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="entityInterceptor" ref="historizationInterceptor"/>
     </bean>
+
+    <bean id="historizationInterceptor" class="org.devproof.portal.core.module.historization.interceptor.HistorizationInterceptor"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

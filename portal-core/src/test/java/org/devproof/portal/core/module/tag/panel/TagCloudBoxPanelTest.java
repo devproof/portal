@@ -138,5 +138,15 @@ public class TagCloudBoxPanelTest {
         @Override
         public void save(TestTag entity) {
         }
+
+        @Override
+        public List<TestTag> findWhitespaceSeparatedTagsAndCreateIfNotExists(String tags) {
+            return new ArrayList<TestTag>();
+        }
+
+        @Override
+        public String convertTagsToWhitespaceSeparated(List<TestTag> tags) {
+            return null;
+        }
     }
 }

@@ -10,7 +10,7 @@
            memoryStoreEvictionPolicy="LRU"
            statistics="true"/>
     <cache name="org.hibernate.cache.StandardQueryCache"
-           maxElementsInMemory="10"
+           maxElementsInMemory="10000"
            overflowToDisk="false"
            diskPersistent="false"
            timeToIdleSeconds="172800"
@@ -59,14 +59,14 @@
            memoryStoreEvictionPolicy="LRU"
            statistics="true"/>
     <cache name="entity.user"
-           maxElementsInMemory="300"
+           maxElementsInMemory="3000"
            overflowToDisk="false"
            diskPersistent="false"
            timeToIdleSeconds="7200"
            memoryStoreEvictionPolicy="LRU"
            statistics="true"/>
     <cache name="query.user"
-           maxElementsInMemory="500"
+           maxElementsInMemory="5000"
            overflowToDisk="false"
            diskPersistent="false"
            timeToIdleSeconds="7200"

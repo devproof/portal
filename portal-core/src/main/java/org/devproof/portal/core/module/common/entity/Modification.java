@@ -46,6 +46,13 @@ public abstract class Modification implements Serializable {
     @Transient
     private boolean updateModificationData = true;
 
+    public void copyFrom(Modification modification) {
+        createdAt = modification.createdAt;
+        createdBy = modification.createdBy;
+        modifiedAt = modification.modifiedAt;
+        modifiedBy = modification.modifiedBy;
+    }
+
     public void setModifiedBy(String modifiedBy) {
         this.modifiedBy = modifiedBy;
     }

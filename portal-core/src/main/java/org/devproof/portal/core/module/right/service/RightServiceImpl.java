@@ -15,12 +15,14 @@
  */
 package org.devproof.portal.core.module.right.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.repository.RightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -94,6 +96,27 @@ public class RightServiceImpl implements RightService {
     @Transactional
     public void save(Right entity) {
         rightRepository.save(entity);
+    }
+
+    // TODO unit test
+    @Override
+    @Transactional(readOnly = true)
+    public List<Right> findWhitespaceSeparatedRights(String rights) {
+        String[] rightsSplitted = StringUtils.split(rights, " ");
+        List<Right> convertedRights = new ArrayList<Right>();
+        for(String right : rightsSplitted) {
+            convertedRights.add(findById(right));
+        }
+        return convertedRights;
+    }
+    // TODO unit test
+    @Override
+    public String convertRightsToWhitespaceSeparated(List<Right> rights) {
+        StringBuilder buf = new StringBuilder();
+        for(Right right : rights) {
+            buf.append(right.getRight()).append(' ');
+        }
+        return buf.toString();
     }
 
     @Autowired

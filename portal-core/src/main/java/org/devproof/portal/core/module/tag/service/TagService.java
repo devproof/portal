@@ -58,4 +58,15 @@ public interface TagService<T> extends CrudService<T, String> {
      * Returns a tag by id and creates it, if it does exist
      */
     T findByIdAndCreateIfNotExists(String tagName);
+
+    /**
+     * Returns a list with tags, expects a string with whitespace separated tags
+     */
+    List<T> findWhitespaceSeparatedTagsAndCreateIfNotExists(String tags);
+
+    /**
+     * Returns a whitespace separated list of tags
+     */
+    String convertTagsToWhitespaceSeparated(List<T> tags);
+
 }

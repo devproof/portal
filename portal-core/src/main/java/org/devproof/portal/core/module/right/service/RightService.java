@@ -79,4 +79,14 @@ public interface RightService extends CrudService<Right, String> {
      * @return new instance of Right
      */
 	Right newRightEntity(String right);
+
+    /**
+     * Returns a list with tags, expects a string with whitespace separated tags
+     */
+    List<Right> findWhitespaceSeparatedRights(String rights);
+
+    /**
+     * Returns a whitespace separated list of rights
+     */
+    String convertRightsToWhitespaceSeparated(List<Right> rights);
 }

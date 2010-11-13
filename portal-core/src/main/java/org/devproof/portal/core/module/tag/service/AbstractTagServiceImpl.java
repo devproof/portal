@@ -15,12 +15,15 @@
  */
 package org.devproof.portal.core.module.tag.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.repository.TagRepository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,6 +99,27 @@ public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implement
             save(tag);
         }
         return tag;
+    }
+
+    // TODO unit test
+    @Override
+    @Transactional
+    public List<T> findWhitespaceSeparatedTagsAndCreateIfNotExists(String tags) {
+        String[] tagsSplitted = StringUtils.split(tags, " ");
+        List<T> convertedTags = new ArrayList<T>();
+        for(String tag : tagsSplitted) {
+            convertedTags.add(findByIdAndCreateIfNotExists(tag));
+        }
+        return convertedTags;
+    }
+    // TODO unit test
+    @Override
+    public String convertTagsToWhitespaceSeparated(List<T> tags) {
+        StringBuilder buf = new StringBuilder();
+        for(T tag : tags) {
+            buf.append(tag.getTagname()).append(' ');
+        }
+        return buf.toString();
     }
 
     public void setTagRepository(TagRepository<T> tagRepository) {

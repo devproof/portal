@@ -55,7 +55,6 @@ public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends 
 
     @SuppressWarnings("unchecked")
     public T save(T entity) {
-        openTransaction();
         logger.debug("save " + type);
         updateModificationData(entity);
         return (T) getSession().merge(entity);
@@ -80,24 +79,12 @@ public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends 
         }
     }
 
-    private void openTransaction() {
-        SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
-        if (holder.getTransaction() == null) {
-            holder.setTransaction(holder.getSession().beginTransaction());
-        }
-    }
-
     @Override
     public void refresh(T entity) {
         getSession().refresh(entity);
     }
 
     public void delete(T entity) throws DeleteFailedException {
-        SessionHolder holder = (SessionHolder) TransactionSynchronizationManager.getResource(getSessionFactory());
-        if (holder.getTransaction() == null) {
-            logger.debug("No transaction found, start one.");
-            holder.setTransaction(holder.getSession().beginTransaction());
-        }
         getSession().delete(entity);
     }
 
