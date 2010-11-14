@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
+import java.util.Date;
 
 /**
  * Historizer for Blog
@@ -34,7 +35,17 @@ public class BlogHistorizer implements Historizer<Blog, BlogHistorized> {
         historized.setRights(rightService.convertRightsToWhitespaceSeparated(blog.getAllRights()));
         historized.setBlog(blog);
         historized.setAction(action);
+        historized.setActionAt(new Date());
+        historized.setVersionNumber(retrieveNextVersionNumber(blog));
         blogHistorizedRepository.save(historized);
+    }
+
+    private Integer retrieveNextVersionNumber(Blog blog) {
+        Integer nextNumber = blogHistorizedRepository.findLastVersionNumber(blog);
+        if(nextNumber == null) {
+            nextNumber = 0;
+        }
+        return nextNumber + 1;
     }
 
     @Override

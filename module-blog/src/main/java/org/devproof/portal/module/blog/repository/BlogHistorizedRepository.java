@@ -32,6 +32,9 @@ import java.util.List;
  */
 @GenericRepository("blogHistorizedRepository")
 public interface BlogHistorizedRepository extends CrudRepository<BlogHistorized, Integer> {
+    @Query("select max(b.versionNumber) from BlogHistorized b where b.blog = ?")
+    Integer findLastVersionNumber(Blog blog);
+    
     @BulkUpdate("delete from BlogHistorized where blog = ?")
     void deleteHistoryForBlog(Blog blog);
 }

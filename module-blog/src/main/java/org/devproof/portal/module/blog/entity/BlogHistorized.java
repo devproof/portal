@@ -20,6 +20,7 @@ import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.historization.interceptor.Action;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.blog.BlogConstants;
+import org.devproof.portal.module.blog.query.BlogHistoryQuery;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -28,6 +29,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,13 +39,18 @@ import java.util.List;
  */
 @Entity
 @Table(name = "blog_historized")
-@RegisterGenericDataProvider(value = "blogHistorizedDataProvider", sortProperty = "modifiedAt", sortAscending = false)
+@RegisterGenericDataProvider(value = "blogHistoryDataProvider", sortProperty = "versionNumber", sortAscending = false, queryClass = BlogHistoryQuery.class)
 public class BlogHistorized extends BaseBlog {
     private static final long serialVersionUID = 1L;
+    @Column(name = "version_number")
+    private Integer versionNumber;
     @Enumerated(EnumType.STRING)
     @Column(name = "action")
     private Action action;
-
+    @Column(name = "action_at")
+    private Date actionAt;
+    @Column(name = "restored_from_version")
+    private Integer restoredFromVersion;
     @Lob
     @Column(name = "rights")
     private String rights;
@@ -86,5 +93,29 @@ public class BlogHistorized extends BaseBlog {
 
     public Action getAction() {
         return action;
+    }
+
+    public Date getActionAt() {
+        return actionAt;
+    }
+
+    public void setActionAt(Date actionAt) {
+        this.actionAt = actionAt;
+    }
+
+    public Integer getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(Integer versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    public Integer getRestoredFromVersion() {
+        return restoredFromVersion;
+    }
+
+    public void setRestoredFromVersion(Integer restoredFromVersion) {
+        this.restoredFromVersion = restoredFromVersion;
     }
 }

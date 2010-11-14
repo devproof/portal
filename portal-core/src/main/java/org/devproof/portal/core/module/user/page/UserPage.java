@@ -254,7 +254,7 @@ public class UserPage extends TemplatePage {
             return new Label("role", roleDescModel);
         }
 
-        private Label createUserRegistrationDateLabel(final IModel<User> userModel) {
+        private Label createUserRegistrationDateLabel(IModel<User> userModel) {
             return new Label("registration", createRegistrationDateModel(userModel));
         }
 

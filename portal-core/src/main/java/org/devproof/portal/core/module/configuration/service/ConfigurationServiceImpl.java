@@ -25,9 +25,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * @author Carsten Hufe
@@ -36,11 +34,11 @@ import java.util.NoSuchElementException;
 public class ConfigurationServiceImpl implements ConfigurationService {
 	private ConfigurationRepository configurationRepository;
 	private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private Map<String, Configuration> configurations;
 
 	@Override
-    @Transactional(readOnly = true)
 	public Object findAsObject(String key) {
-		Configuration c = configurationRepository.findById(key);
+		Configuration c = configurations.get(key);
 		if (c == null) {
 			throw new NoSuchElementException("Configuration element \"" + key + "\" was not found!");
 		}
@@ -59,14 +57,23 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 	}
 
-	@Override
+    // TODO unit test
+    @Override
     @Transactional(readOnly = true)
+    public synchronized void refreshGlobalApplicationConfiguration() {
+        List<Configuration> configList = configurationRepository.findAll();
+        configurations = new HashMap<String, Configuration>();
+        for(Configuration config : configList) {
+            configurations.put(config.getKey(), config);    
+        }
+    }
+
+	@Override
 	public Boolean findAsBoolean(String key) {
 		return (Boolean) findAsObject(key);
 	}
 
 	@Override
-    @Transactional(readOnly = true)
 	public Date findAsDate(String key) {
 		Configuration c = configurationRepository.findById(key);
 		if (c == null) {
@@ -84,31 +91,26 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	@Override
-    @Transactional(readOnly = true)
 	public Double findAsDouble(String key) {
 		return (Double) findAsObject(key);
 	}
 
 	@Override
-    @Transactional(readOnly = true)
 	public Enum<?> findAsEnum(String key) {
 		return (Enum<?>) findAsObject(key);
 	}
 
 	@Override
-    @Transactional(readOnly = true)
 	public Integer findAsInteger(String key) {
 		return (Integer) findAsObject(key);
 	}
 
 	@Override
-    @Transactional(readOnly = true)
 	public String findAsString(String key) {
 		return (String) findAsObject(key);
 	}
 
 	@Override
-    @Transactional(readOnly = true)
 	public File findAsFile(String key) {
 		String path = findAsString(key);
 		if (path.equals("java.io.tmpdir")) {
@@ -151,6 +153,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Transactional
 	public void save(Configuration entity) {
 		configurationRepository.save(entity);
+        refreshGlobalApplicationConfiguration();
 	}
 
 	@Autowired

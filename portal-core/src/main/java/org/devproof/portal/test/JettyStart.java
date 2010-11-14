@@ -28,6 +28,7 @@ import org.mortbay.jetty.plus.naming.Resource;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.management.MBeanContainer;
+import org.springframework.orm.hibernate3.support.OpenSessionInViewFilter;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -61,12 +62,12 @@ public class JettyStart {
         bb.setContextPath("/");
         bb.setWar(System.getProperty("java.io.tmpdir"));
         bb.addEventListener(new PortalContextLoaderListener());
-        FilterHolder servlet = new FilterHolder();
-        servlet.setInitParameter("applicationClassName", PortalApplication.class.getName());
+        FilterHolder filter = new FilterHolder();
+        filter.setInitParameter("applicationClassName", PortalApplication.class.getName());
         // servlet.setInitParameter("configuration", "deployment");
-        servlet.setClassName(WicketFilter.class.getName());
-        servlet.setName(WicketFilter.class.getName());
-        bb.addFilter(servlet, "/*", 0);
+        filter.setClassName(WicketFilter.class.getName());
+        filter.setName(WicketFilter.class.getName());
+        bb.addFilter(filter, "/*", 1);
         server.addHandler(bb);
 
         BasicDataSource datasource = new BasicDataSource();

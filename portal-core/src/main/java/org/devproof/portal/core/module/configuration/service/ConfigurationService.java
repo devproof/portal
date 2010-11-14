@@ -112,4 +112,8 @@ public interface ConfigurationService extends CrudService<Configuration, String>
      */
 	List<Configuration> findConfigurationsByGroup(String group);
 
+    /**
+     * Refreshes the cached configuration
+     */
+    void refreshGlobalApplicationConfiguration();
 }

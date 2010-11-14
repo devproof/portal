@@ -31,8 +31,6 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "core_configuration")
-@CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
 public class Configuration implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +47,7 @@ public class Configuration implements Serializable {
     @Column(name = "conf_value", nullable = false)
     private String value;
 
-    @Transient
+    @Transient                                                    
     public Integer getIntegerValue() {
         return new Integer(value);
     }

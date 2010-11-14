@@ -66,7 +66,7 @@ public class HistorizationInterceptor extends EmptyInterceptor {
     @Override
     public void afterTransactionCompletion(Transaction tx) {
         // TODO check caching for COnfiguration and remove hibernate chaching
-//        System.out.println("transaction" + tx);
+        System.out.println("transaction" + tx);
     }
 
     @Override
