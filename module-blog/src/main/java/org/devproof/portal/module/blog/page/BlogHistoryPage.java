@@ -20,6 +20,7 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
@@ -27,12 +28,9 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
-import org.devproof.portal.core.module.common.component.TooltipLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
-import org.devproof.portal.core.module.user.entity.User;
-import org.devproof.portal.core.module.user.panel.UserInfoPanel;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.query.BlogHistoryQuery;
@@ -136,7 +134,18 @@ public class BlogHistoryPage extends TemplatePage {
             item.add(createModifiedAtLabel(blogHistorizedModel));
             item.add(createActionAtLabel(blogHistorizedModel));
             item.add(createActionLabel(blogHistorizedModel));
+            item.add(createRestoreLink(blogHistorizedModel));
             item.add(createAlternatingModifier(item));
+        }
+
+        private Link<Void> createRestoreLink(final IModel<BlogHistorized> blogHistorizedModel) {
+            return new Link<Void>("restore") {
+                @Override
+                public void onClick() {
+                    blogService.restoreFromHistory(blogHistorizedModel.getObject());
+                    info("Restored!!");
+                }
+            };
         }
 
         private Label createVersionNumberLabel(IModel<BlogHistorized> blogHistorizedModel) {

@@ -17,6 +17,7 @@ package org.devproof.portal.module.blog.service;
 
 import org.devproof.portal.core.module.historization.interceptor.Action;
 import org.devproof.portal.module.blog.entity.Blog;
+import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,13 @@ public class BlogServiceImpl implements BlogService {
     private BlogRepository blogRepository;
     private BlogTagService blogTagService;
     private BlogHistorizer blogHistorizer;
+
+    // TODO unit test
+    @Override
+    @Transactional
+    public void restoreFromHistory(BlogHistorized historized) {
+        blogHistorizer.restore(historized);
+    }
 
     @Override
     @Transactional

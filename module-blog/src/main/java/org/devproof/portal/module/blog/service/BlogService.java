@@ -17,6 +17,7 @@ package org.devproof.portal.module.blog.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.module.blog.entity.Blog;
+import org.devproof.portal.module.blog.entity.BlogHistorized;
 
 /**
  * @author Carsten Hufe
@@ -28,4 +29,11 @@ public interface BlogService extends CrudService<Blog, Integer> {
      * @return new instance of {@link org.devproof.portal.module.blog.entity.Blog}
      */
     Blog newBlogEntity();
+
+    /**
+     * Restores a blog entry from history
+     *
+     * @param historized historied blog entry
+     */
+    void restoreFromHistory(BlogHistorized historized);
 }

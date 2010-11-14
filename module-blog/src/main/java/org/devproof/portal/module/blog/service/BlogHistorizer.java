@@ -29,6 +29,10 @@ public class BlogHistorizer implements Historizer<Blog, BlogHistorized> {
 
     @Override
     public void historize(Blog blog, Action action) {
+        historize(blog, action, null);
+    }
+
+    private void historize(Blog blog, Action action, Integer restoredVersion) {
         BlogHistorized historized = new BlogHistorized();
         historized.copyFrom(blog);
         historized.setTags(blogTagService.convertTagsToWhitespaceSeparated(blog.getTags()));
@@ -37,6 +41,7 @@ public class BlogHistorizer implements Historizer<Blog, BlogHistorized> {
         historized.setAction(action);
         historized.setActionAt(new Date());
         historized.setVersionNumber(retrieveNextVersionNumber(blog));
+        historized.setRestoredFromVersion(restoredVersion);
         blogHistorizedRepository.save(historized);
     }
 
@@ -54,6 +59,8 @@ public class BlogHistorizer implements Historizer<Blog, BlogHistorized> {
         blog.copyFrom(historized);
         blog.setAllRights(rightService.findWhitespaceSeparatedRights(historized.getTags()));
         blog.setTags(blogTagService.findWhitespaceSeparatedTagsAndCreateIfNotExists(historized.getTags()));
+        blog.setUpdateModificationData(false);
+        historize(blog, Action.RESTORED, historized.getVersionNumber());
         blogRepository.save(blog);
         return blog;
     }
