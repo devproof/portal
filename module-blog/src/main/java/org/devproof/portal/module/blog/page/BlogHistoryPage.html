@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:extend>
+    <div wicket:id="bubblePanel"></div>
+    <h2><wicket:message key="contentTitle">[history]</wicket:message></h2><br/>
+    <div wicket:id="refreshTable">
+        <p><span wicket:id="navigatorTop">[dataview navigator]</span></p>
+        <table class="dataview" cellspacing="0">
+            <tr>
+                <th wicket:id="table_versionnumber"><wicket:message key="table_versionnumber">[version number]</wicket:message></th>
+                <th wicket:id="table_modifiedby"><wicket:message key="table_modifiedby">[modified by]</wicket:message></th>
+                <th wicket:id="table_modifiedat"><wicket:message key="table_modifiedat">[modified at]</wicket:message></th>
+                <th wicket:id="table_actionat"><wicket:message key="table_actionat">[action at]</wicket:message></th>
+                <th wicket:id="table_action"><wicket:message key="table_action">[action]</wicket:message></th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr wicket:id="repeatingHistory">
+                <td wicket:id="versionNumber">[version]</td>
+                <td wicket:id="modifiedBy">[modified by]</td>
+                <td wicket:id="modifiedAt">[modified at]</td>
+                <td wicket:id="actionAt">[action at]</td>
+                <td wicket:id="action">[action]</td>
+                <td>view button</td>
+                <td>restore button</td>
+            </tr>
+        </table>
+        <p><span wicket:id="navigatorBottom">[dataview navigator]</span></p>
+    </div>
+</wicket:extend>
+</body>
+</html>
