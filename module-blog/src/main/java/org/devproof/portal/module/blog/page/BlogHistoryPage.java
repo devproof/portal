@@ -41,6 +41,8 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
+// TODO german customization
+// TODO generalize
 @ModulePage(mountPath = "/blog/history")
 public class BlogHistoryPage extends TemplatePage {
 
