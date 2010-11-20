@@ -1,0 +1,1 @@
+alter table blog change content content mediumtext;
