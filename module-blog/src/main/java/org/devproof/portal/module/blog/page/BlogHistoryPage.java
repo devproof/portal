@@ -16,7 +16,11 @@
 package org.devproof.portal.module.blog.page;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -30,9 +34,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
+import org.devproof.portal.module.blog.panel.BlogPanel;
 import org.devproof.portal.module.blog.query.BlogHistoryQuery;
 import org.devproof.portal.module.blog.service.BlogService;
 
@@ -54,7 +58,7 @@ public class BlogHistoryPage extends TemplatePage {
     @SpringBean(name = "displayDateFormat")
     private SimpleDateFormat dateFormat;
     private IModel<BlogHistoryQuery> queryModel;
-    private BubblePanel bubblePanel;
+    private ModalWindow modalWindow;
     private WebMarkupContainer blogRefreshTableContainer;
     private BlogHistoryDataView blogHistoryDataView;
 
@@ -63,14 +67,15 @@ public class BlogHistoryPage extends TemplatePage {
         this.queryModel = blogHistoryDataProvider.getSearchQueryModel();
         Blog blog = blogService.findById(params.getAsInteger("id"));
         this.queryModel.getObject().setBlog(blog);
-        add(createBubblePanel());
+        addSyntaxHighlighter();
+        add(createModalWindow());
         add(createBlogRefreshContainer());
     }
 
 
-    private BubblePanel createBubblePanel() {
-        bubblePanel = new BubblePanel("bubblePanel");
-        return bubblePanel;
+    private ModalWindow createModalWindow() {
+        modalWindow = new ModalWindow("modalWindow");
+        return modalWindow;
     }
 
     private WebMarkupContainer createBlogRefreshContainer() {
@@ -136,16 +141,33 @@ public class BlogHistoryPage extends TemplatePage {
             item.add(createModifiedAtLabel(blogHistorizedModel));
             item.add(createActionAtLabel(blogHistorizedModel));
             item.add(createActionLabel(blogHistorizedModel));
+            item.add(createViewLink(blogHistorizedModel));
             item.add(createRestoreLink(blogHistorizedModel));
             item.add(createAlternatingModifier(item));
         }
 
         private Link<Void> createRestoreLink(final IModel<BlogHistorized> blogHistorizedModel) {
             return new Link<Void>("restore") {
+                private static final long serialVersionUID = 6780596346704309571L;
+
                 @Override
                 public void onClick() {
                     blogService.restoreFromHistory(blogHistorizedModel.getObject());
                     info("Restored!!");
+                }
+            };
+        }
+
+        private Component createViewLink(final IModel<BlogHistorized> blogHistorizedModel) {
+            return new AjaxLink<Void>("view") {
+                private static final long serialVersionUID = -8563567205274304661L;
+
+                @Override
+                public void onClick(AjaxRequestTarget target) {
+                    // TODO fix me
+                    Blog blog = blogHistorizedModel.getObject().toBlog();
+                    modalWindow.setContent(new BlogPanel(modalWindow.getContentId(), Model.of(blog)));
+                    modalWindow.show(target);
                 }
             };
         }

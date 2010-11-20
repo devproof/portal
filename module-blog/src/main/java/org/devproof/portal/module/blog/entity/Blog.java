@@ -69,17 +69,17 @@ public class Blog extends BaseBlog {
 
     @Transient
     public List<Right> getViewRights() {
-        return getRightsStartingWith(allRights, "blog.view");
+        return getRightsStartingWith(getAllRights(), "blog.view");
     }
 
     @Transient
     public List<Right> getCommentViewRights() {
-        return getRightsStartingWith(allRights, "blog.comment.view");
+        return getRightsStartingWith(getAllRights(), "blog.comment.view");
     }
 
     @Transient
     public List<Right> getCommentWriteRights() {
-        return getRightsStartingWith(allRights, "blog.comment.write");
+        return getRightsStartingWith(getAllRights(), "blog.comment.write");
     }
 
     public List<BlogTag> getTags() {

@@ -3,6 +3,8 @@ package org.devproof.portal.module.blog.panel;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -41,6 +43,7 @@ public class BlogPanel extends Panel {
     public BlogPanel(String id, IModel<Blog> blogModel) {
         super(id, blogModel);
         this.blogModel = blogModel;
+        add(createCSSHeaderContributor());
         add(createAppropriateAuthorPanel());
         add(createHeadline());
         add(createMetaInfoPanel());
@@ -49,6 +52,10 @@ public class BlogPanel extends Panel {
         add(createContentLabel());
         add(createCommentPanel());
         setOutputMarkupId(true);
+    }
+    
+    private HeaderContributor createCSSHeaderContributor() {
+        return CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS);
     }
 
     private Component createPrintLink() {

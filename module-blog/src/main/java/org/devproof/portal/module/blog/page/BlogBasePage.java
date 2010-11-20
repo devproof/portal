@@ -39,13 +39,8 @@ public abstract class BlogBasePage extends TemplatePage {
 
     public BlogBasePage(PageParameters params) {
         super(params);
-        add(createCSSHeaderContributor());
         addSyntaxHighlighter();
         addBlogAddLink();
-    }
-
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS);
     }
 
     private void addBlogAddLink() {

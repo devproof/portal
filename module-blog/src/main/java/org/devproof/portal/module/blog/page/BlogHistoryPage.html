@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
-    <div wicket:id="bubblePanel"></div>
+    <div wicket:id="modalWindow"></div>
     <h2><wicket:message key="contentTitle">[history]</wicket:message></h2><br/>
     <div wicket:id="refreshTable">
         <p><span wicket:id="navigatorTop">[dataview navigator]</span></p>
@@ -22,7 +22,7 @@
                 <td wicket:id="modifiedAt">[modified at]</td>
                 <td wicket:id="actionAt">[action at]</td>
                 <td wicket:id="action">[action]</td>
-                <td>view button</td>
+                <td><a href="#" wicket:id="view">view button</a></td>
                 <td><a href="#" wicket:id="restore">restore button</a></td>
             </tr>
         </table>

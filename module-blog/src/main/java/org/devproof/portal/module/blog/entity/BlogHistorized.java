@@ -118,4 +118,12 @@ public class BlogHistorized extends BaseBlog {
     public void setRestoredFromVersion(Integer restoredFromVersion) {
         this.restoredFromVersion = restoredFromVersion;
     }
+
+    public Blog toBlog() {
+        Blog blog = new Blog();
+        blog.copyFrom(this);
+        // TODO wieder raus
+        blog.setId(-1);
+        return blog;
+    }
 }
