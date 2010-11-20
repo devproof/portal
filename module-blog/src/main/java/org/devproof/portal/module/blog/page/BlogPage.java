@@ -41,6 +41,7 @@ import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogTag;
+import org.devproof.portal.module.blog.panel.BlogPanel;
 import org.devproof.portal.module.blog.panel.BlogSearchBoxPanel;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.devproof.portal.module.blog.service.BlogService;
@@ -98,11 +99,6 @@ public class BlogPage extends BlogBasePage {
         return dataView;
     }
 
-    private BlogView createBlogView(Item<Blog> item) {
-        return new BlogView("blogView", item);
-    }
-
-
     @Override
     public String getPageTitle() {
         if (blogDataProvider.size() == 1) {
@@ -124,109 +120,18 @@ public class BlogPage extends BlogBasePage {
 
         @Override
         protected void populateItem(Item<Blog> item) {
-            item.add(createBlogView(item));
+            item.add(createBlogPanel(item));
             item.setOutputMarkupId(true);
         }
-    }
 
-    public class BlogView extends Fragment {
-
-        private static final long serialVersionUID = 1L;
-
-        private IModel<Blog> blogModel;
-
-        public BlogView(String id, Item<Blog> item) {
-            super(id, "blogView", BlogPage.this);
-            blogModel = item.getModel();
-            add(createAppropriateAuthorPanel(item));
-            add(createHeadline());
-            add(createMetaInfoPanel());
-            add(createPrintLink());
-            add(createTagPanel());
-            add(createContentLabel());
-            add(createCommentPanel());
-        }
-
-        private Component createPrintLink() {
-            Blog blog = blogModel.getObject();
-            BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink", BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
-            link.add(createPrintImage());
-            return link;
-        }
-
-        private Component createPrintImage() {
-            return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
-        }
-
-        private Component createAppropriateAuthorPanel(Item<Blog> item) {
-            if (isAuthor()) {
-                return createAuthorPanel(item);
-            } else {
-                return createEmptyAuthorPanel();
-            }
-        }
-
-        private AuthorPanel<Blog> createAuthorPanel(final Item<Blog> item) {
-            return new AuthorPanel<Blog>("authorButtons", blogModel) {
-                private static final long serialVersionUID = 1L;
-
+        private BlogPanel createBlogPanel(Item<Blog> item) {
+            return new BlogPanel("blog", item.getModel()) {
                 @Override
-                public void onDelete(AjaxRequestTarget target) {
-                    blogService.delete(getEntityModel().getObject());
-                    item.setVisible(false);
-                    target.addComponent(item);
-                    target.addComponent(getFeedback());
+                protected void onDeleted(AjaxRequestTarget target) {
                     info(getString("msg.deleted"));
-                }
-
-                @Override
-                public void onEdit(AjaxRequestTarget target) {
-                    setResponsePage(new BlogEditPage(blogModel));
+                    target.addComponent(getFeedback());
                 }
             };
-        }
-
-        private WebMarkupContainer createEmptyAuthorPanel() {
-            return new WebMarkupContainer("authorButtons");
-        }
-
-        private BookmarkablePageLink<BlogPage> createHeadline() {
-            BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink", BlogPage.class);
-            if (params == null || !params.containsKey("id")) {
-                Blog blog = blogModel.getObject();
-                headlineLink.setParameter("id", blog.getId());
-            }
-            headlineLink.add(headlineLinkLabel());
-            return headlineLink;
-        }
-
-        private Label headlineLinkLabel() {
-            IModel<String> headliineModel = new PropertyModel<String>(blogModel, "headline");
-            return new Label("headlineLabel", headliineModel);
-        }
-
-        private MetaInfoPanel<Blog> createMetaInfoPanel() {
-            return new MetaInfoPanel<Blog>("metaInfo", blogModel);
-        }
-
-        private ExtendedLabel createContentLabel() {
-            IModel<String> contentModel = new PropertyModel<String>(blogModel, "content");
-            return new ExtendedLabel("content", contentModel);
-        }
-
-        private Component createCommentPanel() {
-            Blog blog = blogModel.getObject();
-            DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-            conf.setModuleContentId(blog.getId().toString());
-            conf.setModuleName(BlogPage.class.getSimpleName());
-            conf.setViewRights(blog.getCommentViewRights());
-            conf.setWriteRights(blog.getCommentWriteRights());
-            return new ExpandableCommentPanel("comments", conf);
-        }
-
-        private TagContentPanel<BlogTag> createTagPanel() {
-            IModel<List<BlogTag>> blogTagModel = new PropertyModel<List<BlogTag>>(blogModel, "tags");
-            return new TagContentPanel<BlogTag>("tags", blogTagModel, BlogPage.class);
         }
     }
 }
