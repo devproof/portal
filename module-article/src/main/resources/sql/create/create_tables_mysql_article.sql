@@ -13,7 +13,7 @@ CREATE TABLE `article` (
 CREATE TABLE `article_page` (
   `content_id` varchar(255) NOT NULL,
   `page` int(11) NOT NULL,
-  `content` text,
+  `content` mediumtext,
   `article_id` int(11) NOT NULL,
   PRIMARY KEY  (`content_id`,`page`),
   KEY `FKE87DF838B0BB873F` (`article_id`),

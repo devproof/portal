@@ -4,7 +4,7 @@ CREATE TABLE `blog` (
   `created_by` varchar(30) default NULL,
   `modified_at` datetime default NULL,
   `modified_by` varchar(30) default NULL,
-  `content` text,
+  `content` mediumtext,
   `headline` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
@@ -44,7 +44,7 @@ CREATE TABLE `blog_historized` (
   `action` varchar(50) default NULL,
   `action_at` datetime default NULL,
   `restored_from_version` int(11) default NULL,
-  `content` text,
+  `content` mediumtext,
   `headline` varchar(255) default NULL,
   `tags` text default NULL,
   `rights` text default NULL,

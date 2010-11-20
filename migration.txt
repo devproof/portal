@@ -4,3 +4,9 @@ emailTemplateDao to emailTemplateRepository
 roleDao to roleRepository in DB
 maven to gradle
 PortalTestUtil methods removed
+
+
+db update for article  and blog
+
+-- nur mysql!
+alter table article_page change content content mediumtext;
