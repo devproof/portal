@@ -42,7 +42,7 @@ import java.util.Iterator;
  * @author Carsten Hufe
  */
 // TODO unit test
-public class RestoreViewPage extends TemplatePage {
+public abstract class RestoreViewPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "blogService")
@@ -54,19 +54,11 @@ public class RestoreViewPage extends TemplatePage {
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
 
-    // TODO darf nicht instanziierbar sein
+    // TODO darf nicht instanziierbar sein, wird abstract
     public RestoreViewPage() {
         super(new PageParameters());
-        add(createBlogPanel());
+        add(createBlogPanel("blog"));
     }
 
-    private BlogPanel createBlogPanel() {
-        return new BlogPanel("blog", null) {
-            @Override
-            protected void onDeleted(AjaxRequestTarget target) {
-                info(getString("msg.deleted"));
-                target.addComponent(getFeedback());
-            }
-        };
-    }
+    protected abstract BlogPanel createBlogPanel(String markupId);
 }

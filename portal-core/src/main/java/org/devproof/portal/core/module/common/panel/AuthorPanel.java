@@ -15,16 +15,20 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.historization.HistorizationConstants;
 
 /**
  * Shows the edit and delete button
@@ -47,6 +51,19 @@ public abstract class AuthorPanel<T> extends Panel {
         add(createBubblePanel());
         add(createEditLink());
         add(createDeleteLink());
+        add(createHistorizationLink());
+    }
+
+    private Component createHistorizationLink() {
+        MarkupContainer link = newHistorizationLink("historizationLink");
+        link.add(createHistorizationImage());
+        return link;
+    }
+
+    protected MarkupContainer newHistorizationLink(String markupId) {
+        WebMarkupContainer container = new WebMarkupContainer(markupId);
+        container.setVisible(false);
+        return container;
     }
 
     private MarkupContainer createDeleteLink() {
@@ -86,6 +103,11 @@ public abstract class AuthorPanel<T> extends Panel {
                 };
             }
         };
+    }
+
+
+    private Image createHistorizationImage() {
+        return new Image("historizationImage", HistorizationConstants.REF_HISTORY);
     }
 
     private Image createDeleteImage() {

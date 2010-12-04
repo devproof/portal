@@ -47,6 +47,7 @@ import java.text.SimpleDateFormat;
  */
 // TODO german customization
 // TODO generalize
+// TODO rights
 @ModulePage(mountPath = "/blog/history")
 public class BlogHistoryPage extends TemplatePage {
 
@@ -58,7 +59,6 @@ public class BlogHistoryPage extends TemplatePage {
     @SpringBean(name = "displayDateFormat")
     private SimpleDateFormat dateFormat;
     private IModel<BlogHistoryQuery> queryModel;
-    private ModalWindow modalWindow;
     private WebMarkupContainer blogRefreshTableContainer;
     private BlogHistoryDataView blogHistoryDataView;
 
@@ -68,15 +68,9 @@ public class BlogHistoryPage extends TemplatePage {
         Blog blog = blogService.findById(params.getAsInteger("id"));
         this.queryModel.getObject().setBlog(blog);
         addSyntaxHighlighter();
-        add(createModalWindow());
         add(createBlogRefreshContainer());
     }
 
-
-    private ModalWindow createModalWindow() {
-        modalWindow = new ModalWindow("modalWindow");
-        return modalWindow;
-    }
 
     private WebMarkupContainer createBlogRefreshContainer() {
         blogRefreshTableContainer = new WebMarkupContainer("refreshTable");
@@ -165,9 +159,33 @@ public class BlogHistoryPage extends TemplatePage {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     // TODO fix me
-                    Blog blog = blogHistorizedModel.getObject().toBlog();
-                    modalWindow.setContent(new BlogPanel(modalWindow.getContentId(), Model.of(blog)));
-                    modalWindow.show(target);
+                    setResponsePage(new RestoreViewPage() {
+                        private static final long serialVersionUID = -4001522334346081561L;
+
+                        @Override
+                        protected BlogPanel createBlogPanel(String markupId) {
+                            Blog blog = blogHistorizedModel.getObject().getBlog();
+                            return new BlogPanel(markupId, Model.of(blog)) {
+                                private static final long serialVersionUID = -8580867738175014351L;
+
+                                @Override
+                                protected void onDeleted(AjaxRequestTarget target) {
+                                    info(getString("msg.deleted"));
+                                    target.addComponent(getFeedback());
+                                }
+
+                                @Override
+                                public boolean hideAuthorButtons() {
+                                    return true;
+                                }
+
+                                @Override
+                                public boolean hideComments() {
+                                    return true;
+                                }
+                            };
+                        }
+                    });
                 }
             };
         }
