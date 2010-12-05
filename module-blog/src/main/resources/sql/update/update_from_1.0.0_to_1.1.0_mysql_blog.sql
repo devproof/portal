@@ -19,3 +19,7 @@ CREATE TABLE `blog_historized` (
   PRIMARY KEY  (`id`),
   CONSTRAINT `FK3DB0669D97F3646` FOREIGN KEY (`blog_id`) REFERENCES `blog` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+-- since 1.1
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.BlogHistoryPage','Blog: History',null,null,null,null);
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.BlogHistoryPage');
