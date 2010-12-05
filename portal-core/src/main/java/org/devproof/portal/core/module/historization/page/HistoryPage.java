@@ -204,9 +204,17 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
             return new Label("actionAt", actionAtModel);
         }
 
-        private Component createActionLabel(IModel<T> historizedModel) {
-            IModel<Action> actionModel = new PropertyModel<Action>(historizedModel, "action");
-            return new EnumLabel<Action>("action", actionModel);
+        private Component createActionLabel(final IModel<T> historizedModel) {
+            IModel<String> actionModel = new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = -8373553102841554443L;
+
+                @Override
+                public String getObject() {
+                    String action = historizedModel.getObject().getAction().toString();
+                    return new StringResourceModel(action, HistoryPage.this, new PropertyModel<Integer>(historizedModel, "restoredFromVersion")).getString();
+                }
+            };
+            return new Label("action", actionModel);
         }
               
         private AttributeModifier createAlternatingModifier(final Item<T> item) {
