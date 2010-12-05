@@ -32,6 +32,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.servlet.ServletContext;
 
+import static org.junit.Assert.assertFalse;
+
 /**
  * @author Carsten Hufe
  */
@@ -82,14 +84,14 @@ public class BlogEditPageTest {
         submitBlogForm();
         assertBlogPage();
         String s = tester.getServletResponse().getDocument();
-        Assert.assertFalse(s.contains("This is a sample blog entry."));
+        assertFalse(s.contains("This is a sample blog entry."));
     }
 
     private void navigateToBlogEditPage() {
         tester.startPage(BlogPage.class);
         tester.assertRenderedPage(BlogPage.class);
         tester.assertContains("This is a sample blog entry.");
-        tester.clickLink("repeatingBlogEntries:2:blogView:authorButtons:editLink");
+        tester.clickLink("repeatingBlogEntries:2:blog:authorButtons:editLink");
         tester.assertRenderedPage(BlogEditPage.class);
     }
 

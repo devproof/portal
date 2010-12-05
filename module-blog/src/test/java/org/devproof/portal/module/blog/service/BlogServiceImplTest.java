@@ -15,7 +15,10 @@
  */
 package org.devproof.portal.module.blog.service;
 
+import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.historization.service.Historizer;
 import org.devproof.portal.module.blog.entity.Blog;
+import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.repository.BlogRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,15 +34,18 @@ public class BlogServiceImplTest {
     private BlogServiceImpl impl;
     private BlogRepository mock;
     private BlogTagService mockTag;
+    private BlogHistorizer mockHistorizer;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(BlogRepository.class);
         mockTag = createStrictMock(BlogTagService.class);
+        mockHistorizer = createStrictMock(BlogHistorizer.class);
         impl = new BlogServiceImpl();
         impl.setBlogRepository(mock);
         impl.setBlogTagService(mockTag);
+        impl.setBlogHistorizer(mockHistorizer);
     }
 
     @Test
@@ -47,11 +53,14 @@ public class BlogServiceImplTest {
         Blog e = createBlogEntity();
         expect(mock.save(e)).andReturn(e);
         mockTag.deleteUnusedTags();
+        mockHistorizer.historize(e, Action.MODIFIED);
         replay(mock);
         replay(mockTag);
+        replay(mockHistorizer);
         impl.save(e);
         verify(mock);
         verify(mockTag);
+        verify(mockHistorizer);
     }
 
     @Test
