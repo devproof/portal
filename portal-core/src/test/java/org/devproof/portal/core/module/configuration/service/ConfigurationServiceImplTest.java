@@ -46,8 +46,6 @@ public class ConfigurationServiceImplTest {
         c.setValue("dd-mm-yyyy");
         c.setType(String.class.getName());
         list.add(c);
-//        expect(mock.findAll()).andReturn(list);
-//        impl.refreshGlobalApplicationConfiguration();
     }
 
     @Test
@@ -56,6 +54,7 @@ public class ConfigurationServiceImplTest {
         e.setKey("foo");
         e.setValue("bar");
         expect(mock.save(e)).andReturn(e);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
         impl.save(e);
         verify(mock);
@@ -123,8 +122,9 @@ public class ConfigurationServiceImplTest {
         c.setValue("value");
         c.setType(String.class.getName());
         list.add(c);
-        expect(mock.findById("key")).andReturn(c);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
         assertNotNull(impl.findAsObject("key"));
         verify(mock);
     }
@@ -136,8 +136,9 @@ public class ConfigurationServiceImplTest {
         c.setValue("true");
         c.setType(Boolean.class.getName());
         list.add(c);
-        expect(mock.findById("key")).andReturn(c);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
         assertTrue(impl.findAsBoolean("key"));
         verify(mock);
     }
@@ -162,8 +163,9 @@ public class ConfigurationServiceImplTest {
         c.setValue("12.34");
         c.setType(Double.class.getName());
         list.add(c);
-        expect(mock.findById("key")).andReturn(c);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
         double d = impl.findAsDouble("key");
         assertEquals(d, 12.34, 0.05);
         verify(mock);
@@ -176,8 +178,9 @@ public class ConfigurationServiceImplTest {
         c.setValue("12");
         c.setType(Integer.class.getName());
         list.add(c);
-        expect(mock.findById("key")).andReturn(c);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
         assertEquals(impl.findAsInteger("key"), Integer.valueOf(12));
         verify(mock);
     }
@@ -189,8 +192,9 @@ public class ConfigurationServiceImplTest {
         c.setValue("string");
         c.setType(String.class.getName());
         list.add(c);
-        expect(mock.findById("key")).andReturn(c);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
         assertEquals(impl.findAsString("key"), "string");
         verify(mock);
     }
@@ -202,8 +206,9 @@ public class ConfigurationServiceImplTest {
         c.setValue("java.io.tmpdir");
         c.setType(String.class.getName());
         list.add(c);
-        expect(mock.findById("key")).andReturn(c);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
         assertNotNull(impl.findAsFile("key"));
         verify(mock);
     }
@@ -219,8 +224,9 @@ public class ConfigurationServiceImplTest {
         c.setValue("TEST2");
         c.setType(TestEnum.class.getName());
         list.add(c);
-        expect(mock.findById("key")).andReturn(c);
+        expect(mock.findAll()).andReturn(list);
         replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
         assertEquals(impl.findAsEnum("key"), TestEnum.TEST2);
         verify(mock);
     }

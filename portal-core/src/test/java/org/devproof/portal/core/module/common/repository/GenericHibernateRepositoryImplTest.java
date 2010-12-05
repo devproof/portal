@@ -73,8 +73,7 @@ public class GenericHibernateRepositoryImplTest {
 	@Test
 	public void testSave() {
 		EmailTemplate template = newEmailTemplate();
-		expect(session.beginTransaction()).andReturn(null);
-		expect(session.merge(template)).andReturn(1);
+		session.saveOrUpdate(template);
 		expect(usernameResolver.getUsername()).andReturn("testuser");
 		replay(sessionFactory, session, query, usernameResolver);
 		impl.save(template);
@@ -97,7 +96,6 @@ public class GenericHibernateRepositoryImplTest {
 	@Test
 	public void testDelete() {
 		EmailTemplate template = newEmailTemplate();
-		expect(session.beginTransaction()).andReturn(null);
 		session.delete(template);
 		replay(sessionFactory, session, query);
 		impl.delete(template);
