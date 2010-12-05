@@ -13,29 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.historization.interceptor;
+package org.devproof.portal.core.module.historization.service;
 
 /**
- * Converter to a history object and back
- *
  * @author Carsten Hufe
  */
-public interface Historizer<ENTITY, HISTORIZED> {
-    /**
-     * Creates the history object
-     * @param entity entity to historize
-     * @return history object
-     */
-    void historize(ENTITY entity, Action action);
-
-    /**
-     * Restores the entity, copies the values from historized to entity
-     * @param historized history object
-     */
-    ENTITY restore(HISTORIZED historized);
-
-    /**
-     * Cleans the history, when the entity is deleted
-     */
-    void deleteHistory(ENTITY entity);
+public enum Action {
+    CREATED, MODIFIED, RESTORED
 }

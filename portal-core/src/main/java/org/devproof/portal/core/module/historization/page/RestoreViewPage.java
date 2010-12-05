@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.historization.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -36,7 +37,35 @@ public abstract class RestoreViewPage extends TemplatePage {
     public RestoreViewPage() {
         super(new PageParameters());
         add(newHistorizedView("view"));
+        add(newRestoreLink("topRestore"));
+        add(newRestoreLink("bottomRestore"));
+        add(newBackLink("topBack"));
+        add(newBackLink("bottomBack"));
     }
 
+    private Link<Void> newBackLink(final String markupId) {
+        return new Link<Void>(markupId) {
+            private static final long serialVersionUID = 9215404203013168802L;
+
+            @Override
+            public void onClick() {
+                onBack();
+            }
+        };
+    }
+
+    private Link<Void> newRestoreLink(final String markupId) {
+        return new Link<Void>(markupId) {
+            private static final long serialVersionUID = 9215404203013168802L;
+
+            @Override
+            public void onClick() {
+                onRestore();
+            }
+        };
+    }
+
+    protected abstract void onRestore();
+    protected abstract void onBack();
     protected abstract Component newHistorizedView(String markupId);
 }

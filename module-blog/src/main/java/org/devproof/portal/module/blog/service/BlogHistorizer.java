@@ -1,7 +1,7 @@
 package org.devproof.portal.module.blog.service;
 
-import org.devproof.portal.core.module.historization.interceptor.Action;
-import org.devproof.portal.core.module.historization.interceptor.Historizer;
+import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.historization.service.Historizer;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
@@ -10,8 +10,6 @@ import org.devproof.portal.module.blog.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
 import java.util.Date;
 
 /**

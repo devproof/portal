@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.historization.service;
 
-import org.devproof.portal.core.module.historization.interceptor.Action;
-
 import java.util.Date;
 
 /**

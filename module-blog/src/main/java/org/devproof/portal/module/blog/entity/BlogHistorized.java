@@ -16,22 +16,12 @@
 package org.devproof.portal.module.blog.entity;
 
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
-import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.historization.interceptor.Action;
+import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.core.module.historization.service.Historized;
-import org.devproof.portal.core.module.right.entity.Right;
-import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.query.BlogHistoryQuery;
-import org.devproof.portal.module.blog.query.BlogQuery;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Represents a blog entry

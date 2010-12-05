@@ -22,6 +22,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -31,9 +32,11 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.core.module.historization.service.Historized;
 
 import java.text.SimpleDateFormat;
@@ -55,6 +58,7 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
     public HistoryPage(PageParameters params) {
         super(params);
         addSyntaxHighlighter();
+        add(createContentTitleLabel());
         add(createRefreshContainer());
     }
 
@@ -62,6 +66,14 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
     protected abstract QueryDataProvider<T, ?> getQueryDataProvider();
     protected abstract Component newHistorizedView(String markupId, IModel<T> historizedModel);
     protected abstract void onRestore(IModel<T> historizedModel);
+
+    protected IModel<String> newHeadlineModel() {
+        return new StringResourceModel("contentTitle", this, null);
+    }
+
+    private Label createContentTitleLabel() {
+        return new Label("contentTitle", newHeadlineModel());
+    }
 
     private WebMarkupContainer createRefreshContainer() {
         refreshTableContainer = new WebMarkupContainer("refreshTable");
@@ -157,6 +169,16 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
                         protected Component newHistorizedView(String markupId) {
                             return HistoryPage.this.newHistorizedView(markupId, historizedModel);
                         }
+
+                        @Override
+                        protected void onRestore() {
+                            HistoryPage.this.onRestore(historizedModel);
+                        }
+
+                        @Override
+                        protected void onBack() {
+                            setResponsePage(HistoryPage.this);
+                        }
                     });
                 }
             };
@@ -182,9 +204,9 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
             return new Label("actionAt", actionAtModel);
         }
 
-        private Label createActionLabel(IModel<T> historizedModel) {
-            IModel<String> actionModel = new PropertyModel<String>(historizedModel, "action");
-            return new Label("action", actionModel);
+        private Component createActionLabel(IModel<T> historizedModel) {
+            IModel<Action> actionModel = new PropertyModel<Action>(historizedModel, "action");
+            return new EnumLabel<Action>("action", actionModel);
         }
               
         private AttributeModifier createAlternatingModifier(final Item<T> item) {

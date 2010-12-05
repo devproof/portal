@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.blog.service;
 
-import org.devproof.portal.core.module.historization.interceptor.Action;
+import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.repository.BlogRepository;

@@ -18,16 +18,12 @@ package org.devproof.portal.core.module.common.repository;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.historization.interceptor.Historize;
-import org.devproof.portal.core.module.historization.interceptor.Historizer;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
-import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;

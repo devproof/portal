@@ -18,9 +18,7 @@ package org.devproof.portal.module.blog.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
@@ -37,7 +35,6 @@ import java.text.SimpleDateFormat;
  * @author Carsten Hufe
  */
 // TODO german customization
-// TODO generalize
 // TODO rights
 @ModulePage(mountPath = "/blog/history")
 public class BlogHistoryPage extends HistoryPage<BlogHistorized> {
@@ -50,12 +47,42 @@ public class BlogHistoryPage extends HistoryPage<BlogHistorized> {
     @SpringBean(name = "displayDateFormat")
     private SimpleDateFormat dateFormat;
     private IModel<BlogHistoryQuery> queryModel;
+    private IModel<Blog> blogModel;
+    private PageParameters params;
 
     public BlogHistoryPage(PageParameters params) {
         super(params);
+        this.params = params;
         this.queryModel = blogHistoryDataProvider.getSearchQueryModel();
-        Blog blog = blogService.findById(params.getAsInteger("id"));
-        this.queryModel.getObject().setBlog(blog);
+    }
+
+    private IModel<Blog> getBlogModel() {
+        if(blogModel == null) {
+            blogModel = createBlogModel();
+        }
+        return blogModel;
+    }
+
+    private LoadableDetachableModel<Blog> createBlogModel() {
+        return new LoadableDetachableModel<Blog>() {
+            private static final long serialVersionUID = -4042346265134003874L;
+
+            @Override
+            protected Blog load() {
+                return blogService.findById(params.getAsInteger("id"));
+            }
+        };
+    }
+
+    @Override
+    protected void onBeforeRender() {
+        super.onBeforeRender();
+        this.queryModel.getObject().setBlog(getBlogModel().getObject());
+    }
+
+    @Override
+    protected IModel<String> newHeadlineModel() {
+        return new StringResourceModel("headline", this, new PropertyModel<String>(getBlogModel(), "headline"));
     }
 
     @Override
@@ -89,6 +116,8 @@ public class BlogHistoryPage extends HistoryPage<BlogHistorized> {
     @Override
     protected void onRestore(IModel<BlogHistorized> restoreModel) {
         blogService.restoreFromHistory(restoreModel.getObject());
-        error("hello world");
+        info(getString("restored"));
+        Integer blogId = restoreModel.getObject().getBlog().getId();
+        setResponsePage(new BlogPage(new PageParameters("id=" + blogId)));
     }
 }
