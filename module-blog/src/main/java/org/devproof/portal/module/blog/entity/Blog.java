@@ -18,7 +18,6 @@ package org.devproof.portal.module.blog.entity;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
-import org.devproof.portal.core.module.historization.interceptor.Historize;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.query.BlogQuery;
@@ -42,7 +41,6 @@ import java.util.List;
 @CacheQuery(region = BlogConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = BlogConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "blogDataProvider", sortProperty = "createdAt", sortAscending = false, queryClass = BlogQuery.class)
-@Historize(BlogHistorizer.class)
 public class Blog extends BaseBlog {
     private static final long serialVersionUID = 1L;
 

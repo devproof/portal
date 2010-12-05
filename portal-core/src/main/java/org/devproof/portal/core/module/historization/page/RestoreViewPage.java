@@ -35,7 +35,7 @@ public abstract class RestoreViewPage extends TemplatePage {
 
     public RestoreViewPage() {
         super(new PageParameters());
-        add(newHistorizedView("blog"));
+        add(newHistorizedView("view"));
     }
 
     protected abstract Component newHistorizedView(String markupId);
