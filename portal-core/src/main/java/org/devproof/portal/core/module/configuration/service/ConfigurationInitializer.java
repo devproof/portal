@@ -24,7 +24,7 @@ import javax.annotation.PostConstruct;
 /**
  * @author Carsten Hufe
  */
-@Component
+@Component("configurationInitializer")
 public class ConfigurationInitializer {
     @Autowired
     private ConfigurationService configurationService;

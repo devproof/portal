@@ -55,7 +55,8 @@ public class MockContextLoader implements ContextLoader {
         };
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, context);
         context.setServletContext(servletContext);
-        context.setConfigLocations(PortalContextLoaderListener.locateConfigLocations(locations));
+        String[] configLocations = PortalContextLoaderListener.locateConfigLocations(locations);
+        context.setConfigLocations(configLocations);
         context.refresh();
         context.registerShutdownHook();
         return context;

@@ -59,8 +59,7 @@ public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends 
         updateModificationData(entity);
 //        return (T) getSession().merge(entity);
         getSession().saveOrUpdate(entity);
-        // TODO change return type
-        return null;
+        return entity;
     }
 
     private void updateModificationData(T entity) {

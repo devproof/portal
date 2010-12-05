@@ -46,6 +46,8 @@ public class ConfigurationServiceImplTest {
         c.setValue("dd-mm-yyyy");
         c.setType(String.class.getName());
         list.add(c);
+//        expect(mock.findAll()).andReturn(list);
+//        impl.refreshGlobalApplicationConfiguration();
     }
 
     @Test
