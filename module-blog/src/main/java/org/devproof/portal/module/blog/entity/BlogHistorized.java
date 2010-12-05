@@ -18,6 +18,7 @@ package org.devproof.portal.module.blog.entity;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.historization.interceptor.Action;
+import org.devproof.portal.core.module.historization.service.Historized;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.query.BlogHistoryQuery;
@@ -40,7 +41,7 @@ import java.util.List;
 @Entity
 @Table(name = "blog_historized")
 @RegisterGenericDataProvider(value = "blogHistoryDataProvider", sortProperty = "versionNumber", sortAscending = false, queryClass = BlogHistoryQuery.class)
-public class BlogHistorized extends BaseBlog {
+public class BlogHistorized extends BaseBlog implements Historized {
     private static final long serialVersionUID = 1L;
     @Column(name = "version_number")
     private Integer versionNumber;
@@ -91,10 +92,12 @@ public class BlogHistorized extends BaseBlog {
         this.action = action;
     }
 
+    @Override
     public Action getAction() {
         return action;
     }
 
+    @Override
     public Date getActionAt() {
         return actionAt;
     }
@@ -103,6 +106,7 @@ public class BlogHistorized extends BaseBlog {
         this.actionAt = actionAt;
     }
 
+    @Override
     public Integer getVersionNumber() {
         return versionNumber;
     }
@@ -111,6 +115,7 @@ public class BlogHistorized extends BaseBlog {
         this.versionNumber = versionNumber;
     }
 
+    @Override
     public Integer getRestoredFromVersion() {
         return restoredFromVersion;
     }
