@@ -34,7 +34,7 @@ import java.util.*;
 public class ConfigurationServiceImpl implements ConfigurationService {
 	private ConfigurationRepository configurationRepository;
 	private SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private Map<String, Configuration> configurations;
+    protected Map<String, Configuration> configurations;
 
 	@Override
 	public Object findAsObject(String key) {
@@ -57,7 +57,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		}
 	}
 
-    // TODO unit test
     @Override
     @Transactional(readOnly = true)
     public synchronized void refreshGlobalApplicationConfiguration() {

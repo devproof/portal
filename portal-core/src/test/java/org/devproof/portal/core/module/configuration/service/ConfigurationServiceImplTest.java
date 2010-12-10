@@ -49,6 +49,22 @@ public class ConfigurationServiceImplTest {
     }
 
     @Test
+    public void testRefreshGlobalApplicationConfiguration() {
+        List<Configuration> list = new ArrayList<Configuration>();
+        Configuration e = new Configuration();
+        e.setKey("key1");
+        list.add(e);
+        e = new Configuration();
+        e.setKey("key2");
+        list.add(e);
+        expect(mock.findAll()).andReturn(list);
+        replay(mock);
+        impl.refreshGlobalApplicationConfiguration();
+        verify(mock);
+        assertEquals(2, impl.configurations.size());
+    }
+
+    @Test
     public void testSave() {
         Configuration e = new Configuration();
         e.setKey("foo");
