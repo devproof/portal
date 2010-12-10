@@ -98,7 +98,6 @@ public class RightServiceImpl implements RightService {
         rightRepository.save(entity);
     }
 
-    // TODO unit test
     @Override
     @Transactional(readOnly = true)
     public List<Right> findWhitespaceSeparatedRights(String rights) {
@@ -112,14 +111,14 @@ public class RightServiceImpl implements RightService {
         }
         return convertedRights;
     }
-    // TODO unit test
+
     @Override
     public String convertRightsToWhitespaceSeparated(List<Right> rights) {
         StringBuilder buf = new StringBuilder();
         for(Right right : rights) {
             buf.append(right.getRight()).append(' ');
         }
-        return buf.toString();
+        return buf.toString().trim();
     }
 
     @Autowired

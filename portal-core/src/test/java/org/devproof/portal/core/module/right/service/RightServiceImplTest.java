@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe
@@ -38,6 +39,34 @@ public class RightServiceImplTest {
         mock = createStrictMock(RightRepository.class);
         impl = new RightServiceImpl();
         impl.setRightRepository(mock);
+    }
+
+    @Test
+    public void testConvertRightsToWhitespaceSeparated() {
+        List<Right> rights = new ArrayList<Right>();
+        Right right = new Right();
+        right.setRight("aaa");
+        rights.add(right);
+        right = new Right();
+        right.setRight("bbb");
+        rights.add(right);
+        String strRights = impl.convertRightsToWhitespaceSeparated(rights);
+        assertEquals("aaa bbb", strRights);
+    }
+
+    @Test
+    public void testFindWhitespaceSeparatedRights() {
+        Right right1 = new Right();
+        right1.setRight("right1");
+        expect(mock.findById("right1")).andReturn(right1);
+        Right right2 = new Right();
+        right2.setRight("right2");
+        expect(mock.findById("right2")).andReturn(right2);
+        replay(mock);
+        List<Right> rights = impl.findWhitespaceSeparatedRights("right1 right2");
+        assertEquals(right1, rights.get(0));
+        assertEquals(right2, rights.get(1));
+        verify(mock);
     }
 
     @Test
