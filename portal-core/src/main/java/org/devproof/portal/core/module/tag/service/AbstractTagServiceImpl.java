@@ -101,7 +101,6 @@ public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implement
         return tag;
     }
 
-    // TODO unit test
     @Override
     @Transactional
     public List<T> findWhitespaceSeparatedTagsAndCreateIfNotExists(String tags) {
@@ -112,14 +111,14 @@ public abstract class AbstractTagServiceImpl<T extends AbstractTag<?>> implement
         }
         return convertedTags;
     }
-    // TODO unit test
+
     @Override
     public String convertTagsToWhitespaceSeparated(List<T> tags) {
         StringBuilder buf = new StringBuilder();
         for(T tag : tags) {
             buf.append(tag.getTagname()).append(' ');
         }
-        return buf.toString();
+        return buf.toString().trim();
     }
 
     public void setTagRepository(TagRepository<T> tagRepository) {

@@ -31,7 +31,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * @author Carsten Hufe
  */
-public class TagServiceImplTest {
+public class AbstractTagServiceImplTest {
     private AbstractTagServiceImpl<DummyTag> impl;
     private TagRepository<DummyTag> mock;
 
@@ -135,6 +135,34 @@ public class TagServiceImplTest {
         replay(mock);
         DummyTag newTag = impl.findByIdAndCreateIfNotExists("sampletag");
         assertEquals("sampletag", newTag.getTagname());
+        verify(mock);
+    }
+
+    @Test
+    public void testConvertTagsToWhitespaceSeparated() {
+        List<DummyTag> tags = new ArrayList<DummyTag>();
+        DummyTag tag = new DummyTag();
+        tag.setTagname("aaa");
+        tags.add(tag);
+        tag = new DummyTag();
+        tag.setTagname("bbb");
+        tags.add(tag);
+        String strTags = impl.convertTagsToWhitespaceSeparated(tags);
+        assertEquals("aaa bbb", strTags);
+    }
+
+    @Test
+    public void testFindWhitespaceSeparatedTagsAndCreateIfNotExists() {
+        DummyTag tag1 = new DummyTag();
+        tag1.setTagname("tag1");
+        expect(mock.findById("tag1")).andReturn(tag1);
+        DummyTag tag2 = new DummyTag();
+        tag2.setTagname("tag2");
+        expect(mock.findById("tag2")).andReturn(tag2);
+        replay(mock);
+        List<DummyTag> tags = impl.findWhitespaceSeparatedTagsAndCreateIfNotExists("tag1 tag2");
+        assertEquals(tag1, tags.get(0));
+        assertEquals(tag2, tags.get(1));
         verify(mock);
     }
 

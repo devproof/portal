@@ -228,7 +228,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    // TODO jedes mal kompletter lock auf right, roles....!
     public User authentificate(String sessionId, String ipAddress) {
         User user = findUserBySessionId(sessionId);
         if (user != null && user.getActive() && user.getRole().getActive() && user.getConfirmed()) {
