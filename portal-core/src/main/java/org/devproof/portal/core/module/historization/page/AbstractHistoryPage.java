@@ -22,7 +22,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
@@ -36,7 +35,6 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
-import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.core.module.historization.service.Historized;
 
 import java.text.SimpleDateFormat;
@@ -47,7 +45,7 @@ import java.text.SimpleDateFormat;
  * @author Carsten Hufe
  */
 // TODO unit test
-public abstract class HistoryPage<T extends Historized> extends TemplatePage {
+public abstract class AbstractHistoryPage<T extends Historized> extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "displayDateFormat")
@@ -55,7 +53,7 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
     private WebMarkupContainer refreshTableContainer;
     private HistoryDataView historyDataView;
 
-    public HistoryPage(PageParameters params) {
+    public AbstractHistoryPage(PageParameters params) {
         super(params);
         addSyntaxHighlighter();
         add(createContentTitleLabel());
@@ -180,22 +178,22 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
 
                 @Override
                 public void onClick(AjaxRequestTarget target) {
-                    setResponsePage(new RestoreViewPage() {
+                    setResponsePage(new AbstractRestoreViewPage() {
                         private static final long serialVersionUID = -4001522334346081561L;
 
                         @Override
                         protected Component newHistorizedView(String markupId) {
-                            return HistoryPage.this.newHistorizedView(markupId, historizedModel);
+                            return AbstractHistoryPage.this.newHistorizedView(markupId, historizedModel);
                         }
 
                         @Override
                         protected void onRestore() {
-                            HistoryPage.this.onRestore(historizedModel);
+                            AbstractHistoryPage.this.onRestore(historizedModel);
                         }
 
                         @Override
                         protected void onBack() {
-                            setResponsePage(HistoryPage.this);
+                            setResponsePage(AbstractHistoryPage.this);
                         }
                     });
                 }
@@ -229,7 +227,7 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
                 @Override
                 public String getObject() {
                     String action = historizedModel.getObject().getAction().toString();
-                    return new StringResourceModel(action, HistoryPage.this, new PropertyModel<Integer>(historizedModel, "restoredFromVersion")).getString();
+                    return new StringResourceModel(action, AbstractHistoryPage.this, new PropertyModel<Integer>(historizedModel, "restoredFromVersion")).getString();
                 }
             };
             return new Label("action", actionModel);

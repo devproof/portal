@@ -27,15 +27,14 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
  *
  * @author Carsten Hufe
  */
-// TODO unit test
-public abstract class RestoreViewPage extends TemplatePage {
+public abstract class AbstractRestoreViewPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
 
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
 
-    public RestoreViewPage() {
+    public AbstractRestoreViewPage() {
         super(new PageParameters());
         add(newHistorizedView("view"));
         add(newRestoreLink("topRestore"));

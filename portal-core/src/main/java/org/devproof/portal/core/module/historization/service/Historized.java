@@ -19,7 +19,7 @@ import java.util.Date;
 
 /**
  * Fields are required to display it on the
- * default {@link org.devproof.portal.core.module.historization.page.HistoryPage}
+ * default {@link org.devproof.portal.core.module.historization.page.AbstractHistoryPage}
  * @author Carsten Hufe
  */
 public interface Historized {

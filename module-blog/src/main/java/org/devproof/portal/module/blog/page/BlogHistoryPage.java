@@ -22,7 +22,7 @@ import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
-import org.devproof.portal.core.module.historization.page.HistoryPage;
+import org.devproof.portal.core.module.historization.page.AbstractHistoryPage;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.panel.BlogPanel;
@@ -35,7 +35,7 @@ import java.text.SimpleDateFormat;
  * @author Carsten Hufe
  */
 @ModulePage(mountPath = "/blog/history")
-public class BlogHistoryPage extends HistoryPage<BlogHistorized> {
+public class BlogHistoryPage extends AbstractHistoryPage<BlogHistorized> {
 
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "blogService")
