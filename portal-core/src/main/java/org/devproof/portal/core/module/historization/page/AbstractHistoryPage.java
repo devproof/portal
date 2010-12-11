@@ -44,7 +44,6 @@ import java.text.SimpleDateFormat;
  *
  * @author Carsten Hufe
  */
-// TODO unit test
 public abstract class AbstractHistoryPage<T extends Historized> extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
