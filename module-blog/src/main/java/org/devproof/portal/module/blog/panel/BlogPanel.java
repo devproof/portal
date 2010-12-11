@@ -36,7 +36,6 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-// TODO unit test
 public class BlogPanel extends Panel {
     private static final long serialVersionUID = -7287096143680409742L;
     @SpringBean(name = "blogService")
