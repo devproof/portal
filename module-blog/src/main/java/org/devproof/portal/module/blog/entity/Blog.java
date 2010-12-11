@@ -17,11 +17,9 @@ package org.devproof.portal.module.blog.entity;
 
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.query.BlogQuery;
-import org.devproof.portal.module.blog.service.BlogHistorizer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;

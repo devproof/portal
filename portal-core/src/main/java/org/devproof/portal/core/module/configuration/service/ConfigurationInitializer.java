@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.configuration.service;
 
-import org.devproof.portal.core.module.right.service.RightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

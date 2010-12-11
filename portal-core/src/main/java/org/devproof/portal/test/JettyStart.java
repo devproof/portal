@@ -28,7 +28,6 @@ import org.mortbay.jetty.plus.naming.Resource;
 import org.mortbay.jetty.servlet.FilterHolder;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.management.MBeanContainer;
-import org.springframework.orm.hibernate3.support.OpenSessionInViewFilter;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

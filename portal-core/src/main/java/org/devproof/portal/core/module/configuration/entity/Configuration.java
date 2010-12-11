@@ -16,10 +16,7 @@
 package org.devproof.portal.core.module.configuration.entity;
 
 import org.apache.commons.lang.UnhandledException;
-import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.configuration.ConfigurationConstants;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;

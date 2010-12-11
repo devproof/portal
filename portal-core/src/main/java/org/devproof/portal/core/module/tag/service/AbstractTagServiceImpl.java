@@ -20,7 +20,6 @@ import org.apache.commons.lang.UnhandledException;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.repository.TagRepository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;

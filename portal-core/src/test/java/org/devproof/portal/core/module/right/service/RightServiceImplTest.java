@@ -25,7 +25,6 @@ import java.util.List;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Carsten Hufe

@@ -15,14 +15,7 @@
  */
 package org.devproof.portal.module.blog.query;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.PageParameters;
-import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
-import org.devproof.portal.core.module.common.query.SearchQuery;
-import org.devproof.portal.core.module.common.util.PortalUtil;
-import org.devproof.portal.core.module.role.entity.Role;
-import org.devproof.portal.core.module.tag.TagConstants;
 import org.devproof.portal.module.blog.entity.Blog;
 
 import java.io.Serializable;
