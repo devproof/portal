@@ -34,8 +34,7 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
-// TODO german customization
-// TODO rights
+// TODO test
 @ModulePage(mountPath = "/blog/history")
 public class BlogHistoryPage extends HistoryPage<BlogHistorized> {
 

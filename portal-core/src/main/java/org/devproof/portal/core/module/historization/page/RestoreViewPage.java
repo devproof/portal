@@ -23,10 +23,11 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 
 /**
+ * Shows the historized dataset and provides restore buttons
+ *
  * @author Carsten Hufe
  */
 // TODO unit test
-    // TODO comment
 public abstract class RestoreViewPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
@@ -65,7 +66,20 @@ public abstract class RestoreViewPage extends TemplatePage {
         };
     }
 
+    /**
+     * Gets executed when clicking on the restore button
+     */
     protected abstract void onRestore();
+
+    /**
+     * Gets executed when clicking on the back button
+     */
     protected abstract void onBack();
+
+    /**
+     * Must return a component which displays the historized part
+     * @param markupId markup id for the compoennt
+     * @return component
+     */
     protected abstract Component newHistorizedView(String markupId);
 }

@@ -16,6 +16,8 @@
 package org.devproof.portal.core.module.historization.service;
 
 /**
+ * Actions for historization
+ *
  * @author Carsten Hufe
  */
 public enum Action {

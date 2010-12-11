@@ -18,14 +18,38 @@ package org.devproof.portal.core.module.historization.service;
 import java.util.Date;
 
 /**
+ * Fields are required to display it on the
+ * default {@link org.devproof.portal.core.module.historization.page.HistoryPage}
  * @author Carsten Hufe
  */
-// TODO comments
 public interface Historized {
+    /**
+     * @return executed action
+     */
     Action getAction();
+
+    /**
+     * @return execution time
+     */
     Date getActionAt();
+
+    /**
+     * @return modification time
+     */
     Date getModifiedAt();
+
+    /**
+     * @return author, modified by
+     */
     String getModifiedBy();
+
+    /**
+     * @return version or revision number
+     */
     Integer getVersionNumber();
+
+    /**
+     * @return when Action.RESTORED is, there must be a restoring version
+     */
     Integer getRestoredFromVersion();
 }

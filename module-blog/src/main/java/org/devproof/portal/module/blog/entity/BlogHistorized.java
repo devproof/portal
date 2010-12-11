@@ -117,8 +117,6 @@ public class BlogHistorized extends BaseBlog implements Historized {
     public Blog toBlog() {
         Blog blog = new Blog();
         blog.copyFrom(this);
-        // TODO wieder raus
-        blog.setId(-1);
         return blog;
     }
 }

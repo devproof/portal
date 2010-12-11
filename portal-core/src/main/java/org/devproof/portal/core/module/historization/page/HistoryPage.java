@@ -42,11 +42,11 @@ import org.devproof.portal.core.module.historization.service.Historized;
 import java.text.SimpleDateFormat;
 
 /**
+ * Base history page which lists the actions
+ *
  * @author Carsten Hufe
  */
-// TODO german customization
-// TODO rights
-// TODO comment
+// TODO unit test
 public abstract class HistoryPage<T extends Historized> extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
@@ -62,11 +62,30 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
         add(createRefreshContainer());
     }
 
-    // TODO comment
+    /**
+     * @return an instance of the query data provider, which provides data for the list
+     */
     protected abstract QueryDataProvider<T, ?> getQueryDataProvider();
+
+    /**
+     * Component which will be displayed when clicking on the view button in the history list
+     * @param markupId markupId for the component
+     * @param historizedModel historized dataset
+     * @return a component instance
+     */
     protected abstract Component newHistorizedView(String markupId, IModel<T> historizedModel);
+
+    /**
+     * Event which gets executed when clicking on the restore link in the history list or on the restore button
+     * in the view page
+     *
+     * @param historizedModel historized dataset
+     */
     protected abstract void onRestore(IModel<T> historizedModel);
 
+    /**
+     * @return model will be displayed in the page title
+     */
     protected IModel<String> newHeadlineModel() {
         return new StringResourceModel("contentTitle", this, null);
     }
@@ -161,7 +180,6 @@ public abstract class HistoryPage<T extends Historized> extends TemplatePage {
 
                 @Override
                 public void onClick(AjaxRequestTarget target) {
-                    // TODO fix me
                     setResponsePage(new RestoreViewPage() {
                         private static final long serialVersionUID = -4001522334346081561L;
 
