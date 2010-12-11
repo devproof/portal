@@ -49,6 +49,15 @@ public class BlogServiceImplTest {
     }
 
     @Test
+    public void testRestoreFromHistory() throws Exception {
+        BlogHistorized historized = new BlogHistorized();
+        expect(mockHistorizer.restore(historized)).andReturn(new Blog());
+        replay(mockHistorizer);
+        impl.restoreFromHistory(historized);
+        verify(mockHistorizer);
+    }
+
+    @Test
     public void testSave() {
         Blog e = createBlogEntity();
         expect(mock.save(e)).andReturn(e);

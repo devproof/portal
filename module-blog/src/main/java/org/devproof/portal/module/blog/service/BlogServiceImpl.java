@@ -32,7 +32,6 @@ public class BlogServiceImpl implements BlogService {
     private BlogTagService blogTagService;
     private BlogHistorizer blogHistorizer;
 
-    // TODO unit test
     @Override
     @Transactional
     public void restoreFromHistory(BlogHistorized historized) {
