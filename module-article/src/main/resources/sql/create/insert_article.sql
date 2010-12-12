@@ -63,3 +63,7 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'article.comment.v
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'article.comment.write');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.comment.view');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.comment.write');
+
+-- since 1.1
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ArticleHistoryPage','Article: History',null,null,null,null);
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ArticleHistoryPage');
