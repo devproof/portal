@@ -18,8 +18,6 @@ package org.devproof.portal.module.article.entity;
 import org.apache.commons.lang.StringUtils;
 import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
-import org.devproof.portal.core.module.common.entity.Modification;
-import org.devproof.portal.core.module.common.model.EntityId;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.query.ArticleQuery;
@@ -40,19 +38,9 @@ import java.util.List;
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "articleDataProvider", sortProperty = "title", sortAscending = true, queryClass = ArticleQuery.class)
-public class Article extends Modification implements EntityId {
+public class Article extends BaseArticle {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "content_id", unique = true)
-    private String contentId;
-    @Column(name = "title")
-    private String title;
-    @Lob
-    @Column(name = "teaser")
-    private String teaser;
+
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArticlePage> articlePages;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -63,6 +51,11 @@ public class Article extends Modification implements EntityId {
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "article_tag_xref", joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tagname", referencedColumnName = "tagname"))
     private List<ArticleTag> tags;
+
+    public void copyFrom(ArticleHistorized modification) {
+        super.copyFrom(modification);
+        setFullArticle(modification.getFullArticle());
+    }
 
     @Transient
     public List<Right> getCommentViewRights() {
@@ -82,38 +75,6 @@ public class Article extends Modification implements EntityId {
     @Transient
     public List<Right> getReadRights() {
         return getRightsStartingWith(allRights, "article.read");
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getContentId() {
-        return contentId;
-    }
-
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTeaser() {
-        return teaser;
-    }
-
-    public void setTeaser(String teaser) {
-        this.teaser = teaser;
     }
 
     public List<ArticlePage> getArticlePages() {
@@ -229,35 +190,5 @@ public class Article extends Modification implements EntityId {
             result.add(pages);
         }
         return result;
-    }
-
-    @Override
-    public int hashCode() {
-        int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        Article other = (Article) obj;
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        } else if (!id.equals(other.id)) {
-            return false;
-        }
-        return true;
     }
 }

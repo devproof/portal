@@ -33,7 +33,6 @@ import java.util.Date;
  * @author Carsten Hufe
  */
 @Component
-// TODO unit test
 public class BlogHistorizer implements Historizer<Blog, BlogHistorized> {
     private BlogTagService blogTagService;
     private RightService rightService;
@@ -70,7 +69,7 @@ public class BlogHistorizer implements Historizer<Blog, BlogHistorized> {
     public Blog restore(BlogHistorized historized) {
         Blog blog = historized.getBlog();
         blog.copyFrom(historized);
-        blog.setAllRights(rightService.findWhitespaceSeparatedRights(historized.getTags()));
+        blog.setAllRights(rightService.findWhitespaceSeparatedRights(historized.getRights()));
         blog.setTags(blogTagService.findWhitespaceSeparatedTagsAndCreateIfNotExists(historized.getTags()));
         blog.setUpdateModificationData(false);
         historize(blog, Action.RESTORED, historized.getVersionNumber());

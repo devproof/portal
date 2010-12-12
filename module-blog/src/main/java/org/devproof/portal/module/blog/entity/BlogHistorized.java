@@ -113,10 +113,4 @@ public class BlogHistorized extends BaseBlog implements Historized {
     public void setRestoredFromVersion(Integer restoredFromVersion) {
         this.restoredFromVersion = restoredFromVersion;
     }
-
-    public Blog toBlog() {
-        Blog blog = new Blog();
-        blog.copyFrom(this);
-        return blog;
-    }
 }
