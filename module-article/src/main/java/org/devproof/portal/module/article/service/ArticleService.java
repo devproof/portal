@@ -18,6 +18,7 @@ package org.devproof.portal.module.article.service;
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
+import org.devproof.portal.module.article.entity.ArticleHistorized;
 import org.devproof.portal.module.article.entity.ArticlePage;
 
 import java.util.List;
@@ -84,4 +85,11 @@ public interface ArticleService extends CrudService<Article, Integer> {
      * @return {@link org.devproof.portal.module.article.entity.Article}
      */
 	Article findByContentId(String contentId);
+
+    /**
+     * Restores an article from history
+     *
+     * @param historized article
+     */
+    void restoreFromHistory(ArticleHistorized historized);
 }

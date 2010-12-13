@@ -17,6 +17,7 @@ package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
+import org.devproof.portal.module.article.entity.ArticleHistorized;
 import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
@@ -35,6 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleRepository articleRepository;
     private ArticlePageRepository articlePageRepository;
     private ArticleTagService articleTagService;
+    private ArticleHistorizer articleHistorizer;
 
     @Override
     @Transactional(readOnly = true)
@@ -100,6 +102,12 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findByContentId(contentId);
     }
 
+    @Override
+    @Transactional
+    public void restoreFromHistory(ArticleHistorized historized) {
+        articleHistorizer.restore(historized);
+    }
+
     @Autowired
     public void setArticleRepository(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
@@ -113,5 +121,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     public void setArticleTagService(ArticleTagService articleTagService) {
         this.articleTagService = articleTagService;
+    }
+
+    @Autowired
+    public void setArticleHistorizer(ArticleHistorizer articleHistorizer) {
+        this.articleHistorizer = articleHistorizer;
     }
 }

@@ -17,6 +17,7 @@ package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
+import org.devproof.portal.module.article.entity.ArticleHistorized;
 import org.devproof.portal.module.article.entity.ArticlePage;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
@@ -39,6 +40,7 @@ public class ArticleServiceImplTest {
     private ArticleRepository mock;
     private ArticlePageRepository mockPage;
     private ArticleTagService mockTag;
+    private ArticleHistorizer mockHistorizer;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -46,10 +48,21 @@ public class ArticleServiceImplTest {
         mock = createStrictMock(ArticleRepository.class);
         mockPage = createStrictMock(ArticlePageRepository.class);
         mockTag = createStrictMock(ArticleTagService.class);
+        mockHistorizer = createStrictMock(ArticleHistorizer.class);
         impl = new ArticleServiceImpl();
         impl.setArticleRepository(mock);
         impl.setArticlePageRepository(mockPage);
         impl.setArticleTagService(mockTag);
+        impl.setArticleHistorizer(mockHistorizer);
+    }
+
+    @Test
+    public void testRestoreFromHistory() throws Exception {
+        ArticleHistorized historized = new ArticleHistorized();
+        expect(mockHistorizer.restore(historized)).andReturn(new Article());
+        replay(mockHistorizer);
+        impl.restoreFromHistory(historized);
+        verify(mockHistorizer);
     }
 
     @Test
