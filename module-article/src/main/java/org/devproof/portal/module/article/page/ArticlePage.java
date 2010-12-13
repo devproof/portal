@@ -16,6 +16,7 @@
 package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -275,7 +276,21 @@ public class ArticlePage extends ArticleBasePage {
 					setResponsePage(new ArticleEditPage(articleModel));
 				}
 
-				private IModel<Article> createArticleModel() {
+                @Override
+                protected MarkupContainer newHistorizationLink(String markupId) {
+                    return new BookmarkablePageLink<ArticleHistoryPage>(markupId, ArticleHistoryPage.class) {
+                        private static final long serialVersionUID = 1918205848493398092L;
+
+                        @Override
+                        public PageParameters getPageParameters() {
+                            PageParameters params = new PageParameters();
+                            params.put("id", articleModel.getObject().getId());
+                            return params;
+                        }
+                    };
+                }
+
+                private IModel<Article> createArticleModel() {
 					return new LoadableDetachableModel<Article>() {
 						private static final long serialVersionUID = 1L;
 

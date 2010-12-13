@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.service;
 
+import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleHistorized;
@@ -67,6 +68,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public void delete(Article entity) {
+        articleHistorizer.deleteHistory(entity);
         articleRepository.delete(entity);
         articleTagService.deleteUnusedTags();
     }
@@ -80,8 +82,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public void save(Article entity) {
+        Action action = entity.isTransient() ? Action.CREATED : Action.MODIFIED;
         articleRepository.save(entity);
         articleTagService.deleteUnusedTags();
+        articleHistorizer.historize(entity, action);
     }
 
     @Override

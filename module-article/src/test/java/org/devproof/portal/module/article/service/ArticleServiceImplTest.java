@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.service;
 
+import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleHistorized;
@@ -71,11 +72,14 @@ public class ArticleServiceImplTest {
         e.setId(1);
         expect(mock.save(e)).andReturn(e);
         mockTag.deleteUnusedTags();
+        mockHistorizer.historize(e, Action.MODIFIED);
         replay(mock);
         replay(mockTag);
+        replay(mockHistorizer);
         impl.save(e);
         verify(mock);
         verify(mockTag);
+        verify(mockHistorizer);
     }
 
     @Test

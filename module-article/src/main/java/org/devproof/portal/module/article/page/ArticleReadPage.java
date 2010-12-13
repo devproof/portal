@@ -16,6 +16,7 @@
 package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -205,6 +206,21 @@ public class ArticleReadPage extends ArticleBasePage {
 				IModel<Article> articleModel = createArticleModel();
 				setResponsePage(new ArticleEditPage(articleModel));
 			}
+
+
+            @Override
+            protected MarkupContainer newHistorizationLink(String markupId) {
+                return new BookmarkablePageLink<ArticleHistoryPage>(markupId, ArticleHistoryPage.class) {
+                    private static final long serialVersionUID = 1918205848493398092L;
+
+                    @Override
+                    public PageParameters getPageParameters() {
+                        PageParameters params = new PageParameters();
+                        params.put("id", articleModel.getObject().getId());
+                        return params;
+                    }
+                };
+            }
 
 			private IModel<Article> createArticleModel() {
 				return new LoadableDetachableModel<Article>() {

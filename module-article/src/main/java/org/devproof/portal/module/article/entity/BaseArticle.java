@@ -77,6 +77,10 @@ public class BaseArticle extends Modification implements EntityId {
         this.teaser = teaser;
     }
 
+    public boolean isTransient() {
+        return id == null;
+    }
+
     @Override
     public int hashCode() {
         int prime = 31;

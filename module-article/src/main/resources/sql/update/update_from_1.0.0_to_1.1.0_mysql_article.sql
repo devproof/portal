@@ -15,7 +15,7 @@ CREATE TABLE `article_historized` (
   `full_article` mediumtext,
   `tags` text default NULL,
   `rights` text default NULL,
-  `blog_id` int(11) NOT NULL,
+  `article_id` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
   CONSTRAINT `FK3DB0669D97F357` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
