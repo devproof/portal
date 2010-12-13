@@ -53,6 +53,12 @@ public class BlogHistorized extends BaseBlog implements Historized {
     @JoinColumn(name = "blog_id")
     private Blog blog;
 
+    public Blog getConvertedBlog() {
+        Blog blog = new Blog();
+        blog.copyFrom(this);
+        return blog;
+    }
+
     // Generated stuff
     public String getRights() {
         return rights;

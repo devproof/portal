@@ -77,8 +77,8 @@ public class BlogHistoryPage extends AbstractHistoryPage<BlogHistorized> {
 
     @Override
     protected void onBeforeRender() {
-        super.onBeforeRender();
         this.queryModel.getObject().setBlog(getBlogModel().getObject());
+        super.onBeforeRender();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class BlogHistoryPage extends AbstractHistoryPage<BlogHistorized> {
 
     @Override
     protected Component newHistorizedView(String markupId, IModel<BlogHistorized> historizedModel) {
-        return new BlogPrintPanel(markupId, new PropertyModel<Blog>(historizedModel, "blog"));
+        return new BlogPrintPanel(markupId, new PropertyModel<Blog>(historizedModel, "convertedBlog"));
     }
 
     @Override

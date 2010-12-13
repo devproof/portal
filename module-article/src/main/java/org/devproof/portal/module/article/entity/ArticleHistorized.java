@@ -71,6 +71,12 @@ public class ArticleHistorized extends BaseArticle implements Historized {
         setFullArticle(modification.getFullArticle());
     }
 
+    public Article getConvertedArticle() {
+        Article article = new Article();
+        article.copyFrom(this);
+        return article;
+    }
+
     public String getFullArticle() {
         return fullArticle;
     }

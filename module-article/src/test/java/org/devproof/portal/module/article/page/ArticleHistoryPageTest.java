@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.blog.page;
+package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
@@ -34,8 +34,8 @@ import javax.servlet.ServletContext;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = MockContextLoader.class,
-        locations = {"classpath:/org/devproof/portal/module/blog/test-datasource.xml" })
-public class BlogHistoryPageTest {
+        locations = {"classpath:/org/devproof/portal/module/article/test-datasource.xml" })
+public class ArticleHistoryPageTest {
     @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
@@ -54,7 +54,7 @@ public class BlogHistoryPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        tester.startPage(new BlogHistoryPage(new PageParameters("id=1")));
-        tester.assertRenderedPage(BlogHistoryPage.class);
+        tester.startPage(new ArticleHistoryPage(new PageParameters("id=1")));
+        tester.assertRenderedPage(ArticleHistoryPage.class);
     }
 }
