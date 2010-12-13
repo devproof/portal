@@ -3,9 +3,24 @@
 <body>
 <wicket:extend>
     <div wicket:id="repeatingBlogEntries">
-        <div wicket:id="blog"></div>
+        <div wicket:id="blogView"></div>
     </div>
     <div wicket:id="paging">paging</div>
+
+    <wicket:fragment wicket:id="blogView">
+        <h1><a href="#" wicket:id="headlineLink"><span wicket:id="headlineLabel"></span></a></h1>
+
+        <div class="descr">
+            <span wicket:id="metaInfo">[author name]</span>&nbsp; <a wicket:id="printLink" target="_blank"><img
+                wicket:id="printImage"/></a> <span wicket:id="authorButtons"></span>
+        </div>
+        <div wicket:id="tags">tag1 tag2</div>
+        <br/>
+
+        <div wicket:id="content">[content]</div>
+        <div wicket:id="comments">[comments]</div>
+        <p></p>
+    </wicket:fragment>
 </wicket:extend>
 </body>
 </html>

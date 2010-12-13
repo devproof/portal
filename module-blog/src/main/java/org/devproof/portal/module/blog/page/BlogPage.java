@@ -15,26 +15,43 @@
  */
 package org.devproof.portal.module.blog.page;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.component.AutoPagingDataView;
+import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
+import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
+import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.print.PrintConstants;
+import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
-import org.devproof.portal.module.blog.panel.BlogPanel;
+import org.devproof.portal.module.blog.entity.BlogTag;
 import org.devproof.portal.module.blog.panel.BlogSearchBoxPanel;
 import org.devproof.portal.module.blog.query.BlogQuery;
 import org.devproof.portal.module.blog.service.BlogService;
 import org.devproof.portal.module.blog.service.BlogTagService;
+import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
+import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Carsten Hufe
@@ -83,6 +100,11 @@ public class BlogPage extends BlogBasePage {
         return dataView;
     }
 
+    private BlogView createBlogView(Item<Blog> item) {
+        return new BlogView("blogView", item);
+    }
+
+
     @Override
     public String getPageTitle() {
         if (blogDataProvider.size() == 1) {
@@ -104,18 +126,123 @@ public class BlogPage extends BlogBasePage {
 
         @Override
         protected void populateItem(Item<Blog> item) {
-            item.add(createBlogPanel(item));
+            item.add(createBlogView(item));
             item.setOutputMarkupId(true);
         }
+    }
 
-        private BlogPanel createBlogPanel(Item<Blog> item) {
-            return new BlogPanel("blog", item.getModel()) {
+    public class BlogView extends Fragment {
+
+        private static final long serialVersionUID = 1L;
+
+        private IModel<Blog> blogModel;
+
+        public BlogView(String id, Item<Blog> item) {
+            super(id, "blogView", BlogPage.this);
+            blogModel = item.getModel();
+            add(createAppropriateAuthorPanel(item));
+            add(createHeadline());
+            add(createMetaInfoPanel());
+            add(createPrintLink());
+            add(createTagPanel());
+            add(createContentLabel());
+            add(createCommentPanel());
+        }
+
+        private Component createPrintLink() {
+            Blog blog = blogModel.getObject();
+            BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink", BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
+            link.add(createPrintImage());
+            return link;
+        }
+
+        private Component createPrintImage() {
+            return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
+        }
+
+        private Component createAppropriateAuthorPanel(Item<Blog> item) {
+            if (isAuthor()) {
+                return createAuthorPanel(item);
+            } else {
+                return createEmptyAuthorPanel();
+            }
+        }
+
+        private AuthorPanel<Blog> createAuthorPanel(final Item<Blog> item) {
+            return new AuthorPanel<Blog>("authorButtons", blogModel) {
+                private static final long serialVersionUID = 1L;
+
                 @Override
-                protected void onDeleted(AjaxRequestTarget target) {
-                    info(getString("msg.deleted"));
+                public void onDelete(AjaxRequestTarget target) {
+                    blogService.delete(getEntityModel().getObject());
+                    item.setVisible(false);
+                    target.addComponent(item);
                     target.addComponent(getFeedback());
+                    info(getString("msg.deleted"));
+                }
+
+                @Override
+                public void onEdit(AjaxRequestTarget target) {
+                    setResponsePage(new BlogEditPage(blogModel));
+                }
+
+                @Override
+                protected MarkupContainer newHistorizationLink(String markupId) {
+                    return new BookmarkablePageLink<BlogHistoryPage>(markupId, BlogHistoryPage.class) {
+                        private static final long serialVersionUID = 1918205848493398092L;
+
+                        @Override
+                        public PageParameters getPageParameters() {
+                            PageParameters params = new PageParameters();
+                            params.put("id", blogModel.getObject().getId());
+                            return params;
+                        }
+                    };
                 }
             };
+        }
+
+        private WebMarkupContainer createEmptyAuthorPanel() {
+            return new WebMarkupContainer("authorButtons");
+        }
+
+        private BookmarkablePageLink<BlogPage> createHeadline() {
+            BookmarkablePageLink<BlogPage> headlineLink = new BookmarkablePageLink<BlogPage>("headlineLink", BlogPage.class);
+            if (params == null || !params.containsKey("id")) {
+                Blog blog = blogModel.getObject();
+                headlineLink.setParameter("id", blog.getId());
+            }
+            headlineLink.add(headlineLinkLabel());
+            return headlineLink;
+        }
+
+        private Label headlineLinkLabel() {
+            IModel<String> headliineModel = new PropertyModel<String>(blogModel, "headline");
+            return new Label("headlineLabel", headliineModel);
+        }
+
+        private MetaInfoPanel<Blog> createMetaInfoPanel() {
+            return new MetaInfoPanel<Blog>("metaInfo", blogModel);
+        }
+
+        private ExtendedLabel createContentLabel() {
+            IModel<String> contentModel = new PropertyModel<String>(blogModel, "content");
+            return new ExtendedLabel("content", contentModel);
+        }
+
+        private Component createCommentPanel() {
+            Blog blog = blogModel.getObject();
+            DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+            conf.setModuleContentId(blog.getId().toString());
+            conf.setModuleName(BlogPage.class.getSimpleName());
+            conf.setViewRights(blog.getCommentViewRights());
+            conf.setWriteRights(blog.getCommentWriteRights());
+            return new ExpandableCommentPanel("comments", conf);
+        }
+
+        private TagContentPanel<BlogTag> createTagPanel() {
+            IModel<List<BlogTag>> blogTagModel = new PropertyModel<List<BlogTag>>(blogModel, "tags");
+            return new TagContentPanel<BlogTag>("tags", blogTagModel, BlogPage.class);
         }
     }
 }

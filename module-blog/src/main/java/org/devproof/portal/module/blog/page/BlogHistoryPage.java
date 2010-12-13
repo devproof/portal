@@ -28,7 +28,7 @@ import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.historization.page.AbstractHistoryPage;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
-import org.devproof.portal.module.blog.panel.BlogPanel;
+import org.devproof.portal.module.blog.panel.BlogPrintPanel;
 import org.devproof.portal.module.blog.query.BlogHistoryQuery;
 import org.devproof.portal.module.blog.service.BlogService;
 
@@ -93,25 +93,7 @@ public class BlogHistoryPage extends AbstractHistoryPage<BlogHistorized> {
 
     @Override
     protected Component newHistorizedView(String markupId, IModel<BlogHistorized> historizedModel) {
-        return new BlogPanel(markupId, new PropertyModel<Blog>(historizedModel, "blog")) {
-            private static final long serialVersionUID = -8580867738175014351L;
-
-            @Override
-            protected void onDeleted(AjaxRequestTarget target) {
-                info(getString("msg.deleted"));
-                target.addComponent(getFeedback());
-            }
-
-            @Override
-            public boolean hideAuthorButtons() {
-                return true;
-            }
-
-            @Override
-            public boolean hideComments() {
-                return true;
-            }
-        };
+        return new BlogPrintPanel(markupId, new PropertyModel<Blog>(historizedModel, "blog"));
     }
 
     @Override
