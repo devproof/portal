@@ -37,7 +37,7 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
-@ModulePage(mountPath = "/blog/history")
+@ModulePage(mountPath = "/admin/blog/history")
 public class BlogHistoryPage extends AbstractHistoryPage<BlogHistorized> {
 
     private static final long serialVersionUID = 1L;

@@ -55,6 +55,12 @@ public class OtherPageHistorized extends BaseOtherPage implements Historized {
     @JoinColumn(name = "other_page_id")
     private OtherPage otherPage;
 
+    public OtherPage getConvertedOtherPage() {
+        OtherPage otherPage = new OtherPage();
+        otherPage.copyFrom(this);
+        return otherPage;
+    }
+
     @Override
     public Action getAction() {
         return action;

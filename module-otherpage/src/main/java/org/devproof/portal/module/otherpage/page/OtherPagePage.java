@@ -16,6 +16,7 @@
 package org.devproof.portal.module.otherpage.page;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
@@ -126,6 +127,20 @@ public class OtherPagePage extends OtherPageBasePage {
                 @Override
                 public void onEdit(AjaxRequestTarget target) {
                     setResponsePage(new OtherPageEditPage(otherPageModel));
+                }
+
+                @Override
+                protected MarkupContainer newHistorizationLink(String markupId) {
+                    return new BookmarkablePageLink<OtherPageHistoryPage>(markupId, OtherPageHistoryPage.class) {
+                        private static final long serialVersionUID = 1918205848493398092L;
+
+                        @Override
+                        public PageParameters getPageParameters() {
+                            PageParameters params = new PageParameters();
+                            params.put("id", otherPageModel.getObject().getId());
+                            return params;
+                        }
+                    };
                 }
             };
         }

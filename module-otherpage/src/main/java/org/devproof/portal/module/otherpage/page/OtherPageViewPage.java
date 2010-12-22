@@ -16,10 +16,12 @@
 package org.devproof.portal.module.otherpage.page;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
@@ -155,6 +157,20 @@ public class OtherPageViewPage extends OtherPageBasePage {
             @Override
             public void onEdit(AjaxRequestTarget target) {
                 setResponsePage(new OtherPageEditPage(otherPageModel));
+            }
+
+            @Override
+            protected MarkupContainer newHistorizationLink(String markupId) {
+                return new BookmarkablePageLink<OtherPageHistoryPage>(markupId, OtherPageHistoryPage.class) {
+                    private static final long serialVersionUID = 1918205848493398092L;
+
+                    @Override
+                    public PageParameters getPageParameters() {
+                        PageParameters params = new PageParameters();
+                        params.put("id", otherPageModel.getObject().getId());
+                        return params;
+                    }
+                };
             }
 
             @Override
