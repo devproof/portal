@@ -100,7 +100,7 @@ public class OtherPageHistoryPage extends AbstractHistoryPage<OtherPageHistorize
     protected void onRestore(IModel<OtherPageHistorized> restoreModel) {
         otherPageService.restoreFromHistory(restoreModel.getObject());
         info(getString("restored"));
-        Integer otherPageId = restoreModel.getObject().getOtherPage().getId();
-        setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPageId)));
+        String contentId = restoreModel.getObject().getOtherPage().getContentId();
+        setResponsePage(new OtherPageViewPage(new PageParameters("0=" + contentId)));
     }
 }

@@ -170,6 +170,11 @@ public class OtherPageViewPage extends OtherPageBasePage {
                         params.put("id", otherPageModel.getObject().getId());
                         return params;
                     }
+
+                    @Override
+                    public boolean isVisible() {
+                        return isDeleteButtonVisible();
+                    }
                 };
             }
 
