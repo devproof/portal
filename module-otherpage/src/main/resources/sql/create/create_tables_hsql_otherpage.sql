@@ -28,6 +28,7 @@ CREATE TABLE other_page_historized (
   action_at timestamp,
   restored_from_version int,
   content longvarchar,
+  content_id varchar(255),
   tags longvarchar default NULL,
   rights longvarchar default NULL,
   other_page_id int NOT NULL,

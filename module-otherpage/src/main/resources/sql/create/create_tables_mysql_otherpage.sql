@@ -29,6 +29,7 @@ CREATE TABLE `other_page_historized` (
   `action_at` datetime default NULL,
   `restored_from_version` int(11) default NULL,
   `content` mediumtext,
+  `content_id` varchar(255) default NULL,
   `rights` text default NULL,
   `other_page_id` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
