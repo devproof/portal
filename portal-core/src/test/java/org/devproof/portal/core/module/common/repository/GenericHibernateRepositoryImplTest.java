@@ -52,12 +52,7 @@ public class GenericHibernateRepositoryImplTest {
 		impl = new GenericHibernateRepositoryImpl<EmailTemplate, Integer>(EmailTemplate.class);
 		impl.setSessionFactory(sessionFactory);
 		impl.setUsernameResolver(usernameResolver);
-		expect(session.getSessionFactory()).andReturn(sessionFactory);
-		expect(sessionFactory.openSession()).andReturn(session);
-		SessionHolder sessionHolder = new SessionHolder(session);
-		TransactionSynchronizationManager.bindResource(sessionFactory, sessionHolder);
-		expect(session.isOpen()).andReturn(false);
-		expect(session.getSessionFactory()).andReturn(sessionFactory);
+		expect(sessionFactory.getCurrentSession()).andReturn(session);
 	}
 
 	@Test

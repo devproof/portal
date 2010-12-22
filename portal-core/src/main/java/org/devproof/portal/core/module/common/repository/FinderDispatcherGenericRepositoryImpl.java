@@ -21,6 +21,7 @@ import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.DelegateRepositoryMethod;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
+import org.hibernate.SessionFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -48,7 +49,7 @@ import java.lang.reflect.Method;
  * @param <PK>
  *            primary key type
  */
-public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> extends HibernateDaoSupport implements
+public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> implements
 		FactoryBean<Object>, Serializable, ApplicationContextAware {
 
 	private static final long serialVersionUID = -3752572093862325307L;
@@ -58,6 +59,7 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 	private Class<?> daoInterface;
 	private UsernameResolver usernameResolver;
     private ApplicationContext applicationContext;
+    private SessionFactory sessionFactory;
 
     public Object getObject() throws Exception {
 		ProxyFactory result = new ProxyFactory();
@@ -70,10 +72,8 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 
 	protected CrudRepository<T, PK> createGenericHibernateDao() {
 		GenericHibernateRepositoryImpl<T, PK> genericRepository = new GenericHibernateRepositoryImpl<T, PK>(entityClass);
-		genericRepository.setSessionFactory(getSessionFactory());
-		genericRepository.setHibernateTemplate(getHibernateTemplate());
+		genericRepository.setSessionFactory(sessionFactory);
 		genericRepository.setUsernameResolver(usernameResolver);
-        genericRepository.setApplicationContext(applicationContext);
 		return genericRepository;
 	}
 
@@ -190,6 +190,11 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> e
 	public void setUsernameResolver(UsernameResolver usernameResolver) {
 		this.usernameResolver = usernameResolver;
 	}
+
+    @Required
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

@@ -23,14 +23,15 @@
 
     <!--  Base generic DAO  -->
     <bean id="baseGenericDao"
-          class="org.devproof.portal.core.module.common.repository.FinderDispatcherGenericRepositoryImpl"
-          parent="hibernateDaoSupport" abstract="true">
+          class="org.devproof.portal.core.module.common.repository.FinderDispatcherGenericRepositoryImpl" abstract="true">
         <property name="usernameResolver" ref="usernameResolver"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <!-- Common data provider DAO -->
-    <bean id="dataProviderRepository" class="org.devproof.portal.core.module.common.repository.DataProviderRepositoryImpl"
-          parent="hibernateDaoSupport"/>
+    <bean id="dataProviderRepository" class="org.devproof.portal.core.module.common.repository.DataProviderRepositoryImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
 
     <!-- Persistence data provider -->
     <bean id="persistenceDataProvider"
@@ -81,17 +82,6 @@
         <property name="annotatedClasses">
             <bean factory-bean="entityLocator" factory-method="getEntities"/>
         </property>
-    </bean>
-
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
-        <property name="allowCreate" value="false"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
-    <bean id="hibernateDaoSupport"
-          class="org.springframework.orm.hibernate3.support.HibernateDaoSupport"
-          abstract="true">
-        <property name="hibernateTemplate" ref="hibernateTemplate"/>
     </bean>
 
     <bean id="transactionManager"

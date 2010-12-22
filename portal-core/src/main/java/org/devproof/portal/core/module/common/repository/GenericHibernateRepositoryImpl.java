@@ -15,12 +15,16 @@
  */
 package org.devproof.portal.core.module.common.repository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.user.service.UsernameResolver;
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -38,10 +42,11 @@ import java.util.Collection;
  * @param <PK>
  * primary key type
  */
-public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends HibernateDaoSupport implements CrudRepository<T, PK> {
+public class GenericHibernateRepositoryImpl<T, PK extends Serializable> implements CrudRepository<T, PK> {
+    private final Log logger = LogFactory.getLog(getClass());
     private UsernameResolver usernameResolver;
     private Class<T> type;
-    private ApplicationContext applicationContext;
+    private SessionFactory sessionFactory;
 
     public GenericHibernateRepositoryImpl(Class<T> type) {
         this.type = type;
@@ -160,6 +165,10 @@ public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends 
         return type;
     }
 
+    protected Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     @Required
     public void setType(Class<T> type) {
         this.type = type;
@@ -171,7 +180,7 @@ public class GenericHibernateRepositoryImpl<T, PK extends Serializable> extends 
     }
 
     @Required
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }

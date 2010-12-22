@@ -22,6 +22,9 @@ import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,13 +36,14 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-public class DataProviderRepositoryImpl<T> extends HibernateDaoSupport implements DataProviderRepository<T> {
+public class DataProviderRepositoryImpl<T> implements DataProviderRepository<T> {
+    private SessionFactory sessionFactory;
 
 	@Override
 	@SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
 	public T findById(Class<T> clazz, Serializable id) {
-		return (T) this.getSession().get(clazz, id);
+		return (T) getSession().get(clazz, id);
 	}
 
 	@Override
@@ -200,4 +204,13 @@ public class DataProviderRepositoryImpl<T> extends HibernateDaoSupport implement
 			q.setCacheRegion(cacheAnnotation.region());
 		}
 	}
+
+    protected Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    @Required
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 }

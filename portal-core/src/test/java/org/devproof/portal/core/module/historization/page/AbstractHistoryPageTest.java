@@ -35,6 +35,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.servlet.ServletContext;
 
+import java.io.Serializable;
+
 import static org.easymock.EasyMock.*;
 
 /**
@@ -74,8 +76,9 @@ public class AbstractHistoryPageTest {
         }
 
         @Override
-        protected QueryDataProvider<Historized, ?> getQueryDataProvider() {
-            QueryDataProvider mock = createNiceMock(QueryDataProvider.class);
+        protected QueryDataProvider<Historized, Serializable> getQueryDataProvider() {
+            @SuppressWarnings("unchecked")
+            QueryDataProvider<Historized, Serializable> mock = createNiceMock(QueryDataProvider.class);
             expect(mock.getSortState()).andReturn(new SingleSortState()).anyTimes();
             replay(mock);
             return mock;
