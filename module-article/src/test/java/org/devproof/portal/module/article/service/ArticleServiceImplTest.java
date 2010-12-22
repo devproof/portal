@@ -88,11 +88,14 @@ public class ArticleServiceImplTest {
         e.setId(1);
         mock.delete(e);
         mockTag.deleteUnusedTags();
+        mockHistorizer.deleteHistory(e);
         replay(mock);
         replay(mockTag);
+        replay(mockHistorizer);
         impl.delete(e);
         verify(mock);
         verify(mockTag);
+        verify(mockHistorizer);
     }
 
     @Test

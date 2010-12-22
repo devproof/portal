@@ -25,7 +25,7 @@ import javax.persistence.*;
  * @author Carsten Hufe
  */
 @MappedSuperclass
-public class BaseBlog extends Modification {
+public abstract class BaseBlog extends Modification {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

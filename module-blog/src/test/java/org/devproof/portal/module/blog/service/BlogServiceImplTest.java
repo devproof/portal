@@ -76,11 +76,14 @@ public class BlogServiceImplTest {
         Blog e = createBlogEntity();
         mock.delete(e);
         mockTag.deleteUnusedTags();
+        mockHistorizer.deleteHistory(e);
         replay(mock);
         replay(mockTag);
+        replay(mockHistorizer);
         impl.delete(e);
         verify(mock);
         verify(mockTag);
+        verify(mockHistorizer);
     }
 
     @Test

@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
+import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
+import org.devproof.portal.module.otherpage.entity.OtherPageHistorized;
 import org.devproof.portal.module.otherpage.repository.OtherPageRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,41 +34,56 @@ import static org.junit.Assert.assertTrue;
  */
 public class OtherPageServiceImplTest {
     private OtherPageServiceImpl impl;
-    private OtherPageRepository mock;
+    private OtherPageRepository mockRepository;
+    private OtherPageHistorizer mockHistorizer;
 
     @Before
     public void setUp() throws Exception {
-        mock = createStrictMock(OtherPageRepository.class);
+        mockRepository = createStrictMock(OtherPageRepository.class);
+        mockHistorizer = createStrictMock(OtherPageHistorizer.class);
         impl = new OtherPageServiceImpl();
-        impl.setOtherPageRepository(mock);
+        impl.setOtherPageRepository(mockRepository);
+        impl.setOtherPageHistorizer(mockHistorizer);
+    }
+
+
+    @Test
+    public void testRestoreFromHistory() throws Exception {
+        OtherPageHistorized historized = new OtherPageHistorized();
+        expect(mockHistorizer.restore(historized)).andReturn(new OtherPage());
+        replay(mockHistorizer);
+        impl.restoreFromHistory(historized);
+        verify(mockHistorizer);
     }
 
     @Test
     public void testSave() {
         OtherPage e = createOtherPageEntity();
-        expect(mock.save(e)).andReturn(e);
-        replay(mock);
+        expect(mockRepository.save(e)).andReturn(e);
+        mockHistorizer.historize(e, Action.MODIFIED);
+        replay(mockRepository, mockHistorizer);
         impl.save(e);
-        verify(mock);
+        verify(mockRepository, mockHistorizer);
     }
 
     @Test
     public void testDelete() {
         OtherPage e = createOtherPageEntity();
         e.setId(1);
-        mock.delete(e);
-        replay(mock);
+        mockRepository.delete(e);
+        mockHistorizer.deleteHistory(e);
+        replay(mockRepository, mockHistorizer);
         impl.delete(e);
-        verify(mock);
+        verify(mockRepository, mockHistorizer);
     }
 
     @Test
     public void testFindById() {
         OtherPage e = createOtherPageEntity();
-        expect(mock.findById(1)).andReturn(e);
-        replay(mock);
+        expect(mockRepository.findById(1)).andReturn(e);
+        replay(mockRepository);
         assertEquals(impl.findById(1), e);
-        verify(mock);
+        verify(mockRepository);
     }
 
     @Test
@@ -76,10 +93,10 @@ public class OtherPageServiceImplTest {
 
     @Test
     public void testExistsContentId() {
-        expect(mock.existsContentId("contentId")).andReturn(1l);
-        replay(mock);
+        expect(mockRepository.existsContentId("contentId")).andReturn(1l);
+        replay(mockRepository);
         assertTrue(impl.existsContentId("contentId"));
-        verify(mock);
+        verify(mockRepository);
     }
 
     private OtherPage createOtherPageEntity() {

@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.module.otherpage.service;
 
+import org.devproof.portal.core.module.historization.service.Action;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
+import org.devproof.portal.module.otherpage.entity.OtherPageHistorized;
 import org.devproof.portal.module.otherpage.repository.OtherPageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("otherPageService")
 public class OtherPageServiceImpl implements OtherPageService {
     private OtherPageRepository otherPageRepository;
+    private OtherPageHistorizer otherPageHistorizer;
+
+    @Override
+    @Transactional
+    public void restoreFromHistory(OtherPageHistorized historized) {
+        otherPageHistorizer.restore(historized);
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -51,6 +60,7 @@ public class OtherPageServiceImpl implements OtherPageService {
     @Override
     @Transactional
     public void delete(OtherPage entity) {
+        otherPageHistorizer.deleteHistory(entity);
         otherPageRepository.delete(entity);
     }
 
@@ -63,11 +73,18 @@ public class OtherPageServiceImpl implements OtherPageService {
     @Override
     @Transactional
     public void save(OtherPage entity) {
+        Action action = entity.isTransient() ? Action.CREATED : Action.MODIFIED;
         otherPageRepository.save(entity);
+        otherPageHistorizer.historize(entity, action);
     }
 
     @Autowired
     public void setOtherPageRepository(OtherPageRepository otherPageRepository) {
         this.otherPageRepository = otherPageRepository;
+    }
+
+    @Autowired
+    public void setOtherPageHistorizer(OtherPageHistorizer otherPageHistorizer) {
+        this.otherPageHistorizer = otherPageHistorizer;
     }
 }

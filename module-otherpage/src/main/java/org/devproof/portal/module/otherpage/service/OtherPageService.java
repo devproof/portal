@@ -17,11 +17,19 @@ package org.devproof.portal.module.otherpage.service;
 
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
+import org.devproof.portal.module.otherpage.entity.OtherPageHistorized;
 
 /**
  * @author Carsten Hufe
  */
 public interface OtherPageService extends CrudService<OtherPage, Integer> {
+    /**
+     * Restores an other page from history
+     *
+     * @param historized historied other page
+     */
+    void restoreFromHistory(OtherPageHistorized historized);
+
     /**
      * Returns a new instance of {@link org.devproof.portal.module.otherpage.entity.OtherPage}
      *

@@ -13,36 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.article.entity;
+package org.devproof.portal.module.otherpage.entity;
 
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
+import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.entity.Modification;
-import org.devproof.portal.core.module.common.model.EntityId;
+import org.devproof.portal.core.module.right.entity.Right;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
 @MappedSuperclass
-public abstract class BaseArticle extends Modification implements EntityId {
+public class BaseOtherPage extends Modification {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "content_id", unique = true)
+    @Column(name = "content_id")
     private String contentId;
-    @Column(name = "title")
-    private String title;
     @Lob
-    @Column(name = "teaser")
-    private String teaser;
+    @Column(name = "content")
+    private String content;
 
-    public void copyFrom(BaseArticle modification) {
-        super.copyFrom(modification);
-        contentId = modification.contentId;
-        title = modification.title;
-        teaser = modification.teaser;
+    public void copyFrom(BaseOtherPage baseOtherPage) {
+        content = baseOtherPage.content;
+        contentId = baseOtherPage.contentId;
+        super.copyFrom(baseOtherPage);
     }
 
     public Integer getId() {
@@ -61,20 +65,12 @@ public abstract class BaseArticle extends Modification implements EntityId {
         this.contentId = contentId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getContent() {
+        return content;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTeaser() {
-        return teaser;
-    }
-
-    public void setTeaser(String teaser) {
-        this.teaser = teaser;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public boolean isTransient() {
@@ -100,7 +96,7 @@ public abstract class BaseArticle extends Modification implements EntityId {
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        BaseArticle other = (BaseArticle) obj;
+        BaseOtherPage other = (BaseOtherPage) obj;
         if (id == null) {
             if (other.id != null) {
                 return false;
