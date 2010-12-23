@@ -1,5 +1,6 @@
 GenericDao -> CrudRepository
 achtung SQL:
+hibernateTemplate and hibernateDao Support removed
 emailTemplateDao to emailTemplateRepository
 roleDao to roleRepository in DB
 maven to gradle

@@ -22,6 +22,7 @@ import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.extensions.markup.html.tree.table.TreeTable;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.right.RightConstants;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
@@ -29,6 +30,7 @@ import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
 import org.devproof.portal.core.module.user.panel.UserBoxPanel;
 import org.springframework.context.ApplicationContext;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 /**
@@ -43,6 +45,7 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
         rightService = (RightService) context.getBean("rightService");
     }
 
+    @Override
     public boolean isActionAuthorized(Component component, Action action) {
         // false means the component will not be rendered
         PortalSession session = ((PortalSession) Session.get());
@@ -66,6 +69,9 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
             }
             return true;
         }
+        else if(component.getClass().isAnnotationPresent(Secured.class)) {
+            return evaluateSecuredAnnotation(component.getClass());
+        }
         // problem with tree table, i dont know why
         else if (!(component instanceof TreeTable)) {
             String rightName = RightConstants.COMPONENT_RIGHT_PREFIX + component.getPage().getClass().getSimpleName() + "." + component.getId();
@@ -83,17 +89,37 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
         return true;
     }
 
+    @Override
     public boolean isInstantiationAuthorized(@SuppressWarnings("rawtypes") Class componentClass) {
-        // false means the whole page is blocked
-        PortalSession session = ((PortalSession) Session.get());
-        List<Right> allRights = rightService.getAllRights();
         if (Page.class.isAssignableFrom(componentClass)) {
-            String rightName = RightConstants.PAGE_RIGHT_PREFIX + componentClass.getSimpleName();
-            Right right = rightService.newRightEntity(rightName);
-            if (allRights.contains(right)) {
-                return session.hasRight(right);
+            // false means the whole page is blocked
+            if(componentClass.isAnnotationPresent(Secured.class)) {
+                return evaluateSecuredAnnotation(componentClass);
+            }
+            else {
+                PortalSession session = ((PortalSession) Session.get());
+                List<Right> allRights = rightService.getAllRights();
+                String rightName = RightConstants.PAGE_RIGHT_PREFIX + componentClass.getSimpleName();
+                Right right = rightService.newRightEntity(rightName);
+                if (allRights.contains(right)) {
+                    return session.hasRight(right);
+                }
             }
         }
         return true;
+    }
+
+    private boolean evaluateSecuredAnnotation(Class<?> clazz) {
+        // if the user do not have the right when page is annotated with @Secured, he is not allowed to visit
+        // page with this annotation is always protected
+        PortalSession session = ((PortalSession) Session.get());
+        List<Right> allRights = rightService.getAllRights();
+        @SuppressWarnings({"unchecked"}) Secured secured = clazz.getAnnotation(Secured.class);
+        for(String right : secured.value()) {
+            if(session.hasRight(right)) {
+                return true;
+            };
+        }
+        return false;
     }
 }
