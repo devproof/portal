@@ -36,5 +36,5 @@ public interface BookmarkConstants {
 
     String ENTITY_CACHE_REGION = "entity.content";
     String QUERY_CACHE_REGION = "query.content";
-    String AUTHOR_RIGHT = "page." + BookmarkEditPage.class.getSimpleName();
+    String AUTHOR_RIGHT = "bookmark.author";
 }

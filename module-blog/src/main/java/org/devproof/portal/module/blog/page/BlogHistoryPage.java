@@ -24,8 +24,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.historization.page.AbstractHistoryPage;
+import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.panel.BlogPrintPanel;
@@ -37,6 +39,7 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
+@Secured(BlogConstants.AUTHOR_RIGHT)
 @ModulePage(mountPath = "/admin/blog/history")
 public class BlogHistoryPage extends AbstractHistoryPage<BlogHistorized> {
 

@@ -30,6 +30,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.ConfigurationConstants;
@@ -46,6 +47,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured(ConfigurationConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/configuration", registerGlobalAdminLink = true)
 public class ConfigurationPage extends TemplatePage {
 

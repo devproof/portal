@@ -112,6 +112,7 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
     private boolean evaluateSecuredAnnotation(Class<?> clazz) {
         // if the user do not have the right when page is annotated with @Secured, he is not allowed to visit
         // page with this annotation is always protected
+        // TODO also handle parent clazzes
         PortalSession session = ((PortalSession) Session.get());
         List<Right> allRights = rightService.getAllRights();
         @SuppressWarnings({"unchecked"}) Secured secured = clazz.getAnnotation(Secured.class);

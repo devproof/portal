@@ -30,5 +30,5 @@ public interface ArticleConstants {
     String CONF_ARTICLE_FEED_TITLE = "article_feed_title";
     String ENTITY_CACHE_REGION = "entity.content";
     String QUERY_CACHE_REGION = "query.content";
-    String AUTHOR_RIGHT = "page." + ArticleEditPage.class.getSimpleName();
+    String AUTHOR_RIGHT = "article.author";
 }

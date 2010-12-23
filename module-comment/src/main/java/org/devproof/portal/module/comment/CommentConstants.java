@@ -38,5 +38,5 @@ public interface CommentConstants {
     String CONF_NOTIFY_VIOLATION = "spring.emailService.findAll.subject.id.violationnotification";
     String ENTITY_CACHE_REGION = "entity.usercontent";
     String QUERY_CACHE_REGION = "query.usercontent";
-    String AUTHOR_RIGHT = "page." + CommentAdminPage.class.getSimpleName();
+    String AUTHOR_RIGHT = "comment.admin";
 }

@@ -30,6 +30,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.InternalDownloadLink;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -45,6 +46,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured("themes.admin")
 @ModulePage(mountPath = "/admin/themes", registerGlobalAdminLink = true)
 public class ThemePage extends TemplatePage {
 

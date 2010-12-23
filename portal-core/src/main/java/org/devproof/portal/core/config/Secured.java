@@ -29,7 +29,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * @author Carsten Hufe
  */
-@Component
 @Documented
 @Target(TYPE)
 @Retention(RUNTIME)

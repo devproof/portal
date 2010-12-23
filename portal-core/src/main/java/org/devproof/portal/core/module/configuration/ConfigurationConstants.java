@@ -24,4 +24,5 @@ public interface ConfigurationConstants {
     String SPRING_CONFIGURATION_PREFIX = "spring.";
     String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
+    String ADMIN_RIGHT = "configuration.admin";
 }

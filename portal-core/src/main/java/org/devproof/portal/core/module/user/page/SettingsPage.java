@@ -33,6 +33,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -44,6 +45,7 @@ import org.devproof.portal.core.module.user.service.UserService;
 /**
  * @author Carsten Hufe
  */
+@Secured("user.settings")
 @ModulePage(mountPath = "/settings")
 public class SettingsPage extends TemplatePage {
 

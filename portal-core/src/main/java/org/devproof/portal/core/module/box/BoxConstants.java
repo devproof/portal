@@ -21,4 +21,5 @@ package org.devproof.portal.core.module.box;
  * @author Carsten Hufe
  */
 public interface BoxConstants {
+    String ADMIN_RIGHT = "box.admin";
 }

@@ -23,8 +23,10 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.historization.page.AbstractHistoryPage;
+import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleHistorized;
 import org.devproof.portal.module.article.panel.ArticlePrintPanel;
@@ -36,6 +38,7 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
+@Secured(ArticleConstants.AUTHOR_RIGHT)
 @ModulePage(mountPath = "/admin/article/history")
 public class ArticleHistoryPage extends AbstractHistoryPage<ArticleHistorized> {
 

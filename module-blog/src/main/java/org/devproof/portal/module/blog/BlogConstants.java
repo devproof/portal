@@ -29,5 +29,5 @@ public interface BlogConstants {
     ResourceReference REF_BLOG_CSS = new ResourceReference(BlogConstants.class, "css/blog.css");
     String ENTITY_CACHE_REGION = "entity.content";
     String QUERY_CACHE_REGION = "query.content";
-    String AUTHOR_RIGHT = "page." + BlogEditPage.class.getSimpleName();
+    String AUTHOR_RIGHT = "blog.author";
 }

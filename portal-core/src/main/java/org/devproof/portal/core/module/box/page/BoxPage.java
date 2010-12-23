@@ -29,6 +29,8 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.box.BoxConstants;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.panel.BoxEditPanel;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
@@ -41,6 +43,7 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 /**
  * @author Carsten Hufe
  */
+@Secured(BoxConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/boxes", registerGlobalAdminLink = true)
 public class BoxPage extends TemplatePage {
 

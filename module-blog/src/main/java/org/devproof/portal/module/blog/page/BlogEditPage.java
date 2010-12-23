@@ -23,10 +23,12 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
+import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogTag;
 import org.devproof.portal.module.blog.service.BlogService;
@@ -37,6 +39,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured(BlogConstants.AUTHOR_RIGHT)
 public class BlogEditPage extends BlogBasePage {
 
     private static final long serialVersionUID = 1L;

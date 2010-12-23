@@ -30,6 +30,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -47,6 +48,7 @@ import java.io.File;
 /**
  * @author Carsten Hufe
  */
+@Secured("uploadcenter.admin")
 @ModulePage(mountPath = "/uploadcenter", registerPageAdminLink = true)
 public class UploadCenterPage extends TemplatePage {
 

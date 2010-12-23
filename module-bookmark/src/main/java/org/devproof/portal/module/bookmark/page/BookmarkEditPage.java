@@ -23,10 +23,12 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
+import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 import org.devproof.portal.module.bookmark.entity.BookmarkTag;
@@ -38,6 +40,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured(BookmarkConstants.AUTHOR_RIGHT)
 public class BookmarkEditPage extends BookmarkBasePage {
 
     private static final long serialVersionUID = 1L;

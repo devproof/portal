@@ -27,6 +27,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.config.BoxConfiguration;
+import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.box.BoxConstants;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
@@ -36,6 +38,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured(BoxConstants.ADMIN_RIGHT)
 public abstract class BoxEditPanel extends Panel {
 
     private static final long serialVersionUID = 1L;
