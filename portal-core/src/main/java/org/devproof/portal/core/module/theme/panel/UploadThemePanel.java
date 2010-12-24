@@ -31,6 +31,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.devproof.portal.core.module.theme.service.ThemeService;
 import org.devproof.portal.core.module.theme.service.ThemeService.ValidationKey;
 
@@ -42,7 +43,7 @@ import java.io.IOException;
  *
  * @author Carsten Hufe
  */
-@Secured("themes.admin")
+@Secured(ThemeConstants.ADMIN_RIGHT)
 public abstract class UploadThemePanel extends Panel {
     private static final long serialVersionUID = 1L;
     private final Log logger = LogFactory.getLog(UploadThemePanel.class);

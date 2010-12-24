@@ -46,7 +46,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-@Secured("themes.admin")
+@Secured(ThemeConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/themes", registerGlobalAdminLink = true)
 public class ThemePage extends TemplatePage {
 

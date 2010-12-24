@@ -48,7 +48,7 @@ import java.io.File;
 /**
  * @author Carsten Hufe
  */
-@Secured("uploadcenter.admin")
+@Secured(UploadCenterConstants.AUTHOR_RIGHT)
 @ModulePage(mountPath = "/uploadcenter", registerPageAdminLink = true)
 public class UploadCenterPage extends TemplatePage {
 

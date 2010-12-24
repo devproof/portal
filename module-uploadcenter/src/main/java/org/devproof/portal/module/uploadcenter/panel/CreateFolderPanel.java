@@ -27,6 +27,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +36,7 @@ import java.io.IOException;
 /**
  * @author Carsten Hufe
  */
+@Secured(UploadCenterConstants.AUTHOR_RIGHT)
 public abstract class CreateFolderPanel extends Panel {
     private static final long serialVersionUID = 1L;
 

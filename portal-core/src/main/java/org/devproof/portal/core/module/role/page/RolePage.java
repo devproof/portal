@@ -33,12 +33,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.ConfirmDeletePanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.right.RightConstants;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.RoleConstants;
 import org.devproof.portal.core.module.role.entity.Role;
@@ -51,6 +53,7 @@ import org.devproof.portal.core.module.user.service.UserService;
 /**
  * @author Carsten Hufe
  */
+@Secured(RoleConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/roles", registerGlobalAdminLink = true)
 public class RolePage extends TemplatePage {
 

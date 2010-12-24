@@ -26,5 +26,6 @@ public interface ThemeConstants {
 
     String CONF_SELECTED_THEME_UUID = "hidden.selected_theme_uuid";
     String CONF_SELECTED_THEME_DEFAULT = "_default_";
+    String ADMIN_RIGHT = "theme.admin";
     // String PORTAL_THEME_VERSION = "${devproof.version}";
 }

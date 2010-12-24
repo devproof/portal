@@ -33,6 +33,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.file.Files;
 import org.apache.wicket.util.file.Folder;
 import org.apache.wicket.util.lang.Bytes;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.uploadcenter.UploadCenterConstants;
@@ -44,6 +45,7 @@ import java.util.Collection;
 /**
  * @author Carsten Hufe
  */
+@Secured(UploadCenterConstants.AUTHOR_RIGHT)
 public class UploadFilePanel extends Panel {
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "configurationService")

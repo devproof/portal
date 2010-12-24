@@ -38,6 +38,7 @@ import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
+import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.panel.UserEditPanel;
 import org.devproof.portal.core.module.user.panel.UserInfoPanel;
@@ -50,7 +51,7 @@ import java.text.SimpleDateFormat;
 /**
  * @author Carsten Hufe
  */
-@Secured("user.admin")
+@Secured(UserConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/users", registerGlobalAdminLink = true)
 public class UserPage extends TemplatePage {
 

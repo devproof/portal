@@ -30,11 +30,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.repository.DeleteFailedException;
+import org.devproof.portal.core.module.right.RightConstants;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightEditPanel;
 import org.devproof.portal.core.module.right.panel.RightSearchBoxPanel;
@@ -44,6 +46,7 @@ import org.devproof.portal.core.module.right.service.RightService;
 /**
  * @author Carsten Hufe
  */
+@Secured(RightConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/rights", registerGlobalAdminLink = true)
 public class RightPage extends TemplatePage {
 

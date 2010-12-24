@@ -22,4 +22,5 @@ public interface RightConstants {
     String PAGE_RIGHT_PREFIX = "page.";
     String COMPONENT_RIGHT_PREFIX = "component.";
     String GENERAL_RIGHT_PREFIX = "general.";
+    String ADMIN_RIGHT = "right.admin";
 }

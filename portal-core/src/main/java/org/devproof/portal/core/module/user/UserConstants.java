@@ -29,4 +29,5 @@ public interface UserConstants {
     String CONF_REGISTRATION_REQUIRED_BIRTHDAY = "registration_required_birthday";
     String ENTITY_CACHE_REGION = "entity.user";
     String QUERY_CACHE_REGION = "query.user";
+    String ADMIN_RIGHT = "user.admin";
 }

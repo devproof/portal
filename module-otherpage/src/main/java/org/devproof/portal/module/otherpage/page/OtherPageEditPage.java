@@ -26,9 +26,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.service.OtherPageService;
 
@@ -37,6 +39,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured(OtherPageConstants.AUTHOR_RIGHT)
 public class OtherPageEditPage extends OtherPageBasePage {
 
     private static final long serialVersionUID = 1L;
