@@ -19,13 +19,16 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.modulemgmt.ModuleMgmtConstants;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 import org.devproof.portal.core.module.modulemgmt.panel.ModuleLinkPanel;
 
 /**
  * @author Carsten Hufe
  */
+@Secured(ModuleMgmtConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/modulenavigation", registerGlobalAdminLink = true)
 public class ModuleLinkPage extends TemplatePage {
 

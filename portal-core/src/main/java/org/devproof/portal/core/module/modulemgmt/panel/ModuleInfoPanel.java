@@ -24,12 +24,15 @@ import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.config.BoxConfiguration;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.core.config.PageConfiguration;
+import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.modulemgmt.ModuleMgmtConstants;
 
 import javax.persistence.Table;
 
 /**
  * @author Carsten Hufe
  */
+@Secured(ModuleMgmtConstants.ADMIN_RIGHT)
 public class ModuleInfoPanel extends Panel {
 
     private static final long serialVersionUID = 1L;

@@ -16,7 +16,6 @@
 package org.devproof.portal.module.download;
 
 import org.apache.wicket.ResourceReference;
-import org.devproof.portal.module.download.page.DownloadEditPage;
 
 /**
  * @author Carsten Hufe
@@ -33,5 +32,5 @@ public interface DownloadConstants {
     String ENTITY_CACHE_REGION = "entity.content";
 
     String QUERY_CACHE_REGION = "query.content";
-    String AUTHOR_RIGHT = "page." + DownloadEditPage.class.getSimpleName();
+    String AUTHOR_RIGHT = "download.author";
 }

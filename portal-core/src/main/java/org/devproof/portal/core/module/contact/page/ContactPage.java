@@ -36,6 +36,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -53,6 +54,7 @@ import org.devproof.portal.core.module.user.service.UserService;
 /**
  * @author Carsten Hufe
  */
+@Secured("contact")
 @ModulePage(mountPath = "/contact", indexMountedPath = true)
 public class ContactPage extends TemplatePage {
 

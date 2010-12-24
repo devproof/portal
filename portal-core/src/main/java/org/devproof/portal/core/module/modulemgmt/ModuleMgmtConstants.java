@@ -19,4 +19,5 @@ package org.devproof.portal.core.module.modulemgmt;
  * @author Carsten Hufe
  */
 public interface ModuleMgmtConstants {
+    String ADMIN_RIGHT = "modulemgmt.admin";
 }

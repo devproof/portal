@@ -24,10 +24,12 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
+import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.entity.DownloadTag;
 import org.devproof.portal.module.download.service.DownloadService;
@@ -38,6 +40,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured(DownloadConstants.AUTHOR_RIGHT)
 public class DownloadEditPage extends DownloadBasePage {
 
     private static final long serialVersionUID = 1L;

@@ -28,13 +28,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
+import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.email.service.EmailService;
 
 /**
  * @author Carsten Hufe
  */
+@Secured(EmailConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/emails", registerGlobalAdminLink = true)
 public class EmailTemplatePage extends EmailTemplateBasePage {
 

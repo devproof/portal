@@ -31,9 +31,11 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.service.RegistryService;
+import org.devproof.portal.core.module.modulemgmt.ModuleMgmtConstants;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink;
 import org.devproof.portal.core.module.modulemgmt.entity.ModuleLink.LinkType;
 import org.devproof.portal.core.module.modulemgmt.query.ModuleLinkQuery;
@@ -42,6 +44,7 @@ import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
 /**
  * @author Carsten Hufe
  */
+@Secured(ModuleMgmtConstants.ADMIN_RIGHT)
 public class ModuleLinkPanel extends Panel {
 
     private static final long serialVersionUID = 1L;

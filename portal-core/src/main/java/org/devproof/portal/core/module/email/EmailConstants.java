@@ -35,4 +35,5 @@ public interface EmailConstants {
     String CONF_PAGE_NAME = "page_name";
     String CONF_FROM_EMAIL_ADDRESS = "from_email_address";
     String CONF_FROM_EMAIL_NAME = "from_email_name";
+    String ADMIN_RIGHT = "emailtemplate.admin";
 }

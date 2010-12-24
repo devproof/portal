@@ -22,8 +22,10 @@ import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.TooltipLabel;
 import org.devproof.portal.core.module.common.page.TemplatePage;
+import org.devproof.portal.core.module.modulemgmt.ModuleMgmtConstants;
 import org.devproof.portal.core.module.modulemgmt.bean.ModuleBean;
 import org.devproof.portal.core.module.modulemgmt.panel.ModuleInfoPanel;
 import org.devproof.portal.core.module.modulemgmt.service.ModuleService;
@@ -33,6 +35,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+@Secured(ModuleMgmtConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/modules", registerGlobalAdminLink = true)
 public class ModuleOverviewPage extends TemplatePage {
 
