@@ -7,19 +7,15 @@ INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,m
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.PageAdminBoxPanel','See Box: Page Administration',{ts '2009-01-05 14:13:15.000'},'admin',{ts '2009-01-05 14:13:15.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.TagCloudBoxPanel','See Box: Related tags box',{ts '2009-01-05 14:23:13.000'},'admin',{ts '2009-01-05 14:23:13.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.UserBoxPanel','See Box: User info box (Settings/Logout)',{ts '2009-01-05 14:24:02.000'},'admin',{ts '2009-01-05 14:24:02.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.BoxPage','Box Administration: Administrate boxes',{ts '2009-01-05 14:11:43.000'},'admin',{ts '2009-01-10 21:28:18.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ConfigurationPage','Configuration: Administrate configuration',{ts '2009-01-10 21:28:45.000'},'admin',{ts '2009-01-10 21:28:45.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ContactPage','Contact Form: User who are allowed to access the contact form',{ts '2009-01-05 23:01:39.000'},'admin',{ts '2009-01-06 15:59:04.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.EmailTemplatePage','Email Template Administration: Administrate email templates',{ts '2009-01-10 21:24:57.000'},'admin',{ts '2009-01-10 21:24:57.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ForgotPasswordPage','Forgot Password: Enables the forgot password page',{ts '2009-01-05 23:29:26.000'},'admin',{ts '2009-01-06 17:02:37.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.RegisterPage','Registration: Register an account',{ts '2009-01-05 23:27:42.000'},'admin',{ts '2009-01-06 17:02:28.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.RightPage','Right Administration: Administrate rights',{ts '2009-01-10 21:23:44.000'},'admin',{ts '2009-01-10 21:23:44.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.RolePage','Role Administration: Administrate roles',{ts '2009-01-10 21:23:01.000'},'admin',{ts '2009-01-10 21:24:11.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.SettingsPage','User Settings: Edit his own settings',null,null,null,null);
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.UserPage','User Administration: Administrate users',{ts '2009-01-10 21:21:23.000'},'admin',{ts '2009-01-10 21:21:53.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ThemePage','Theme Administration: Manage themes',{ts '2009-01-10 21:21:23.000'},'admin',{ts '2009-01-10 21:21:53.000'},'admin');
-INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('page.ModuleLinkPage',{ts '2009-05-10 00:30:24.000'},'admin',{ts '2009-05-10 00:30:24.000'},'admin','Module Administration: Module Navigation Links');
-INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('page.ModuleOverviewPage',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Module Administration: Module Overview');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('box.admin','Box Administration',{ts '2009-01-05 14:11:43.000'},'admin',{ts '2009-01-10 21:28:18.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('configuration.admin','Configuration Administration',{ts '2009-01-10 21:28:45.000'},'admin',{ts '2009-01-10 21:28:45.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('contact','Contact Form: User who are allowed to access the contact form',{ts '2009-01-05 23:01:39.000'},'admin',{ts '2009-01-06 15:59:04.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('emailtemplate.admin','Email Templates Administration',{ts '2009-01-10 21:24:57.000'},'admin',{ts '2009-01-10 21:24:57.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('right.admin','Rights Administration',{ts '2009-01-10 21:23:44.000'},'admin',{ts '2009-01-10 21:23:44.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('role.admin','Roles Administration',{ts '2009-01-10 21:23:01.000'},'admin',{ts '2009-01-10 21:24:11.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('user.admin','User Administration',{ts '2009-01-10 21:21:23.000'},'admin',{ts '2009-01-10 21:21:53.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('theme.admin','Theme Administration',{ts '2009-01-10 21:21:23.000'},'admin',{ts '2009-01-10 21:21:53.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('modulemgmt.admin','Module Administration',{ts '2009-05-10 00:30:24.000'},'admin',{ts '2009-05-10 00:30:24.000'},'admin');
 
 INSERT INTO core_right (right_id,created_at,created_by,modified_at,modified_by,description) VALUES ('captcha.disabled',{ts '2009-05-10 00:29:41.000'},'admin',{ts '2009-05-10 00:29:41.000'},'admin','Disables all captchas');
 
@@ -29,38 +25,29 @@ INSERT INTO core_role (id,active,description,created_at,created_by,modified_at,m
 
 
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'contact.form.enable');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ContactPage');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'contact');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'emailnotification.registered.user');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ForgotPasswordPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.RegisterPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.GlobalAdminBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.OtherBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.PageAdminBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.TagCloudBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.UserBoxPanel');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.SettingsPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.UserPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ThemePage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.RightPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.RolePage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.EmailTemplatePage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.BoxPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ConfigurationPage');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'user.admin');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'theme.admin');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'right.admin');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'role.admin');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'emailtemplate.admin');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'box.admin');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'configuration.admin');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'general.LoginBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'general.OtherBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'general.TagCloudBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'general.UserBoxPanel');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'page.RegisterPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'page.ForgotPasswordPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.SettingsPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'general.OtherBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'general.TagCloudBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'general.UserBoxPanel');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.ContactPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.RegisterPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.ForgotPasswordPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ModuleLinkPage');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ModuleOverviewPage');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'contact');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'modulemgmt.admin');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'captcha.disabled');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'captcha.disabled');
 

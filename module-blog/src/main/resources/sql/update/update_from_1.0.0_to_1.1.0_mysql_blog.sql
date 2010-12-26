@@ -23,3 +23,6 @@ CREATE TABLE `blog_historized` (
 -- since 1.1
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.BlogHistoryPage','Blog: History',null,null,null,null);
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.BlogHistoryPage');
+
+-- page.BlogPage loeschen
+-- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('blog.author','Article: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');

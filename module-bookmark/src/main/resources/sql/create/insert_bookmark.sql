@@ -1,4 +1,4 @@
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.BookmarkEditPage','Bookmark Author: Edit bookmarks',{ts '2009-01-10 23:33:51.000'},'admin',{ts '2009-01-10 23:33:51.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.author','Bookmark Author',{ts '2009-01-10 23:33:51.000'},'admin',{ts '2009-01-10 23:33:51.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.view','Bookmark: View as admin',{ts '2008-12-15 17:53:49.000'},'admin',{ts '2008-12-15 17:53:49.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.view.guest','Bookmark: View as guest',{ts '2008-12-15 17:54:16.000'},'admin',{ts '2008-12-15 17:54:16.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.view.registered','Bookmark: View as registered user',{ts '2008-12-15 17:54:39.000'},'admin',{ts '2008-12-15 17:54:39.000'},'admin');
@@ -9,8 +9,6 @@ INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,m
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.vote.guest','Bookmark: Vote as guest',{ts '2008-12-29 19:53:32.000'},'admin',{ts '2008-12-29 19:53:32.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.vote.registered','Bookmark: Vote as registered user',{ts '2008-12-29 19:53:58.000'},'admin',{ts '2008-12-29 19:53:58.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.BookmarkBoxPanel','See Box: Latest bookmarks box',{ts '2009-01-05 14:20:01.000'},'admin',{ts '2009-01-05 14:20:01.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.BookmarkPage','Bookmark: See the bookmarks',{ts '2009-01-05 23:30:05.000'},'admin',{ts '2009-01-05 23:30:38.000'},'admin');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.BookmarkPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'bookmark.view');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'bookmark.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'bookmark.view.registered');
@@ -21,12 +19,11 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'bookmark.vote');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'bookmark.vote.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'bookmark.vote.registered');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.BookmarkBoxPanel');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.BookmarkEditPage');
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'bookmark.author');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'bookmark.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'bookmark.visit.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'bookmark.vote.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'general.BookmarkBoxPanel');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'page.BookmarkPage');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'bookmark.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'bookmark.view.registered');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'bookmark.visit.guest');
@@ -34,7 +31,6 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'bookmark.visit.re
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'bookmark.vote.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'bookmark.vote.registered');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'general.BookmarkBoxPanel');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'page.BookmarkPage');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('bookmarks_per_page','Bookmarks per page','Bookmarks','java.lang.Integer','5');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('bookmark_vote_enabled','Vote enabled','Bookmarks','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('bookmark_hide_broken','Hide broken bookmarks','Bookmarks','java.lang.Boolean','true');

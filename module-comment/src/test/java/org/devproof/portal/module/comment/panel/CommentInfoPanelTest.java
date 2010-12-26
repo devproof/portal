@@ -40,6 +40,7 @@ import java.util.Date;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/comment/test-datasource.xml" })
 public class CommentInfoPanelTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -67,7 +68,9 @@ public class CommentInfoPanelTest {
             @Override
             public Panel getTestPanel(String panelId) {
                 Comment comment = new Comment();
+                comment.setId(1);
                 comment.setCreatedAt(new Date());
+                comment.setCreatedBy("someone");
                 comment.setModifiedAt(new Date());
                 return new CommentInfoPanel(panelId, Model.of(comment));
             }

@@ -4,8 +4,8 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('comment_number_per_page_admin','Number of comments per page for administration','Comments','java.lang.Integer','50');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('comment_show_only_reviewed','Show only reviewed comments','Comments','java.lang.Boolean','false');
 
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.CommentAdminPage','Comment: Administrate comments',null,null,null,null);
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.CommentAdminPage');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.admin','Comment: Administrate comments',null,null,null,null);
+INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.notify.autoblocked','Comment: Automatic blocked notification email',null,null,null,null);
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.notify.autoblocked');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.notify.violation','Comment: Violation notication email',null,null,null,null);

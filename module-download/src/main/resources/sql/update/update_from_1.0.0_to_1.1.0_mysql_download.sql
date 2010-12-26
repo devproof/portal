@@ -1,0 +1,2 @@
+-- page.DownloadPage loeschen
+-- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('download.author','Download: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');

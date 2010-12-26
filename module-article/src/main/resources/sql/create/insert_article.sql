@@ -1,4 +1,4 @@
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.author','Article: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
+INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.author','Article Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.read','Article: Read as admin',{ts '2008-12-30 23:36:13.000'},'admin',{ts '2008-12-30 23:36:13.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.read.guest','Article: Read as guest',{ts '2008-12-30 23:36:31.000'},'admin',{ts '2008-12-30 23:36:31.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.read.preview','Article: Preview read',{ts '2008-12-30 23:51:18.000'},'admin',{ts '2008-12-30 23:51:18.000'},'admin');
