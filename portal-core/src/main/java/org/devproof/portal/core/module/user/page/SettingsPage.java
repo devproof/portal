@@ -48,7 +48,6 @@ import org.devproof.portal.core.module.user.service.UserService;
 /**
  * @author Carsten Hufe
  */
-// todo kein recht nur fuer reg user ...
 @ModulePage(mountPath = "/settings")
 public class SettingsPage extends TemplatePage {
 
