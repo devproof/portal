@@ -25,7 +25,7 @@ import org.devproof.portal.module.otherpage.entity.OtherPageHistorized;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("blogHistorizedRepository")
+@GenericRepository("otherPageHistorizedRepository")
 public interface OtherPageHistorizedRepository extends CrudRepository<OtherPageHistorized, Integer> {
     @Query("select max(op.versionNumber) from OtherPageHistorized op where op.otherPage = ?")
     Integer findLastVersionNumber(OtherPage otherPageHistorized);

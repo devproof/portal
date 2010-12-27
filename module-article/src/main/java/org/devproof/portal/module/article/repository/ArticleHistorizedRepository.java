@@ -25,7 +25,7 @@ import org.devproof.portal.module.article.entity.ArticleHistorized;
 /**
  * @author Carsten Hufe
  */
-@GenericRepository("blogHistorizedRepository")
+@GenericRepository("articleHistorizedRepository")
 public interface ArticleHistorizedRepository extends CrudRepository<ArticleHistorized, Integer> {
     @Query("select max(a.versionNumber) from ArticleHistorized a where a.article = ?")
     Integer findLastVersionNumber(Article article);
