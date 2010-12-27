@@ -51,6 +51,7 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	private RepeatingView extendableRepeating;
 	private WebMarkupContainer titleContainer;
     private IModel<List<Class<? extends Page>>> registeredPageAdminPagesModel;
+    private int itemCounter = 0;
 
     public PageAdminBoxPanel(String id) {
 		super(id);
@@ -86,7 +87,7 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
     @Override
     public boolean isVisible() {
-        return registeredPageAdminPagesModel.getObject().size() > 0;
+        return itemCounter + registeredPageAdminPagesModel.getObject().size() > 0;
     }
 
     private IModel<List<Class<? extends Page>>> createRegisteredPageAdminPagesModel() {
@@ -119,6 +120,7 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 		WebMarkupContainer container = new WebMarkupContainer(extendableRepeating.newChildId());
 		extendableRepeating.add(container);
 		container.add(link);
+        itemCounter++;
 	}
 
 	@Override
