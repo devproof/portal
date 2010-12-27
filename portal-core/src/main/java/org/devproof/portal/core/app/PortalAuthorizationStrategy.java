@@ -62,6 +62,9 @@ public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
                 */
             BookmarkablePageLink<?> l = (BookmarkablePageLink<?>) component;
             Class<?> pageClazz = l.getPageClass();
+            if(pageClazz.isAnnotationPresent(Secured.class)) {
+                return evaluateSecuredAnnotation(pageClazz);
+            }
             String rightName = RightConstants.PAGE_RIGHT_PREFIX + pageClazz.getSimpleName();
             Right right = rightService.newRightEntity(rightName);
             if (allRights.contains(right)) {

@@ -7,7 +7,6 @@ INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,m
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.view.guest','Article: View as guest',{ts '2008-12-30 23:35:00.000'},'admin',{ts '2008-12-30 23:35:00.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.view.preview','Article: Preview teaser',{ts '2008-12-30 23:50:53.000'},'admin',{ts '2008-12-30 23:51:34.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.view.registered','Article: View as registered user',{ts '2008-12-30 23:35:19.000'},'admin',{ts '2008-12-30 23:35:19.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.ArticleBoxPanel','See Box: Latest articles box',{ts '2009-01-05 14:19:24.000'},'admin',{ts '2009-01-05 14:20:10.000'},'admin');
 
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'article.read.preview');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'article.view.preview');
@@ -17,16 +16,13 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'article.read.regi
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'article.view');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'article.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'article.view.registered');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.ArticleBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'article.author');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'article.read.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'article.view.guest');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'general.ArticleBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.view.registered');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.read.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.read.registered');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'general.ArticleBoxPanel');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('articles_per_page','Articles per page','Articles','java.lang.Integer','5');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('box_num_latest_articles','Number of latest articles','Articles','java.lang.Integer','3');
 INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (300,{ts '2009-01-05 12:17:49.000'},'admin',{ts '2009-01-05 12:18:07.000'},'admin','ArticleBoxPanel',null,10,'Latest Articles Box', 0);

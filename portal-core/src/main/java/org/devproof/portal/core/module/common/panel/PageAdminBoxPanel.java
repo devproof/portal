@@ -41,6 +41,7 @@ import java.util.List;
  * 
  * @author Carsten Hufe
  */
+// todo nur bei existierenden links rendern
 @NavigationBox("Page Admin Box")
 public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 

@@ -1,2 +1,3 @@
 -- page.DownloadPage loeschen
 -- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('download.author','Download: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
+-- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.DownloadBoxPanel','See Box: Latest downloads box',{ts '2009-01-05 14:20:40.000'},'admin',{ts '2009-01-05 14:24:41.000'},'admin');

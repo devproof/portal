@@ -25,3 +25,4 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ArticleHisto
 
 -- page.ArticlePage loeschen
 -- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.author','Article: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
+-- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.ArticleBoxPanel','See Box: Latest articles box',{ts '2009-01-05 14:19:24.000'},'admin',{ts '2009-01-05 14:20:10.000'},'admin');

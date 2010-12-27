@@ -8,8 +8,6 @@ INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,m
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('download.vote','Download: Vote as admin',{ts '2008-12-26 01:36:19.000'},'admin',{ts '2008-12-26 01:36:19.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('download.vote.guest','Download: Vote as guest',{ts '2008-12-26 01:36:44.000'},'admin',{ts '2008-12-26 01:36:44.000'},'admin');
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('download.vote.registered','Download: Vote as registered user',{ts '2008-12-26 01:37:06.000'},'admin',{ts '2008-12-26 01:37:06.000'},'admin');
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.DownloadBoxPanel','See Box: Latest downloads box',{ts '2009-01-05 14:20:40.000'},'admin',{ts '2009-01-05 14:24:41.000'},'admin');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.download');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.download.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.download.registered');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.view');
@@ -18,19 +16,16 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.view.reg
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.vote');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.vote.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.vote.registered');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'general.DownloadBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'download.author');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'download.download.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'download.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'download.vote.guest');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'general.DownloadBoxPanel');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'download.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'download.view.registered');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'download.download.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'download.download.registered');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'download.vote.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'download.vote.registered');
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'general.DownloadBoxPanel');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('downloads_per_page','Downloads per page','Downloads','java.lang.Integer','5');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('download_vote_enabled','Vote enabled','Downloads','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('download_hide_broken','Hide broken downloads','Downloads','java.lang.Boolean','true');

@@ -38,6 +38,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+// todo nur bei existierenden links rendern
 @NavigationBox("Global Admin Box")
 public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 

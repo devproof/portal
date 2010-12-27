@@ -1,2 +1,3 @@
 -- page.BookmarkPage loeschen
 -- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.author','Bookmark: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
+-- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.BookmarkBoxPanel','See Box: Latest bookmarks box',{ts '2009-01-05 14:20:01.000'},'admin',{ts '2009-01-05 14:20:01.000'},'admin');
