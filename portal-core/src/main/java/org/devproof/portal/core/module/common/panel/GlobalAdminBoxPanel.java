@@ -28,17 +28,18 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.registry.GlobalAdminPageRegistry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Carsten Hufe
  */
-// todo nur bei existierenden links rendern
 @NavigationBox("Global Admin Box")
 public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
@@ -47,15 +48,22 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	@SpringBean(name = "globalAdminPageRegistry")
 	private GlobalAdminPageRegistry adminPageRegistry;
 	private WebMarkupContainer titleContainer;
+    private IModel<List<Class<? extends Page>>> registeredAdminPageModel;
 
-	public GlobalAdminBoxPanel(String id) {
+    public GlobalAdminBoxPanel(String id) {
 		super(id);
+        registeredAdminPageModel = createRegisteredAdminPageModel();
 		add(createTitleContainer());
 		add(createRepeatingNavExtendable());
 	}
 
-	private ListView<?> createRepeatingNavExtendable() {
-		IModel<List<Class<? extends Page>>> registeredAdminPageModel = createRegisteredAdminPageModel();
+    @Override
+    public boolean isVisible() {
+        List<Class<? extends Page>> adminPages = registeredAdminPageModel.getObject();
+        return adminPages.size() > 0;
+    }
+
+    private ListView<?> createRepeatingNavExtendable() {
 		return new ListView<Class<? extends Page>>("repeatingNavExtendable", registeredAdminPageModel) {
 			private static final long serialVersionUID = -277523349047078562L;
 
@@ -79,7 +87,15 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
 			@Override
 			protected List<Class<? extends Page>> load() {
-				return adminPageRegistry.getRegisteredGlobalAdminPages();
+                List<Class<? extends Page>> pages = adminPageRegistry.getRegisteredGlobalAdminPages();
+                List<Class<? extends Page>> filteredPages = new ArrayList<Class<? extends Page>>(pages.size());
+                PortalSession session = PortalSession.get();
+                for(Class<? extends Page> page : pages) {
+                    if(session.hasRight(page)) {
+                        filteredPages.add(page);
+                    }
+                }
+                return filteredPages;
 			}
 		};
 	}

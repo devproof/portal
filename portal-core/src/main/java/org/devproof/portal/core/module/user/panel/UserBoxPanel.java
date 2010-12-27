@@ -31,7 +31,6 @@ import org.devproof.portal.core.module.user.page.SettingsPage;
  *
  * @author Carsten Hufe
  */
-// todo nur bei eingeloggtem user rendern
 @NavigationBox("User Box")
 public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 
@@ -43,6 +42,11 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
         add(createTitleContainer());
         add(createSettingsLink());
         add(createLogoutLink());
+    }
+
+    @Override
+    public boolean isVisible() {
+        return PortalSession.get().isSignedIn();
     }
 
     private WebMarkupContainer createTitleContainer() {

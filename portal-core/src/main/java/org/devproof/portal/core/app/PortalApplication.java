@@ -92,7 +92,7 @@ public class PortalApplication extends WebApplication {
         getMarkupSettings().setStripWicketTags(true);
         getMarkupSettings().setCompressWhitespace(true);
         getMarkupSettings().setStripComments(true);
-        getSecuritySettings().setAuthorizationStrategy(new PortalAuthorizationStrategy(getSpringContext()));
+        getSecuritySettings().setAuthorizationStrategy(new PortalAuthorizationStrategy());
         getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
         getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
         getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
@@ -137,9 +137,4 @@ public class PortalApplication extends WebApplication {
         logger.debug("New session created.");
         return new PortalSession(request);
     }
-
-//    @Override
-//    public RequestCycle newRequestCycle(Request request, Response response) {
-//        return new PortalWebRequestCycle(this, (WebRequest) request, response, getSpringContext());
-//    }
 }

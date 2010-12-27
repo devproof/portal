@@ -39,6 +39,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
@@ -72,6 +73,7 @@ import java.util.List;
  */
 public abstract class TemplatePage extends WebPage {
 
+    private static final long serialVersionUID = -2077311506052517540L;
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
     @SpringBean(name = "boxService")

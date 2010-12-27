@@ -38,7 +38,6 @@ import org.devproof.portal.core.module.user.page.RegisterPage;
 /**
  * @author Carsten Hufe
  */
-// todo nur bei guest rendern
 @NavigationBox("Login Box")
 public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 
@@ -55,6 +54,11 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
         add(createLoginForm());
         add(createRegisterLink());
         add(createForgotPasswordLink());
+    }
+
+    @Override
+    public boolean isVisible() {
+        return !PortalSession.get().isSignedIn();
     }
 
     private Form<ValueMap> createLoginForm() {

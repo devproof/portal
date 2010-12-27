@@ -15,17 +15,20 @@
  */
 package org.devproof.portal.core.app;
 
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.Session;
+import org.apache.wicket.*;
+import org.apache.wicket.extensions.markup.html.tree.table.TreeTable;
 import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.config.GenericRepository;
+import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.right.RightConstants;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.Role;
@@ -33,11 +36,15 @@ import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
+import org.devproof.portal.core.module.user.page.UserPage;
 import org.devproof.portal.core.module.user.service.UserService;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import javax.servlet.http.Cookie;
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Global portal session
@@ -201,7 +208,7 @@ public class PortalSession extends WebSession {
     }
 
     /**
-     * Whether a user has this right
+     * Whether an user has this right
      *
      * @param right right entity
      * @return true if he has
@@ -209,6 +216,87 @@ public class PortalSession extends WebSession {
     public boolean hasRight(Right right) {
         User user = getUser();
         return user.getRole().getRights().contains(right);
+    }
+
+    /**
+     * Whether an user has the right for this component
+     * @param pageClazz page class
+     * @return true if the user has the right
+     */
+    public boolean hasRight(Class<? extends Page> pageClazz) {
+        if (Page.class.isAssignableFrom(pageClazz)) {
+            // false means the whole page is blocked
+            if(pageClazz.isAnnotationPresent(Secured.class)) {
+                return evaluateSecuredAnnotation(pageClazz);
+            }
+            else {
+                List<Right> allRights = rightService.getAllRights();
+                String rightName = RightConstants.PAGE_RIGHT_PREFIX + pageClazz.getSimpleName();
+                Right right = rightService.newRightEntity(rightName);
+                if (allRights.contains(right)) {
+                    return hasRight(right);
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Whether an user has the right for this component
+     * @param component component
+     * @return true if the user has the right
+     */
+    public boolean hasRight(Component component) {
+        List<Right> allRights = rightService.getAllRights();
+        if (component instanceof BookmarkablePageLink<?>) {
+            /*
+                * This will remove the links for pages where the user hasn't got
+                * rights. If there exists a right starting with page.PageClassName,
+                * the user must have the right to access the page!
+                */
+            BookmarkablePageLink<?> l = (BookmarkablePageLink<?>) component;
+            Class<? extends Page> pageClass = l.getPageClass();
+            return hasRight(pageClass);
+        }
+        else if(hasSecuredAnnotation(component.getClass())) {
+            return evaluateSecuredAnnotation(component.getClass());
+        }
+        // problem with tree table, i dont know why
+        else if (!(component instanceof TreeTable)) {
+            String rightName = RightConstants.COMPONENT_RIGHT_PREFIX + component.getPage().getClass().getSimpleName() + "." + component.getId();
+            Right right = rightService.newRightEntity(rightName);
+            if (allRights.contains(right)) {
+                return hasRight(right);
+            }
+
+            rightName = RightConstants.GENERAL_RIGHT_PREFIX + component.getClass().getSimpleName();
+            right = rightService.newRightEntity(rightName);
+            if (allRights.contains(right)) {
+                return hasRight(right);
+            }
+        }
+        return true;
+    }
+
+    private boolean evaluateSecuredAnnotation(Class<?> clazz) {
+        // if the user do not have the right when page is annotated with @Secured, he is not allowed to visit
+        // page with this annotation is always protected
+        Secured secured = getSecuredAnnotation(clazz);
+        for(String right : secured.value()) {
+            if(hasRight(right)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasSecuredAnnotation(Class<?> clazz) {
+        Secured secured = AnnotationUtils.findAnnotation(clazz, Secured.class);
+        return secured != null;
+    }
+
+    private Secured getSecuredAnnotation(Class<?> clazz) {
+        return AnnotationUtils.findAnnotation(clazz, Secured.class);
     }
 
     /**

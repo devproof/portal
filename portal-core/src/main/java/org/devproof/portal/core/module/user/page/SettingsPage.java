@@ -16,7 +16,10 @@
 package org.devproof.portal.core.module.user.page;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.*;
@@ -31,6 +34,7 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
@@ -234,6 +238,10 @@ public class SettingsPage extends TemplatePage {
             @Override
             protected User load() {
                 PortalSession session = (PortalSession) getSession();
+                if(!session.isSignedIn()) {
+                    Class<? extends Page> accessDeniedPage = PortalApplication.get().getApplicationSettings().getAccessDeniedPage();
+                    throw new RestartResponseException(accessDeniedPage);
+                }
                 return userService.findById(session.getUser().getId());
             }
         };

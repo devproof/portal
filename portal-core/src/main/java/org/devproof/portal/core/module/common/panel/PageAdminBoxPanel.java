@@ -41,7 +41,6 @@ import java.util.List;
  * 
  * @author Carsten Hufe
  */
-// todo nur bei existierenden links rendern
 @NavigationBox("Page Admin Box")
 public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 
@@ -51,9 +50,11 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	private PageAdminPageRegistry adminPageRegistry;
 	private RepeatingView extendableRepeating;
 	private WebMarkupContainer titleContainer;
+    private IModel<List<Class<? extends Page>>> registeredPageAdminPagesModel;
 
-	public PageAdminBoxPanel(String id) {
+    public PageAdminBoxPanel(String id) {
 		super(id);
+        registeredPageAdminPagesModel = createRegisteredPageAdminPagesModel();
 		add(createTitleContainer());
 		add(createRepeatingNavExtendable());
 		add(createRepeatingNavFixed());
@@ -65,7 +66,6 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 	}
 
 	private ListView<?> createRepeatingNavFixed() {
-		IModel<List<Class<? extends Page>>> registeredPageAdminPagesModel = createRegisteredPageAdminPagesModel();
 		return new ListView<Class<? extends Page>>("repeatingNavFixed", registeredPageAdminPagesModel) {
 			private static final long serialVersionUID = -277523349047078562L;
 
@@ -81,18 +81,15 @@ public class PageAdminBoxPanel extends Panel implements BoxTitleVisibility {
 				link.add(new Label("adminLinkLabel", label));
 				return link;
 			}
-			//
-			// private BookmarkablePageLink<Void> createAdminLink(Class<?
-			// extends Page> pageClass) {
-			// BookmarkablePageLink<Void> link = new
-			// BookmarkablePageLink<Void>("adminLink", pageClass);
-			// link.add(createAdminItemLink(pageClass));
-			// return link;
-			// }
 		};
 	}
 
-	private IModel<List<Class<? extends Page>>> createRegisteredPageAdminPagesModel() {
+    @Override
+    public boolean isVisible() {
+        return registeredPageAdminPagesModel.getObject().size() > 0;
+    }
+
+    private IModel<List<Class<? extends Page>>> createRegisteredPageAdminPagesModel() {
 		return new LoadableDetachableModel<List<Class<? extends Page>>>() {
 			private static final long serialVersionUID = 3289204569577932297L;
 

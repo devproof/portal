@@ -25,7 +25,6 @@ import org.devproof.portal.module.otherpage.entity.OtherPage;
 /**
  * @author Carsten Hufe
  */
-// TODO unit test
 public class OtherPagePrintPanel extends Panel {
 
 	private static final long serialVersionUID = 1L;
@@ -40,6 +39,8 @@ public class OtherPagePrintPanel extends Panel {
 
 	private MetaInfoPanel<?> createMetaInfoPanel() {
 		return new MetaInfoPanel<OtherPage>("metaInfo", otherPageModel) {
+            private static final long serialVersionUID = 606108060575073163L;
+
             @Override
             public boolean isVisible() {
                 OtherPage otherPage = otherPageModel.getObject();
