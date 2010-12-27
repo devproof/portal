@@ -43,13 +43,11 @@ import java.util.List;
  * @author Carsten Hufe
  */
 public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
-    private SessionFactory sessionFactory;
     private ConfigurationService configurationService;
     private UserService userService;
     private EmailService emailService;
 
     public PortalRequestCycleProcessor(ApplicationContext context) {
-        sessionFactory = (SessionFactory) context.getBean("sessionFactory");
         configurationService = (ConfigurationService) context.getBean("configurationService");
         userService = (UserService) context.getBean("userService");
         emailService = (EmailService) context.getBean("emailService");
