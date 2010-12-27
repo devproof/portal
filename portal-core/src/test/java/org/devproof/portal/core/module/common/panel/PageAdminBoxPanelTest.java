@@ -15,7 +15,10 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.module.common.registry.PageAdminPageRegistry;
+import org.devproof.portal.core.module.feed.DummyPage;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
@@ -35,12 +38,17 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class PageAdminBoxPanelTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
-    private ServletContext servletContext;    
+    private ServletContext servletContext;
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
+    @Autowired
+	private PageAdminPageRegistry adminPageRegistry;
     private WicketTester tester;
 
     @Before
     public void setUp() throws Exception {
+        adminPageRegistry.registerPageAdminPage(DummyPage.class);
         tester = PortalTestUtil.createWicketTester(servletContext);
         PortalTestUtil.loginDefaultAdminUser(tester);
     }

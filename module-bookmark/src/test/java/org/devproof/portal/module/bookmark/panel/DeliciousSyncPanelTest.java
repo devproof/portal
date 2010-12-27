@@ -36,6 +36,7 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/bookmark/test-datasource.xml" })
 public class DeliciousSyncPanelTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -43,6 +44,7 @@ public class DeliciousSyncPanelTest {
     @Before
     public void setUp() throws Exception {
         tester = PortalTestUtil.createWicketTester(servletContext);
+        PortalTestUtil.loginDefaultAdminUser(tester);
     }
 
     @After
