@@ -20,9 +20,6 @@ CREATE TABLE `article_historized` (
   CONSTRAINT `FK3DB0669D97F357` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ArticleHistoryPage','Article: History',null,null,null,null);
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ArticleHistoryPage');
-
 SET FOREIGN_KEY_CHECKS=0;
 DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.ArticlePage';
 DELETE FROM core_right WHERE right_id LIKE 'page.ArticlePage';
