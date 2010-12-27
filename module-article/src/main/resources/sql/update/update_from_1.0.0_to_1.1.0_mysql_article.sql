@@ -23,6 +23,11 @@ CREATE TABLE `article_historized` (
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ArticleHistoryPage','Article: History',null,null,null,null);
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ArticleHistoryPage');
 
--- page.ArticlePage loeschen
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('article.author','Article: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.ArticleBoxPanel','See Box: Latest articles box',{ts '2009-01-05 14:19:24.000'},'admin',{ts '2009-01-05 14:20:10.000'},'admin');
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.ArticlePage';
+DELETE FROM core_right WHERE right_id LIKE 'page.ArticlePage';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.ArticleBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.ArticleBoxPanel';
+UPDATE core_role_right_xref SET right_id = 'article.author' WHERE right_id LIKE 'page.ArticleEditPage';
+UPDATE core_right SET right_id = 'article.author', description = 'Article Author' WHERE right_id LIKE 'page.ArticleEditPage';
+SET FOREIGN_KEY_CHECKS=1;

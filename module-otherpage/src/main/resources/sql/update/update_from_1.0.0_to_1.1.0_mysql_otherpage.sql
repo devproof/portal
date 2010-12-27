@@ -1,6 +1,5 @@
 alter table other_page change content content mediumtext;
 
--- since 1.1
 CREATE TABLE `other_page_historized` (
   `id` int(11) NOT NULL auto_increment,
   `version_number` int(11) NOT NULL,
@@ -19,5 +18,7 @@ CREATE TABLE `other_page_historized` (
   CONSTRAINT `FK3DB056F97F3646` FOREIGN KEY (`other_page_id`) REFERENCES `other_page` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
--- since 1.1
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('otherPage.author','Other Page: Author',{ts '2009-01-05 20:28:31.000'},'admin',{ts '2009-01-10 21:33:42.000'},'admin');
+SET FOREIGN_KEY_CHECKS=0;
+UPDATE core_role_right_xref SET right_id = 'otherPage.author' WHERE right_id LIKE 'page.OtherPagePage';
+UPDATE core_right SET right_id = 'otherPage.author', description = 'Other Page Author' WHERE right_id LIKE 'page.OtherPagePage';
+SET FOREIGN_KEY_CHECKS=1;

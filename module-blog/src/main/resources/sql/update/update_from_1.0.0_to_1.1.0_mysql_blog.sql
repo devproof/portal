@@ -26,3 +26,9 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.BlogHistoryP
 
 -- page.BlogPage loeschen
 -- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('blog.author','Article: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.BlogPage';
+DELETE FROM core_right WHERE right_id LIKE 'page.BlogPage';
+UPDATE core_role_right_xref SET right_id = 'blog.author' WHERE right_id LIKE 'page.BlogEditPage';
+UPDATE core_right SET right_id = 'blog.author', description = 'Blog Author' WHERE right_id LIKE 'page.BlogEditPage';
+SET FOREIGN_KEY_CHECKS=1;

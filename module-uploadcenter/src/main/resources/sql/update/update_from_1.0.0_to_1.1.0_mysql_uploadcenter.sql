@@ -1,4 +1,4 @@
--- loeschen UploadCenterPage
--- update UploadThemePage
---INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('uploadcenter.author','Upload Center: Author',{ts '2008-12-15 17:58:02.000'},'admin',{ts '2009-01-10 21:26:21.000'},'admin');
---INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'uploadcenter.author');
+SET FOREIGN_KEY_CHECKS=0;
+UPDATE core_role_right_xref SET right_id = 'uploadcenter.author' WHERE right_id LIKE 'page.UploadCenterPage';
+UPDATE core_right SET right_id = 'uploadcenter.author', description = 'Upload Center Author' WHERE right_id LIKE 'page.UploadCenterPage';
+SET FOREIGN_KEY_CHECKS=1;

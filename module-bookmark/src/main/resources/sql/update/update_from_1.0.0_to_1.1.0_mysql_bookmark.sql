@@ -1,3 +1,8 @@
--- page.BookmarkPage loeschen
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('bookmark.author','Bookmark: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.BookmarkBoxPanel','See Box: Latest bookmarks box',{ts '2009-01-05 14:20:01.000'},'admin',{ts '2009-01-05 14:20:01.000'},'admin');
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.BookmarkPage';
+DELETE FROM core_right WHERE right_id LIKE 'page.BookmarkPage';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.BookmarkBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.BookmarkBoxPanel';
+UPDATE core_role_right_xref SET right_id = 'bookmark.author' WHERE right_id LIKE 'page.BookmarkEditPage';
+UPDATE core_right SET right_id = 'bookmark.author', description = 'Bookmark Author' WHERE right_id LIKE 'page.BookmarkEditPage';
+SET FOREIGN_KEY_CHECKS=1;

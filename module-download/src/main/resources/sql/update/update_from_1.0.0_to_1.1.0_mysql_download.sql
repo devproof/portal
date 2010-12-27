@@ -1,3 +1,8 @@
--- page.DownloadPage loeschen
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('download.author','Download: Author',{ts '2009-01-10 21:48:33.000'},'admin',{ts '2009-01-10 21:48:33.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.DownloadBoxPanel','See Box: Latest downloads box',{ts '2009-01-05 14:20:40.000'},'admin',{ts '2009-01-05 14:24:41.000'},'admin');
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.DownloadPage';
+DELETE FROM core_right WHERE right_id LIKE 'page.DownloadPage';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.DownloadBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.DownloadBoxPanel';
+UPDATE core_role_right_xref SET right_id = 'download.author' WHERE right_id LIKE 'page.DownloadEditPage';
+UPDATE core_right SET right_id = 'download.author', description = 'Download Author' WHERE right_id LIKE 'page.DownloadEditPage';
+SET FOREIGN_KEY_CHECKS=1;

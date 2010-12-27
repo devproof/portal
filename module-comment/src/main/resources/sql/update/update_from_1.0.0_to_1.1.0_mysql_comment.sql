@@ -6,5 +6,7 @@ UPDATE core_configuration set conf_key = 'spring.emailService.findAll.subject.id
   WHERE conf_key = 'spring.emailTemplateDao.findAll.subject.id.violationnotification';
 
 
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('comment.admin','Comment: Administrate comments',null,null,null,null);
--- INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'comment.admin');
+SET FOREIGN_KEY_CHECKS=0;
+UPDATE core_role_right_xref SET right_id = 'comment.admin' WHERE right_id LIKE 'page.CommentAdminPage';
+UPDATE core_right SET right_id = 'comment.admin', description = 'Comment Administration' WHERE right_id LIKE 'page.CommentAdminPage';
+SET FOREIGN_KEY_CHECKS=1;

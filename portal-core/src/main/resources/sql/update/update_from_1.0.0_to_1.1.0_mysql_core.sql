@@ -17,10 +17,41 @@ UPDATE core_configuration set conf_key = 'spring.roleService.findAll.description
 UPDATE core_configuration set conf_key = 'spring.roleService.findAll.description.id.registerrole'
   WHERE conf_key = 'spring.roleDao.findAll.description.id.registerrole';
 
--- entfernen
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.GlobalAdminBoxPanel','See Box: Global Administration',{ts '2009-01-05 14:13:07.000'},'admin',{ts '2009-01-05 14:13:07.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.LoginBoxPanel','See Box: Login box',{ts '2009-01-05 14:21:46.000'},'admin',{ts '2009-01-05 14:21:46.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.OtherBoxPanel','See Box: Other boxes',{ts '2009-01-05 14:22:23.000'},'admin',{ts '2009-01-05 14:22:23.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.PageAdminBoxPanel','See Box: Page Administration',{ts '2009-01-05 14:13:15.000'},'admin',{ts '2009-01-05 14:13:15.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.TagCloudBoxPanel','See Box: Related tags box',{ts '2009-01-05 14:23:13.000'},'admin',{ts '2009-01-05 14:23:13.000'},'admin');
--- INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('general.UserBoxPanel','See Box: User info box (Settings/Logout)',{ts '2009-01-05 14:24:02.000'},'admin',{ts '2009-01-05 14:24:02.000'},'admin');
+
+SET FOREIGN_KEY_CHECKS=0;
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.GlobalAdminBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.GlobalAdminBoxPanel';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.LoginBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.LoginBoxPanel';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.OtherBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.OtherBoxPanel';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.PageAdminBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.PageAdminBoxPanel';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.TagCloudBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.TagCloudBoxPanel';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.UserBoxPanel';
+DELETE FROM core_right WHERE right_id LIKE 'general.UserBoxPanel';
+
+UPDATE core_role_right_xref SET right_id = 'box.admin' WHERE right_id LIKE 'page.BoxPage';
+UPDATE core_right SET right_id = 'box.admin', description = 'Box Administration' WHERE right_id LIKE 'page.BoxPage';
+UPDATE core_role_right_xref SET right_id = 'configuration.admin' WHERE right_id LIKE 'page.ConfigurationPage';
+UPDATE core_right SET right_id = 'configuration.admin', description = 'Configuration Administration' WHERE right_id LIKE 'page.ContactPage';
+UPDATE core_role_right_xref SET right_id = 'contact' WHERE right_id LIKE 'page.ConfigurationPage';
+UPDATE core_right SET right_id = 'contact', description = 'Contact Form: User who are allowed to access the contact form' WHERE right_id LIKE 'page.ContactPage';
+UPDATE core_role_right_xref SET right_id = 'emailtemplate.admin' WHERE right_id LIKE 'page.EmailTemplatePage';
+UPDATE core_right SET right_id = 'emailtemplate.admin', description = 'Email Templates Administration' WHERE right_id LIKE 'page.EmailTemplatePage';
+UPDATE core_role_right_xref SET right_id = 'right.admin' WHERE right_id LIKE 'page.RightPage';
+UPDATE core_right SET right_id = 'right.admin', description = 'Rights Administration' WHERE right_id LIKE 'page.RightPage';
+UPDATE core_role_right_xref SET right_id = 'role.admin' WHERE right_id LIKE 'page.RolePage';
+UPDATE core_right SET right_id = 'role.admin', description = 'Roles Administration' WHERE right_id LIKE 'page.RolePage';
+UPDATE core_role_right_xref SET right_id = 'user.admin' WHERE right_id LIKE 'page.UserPage';
+UPDATE core_right SET right_id = 'user.admin', description = 'User Administration' WHERE right_id LIKE 'page.UserPage';
+UPDATE core_role_right_xref SET right_id = 'theme.admin' WHERE right_id LIKE 'page.ThemePage';
+UPDATE core_right SET right_id = 'theme.admin', description = 'Theme Administration' WHERE right_id LIKE 'page.ThemePage';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.UploadThemePage';
+DELETE FROM core_right WHERE right_id LIKE 'page.UploadThemePage';
+UPDATE core_role_right_xref SET right_id = 'modulemgmt.admin' WHERE right_id LIKE 'page.ModuleOverviewPage';
+UPDATE core_right SET right_id = 'modulemgmt.admin', description = 'Module Administration' WHERE right_id LIKE 'page.ModuleOverviewPage';
+DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.ModuleLinkPage';
+DELETE FROM core_right WHERE right_id LIKE 'page.ModuleLinkPage';
+SET FOREIGN_KEY_CHECKS=1;
