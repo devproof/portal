@@ -15,12 +15,22 @@
  */
 package org.devproof.portal.core.app;
 
+import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
 import org.apache.wicket.protocol.http.PageExpiredException;
 import org.apache.wicket.protocol.http.WebRequestCycleProcessor;
+import org.apache.wicket.protocol.http.request.WebRequestCodingStrategy;
+import org.apache.wicket.request.IRequestCodingStrategy;
+import org.apache.wicket.request.RequestParameters;
+import org.apache.wicket.request.target.basic.StringRequestTarget;
+import org.apache.wicket.request.target.coding.IRequestTargetUrlCodingStrategy;
+import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
+import org.apache.wicket.request.target.component.PageRequestTarget;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.page.NoStartPage;
 import org.devproof.portal.core.module.common.page.UnsupportedOperationPage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
@@ -75,6 +85,11 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 
         }
         return super.onRuntimeException(page, e);
+    }
+
+    @Override
+    protected IRequestCodingStrategy newRequestCodingStrategy() {
+        return new PortalWebRequestCodingStrategy();
     }
 
     private void sendEmailToUsers(Integer templateId, String content) {
