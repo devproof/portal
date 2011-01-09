@@ -19,14 +19,21 @@ import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.request.RequestParameters;
+import org.apache.wicket.request.target.basic.StringRequestTarget;
 import org.apache.wicket.request.target.coding.IRequestTargetUrlCodingStrategy;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.NoStartPage;
+import org.devproof.portal.core.module.mount.registry.MountHandlerRegistry;
+import org.devproof.portal.core.module.mount.service.MountService;
 
 /**
  * @author Carsten Hufe
  */
 public class CustomMountUrlCodingStrategy implements IRequestTargetUrlCodingStrategy {
+    @SpringBean(name = "mountService")
+    private MountService mountService;
+
     @Override
     public String getMountPath() {
         return "doesNotMatter";
@@ -39,14 +46,15 @@ public class CustomMountUrlCodingStrategy implements IRequestTargetUrlCodingStra
 
     @Override
     public IRequestTarget decode(RequestParameters requestParameters) {
+        return mountService.resolveRequestTarget(requestParameters.getPath());
 //                        return new StringRequestTarget(requestParameters.toString());
-
-        try {
-            return new BookmarkablePageRequestTarget((Class<? extends Page>) Class.forName("org.devproof.portal.module.article.page.ArticleReadPage"), new PageParameters("0=Sample_article"));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return new BookmarkablePageRequestTarget(NoStartPage.class);
+//
+//        try {
+//            return new BookmarkablePageRequestTarget((Class<? extends Page>) Class.forName("org.devproof.portal.module.article.page.ArticleReadPage"), new PageParameters("0=Sample_article"));
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return new BookmarkablePageRequestTarget(NoStartPage.class);
 //                        return new PageRequestTarget(new NoStartPage());
     }
 
