@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.app;
 
+import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.protocol.http.request.WebRequestCodingStrategy;
 import org.apache.wicket.request.target.coding.IRequestTargetUrlCodingStrategy;
 import org.devproof.portal.core.module.mount.service.MountService;
@@ -37,5 +38,11 @@ public class PortalWebRequestCodingStrategy extends WebRequestCodingStrategy {
             return customMountUrlCodingStrategy;
         }
         return super.urlCodingStrategyForPath(path);
+    }
+
+    @Override
+    protected IRequestTargetUrlCodingStrategy getMountEncoder(IRequestTarget requestTarget) {
+//        return super.getMountEncoder(requestTarget);
+        return customMountUrlCodingStrategy;
     }
 }

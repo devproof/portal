@@ -16,11 +16,17 @@
 package org.devproof.portal.module.article.mount;
 
 import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
+import org.apache.wicket.request.target.component.PageRequestTarget;
 import org.devproof.portal.core.module.mount.annotation.MountPointHandler;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
+import org.devproof.portal.module.article.entity.Article;
+import org.devproof.portal.module.article.page.ArticlePage;
+import org.devproof.portal.module.article.page.ArticleReadPage;
 import org.devproof.portal.module.article.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Carsten Hufe
@@ -33,12 +39,19 @@ public class ArticleMountHandler implements MountHandler {
     @Override
     public IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint) {
         String relatedContentId = mountPoint.getRelatedContentId();
+        // TODO ArticlePage laden ...
+        Article article = articleService.findById(Integer.valueOf(relatedContentId));
 //        return new Article;
-        return new StringRequestTarget("Hello world" + requestedUrl + mountPoint);
+        return new PageRequestTarget(new ArticleReadPage(new PageParameters("0=" + article.getContentId())));
     }
 
     @Override
     public String getHandlerKey() {
         return "article";
+    }
+
+    @Autowired
+    public void setArticleService(ArticleService articleService) {
+        this.articleService = articleService;
     }
 }

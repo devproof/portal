@@ -45,7 +45,7 @@ public class CustomMountUrlCodingStrategy implements IRequestTargetUrlCodingStra
 
     @Override
     public CharSequence encode(IRequestTarget requestTarget) {
-        return null;
+        return "Hallo";
     }
 
     @Override

@@ -59,6 +59,7 @@ public interface ArticleService extends CrudService<Article, Integer> {
      * @param contentId content id
      * @return true if content id exists
      */
+    @Deprecated
     boolean existsContentId(String contentId);
 
     /**
@@ -76,6 +77,7 @@ public interface ArticleService extends CrudService<Article, Integer> {
      * @param page      page number
      * @return {@link org.devproof.portal.module.article.entity.ArticlePage}
      */
+    @Deprecated
     ArticlePage findArticlePageByContentIdAndPage(String contentId, Integer page);
 
     /**
@@ -84,6 +86,7 @@ public interface ArticleService extends CrudService<Article, Integer> {
      * @param contentId content id
      * @return {@link org.devproof.portal.module.article.entity.Article}
      */
+    @Deprecated
 	Article findByContentId(String contentId);
 
     /**

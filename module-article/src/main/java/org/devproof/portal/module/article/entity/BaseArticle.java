@@ -30,6 +30,7 @@ public abstract class BaseArticle extends Modification implements EntityId {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
+    // TODO entfernen ...
     @Column(name = "content_id", unique = true)
     private String contentId;
     @Column(name = "title")
