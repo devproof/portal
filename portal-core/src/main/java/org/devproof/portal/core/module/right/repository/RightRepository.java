@@ -30,7 +30,7 @@ import java.util.List;
 @GenericRepository("rightRepository")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 public interface RightRepository extends CrudRepository<Right, String> {
-    @Query("Select r from Right r")
+    @Query("select r from Right r")
     List<Right> findAll();
 
     @Query("select r from Right r where r.right like ?||'.%'")

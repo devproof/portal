@@ -96,3 +96,18 @@ CREATE TABLE `core_module_link` (
   `visible` bit(1) NOT NULL,
   PRIMARY KEY  (`link_type`,`page_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+
+
+CREATE TABLE `core_mount_point` (
+  `id` int(11) NOT NULL auto_increment,
+  `mount_path` varchar(255) NOT NULL,
+  `related_content_id` varchar(255),
+  `handler_key` varchar(255) NOT NULL,
+  `sort` int(11) NOT NULL,
+--   `created_at` datetime default NULL,
+--   `created_by` varchar(30) default NULL,
+--   `modified_at` datetime default NULL,
+--   `modified_by` varchar(30) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `mount_path` (`mount_path`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;

@@ -15,6 +15,8 @@
  */
 package org.devproof.portal.core.module.mount.repository;
 
+import org.devproof.portal.core.config.GenericRepository;
+import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 
@@ -23,7 +25,10 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+// TODO comment
+@GenericRepository("mountPointRepository")
 public interface MountPointRepository extends CrudRepository<MountPoint, Integer> {
-    List<String> findSimilarUrls(String url);
+//    List<String> findSimilarUrls(String url);
+    @Query("select mp from MountPoint mp where mp.mountPath like ?")
     MountPoint findMountPointByUrl(String url);
 }

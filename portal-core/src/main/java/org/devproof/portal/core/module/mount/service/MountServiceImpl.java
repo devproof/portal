@@ -7,6 +7,7 @@ import org.devproof.portal.core.module.mount.registry.MountHandlerRegistry;
 import org.devproof.portal.core.module.mount.repository.MountPointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,13 +15,15 @@ import java.util.List;
  * @author Carsten Hufe
  */
 @Service("mountService")
+// TODO unit test
 public class MountServiceImpl implements MountService {
     private MountHandlerRegistry mountHandlerRegistry;
     private MountPointRepository mountPointRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public IRequestTarget resolveRequestTarget(String requestedUrl) {
-        MountPoint mountPoint = mountPointRepository.findMountPointByUrl(requestedUrl);
+        MountPoint mountPoint = mountPointRepository.findMountPointByUrl("/" + requestedUrl);
         // TODO wenn keiner gefunden ? default delegieren?
         String handlerKey = mountPoint.getHandlerKey();
         if(mountHandlerRegistry.isMountHandlerAvailable(handlerKey)) {

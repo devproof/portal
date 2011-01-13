@@ -18,6 +18,7 @@ package org.devproof.portal.core.app;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.request.RequestParameters;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
 import org.apache.wicket.request.target.coding.IRequestTargetUrlCodingStrategy;
@@ -31,8 +32,11 @@ import org.devproof.portal.core.module.mount.service.MountService;
  * @author Carsten Hufe
  */
 public class CustomMountUrlCodingStrategy implements IRequestTargetUrlCodingStrategy {
-    @SpringBean(name = "mountService")
     private MountService mountService;
+
+    public CustomMountUrlCodingStrategy(MountService mountService) {
+        this.mountService = mountService;
+    }
 
     @Override
     public String getMountPath() {

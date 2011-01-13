@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.mount.registry;
+package org.devproof.portal.core.module.mount.locator;
 
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.Page;
-import org.devproof.portal.core.module.mount.entity.MountPoint;
+import org.devproof.portal.core.module.feed.provider.FeedProvider;
+import org.devproof.portal.core.module.mount.registry.MountHandler;
+
+import java.util.Collection;
 
 /**
+ * Locates mount handler
+ *
  * @author Carsten Hufe
  */
 // TODO comment
-public interface MountHandler {
-    IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint);
-    String getHandlerKey();
+public interface MountHandlerLocator {
+
+    Collection<MountHandler> getMountHandlers();
 }

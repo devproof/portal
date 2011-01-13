@@ -22,6 +22,7 @@ import java.util.Map;
  *
  * @author Carsten Hufe
  */
+// TODO comment
 public interface MountHandlerRegistry {
 
     void registerMountHandler(String handlerKey, MountHandler mountHandler);

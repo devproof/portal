@@ -17,6 +17,7 @@ package org.devproof.portal.module.article.mount;
 
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
+import org.devproof.portal.core.module.mount.annotation.MountPointHandler;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.module.article.service.ArticleService;
@@ -25,8 +26,7 @@ import org.devproof.portal.module.article.service.ArticleService;
  * @author Carsten Hufe
  */
 // TODO unit test
-// auf jeden fall als spring bean
-// Wie registrieren? ueber initializing bean ... oder spring context nach MountHandler durchsuchen?
+@MountPointHandler("articleMountHandler")
 public class ArticleMountHandler implements MountHandler {
     private ArticleService articleService;
 
@@ -37,5 +37,8 @@ public class ArticleMountHandler implements MountHandler {
         return new StringRequestTarget("Hello world" + requestedUrl + mountPoint);
     }
 
-
+    @Override
+    public String getHandlerKey() {
+        return "article";
+    }
 }

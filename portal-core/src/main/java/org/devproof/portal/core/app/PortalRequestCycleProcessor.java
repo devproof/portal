@@ -35,6 +35,7 @@ import org.devproof.portal.core.module.common.page.UnsupportedOperationPage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.email.service.EmailService;
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.hibernate.SessionFactory;
@@ -56,11 +57,13 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
     private ConfigurationService configurationService;
     private UserService userService;
     private EmailService emailService;
+    private MountService mountService;
 
     public PortalRequestCycleProcessor(ApplicationContext context) {
         configurationService = (ConfigurationService) context.getBean("configurationService");
         userService = (UserService) context.getBean("userService");
         emailService = (EmailService) context.getBean("emailService");
+        mountService = (MountService) context.getBean("mountService");
     }
 
     @Override
@@ -89,7 +92,7 @@ public class PortalRequestCycleProcessor extends WebRequestCycleProcessor {
 
     @Override
     protected IRequestCodingStrategy newRequestCodingStrategy() {
-        return new PortalWebRequestCodingStrategy();
+        return new PortalWebRequestCodingStrategy(mountService);
     }
 
     private void sendEmailToUsers(Integer templateId, String content) {

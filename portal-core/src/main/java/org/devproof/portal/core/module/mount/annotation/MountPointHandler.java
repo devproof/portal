@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.mount.registry;
+package org.devproof.portal.core.module.mount.annotation;
 
-import org.apache.wicket.IRequestTarget;
-import org.apache.wicket.Page;
-import org.devproof.portal.core.module.mount.entity.MountPoint;
+import org.springframework.stereotype.Component;
+
+import java.lang.annotation.*;
 
 /**
+ * Marks a mount point handler
+ *
  * @author Carsten Hufe
  */
-// TODO comment
-public interface MountHandler {
-    IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint);
-    String getHandlerKey();
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface MountPointHandler {
+	String value() default "";
 }
