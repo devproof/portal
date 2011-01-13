@@ -28,6 +28,7 @@ import java.util.List;
 // TODO comment
 public interface MountService {
     IRequestTarget resolveRequestTarget(String requestedUrl);
+    boolean existsPath(String requestedUrl);
     void moveUp(MountPoint mountPoint);
     void moveDown(MountPoint mountPoint);
     void addMountPoint(String path, String relatedContentId, String handlerKey);

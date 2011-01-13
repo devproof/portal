@@ -31,4 +31,7 @@ public interface MountPointRepository extends CrudRepository<MountPoint, Integer
 //    List<String> findSimilarUrls(String url);
     @Query("select mp from MountPoint mp where mp.mountPath like ?")
     MountPoint findMountPointByUrl(String url);
+
+    @Query("select count(mp) from MountPoint mp where mp.mountPath like ?")
+    long existsMountPointUrl(String url);
 }

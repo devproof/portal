@@ -25,18 +25,17 @@ import org.devproof.portal.core.module.mount.service.MountService;
  * @author Carsten Hufe
  */
 public class PortalWebRequestCodingStrategy extends WebRequestCodingStrategy {
-    private MountService mountService;
+    private CustomMountUrlCodingStrategy customMountUrlCodingStrategy;
 
     public PortalWebRequestCodingStrategy(MountService mountService) {
-        this.mountService = mountService;
+        customMountUrlCodingStrategy = new CustomMountUrlCodingStrategy(mountService);
     }
 
     @Override
     public IRequestTargetUrlCodingStrategy urlCodingStrategyForPath(String path) {
-        IRequestTargetUrlCodingStrategy strategy = super.urlCodingStrategyForPath(path);
-        if (strategy != null) {
-            return strategy;
+        if(customMountUrlCodingStrategy.matches(path, true)) {
+            return customMountUrlCodingStrategy;
         }
-        return new CustomMountUrlCodingStrategy(mountService);
+        return super.urlCodingStrategyForPath(path);
     }
 }

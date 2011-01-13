@@ -23,14 +23,29 @@ public class MountServiceImpl implements MountService {
     @Override
     @Transactional(readOnly = true)
     public IRequestTarget resolveRequestTarget(String requestedUrl) {
-        MountPoint mountPoint = mountPointRepository.findMountPointByUrl("/" + requestedUrl);
+        requestedUrl = addLeadingSlash(requestedUrl);
+        MountPoint mountPoint = mountPointRepository.findMountPointByUrl(requestedUrl);
         // TODO wenn keiner gefunden ? default delegieren?
         String handlerKey = mountPoint.getHandlerKey();
         if(mountHandlerRegistry.isMountHandlerAvailable(handlerKey)) {
             MountHandler mountHandler = mountHandlerRegistry.getMountHandler(handlerKey);
             return mountHandler.getRequestTarget(requestedUrl, mountPoint);
         }
-        return null;
+        throw new IllegalStateException("No mount handler available");
+    }
+
+    private String addLeadingSlash(String requestedUrl) {
+        if(!requestedUrl.startsWith("/")) {
+            requestedUrl = "/" + requestedUrl;
+        }
+        return requestedUrl;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsPath(String requestedUrl) {
+        requestedUrl = addLeadingSlash(requestedUrl);
+        return mountPointRepository.existsMountPointUrl(requestedUrl) > 0;
     }
 
     @Override

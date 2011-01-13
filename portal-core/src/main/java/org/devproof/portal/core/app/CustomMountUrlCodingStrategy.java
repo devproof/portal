@@ -51,15 +51,6 @@ public class CustomMountUrlCodingStrategy implements IRequestTargetUrlCodingStra
     @Override
     public IRequestTarget decode(RequestParameters requestParameters) {
         return mountService.resolveRequestTarget(requestParameters.getPath());
-//                        return new StringRequestTarget(requestParameters.toString());
-//
-//        try {
-//            return new BookmarkablePageRequestTarget((Class<? extends Page>) Class.forName("org.devproof.portal.module.article.page.ArticleReadPage"), new PageParameters("0=Sample_article"));
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return new BookmarkablePageRequestTarget(NoStartPage.class);
-//                        return new PageRequestTarget(new NoStartPage());
     }
 
     @Override
@@ -69,6 +60,6 @@ public class CustomMountUrlCodingStrategy implements IRequestTargetUrlCodingStra
 
     @Override
     public boolean matches(String path, boolean caseSensitive) {
-        return true;
+        return mountService.existsPath(path);
     }
 }
