@@ -20,7 +20,6 @@ import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleHistorized;
 import org.devproof.portal.module.article.entity.ArticlePage;
-import org.devproof.portal.module.article.entity.ArticlePageId;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +37,6 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticlePageRepository articlePageRepository;
     private ArticleTagService articleTagService;
     private ArticleHistorizer articleHistorizer;
-
-    @Override
-    @Transactional(readOnly = true)
-    public boolean existsContentId(String contentId) {
-        return articleRepository.existsContentId(contentId) > 0;
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -90,20 +83,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(readOnly = true)
-    public long getPageCount(String contentId) {
-        return articlePageRepository.getPageCount(contentId);
+    public long getPageCount(Integer articleId) {
+        return articlePageRepository.getPageCount(articleId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ArticlePage findArticlePageByContentIdAndPage(String contentId, Integer page) {
-        return articlePageRepository.findById(new ArticlePageId(contentId, page));
-    }
-
-    @Override
-    @Transactional(readOnly = true)    
-    public Article findByContentId(String contentId) {
-        return articleRepository.findByContentId(contentId);
+    public ArticlePage findArticlePageByArticleIdAndPage(Integer articleId, Integer page) {
+        return articlePageRepository.findByArticleIdAndPage(articleId, page);
     }
 
     @Override

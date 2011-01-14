@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.mount.registry;
 
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 
 /**
@@ -26,4 +27,6 @@ import org.devproof.portal.core.module.mount.entity.MountPoint;
 public interface MountHandler {
     IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint);
     String getHandlerKey();
+    boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
+    String urlFor(Class<? extends Page> pageClazz, PageParameters params);
 }

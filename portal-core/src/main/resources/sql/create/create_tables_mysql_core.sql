@@ -101,7 +101,7 @@ CREATE TABLE `core_module_link` (
 CREATE TABLE `core_mount_point` (
   `id` int(11) NOT NULL auto_increment,
   `mount_path` varchar(255) NOT NULL, -- index
-  `related_content_id` varchar(255),
+  `related_content_id` varchar(255), -- index
   `handler_key` varchar(255) NOT NULL, -- index
   `sort` int(11) NOT NULL,
 --   `created_at` datetime default NULL,

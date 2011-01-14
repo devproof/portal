@@ -166,7 +166,7 @@ public class ArticlePage extends ArticleBasePage {
 
 		private Component createPrintLink() {
 			Article article = articleModel.getObject();
-			PageParameters params = new PageParameters("0=" + article.getContentId());
+			PageParameters params = new PageParameters("0=" + article.getId());
 			BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
 					ArticlePrintPage.class, params);
 			link.add(createPrintImage());
@@ -192,7 +192,7 @@ public class ArticlePage extends ArticleBasePage {
 					"readMoreLink", ArticleReadPage.class);
 			readMoreLink.add(createReadMoreImage());
 			readMoreLink.add(createReadMoreLabel());
-			readMoreLink.setParameter("0", article.getContentId());
+			readMoreLink.setParameter("0", article.getId());
 			readMoreLink.setEnabled(allowedToRead);
 			return readMoreLink;
 		}
@@ -247,7 +247,7 @@ public class ArticlePage extends ArticleBasePage {
 			BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>("titleLink",
 					ArticleReadPage.class);
 			titleLink.add(createTitleLabel());
-			titleLink.setParameter("0", article.getContentId());
+			titleLink.setParameter("0", article.getId());
 			titleLink.setEnabled(allowedToRead);
 			return titleLink;
 		}

@@ -66,7 +66,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	private IModel<ArticlePage> displayedPageModel;
 	private int currentPageNumber;
 	private int numberOfPages;
-	private String contentId;
+	private Integer contentId;
 
 	public ArticleReadPage(PageParameters params) {
 		super(params);
@@ -87,11 +87,13 @@ public class ArticleReadPage extends ArticleBasePage {
 		addTagCloudBox();
 	}
 
-	private String getContentId() {
-		String contentId = params.getString("0");
-		if (contentId == null) {
-			contentId = getRequest().getParameter("optparam");
+	private Integer getContentId() {
+		String id = params.getString("0");
+		if (id == null) {
+            // TODO woher kam der ?
+			id = getRequest().getParameter("optparam");
 		}
+        contentId = Integer.valueOf(id);
 		return contentId;
 	}
 
@@ -135,7 +137,7 @@ public class ArticleReadPage extends ArticleBasePage {
 
 			@Override
 			protected ArticlePage load() {
-				return articleService.findArticlePageByContentIdAndPage(contentId, currentPageNumber);
+				return articleService.findArticlePageByArticleIdAndPage(contentId, currentPageNumber);
 			}
 		};
 	}

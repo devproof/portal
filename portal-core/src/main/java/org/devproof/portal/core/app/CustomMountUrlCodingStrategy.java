@@ -45,7 +45,13 @@ public class CustomMountUrlCodingStrategy implements IRequestTargetUrlCodingStra
 
     @Override
     public CharSequence encode(IRequestTarget requestTarget) {
-        return "Hallo";
+        if(requestTarget instanceof BookmarkablePageRequestTarget) {
+            BookmarkablePageRequestTarget bp = (BookmarkablePageRequestTarget) requestTarget;
+            Class<? extends Page> pageClass = bp.getPageClass();
+            PageParameters pageParameters = bp.getPageParameters();
+            return mountService.urlFor(pageClass, pageParameters);
+        }
+        return null;
     }
 
     @Override

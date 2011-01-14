@@ -27,10 +27,10 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('box_num_latest_articles','Number of latest articles','Articles','java.lang.Integer','3');
 INSERT INTO core_box (id,created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (300,{ts '2009-01-05 12:17:49.000'},'admin',{ts '2009-01-05 12:18:07.000'},'admin','ArticleBoxPanel',null,10,'Latest Articles Box', 0);
 
-INSERT INTO article (id,created_at,created_by,modified_at,modified_by,content_id,teaser,title) VALUES (1,{ts '2009-01-06 19:28:56.000'},'admin',{ts '2009-01-06 19:28:56.000'},'admin','Sample_article','<p>This is a sample article and this is the teaser</p>','Sample article');
-INSERT INTO article_page (content_id,page,content,article_id) VALUES ('Sample_article',1,'<p>Some sample content on page 1.</p>',1);
-INSERT INTO article_page (content_id,page,content,article_id) VALUES ('Sample_article',2,'<p>Some sample content on page 2.</p>',1);
-INSERT INTO article_page (content_id,page,content,article_id) VALUES ('Sample_article',3,'<p>Some sample content on page 3.</p>',1);
+INSERT INTO article (id,created_at,created_by,modified_at,modified_by,teaser,title) VALUES (1,{ts '2009-01-06 19:28:56.000'},'admin',{ts '2009-01-06 19:28:56.000'},'admin','<p>This is a sample article and this is the teaser</p>','Sample article');
+INSERT INTO article_page (id ,page,content,article_id) VALUES (1,1,'<p>Some sample content on page 1.</p>',1);
+INSERT INTO article_page (id ,page,content,article_id) VALUES (2,2,'<p>Some sample content on page 2.</p>',1);
+INSERT INTO article_page (id ,page,content,article_id) VALUES (3,3,'<p>Some sample content on page 3.</p>',1);
 
 
 INSERT INTO article_right_xref (article_id,right_id) VALUES (1,'article.view.guest');
@@ -55,3 +55,5 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'article.comment.v
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'article.comment.write');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.comment.view');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.comment.write');
+
+-- TODO insert mount path

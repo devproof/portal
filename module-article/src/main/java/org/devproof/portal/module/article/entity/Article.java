@@ -34,7 +34,7 @@ import java.util.List;
  * @author Carsten Hufe
  */
 @Entity
-@Table(name = "article", uniqueConstraints = @UniqueConstraint(columnNames = {"content_id"}))
+@Table(name = "article")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
 @RegisterGenericDataProvider(value = "articleDataProvider", sortProperty = "title", sortAscending = true, queryClass = ArticleQuery.class)
@@ -155,7 +155,6 @@ public class Article extends BaseArticle {
     public ArticlePage newArticlePageEntity(Integer page) {
         ArticlePage e = new ArticlePage();
         e.setArticle(this);
-        e.setContentId(getContentId());
         e.setPage(page);
         return e;
     }

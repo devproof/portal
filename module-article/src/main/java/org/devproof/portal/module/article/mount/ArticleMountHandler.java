@@ -15,18 +15,24 @@
  */
 package org.devproof.portal.module.article.mount;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.request.target.basic.StringRequestTarget;
+import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.apache.wicket.request.target.component.PageRequestTarget;
 import org.devproof.portal.core.module.mount.annotation.MountPointHandler;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.page.ArticlePage;
+import org.devproof.portal.module.article.page.ArticlePrintPage;
 import org.devproof.portal.module.article.page.ArticleReadPage;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Carsten Hufe
@@ -35,19 +41,66 @@ import org.springframework.beans.factory.annotation.Autowired;
 @MountPointHandler("articleMountHandler")
 public class ArticleMountHandler implements MountHandler {
     private ArticleService articleService;
+    private MountService mountService;
 
     @Override
+    @Transactional(readOnly = true)
     public IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint) {
         String relatedContentId = mountPoint.getRelatedContentId();
-        // TODO ArticlePage laden ...
-        Article article = articleService.findById(Integer.valueOf(relatedContentId));
-//        return new Article;
-        return new PageRequestTarget(new ArticleReadPage(new PageParameters("0=" + article.getContentId())));
+        PageParameters pageParameters = new PageParameters("0=" + relatedContentId);
+        String rest = StringUtils.substringAfter(requestedUrl, mountPoint.getMountPath());
+        if(StringUtils.isNotBlank(rest)) {
+            String page = StringUtils.remove(rest, '/');
+            if("print".equals(page)) {
+                return new BookmarkablePageRequestTarget(ArticlePrintPage.class, pageParameters);
+            }
+            else if(StringUtils.isNumeric(page)) {
+                pageParameters.put("1", page);
+            }
+        }
+        return new BookmarkablePageRequestTarget(ArticleReadPage.class, pageParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters) {
+        if(ArticleReadPage.class.equals(pageClazz) || ArticlePrintPage.class.equals(pageClazz)) {
+            String articleId = pageParameters.getString("0");
+            if(StringUtils.isNumeric(articleId)) {
+                return mountService.existsMountPoint(articleId, getHandlerKey());
+            }
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public String urlFor(Class<? extends Page> pageClazz, PageParameters params) {
+        String relatedContentId = params.getString("0");
+        MountPoint mountPoint = mountService.findFirstMountPoint(relatedContentId, getHandlerKey());
+        if(mountPoint != null) {
+            String mountPath = mountPoint.getMountPath();
+            if(ArticleReadPage.class.equals(pageClazz)) {
+                if(params.containsKey("1")) {
+                    mountPath += "/" + params.getString("1");
+                }
+                return mountPath; // page
+            }
+            else if(ArticlePrintPage.class.equals(pageClazz)) {
+                return mountPath + "/print";
+            }
+        }
+        return null;
     }
 
     @Override
     public String getHandlerKey() {
         return "article";
+    }
+
+    @Autowired
+    public void setMountService(MountService mountService) {
+        this.mountService = mountService;
     }
 
     @Autowired

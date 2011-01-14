@@ -21,14 +21,16 @@ import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.ArticlePage;
-import org.devproof.portal.module.article.entity.ArticlePageId;
 
 /**
  * @author Carsten Hufe
  */
 @GenericRepository("articlePageRepository")
 @CacheQuery(region = ArticleConstants.QUERY_CACHE_REGION)
-public interface ArticlePageRepository extends CrudRepository<ArticlePage, ArticlePageId> {
-    @Query("select count(ap.contentId) from ArticlePage ap where ap.contentId like ?")
-    long getPageCount(String contentId);
+public interface ArticlePageRepository extends CrudRepository<ArticlePage, Integer> {
+    @Query("select count(ap.articleId) from ArticlePage ap where ap.articleId = ?")
+    long getPageCount(Integer articleId);
+
+    @Query("select ap from ArticlePage ap where ap.articleId = ? and ap.page = ?")
+    ArticlePage findByArticleIdAndPage(Integer articleId, Integer page);
 }

@@ -26,20 +26,24 @@ import java.io.Serializable;
  * @author Carsten Hufe
  */
 @Entity
-@IdClass(ArticlePageId.class)
 @Table(name = "article_page")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = ArticleConstants.ENTITY_CACHE_REGION)
 public class ArticlePage implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "content_id")
-    private String contentId;
-    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private String id;
+
     @Column(name = "page")
     private Integer page;
     @Lob
     @Column(name = "content")
     private String content;
+
+    @Column(name = "article_id", insertable = false, updatable = false)
+    private Integer articleId;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "article_id")
     private Article article;
@@ -60,14 +64,6 @@ public class ArticlePage implements Serializable {
         this.article = article;
     }
 
-    public String getContentId() {
-        return contentId;
-    }
-
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
-    }
-
     public Integer getPage() {
         return page;
     }
@@ -76,41 +72,33 @@ public class ArticlePage implements Serializable {
         this.page = page;
     }
 
-    @Override
-    public int hashCode() {
-        int prime = 31;
-        int result = 1;
-        result = prime * result + ((contentId == null) ? 0 : contentId.hashCode());
-        result = prime * result + ((page == null) ? 0 : page.hashCode());
-        return result;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Integer getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        ArticlePage other = (ArticlePage) obj;
-        if (contentId == null) {
-            if (other.contentId != null) {
-                return false;
-            }
-        } else if (!contentId.equals(other.contentId)) {
-            return false;
-        }
-        if (page == null) {
-            if (other.page != null) {
-                return false;
-            }
-        } else if (!page.equals(other.page)) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ArticlePage)) return false;
+        ArticlePage that = (ArticlePage) o;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

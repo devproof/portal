@@ -54,40 +54,21 @@ public interface ArticleService extends CrudService<Article, Integer> {
     List<Article> findAllArticlesForRoleOrderedByDateDesc(Role role, Integer firstResult, Integer maxResult);
 
     /**
-     * Returns true if a content id exists
-     *
-     * @param contentId content id
-     * @return true if content id exists
-     */
-    @Deprecated
-    boolean existsContentId(String contentId);
-
-    /**
      * Number of pages of the article
      *
-     * @param contentId content id
+     * @param id content id
      * @return number of pages
      */
-    long getPageCount(String contentId);
+    long getPageCount(Integer id);
 
     /**
      * Returns the article page
      *
-     * @param contentId content id
+     * @param articleId content id
      * @param page      page number
      * @return {@link org.devproof.portal.module.article.entity.ArticlePage}
      */
-    @Deprecated
-    ArticlePage findArticlePageByContentIdAndPage(String contentId, Integer page);
-
-    /**
-     * Returns the Article by content id
-     *
-     * @param contentId content id
-     * @return {@link org.devproof.portal.module.article.entity.Article}
-     */
-    @Deprecated
-	Article findByContentId(String contentId);
+    ArticlePage findArticlePageByArticleIdAndPage(Integer articleId, Integer page);
 
     /**
      * Restores an article from history

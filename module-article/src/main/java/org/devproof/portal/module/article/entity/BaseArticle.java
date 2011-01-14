@@ -30,9 +30,6 @@ public abstract class BaseArticle extends Modification implements EntityId {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
-    // TODO entfernen ...
-    @Column(name = "content_id", unique = true)
-    private String contentId;
     @Column(name = "title")
     private String title;
     @Lob
@@ -41,7 +38,6 @@ public abstract class BaseArticle extends Modification implements EntityId {
 
     public void copyFrom(BaseArticle modification) {
         super.copyFrom(modification);
-        contentId = modification.contentId;
         title = modification.title;
         teaser = modification.teaser;
     }
@@ -52,14 +48,6 @@ public abstract class BaseArticle extends Modification implements EntityId {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getContentId() {
-        return contentId;
-    }
-
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
     }
 
     public String getTitle() {

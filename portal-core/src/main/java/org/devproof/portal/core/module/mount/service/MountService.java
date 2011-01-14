@@ -16,6 +16,8 @@
 package org.devproof.portal.core.module.mount.service;
 
 import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
 import org.devproof.portal.core.module.common.service.CrudService;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
@@ -28,10 +30,14 @@ import java.util.List;
 // TODO comment
 public interface MountService {
     IRequestTarget resolveRequestTarget(String requestedUrl);
+    MountPoint findFirstMountPoint(String relatedContentId, String handlerKey);
     boolean existsPath(String requestedUrl);
+    String urlFor(Class<? extends Page> pageClazz, PageParameters params);
+    boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
     void moveUp(MountPoint mountPoint);
     void moveDown(MountPoint mountPoint);
     void addMountPoint(String path, String relatedContentId, String handlerKey);
     void removeMountPoint(String path);
     List<MountPoint> findMountPoints(String relatedContentId, String handlerKey);
+    boolean existsMountPoint(String relatedContentId, String handlerKey);
 }

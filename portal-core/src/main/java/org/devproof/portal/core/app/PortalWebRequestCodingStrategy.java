@@ -16,8 +16,11 @@
 package org.devproof.portal.core.app;
 
 import org.apache.wicket.IRequestTarget;
+import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
 import org.apache.wicket.protocol.http.request.WebRequestCodingStrategy;
 import org.apache.wicket.request.target.coding.IRequestTargetUrlCodingStrategy;
+import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.devproof.portal.core.module.mount.service.MountService;
 
 /**
@@ -27,8 +30,10 @@ import org.devproof.portal.core.module.mount.service.MountService;
  */
 public class PortalWebRequestCodingStrategy extends WebRequestCodingStrategy {
     private CustomMountUrlCodingStrategy customMountUrlCodingStrategy;
+    private MountService mountService;
 
     public PortalWebRequestCodingStrategy(MountService mountService) {
+        this.mountService = mountService;
         customMountUrlCodingStrategy = new CustomMountUrlCodingStrategy(mountService);
     }
 
@@ -42,7 +47,14 @@ public class PortalWebRequestCodingStrategy extends WebRequestCodingStrategy {
 
     @Override
     protected IRequestTargetUrlCodingStrategy getMountEncoder(IRequestTarget requestTarget) {
-//        return super.getMountEncoder(requestTarget);
-        return customMountUrlCodingStrategy;
+        if(requestTarget instanceof BookmarkablePageRequestTarget) {
+            BookmarkablePageRequestTarget bp = (BookmarkablePageRequestTarget) requestTarget;
+            Class<? extends Page> pageClass = bp.getPageClass();
+            PageParameters pageParameters = bp.getPageParameters();
+            if(mountService.canHandlePageClass(pageClass, pageParameters)) {
+                return customMountUrlCodingStrategy;
+            }
+        }
+        return super.getMountEncoder(requestTarget);
     }
 }

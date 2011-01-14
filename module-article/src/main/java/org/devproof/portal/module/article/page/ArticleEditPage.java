@@ -45,6 +45,7 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
+// TODO clean up
 @Secured(ArticleConstants.AUTHOR_RIGHT)
 public class ArticleEditPage extends ArticleBasePage {
 
@@ -65,7 +66,7 @@ public class ArticleEditPage extends ArticleBasePage {
 
     private Form<Article> createArticleEditForm() {
         Form<Article> form = newArticleEditForm();
-        form.add(createContentIdField());
+//        form.add(createContentIdField());
         form.add(createTitleField());
         form.add(createTeaserField());
         form.add(createContentField());
@@ -97,13 +98,13 @@ public class ArticleEditPage extends ArticleBasePage {
         return new TagField<ArticleTag>("tags", tagsModel, articleTagService);
     }
 
-    private RequiredTextField<String> createContentIdField() {
-        contentIdField = newContentIdField();
-        contentIdField.add(contentIdValidator());
-        contentIdField.add(contentIdPatternValidator());
-        contentIdField.setOutputMarkupId(true);
-        return contentIdField;
-    }
+//    private RequiredTextField<String> createContentIdField() {
+//        contentIdField = newContentIdField();
+//        contentIdField.add(contentIdValidator());
+//        contentIdField.add(contentIdPatternValidator());
+//        contentIdField.setOutputMarkupId(true);
+//        return contentIdField;
+//    }
 
     private PatternValidator contentIdPatternValidator() {
         return new PatternValidator("[A-Za-z0-9\\_\\._\\-]*");
@@ -154,24 +155,24 @@ public class ArticleEditPage extends ArticleBasePage {
             }
         };
     }
-
-    private AbstractValidator<String> contentIdValidator() {
-        return new AbstractValidator<String>() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onValidate(IValidatable<String> ivalidatable) {
-                if (articleService.existsContentId(ivalidatable.getValue()) && isNewArticle()) {
-                    error(ivalidatable);
-                }
-            }
-
-            @Override
-            protected String resourceKey() {
-                return "existing.contentId";
-            }
-        };
-    }
+// TODO cleanup
+//    private AbstractValidator<String> contentIdValidator() {
+//        return new AbstractValidator<String>() {
+//            private static final long serialVersionUID = 1L;
+//
+//            @Override
+//            protected void onValidate(IValidatable<String> ivalidatable) {
+//                if (articleService.existstArticleId(ivalidatable.getValue()) && isNewArticle()) {
+//                    error(ivalidatable);
+//                }
+//            }
+//
+//            @Override
+//            protected String resourceKey() {
+//                return "existing.contentId";
+//            }
+//        };
+//    }
 
     private Form<Article> newArticleEditForm() {
         return new Form<Article>("form", new CompoundPropertyModel<Article>(articleModel)) {
@@ -182,7 +183,7 @@ public class ArticleEditPage extends ArticleBasePage {
                 Article article = articleModel.getObject();
                 articleService.save(article);
                 setRedirect(false);
-                setResponsePage(ArticleReadPage.class, new PageParameters("0=" + article.getContentId()));
+                setResponsePage(ArticleReadPage.class, new PageParameters("0=" + article.getId()));
                 info(getString("msg.saved"));
             }
         };

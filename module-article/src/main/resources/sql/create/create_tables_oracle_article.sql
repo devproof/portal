@@ -1,4 +1,4 @@
-
+-- TODO clean up content id
 CREATE TABLE "ARTICLE"
  (	
   "ID" NUMBER(10,0) NOT NULL ENABLE,

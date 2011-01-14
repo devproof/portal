@@ -4,18 +4,16 @@ CREATE TABLE `article` (
   `created_by` varchar(30) default NULL,
   `modified_at` datetime default NULL,
   `modified_by` varchar(30) default NULL,
-  `content_id` varchar(255) default NULL,
   `teaser` text,
   `title` varchar(255) default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `content_id` (`content_id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 CREATE TABLE `article_page` (
-  `content_id` varchar(255) NOT NULL,
+  `id` int(11) NOT NULL auto_increment,
   `page` int(11) NOT NULL,
   `content` mediumtext,
   `article_id` int(11) NOT NULL,
-  PRIMARY KEY  (`content_id`,`page`),
+  PRIMARY KEY  (`id`),
   KEY `FKE87DF838B0BB873F` (`article_id`),
   CONSTRAINT `FKE87DF838B0BB873F` FOREIGN KEY (`article_id`) REFERENCES `article` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
@@ -54,7 +52,6 @@ CREATE TABLE `article_historized` (
   `action` varchar(50) default NULL,
   `action_at` datetime default NULL,
   `restored_from_version` int(11) default NULL,
-  `content_id` varchar(255) default NULL,
   `teaser` text,
   `title` varchar(255) default NULL,
   `full_article` mediumtext,

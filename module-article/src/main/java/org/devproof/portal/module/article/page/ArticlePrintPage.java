@@ -32,6 +32,7 @@ import org.devproof.portal.module.article.service.ArticleService;
 /**
  * @author Carsten Hufe
  */
+// TODO remove mount url
 @ModulePage(mountPath = "/print/article", indexMountedPath = true)
 public class ArticlePrintPage extends PrintPage {
     private static final long serialVersionUID = 3988970146526291830L;
@@ -50,8 +51,8 @@ public class ArticlePrintPage extends PrintPage {
 
             @Override
             protected Article load() {
-                String contentId = getContentId();
-                return articleService.findByContentId(contentId);
+                Integer articleId = getArticleId();
+                return articleService.findById(articleId);
             }
         };
     }
@@ -75,12 +76,11 @@ public class ArticlePrintPage extends PrintPage {
         super.onBeforeRender();
     }
 
-    private String getContentId() {
-        String contentId = params.getString("0");
-        if (contentId == null) {
+    private Integer getArticleId() {
+        if (!params.containsKey("0")) {
             throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.parameter")));
         }
-        return contentId;
+        return params.getInt("0");
     }
 
     private void validateAccessRights() {
