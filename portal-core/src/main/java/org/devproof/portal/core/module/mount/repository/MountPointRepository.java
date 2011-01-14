@@ -23,9 +23,10 @@ import org.devproof.portal.core.module.mount.entity.MountPoint;
 import java.util.List;
 
 /**
+ * MountPoint repository
+ *
  * @author Carsten Hufe
  */
-// TODO comment
 @GenericRepository("mountPointRepository")
 public interface MountPointRepository extends CrudRepository<MountPoint, Integer> {
 //    List<String> findSimilarUrls(String url);

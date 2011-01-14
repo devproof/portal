@@ -23,6 +23,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
@@ -31,6 +32,7 @@ import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
+import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
@@ -67,6 +69,8 @@ public class ArticleEditPage extends ArticleBasePage {
     private Form<Article> createArticleEditForm() {
         Form<Article> form = newArticleEditForm();
 //        form.add(createContentIdField());
+        // TODO ...
+        form.add(new MountInputPanel("mountUrls", Model.of(""), "article"));
         form.add(createTitleField());
         form.add(createTeaserField());
         form.add(createContentField());
