@@ -25,7 +25,7 @@ public class MountInputPanel extends Panel {
     @SpringBean(name = "mountService")
     private MountService mountService;
 
-    public MountInputPanel(String id, IModel<String> relatedContentIdModel, String handlerKey) {
+    public MountInputPanel(String id, String handlerKey) {
         super(id);
         Form<MountPoint> form = newForm();
 
@@ -37,7 +37,7 @@ public class MountInputPanel extends Panel {
 
             @Override
             protected void populateItem(ListItem<MountPoint> item) {
-                item.add(new TextField<String>("mountUrl", new PropertyModel<String>(item.getModelObject(), "mountPath")));
+                item.add(new TextField<String>("mountUrl", new PropertyModel<String>(item.getModel(), "mountPath")));
             }
         };
         form.add(listView);
@@ -45,12 +45,10 @@ public class MountInputPanel extends Panel {
     }
 
     private Form<MountPoint> newForm() {
-        return new Form<MountPoint>("form") {
-            private static final long serialVersionUID = -6550627871611492450L;
+        return new Form<MountPoint>("form");
+    }
 
-            @Override
-            protected void onSubmit() {
-            }
-        };
+    public void save(String relatedContentId) {
+
     }
 }
