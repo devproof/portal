@@ -36,8 +36,12 @@ public interface MountService {
     boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
     void moveUp(MountPoint mountPoint);
     void moveDown(MountPoint mountPoint);
+    // TODO remove
     void addMountPoint(String path, String relatedContentId, String handlerKey);
+    // TODO remove
     void removeMountPoint(String path);
+    void save(MountPoint mountPoint);
+    void delete(MountPoint mountPoint);
     List<MountPoint> findMountPoints(String relatedContentId, String handlerKey);
     boolean existsMountPoint(String relatedContentId, String handlerKey);
 }

@@ -16,18 +16,14 @@
 package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
@@ -58,7 +54,8 @@ public class ArticleEditPage extends ArticleBasePage {
     private ArticleTagService articleTagService;
 
     private IModel<Article> articleModel;
-    private RequiredTextField<String> contentIdField;
+    private MountInputPanel mountInputPanel;
+//    private RequiredTextField<String> contentIdField;
 
     public ArticleEditPage(IModel<Article> articleModel) {
         super(new PageParameters());
@@ -70,7 +67,7 @@ public class ArticleEditPage extends ArticleBasePage {
         Form<Article> form = newArticleEditForm();
 //        form.add(createContentIdField());
         // TODO ...
-        form.add(new MountInputPanel("mountUrls", Model.of(""), "article"));
+        form.add(mountInputPanel());
         form.add(createTitleField());
         form.add(createTeaserField());
         form.add(createContentField());
@@ -80,6 +77,26 @@ public class ArticleEditPage extends ArticleBasePage {
         form.add(createCommentRightPanel());
         form.setOutputMarkupId(true);
         return form;
+    }
+
+    private MountInputPanel mountInputPanel() {
+        mountInputPanel = new MountInputPanel("mountUrls", "article", createArticleIdModel());
+        return mountInputPanel;
+    }
+
+    private IModel<String> createArticleIdModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 1340993990243817302L;
+
+            @Override
+            public String getObject() {
+                Integer id = articleModel.getObject().getId();
+                if(id != null) {
+                    return id.toString();
+                }
+                return null;
+            }
+        };
     }
 
     private RightGridPanel createReadRightPanel() {
@@ -130,9 +147,8 @@ public class ArticleEditPage extends ArticleBasePage {
     }
 
     private RequiredTextField<String> createTitleField() {
-        RequiredTextField<String> title = new RequiredTextField<String>("title");
-        title.add(createContentIdGeneratorBehavior(title));
-        return title;
+        //        title.add(createContentIdGeneratorBehavior(title));
+        return new RequiredTextField<String>("title");
     }
 
     private FormComponent<String> createTeaserField() {
@@ -143,22 +159,22 @@ public class ArticleEditPage extends ArticleBasePage {
         return new FullRichTextArea("fullArticle");
     }
 
-    private OnChangeAjaxBehavior createContentIdGeneratorBehavior(final RequiredTextField<String> title) {
-        return new OnChangeAjaxBehavior() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected void onUpdate(AjaxRequestTarget target) {
-                if (isNewArticle()) {
-                    String id = title.getModelObject();
-                    id = id.replace(' ', '_');
-                    id = id.replaceAll("[^A-Z^a-z^0-9^\\_^\\.^_\\-]*", "");
-                    contentIdField.setModelObject(id);
-                    target.addComponent(contentIdField);
-                }
-            }
-        };
-    }
+//    private OnChangeAjaxBehavior createContentIdGeneratorBehavior(final RequiredTextField<String> title) {
+//        return new OnChangeAjaxBehavior() {
+//            private static final long serialVersionUID = 1L;
+//
+//            @Override
+//            protected void onUpdate(AjaxRequestTarget target) {
+//                if (isNewArticle()) {
+//                    String id = title.getModelObject();
+//                    id = id.replace(' ', '_');
+//                    id = id.replaceAll("[^A-Z^a-z^0-9^\\_^\\.^_\\-]*", "");
+//                    contentIdField.setModelObject(id);
+//                    target.addComponent(contentIdField);
+//                }
+//            }
+//        };
+//    }
 // TODO cleanup
 //    private AbstractValidator<String> contentIdValidator() {
 //        return new AbstractValidator<String>() {
@@ -186,6 +202,7 @@ public class ArticleEditPage extends ArticleBasePage {
             protected void onSubmit() {
                 Article article = articleModel.getObject();
                 articleService.save(article);
+                mountInputPanel.storeMountPoints();
                 setRedirect(false);
                 setResponsePage(ArticleReadPage.class, new PageParameters("0=" + article.getId()));
                 info(getString("msg.saved"));

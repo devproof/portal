@@ -21,6 +21,7 @@ public class MountPoint implements Serializable {
     private static final long serialVersionUID = -4190803563987971202L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
     @Column(name = "mount_path", nullable = false, unique = true)
@@ -29,8 +30,9 @@ public class MountPoint implements Serializable {
     private String relatedContentId;
     @Column(name = "handler_key", nullable = false)
     private String handlerKey;
+    // TODO remove ?? bzw. checkbox fuer default url
     @Column(name = "sort", nullable = false)
-    private Integer sort;
+    private Integer sort = 1;
 
     public Integer getId() {
         return id;
@@ -70,6 +72,10 @@ public class MountPoint implements Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public boolean isTransient() {
+        return id == null;
     }
 
     @Override

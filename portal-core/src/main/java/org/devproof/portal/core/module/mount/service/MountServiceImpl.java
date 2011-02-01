@@ -25,6 +25,18 @@ public class MountServiceImpl implements MountService {
     private MountPointRepository mountPointRepository;
 
     @Override
+    @Transactional
+    public void save(MountPoint mountPoint) {
+        mountPointRepository.save(mountPoint);
+    }
+
+    @Override
+    @Transactional
+    public void delete(MountPoint mountPoint) {
+        mountPointRepository.delete(mountPoint);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public boolean existsMountPoint(String relatedContentId, String handlerKey) {
         return mountPointRepository.existsMountPoint(relatedContentId, handlerKey) > 0;
