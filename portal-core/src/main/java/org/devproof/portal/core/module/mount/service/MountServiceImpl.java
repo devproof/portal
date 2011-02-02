@@ -25,6 +25,12 @@ public class MountServiceImpl implements MountService {
     private MountPointRepository mountPointRepository;
 
     @Override
+    @Transactional(readOnly = true)
+    public List<String> findMountPointsStartingWith(String urlPrefix) {
+        return mountPointRepository.findMountPointsStartingWith(urlPrefix);
+    }
+
+    @Override
     @Transactional
     public void save(MountPoint mountPoint) {
         mountPointRepository.save(mountPoint);
@@ -145,7 +151,7 @@ public class MountServiceImpl implements MountService {
     @Override
     @Transactional(readOnly = true)
     public List<MountPoint> findMountPoints(String relatedContentId, String handlerKey) {
-        return mountPointRepository.findMountPointByHandlerKeyAndRelatedContentId(relatedContentId, handlerKey);
+        return mountPointRepository.findMountsPointByHandlerKeyAndRelatedContentId(relatedContentId, handlerKey);
     }
 
     @Autowired

@@ -43,5 +43,6 @@ public interface MountService {
     void save(MountPoint mountPoint);
     void delete(MountPoint mountPoint);
     List<MountPoint> findMountPoints(String relatedContentId, String handlerKey);
+    List<String> findMountPointsStartingWith(String urlPrefix);
     boolean existsMountPoint(String relatedContentId, String handlerKey);
 }

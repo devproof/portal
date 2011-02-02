@@ -34,7 +34,10 @@ public interface MountPointRepository extends CrudRepository<MountPoint, Integer
     MountPoint findMountPointByUrl(String url);
 
     @Query("select mp from MountPoint mp where mp.relatedContentId like ? and mp.handlerKey like ? order by mp.sort")
-    List<MountPoint> findMountPointByHandlerKeyAndRelatedContentId(String relatedContentId, String handlerKey);
+    List<MountPoint> findMountsPointByHandlerKeyAndRelatedContentId(String relatedContentId, String handlerKey);
+
+    @Query("select mp.mountPath from MountPoint mp where mp.mountPath like ?||'%' order by mp.mountPath")
+    List<String> findMountPointsStartingWith(String mountPathStart);
 
     @Query("select count(mp) from MountPoint mp where mp.mountPath like ?")
     long existsMountPointUrl(String url);

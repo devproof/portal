@@ -67,6 +67,7 @@ public interface CommonConstants {
     String CONF_SYNTAXHL_THEME = "spring.fontService.findSyntaxHighlighterThemes.theme";
     String CONF_UNKNOWN_ERROR_EMAIL = "spring.emailService.findAll.subject.id.unknownerror";
     ResourceReference REF_DEFAULT_CSS = new ResourceReference(CommonConstants.class, "css/default.css");
+    ResourceReference REF_ADD_IMG = new ResourceReference(CommonConstants.class, "img/add.gif");
     ResourceReference REF_EDIT_IMG = new ResourceReference(CommonConstants.class, "img/edit.png");
     ResourceReference REF_DELETE_IMG = new ResourceReference(CommonConstants.class, "img/delete.png");
     ResourceReference REF_VIEW_IMG = new ResourceReference(CommonConstants.class, "img/view.png");

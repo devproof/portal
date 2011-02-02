@@ -3,7 +3,11 @@
 <wicket:panel>
     <form wicket:id="form">
         <div wicket:id="mountUrls">
-            <input type="text" wicket:id="mountUrl" size="80"/><a href="#" wicket:id="addLink">add</a> <a href="#" wicket:id="deleteLink">del</a><br />
+            <!-- TODO own style-->
+            <p style="background-color: #fafad2; border: #d3d3d3 1px solid; padding: 5px;">
+                <input type="text" wicket:id="mountUrl" size="80"/> &nbsp;<a href="#" wicket:id="addLink"><img wicket:id="addImage"/></a> <a href="#" wicket:id="deleteLink"><img wicket:id="deleteImage"/></a><br /><br />
+                <span><input type="radio" name="defaultUrl" value="aa"/> Default &nbsp;<input type="checkbox" wicket:id="overrideInput"/> <span wicket:id="overrideDescription">Override from ...</span></span>
+            </p><br />
         </div>
     </form>
 </wicket:panel>
