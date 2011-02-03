@@ -44,7 +44,6 @@ import java.util.List;
 /**
  * @author Carsten Hufe
  */
-// TODO clean up
 @Secured(ArticleConstants.AUTHOR_RIGHT)
 public class ArticleEditPage extends ArticleBasePage {
 
@@ -56,7 +55,6 @@ public class ArticleEditPage extends ArticleBasePage {
 
     private IModel<Article> articleModel;
     private MountInputPanel mountInputPanel;
-//    private RequiredTextField<String> contentIdField;
 
     public ArticleEditPage(IModel<Article> articleModel) {
         super(new PageParameters());
@@ -66,8 +64,6 @@ public class ArticleEditPage extends ArticleBasePage {
 
     private Form<Article> createArticleEditForm() {
         Form<Article> form = newArticleEditForm();
-//        form.add(createContentIdField());
-        // TODO ...
         form.add(mountInputPanel());
         form.add(createTitleField());
         form.add(createTeaserField());
@@ -120,18 +116,6 @@ public class ArticleEditPage extends ArticleBasePage {
         return new TagField<ArticleTag>("tags", tagsModel, articleTagService);
     }
 
-//    private RequiredTextField<String> createContentIdField() {
-//        contentIdField = newContentIdField();
-//        contentIdField.add(contentIdValidator());
-//        contentIdField.add(contentIdPatternValidator());
-//        contentIdField.setOutputMarkupId(true);
-//        return contentIdField;
-//    }
-
-    private PatternValidator contentIdPatternValidator() {
-        return new PatternValidator("[A-Za-z0-9\\_\\._\\-]*");
-    }
-
     private RequiredTextField<String> newContentIdField() {
         return new RequiredTextField<String>("contentId") {
             private static final long serialVersionUID = 1L;
@@ -148,7 +132,6 @@ public class ArticleEditPage extends ArticleBasePage {
     }
 
     private RequiredTextField<String> createTitleField() {
-        //        title.add(createContentIdGeneratorBehavior(title));
         return new RequiredTextField<String>("title");
     }
 
@@ -159,41 +142,6 @@ public class ArticleEditPage extends ArticleBasePage {
     private FormComponent<String> createContentField() {
         return new FullRichTextArea("fullArticle");
     }
-
-//    private OnChangeAjaxBehavior createContentIdGeneratorBehavior(final RequiredTextField<String> title) {
-//        return new OnChangeAjaxBehavior() {
-//            private static final long serialVersionUID = 1L;
-//
-//            @Override
-//            protected void onUpdate(AjaxRequestTarget target) {
-//                if (isNewArticle()) {
-//                    String id = title.getModelObject();
-//                    id = id.replace(' ', '_');
-//                    id = id.replaceAll("[^A-Z^a-z^0-9^\\_^\\.^_\\-]*", "");
-//                    contentIdField.setModelObject(id);
-//                    target.addComponent(contentIdField);
-//                }
-//            }
-//        };
-//    }
-// TODO cleanup
-//    private AbstractValidator<String> contentIdValidator() {
-//        return new AbstractValidator<String>() {
-//            private static final long serialVersionUID = 1L;
-//
-//            @Override
-//            protected void onValidate(IValidatable<String> ivalidatable) {
-//                if (articleService.existstArticleId(ivalidatable.getValue()) && isNewArticle()) {
-//                    error(ivalidatable);
-//                }
-//            }
-//
-//            @Override
-//            protected String resourceKey() {
-//                return "existing.contentId";
-//            }
-//        };
-//    }
 
     private Form<Article> newArticleEditForm() {
         return new Form<Article>("form", new CompoundPropertyModel<Article>(articleModel)) {

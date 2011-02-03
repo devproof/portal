@@ -25,8 +25,10 @@ import java.util.Collection;
  *
  * @author Carsten Hufe
  */
-// TODO comment
 public interface MountHandlerLocator {
-
+    /**
+     * Retrieves all mount handlers in web context
+     * @return mount handlers
+     */
     Collection<MountHandler> getMountHandlers();
 }

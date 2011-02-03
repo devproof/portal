@@ -32,7 +32,6 @@ import org.devproof.portal.module.article.service.ArticleService;
 /**
  * @author Carsten Hufe
  */
-// TODO remove mount url
 @ModulePage(mountPath = "/print/article", indexMountedPath = true)
 public class ArticlePrintPage extends PrintPage {
     private static final long serialVersionUID = 3988970146526291830L;

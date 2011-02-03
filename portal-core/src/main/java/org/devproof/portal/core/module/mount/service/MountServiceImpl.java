@@ -133,22 +133,6 @@ public class MountServiceImpl implements MountService {
     }
 
     @Override
-    public void moveUp(MountPoint mountPoint) {
-    }
-
-    @Override
-    public void moveDown(MountPoint mountPoint) {
-    }
-
-    @Override
-    public void addMountPoint(String path, String relatedContentId, String handlerKey) {
-    }
-
-    @Override
-    public void removeMountPoint(String path) {
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<MountPoint> findMountPoints(String relatedContentId, String handlerKey) {
         return mountPointRepository.findMountsPointByHandlerKeyAndRelatedContentId(relatedContentId, handlerKey);

@@ -35,15 +35,6 @@ public interface MountService {
     String urlFor(Class<? extends Page> pageClazz, PageParameters params);
     boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
     public MountPoint resolveMountPoint(String url);
-
-    // TODO remove
-    void moveUp(MountPoint mountPoint);
-    // TODO remove
-    void moveDown(MountPoint mountPoint);
-    // TODO remove
-    void addMountPoint(String path, String relatedContentId, String handlerKey);
-    // TODO remove
-    void removeMountPoint(String path);
     void save(MountPoint mountPoint);
     void delete(MountPoint mountPoint);
     List<MountPoint> findMountPoints(String relatedContentId, String handlerKey);
