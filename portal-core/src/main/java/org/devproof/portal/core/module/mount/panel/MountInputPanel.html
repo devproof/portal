@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>
     <form wicket:id="form">
+        <wicket:container wicket:id="defaultUrlGroup">
         <div wicket:id="mountUrls">
             <!-- TODO own style-->
             <p style="background-color: #fafad2; border: #d3d3d3 1px solid; padding: 5px;">
                 <input type="text" wicket:id="mountUrl" size="80"/> &nbsp;<a href="#" wicket:id="addLink"><img wicket:id="addImage"/></a> <a href="#" wicket:id="deleteLink"><img wicket:id="deleteImage"/></a><br /><br />
-                <span><input type="radio" name="defaultUrl" value="aa"/> Default &nbsp;<input type="checkbox" wicket:id="overrideInput"/> <span wicket:id="overrideDescription">Override from ...</span></span>
+                <span><input type="radio" wicket:id="defaultUrl"/> Default &nbsp;
+                <span wicket:id="overrideDescription" style="color: red; font-weight: bold;">Override from ...</span></span>
             </p><br />
         </div>
+        </wicket:container>
     </form>
 </wicket:panel>
 </html>

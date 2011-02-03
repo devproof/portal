@@ -5,14 +5,14 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.CheckBox;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -33,6 +33,8 @@ import java.util.List;
 // TODO vorbelegung
 // TODO cleanup
 // TODO remove doubles in gleichen und bei anderen
+// TODO plus muss angezeigt werden wenn keine mount url da ist  (immer eins anzeigen und - bei eins ausblenden)
+// TODO delete mountpoints on article delete
 public class MountInputPanel extends Panel {
     private static final long serialVersionUID = 1220436300695707556L;
 
@@ -52,41 +54,78 @@ public class MountInputPanel extends Panel {
 
         final Form<MountPoint> form = newForm();
 
-        ListView<MountPoint> listView = new ListView<MountPoint>("mountUrls", mountPointsModel) {
-            private static final long serialVersionUID = -7992014373658362790L;
+        ListView<MountPoint> listView = mountUrlListView();
+        listView.setOutputMarkupId(true);
+        RadioGroup<Integer> defaultUrlGroup = new RadioGroup<Integer>("defaultUrlGroup", new IModel<Integer>() {
+            private static final long serialVersionUID = -8339571053130192758L;
 
             @Override
-            protected void populateItem(final ListItem<MountPoint> item) {
-                item.add(createMountUrlField(item));
-                item.add(createAddLink(item));
-                item.add(createDeleteLink(item));
-                item.add(createOverrideCheckBox(item));
-                // TODO ....
-                item.add(new Label("overrideDescription", "here some stuff"));
-                item.setOutputMarkupId(true);
+            public Integer getObject() {
+                return findSelectedIndex(mountPointsModel.getObject());
             }
-        };
-        listView.setOutputMarkupId(true);
-        form.add(listView);
+
+            @Override
+            public void setObject(Integer object) {
+                List<MountPoint> mountPoints = mountPointsModel.getObject();
+                for (int i = 0; i < mountPoints.size() ; i++) {
+                    MountPoint mountPoint =  mountPoints.get(i);
+                    mountPoint.setDefaultUrl(object != null && object == i);
+                }
+            }
+
+            @Override
+            public void detach() {
+            }
+        });
+        defaultUrlGroup.add(listView);
+        form.add(defaultUrlGroup);
         form.setOutputMarkupId(true);
         add(form);
     }
 
-    private CheckBox createOverrideCheckBox(final ListItem<MountPoint> item) {
-        CheckBox overrideInput = new CheckBox("overrideInput", new Model<Boolean>()) {
-            private static final long serialVersionUID = -5152560765406977370L;
+    private ListView<MountPoint> mountUrlListView() {
+        return new ListView<MountPoint>("mountUrls", mountPointsModel) {
+                private static final long serialVersionUID = -7992014373658362790L;
 
-            @Override
-            public boolean isEnabled() {
-                return true;
-//                return item.getModelObject().getMountPath().co
-            }
-        };
-//        overrideInput.setRequired(true);
-        return overrideInput;
+                @Override
+                protected void populateItem(final ListItem<MountPoint> item) {
+                    // TODO extrakt own panel
+
+                    Label overrideDescription = new Label("overrideDescription", new AbstractReadOnlyModel<String>() {
+                        private static final long serialVersionUID = -245277654798313891L;
+
+                        @Override
+                        public String getObject() {
+                            MountPoint mountPoint = item.getModelObject();
+                            String mountPath = mountPoint.getMountPath();
+                            boolean existsPath = mountService.existsPath(mountPath);
+                            String mountPointRelatedContentId = mountPoint.getRelatedContentId();
+                            if (existsPath) {
+                                MountPoint existingMountPoint = mountService.resolveMountPoint(mountPath);
+                                if(!existingMountPoint.getRelatedContentId().equals(mountPointRelatedContentId)) {
+                                    // TODO extract
+                                    return "ACHTUNG: URL ist bereits an einem anderen Inhalt gebunden.";
+                                }
+                            }
+                            return "";
+                        }
+                    });
+                    overrideDescription.setOutputMarkupId(true);
+
+                    item.add(createMountUrlField(item, overrideDescription));
+                    item.add(createAddLink(item));
+                    item.add(createDeleteLink(item));
+                    item.add(new Radio<Integer>("defaultUrl", new PropertyModel<Integer>(item, "index")));
+
+
+                    item.add(overrideDescription);
+                    item.setOutputMarkupId(true);
+                }
+            };
     }
 
-    private TextField<String> createMountUrlField(ListItem<MountPoint> item) {
+
+    private TextField<String> createMountUrlField(ListItem<MountPoint> item, final Label label) {
         final AutoCompleteTextField<String> tf = new AutoCompleteTextField<String>("mountUrl", new PropertyModel<String>(item.getModel(), "mountPath")) {
             private static final long serialVersionUID = -6260288249626574703L;
 
@@ -111,16 +150,11 @@ public class MountInputPanel extends Panel {
                     value = StringUtils.removeEnd(value, "/");
                     tf.setModelObject(value);
                     target.addComponent(tf);
+                    target.addComponent(label);
                 }
             }
 
-//            @Override
-//            protected void onEvent(AjaxRequestTarget target) {
-//
-////                target.appendJavascript("alert('refresh here for check box');");
-//            }
         });
-//        tf.setRequired(true);
         tf.setOutputMarkupId(true);
         return tf;
     }
@@ -181,18 +215,46 @@ public class MountInputPanel extends Panel {
         return new Form<MountPoint>("form");
     }
 
+    // TODO comment
     public void storeMountPoints() {
-                            String relatedContentId = relatedContentIdModel.getObject();
-                    List<MountPoint> mountPoints = mountPointsModel.getObject();
-                    for(MountPoint mountPoint : mountPoints) {
-                        mountPoint.setRelatedContentId(relatedContentId);
-                        mountService.save(mountPoint);
-                    }
-                    List<MountPoint> mountPointsToRemove = mountPointsToRemoveModel.getObject();
-                    for(MountPoint mountPoint : mountPointsToRemove) {
-                        if(!mountPoint.isTransient()) {
-                            mountService.delete(mountPoint);
-                        }
-                    }
+        String relatedContentId = relatedContentIdModel.getObject();
+        List<MountPoint> mountPoints = mountPointsModel.getObject();
+        // TODO move to service
+        boolean defaultUrlNotSelected = isDefaultUrlNotSelected(mountPoints);
+        for(MountPoint mountPoint : mountPoints) {
+            mountPoint.setRelatedContentId(relatedContentId);
+            if(StringUtils.isNotBlank(mountPoint.getMountPath())) {
+                if(defaultUrlNotSelected) {
+                    mountPoint.setDefaultUrl(true);
+                    defaultUrlNotSelected = false;
+                }
+                mountService.save(mountPoint);
+            }
+            else if(!mountPoint.isTransient()) {
+                mountService.delete(mountPoint);
+            }
+        }
+        // TODO move to service
+        List<MountPoint> mountPointsToRemove = mountPointsToRemoveModel.getObject();
+        for(MountPoint mountPoint : mountPointsToRemove) {
+            if(!mountPoint.isTransient()) {
+                mountService.delete(mountPoint);
+            }
+        }
+    }
+
+
+    private boolean isDefaultUrlNotSelected(List<MountPoint> mountPoints) {
+        return findSelectedIndex(mountPoints) == -1;
+    }
+
+    private int findSelectedIndex(List<MountPoint> mountPoints) {
+        for (int i = 0; i < mountPoints.size() ; i++) {
+            MountPoint mountPoint =  mountPoints.get(i);
+            if(mountPoint.isDefaultUrl()) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

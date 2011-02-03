@@ -30,9 +30,8 @@ public class MountPoint implements Serializable {
     private String relatedContentId;
     @Column(name = "handler_key", nullable = false)
     private String handlerKey;
-    // TODO remove ?? bzw. checkbox fuer default url
-    @Column(name = "sort", nullable = false)
-    private Integer sort = 1;
+    @Column(name = "default_url", nullable = false)
+    private boolean defaultUrl = false;
 
     public Integer getId() {
         return id;
@@ -66,12 +65,12 @@ public class MountPoint implements Serializable {
         this.handlerKey = handlerKey;
     }
 
-    public Integer getSort() {
-        return sort;
+    public boolean isDefaultUrl() {
+        return defaultUrl;
     }
 
-    public void setSort(Integer sort) {
-        this.sort = sort;
+    public void setDefaultUrl(boolean defaultUrl) {
+        this.defaultUrl = defaultUrl;
     }
 
     public boolean isTransient() {
@@ -80,6 +79,6 @@ public class MountPoint implements Serializable {
 
     @Override
     public String toString() {
-        return "MountPoint{" + "id=" + id + ", mountPath='" + mountPath + '\'' + ", relatedContentId='" + relatedContentId + '\'' + ", handlerKey='" + handlerKey + '\'' + ", sort=" + sort + '}';
+        return "MountPoint{" + "id=" + id + ", mountPath='" + mountPath + '\'' + ", relatedContentId='" + relatedContentId + '\'' + ", handlerKey='" + handlerKey + '\'' + ", defaultUrl=" + defaultUrl + '}';
     }
 }

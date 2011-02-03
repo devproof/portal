@@ -19,15 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.request.target.basic.StringRequestTarget;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
-import org.apache.wicket.request.target.component.PageRequestTarget;
 import org.devproof.portal.core.module.mount.annotation.MountPointHandler;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.service.MountService;
-import org.devproof.portal.module.article.entity.Article;
-import org.devproof.portal.module.article.page.ArticlePage;
 import org.devproof.portal.module.article.page.ArticlePrintPage;
 import org.devproof.portal.module.article.page.ArticleReadPage;
 import org.devproof.portal.module.article.service.ArticleService;
@@ -77,7 +73,7 @@ public class ArticleMountHandler implements MountHandler {
     @Transactional(readOnly = true)
     public String urlFor(Class<? extends Page> pageClazz, PageParameters params) {
         String relatedContentId = params.getString("0");
-        MountPoint mountPoint = mountService.findFirstMountPoint(relatedContentId, getHandlerKey());
+        MountPoint mountPoint = mountService.findDefaultMountPoint(relatedContentId, getHandlerKey());
         if(mountPoint != null) {
             String mountPath = mountPoint.getMountPath();
             if(ArticleReadPage.class.equals(pageClazz)) {

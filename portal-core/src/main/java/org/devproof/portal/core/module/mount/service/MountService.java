@@ -30,11 +30,15 @@ import java.util.List;
 // TODO comment
 public interface MountService {
     IRequestTarget resolveRequestTarget(String requestedUrl);
-    MountPoint findFirstMountPoint(String relatedContentId, String handlerKey);
+    MountPoint findDefaultMountPoint(String relatedContentId, String handlerKey);
     boolean existsPath(String requestedUrl);
     String urlFor(Class<? extends Page> pageClazz, PageParameters params);
     boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
+    public MountPoint resolveMountPoint(String url);
+
+    // TODO remove
     void moveUp(MountPoint mountPoint);
+    // TODO remove
     void moveDown(MountPoint mountPoint);
     // TODO remove
     void addMountPoint(String path, String relatedContentId, String handlerKey);

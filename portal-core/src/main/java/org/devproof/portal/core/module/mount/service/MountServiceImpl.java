@@ -64,15 +64,13 @@ public class MountServiceImpl implements MountService {
 
     @Override
     @Transactional(readOnly = true)
-    public MountPoint findFirstMountPoint(String relatedContentId, String handlerKey) {
-        List<MountPoint> mountPoints = findMountPoints(relatedContentId, handlerKey);
-        if(mountPoints.size() > 0) {
-            return mountPoints.get(0);
-        }
-        return null;
+    public MountPoint findDefaultMountPoint(String relatedContentId, String handlerKey) {
+        return mountPointRepository.findDefaultMountPoint(relatedContentId, handlerKey);
     }
 
-    private MountPoint resolveMountPoint(String url) {
+    @Override
+    @Transactional(readOnly = true)
+    public MountPoint resolveMountPoint(String url) {
         if(StringUtils.isEmpty(url)) {
             return null;
         }
@@ -125,11 +123,13 @@ public class MountServiceImpl implements MountService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsPath(String requestedUrl) {
+        if(requestedUrl == null) {
+            return false;
+        }
         requestedUrl = addLeadingSlash(requestedUrl);
         requestedUrl = removeEndingSlash(requestedUrl);
         MountPoint mountPoint = resolveMountPoint(requestedUrl);
         return mountPoint != null;
-//        return mountPointRepository.existsMountPointUrl(requestedUrl) > 0;
     }
 
     @Override
