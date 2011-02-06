@@ -244,16 +244,27 @@ def concatUpdateSqlAndWriteFile(type, bundlePath) {
   mkdir(sqlPath)
   def sqlFiles = file(sqlTmpPath + '/update').listFiles().sort()
 
-  // update* files
+  // update* files core
   sqlFiles.each { File file ->
-    if(file.name.contains("_${type}_")) {
+    if(file.name.contains("_${type}_") && file.name.endsWith('_core.sql')) {
       tmp = file.name.minus("update_from_")
       index = tmp.lastIndexOf("_${type}_")
       def sqlVersion = tmp.substring(0, index)
       def outputFilePath = "$sqlPath/update_from_${sqlVersion}_${type}.sql"
       File outputFile = new File(outputFilePath)
       outputFile.append(file.text + "\n");
-//      println file.name + ' to ' + outputFilePath
+    }
+  }
+
+  // update* files
+  sqlFiles.each { File file ->
+    if(file.name.contains("_${type}_") && !file.name.endsWith('_core.sql')) {
+      tmp = file.name.minus("update_from_")
+      index = tmp.lastIndexOf("_${type}_")
+      def sqlVersion = tmp.substring(0, index)
+      def outputFilePath = "$sqlPath/update_from_${sqlVersion}_${type}.sql"
+      File outputFile = new File(outputFilePath)
+      outputFile.append(file.text + "\n");
     }
   }
 }

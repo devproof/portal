@@ -21,10 +21,18 @@ CREATE TABLE `article_historized` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 SET FOREIGN_KEY_CHECKS=0;
-DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.ArticlePage';
-DELETE FROM core_right WHERE right_id LIKE 'page.ArticlePage';
-DELETE FROM core_role_right_xref WHERE right_id LIKE 'general.ArticleBoxPanel';
-DELETE FROM core_right WHERE right_id LIKE 'general.ArticleBoxPanel';
-UPDATE core_role_right_xref SET right_id = 'article.author' WHERE right_id LIKE 'page.ArticleEditPage';
+DELETE FROM `core_role_right_xref` WHERE `right_id` LIKE 'page.ArticlePage';
+DELETE FROM `core_right` WHERE `right_id` LIKE 'page.ArticlePage';
+DELETE FROM `core_role_right_xref` WHERE `right_id` LIKE 'general.ArticleBoxPanel';
+DELETE FROM `core_right` WHERE `right_id` LIKE 'general.ArticleBoxPanel';
+UPDATE `core_role_right_xref` SET `right_id` = 'article.author' WHERE `right_id` LIKE 'page.ArticleEditPage';
 UPDATE core_right SET right_id = 'article.author', description = 'Article Author' WHERE right_id LIKE 'page.ArticleEditPage';
 SET FOREIGN_KEY_CHECKS=1;
+
+-- copy current content ids to mount_points
+INSERT INTO `core_mount_point` (`related_content_id`, `handler_key`, `mount_path`, `default_url`)
+ (select `id`, 'article', concat('/article/', `content_id`), 1 from `article`);
+ALTER TABLE article_page DROP PRIMARY KEY;
+ALTER TABLE article_page ADD COLUMN `id` int(11) NOT NULL auto_increment FIRST, ADD PRIMARY KEY (`id`);
+ALTER TABLE article DROP COLUMN content_id;
+ALTER TABLE article_page DROP COLUMN content_id;
