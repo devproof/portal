@@ -95,6 +95,17 @@ div.wicket-aa ul li.selected {
     padding: 2px 0;
 }
 
+.mountPointPanel {
+    background-color: #fafad2;
+    border: #d3d3d3 1px solid;
+    padding: 5px;
+}
+
+.mountPointHint {
+    color: red;
+    font-weight: bold;
+}
+
 table.palette {
     border: 0;
 }

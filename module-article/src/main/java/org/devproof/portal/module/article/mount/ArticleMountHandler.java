@@ -24,6 +24,7 @@ import org.devproof.portal.core.module.mount.annotation.MountPointHandler;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.service.MountService;
+import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.page.ArticlePrintPage;
 import org.devproof.portal.module.article.page.ArticleReadPage;
 import org.devproof.portal.module.article.service.ArticleService;
@@ -91,7 +92,7 @@ public class ArticleMountHandler implements MountHandler {
 
     @Override
     public String getHandlerKey() {
-        return "article";
+        return ArticleConstants.HANDLER_KEY;
     }
 
     @Autowired

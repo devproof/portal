@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Carsten Hufe
@@ -32,14 +31,97 @@ public class MountServiceImpl implements MountService {
 
     @Override
     @Transactional
+    public void delete(String relatedContentId, String handlerKey) {
+        List<MountPoint> mountPoints = mountPointRepository.findMountPoints(relatedContentId, handlerKey);
+        delete(mountPoints);
+    }
+
+    @Override
+    @Transactional
     public void save(MountPoint mountPoint) {
+        boolean exists = false;
+        if(mountPoint.isTransient()) {
+            exists =  mountPointRepository.existsMountPoint(mountPoint.getMountPath()) > 0;
+        }
+        else {
+            exists =  mountPointRepository.existsMountPoint(mountPoint.getMountPath(), mountPoint.getRelatedContentId(), mountPoint.getHandlerKey()) > 0;
+        }
+        if(exists) {
+            MountPoint existing = mountPointRepository.findMountPointByUrl(mountPoint.getMountPath());
+            delete(existing);
+        }
         mountPointRepository.save(mountPoint);
     }
 
     @Override
     @Transactional
+    public void save(List<MountPoint> mountPoints, String relatedContentId) {
+        List<MountPoint> filteredMountPoints = removeDoubles(mountPoints);
+        for(MountPoint mountPoint : filteredMountPoints) {
+            boolean defaultUrlNotSelected = !hasDefaultUrl(mountPoint);
+            mountPoint.setRelatedContentId(relatedContentId);
+            if(StringUtils.isNotBlank(mountPoint.getMountPath())) {
+                if(defaultUrlNotSelected) {
+                    mountPoint.setDefaultUrl(true);
+                    defaultUrlNotSelected = false;
+                }
+                save(mountPoint);
+            }
+            else if(!mountPoint.isTransient()) {
+                mountPoint.setMountPath("dummy");
+                mountPointRepository.delete(mountPoint);
+            }
+        }
+    }
+
+    private boolean hasDefaultUrl(MountPoint mountPoint) {
+        return mountPointRepository.hasDefaultUrl(mountPoint.getRelatedContentId(), mountPoint.getHandlerKey()) > 0;
+    }
+
+    private List<MountPoint> removeDoubles(List<MountPoint> mountPoints) {
+        Set<String> urls = new HashSet<String>();
+        List<MountPoint> result = new ArrayList<MountPoint>();
+        for(MountPoint mountPoint : mountPoints) {
+            String mountPath = mountPoint.getMountPath();
+            if(!urls.contains(mountPath)) {
+                result.add(mountPoint);
+            }
+            urls.add(mountPath);
+        }
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public void delete(List<MountPoint> mountPoints) {
+        for(MountPoint mountPoint : mountPoints) {
+            if(!mountPoint.isTransient()) {
+                delete(mountPoint);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
     public void delete(MountPoint mountPoint) {
+        mountPoint.setMountPath("dummy");
         mountPointRepository.delete(mountPoint);
+        List<MountPoint> mps = mountPointRepository.findMountPoints(mountPoint.getRelatedContentId(), mountPoint.getHandlerKey());
+        if(mps.size() > 0 && hasNoDefaultUrl(mps)) {
+            MountPoint mp = mps.get(0);
+            mp.setDefaultUrl(true);
+            mountPointRepository.save(mp);
+        }
+    }
+
+    private boolean hasNoDefaultUrl(List<MountPoint> mps) {
+        for (MountPoint mp : mps) {
+            if(mp.isDefaultUrl()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -135,7 +217,7 @@ public class MountServiceImpl implements MountService {
     @Override
     @Transactional(readOnly = true)
     public List<MountPoint> findMountPoints(String relatedContentId, String handlerKey) {
-        return mountPointRepository.findMountsPointByHandlerKeyAndRelatedContentId(relatedContentId, handlerKey);
+        return mountPointRepository.findMountPoints(relatedContentId, handlerKey);
     }
 
     @Autowired

@@ -16,10 +16,14 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.mount.registry.MountHandler;
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.role.entity.Role;
+import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleHistorized;
 import org.devproof.portal.module.article.entity.ArticlePage;
+import org.devproof.portal.module.article.mount.ArticleMountHandler;
 import org.devproof.portal.module.article.repository.ArticlePageRepository;
 import org.devproof.portal.module.article.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticlePageRepository articlePageRepository;
     private ArticleTagService articleTagService;
     private ArticleHistorizer articleHistorizer;
+    private MountService mountService;
 
     @Override
     @Transactional(readOnly = true)
@@ -64,6 +69,8 @@ public class ArticleServiceImpl implements ArticleService {
         articleHistorizer.deleteHistory(entity);
         articleRepository.delete(entity);
         articleTagService.deleteUnusedTags();
+        // TODO unit test
+        mountService.delete(entity.getId().toString(), ArticleConstants.HANDLER_KEY);
     }
 
     @Override
@@ -117,5 +124,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     public void setArticleHistorizer(ArticleHistorizer articleHistorizer) {
         this.articleHistorizer = articleHistorizer;
+    }
+
+    @Autowired
+    public void setMountService(MountService mountService) {
+        this.mountService = mountService;
     }
 }

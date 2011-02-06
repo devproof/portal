@@ -35,8 +35,12 @@ public interface MountService {
     String urlFor(Class<? extends Page> pageClazz, PageParameters params);
     boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
     public MountPoint resolveMountPoint(String url);
+
     void save(MountPoint mountPoint);
+    void save(List<MountPoint> mountPoints, String relatedContentId);
     void delete(MountPoint mountPoint);
+    void delete(List<MountPoint> mountPoints);
+    void delete(String relatedContentId, String handlerKey);
     List<MountPoint> findMountPoints(String relatedContentId, String handlerKey);
     List<String> findMountPointsStartingWith(String urlPrefix);
     boolean existsMountPoint(String relatedContentId, String handlerKey);

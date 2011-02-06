@@ -33,17 +33,23 @@ public interface MountPointRepository extends CrudRepository<MountPoint, Integer
     @Query("select mp from MountPoint mp where mp.mountPath like ?")
     MountPoint findMountPointByUrl(String url);
 
+    @Query("select count(mp) from MountPoint mp where mp.relatedContentId not like ? and mp.handlerKey not like ? and mp.defaultUrl = 1")
+    long hasDefaultUrl(String relatedContentId, String handlerKey);
+
+    @Query("select count(mp) from MountPoint mp where mp.mountPath like ? and (mp.relatedContentId not like ? or mp.handlerKey not like ?)")
+    long existsMountPoint(String url, String relatedContentId, String handlerKey);
+
+    @Query("select count(mp) from MountPoint mp where mp.mountPath like ?")
+    long existsMountPoint(String url);
+
     @Query("select mp from MountPoint mp where mp.relatedContentId like ? and mp.handlerKey like ? and mp.defaultUrl = 1")
     MountPoint findDefaultMountPoint(String relatedContentId, String handlerKey);
 
     @Query("select mp from MountPoint mp where mp.relatedContentId like ? and mp.handlerKey like ? order by mp.defaultUrl desc")
-    List<MountPoint> findMountsPointByHandlerKeyAndRelatedContentId(String relatedContentId, String handlerKey);
+    List<MountPoint> findMountPoints(String relatedContentId, String handlerKey);
 
     @Query("select mp.mountPath from MountPoint mp where mp.mountPath like ?||'%' order by mp.mountPath")
     List<String> findMountPointsStartingWith(String mountPathStart);
-
-    @Query("select count(mp) from MountPoint mp where mp.mountPath like ?")
-    long existsMountPointUrl(String url);
 
     @Query("select count(mp) from MountPoint mp where mp.relatedContentId like ? and mp.handlerKey like ?")
     long existsMountPoint(String relatedContentId, String handlerKey);

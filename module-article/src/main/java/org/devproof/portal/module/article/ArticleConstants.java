@@ -31,4 +31,5 @@ public interface ArticleConstants {
     String ENTITY_CACHE_REGION = "entity.content";
     String QUERY_CACHE_REGION = "query.content";
     String AUTHOR_RIGHT = "article.author";
+    String HANDLER_KEY = "article";
 }
