@@ -69,7 +69,6 @@ public class ArticleServiceImpl implements ArticleService {
         articleHistorizer.deleteHistory(entity);
         articleRepository.delete(entity);
         articleTagService.deleteUnusedTags();
-        // TODO unit test
         mountService.delete(entity.getId().toString(), ArticleConstants.HANDLER_KEY);
     }
 

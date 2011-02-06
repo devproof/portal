@@ -16,6 +16,7 @@
 package org.devproof.portal.module.article.service;
 
 import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticleHistorized;
@@ -42,6 +43,7 @@ public class ArticleServiceImplTest {
     private ArticlePageRepository mockPage;
     private ArticleTagService mockTag;
     private ArticleHistorizer mockHistorizer;
+    private MountService mockMountService;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -50,11 +52,13 @@ public class ArticleServiceImplTest {
         mockPage = createStrictMock(ArticlePageRepository.class);
         mockTag = createStrictMock(ArticleTagService.class);
         mockHistorizer = createStrictMock(ArticleHistorizer.class);
+        mockMountService = createStrictMock(MountService.class);
         impl = new ArticleServiceImpl();
         impl.setArticleRepository(mock);
         impl.setArticlePageRepository(mockPage);
         impl.setArticleTagService(mockTag);
         impl.setArticleHistorizer(mockHistorizer);
+        impl.setMountService(mockMountService);
     }
 
     @Test
@@ -89,13 +93,16 @@ public class ArticleServiceImplTest {
         mock.delete(e);
         mockTag.deleteUnusedTags();
         mockHistorizer.deleteHistory(e);
+        mockMountService.delete("1", "article");
         replay(mock);
         replay(mockTag);
         replay(mockHistorizer);
+        replay(mockMountService);
         impl.delete(e);
         verify(mock);
         verify(mockTag);
         verify(mockHistorizer);
+        verify(mockMountService);
     }
 
     @Test
@@ -121,23 +128,14 @@ public class ArticleServiceImplTest {
         assertNotNull(ap);
         assertEquals(a, ap.getArticle());
     }
-// TODO fix tests
-//
-//    @Test
-//    public void testGetPageCount() {
-//        expect(mockPage.getPageCount("contentId")).andReturn(4l);
-//        replay(mockPage);
-//        assertEquals(impl.getPageCount("contentId"), 4l);
-//        verify(mockPage);
-//    }
-//
-//    @Test
-//    public void testExistsContentId() {
-//        expect(mock.existsId("contentId")).andReturn(1l);
-//        replay(mock);
-//        assertTrue(impl.existstId("contentId"));
-//        verify(mock);
-//    }
+
+    @Test
+    public void testGetPageCount() {
+        expect(mockPage.getPageCount(123)).andReturn(4l);
+        replay(mockPage);
+        assertEquals(impl.getPageCount(123), 4l);
+        verify(mockPage);
+    }
 
     @Test
     public void testFindAllArticlesForRoleOrderedByDateDesc() {

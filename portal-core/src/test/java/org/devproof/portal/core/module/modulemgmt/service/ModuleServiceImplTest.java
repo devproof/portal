@@ -105,7 +105,7 @@ public class ModuleServiceImplTest {
 
     @Test
     public void testRebuildModuleLinks() {
-        // TODO impl.rebuildModuleLinks(); who wanna write it?
+        // impl.rebuildModuleLinks(); who wanna write it?
     }
 
     @Test
