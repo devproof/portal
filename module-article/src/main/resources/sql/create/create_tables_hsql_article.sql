@@ -67,3 +67,4 @@ CREATE TABLE article_historized
    PRIMARY KEY(id)
 )
 ;
+

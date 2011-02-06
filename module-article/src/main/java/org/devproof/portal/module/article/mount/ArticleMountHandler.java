@@ -37,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 // TODO unit test
 @MountPointHandler("articleMountHandler")
 public class ArticleMountHandler implements MountHandler {
-    private ArticleService articleService;
     private MountService mountService;
 
     @Override
@@ -98,10 +97,5 @@ public class ArticleMountHandler implements MountHandler {
     @Autowired
     public void setMountService(MountService mountService) {
         this.mountService = mountService;
-    }
-
-    @Autowired
-    public void setArticleService(ArticleService articleService) {
-        this.articleService = articleService;
     }
 }

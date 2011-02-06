@@ -46,7 +46,6 @@ public class ArticleServiceImplTest {
     private MountService mockMountService;
 
     @Before
-    @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(ArticleRepository.class);
         mockPage = createStrictMock(ArticlePageRepository.class);
