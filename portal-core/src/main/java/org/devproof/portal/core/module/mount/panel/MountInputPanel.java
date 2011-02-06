@@ -32,7 +32,6 @@ import java.util.List;
  * @author Carsten Hufe
  */
 // TODO unit test
-// TODO cleanup
 public class MountInputPanel extends Panel {
     private static final long serialVersionUID = 1220436300695707556L;
 

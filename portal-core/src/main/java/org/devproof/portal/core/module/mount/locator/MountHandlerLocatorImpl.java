@@ -10,9 +10,10 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * Locates all mount handlers in the spring context
+ *
  * @author Carsten Hufe
  */
-// TODO unit test
 @Locator("mountHandlerLocator")
 public class MountHandlerLocatorImpl implements MountHandlerLocator {
     private ApplicationContext context;

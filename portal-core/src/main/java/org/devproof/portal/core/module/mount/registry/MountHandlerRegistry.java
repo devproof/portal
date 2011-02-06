@@ -22,12 +22,42 @@ import java.util.Map;
  *
  * @author Carsten Hufe
  */
-// TODO comment
 public interface MountHandlerRegistry {
-
+    /**
+     * Registers a new mount handler
+     *
+     * @param handlerKey handler key
+     * @param mountHandler mount handler
+     */
     void registerMountHandler(String handlerKey, MountHandler mountHandler);
+
+    /**
+     * Removes a mount handler
+     *
+     * @param handlerKey handler key
+     */
     void removeMountHandler(String handlerKey);
+
+    /**
+     * Resolve a mount handler
+     *
+     * @param handlerKey handler key
+     * @return matching mount handler
+     */
     MountHandler getMountHandler(String handlerKey);
+
+    /**
+     * Checks if a mount handler exists
+     *
+     * @param handlerKey handler key
+     * @return true if exists
+     */
     boolean isMountHandlerAvailable(String handlerKey);
+
+    /**
+     * Returns all mount handler
+     *
+     * @return all registered mount handlers
+     */
 	Map<String, MountHandler> getRegisteredMountHandlers();
 }

@@ -21,12 +21,40 @@ import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 
 /**
+ * Mount handler handles global defined URLs for a module
+ *
  * @author Carsten Hufe
  */
-// TODO comment
 public interface MountHandler {
+    /**
+     * Builds the request target
+     *
+     * @param requestedUrl original requested URL
+     * @param mountPoint mount point
+     * @return wicket request target
+     */
     IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint);
+
+    /**
+     * @return module handler key e.g. "article"
+     */
     String getHandlerKey();
+
+    /**
+     * If a MountHandler can handle the page
+     *
+     * @param pageClazz wicket page class
+     * @param pageParameters page params
+     * @return true if it can handle
+     */
     boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
+
+    /**
+     * Returns a URL for a wicket page
+     *
+     * @param pageClazz page class
+     * @param params page parameter
+     * @return matching URL
+     */
     String urlFor(Class<? extends Page> pageClazz, PageParameters params);
 }

@@ -74,11 +74,6 @@ public class MountServiceImpl implements MountService {
         }
     }
 
-    private boolean hasDefaultUrl(MountPoint mountPoint) {
-        long l = mountPointRepository.hasDefaultUrl(mountPoint.getRelatedContentId(), mountPoint.getHandlerKey());
-        return l > 0;
-    }
-
     private List<MountPoint> removeDoubles(List<MountPoint> mountPoints) {
         Set<String> urls = new HashSet<String>();
         List<MountPoint> result = new ArrayList<MountPoint>();
@@ -89,7 +84,6 @@ public class MountServiceImpl implements MountService {
             }
             urls.add(mountPath);
         }
-
         return result;
     }
 
