@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2010 Carsten Hufe devproof.org
+ * Copyright 2009-2011 Carsten Hufe devproof.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,28 +28,28 @@ import java.util.Map;
 
 /**
  * Locates the pages of all modules
- * 
+ *
  * @author Carsten Hufe
  */
 @Locator("pageLocator")
 public class PageLocatorImpl implements PageLocator {
-	private ApplicationContext context;
+    private ApplicationContext context;
 
-	@Override
-	public Collection<PageConfiguration> getPageConfigurations() {
-		Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
-		List<PageConfiguration> back = new ArrayList<PageConfiguration>();
-		for (ModuleConfiguration module : beans.values()) {
-			back.addAll(module.getPages());
-			for (PageConfiguration page : module.getPages()) {
-				page.setModule(module);
-			}
-		}
+    @Override
+    public Collection<PageConfiguration> getPageConfigurations() {
+        Map<String, ModuleConfiguration> beans = context.getBeansOfType(ModuleConfiguration.class);
+        List<PageConfiguration> back = new ArrayList<PageConfiguration>();
+        for (ModuleConfiguration module : beans.values()) {
+            back.addAll(module.getPages());
+            for (PageConfiguration page : module.getPages()) {
+                page.setModule(module);
+            }
+        }
         return back;
-	}
+    }
 
-	@Autowired
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		context = applicationContext;
-	}
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        context = applicationContext;
+    }
 }

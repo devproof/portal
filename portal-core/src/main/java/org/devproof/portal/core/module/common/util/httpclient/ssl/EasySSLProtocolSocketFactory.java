@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2010 Carsten Hufe devproof.org
+ * Copyright 2009-2011 Carsten Hufe devproof.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -116,7 +116,7 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
     }
 
     /**
-     * @see SecureProtocolSocketFactory#createSocket(java.lang.String,int,java.net.InetAddress,int)
+     * @see SecureProtocolSocketFactory#createSocket(java.lang.String, int, java.net.InetAddress, int)
      */
     public Socket createSocket(String host, int port, InetAddress clientHost, int clientPort) throws IOException {
 
@@ -162,14 +162,14 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
     }
 
     /**
-     * @see SecureProtocolSocketFactory#createSocket(java.lang.String,int)
+     * @see SecureProtocolSocketFactory#createSocket(java.lang.String, int)
      */
     public Socket createSocket(String host, int port) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(host, port);
     }
 
     /**
-     * @see SecureProtocolSocketFactory#createSocket(java.net.Socket,java.lang.String,int,boolean)
+     * @see SecureProtocolSocketFactory#createSocket(java.net.Socket, java.lang.String, int, boolean)
      */
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(socket, host, port, autoClose);
@@ -184,6 +184,6 @@ public class EasySSLProtocolSocketFactory implements ProtocolSocketFactory {
     // @Override
     // public int hashCode() {
     // return EasySSLProtocolSocketFactory.class.hashCode();
-	// }
+    // }
 
 }

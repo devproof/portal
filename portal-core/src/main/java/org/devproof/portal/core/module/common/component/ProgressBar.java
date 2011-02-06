@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2010 Carsten Hufe devproof.org
+ * Copyright 2009-2011 Carsten Hufe devproof.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ import org.apache.wicket.util.time.Duration;
  * 	protected Progression getProgression() {
  * 		// progress is an int instance variable defined somewhere else
  * 		return new Progression(progress);
- * 	}
+ *     }
  * }));
  * &lt;/code&gt;
  * </pre>
@@ -224,7 +224,7 @@ public class ProgressBar extends Panel {
      *
      * @param width the width of the ProgressBar in px
      */
-	public void setWidth(int width) {
-		this.width = width;
-	}
+    public void setWidth(int width) {
+        this.width = width;
+    }
 }

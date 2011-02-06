@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2010 Carsten Hufe devproof.org
+ * Copyright 2009-2011 Carsten Hufe devproof.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,6 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -42,108 +41,97 @@ import java.lang.reflect.Method;
  * servicesImpl) if no Query or BulkUpdate annotation exist 5. opens transaction
  * on the first change call (save, update, merge, delete, bulkupdate) 6. opens a
  * session if no ones exists and closes it after the call
- * 
+ *
+ * @param <T>  entity type
+ * @param <PK> primary key type
  * @author Carsten Hufe
- * @param <T>
- *            entity type
- * @param <PK>
- *            primary key type
  */
-public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> implements
-		FactoryBean<Object>, Serializable, ApplicationContextAware {
+public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> implements FactoryBean<Object>, Serializable, ApplicationContextAware {
 
-	private static final long serialVersionUID = -3752572093862325307L;
+    private static final long serialVersionUID = -3752572093862325307L;
 
-	private Object servicesImpl;
-	private Class<T> entityClass;
-	private Class<?> daoInterface;
-	private UsernameResolver usernameResolver;
+    private Object servicesImpl;
+    private Class<T> entityClass;
+    private Class<?> daoInterface;
+    private UsernameResolver usernameResolver;
     private ApplicationContext applicationContext;
     private SessionFactory sessionFactory;
 
     public Object getObject() throws Exception {
-		ProxyFactory result = new ProxyFactory();
-		CrudRepository<T, PK> crudRepository = createGenericHibernateDao();
-		result.setTarget(crudRepository);
-		result.setInterfaces(new Class[] { daoInterface });
-		result.addAdvice(createGenericDaoInterceptor());
-		return result.getProxy();
-	}
+        ProxyFactory result = new ProxyFactory();
+        CrudRepository<T, PK> crudRepository = createGenericHibernateDao();
+        result.setTarget(crudRepository);
+        result.setInterfaces(new Class[]{daoInterface});
+        result.addAdvice(createGenericDaoInterceptor());
+        return result.getProxy();
+    }
 
-	protected CrudRepository<T, PK> createGenericHibernateDao() {
-		GenericHibernateRepositoryImpl<T, PK> genericRepository = new GenericHibernateRepositoryImpl<T, PK>(entityClass);
-		genericRepository.setSessionFactory(sessionFactory);
-		genericRepository.setUsernameResolver(usernameResolver);
-		return genericRepository;
-	}
+    protected CrudRepository<T, PK> createGenericHibernateDao() {
+        GenericHibernateRepositoryImpl<T, PK> genericRepository = new GenericHibernateRepositoryImpl<T, PK>(entityClass);
+        genericRepository.setSessionFactory(sessionFactory);
+        genericRepository.setUsernameResolver(usernameResolver);
+        return genericRepository;
+    }
 
-	private MethodInterceptor createGenericDaoInterceptor() {
-		return new MethodInterceptor() {
-			public Object invoke(MethodInvocation invocation) throws Throwable {
-				return evaluateMethodInvocation(invocation);
+    private MethodInterceptor createGenericDaoInterceptor() {
+        return new MethodInterceptor() {
+            public Object invoke(MethodInvocation invocation) throws Throwable {
+                return evaluateMethodInvocation(invocation);
 
-			}
+            }
 
-			private Object evaluateMethodInvocation(MethodInvocation invocation) throws Throwable {
-				Object result = null;
-				Method method = invocation.getMethod();
-				if (method.isAnnotationPresent(Query.class)) {
-					result = executeQuery(invocation);
-				}
-                else if (method.isAnnotationPresent(BulkUpdate.class)) {
-					executeBulkUpdate(invocation);
-				}
-                else if(method.isAnnotationPresent(DelegateRepositoryMethod.class)) {
+            private Object evaluateMethodInvocation(MethodInvocation invocation) throws Throwable {
+                Object result = null;
+                Method method = invocation.getMethod();
+                if (method.isAnnotationPresent(Query.class)) {
+                    result = executeQuery(invocation);
+                } else if (method.isAnnotationPresent(BulkUpdate.class)) {
+                    executeBulkUpdate(invocation);
+                } else if (method.isAnnotationPresent(DelegateRepositoryMethod.class)) {
                     result = delegateRepositoryMethod(invocation, method);
+                } else {
+                    result = delegateToServiceMethod(invocation);
                 }
-                else {
-					result = delegateToServiceMethod(invocation);
-				}
-				return result;
-			}
+                return result;
+            }
 
-			private Object delegateToServiceMethod(MethodInvocation invocation) throws Throwable {
-				Method serviceMethod = FinderDispatcherGenericRepositoryImpl.this.servicesImpl != null ? FinderDispatcherGenericRepositoryImpl.this.servicesImpl
-						.getClass().getMethod(invocation.getMethod().getName(),
-								invocation.getMethod().getParameterTypes())
-						: null;
-				if (serviceMethod != null) {
-					return serviceMethod.invoke(FinderDispatcherGenericRepositoryImpl.this.servicesImpl, invocation
-							.getArguments());
-				} else {
-					// should be only save, update, delete from the generic
-					// dao
-					return invocation.proceed();
-				}
-			}
+            private Object delegateToServiceMethod(MethodInvocation invocation) throws Throwable {
+                Method serviceMethod = FinderDispatcherGenericRepositoryImpl.this.servicesImpl != null ? FinderDispatcherGenericRepositoryImpl.this.servicesImpl.getClass().getMethod(invocation.getMethod().getName(), invocation.getMethod().getParameterTypes()) : null;
+                if (serviceMethod != null) {
+                    return serviceMethod.invoke(FinderDispatcherGenericRepositoryImpl.this.servicesImpl, invocation.getArguments());
+                } else {
+                    // should be only save, update, delete from the generic
+                    // dao
+                    return invocation.proceed();
+                }
+            }
 
-			private void executeBulkUpdate(MethodInvocation invocation) {
+            private void executeBulkUpdate(MethodInvocation invocation) {
 //				openTransaction();
-				Method method = invocation.getMethod();
-				BulkUpdate bulkUpdate = method.getAnnotation(BulkUpdate.class);
-				FinderExecutor target = (FinderExecutor) invocation.getThis();
-				target.executeUpdate(bulkUpdate.value(), invocation.getArguments());
-			}
+                Method method = invocation.getMethod();
+                BulkUpdate bulkUpdate = method.getAnnotation(BulkUpdate.class);
+                FinderExecutor target = (FinderExecutor) invocation.getThis();
+                target.executeUpdate(bulkUpdate.value(), invocation.getArguments());
+            }
 
-			private Object executeQuery(MethodInvocation invocation) {
-				Method method = invocation.getMethod();
-				Query query = method.getAnnotation(Query.class);
-				FinderExecutor target = (FinderExecutor) invocation.getThis();
-				if (query.limitClause()) {
-					Object orginal[] = invocation.getArguments();
-					int len = orginal.length - 2;
-					Object copy[] = new Object[len];
-					for (int i = 0; i < len; i++) {
-						copy[i] = orginal[i];
-					}
-					return target.executeFinder(query.value(), copy, method, (Integer) orginal[len],
-							(Integer) orginal[len + 1]);
-				} else {
-					return target.executeFinder(query.value(), invocation.getArguments(), method, null, null);
-				}
-			}
-		};
-	}
+            private Object executeQuery(MethodInvocation invocation) {
+                Method method = invocation.getMethod();
+                Query query = method.getAnnotation(Query.class);
+                FinderExecutor target = (FinderExecutor) invocation.getThis();
+                if (query.limitClause()) {
+                    Object orginal[] = invocation.getArguments();
+                    int len = orginal.length - 2;
+                    Object copy[] = new Object[len];
+                    for (int i = 0; i < len; i++) {
+                        copy[i] = orginal[i];
+                    }
+                    return target.executeFinder(query.value(), copy, method, (Integer) orginal[len], (Integer) orginal[len + 1]);
+                } else {
+                    return target.executeFinder(query.value(), invocation.getArguments(), method, null, null);
+                }
+            }
+        };
+    }
 
     private Object delegateRepositoryMethod(MethodInvocation invocation, Method method) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         DelegateRepositoryMethod annotation = method.getAnnotation(DelegateRepositoryMethod.class);
@@ -153,43 +141,43 @@ public class FinderDispatcherGenericRepositoryImpl<T, PK extends Serializable> i
     }
 
     public Class<?> getObjectType() {
-		return daoInterface;
-	}
+        return daoInterface;
+    }
 
-	public boolean isSingleton() {
-		return true;
-	}
+    public boolean isSingleton() {
+        return true;
+    }
 
-	public Object getServicesImpl() {
-		return servicesImpl;
-	}
+    public Object getServicesImpl() {
+        return servicesImpl;
+    }
 
-	public void setServicesImpl(Object servicesImpl) {
-		this.servicesImpl = servicesImpl;
-	}
+    public void setServicesImpl(Object servicesImpl) {
+        this.servicesImpl = servicesImpl;
+    }
 
-	public Class<T> getEntityClass() {
-		return entityClass;
-	}
+    public Class<T> getEntityClass() {
+        return entityClass;
+    }
 
-	@Required
-	public void setEntityClass(Class<T> entityClass) {
-		this.entityClass = entityClass;
-	}
+    @Required
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
 
-	public Class<?> getDaoInterface() {
-		return daoInterface;
-	}
+    public Class<?> getDaoInterface() {
+        return daoInterface;
+    }
 
-	@Required
-	public void setDaoInterface(Class<?> daoInterface) {
-		this.daoInterface = daoInterface;
-	}
+    @Required
+    public void setDaoInterface(Class<?> daoInterface) {
+        this.daoInterface = daoInterface;
+    }
 
-	@Required
-	public void setUsernameResolver(UsernameResolver usernameResolver) {
-		this.usernameResolver = usernameResolver;
-	}
+    @Required
+    public void setUsernameResolver(UsernameResolver usernameResolver) {
+        this.usernameResolver = usernameResolver;
+    }
 
     @Required
     public void setSessionFactory(SessionFactory sessionFactory) {

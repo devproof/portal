@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2010 Carsten Hufe devproof.org
+ * Copyright 2009-2011 Carsten Hufe devproof.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,7 +66,8 @@ public abstract class AbstractHistoryPage<T extends Historized> extends Template
 
     /**
      * Component which will be displayed when clicking on the view button in the history list
-     * @param markupId markupId for the component
+     *
+     * @param markupId        markupId for the component
      * @param historizedModel historized dataset
      * @return a component instance
      */
@@ -231,7 +232,7 @@ public abstract class AbstractHistoryPage<T extends Historized> extends Template
             };
             return new Label("action", actionModel);
         }
-              
+
         private AttributeModifier createAlternatingModifier(final Item<T> item) {
             return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;

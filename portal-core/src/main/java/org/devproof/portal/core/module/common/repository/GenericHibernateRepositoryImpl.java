@@ -1,11 +1,11 @@
 /*
- * Copyright 2009-2010 Carsten Hufe devproof.org
+ * Copyright 2009-2011 Carsten Hufe devproof.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,8 +26,6 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.ApplicationContext;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -36,11 +34,9 @@ import java.util.Collection;
 /**
  * Implementation of the generic dao
  *
+ * @param <T>  entity type
+ * @param <PK> primary key type
  * @author Carsten Hufe
- * @param <T>
- * entity type
- * @param <PK>
- * primary key type
  */
 public class GenericHibernateRepositoryImpl<T, PK extends Serializable> implements CrudRepository<T, PK> {
     private final Log logger = LogFactory.getLog(getClass());
