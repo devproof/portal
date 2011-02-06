@@ -15,7 +15,7 @@ subprojects {
   
     springVersion = '3.0.5.RELEASE'
     hibernateVersion = '3.5.1-Final'
-    wicketVersion = '1.4.13'
+    wicketVersion = '1.4.15'
     jettyVersion = '6.1.25'
 
     sourceCompatibility = 1.6

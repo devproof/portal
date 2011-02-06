@@ -44,6 +44,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
+ * Provides the UI to handle global mount URLs
+ *
  * @author Carsten Hufe
  */
 // TODO unit test
