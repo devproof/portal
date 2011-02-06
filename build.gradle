@@ -21,7 +21,7 @@ subprojects {
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
     group = 'org.devproof.portal'
-    tomcatUrl = 'http://www.eu.apache.org/dist/tomcat/tomcat-6/v6.0.29/bin/apache-tomcat-6.0.29.tar.gz'
+    tomcatUrl = 'http://www.eu.apache.org/dist/tomcat/tomcat-7/v7.0.8/bin/apache-tomcat-7.0.8.tar.gz'
     configurations {
         compile.transitive = true
         testCompile.transitive = true

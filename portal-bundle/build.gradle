@@ -21,7 +21,7 @@ task dist << {
 def bundleWar() {
   def bundleWarPath = "$bundlePath/devproof-portal-${version}-war"
   mkdir(bundleWarPath)
-  copyReadmeAndChanges(bundleWarPath, 'TOMCAT6')
+  copyReadmeAndChanges(bundleWarPath, 'TOMCAT7')
   copyLicences(bundleWarPath)
   copyWar(bundleWarPath)
   copyConfigFiles(bundleWarPath)
@@ -30,7 +30,7 @@ def bundleWar() {
 }
 
 def bundleTomcat() {
-  def bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat6"
+  def bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat7"
   mkdir(bundleTomcatPath)
   copyReadmeAndChanges(bundleTomcatPath, 'WAR')
   copyLicences(bundleTomcatPath)
@@ -71,7 +71,7 @@ def tarGz(bundlePath) {
 
 def copyConfigForTomcat(tomcatPath) {
   copy {
-    from ('config/tomcat6/hsql/ROOT.xml') {
+    from ('config/tomcat7/hsql/ROOT.xml') {
       filter(ReplaceTokens, tokens: [devproofVersion: project.version])
     }
     into "$tomcatPath/conf/Catalina/localhost/"
@@ -80,7 +80,7 @@ def copyConfigForTomcat(tomcatPath) {
 
 def copyLibsForTomcat(tomcatPath) {
   copy {
-    from 'server/tomcat6/lib/'
+    from 'server/tomcat7/lib/'
     into "$tomcatPath/lib/"
   }
 }
