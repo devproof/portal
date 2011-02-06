@@ -56,4 +56,5 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'article.comment.w
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.comment.view');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'article.comment.write');
 
--- TODO insert mount path
+-- since 1.1
+INSERT INTO core_mount_point (id,mount_path,related_content_id,handler_key,default_url) VALUES (10,'/article/Sample_article.html', '1', 'article', '1');

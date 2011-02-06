@@ -29,7 +29,6 @@ import java.util.List;
  */
 @GenericRepository("mountPointRepository")
 public interface MountPointRepository extends CrudRepository<MountPoint, Integer> {
-//    List<String> findSimilarUrls(String url);
     @Query("select mp from MountPoint mp where mp.mountPath like ?")
     MountPoint findMountPointByUrl(String url);
 

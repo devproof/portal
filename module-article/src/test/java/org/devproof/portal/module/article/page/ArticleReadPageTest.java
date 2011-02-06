@@ -36,6 +36,7 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/article/test-datasource.xml" })
 public class ArticleReadPageTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -52,7 +53,7 @@ public class ArticleReadPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        tester.startPage(ArticleReadPage.class, new PageParameters("0=Sample_article"));
+        tester.startPage(ArticleReadPage.class, new PageParameters("0=1"));
         tester.assertRenderedPage(ArticleReadPage.class);
     }
 }

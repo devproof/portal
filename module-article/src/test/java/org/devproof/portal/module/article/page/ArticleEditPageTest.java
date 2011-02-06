@@ -39,6 +39,7 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/article/test-datasource.xml" })
 public class ArticleEditPageTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -64,7 +65,7 @@ public class ArticleEditPageTest {
     public void testSaveArticle() {
         callArticleEditPage();
         submitArticleForm();
-        assertArticleViewPage("0=testing_content_id");
+        assertArticleViewPage("0=2");
         assertArticlePage();
     }
 
@@ -72,7 +73,7 @@ public class ArticleEditPageTest {
     public void testEditArticle() {
         navigateToArticleEditPage();
         submitArticleForm();
-        assertArticleViewPage("0=Sample_article");
+        assertArticleViewPage("0=1");
         assertArticlePage();
     }
 
@@ -116,7 +117,6 @@ public class ArticleEditPageTest {
         form.setValue("tags", "these are tags");
         form.setValue("title", "testing title");
         form.setValue("teaser", "testing teaser");
-        form.setValue("contentId", "testing_content_id");
         form.setValue("fullArticle", "testing content");
         form.submit();
     }

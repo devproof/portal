@@ -34,7 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Carsten Hufe
  */
-// TODO unit test
 @MountPointHandler("articleMountHandler")
 public class ArticleMountHandler implements MountHandler {
     private MountService mountService;

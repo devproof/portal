@@ -100,10 +100,13 @@ CREATE TABLE `core_module_link` (
 
 CREATE TABLE `core_mount_point` (
   `id` int(11) NOT NULL auto_increment,
-  `mount_path` varchar(255) NOT NULL, -- TODO index
-  `related_content_id` varchar(255), -- TODO index
-  `handler_key` varchar(255) NOT NULL, -- TODO index
+  `mount_path` varchar(255) NOT NULL,
+  `related_content_id` varchar(255),
+  `handler_key` varchar(255) NOT NULL,
   `default_url` bit(1) NOT NULL,
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `mount_path` (`mount_path`)
+  INDEX `mp_related_content_id` (`related_content_id`),
+  INDEX `mp_handler_key` (`handler_key`),
+  INDEX `mp_default_url` (`default_url`),
+  UNIQUE KEY `mp_mount_path` (`mount_path`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
