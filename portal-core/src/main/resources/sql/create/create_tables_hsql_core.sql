@@ -103,3 +103,5 @@ CREATE TABLE core_module_link
    visible bit NOT NULL,
    PRIMARY KEY (link_type,page_name)
 );
+
+-- TODO mount_point sql

@@ -20,3 +20,4 @@ CREATE TABLE "OTHER_PAGE_HISTORIZED"
 -- since 1.1
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.OtherPageHistoryPage','Other Page Administration: History',null,null,null,null);
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.OtherPageHistoryPage');
+-- TODO oracle migration scripts for rights

@@ -100,9 +100,9 @@ CREATE TABLE `core_module_link` (
 
 CREATE TABLE `core_mount_point` (
   `id` int(11) NOT NULL auto_increment,
-  `mount_path` varchar(255) NOT NULL, -- index
-  `related_content_id` varchar(255), -- index
-  `handler_key` varchar(255) NOT NULL, -- index
+  `mount_path` varchar(255) NOT NULL, -- TODO index
+  `related_content_id` varchar(255), -- TODO index
+  `handler_key` varchar(255) NOT NULL, -- TODO index
   `default_url` bit(1) NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `mount_path` (`mount_path`)

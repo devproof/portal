@@ -4,3 +4,4 @@ UPDATE core_configuration set conf_key = 'spring.emailService.findAll.subject.id
   WHERE conf_key = 'spring.emailTemplateDao.findAll.subject.id.autoblockednotification';
 UPDATE core_configuration set conf_key = 'spring.emailService.findAll.subject.id.violationnotification'
   WHERE conf_key = 'spring.emailTemplateDao.findAll.subject.id.violationnotification';
+-- TODO oracle migration scripts for rights

@@ -14,7 +14,6 @@ import java.util.Map;
 /**
  * @author Carsten Hufe
  */
-// TODO unit test
 @Registry("mountHandlerRegistry")
 public class MountHandlerRegistryImpl implements MountHandlerRegistry {
     private MountHandlerLocator mountHandlerLocator;

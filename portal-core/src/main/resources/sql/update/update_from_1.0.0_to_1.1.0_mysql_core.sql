@@ -61,3 +61,5 @@ UPDATE core_right SET right_id = 'modulemgmt.admin', description = 'Module Admin
 DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.ModuleLinkPage';
 DELETE FROM core_right WHERE right_id LIKE 'page.ModuleLinkPage';
 SET FOREIGN_KEY_CHECKS=1;
+
+-- TODO migration for mount point mysql

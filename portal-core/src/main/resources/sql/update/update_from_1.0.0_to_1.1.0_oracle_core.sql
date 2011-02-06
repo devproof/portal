@@ -16,3 +16,6 @@ UPDATE core_configuration set conf_key = 'spring.roleService.findAll.description
   WHERE conf_key = 'spring.roleDao.findAll.description.id.guestrole';
 UPDATE core_configuration set conf_key = 'spring.roleService.findAll.description.id.registerrole'
   WHERE conf_key = 'spring.roleDao.findAll.description.id.registerrole';
+
+-- TODO migrate oracle rights
+-- TODO migration mount points

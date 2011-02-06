@@ -20,3 +20,6 @@ CREATE TABLE "ARTICLE_HISTORIZED"
  );
 INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ArticleHistoryPage','Article: History',null,null,null,null);
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ArticleHistoryPage');
+
+-- TODO oracle migration scripts for urls
+-- TODO oracle migration scripts for rights

@@ -1,0 +1,1 @@
+-- TODO oracle migration scripts for rights
