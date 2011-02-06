@@ -33,7 +33,7 @@ public interface MountPointRepository extends CrudRepository<MountPoint, Integer
     @Query("select mp from MountPoint mp where mp.mountPath like ?")
     MountPoint findMountPointByUrl(String url);
 
-    @Query("select count(mp) from MountPoint mp where mp.relatedContentId not like ? and mp.handlerKey not like ? and mp.defaultUrl = 1")
+    @Query("select count(mp) from MountPoint mp where mp.relatedContentId not like ? and mp.handlerKey not like ? and mp.defaultUrl = true")
     long hasDefaultUrl(String relatedContentId, String handlerKey);
 
     @Query("select count(mp) from MountPoint mp where mp.mountPath like ? and (mp.relatedContentId not like ? or mp.handlerKey not like ?)")

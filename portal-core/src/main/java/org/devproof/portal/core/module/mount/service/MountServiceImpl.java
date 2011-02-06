@@ -57,8 +57,8 @@ public class MountServiceImpl implements MountService {
     @Transactional
     public void save(List<MountPoint> mountPoints, String relatedContentId) {
         List<MountPoint> filteredMountPoints = removeDoubles(mountPoints);
+        boolean defaultUrlNotSelected = hasNoDefaultUrl(filteredMountPoints);
         for(MountPoint mountPoint : filteredMountPoints) {
-            boolean defaultUrlNotSelected = !hasDefaultUrl(mountPoint);
             mountPoint.setRelatedContentId(relatedContentId);
             if(StringUtils.isNotBlank(mountPoint.getMountPath())) {
                 if(defaultUrlNotSelected) {
@@ -75,7 +75,8 @@ public class MountServiceImpl implements MountService {
     }
 
     private boolean hasDefaultUrl(MountPoint mountPoint) {
-        return mountPointRepository.hasDefaultUrl(mountPoint.getRelatedContentId(), mountPoint.getHandlerKey()) > 0;
+        long l = mountPointRepository.hasDefaultUrl(mountPoint.getRelatedContentId(), mountPoint.getHandlerKey());
+        return l > 0;
     }
 
     private List<MountPoint> removeDoubles(List<MountPoint> mountPoints) {
@@ -117,7 +118,7 @@ public class MountServiceImpl implements MountService {
 
     private boolean hasNoDefaultUrl(List<MountPoint> mps) {
         for (MountPoint mp : mps) {
-            if(mp.isDefaultUrl()) {
+            if(mp.isDefaultUrl() && StringUtils.isNotBlank(mp.getMountPath())) {
                 return false;
             }
         }
