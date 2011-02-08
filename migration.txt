@@ -8,6 +8,6 @@ PortalTestUtil methods removed
 
 
 db update for article  and blog
-
+kein hsqldb support mehr!
 -- nur mysql!
 alter table article_page change content content mediumtext;

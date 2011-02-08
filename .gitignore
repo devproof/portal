@@ -1,5 +1,6 @@
 #target/
 build/
+out/
 portal-bundle/true
 .project
 .settings/
