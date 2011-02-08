@@ -43,7 +43,7 @@ public class MockContextLoader implements ContextLoader {
     public ConfigurableApplicationContext loadContext(String... locations) throws Exception {
 		registerResource(CommonConstants.JNDI_MAIL_SESSION, Session.getDefaultInstance(new Properties()));
 		registerResource(CommonConstants.JNDI_PROP_EMAIL_DISABLED, "true");
-        registerResource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, "org.hibernate.dialect.HSQLDialect");
+        registerResource(CommonConstants.JNDI_PROP_HIBERNATE_DIALECT, "org.hibernate.dialect.H2Dialect");
 		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_SECOND_LEVEL_CACHE, "false");
 		registerResource(CommonConstants.JNDI_PROP_HIBERNATE_QUERY_CACHE, "false");
         ConfigurableWebApplicationContext context = new XmlWebApplicationContext();

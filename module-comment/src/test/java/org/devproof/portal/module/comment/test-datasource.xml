@@ -7,10 +7,10 @@
             http://www.springframework.org/schema/jdbc
             http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
-    <jdbc:embedded-database id="dataSource" type="HSQL">
-        <jdbc:script location="classpath:sql/create/create_tables_hsql_core.sql"/>
+    <jdbc:embedded-database id="dataSource" type="H2">
+        <jdbc:script location="classpath:sql/create/create_tables_h2_core.sql"/>
         <jdbc:script location="classpath:sql/create/insert_core.sql"/>
-        <jdbc:script location="classpath:sql/create/create_tables_hsql_comment.sql"/>
+        <jdbc:script location="classpath:sql/create/create_tables_h2_comment.sql"/>
         <jdbc:script location="classpath:sql/create/insert_comment.sql"/>
     </jdbc:embedded-database>
 </beans>

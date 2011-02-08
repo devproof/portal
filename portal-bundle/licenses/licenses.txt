@@ -16,7 +16,7 @@ Frameworks for production:
 - Prototype MIT License (http://en.wikipedia.org/wiki/MIT_License)
 - Scriptaculous
 - ROME Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
-- HSQLDB Own licence (http://hsqldb.org/web/hsqlLicense.html)
+- H2database - Eclipse Public License (http://www.h2database.com/html/license.html)
 - Apache Tomcat 6 Apache License 2 (http://www.apache.org/licenses/LICENSE-2.0.html)
 - CKeditor LGPL (http://www.gnu.org/licenses/lgpl-3.0.txt)
 - JQuery MIT License (http://en.wikipedia.org/wiki/MIT_License)

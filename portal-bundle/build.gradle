@@ -42,15 +42,15 @@ def bundleTomcat() {
   mkdir("$tomcatPath/webapps")
   copyLibsForTomcat(tomcatPath)
   copyConfigForTomcat(tomcatPath)
-  createHsqlDBFiles(bundleTomcatPath, tomcatPath)
+  createH2DBFiles(bundleTomcatPath, tomcatPath)
   tarGz(bundleTomcatPath)
 }
 
 def concatAllSqlScriptsAndWrite(bundlePath) {
-  concatCreateSqlAndWriteFile('hsql', bundlePath)
+  concatCreateSqlAndWriteFile('h2', bundlePath)
   concatCreateSqlAndWriteFile('mysql', bundlePath)
   concatCreateSqlAndWriteFile('oracle', bundlePath)
-  concatUpdateSqlAndWriteFile('hsql', bundlePath)
+  concatUpdateSqlAndWriteFile('h2', bundlePath)
   concatUpdateSqlAndWriteFile('mysql', bundlePath)
   concatUpdateSqlAndWriteFile('oracle', bundlePath)
 }
@@ -71,7 +71,7 @@ def tarGz(bundlePath) {
 
 def copyConfigForTomcat(tomcatPath) {
   copy {
-    from ('config/tomcat7/hsql/ROOT.xml') {
+    from ('config/tomcat7/h2/ROOT.xml') {
       filter(ReplaceTokens, tokens: [devproofVersion: project.version])
     }
     into "$tomcatPath/conf/Catalina/localhost/"
@@ -151,19 +151,19 @@ def sqlPreparation() {
   extractSql()
 }
 
-def createHsqlDBFiles(bundleTomcatPath, tomcatPath) {
-  def bundleTomcatHsqlPath = "$tomcatPath/data/"
-  mkdir(bundleTomcatHsqlPath)
+def createH2DBFiles(bundleTomcatPath, tomcatPath) {
+  def bundleTomcatH2Path = "$tomcatPath/data/"
+  mkdir(bundleTomcatH2Path)
   ant.sql(
       driver: "org.h2.Driver",
-      url: "jdbc:h2:file:$bundleTomcatHsqlPath/devproof_data",
+      url: "jdbc:h2:file:$bundleTomcatH2Path/devproof_data",
       userid: "sa",
       password: "",
       delimiter: "dummy_delimiter_for_one_commit",
       output: "true",
       keepformat: "true",
       autocommit: "true",
-      src: "$bundleTomcatPath/sql/install_devproof_hsql.sql",
+      src: "$bundleTomcatPath/sql/install_devproof_h2.sql",
       classpath: configurations.compile.asPath
   )
 }
