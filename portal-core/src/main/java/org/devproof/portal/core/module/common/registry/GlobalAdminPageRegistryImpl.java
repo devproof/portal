@@ -57,6 +57,7 @@ public class GlobalAdminPageRegistryImpl implements GlobalAdminPageRegistry {
 
     @PostConstruct
     public void buildNavigation() {
+        moduleService.rebuildModuleLinks();
         adminPages.clear();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
         List<ModuleLink> links = moduleService.findAllVisibleGlobalAdministrationLinks();
