@@ -24,6 +24,6 @@ On Linux run: startup.sh
 
 Open browser: http://localhost:8080/
 
-Data will be stored in a HSQLDB, so it is only for non-productive use!
+Data will be stored in a H2database, so it is only for non-productive use!
 
 Have fun with it.

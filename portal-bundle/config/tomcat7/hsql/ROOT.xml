@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!-- The contents of this file will be loaded for each web application -->
 <Context docBase="../../war/devproof-portal-@devproofVersion@.war">
-    <Environment name="/config/devproof/hibernate_dialect" value="org.hibernate.dialect.HSQLDialect"
+    <Environment name="/config/devproof/hibernate_dialect" value="org.hibernate.dialect.H2Dialect"
                  type="java.lang.String"/>
     <Environment name="/config/devproof/disable_email" value="true" type="java.lang.String"/>
 
@@ -9,8 +9,9 @@
               maxActive="100" maxIdle="10" maxWait="10000"
               removeAbandoned="true" removeAbandonedTimeout="300" logAbandoned="true"
               testWhileIdle="true" timeBetweenEvictionRunsMillis="3600000"
-              username="sa" password="" driverClassName="org.hsqldb.jdbcDriver"
-              url="jdbc:hsqldb:file:../data/devproof_data"/>
+              username="sa" password="" driverClassName="org.h2.Driver"
+              url="jdbc:h2:file:../data/devproof_data"/>
+    <!-- jdbc:h2:file:devproof_data;INIT=RUNSCRIPT FROM '../../sql/install_devproof_hsql.sql' -->
 
     <Resource name="mail/Session" auth="Container" type="javax.mail.Session"
               mail.smtp.host="localhost" mail.smtp.auth="false"

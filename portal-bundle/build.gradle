@@ -155,18 +155,17 @@ def createHsqlDBFiles(bundleTomcatPath, tomcatPath) {
   def bundleTomcatHsqlPath = "$tomcatPath/data/"
   mkdir(bundleTomcatHsqlPath)
   ant.sql(
-      driver: "org.hsqldb.jdbcDriver",
-      url: "jdbc:hsqldb:file:$bundleTomcatHsqlPath/devproof_data",
+      driver: "org.h2.Driver",
+      url: "jdbc:h2:file:$bundleTomcatHsqlPath/devproof_data",
       userid: "sa",
       password: "",
       delimiter: "dummy_delimiter_for_one_commit",
       output: "true",
       keepformat: "true",
       autocommit: "true",
+      src: "$bundleTomcatPath/sql/install_devproof_hsql.sql",
       classpath: configurations.compile.asPath
-  ) {
-    transaction(src: "$bundleTomcatPath/sql/install_devproof_hsql.sql")
-  }
+  )
 }
 
 def cleanBundle() {
@@ -247,10 +246,10 @@ def concatUpdateSqlAndWriteFile(type, bundlePath) {
   // update* files core
   sqlFiles.each { File file ->
     if(file.name.contains("_${type}_") && file.name.endsWith('_core.sql')) {
-      tmp = file.name.minus("update_from_")
+      tmp = file.name.minus(filePrefix)
       index = tmp.lastIndexOf("_${type}_")
       def sqlVersion = tmp.substring(0, index)
-      def outputFilePath = "$sqlPath/update_from_${sqlVersion}_${type}.sql"
+      def outputFilePath = "$sqlPath${filePrefix}${sqlVersion}_${type}.sql"
       File outputFile = new File(outputFilePath)
       outputFile.append(file.text + "\n");
     }
@@ -259,10 +258,10 @@ def concatUpdateSqlAndWriteFile(type, bundlePath) {
   // update* files
   sqlFiles.each { File file ->
     if(file.name.contains("_${type}_") && !file.name.endsWith('_core.sql')) {
-      tmp = file.name.minus("update_from_")
+      tmp = file.name.minus(filePrefix)
       index = tmp.lastIndexOf("_${type}_")
       def sqlVersion = tmp.substring(0, index)
-      def outputFilePath = "$sqlPath/update_from_${sqlVersion}_${type}.sql"
+      def outputFilePath = "$sqlPath/${filePrefix}${sqlVersion}_${type}.sql"
       File outputFile = new File(outputFilePath)
       outputFile.append(file.text + "\n");
     }
