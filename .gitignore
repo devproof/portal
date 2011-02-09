@@ -6,6 +6,7 @@ portal-bundle/true
 .settings/
 .classpath
 .idea
+*.db
 *.iml
 *.ipr
 *.iws

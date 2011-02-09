@@ -16,6 +16,8 @@
 package org.devproof.portal.module.blog.page;
 
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
@@ -37,9 +39,14 @@ public abstract class BlogBasePage extends TemplatePage {
 
     public BlogBasePage(PageParameters params) {
         super(params);
+        add(createCSSHeaderContributor());
         addSyntaxHighlighter();
         addBlogAddLink();
     }
+
+    private HeaderContributor createCSSHeaderContributor() {
+		return CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS);
+	}
 
     private void addBlogAddLink() {
         // New Blog Link

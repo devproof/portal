@@ -8,7 +8,8 @@
             http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
     <jdbc:embedded-database id="dataSource" type="H2">
-        <jdbc:script location="classpath:sql/create/create_tables_h2_core.sql"/>
+        <jdbc:script location="classpath:sql/config/h2config.sql"/>
+        <jdbc:script location="classpath:sql/create/create_tables_mysql_core.sql"/>
         <jdbc:script location="classpath:sql/create/insert_core.sql"/>
     </jdbc:embedded-database>
 </beans>
