@@ -12,4 +12,4 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'blog.comment.view
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'blog.comment.write');
 
 ALTER TABLE blog_right_xref DROP FOREIGN KEY FK21039A1BFEB2F584;
-ALTER TABLE blog_right_xref ADD CONSTRAINT `FK21039A1BFEB2F584` FOREIGN KEY (`right_id`) REFERENCES `core_right` (`right_id`) ON DELETE CASCADE;
+ALTER TABLE blog_right_xref ADD CONSTRAINT FK21039A1BFEB2F584 FOREIGN KEY (right_id) REFERENCES core_right (right_id) ON DELETE CASCADE;

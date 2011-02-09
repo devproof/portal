@@ -62,15 +62,15 @@ DELETE FROM core_role_right_xref WHERE right_id LIKE 'page.ModuleLinkPage';
 DELETE FROM core_right WHERE right_id LIKE 'page.ModuleLinkPage';
 SET FOREIGN_KEY_CHECKS=1;
 
-CREATE TABLE `core_mount_point` (
-  `id` int(11) NOT NULL auto_increment,
-  `mount_path` varchar(255) NOT NULL,
-  `related_content_id` varchar(255),
-  `handler_key` varchar(255) NOT NULL,
-  `default_url` bit(1) NOT NULL,
-  PRIMARY KEY  (`id`),
-  INDEX `mp_related_content_id` (`related_content_id`),
-  INDEX `mp_handler_key` (`handler_key`),
-  INDEX `mp_default_url` (`default_url`),
-  UNIQUE KEY `mp_mount_path` (`mount_path`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+CREATE TABLE core_mount_point (
+  id int(11) NOT NULL auto_increment,
+  mount_path varchar(255) NOT NULL,
+  related_content_id varchar(255),
+  handler_key varchar(255) NOT NULL,
+  default_url bit(1) NOT NULL,
+  PRIMARY KEY  (id),
+  INDEX mp_related_content_id (related_content_id),
+  INDEX mp_handler_key (handler_key),
+  INDEX mp_default_url (default_url),
+  UNIQUE KEY mp_mount_path (mount_path)
+);
