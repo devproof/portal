@@ -47,10 +47,8 @@ def bundleTomcat() {
 }
 
 def concatAllSqlScriptsAndWrite(bundlePath) {
-  concatCreateSqlAndWriteFile('h2', bundlePath)
   concatCreateSqlAndWriteFile('mysql', bundlePath)
   concatCreateSqlAndWriteFile('oracle', bundlePath)
-  concatUpdateSqlAndWriteFile('h2', bundlePath)
   concatUpdateSqlAndWriteFile('mysql', bundlePath)
   concatUpdateSqlAndWriteFile('oracle', bundlePath)
 }
@@ -163,7 +161,7 @@ def createH2DBFiles(bundleTomcatPath, tomcatPath) {
       output: "true",
       keepformat: "true",
       autocommit: "true",
-      src: "$bundleTomcatPath/sql/install_devproof_h2.sql",
+      src: "$bundleTomcatPath/sql/install_devproof_mysql.sql",
       classpath: configurations.compile.asPath
   )
 }
