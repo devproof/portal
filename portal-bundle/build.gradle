@@ -79,7 +79,6 @@ def copyConfigForTomcat(tomcatPath) {
 def copyLibsForTomcat(tomcatPath) {
   copy {
     from configurations.tomcatBundleDeps.copy().setTransitive(false)
-//    from 'server/tomcat7/lib/'
     into "$tomcatPath/lib/"
   }
 }
