@@ -163,7 +163,7 @@ def createH2DBFiles(bundleTomcatPath, tomcatPath) {
       autocommit: "true",
       classpath: configurations.compile.asPath
   ) {
-    transaction("SET MODE MYSQL")
+    transaction("SET MODE MySQL;")
     transaction(src: "$bundleTomcatPath/sql/install_devproof_mysql.sql")
   }
 }
