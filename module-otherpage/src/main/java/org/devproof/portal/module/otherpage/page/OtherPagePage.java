@@ -60,7 +60,7 @@ public class OtherPagePage extends OtherPageBasePage {
     }
 
     private OrderByBorder createIdOrderHeader() {
-        return new OrderByBorder("table_id", "subject", otherPageDataProvider);
+        return new OrderByBorder("table_id", "id", otherPageDataProvider);
     }
 
     private OrderByBorder createModifiedByOrderHeader() {
