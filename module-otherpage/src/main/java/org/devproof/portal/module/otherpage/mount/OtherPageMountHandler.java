@@ -27,6 +27,7 @@ import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.page.OtherPagePage;
+import org.devproof.portal.module.otherpage.page.OtherPageViewPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,13 +44,13 @@ public class OtherPageMountHandler implements MountHandler {
     public IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint) {
         String relatedContentId = mountPoint.getRelatedContentId();
         PageParameters pageParameters = new PageParameters("0=" + relatedContentId);
-        return new BookmarkablePageRequestTarget(OtherPagePage.class, pageParameters);
+        return new BookmarkablePageRequestTarget(OtherPageViewPage.class, pageParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters) {
-        if(OtherPagePage.class.equals(pageClazz)) {
+        if(OtherPageViewPage.class.equals(pageClazz)) {
             String relatedContentId = pageParameters.getString("0");
             if(StringUtils.isNumeric(relatedContentId)) {
                 return mountService.existsMountPoint(relatedContentId, getHandlerKey());
