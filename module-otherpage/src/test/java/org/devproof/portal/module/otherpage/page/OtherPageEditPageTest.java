@@ -82,14 +82,13 @@ public class OtherPageEditPageTest {
         tester.assertRenderedPage(OtherPageViewPage.class);
         tester.assertNoErrorMessage();
         tester.assertInfoMessages(expectedMsgs);
-        tester.startPage(OtherPageViewPage.class, new PageParameters("0=cont_id"));
+        tester.startPage(OtherPageViewPage.class, new PageParameters("0=3"));
         tester.assertRenderedPage(OtherPageViewPage.class);
         tester.assertContains("testing content");
     }
 
     private void submitOtherPageForm() {
         FormTester form = tester.newFormTester("form");
-        form.setValue("contentId", "cont_id");
         form.setValue("content", "testing content");
         form.submit();
     }

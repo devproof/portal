@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.page;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
@@ -53,13 +54,13 @@ public class OtherPagePage extends OtherPageBasePage {
 
     public OtherPagePage(PageParameters params) {
         super(params);
-        add(createContentIdOrderHeader());
+        add(createIdOrderHeader());
         add(createModifiedByOrderHeader());
         add(createRepeatingOtherPages());
     }
 
-    private OrderByBorder createContentIdOrderHeader() {
-        return new OrderByBorder("table_content_id", "subject", otherPageDataProvider);
+    private OrderByBorder createIdOrderHeader() {
+        return new OrderByBorder("table_id", "subject", otherPageDataProvider);
     }
 
     private OrderByBorder createModifiedByOrderHeader() {
@@ -80,7 +81,8 @@ public class OtherPagePage extends OtherPageBasePage {
         @Override
         protected void populateItem(Item<OtherPage> item) {
             IModel<OtherPage> otherPageModel = item.getModel();
-            item.add(createContentIdLabel(otherPageModel));
+            item.add(createIdLabel(otherPageModel));
+            item.add(createTeaserLabel(otherPageModel));
             item.add(createModifiedByLabel(otherPageModel));
             item.add(createViewLink(otherPageModel));
             item.add(createAuthorPanel(item));
@@ -88,11 +90,26 @@ public class OtherPagePage extends OtherPageBasePage {
             item.setOutputMarkupId(true);
         }
 
+        private Label createTeaserLabel(final IModel<OtherPage> otherPageModel) {
+            return new Label("teaser", new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = -7421302589639388804L;
+
+                @Override
+                public String getObject() {
+                    String content = otherPageModel.getObject().getContent();
+                    if(StringUtils.isNotBlank(content)) {
+                        return StringUtils.abbreviate(content.replaceAll("\\<.*?>",""), 80) + " ...";
+                    }
+                    return "";
+                }
+            });
+        }
+
         private BookmarkablePageLink<OtherPageViewPage> createViewLink(IModel<OtherPage> otherPageModel) {
             OtherPage otherPage = otherPageModel.getObject();
             BookmarkablePageLink<OtherPageViewPage> viewLink = new BookmarkablePageLink<OtherPageViewPage>("viewLink", OtherPageViewPage.class);
             viewLink.add(createViewLinkImage());
-            viewLink.setParameter("0", otherPage.getContentId());
+            viewLink.setParameter("0", otherPage.getId());
             return viewLink;
         }
 
@@ -153,9 +170,9 @@ public class OtherPagePage extends OtherPageBasePage {
             return new Label("modifiedBy", modifiedByModel);
         }
 
-        private Label createContentIdLabel(IModel<OtherPage> otherPageModel) {
-            IModel<String> contentIdModel = new PropertyModel<String>(otherPageModel, "contentId");
-            return new Label("contentId", contentIdModel);
+        private Label createIdLabel(IModel<OtherPage> otherPageModel) {
+            IModel<String> idModel = new PropertyModel<String>(otherPageModel, "id");
+            return new Label("id", idModel);
         }
     }
 }

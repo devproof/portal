@@ -97,11 +97,11 @@ public class ArticleEditPageTest {
         tester.assertContains("testing teaser");
     }
 
-    private void assertArticleViewPage(String contentId) {
+    private void assertArticleViewPage(String id) {
         String expectedMsgs[] = PortalTestUtil.getMessage("msg.saved", ArticleEditPage.class);
         tester.assertRenderedPage(ArticleReadPage.class);
         tester.assertInfoMessages(expectedMsgs);
-        tester.startPage(ArticleReadPage.class, new PageParameters(contentId));
+        tester.startPage(ArticleReadPage.class, new PageParameters(id));
         tester.assertRenderedPage(ArticleReadPage.class);
         tester.assertContains("testing title");
         tester.assertContains("testing content");

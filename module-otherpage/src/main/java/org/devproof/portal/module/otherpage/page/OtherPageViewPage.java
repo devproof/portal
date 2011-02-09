@@ -68,8 +68,8 @@ public class OtherPageViewPage extends OtherPageBasePage {
 
             @Override
             protected OtherPage load() {
-                String contentId = getContentId();
-                OtherPage otherPage = otherPageService.findOtherPageByContentId(contentId);
+                Integer id = getContentId();
+                OtherPage otherPage = otherPageService.findById(id);
                 if (otherPage == null) {
                     otherPage = otherPageService.newOtherPageEntity();
                     otherPage.setCreatedAt(PortalUtil.now());
@@ -191,11 +191,11 @@ public class OtherPageViewPage extends OtherPageBasePage {
         return !session.hasRight("otherPage.view") && !session.hasRight(page.getViewRights());
     }
 
-    private String getContentId() {
-        String contentId = params.getString("0");
-        if (contentId == null) {
-            contentId = getRequest().getParameter("optparam");
+    private Integer getContentId() {
+        String id = params.getString("0");
+        if (id == null) {
+            id = getRequest().getParameter("optparam");
         }
-        return contentId;
+        return Integer.valueOf(id);
     }
 }

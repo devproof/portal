@@ -12,12 +12,16 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (2,'otherPage.view.gu
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'otherPage.view.guest');
 INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'otherPage.view.registered');
 
-INSERT INTO other_page (id,created_at,created_by,modified_at,modified_by,content,content_id) VALUES (1,{ts '2009-01-06 19:40:23.000'},'admin',{ts '2009-01-06 19:40:23.000'},'admin','<p>Sample about page is an "Other Page"</p>','about');
+INSERT INTO other_page (id,created_at,created_by,modified_at,modified_by,content) VALUES (1,{ts '2009-01-06 19:40:23.000'},'admin',{ts '2009-01-06 19:40:23.000'},'admin','<p>Sample about page is an "Other Page"</p>');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (1,'otherPage.view.preview');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (1,'otherPage.view.guest');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (1,'otherPage.view.registered');
 
-INSERT INTO other_page (id,created_at,created_by,modified_at,modified_by,content,content_id) VALUES (2,{ts '2009-01-07 19:40:23.000'},'admin',{ts '2009-01-07 19:40:23.000'},'admin','<p>Terms of use for registration.</p>','terms_of_use');
+INSERT INTO other_page (id,created_at,created_by,modified_at,modified_by,content) VALUES (2,{ts '2009-01-07 19:40:23.000'},'admin',{ts '2009-01-07 19:40:23.000'},'admin','<p>Terms of use for registration.</p>');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (2,'otherPage.view.preview');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (2,'otherPage.view.guest');
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (2,'otherPage.view.registered');
+
+-- since 1.1.0
+INSERT INTO core_mount_point (id,mount_path,related_content_id,handler_key,default_url) VALUES (50,'/other/about.html', '1', 'otherPage', 1);
+INSERT INTO core_mount_point (id,mount_path,related_content_id,handler_key,default_url) VALUES (51,'/other/terms_of_use.html', '2', 'otherPage', 1);

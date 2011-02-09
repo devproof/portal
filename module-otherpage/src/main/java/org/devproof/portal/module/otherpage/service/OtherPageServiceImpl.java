@@ -39,18 +39,6 @@ public class OtherPageServiceImpl implements OtherPageService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean existsContentId(String contentId) {
-        return otherPageRepository.existsContentId(contentId) > 0;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public OtherPage findOtherPageByContentId(String contentId) {
-        return otherPageRepository.findOtherPageByContentId(contentId);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public OtherPage newOtherPageEntity() {
         OtherPage otherPage = new OtherPage();
         otherPage.setAllRights(otherPageRepository.findLastSelectedRights());

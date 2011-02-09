@@ -37,15 +37,12 @@ public class BaseOtherPage extends Modification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "content_id")
-    private String contentId;
     @Lob
     @Column(name = "content")
     private String content;
 
     public void copyFrom(BaseOtherPage baseOtherPage) {
         content = baseOtherPage.content;
-        contentId = baseOtherPage.contentId;
         super.copyFrom(baseOtherPage);
     }
 
@@ -55,14 +52,6 @@ public class BaseOtherPage extends Modification {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getContentId() {
-        return contentId;
-    }
-
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
     }
 
     public String getContent() {

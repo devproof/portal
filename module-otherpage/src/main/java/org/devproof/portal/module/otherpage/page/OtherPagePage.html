@@ -5,12 +5,14 @@
     <h2><wicket:message key="contentTitle">[edit other pages]</wicket:message></h2><br/>
     <table class="dataview" cellspacing="0">
         <tr>
-            <th wicket:id="table_content_id"><wicket:message key="table_content_id">[content id]</wicket:message></th>
+            <th wicket:id="table_id"><wicket:message key="table_id">[content id]</wicket:message></th>
+            <th><wicket:message key="table_teaser">[teaser]</wicket:message></th>
             <th wicket:id="table_modified_by"><wicket:message key="table_modified_by">[updatedby]</wicket:message></th>
             <th>&nbsp;</th>
         </tr>
         <tr wicket:id="repeatingOtherPages">
-            <td wicket:id="contentId">[content id]</td>
+            <td wicket:id="id">[id]</td>
+            <td wicket:id="teaser">[teaser]</td>
             <td wicket:id="modifiedBy">[modified_by]</td>
             <td><a wicket:id="viewLink"><img wicket:id="viewImage" alt=""/></a><span wicket:id="authorButtons">[edit/delete buttons]</span>
             </td>

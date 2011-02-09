@@ -22,4 +22,5 @@ public interface OtherPageConstants {
     String ENTITY_CACHE_REGION = "entity.content";
     String QUERY_CACHE_REGION = "query.content";
     String AUTHOR_RIGHT = "otherPage.author";
+    String HANDLER_KEY = "otherPage";
 }

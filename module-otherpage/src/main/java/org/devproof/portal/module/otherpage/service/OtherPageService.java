@@ -36,20 +36,4 @@ public interface OtherPageService extends CrudService<OtherPage, Integer> {
      * @return new instance of {@link org.devproof.portal.module.otherpage.entity.OtherPage}
      */
     OtherPage newOtherPageEntity();
-
-    /**
-     * Tests if a content id does exist
-     *
-     * @param contentId
-     * @return true if the content-id existss
-     */
-    boolean existsContentId(String contentId);
-
-    /**
-     * finds the {@link org.devproof.portal.module.otherpage.entity.OtherPage} by the contend id
-     *
-     * @param contentId content id
-     * @return other page
-     */
-    OtherPage findOtherPageByContentId(String contentId);
 }

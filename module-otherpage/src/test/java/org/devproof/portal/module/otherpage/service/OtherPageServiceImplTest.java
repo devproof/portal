@@ -91,14 +91,6 @@ public class OtherPageServiceImplTest {
         Assert.assertNotNull(impl.newOtherPageEntity());
     }
 
-    @Test
-    public void testExistsContentId() {
-        expect(mockRepository.existsContentId("contentId")).andReturn(1l);
-        replay(mockRepository);
-        assertTrue(impl.existsContentId("contentId"));
-        verify(mockRepository);
-    }
-
     private OtherPage createOtherPageEntity() {
         OtherPage e = new OtherPage();
         e.setId(1);

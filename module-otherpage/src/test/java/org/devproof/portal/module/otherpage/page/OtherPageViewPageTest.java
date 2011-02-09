@@ -53,7 +53,7 @@ public class OtherPageViewPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        tester.startPage(OtherPageViewPage.class, new PageParameters("0=about"));
+        tester.startPage(OtherPageViewPage.class, new PageParameters("0=1"));
         tester.assertRenderedPage(OtherPageViewPage.class);
     }
 }

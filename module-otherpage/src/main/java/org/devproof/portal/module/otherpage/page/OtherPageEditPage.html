@@ -4,12 +4,12 @@
     <form wicket:id="form">
         <table cellspacing="10">
             <tr>
-                <td><label for="contentId"><wicket:message key="contentId"/></label></td>
-                <td><input type="text" wicket:id="contentId" class="editTitle"/></td>
-            </tr>
-            <tr>
                 <td><label for="content"><wicket:message key="content"/></label></td>
                 <td><textarea wicket:id="content" cols="85" rows="45"></textarea></td>
+            </tr>
+            <tr>
+                <td><label for="mountUrls"><wicket:message key="mountUrls"/></label></td>
+                <td wicket:id="mountUrls">content</td>
             </tr>
             <tr>
                 <td><label><wicket:message key="rights"/></label></td>

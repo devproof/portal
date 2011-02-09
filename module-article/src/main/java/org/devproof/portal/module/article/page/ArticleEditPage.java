@@ -24,11 +24,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
-import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
@@ -64,7 +62,7 @@ public class ArticleEditPage extends ArticleBasePage {
 
     private Form<Article> createArticleEditForm() {
         Form<Article> form = newArticleEditForm();
-        form.add(mountInputPanel());
+        form.add(createMountInputPanel());
         form.add(createTitleField());
         form.add(createTeaserField());
         form.add(createContentField());
@@ -76,7 +74,7 @@ public class ArticleEditPage extends ArticleBasePage {
         return form;
     }
 
-    private MountInputPanel mountInputPanel() {
+    private MountInputPanel createMountInputPanel() {
         mountInputPanel = new MountInputPanel("mountUrls", "article", createArticleIdModel());
         return mountInputPanel;
     }
@@ -114,21 +112,6 @@ public class ArticleEditPage extends ArticleBasePage {
     private TagField<ArticleTag> createTagField() {
         IModel<List<ArticleTag>> tagsModel = new PropertyModel<List<ArticleTag>>(articleModel, "tags");
         return new TagField<ArticleTag>("tags", tagsModel, articleTagService);
-    }
-
-    private RequiredTextField<String> newContentIdField() {
-        return new RequiredTextField<String>("contentId") {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public boolean isEnabled() {
-                return isNewArticle();
-            }
-        };
-    }
-
-    private boolean isNewArticle() {
-        return articleModel.getObject().getId() == null;
     }
 
     private RequiredTextField<String> createTitleField() {

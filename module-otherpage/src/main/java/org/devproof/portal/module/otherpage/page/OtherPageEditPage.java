@@ -18,7 +18,7 @@ package org.devproof.portal.module.otherpage.page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -28,6 +28,7 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
+import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
@@ -46,6 +47,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
     @SpringBean(name = "otherPageService")
     private OtherPageService otherPageService;
     private IModel<OtherPage> otherPageModel;
+    private MountInputPanel mountInputPanel;
 
     public OtherPageEditPage(IModel<OtherPage> otherPageModel) {
         super(new PageParameters());
@@ -55,45 +57,35 @@ public class OtherPageEditPage extends OtherPageBasePage {
 
     private Form<OtherPage> createOtherPageEditForm() {
         Form<OtherPage> form = newOtherPageEditForm();
-        form.add(createContentIdField());
+        form.add(createMountInputPanel());
         form.add(createContentField());
         form.add(createViewRightPanel());
         form.setOutputMarkupId(true);
         return form;
     }
 
-    private FormComponent<String> createContentField() {
-        return new FullRichTextArea("content");
+    private MountInputPanel createMountInputPanel() {
+        mountInputPanel = new MountInputPanel("mountUrls", "article", createOtherPageIdModel());
+        return mountInputPanel;
     }
 
-    private FormComponent<String> createContentIdField() {
-        FormComponent<String> fc = new RequiredTextField<String>("contentId");
-        fc.add(createContentIdPatternValidator());
-        fc.add(createContentIdValidator());
-        return fc;
-    }
-
-    private PatternValidator createContentIdPatternValidator() {
-        return new PatternValidator("[A-Za-z0-9\\_\\._\\-]*");
-    }
-
-    private AbstractValidator<String> createContentIdValidator() {
-        return new AbstractValidator<String>() {
-            private static final long serialVersionUID = 1L;
+    private IModel<String> createOtherPageIdModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 1340993990243817302L;
 
             @Override
-            protected void onValidate(IValidatable<String> ivalidatable) {
-                OtherPage otherPage = otherPageModel.getObject();
-                if (otherPageService.existsContentId(ivalidatable.getValue()) && otherPage.getId() == null) {
-                    error(ivalidatable);
+            public String getObject() {
+                Integer id = otherPageModel.getObject().getId();
+                if(id != null) {
+                    return id.toString();
                 }
-            }
-
-            @Override
-            protected String resourceKey() {
-                return "existing.contentId";
+                return null;
             }
         };
+    }
+
+    private FormComponent<String> createContentField() {
+        return new FullRichTextArea("content");
     }
 
     private RightGridPanel createViewRightPanel() {
@@ -110,9 +102,10 @@ public class OtherPageEditPage extends OtherPageBasePage {
             public void onSubmit() {
                 OtherPage otherPage = otherPageModel.getObject();
                 otherPageService.save(otherPage);
+                mountInputPanel.storeMountPoints();
                 setRedirect(false);
                 info(OtherPageEditPage.this.getString("msg.saved"));
-                setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getContentId())));
+                setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getId())));
             }
         };
     }

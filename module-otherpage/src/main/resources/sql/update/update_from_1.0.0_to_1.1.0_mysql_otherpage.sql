@@ -22,3 +22,5 @@ SET FOREIGN_KEY_CHECKS=0;
 UPDATE core_role_right_xref SET right_id = 'otherPage.author' WHERE right_id LIKE 'page.OtherPagePage';
 UPDATE core_right SET right_id = 'otherPage.author', description = 'Other Page Author' WHERE right_id LIKE 'page.OtherPagePage';
 SET FOREIGN_KEY_CHECKS=1;
+
+-- TODO migration content_id

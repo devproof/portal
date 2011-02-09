@@ -34,10 +34,4 @@ public interface OtherPageRepository extends CrudRepository<OtherPage, Integer> 
     @CacheQuery(enabled = false)
     @Query("select op.allRights from OtherPage op where op.modifiedAt = (select max(modifiedAt) from OtherPage)")
     List<Right> findLastSelectedRights();
-
-    @Query("select count(op.contentId) from OtherPage op where op.contentId like ?")
-    long existsContentId(String contentId);
-
-    @Query("select op from OtherPage op where op.contentId like ?")
-    OtherPage findOtherPageByContentId(String contentId);
 }

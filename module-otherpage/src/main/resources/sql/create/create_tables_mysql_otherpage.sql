@@ -5,7 +5,6 @@ CREATE TABLE other_page (
   modified_at datetime default NULL,
   modified_by varchar(30) default NULL,
   content mediumtext,
-  content_id varchar(255) default NULL,
   PRIMARY KEY  (id)
 );
 CREATE TABLE other_page_right_xref (
@@ -29,7 +28,6 @@ CREATE TABLE other_page_historized (
   action_at datetime default NULL,
   restored_from_version int(11) default NULL,
   content mediumtext,
-  content_id varchar(255) default NULL,
   rights text default NULL,
   other_page_id int(11) NOT NULL,
   PRIMARY KEY  (id),

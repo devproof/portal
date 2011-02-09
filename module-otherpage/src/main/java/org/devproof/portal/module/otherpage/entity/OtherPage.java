@@ -34,7 +34,7 @@ import java.util.List;
 @Table(name = "other_page")
 @CacheQuery(region = OtherPageConstants.QUERY_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = OtherPageConstants.ENTITY_CACHE_REGION)
-@RegisterGenericDataProvider(value = "otherPageDataProvider", sortProperty = "contentId", sortAscending = true)
+@RegisterGenericDataProvider(value = "otherPageDataProvider", sortProperty = "id", sortAscending = false)
 public class OtherPage extends BaseOtherPage {
     private static final long serialVersionUID = 1L;
 
