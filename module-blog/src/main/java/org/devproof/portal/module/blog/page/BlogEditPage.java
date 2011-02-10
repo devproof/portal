@@ -91,6 +91,8 @@ public class BlogEditPage extends BlogBasePage {
 
     private MountInputPanel createMountInputPanel() {
         mountInputPanel = new MountInputPanel("mountUrls", BlogConstants.HANDLER_KEY, createBlogIdModel()) {
+            private static final long serialVersionUID = 5332588454730478889L;
+
             @Override
             protected String getDefaultMountPathWhenEmpty() {
                 SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/HH/mm");
