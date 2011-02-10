@@ -71,10 +71,10 @@ public class BoxEditPanelTest {
         tester.startPanel(TestBoxEditPanel.class);
         tester.assertComponent("panel", TestBoxEditPanel.class);
         FormTester ft = tester.newFormTester("panel:form");
-        ft.select("boxType", 7);
+        ft.select("boxType", 1);
         ft.setValue("title", "mytitle");
-        ft.setValue("content", "mycontent");
-        ft.setValue("customStyle", "myCss");
+        ft.setValue("otherPageConfiguration:content", "mycontent");
+        ft.setValue("otherPageConfiguration:customStyle", "myCss");
         tester.executeAjaxEvent("panel:form:saveButton", "onclick");
         tester.assertNoErrorMessage();
         assertTrue(calledSave);
