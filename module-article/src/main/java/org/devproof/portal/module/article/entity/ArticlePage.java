@@ -33,7 +33,7 @@ public class ArticlePage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private String id;
+    private Integer id;
 
     @Column(name = "page")
     private Integer page;
@@ -72,11 +72,11 @@ public class ArticlePage implements Serializable {
         this.page = page;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

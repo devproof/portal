@@ -98,7 +98,7 @@ CREATE TABLE core_module_link (
   PRIMARY KEY  (link_type,page_name)
 );
 
-
+-- since 1.1.0
 CREATE TABLE core_mount_point (
   id int(11) NOT NULL auto_increment,
   mount_path varchar(255) NOT NULL,
