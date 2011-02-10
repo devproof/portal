@@ -67,6 +67,14 @@ public class MountInputPanel extends Panel {
         add(createForm());
     }
 
+    /**
+     * Hook, called, to retrieve the default URL when no URL is set to suggest a URL
+     * @return url
+     */
+    protected String getDefaultMountPathWhenEmpty() {
+        return "";
+    }
+
     private Form<MountPoint> createForm() {
         Form<MountPoint> form = newForm();
         form.add(createDefaultUrlGroup());
@@ -134,6 +142,7 @@ public class MountInputPanel extends Panel {
     private MountPoint newMountPoint() {
         MountPoint mp = new MountPoint();
         mp.setHandlerKey(this.handlerKey);
+        mp.setMountPath(getDefaultMountPathWhenEmpty());
         return mp;
     }
 

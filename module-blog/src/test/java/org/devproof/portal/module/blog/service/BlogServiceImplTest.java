@@ -16,6 +16,8 @@
 package org.devproof.portal.module.blog.service;
 
 import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.mount.service.MountService;
+import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.repository.BlogRepository;
@@ -34,6 +36,7 @@ public class BlogServiceImplTest {
     private BlogRepository mock;
     private BlogTagService mockTag;
     private BlogHistorizer mockHistorizer;
+    private MountService mockMountService;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -41,10 +44,12 @@ public class BlogServiceImplTest {
         mock = createStrictMock(BlogRepository.class);
         mockTag = createStrictMock(BlogTagService.class);
         mockHistorizer = createStrictMock(BlogHistorizer.class);
+        mockMountService = createStrictMock(MountService.class);
         impl = new BlogServiceImpl();
         impl.setBlogRepository(mock);
         impl.setBlogTagService(mockTag);
         impl.setBlogHistorizer(mockHistorizer);
+        impl.setMountService(mockMountService);
     }
 
     @Test
@@ -62,13 +67,9 @@ public class BlogServiceImplTest {
         expect(mock.save(e)).andReturn(e);
         mockTag.deleteUnusedTags();
         mockHistorizer.historize(e, Action.MODIFIED);
-        replay(mock);
-        replay(mockTag);
-        replay(mockHistorizer);
+        replay(mock, mockTag, mockHistorizer);
         impl.save(e);
-        verify(mock);
-        verify(mockTag);
-        verify(mockHistorizer);
+        verify(mock, mockTag, mockHistorizer);
     }
 
     @Test
@@ -77,13 +78,10 @@ public class BlogServiceImplTest {
         mock.delete(e);
         mockTag.deleteUnusedTags();
         mockHistorizer.deleteHistory(e);
-        replay(mock);
-        replay(mockTag);
-        replay(mockHistorizer);
+        mockMountService.delete("1", BlogConstants.HANDLER_KEY);
+        replay(mock, mockTag, mockHistorizer, mockMountService);
         impl.delete(e);
-        verify(mock);
-        verify(mockTag);
-        verify(mockHistorizer);
+        verify(mock, mockTag, mockHistorizer, mockMountService);
     }
 
     @Test

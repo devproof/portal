@@ -16,6 +16,8 @@
 package org.devproof.portal.module.blog.service;
 
 import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.mount.service.MountService;
+import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.entity.BlogHistorized;
 import org.devproof.portal.module.blog.repository.BlogRepository;
@@ -31,6 +33,7 @@ public class BlogServiceImpl implements BlogService {
     private BlogRepository blogRepository;
     private BlogTagService blogTagService;
     private BlogHistorizer blogHistorizer;
+    private MountService mountService;
 
     @Override
     @Transactional
@@ -44,6 +47,7 @@ public class BlogServiceImpl implements BlogService {
         blogHistorizer.deleteHistory(entity);
         blogRepository.delete(entity);
         blogTagService.deleteUnusedTags();
+        mountService.delete(entity.getId().toString(), BlogConstants.HANDLER_KEY);
     }
 
     @Override
@@ -82,5 +86,10 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     public void setBlogHistorizer(BlogHistorizer blogHistorizer) {
         this.blogHistorizer = blogHistorizer;
+    }
+
+    @Autowired
+    public void setMountService(MountService mountService) {
+        this.mountService = mountService;
     }
 }

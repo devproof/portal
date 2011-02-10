@@ -36,6 +36,8 @@ import org.devproof.portal.module.blog.entity.BlogTag;
 import org.devproof.portal.module.blog.service.BlogService;
 import org.devproof.portal.module.blog.service.BlogTagService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -88,7 +90,13 @@ public class BlogEditPage extends BlogBasePage {
     }
 
     private MountInputPanel createMountInputPanel() {
-        mountInputPanel = new MountInputPanel("mountUrls", BlogConstants.HANDLER_KEY, createBlogIdModel());
+        mountInputPanel = new MountInputPanel("mountUrls", BlogConstants.HANDLER_KEY, createBlogIdModel()) {
+            @Override
+            protected String getDefaultMountPathWhenEmpty() {
+                SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/HH/mm");
+                return sdf.format(new Date());
+            }
+        };
         return mountInputPanel;
     }
 
