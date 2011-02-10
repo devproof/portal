@@ -16,7 +16,6 @@
 package org.devproof.portal.module.blog;
 
 import org.apache.wicket.ResourceReference;
-import org.devproof.portal.module.blog.page.BlogEditPage;
 
 /**
  * @author Carsten Hufe
@@ -30,4 +29,5 @@ public interface BlogConstants {
     String ENTITY_CACHE_REGION = "entity.content";
     String QUERY_CACHE_REGION = "query.content";
     String AUTHOR_RIGHT = "blog.author";
+    String HANDLER_KEY = "blog";
 }

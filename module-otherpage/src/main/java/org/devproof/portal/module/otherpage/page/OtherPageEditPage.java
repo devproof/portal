@@ -23,9 +23,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
-import org.apache.wicket.validation.validator.PatternValidator;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.mount.panel.MountInputPanel;
@@ -65,7 +62,7 @@ public class OtherPageEditPage extends OtherPageBasePage {
     }
 
     private MountInputPanel createMountInputPanel() {
-        mountInputPanel = new MountInputPanel("mountUrls", "article", createOtherPageIdModel());
+        mountInputPanel = new MountInputPanel("mountUrls", OtherPageConstants.HANDLER_KEY, createOtherPageIdModel());
         return mountInputPanel;
     }
 

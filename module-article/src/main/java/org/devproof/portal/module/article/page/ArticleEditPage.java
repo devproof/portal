@@ -62,11 +62,11 @@ public class ArticleEditPage extends ArticleBasePage {
 
     private Form<Article> createArticleEditForm() {
         Form<Article> form = newArticleEditForm();
-        form.add(createMountInputPanel());
         form.add(createTitleField());
         form.add(createTeaserField());
         form.add(createContentField());
         form.add(createTagField());
+        form.add(createMountInputPanel());
         form.add(createViewRightPanel());
         form.add(createReadRightPanel());
         form.add(createCommentRightPanel());
@@ -75,7 +75,7 @@ public class ArticleEditPage extends ArticleBasePage {
     }
 
     private MountInputPanel createMountInputPanel() {
-        mountInputPanel = new MountInputPanel("mountUrls", "article", createArticleIdModel());
+        mountInputPanel = new MountInputPanel("mountUrls", ArticleConstants.HANDLER_KEY, createArticleIdModel());
         return mountInputPanel;
     }
 

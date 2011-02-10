@@ -19,12 +19,14 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
+import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
@@ -48,6 +50,7 @@ public class BlogEditPage extends BlogBasePage {
     @SpringBean(name = "blogTagService")
     private BlogTagService blogTagService;
     private IModel<Blog> blogModel;
+    private MountInputPanel mountInputPanel;
 
     public BlogEditPage(IModel<Blog> blogModel) {
         super(new PageParameters());
@@ -60,6 +63,7 @@ public class BlogEditPage extends BlogBasePage {
         form.add(createHeadlineField());
         form.add(createContentField());
         form.add(createTagField());
+        form.add(createMountInputPanel());
         form.add(createViewRightPanel());
         form.add(createCommentRightPanel());
         form.setOutputMarkupId(true);
@@ -75,9 +79,30 @@ public class BlogEditPage extends BlogBasePage {
                 BlogEditPage.this.setVisible(false);
                 Blog blog = getModelObject();
                 blogService.save(blog);
+                mountInputPanel.storeMountPoints();
                 setRedirect(false);
                 setResponsePage(BlogPage.class, new PageParameters("id=" + blog.getId()));
                 info(getString("msg.saved"));
+            }
+        };
+    }
+
+    private MountInputPanel createMountInputPanel() {
+        mountInputPanel = new MountInputPanel("mountUrls", BlogConstants.HANDLER_KEY, createBlogIdModel());
+        return mountInputPanel;
+    }
+
+    private IModel<String> createBlogIdModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 1340993990243817302L;
+
+            @Override
+            public String getObject() {
+                Integer id = blogModel.getObject().getId();
+                if(id != null) {
+                    return id.toString();
+                }
+                return null;
             }
         };
     }
