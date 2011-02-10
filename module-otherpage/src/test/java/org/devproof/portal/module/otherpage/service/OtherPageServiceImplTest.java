@@ -16,6 +16,8 @@
 package org.devproof.portal.module.otherpage.service;
 
 import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.mount.service.MountService;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.entity.OtherPageHistorized;
 import org.devproof.portal.module.otherpage.repository.OtherPageRepository;
@@ -25,7 +27,6 @@ import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Checks the delegating functionality of the OtherPageServiceImpl
@@ -36,14 +37,17 @@ public class OtherPageServiceImplTest {
     private OtherPageServiceImpl impl;
     private OtherPageRepository mockRepository;
     private OtherPageHistorizer mockHistorizer;
+    private MountService mockMountService;
 
     @Before
     public void setUp() throws Exception {
         mockRepository = createStrictMock(OtherPageRepository.class);
         mockHistorizer = createStrictMock(OtherPageHistorizer.class);
+        mockMountService = createStrictMock(MountService.class);
         impl = new OtherPageServiceImpl();
         impl.setOtherPageRepository(mockRepository);
         impl.setOtherPageHistorizer(mockHistorizer);
+        impl.setMountService(mockMountService);
     }
 
 
@@ -72,9 +76,10 @@ public class OtherPageServiceImplTest {
         e.setId(1);
         mockRepository.delete(e);
         mockHistorizer.deleteHistory(e);
-        replay(mockRepository, mockHistorizer);
+        mockMountService.delete("1", OtherPageConstants.HANDLER_KEY);
+        replay(mockRepository, mockHistorizer, mockMountService);
         impl.delete(e);
-        verify(mockRepository, mockHistorizer);
+        verify(mockRepository, mockHistorizer, mockMountService);
     }
 
     @Test

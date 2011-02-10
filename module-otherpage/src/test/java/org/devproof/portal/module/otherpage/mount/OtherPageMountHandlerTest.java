@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.module.article.mount;
+package org.devproof.portal.module.otherpage.mount;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.service.MountService;
-import org.devproof.portal.module.article.ArticleConstants;
-import org.devproof.portal.module.article.page.ArticlePrintPage;
-import org.devproof.portal.module.article.page.ArticleReadPage;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
+import org.devproof.portal.module.otherpage.page.OtherPageViewPage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,14 +30,14 @@ import static org.junit.Assert.*;
 /**
  * @author Carsten Hufe
  */
-public class ArticleMountHandlerTest {
-    private ArticleMountHandler impl;
+public class OtherPageMountHandlerTest {
+    private OtherPageMountHandler impl;
     private MountService mockMountService;
 
     @Before
     public void setUp() throws Exception {
         mockMountService = createStrictMock(MountService.class);
-        impl = new ArticleMountHandler();
+        impl = new OtherPageMountHandler();
         impl.setMountService(mockMountService);
     }
 
@@ -50,38 +49,30 @@ public class ArticleMountHandlerTest {
         mp.setDefaultUrl(true);
         mp.setRelatedContentId("123");
         BookmarkablePageRequestTarget requestTarget = (BookmarkablePageRequestTarget) impl.getRequestTarget("/hello", mp);
-        assertEquals(ArticleReadPage.class, requestTarget.getPageClass());
+        assertEquals(OtherPageViewPage.class, requestTarget.getPageClass());
     }
 
     @Test
     public void testCanHandlePageClass_notfound() throws Exception {
-        expect(mockMountService.existsMountPoint("123", ArticleConstants.HANDLER_KEY)).andReturn(false);
+        expect(mockMountService.existsMountPoint("123", OtherPageConstants.HANDLER_KEY)).andReturn(false);
         replay(mockMountService);
-        assertFalse(impl.canHandlePageClass(ArticleReadPage.class, new PageParameters("0=123")));
-        verify(mockMountService);
-    }
-
-    @Test
-    public void testCanHandlePageClass_print() throws Exception {
-        expect(mockMountService.existsMountPoint("123", ArticleConstants.HANDLER_KEY)).andReturn(true);
-        replay(mockMountService);
-        assertTrue(impl.canHandlePageClass(ArticlePrintPage.class, new PageParameters("0=123")));
+        assertFalse(impl.canHandlePageClass(OtherPageViewPage.class, new PageParameters("0=123")));
         verify(mockMountService);
     }
 
     @Test
     public void testCanHandlePageClass_read() throws Exception {
-        expect(mockMountService.existsMountPoint("123", ArticleConstants.HANDLER_KEY)).andReturn(true);
+        expect(mockMountService.existsMountPoint("123", OtherPageConstants.HANDLER_KEY)).andReturn(true);
         replay(mockMountService);
-        assertTrue(impl.canHandlePageClass(ArticleReadPage.class, new PageParameters("0=123")));
+        assertTrue(impl.canHandlePageClass(OtherPageViewPage.class, new PageParameters("0=123")));
         verify(mockMountService);
     }
 
     @Test
     public void testUrlFor_null() throws Exception {
-        expect(mockMountService.findDefaultMountPoint("123", ArticleConstants.HANDLER_KEY)).andReturn(null);
+        expect(mockMountService.findDefaultMountPoint("123", OtherPageConstants.HANDLER_KEY)).andReturn(null);
         replay(mockMountService);
-        assertNull(impl.urlFor(ArticleReadPage.class, new PageParameters("0=123")));
+        assertNull(impl.urlFor(OtherPageViewPage.class, new PageParameters("0=123")));
         verify(mockMountService);
     }
 
@@ -92,27 +83,14 @@ public class ArticleMountHandlerTest {
         mp.setMountPath("/hello");
         mp.setDefaultUrl(true);
         mp.setRelatedContentId("123");
-        expect(mockMountService.findDefaultMountPoint("123", ArticleConstants.HANDLER_KEY)).andReturn(mp);
+        expect(mockMountService.findDefaultMountPoint("123", OtherPageConstants.HANDLER_KEY)).andReturn(mp);
         replay(mockMountService);
-        assertEquals("/hello", impl.urlFor(ArticleReadPage.class, new PageParameters("0=123")));
-        verify(mockMountService);
-    }
-
-    @Test
-    public void testUrlFor_print() throws Exception {
-        MountPoint mp = new MountPoint();
-        mp.setId(1);
-        mp.setMountPath("/hello");
-        mp.setDefaultUrl(true);
-        mp.setRelatedContentId("123");
-        expect(mockMountService.findDefaultMountPoint("123", ArticleConstants.HANDLER_KEY)).andReturn(mp);
-        replay(mockMountService);
-        assertEquals("/hello/print", impl.urlFor(ArticlePrintPage.class, new PageParameters("0=123")));
+        assertEquals("/hello", impl.urlFor(OtherPageViewPage.class, new PageParameters("0=123")));
         verify(mockMountService);
     }
 
     @Test
     public void testGetHandlerKey() throws Exception {
-        assertEquals(ArticleConstants.HANDLER_KEY, impl.getHandlerKey());
+        assertEquals(OtherPageConstants.HANDLER_KEY, impl.getHandlerKey());
     }
 }

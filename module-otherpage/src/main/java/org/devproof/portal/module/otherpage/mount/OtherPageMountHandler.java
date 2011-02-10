@@ -26,7 +26,6 @@ import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.module.otherpage.OtherPageConstants;
-import org.devproof.portal.module.otherpage.page.OtherPagePage;
 import org.devproof.portal.module.otherpage.page.OtherPageViewPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Carsten Hufe
  */
-// TODO unit test
 @MountPointHandler("otherPageMountHandler")
 public class OtherPageMountHandler implements MountHandler {
     private MountService mountService;

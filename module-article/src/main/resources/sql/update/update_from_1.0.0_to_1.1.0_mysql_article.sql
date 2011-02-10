@@ -31,7 +31,7 @@ SET FOREIGN_KEY_CHECKS=1;
 
 -- copy current content ids to mount_points
 INSERT INTO core_mount_point (related_content_id, handler_key, mount_path, default_url)
- (select id, 'article', concat('/article/', content_id), 1 from article);
+ (SELECT id, 'article', concat('/article/', content_id), 1 from article);
 ALTER TABLE article_page DROP PRIMARY KEY;
 ALTER TABLE article_page ADD COLUMN id int(11) NOT NULL auto_increment FIRST, ADD PRIMARY KEY (id);
 ALTER TABLE article DROP COLUMN content_id;

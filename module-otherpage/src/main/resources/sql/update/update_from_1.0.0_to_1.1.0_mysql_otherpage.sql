@@ -11,7 +11,6 @@ CREATE TABLE other_page_historized (
   action_at datetime default NULL,
   restored_from_version int(11) default NULL,
   content mediumtext,
-  content_id varchar(255) default NULL,
   rights text default NULL,
   other_page_id int(11) NOT NULL,
   PRIMARY KEY  (id),
@@ -23,4 +22,7 @@ UPDATE core_role_right_xref SET right_id = 'otherPage.author' WHERE right_id LIK
 UPDATE core_right SET right_id = 'otherPage.author', description = 'Other Page Author' WHERE right_id LIKE 'page.OtherPagePage';
 SET FOREIGN_KEY_CHECKS=1;
 
--- TODO migration content_id
+-- copy current content ids to mount_points
+INSERT INTO core_mount_point (related_content_id, handler_key, mount_path, default_url)
+ (SELECT id, 'otherPage', concat('/other/', content_id), 1 from article);
+ALTER TABLE other_page DROP COLUMN content_id;

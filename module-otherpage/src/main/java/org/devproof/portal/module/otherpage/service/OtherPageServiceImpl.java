@@ -16,6 +16,8 @@
 package org.devproof.portal.module.otherpage.service;
 
 import org.devproof.portal.core.module.historization.service.Action;
+import org.devproof.portal.core.module.mount.service.MountService;
+import org.devproof.portal.module.otherpage.OtherPageConstants;
 import org.devproof.portal.module.otherpage.entity.OtherPage;
 import org.devproof.portal.module.otherpage.entity.OtherPageHistorized;
 import org.devproof.portal.module.otherpage.repository.OtherPageRepository;
@@ -26,11 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Carsten Hufe
  */
-// TODO clean up mount URL on delete
 @Service("otherPageService")
 public class OtherPageServiceImpl implements OtherPageService {
     private OtherPageRepository otherPageRepository;
     private OtherPageHistorizer otherPageHistorizer;
+    private MountService mountService;
 
     @Override
     @Transactional
@@ -51,6 +53,7 @@ public class OtherPageServiceImpl implements OtherPageService {
     public void delete(OtherPage entity) {
         otherPageHistorizer.deleteHistory(entity);
         otherPageRepository.delete(entity);
+        mountService.delete(entity.getId().toString(), OtherPageConstants.HANDLER_KEY);
     }
 
     @Override
@@ -75,5 +78,10 @@ public class OtherPageServiceImpl implements OtherPageService {
     @Autowired
     public void setOtherPageHistorizer(OtherPageHistorizer otherPageHistorizer) {
         this.otherPageHistorizer = otherPageHistorizer;
+    }
+
+    @Autowired
+    public void setMountService(MountService mountService) {
+        this.mountService = mountService;
     }
 }
