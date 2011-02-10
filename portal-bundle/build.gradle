@@ -185,7 +185,7 @@ def cleanTmpFolder() {
 
 def locateWarPath() {
   def p = project(':portal-webapp')
-  p.buildDir.path + '/libs/' + p.name + '-' + version + '.war'
+  p.libsDir.path + '/' + p.archivesBaseName + '-' + version + '.war'
 }
 
 def extractWar() {

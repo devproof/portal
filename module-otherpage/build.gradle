@@ -1,3 +1,5 @@
+archivesBaseName = 'devproof-module-otherpage'
+
 dependencies {
   compile project(':portal-core')
 }

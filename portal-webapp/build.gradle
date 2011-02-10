@@ -1,5 +1,7 @@
 apply plugin: 'war'
 
+archivesBaseName = 'devproof-portal'
+
 dependencies {
   compile project(':portal-core')
   compile project(':module-blog')
