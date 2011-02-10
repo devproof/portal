@@ -44,6 +44,8 @@ public class Box extends Modification {
     private String boxType;
     @Column(name = "title")
     private String title;
+    @Column(name = "custom_style")
+    private String customStyle;
     @Column(name = "hide_title", nullable = false)
     private Boolean hideTitle;
     @Lob
@@ -96,6 +98,14 @@ public class Box extends Modification {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCustomStyle() {
+        return customStyle;
+    }
+
+    public void setCustomStyle(String customStyle) {
+        this.customStyle = customStyle;
     }
 
     @Override

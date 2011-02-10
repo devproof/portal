@@ -266,6 +266,7 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * Create the boxes on the right hand side
+     * @return view
      */
     private RepeatingView createRepeatingBoxes() {
         RepeatingView repeating = new RepeatingView("repeatingSideNav");

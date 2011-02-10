@@ -42,6 +42,7 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class BoxEditPanelTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -73,6 +74,7 @@ public class BoxEditPanelTest {
         ft.select("boxType", 7);
         ft.setValue("title", "mytitle");
         ft.setValue("content", "mycontent");
+        ft.setValue("customStyle", "myCss");
         tester.executeAjaxEvent("panel:form:saveButton", "onclick");
         tester.assertNoErrorMessage();
         assertTrue(calledSave);

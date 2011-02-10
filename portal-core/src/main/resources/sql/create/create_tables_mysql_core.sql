@@ -5,6 +5,7 @@ CREATE TABLE core_box (
   modified_at datetime default NULL,
   modified_by varchar(30) default NULL,
   box_type varchar(255) default NULL,
+  custom_style varchar(255) default NULL,
   content text,
   sort int(11) default NULL,
   hide_title bit(1) NOT NULL,

@@ -16,8 +16,11 @@
 package org.devproof.portal.core.module.box.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -32,6 +35,7 @@ import org.devproof.portal.core.module.box.BoxConstants;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
+import org.devproof.portal.core.module.common.panel.OtherBoxPanel;
 
 import java.util.List;
 
@@ -49,6 +53,7 @@ public abstract class BoxEditPanel extends Panel {
     private FeedbackPanel feedback;
     private IModel<BoxConfiguration> boxSelectionModel;
     private IModel<Box> boxModel;
+    private WebMarkupContainer otherPageConfigurationContainer;
 
     public BoxEditPanel(String id, IModel<Box> boxModel) {
         super(id);
@@ -66,14 +71,39 @@ public abstract class BoxEditPanel extends Panel {
     private Form<Box> createBoxEditForm() {
         CompoundPropertyModel<Box> formModel = new CompoundPropertyModel<Box>(boxModel);
         Form<Box> form = new Form<Box>("form", formModel);
-        form.add(createContentField());
         form.add(createBoxTypeChoice());
         form.add(createTitleField());
         form.add(createHideTitleCheckBox());
+        form.add(createOtherPageConfigurationContainer());
         form.add(createAjaxButton());
         form.add(createCancelButton());
         form.setOutputMarkupId(true);
         return form;
+    }
+
+    private WebMarkupContainer createOtherPageConfigurationContainer() {
+        otherPageConfigurationContainer = newOtherPageConfigurationContainer();
+        otherPageConfigurationContainer.add(createContentField());
+        otherPageConfigurationContainer.add(createCustomStyleField());
+        otherPageConfigurationContainer.setOutputMarkupId(true);
+        otherPageConfigurationContainer.setOutputMarkupPlaceholderTag(true);
+        return otherPageConfigurationContainer;
+    }
+
+    private WebMarkupContainer newOtherPageConfigurationContainer() {
+        return new WebMarkupContainer("otherPageConfiguration") {
+            private static final long serialVersionUID = -2477387792864679307L;
+
+            @Override
+            public boolean isVisible() {
+                BoxConfiguration object = boxSelectionModel.getObject();
+                return object != null && OtherBoxPanel.class.equals(object.getBoxClass());
+            }
+        };
+    }
+
+    private TextField<String> createCustomStyleField() {
+        return new TextField<String>("customStyle");
     }
 
     private CheckBox createHideTitleCheckBox() {
@@ -83,9 +113,21 @@ public abstract class BoxEditPanel extends Panel {
     private DropDownChoice<BoxConfiguration> createBoxTypeChoice() {
         List<BoxConfiguration> confs = boxRegistry.getRegisteredBoxes();
         ChoiceRenderer<BoxConfiguration> choiceRenderer = new ChoiceRenderer<BoxConfiguration>("name", "boxClass");
-        DropDownChoice<BoxConfiguration> boxType = new DropDownChoice<BoxConfiguration>("boxType", boxSelectionModel, confs, choiceRenderer);
-        boxType.setRequired(true);
-        return boxType;
+        DropDownChoice<BoxConfiguration> boxTypeChoice = new DropDownChoice<BoxConfiguration>("boxType", boxSelectionModel, confs, choiceRenderer);
+        boxTypeChoice.add(createOnSelectUpdateBEaviour());
+        boxTypeChoice.setRequired(true);
+        return boxTypeChoice;
+    }
+
+    private AjaxFormComponentUpdatingBehavior createOnSelectUpdateBEaviour() {
+        return new AjaxFormComponentUpdatingBehavior("onchange") {
+            private static final long serialVersionUID = 5607813611383990978L;
+
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                target.addComponent(otherPageConfigurationContainer);
+            }
+        };
     }
 
     private TextField<String> createTitleField() {

@@ -39,8 +39,13 @@ public class OtherBoxPanel extends Panel implements BoxTitleVisibility {
     public OtherBoxPanel(String id, IModel<Box> boxModel) {
         super(id, boxModel);
         this.boxModel = boxModel;
+        add(createBoxCustomStyleModifier());
         add(createTitleLabel());
         add(createContentLabel());
+    }
+
+    private BoxCustomStyleModifier createBoxCustomStyleModifier() {
+        return new BoxCustomStyleModifier(boxModel);
     }
 
     private Label createContentLabel() {

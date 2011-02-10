@@ -19,3 +19,4 @@ UPDATE core_configuration set conf_key = 'spring.roleService.findAll.description
 
 -- TODO migrate oracle rights
 -- TODO migration mount points
+-- TODO custom style

@@ -74,3 +74,5 @@ CREATE TABLE core_mount_point (
   INDEX mp_default_url (default_url),
   UNIQUE KEY mp_mount_path (mount_path)
 );
+
+ALTER TABLE core_box ADD COLUMN custom_style varchar(255) default NULL AFTER box_type;
