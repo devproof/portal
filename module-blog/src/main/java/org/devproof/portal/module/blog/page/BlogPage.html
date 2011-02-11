@@ -2,24 +2,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
-    <div wicket:id="repeatingBlogEntries">
+    <wicket:container wicket:id="repeatingBlogEntries">
         <div wicket:id="blogView"></div>
-    </div>
+    </wicket:container>
     <div wicket:id="paging">paging</div>
-
     <wicket:fragment wicket:id="blogView">
-        <h1><a href="#" wicket:id="headlineLink"><span wicket:id="headlineLabel"></span></a></h1>
-
-        <div class="descr">
-            <span wicket:id="metaInfo">[author name]</span>&nbsp; <a wicket:id="printLink" target="_blank"><img
-                wicket:id="printImage"/></a> <span wicket:id="authorButtons"></span>
+        <h2>
+           <a href="#" wicket:id="headlineLink"><wicket:container wicket:id="headlineLabel"></wicket:container></a>
+        </h2>
+        <div class="sub">
+           <span wicket:id="authorButtons"></span>
+           <span wicket:id="metaInfo">[author name]</span>&nbsp;
+           <span wicket:id="tags">tag1 tag2</span>
         </div>
-        <div wicket:id="tags">tag1 tag2</div>
-        <br/>
 
         <div wicket:id="content">[content]</div>
+        <ul class="controls">
+            <li><a class="printerfriendly" href="#">Printer Friendly</a></li>
+            <li><a class="comments" href="#">Comments (18)</a></li>
+            <li><a class="more" href="#">Read More</a></li>
+        </ul>
+
+
+        <br/>
+        <br/>
+        <br/>
         <div wicket:id="comments">[comments]</div>
-        <p></p>
+        <a wicket:id="printLink" target="_blank"><img
+                wicket:id="printImage"/></a> <br/>
+        <br /><br />
     </wicket:fragment>
 </wicket:extend>
 </body>
