@@ -17,10 +17,7 @@ package org.devproof.portal.core.module.common.page;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.*;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
@@ -31,9 +28,12 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -235,25 +235,60 @@ public abstract class TemplatePage extends WebPage {
     /**
      * creates the Main Navigation on the top
      */
-    private RepeatingView createRepeatingMainNavigation() {
-        RepeatingView repeating = new RepeatingView("repeatingMainNav");
-        List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
-        for (Class<? extends Page> pageClass : registeredPages) {
-            repeating.add(createMenuItem(repeating.newChildId(), pageClass));
-        }
-        return repeating;
+    private Component createRepeatingMainNavigation() {
+        IModel<List<Class<? extends Page>>> mainNavigationModel = createMainNavigationModel();
+        return new ListView<Class<? extends Page>>("repeatingMainNav", mainNavigationModel) {
+            private static final long serialVersionUID = 2629038838888554746L;
+
+            @Override
+            protected void populateItem(ListItem<Class<? extends Page>> item) {
+                item.add(createMenuLink(item));
+            }
+        };
     }
 
-    private WebMarkupContainer createMenuItem(String id, Class<? extends Page> pageClass) {
-        WebMarkupContainer item = new WebMarkupContainer(id);
-        item.add(createMenuLink(pageClass));
-        return item;
+    private IModel<List<Class<? extends Page>>> createMainNavigationModel() {
+        return new LoadableDetachableModel<List<Class<? extends Page>>>() {
+                private static final long serialVersionUID = -164465304408431579L;
+
+                @Override
+                protected List<Class<? extends Page>> load() {
+                    return mainNavigationRegistry.getRegisteredPages();
+                }
+            };
     }
 
-    private BookmarkablePageLink<Void> createMenuLink(Class<? extends Page> pageClass) {
-        BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("mainNavigationLink", pageClass);
-        link.add(createMenuLinkLabel(pageClass));
+    private BookmarkablePageLink<Void> createMenuLink(ListItem<Class<? extends Page>> item) {
+        Class<? extends Page> pageClazz = item.getModelObject();
+        BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("mainNavigationLink", pageClazz);
+        link.add(createMainNavigationClassModifier(item));
+        link.add(createMenuLinkLabel(pageClazz));
         return link;
+    }
+
+    private AttributeModifier createMainNavigationClassModifier(ListItem<Class<? extends Page>> item) {
+        return new AttributeModifier("class", true, createMainNavigationClassModifierModel(item));
+    }
+
+    private AbstractReadOnlyModel<String> createMainNavigationClassModifierModel(final ListItem<Class<? extends Page>> item) {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = -8849392135409571179L;
+
+            @Override
+            public String getObject() {
+                if(item.getModelObject().equals(getPage().getClass())) {
+                    return "topNavAct";
+                }
+                else if(isLastItem(item)) {
+                    return "topNavLast";
+                }
+                return "";
+            }
+        };
+    }
+
+    private boolean isLastItem(ListItem<Class<? extends Page>> item) {
+        return item.size() == (item.getIndex() - 1);
     }
 
     private Label createMenuLinkLabel(Class<? extends Page> pageClass) {
