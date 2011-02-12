@@ -63,6 +63,8 @@ import org.devproof.portal.core.module.user.page.LoginPage;
 import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -85,11 +87,6 @@ public abstract class TemplatePage extends WebPage {
     private SharedRegistry sharedRegistry;
 
     private FeedbackPanel feedback;
-    private Component filterBox;
-    private Component tagCloudBox;
-    private PageAdminBoxPanel pageAdminBox;
-    private boolean filterBoxHideTitle;
-    private boolean tagCloudBoxHideTitle;
     private PageParameters params;
 
     public TemplatePage(PageParameters params) {
@@ -303,57 +300,62 @@ public abstract class TemplatePage extends WebPage {
      * Create the boxes on the right hand side
      * @return view
      */
-    private RepeatingView createRepeatingBoxes() {
-        RepeatingView repeating = new RepeatingView("repeatingSideNav");
-        List<Box> boxes = boxService.findAllOrderedBySort();
-        for (Box box : boxes) {
-            repeating.add(createBoxItem(repeating.newChildId(), box));
-        }
-        return repeating;
+    private Component createRepeatingBoxes() {
+        IModel<List<Box>> repeatingBoxesModel = createRepeatingBoxesModel();
+        return new ListView<Box>("repeatingSideNav", repeatingBoxesModel) {
+            private static final long serialVersionUID = -8656227160522461618L;
+
+            @Override
+            protected void populateItem(ListItem<Box> item) {
+                Component box = createBoxItem(item);
+                setBoxTitleVisibility(item.getModelObject(), box);
+                item.add(box);
+            }
+        };
     }
 
-    private WebMarkupContainer createBoxItem(String id, Box box) {
-        WebMarkupContainer item = new WebMarkupContainer(id);
-        Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
-        Component boxInstance = null;
-        if (boxClazz == null) {
-            item.add(boxInstance = createBoxNotFoundPanel());
-        } else if (boxClazz.isAssignableFrom(SearchBoxPanel.class)) {
-            if (filterBox == null) {
-                item.add(filterBox = createEmptyFilterBox());
-                filterBoxHideTitle = box.getHideTitle();
-            }
-        } else if (boxClazz.isAssignableFrom(OtherBoxPanel.class)) {
-            item.add(boxInstance = createOtherBox(box));
-        } else if (boxClazz.isAssignableFrom(PageAdminBoxPanel.class)) {
-            item.add(pageAdminBox = createPageAdminBox());
-            boxInstance = pageAdminBox;
-        } else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
-            item.add(boxInstance = createLoginBox());
-            item.setVisible(isNotLoginPage());
-        } else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
-            item.add(tagCloudBox = createEmptyFilterBox());
-            tagCloudBoxHideTitle = box.getHideTitle();
-            boxInstance = tagCloudBox;
-        } else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
-            item.add(boxInstance = new GlobalAdminBoxPanel("box"));
-        } else if (boxClazz.isAssignableFrom(FeedBoxPanel.class)) {
-            item.add(boxInstance = new FeedBoxPanel("box", getPageClass()));
-        } else {
-            boxInstance = createGenericBoxInstance(boxClazz);
-            if (boxInstance == null) {
-                throw new IllegalArgumentException("The box class " + boxClazz + " does not have a default constructor with a String id parameter or String and PageParameters");
-            } else {
-                item.add(boxInstance);
-            }
-        }
+    private IModel<List<Box>> createRepeatingBoxesModel() {
+        return new LoadableDetachableModel<List<Box>>() {
+            private static final long serialVersionUID = -8338162419354614447L;
 
-        setBoxTitleVisibility(box, boxInstance);
-        return item;
+            @Override
+                protected List<Box> load() {
+                    return boxService.findAllOrderedBySort();
+                }
+            };
+    }
+
+    private Component createBoxItem(ListItem<Box> itemA) {
+        Box box = itemA.getModelObject();
+        Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
+        if (boxClazz == null) {
+            return createBoxNotFoundPanel();
+        } else if (boxClazz.isAssignableFrom(SearchBoxPanel.class)) {
+            return newFilterBox(getBoxId());
+        } else if (boxClazz.isAssignableFrom(OtherBoxPanel.class)) {
+            return createOtherBox(box);
+        } else if (boxClazz.isAssignableFrom(PageAdminBoxPanel.class)) {
+            return createPageAdminBox();
+        } else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
+//            item.setVisible(isNotLoginPage());
+            return createLoginBox();
+        } else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
+            return newTagCloudBox(getBoxId());
+        } else if (boxClazz.isAssignableFrom(GlobalAdminBoxPanel.class)) {
+            return new GlobalAdminBoxPanel(getBoxId());
+        } else if (boxClazz.isAssignableFrom(FeedBoxPanel.class)) {
+            return new FeedBoxPanel(getBoxId(), getPageClass());
+        } else {
+            Component genericBoxInstance = createGenericBoxInstance(boxClazz);
+            if (genericBoxInstance == null) {
+                throw new IllegalArgumentException("The box class " + boxClazz + " does not have a default constructor with a String id parameter or String and PageParameters");
+            }
+            return genericBoxInstance;
+        }
     }
 
     private Component createEmptyFilterBox() {
-        return new WebMarkupContainer("box").setVisible(false);
+        return new WebMarkupContainer(getBoxId()).setVisible(false);
     }
 
     private Component createGenericBoxInstance(Class<? extends Component> boxClazz) {
@@ -361,13 +363,13 @@ public abstract class TemplatePage extends WebPage {
             Class<?> param[] = constr.getParameterTypes();
             if (param.length == 2 && param[0] == String.class && param[1] == PageParameters.class) {
                 try {
-                    return (Component) constr.newInstance("box", params);
+                    return (Component) constr.newInstance(getBoxId(), params);
                 } catch (Exception e) {
                     throw new UnhandledException(e);
                 }
             } else if (param.length == 1 && param[0] == String.class) {
                 try {
-                    return (Component) constr.newInstance("box");
+                    return (Component) constr.newInstance(getBoxId());
                 } catch (Exception e) {
                     throw new UnhandledException(e);
                 }
@@ -387,15 +389,21 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private LoginBoxPanel createLoginBox() {
-        return new LoginBoxPanel("box", params);
+        return new LoginBoxPanel(getBoxId(), params);
     }
 
     private PageAdminBoxPanel createPageAdminBox() {
-        return new PageAdminBoxPanel("box");
+        PageAdminBoxPanel box = new PageAdminBoxPanel(getBoxId());
+        // TODO bad interface!
+        List<Component> components = newPageAdminBoxLinks("adminLink", "linkName");
+        for(Component component : components) {
+            box.addLink(component);
+        }
+        return box;
     }
 
     private OtherBoxPanel createOtherBox(Box box) {
-        return new OtherBoxPanel("box", Model.of(box));
+        return new OtherBoxPanel(getBoxId(), Model.of(box));
     }
 
     private Component createBoxNotFoundPanel() {
@@ -408,59 +416,50 @@ public abstract class TemplatePage extends WebPage {
     }
 
     /**
-     * Set the Filter Box e.g. search or tags
+     * Create the Filter Box e.g. search or tags
      */
-    public void addFilterBox(Panel filterBox) {
-        if (this.filterBox != null) {
-            if (filterBox instanceof BoxTitleVisibility) {
-                ((BoxTitleVisibility) filterBox).setTitleVisible(!filterBoxHideTitle);
-            }
-            this.filterBox.replaceWith(filterBox);
-            this.filterBox = filterBox;
-        }
+    protected Component newFilterBox(String markupId) {
+        return createEmptyFilterBox();
+//        if (this.filterBox != null) {
+//            if (filterBox instanceof BoxTitleVisibility) {
+//                ((BoxTitleVisibility) filterBox).setTitleVisible(!filterBoxHideTitle);
+//            }
+//            this.filterBox = filterBox;
+//        }
     }
 
     /**
-     * Set the TagCloud Box e.g. search or tags
+     * Create the TagCloud Box e.g. search or tags
      */
-    public <T extends AbstractTag<?>> void addTagCloudBox(TagService<T> tagService, Class<? extends Page> page) {
-        TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, page);
-        newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
-        tagCloudBox.replaceWith(newTagCloudBox);
-        tagCloudBox = newTagCloudBox;
+    protected Component newTagCloudBox(String markupId) {
+        return createEmptyFilterBox();
+//        TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, page);
+//        newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
+//        tagCloudBox = newTagCloudBox;
     }
 
     /**
-     * Add a link to the page admin panel
+     * Returns a custom list with page admin links
      */
-    public void addPageAdminBoxLink(Component link) {
-        if (pageAdminBox != null) {
-            pageAdminBox.addLink(link);
+    protected List<Component> newPageAdminBoxLinks(String linkMarkupId, String labelMarkupId) {
+        Component component = newPageAdminBoxLink(linkMarkupId, labelMarkupId);
+        if(component != null) {
+            return Arrays.asList(component);
         }
+        return new ArrayList<Component>();
     }
 
-    public String getPageAdminBoxLinkId() {
-        return "adminLink";
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        return null;
     }
 
-    public String getPageAdminBoxLinkLabelId() {
-        return "linkName";
-    }
-
-    public String getBoxId() {
+    private String getBoxId() {
         return "box";
     }
 
     public String getPageTitle() {
         return "";
     }
-//
-//	/**
-//	 * Change the page title
-//	 */
-//	public void setPageTitle(IModel<String> title) {
-//		pageTitle.setObject(title + " - " + configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
-//	}
 
     public FeedbackPanel getFeedback() {
         return feedback;

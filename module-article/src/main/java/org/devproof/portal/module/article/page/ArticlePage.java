@@ -42,6 +42,7 @@ import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.print.PrintConstants;
+import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.article.ArticleConstants;
 import org.devproof.portal.module.article.entity.Article;
@@ -80,16 +81,24 @@ public class ArticlePage extends ArticleBasePage {
 		searchQueryModel = articleDataProvider.getSearchQueryModel();
 		add(createRepeatingArticles());
 		add(createPagingPanel());
-		addFilterBox(createArticleSearchBoxPanel());
-		addTagCloudBox();
 	}
 
-	private void addTagCloudBox() {
-		addTagCloudBox(articleTagService, ArticlePage.class);
-	}
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createArticleSearchBoxPanel(markupId);
+    }
 
-	private ArticleSearchBoxPanel createArticleSearchBoxPanel() {
-		return new ArticleSearchBoxPanel(getBoxId(), searchQueryModel);
+    @Override
+    protected Component newTagCloudBox(String markupId) {
+        return createTagCloudBox(markupId);
+    }
+
+    private Component createTagCloudBox(String markupId) {
+        return new TagCloudBoxPanel<ArticleTag>(markupId, articleTagService, getClass());
+    }
+
+	private ArticleSearchBoxPanel createArticleSearchBoxPanel(String markupId) {
+		return new ArticleSearchBoxPanel(markupId, searchQueryModel);
 	}
 
 	private ArticleDataView createRepeatingArticles() {

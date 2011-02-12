@@ -49,12 +49,16 @@ public class CommentAdminPage extends TemplatePage {
         super(params);
         this.params = params;
         add(createCommentPanel());
-        addFilterBox(createCommentSearchBoxPanel());
     }
 
-    private CommentSearchBoxPanel createCommentSearchBoxPanel() {
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createCommentSearchBoxPanel(markupId);
+    }
+
+    private CommentSearchBoxPanel createCommentSearchBoxPanel(String markupId) {
         IModel<CommentQuery> queryModel = createCommentQueryModel();
-        return new CommentSearchBoxPanel(getBoxId(), queryModel) {
+        return new CommentSearchBoxPanel(markupId, queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

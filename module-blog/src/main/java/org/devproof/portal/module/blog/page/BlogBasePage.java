@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.blog.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -41,24 +42,28 @@ public abstract class BlogBasePage extends TemplatePage {
         super(params);
         add(createCSSHeaderContributor());
         addSyntaxHighlighter();
-        addBlogAddLink();
+    }
+
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        if (isAuthor()) {
+            return createBlogAddLink(linkMarkupId, labelMarkupId);
+        }
+        return super.newPageAdminBoxLink(linkMarkupId, labelMarkupId);
+    }
+
+    private Component createBlogAddLink(String linkMarkupId, String labelMarkupId) {
+        Link<?> addLink = newBlogAddLink(linkMarkupId);
+        addLink.add(new Label(labelMarkupId, getString("createLink")));
+        return addLink;
     }
 
     private HeaderContributor createCSSHeaderContributor() {
 		return CSSPackageResource.getHeaderContribution(BlogConstants.REF_BLOG_CSS);
 	}
 
-    private void addBlogAddLink() {
-        // New Blog Link
-        if (isAuthor()) {
-            Link<?> addLink = createBlogAddLink();
-            addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
-            addPageAdminBoxLink(addLink);
-        }
-    }
-
-    private Link<?> createBlogAddLink() {
-        return new Link<Void>(getPageAdminBoxLinkId()) {
+    private Link<?> newBlogAddLink(String linkMarkupId) {
+        return new Link<Void>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

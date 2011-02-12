@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.download.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -35,6 +36,7 @@ import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.service.DownloadService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,24 +53,21 @@ public abstract class DownloadBasePage extends TemplatePage {
         super(params);
         add(createCSSHeaderContributor());
         add(createHiddenBubbleWindow());
-        addDownloadAddLink();
-        addDeadlinkCheckLink();
+    }
+
+    @Override
+    protected List<Component> newPageAdminBoxLinks(String linkMarkupId, String labelMarkupId) {
+        if(isAuthor()) {
+            List<Component> links = new ArrayList<Component>();
+            links.add(createDownloadAddLink(linkMarkupId, labelMarkupId));
+            links.add(createDeadlinkCheckLink(linkMarkupId, labelMarkupId));
+            return links;
+        }
+        return super.newPageAdminBoxLinks(linkMarkupId, labelMarkupId);
     }
 
     private HeaderContributor createCSSHeaderContributor() {
         return CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS);
-    }
-
-    private void addDeadlinkCheckLink() {
-        if (isAuthor()) {
-            addPageAdminBoxLink(createDeadlinkCheckLink());
-        }
-    }
-
-    private void addDownloadAddLink() {
-        if (isAuthor()) {
-            addPageAdminBoxLink(createDownloadAddLink());
-        }
     }
 
     private WebMarkupContainer createHiddenBubbleWindow() {
@@ -82,14 +81,14 @@ public abstract class DownloadBasePage extends TemplatePage {
         return bubblePanel;
     }
 
-    private AjaxLink<Download> createDeadlinkCheckLink() {
-        AjaxLink<Download> deadlinkCheckLink = newDeadlinkCheckLink();
-        deadlinkCheckLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("deadlinkCheckLink")));
+    private AjaxLink<Download> createDeadlinkCheckLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<Download> deadlinkCheckLink = newDeadlinkCheckLink(linkMarkupId);
+        deadlinkCheckLink.add(new Label(labelMarkupId, getString("deadlinkCheckLink")));
         return deadlinkCheckLink;
     }
 
-    private AjaxLink<Download> newDeadlinkCheckLink() {
-        return new AjaxLink<Download>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Download> newDeadlinkCheckLink(String linkMarkupId) {
+        return new AjaxLink<Download>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -138,14 +137,14 @@ public abstract class DownloadBasePage extends TemplatePage {
         };
     }
 
-    private Link<?> createDownloadAddLink() {
-        Link<?> addLink = newDownloadAddLink();
-        addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
+    private Link<?> createDownloadAddLink(String linkMarkupId, String labelMarkupId) {
+        Link<?> addLink = newDownloadAddLink(linkMarkupId);
+        addLink.add(new Label(labelMarkupId, getString("createLink")));
         return addLink;
     }
 
-    private Link<?> newDownloadAddLink() {
-        return new Link<Void>(getPageAdminBoxLinkId()) {
+    private Link<?> newDownloadAddLink(String linkMarkupId) {
+        return new Link<Void>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

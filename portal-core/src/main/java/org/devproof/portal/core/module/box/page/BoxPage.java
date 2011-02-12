@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.box.page;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -40,6 +41,9 @@ import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Carsten Hufe
  */
@@ -62,7 +66,11 @@ public class BoxPage extends TemplatePage {
         super(params);
         add(createRepeatingBoxesWithRefreshContainer());
         add(createBubblePanel());
-        addPageAdminBoxLink(createCreateBoxLink());
+    }
+
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        return createCreateBoxLink(linkMarkupId, labelMarkupId);
     }
 
     private BoxDataView createRepeatingBoxes() {
@@ -74,18 +82,18 @@ public class BoxPage extends TemplatePage {
         return bubblePanel;
     }
 
-    private AjaxLink<Box> createCreateBoxLink() {
-        AjaxLink<Box> createLink = newCreateBoxLink();
-        createLink.add(createBoxLinkLabel());
+    private AjaxLink<Box> createCreateBoxLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<Box> createLink = newCreateBoxLink(linkMarkupId);
+        createLink.add(createBoxLinkLabel(labelMarkupId));
         return createLink;
     }
 
-    private Label createBoxLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    private Label createBoxLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("createLink"));
     }
 
-    private AjaxLink<Box> newCreateBoxLink() {
-        return new AjaxLink<Box>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Box> newCreateBoxLink(String linkMarkupId) {
+        return new AjaxLink<Box>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

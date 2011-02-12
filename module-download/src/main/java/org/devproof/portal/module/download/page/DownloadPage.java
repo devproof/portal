@@ -43,6 +43,7 @@ import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
@@ -86,8 +87,6 @@ public class DownloadPage extends DownloadBasePage {
 		add(createBubblePanel());
 		add(createRepeatingDownloads());
 		add(createPagingPanel());
-		addFilterBox(createDownloadSearchBoxPanel());
-		addTagCloudBox();
 	}
 
 	@Override
@@ -96,7 +95,21 @@ public class DownloadPage extends DownloadBasePage {
 		super.onBeforeRender();
 	}
 
-	private BubblePanel createBubblePanel() {
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createDownloadSearchBoxPanel(markupId);
+    }
+
+    @Override
+    protected Component newTagCloudBox(String markupId) {
+        return createTagCloudBox(markupId);
+    }
+
+    private Component createTagCloudBox(String markupId) {
+        return new TagCloudBoxPanel<DownloadTag>(markupId, downloadTagService, getClass());
+    }
+
+    private BubblePanel createBubblePanel() {
 		bubblePanel = new BubblePanel("bubble");
 		return bubblePanel;
 	}
@@ -115,16 +128,12 @@ public class DownloadPage extends DownloadBasePage {
 		return params.containsKey("create");
 	}
 
-	private void addTagCloudBox() {
-		addTagCloudBox(downloadTagService, DownloadPage.class);
-	}
-
 	private BookmarkablePagingPanel createPagingPanel() {
 		return new BookmarkablePagingPanel("paging", dataView, queryModel, DownloadPage.class);
 	}
 
-	private DownloadSearchBoxPanel createDownloadSearchBoxPanel() {
-		return new DownloadSearchBoxPanel("box", queryModel) {
+	private DownloadSearchBoxPanel createDownloadSearchBoxPanel(String markupId) {
+		return new DownloadSearchBoxPanel(markupId, queryModel) {
 			private static final long serialVersionUID = -4167284441561354178L;
 
 			@Override

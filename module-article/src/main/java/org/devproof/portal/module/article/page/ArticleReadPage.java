@@ -36,6 +36,7 @@ import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.print.PrintConstants;
+import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.entity.ArticlePage;
@@ -84,8 +85,16 @@ public class ArticleReadPage extends ArticleBasePage {
 		add(createBackLink());
 		add(createForwardLink());
 		add(createCommentPanel());
-		addTagCloudBox();
 	}
+
+    @Override
+    protected Component newTagCloudBox(String markupId) {
+        return createTagCloudBox(markupId);
+    }
+
+    private Component createTagCloudBox(String markupId) {
+        return new TagCloudBoxPanel<ArticleTag>(markupId, articleTagService, getClass());
+    }
 
 	private Integer getContentId() {
 		String id = params.getString("0");
@@ -139,10 +148,6 @@ public class ArticleReadPage extends ArticleBasePage {
 				return articleService.findArticlePageByArticleIdAndPage(contentId, currentPageNumber);
 			}
 		};
-	}
-
-	private void addTagCloudBox() {
-		addTagCloudBox(articleTagService, org.devproof.portal.module.article.page.ArticlePage.class);
 	}
 
 	private void validateAccessRights() {

@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
@@ -40,23 +41,24 @@ public class OtherPageBasePage extends TemplatePage {
 	public OtherPageBasePage(PageParameters params) {
 		super(params);
 		addSyntaxHighlighter();
-		addOtherPageAddLink();
 	}
 
-	private void addOtherPageAddLink() {
-		if (isAuthor()) {
-			addPageAdminBoxLink(createOtherPageAddLink());
-		}
-	}
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        if(isAuthor()) {
+            return createOtherPageAddLink(linkMarkupId, labelMarkupId);
+        }
+        return super.newPageAdminBoxLink(linkMarkupId, labelMarkupId);
+    }
 
-	private MarkupContainer createOtherPageAddLink() {
-		Link<?> link = newOtherPageAddLink();
-		link.add(createOtherPageAddLinkLabel());
+	private MarkupContainer createOtherPageAddLink(String linkMarkupId, String labelMarkupId) {
+		Link<?> link = newOtherPageAddLink(linkMarkupId);
+		link.add(createOtherPageAddLinkLabel(labelMarkupId));
 		return link;
 	}
 
-	private Link<?> newOtherPageAddLink() {
-		return new Link<Void>(getPageAdminBoxLinkId()) {
+	private Link<?> newOtherPageAddLink(String linkMarkupId) {
+		return new Link<Void>(linkMarkupId) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -68,8 +70,8 @@ public class OtherPageBasePage extends TemplatePage {
 		};
 	}
 
-	private Label createOtherPageAddLinkLabel() {
-		return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+	private Label createOtherPageAddLinkLabel(String labelMarkupId) {
+		return new Label(labelMarkupId, getString("createLink"));
 	}
 
 	public boolean isAuthor() {

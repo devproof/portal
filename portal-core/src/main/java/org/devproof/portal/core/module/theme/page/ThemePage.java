@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.theme.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -41,6 +42,7 @@ import org.devproof.portal.core.module.theme.panel.UploadThemePanel;
 import org.devproof.portal.core.module.theme.service.ThemeService;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,9 +64,15 @@ public class ThemePage extends TemplatePage {
         super(params);
         add(createBubblePanel());
         add(createRepeatingThemes());
-        addPageAdminBoxLink(createUploadLink());
-        addPageAdminBoxLink(createCompleteThemeDownloadLink());
-        addPageAdminBoxLink(createSmallThemeDownloadLink());
+    }
+
+    @Override
+    protected List<Component> newPageAdminBoxLinks(String linkMarkupId, String labelMarkupId) {
+        List<Component> links = new ArrayList<Component>();
+        links.add(createUploadLink(linkMarkupId, labelMarkupId));
+        links.add(createCompleteThemeDownloadLink(linkMarkupId, labelMarkupId));
+        links.add(createSmallThemeDownloadLink(linkMarkupId, labelMarkupId));
+        return links;
     }
 
     private ListView<ThemeBean> createRepeatingThemes() {
@@ -177,19 +185,19 @@ public class ThemePage extends TemplatePage {
         };
     }
 
-    private InternalDownloadLink createSmallThemeDownloadLink() {
+    private InternalDownloadLink createSmallThemeDownloadLink(String linkMarkupId, String labelMarkupId) {
         // Download link for small default theme
-        InternalDownloadLink smallTheme = newSmallThemeDownloadLink();
-        smallTheme.add(createSmallThemeDownloadLinkLabel());
+        InternalDownloadLink smallTheme = newSmallThemeDownloadLink(linkMarkupId);
+        smallTheme.add(createSmallThemeDownloadLinkLabel(labelMarkupId));
         return smallTheme;
     }
 
-    private Label createSmallThemeDownloadLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("smallThemeLink"));
+    private Label createSmallThemeDownloadLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("smallThemeLink"));
     }
 
-    private InternalDownloadLink newSmallThemeDownloadLink() {
-        return new InternalDownloadLink(getPageAdminBoxLinkId()) {
+    private InternalDownloadLink newSmallThemeDownloadLink(String linkMarkupId) {
+        return new InternalDownloadLink(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -199,18 +207,18 @@ public class ThemePage extends TemplatePage {
         };
     }
 
-    private InternalDownloadLink createCompleteThemeDownloadLink() {
-        InternalDownloadLink completeTheme = newCompleteThemeDownloadLink();
-        completeTheme.add(createCompleteThemeDownloadLinkLabel());
+    private InternalDownloadLink createCompleteThemeDownloadLink(String linkMarkupId, String labelMarkupId) {
+        InternalDownloadLink completeTheme = newCompleteThemeDownloadLink(linkMarkupId);
+        completeTheme.add(createCompleteThemeDownloadLinkLabel(labelMarkupId));
         return completeTheme;
     }
 
-    private Label createCompleteThemeDownloadLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("completeThemeLink"));
+    private Label createCompleteThemeDownloadLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("completeThemeLink"));
     }
 
-    private InternalDownloadLink newCompleteThemeDownloadLink() {
-        return new InternalDownloadLink(getPageAdminBoxLinkId()) {
+    private InternalDownloadLink newCompleteThemeDownloadLink(String linkMarkupId) {
+        return new InternalDownloadLink(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -220,18 +228,18 @@ public class ThemePage extends TemplatePage {
         };
     }
 
-    private AjaxLink<BubblePanel> createUploadLink() {
-        AjaxLink<BubblePanel> uploadLink = newUploadLink();
-        uploadLink.add(createUploadLinkLabel());
+    private AjaxLink<BubblePanel> createUploadLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<BubblePanel> uploadLink = newUploadLink(linkMarkupId);
+        uploadLink.add(createUploadLinkLabel(labelMarkupId));
         return uploadLink;
     }
 
-    private Label createUploadLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("uploadLink"));
+    private Label createUploadLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("uploadLink"));
     }
 
-    private AjaxLink<BubblePanel> newUploadLink() {
-        return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
+    private AjaxLink<BubblePanel> newUploadLink(String linkMarkupId) {
+        return new AjaxLink<BubblePanel>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

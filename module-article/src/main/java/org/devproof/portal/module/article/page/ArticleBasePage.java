@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.article.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -41,28 +42,28 @@ public class ArticleBasePage extends TemplatePage {
 		super(params);
 		add(createCSSHeaderContributor());
 		addSyntaxHighlighter();
-		addArticleAddLink();
 	}
 
-	private HeaderContributor createCSSHeaderContributor() {
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        if (isAuthor()) {
+			return createArticleAddLink(linkMarkupId, labelMarkupId);
+		}
+        return super.newPageAdminBoxLink(linkMarkupId, labelMarkupId);
+    }
+
+    private HeaderContributor createCSSHeaderContributor() {
 		return CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS);
 	}
 
-	private void addArticleAddLink() {
-		if (isAuthor()) {
-			Link<?> addLink = createArticleAddLink();
-			addPageAdminBoxLink(addLink);
-		}
-	}
-
-	private Link<?> createArticleAddLink() {
-		Link<?> addLink = newArticleAddLink();
-		addLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("createLink")));
+	private Link<?> createArticleAddLink(String linkMarkupId, String labelMarkupId) {
+		Link<?> addLink = newArticleAddLink(linkMarkupId);
+		addLink.add(new Label(labelMarkupId, getString("createLink")));
 		return addLink;
 	}
 
-	private Link<?> newArticleAddLink() {
-		return new Link<Object>(getPageAdminBoxLinkId()) {
+	private Link<?> newArticleAddLink(String linkMarkupId) {
+		return new Link<Object>(linkMarkupId) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

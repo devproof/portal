@@ -50,8 +50,8 @@ INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,c
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('email_validation','Enable email validation for registration','User','java.lang.Boolean','true');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('page_title','Page title','General','java.lang.String','devproof.org');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('copyright_owner','Copyright owner','General','java.lang.String','devproof.org Copyright 2010');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('footer_content','Footer content','General','java.lang.String','&copy; 2010 - www.devproof.org');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('copyright_owner','Copyright owner','General','java.lang.String','devproof.org Copyright 2011');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('footer_content','Footer content','General','java.lang.String','&copy; 2011 - www.devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('from_email_address','From email address','Email','java.lang.String','your@email.com');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('from_email_name','From email name','Email','java.lang.String','devproof.org');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('page_name','Page name','General','java.lang.String','devproof.org');

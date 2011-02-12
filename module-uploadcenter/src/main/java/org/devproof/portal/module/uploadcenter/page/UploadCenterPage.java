@@ -44,6 +44,8 @@ import org.devproof.portal.module.uploadcenter.panel.UploadFilePanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Carsten Hufe
@@ -71,28 +73,34 @@ public class UploadCenterPage extends TemplatePage {
         this.fileTreeModel = createTreeModel();
         add(createBubblePanel());
         add(createFolderTreeTable());
-        addPageAdminBoxLink(createUploadLink());
-        addPageAdminBoxLink(createFolderLink());
     }
 
-    private AjaxLink<BubblePanel> createFolderLink() {
-        AjaxLink<BubblePanel> createFolderLink = newCreateFolderLink();
-        createFolderLink.add(createFolderLinkLabel());
+    @Override
+    protected List<Component> newPageAdminBoxLinks(String linkMarkupId, String labelMarkupId) {
+        List<Component> links = new ArrayList<Component>();
+        links.add(createUploadLink(linkMarkupId, labelMarkupId));
+        links.add(createFolderLink(linkMarkupId, labelMarkupId));
+        return links;
+    }
+
+    private AjaxLink<BubblePanel> createFolderLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<BubblePanel> createFolderLink = newCreateFolderLink(linkMarkupId);
+        createFolderLink.add(createFolderLinkLabel(labelMarkupId));
         return createFolderLink;
     }
 
-    private Label createFolderLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("createFolderLink"));
+    private Label createFolderLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("createFolderLink"));
     }
 
-    private AjaxLink<BubblePanel> createUploadLink() {
-        AjaxLink<BubblePanel> uploadLink = newUploadLink(bubblePanel);
-        uploadLink.add(createUploadLinkLabel());
+    private AjaxLink<BubblePanel> createUploadLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<BubblePanel> uploadLink = newUploadLink(linkMarkupId);
+        uploadLink.add(createUploadLinkLabel(labelMarkupId));
         return uploadLink;
     }
 
-    private Label createUploadLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("uploadLink"));
+    private Label createUploadLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("uploadLink"));
     }
 
     private TreeTable createFolderTreeTable() {
@@ -125,8 +133,8 @@ public class UploadCenterPage extends TemplatePage {
         };
     }
 
-    private AjaxLink<BubblePanel> newCreateFolderLink() {
-        return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
+    private AjaxLink<BubblePanel> newCreateFolderLink(String linkMarkupId) {
+        return new AjaxLink<BubblePanel>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -159,8 +167,8 @@ public class UploadCenterPage extends TemplatePage {
         return session.hasRight(UploadCenterConstants.DOWNLOAD_AUTHOR_RIGHT);
     }
 
-    private AjaxLink<BubblePanel> newUploadLink(final BubblePanel bubblePanel) {
-        return new AjaxLink<BubblePanel>(getPageAdminBoxLinkId()) {
+    private AjaxLink<BubblePanel> newUploadLink(String markupId) {
+        return new AjaxLink<BubblePanel>(markupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

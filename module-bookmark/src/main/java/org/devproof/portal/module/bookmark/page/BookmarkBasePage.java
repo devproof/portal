@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.module.bookmark.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -36,6 +37,7 @@ import org.devproof.portal.module.bookmark.panel.DeliciousSyncPanel;
 import org.devproof.portal.module.bookmark.service.BookmarkService;
 import org.devproof.portal.module.deadlinkcheck.panel.DeadlinkCheckPanel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,9 +55,18 @@ public abstract class BookmarkBasePage extends TemplatePage {
         super(params);
         add(createCSSHeaderContributor());
         add(createHiddenBubblePanel());
-        addBookmarkAddLink();
-        addDeadlinkCheckLink();
-        addDeliciousSyncLink();
+    }
+
+    @Override
+    protected List<Component> newPageAdminBoxLinks(String linkMarkupId, String labelMarkupId) {
+        if(isAuthor()) {
+            List<Component> links = new ArrayList<Component>();
+            links.add(createBookmarkAddLink(linkMarkupId, labelMarkupId));
+            links.add(createDeadlinkCheckLink(linkMarkupId, labelMarkupId));
+            links.add(createDeliciousSyncLink(linkMarkupId, labelMarkupId));
+            return links;
+        }
+        return super.newPageAdminBoxLinks(linkMarkupId, labelMarkupId);
     }
 
     private HeaderContributor createCSSHeaderContributor() {
@@ -72,20 +83,14 @@ public abstract class BookmarkBasePage extends TemplatePage {
         return bubblePanel;
     }
 
-    private void addDeliciousSyncLink() {
-        if (isAuthor()) {
-            addPageAdminBoxLink(createDeliciousSyncLink());
-        }
-    }
-
-    private AjaxLink<Bookmark> createDeliciousSyncLink() {
-        AjaxLink<Bookmark> syncLink = newDeliciousSyncLink();
-        syncLink.add(new Label(getPageAdminBoxLinkLabelId(), getString("syncLink")));
+    private AjaxLink<Bookmark> createDeliciousSyncLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<Bookmark> syncLink = newDeliciousSyncLink(linkMarkupId);
+        syncLink.add(new Label(labelMarkupId, getString("syncLink")));
         return syncLink;
     }
 
-    private AjaxLink<Bookmark> newDeliciousSyncLink() {
-        return new AjaxLink<Bookmark>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Bookmark> newDeliciousSyncLink(String linkMarkupId) {
+        return new AjaxLink<Bookmark>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -111,30 +116,19 @@ public abstract class BookmarkBasePage extends TemplatePage {
         };
     }
 
-    private void addDeadlinkCheckLink() {
-        if (isAuthor()) {
-            addPageAdminBoxLink(createDeadlinkCheckLink());
-        }
-    }
 
-    private void addBookmarkAddLink() {
-        if (isAuthor()) {
-            addPageAdminBoxLink(createBookmarkAddLink());
-        }
-    }
-
-    private Link<?> createBookmarkAddLink() {
-        Link<?> addLink = newBookmarkAddLink();
-        addLink.add(createAddLinkLabel());
+    private Link<?> createBookmarkAddLink(String linkMarkupId, String labelMarkupId) {
+        Link<?> addLink = newBookmarkAddLink(linkMarkupId);
+        addLink.add(createAddLinkLabel(labelMarkupId));
         return addLink;
     }
 
-    private Label createAddLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    private Label createAddLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("createLink"));
     }
 
-    private Link<?> newBookmarkAddLink() {
-        return new Link<Void>(getPageAdminBoxLinkId()) {
+    private Link<?> newBookmarkAddLink(String linkMarkupId) {
+        return new Link<Void>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -146,18 +140,18 @@ public abstract class BookmarkBasePage extends TemplatePage {
         };
     }
 
-    private AjaxLink<Bookmark> createDeadlinkCheckLink() {
-        AjaxLink<Bookmark> deadlinkCheckLink = newDeadlinkCheckLink();
-        deadlinkCheckLink.add(createDeadlinkCheckLabel());
+    private AjaxLink<Bookmark> createDeadlinkCheckLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<Bookmark> deadlinkCheckLink = newDeadlinkCheckLink(linkMarkupId);
+        deadlinkCheckLink.add(createDeadlinkCheckLabel(labelMarkupId));
         return deadlinkCheckLink;
     }
 
-    private Label createDeadlinkCheckLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("deadlinkCheckLink"));
+    private Label createDeadlinkCheckLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("deadlinkCheckLink"));
     }
 
-    private AjaxLink<Bookmark> newDeadlinkCheckLink() {
-        return new AjaxLink<Bookmark>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Bookmark> newDeadlinkCheckLink(String linkMarkupId) {
+        return new AjaxLink<Bookmark>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

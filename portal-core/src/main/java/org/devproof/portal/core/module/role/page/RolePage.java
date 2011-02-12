@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.role.page;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -78,8 +79,16 @@ public class RolePage extends TemplatePage {
         this.queryModel = roleDataProvider.getSearchQueryModel();
         add(createRoleTableRefreshContainer());
         add(createBubblePanel());
-        addPageAdminBoxLink(createCreateRoleLink());
-        addFilterBox(createSearchBoxPanel());
+    }
+
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        return createCreateRoleLink(linkMarkupId, labelMarkupId);
+    }
+
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createSearchBoxPanel(markupId);
     }
 
     private WebMarkupContainer createRoleTableRefreshContainer() {
@@ -108,8 +117,8 @@ public class RolePage extends TemplatePage {
         return bubblePanel;
     }
 
-    private RoleSearchBoxPanel createSearchBoxPanel() {
-        return new RoleSearchBoxPanel(getBoxId(), queryModel) {
+    private RoleSearchBoxPanel createSearchBoxPanel(String markupId) {
+        return new RoleSearchBoxPanel(markupId, queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -119,18 +128,18 @@ public class RolePage extends TemplatePage {
         };
     }
 
-    private AjaxLink<Role> createCreateRoleLink() {
-        AjaxLink<Role> link = newCreateRoleLink();
-        link.add(createCreateRoleLinkLabel());
+    private AjaxLink<Role> createCreateRoleLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<Role> link = newCreateRoleLink(linkMarkupId);
+        link.add(createCreateRoleLinkLabel(labelMarkupId));
         return link;
     }
 
-    private Label createCreateRoleLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    private Label createCreateRoleLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("createLink"));
     }
 
-    private AjaxLink<Role> newCreateRoleLink() {
-        return new AjaxLink<Role>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Role> newCreateRoleLink(String linkMarkupId) {
+        return new AjaxLink<Role>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

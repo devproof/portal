@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.right.page;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -65,12 +66,20 @@ public class RightPage extends TemplatePage {
         this.queryModel = rightDataProvider.getSearchQueryModel();
         add(createRightRefreshTableContainer());
         add(createBubblePanel());
-        addPageAdminBoxLink(createCreateRightLink());
-        addFilterBox(createRightSearchBoxPanel());
     }
 
-    private RightSearchBoxPanel createRightSearchBoxPanel() {
-        return new RightSearchBoxPanel(getBoxId(), queryModel) {
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        return createCreateRightLink(linkMarkupId, labelMarkupId);
+    }
+
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createRightSearchBoxPanel(markupId);
+    }
+
+    private RightSearchBoxPanel createRightSearchBoxPanel(String markupId) {
+        return new RightSearchBoxPanel(markupId, queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -106,18 +115,18 @@ public class RightPage extends TemplatePage {
         return bubblePanel;
     }
 
-    private AjaxLink<Void> createCreateRightLink() {
-        AjaxLink<Void> adminLink = newCreateRightLink();
-        adminLink.add(createRightLinkLabel());
+    private AjaxLink<Void> createCreateRightLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<Void> adminLink = newCreateRightLink(linkMarkupId);
+        adminLink.add(createRightLinkLabel(labelMarkupId));
         return adminLink;
     }
 
-    private Label createRightLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    private Label createRightLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("createLink"));
     }
 
-    private AjaxLink<Void> newCreateRightLink() {
-        return new AjaxLink<Void>(getPageAdminBoxLinkId()) {
+    private AjaxLink<Void> newCreateRightLink(String linkMarkupId) {
+        return new AjaxLink<Void>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override

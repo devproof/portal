@@ -38,6 +38,7 @@ import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
@@ -77,24 +78,32 @@ public class BookmarkPage extends BookmarkBasePage {
 		add(createBubblePanel());
 		add(createRepeatingBookmarks());
 		add(createPagingPanel());
-		addFilterBox(createBookmarkSearchBoxPanel());
-		addTagCloudBox();
 	}
 
-	private BubblePanel createBubblePanel() {
+    @Override
+    protected Component newTagCloudBox(String markupId) {
+        return createTagCloudBox(markupId);
+    }
+
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createBookmarkSearchBoxPanel(markupId);
+    }
+
+    private BubblePanel createBubblePanel() {
 		bubblePanel = new BubblePanel("bubble");
 		return bubblePanel;
 	}
 
-	private void addTagCloudBox() {
-		addTagCloudBox(bookmarkTagService, BookmarkPage.class);
-	}
+    private Component createTagCloudBox(String markupId) {
+        return new TagCloudBoxPanel<BookmarkTag>(markupId, bookmarkTagService, getClass());
+    }
 
 	private BookmarkablePagingPanel createPagingPanel() {
 		return new BookmarkablePagingPanel("paging", dataView, searchQueryModel, BookmarkPage.class);
 	}
 
-	private BookmarkSearchBoxPanel createBookmarkSearchBoxPanel() {
+	private BookmarkSearchBoxPanel createBookmarkSearchBoxPanel(String markupId) {
 		return new BookmarkSearchBoxPanel("box", searchQueryModel) {
 			private static final long serialVersionUID = 1L;
 

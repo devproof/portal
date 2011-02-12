@@ -39,6 +39,7 @@ import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.print.PrintConstants;
+import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.entity.Blog;
@@ -79,20 +80,28 @@ public class BlogPage extends BlogBasePage {
         this.queryModel = blogDataProvider.getSearchQueryModel();
         add(createRepeatingBlogEntries());
         add(createPagingPanel());
-        addFilterBox(createBlogSearchBoxPanel());
-        addTagCloudBox();
     }
 
-    private BlogSearchBoxPanel createBlogSearchBoxPanel() {
-        return new BlogSearchBoxPanel("box", queryModel);
+    @Override
+    protected Component newTagCloudBox(String markupId) {
+        return createTagCloudBox(markupId);
+    }
+
+    private Component createTagCloudBox(String markupId) {
+        return new TagCloudBoxPanel<BlogTag>(markupId, blogTagService, getClass());
+    }
+
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createBlogSearchBoxPanel(markupId);
+    }
+
+    private BlogSearchBoxPanel createBlogSearchBoxPanel(String markupId) {
+        return new BlogSearchBoxPanel(markupId, queryModel);
     }
 
     private BookmarkablePagingPanel createPagingPanel() {
         return new BookmarkablePagingPanel("paging", dataView, queryModel, BlogPage.class);
-    }
-
-    private void addTagCloudBox() {
-        addTagCloudBox(blogTagService, BlogPage.class);
     }
 
     private BlogDataView createRepeatingBlogEntries() {

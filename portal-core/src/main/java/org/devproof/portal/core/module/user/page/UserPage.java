@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.user.page;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -48,6 +49,7 @@ import org.devproof.portal.core.module.user.query.UserQuery;
 import org.devproof.portal.core.module.user.service.UserService;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * @author Carsten Hufe
@@ -74,22 +76,30 @@ public class UserPage extends TemplatePage {
         this.queryModel = userDataProvider.getSearchQueryModel();
         add(createBubblePanel());
         add(createUserRefreshContainer());
-        addFilterBox(createUserSearchBoxPanel());
-        addPageAdminBoxLink(createCreateUserLink());
     }
 
-    private AjaxLink<User> createCreateUserLink() {
-        AjaxLink<User> createLink = newCreateUserLink();
-        createLink.add(createCreateUserLinkLabel());
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        return createCreateUserLink(linkMarkupId, labelMarkupId);
+    }
+
+    @Override
+    protected Component newFilterBox(String markupId) {
+        return createUserSearchBoxPanel(markupId);
+    }
+
+    private AjaxLink<User> createCreateUserLink(String linkMarkupId, String labelMarkupId) {
+        AjaxLink<User> createLink = newCreateUserLink(linkMarkupId);
+        createLink.add(createCreateUserLinkLabel(labelMarkupId));
         return createLink;
     }
 
-    private Label createCreateUserLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    private Label createCreateUserLinkLabel(String linkMarkupId) {
+        return new Label(linkMarkupId, getString("createLink"));
     }
 
-    private AjaxLink<User> newCreateUserLink() {
-        return new AjaxLink<User>(getPageAdminBoxLinkId()) {
+    private AjaxLink<User> newCreateUserLink(String linkMarkupId) {
+        return new AjaxLink<User>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -177,8 +187,8 @@ public class UserPage extends TemplatePage {
         return new OrderByBorder("table_username", "username", userDataProvider);
     }
 
-    private UserSearchBoxPanel createUserSearchBoxPanel() {
-        return new UserSearchBoxPanel(getBoxId(), queryModel) {
+    private UserSearchBoxPanel createUserSearchBoxPanel(String markupId) {
+        return new UserSearchBoxPanel(markupId, queryModel) {
             private static final long serialVersionUID = 1L;
 
             @Override

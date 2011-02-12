@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.email.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -24,6 +25,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.email.entity.EmailTemplate;
 import org.devproof.portal.core.module.email.service.EmailService;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Carsten Hufe
@@ -35,21 +39,25 @@ public class EmailTemplateBasePage extends TemplatePage {
 
     public EmailTemplateBasePage(PageParameters params) {
         super(params);
-        addPageAdminBoxLink(createCreateEmailTemplateLink());
     }
 
-    private Link<EmailTemplate> createCreateEmailTemplateLink() {
-        Link<EmailTemplate> adminLink = newCreateEmailTemplateLink();
-        adminLink.add(createCreateEmailTemplateLinkLabel());
+    @Override
+    protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
+        return createCreateEmailTemplateLink(linkMarkupId, labelMarkupId);
+    }
+
+    private Link<EmailTemplate> createCreateEmailTemplateLink(String linkMarkupId, String labelMarkupId) {
+        Link<EmailTemplate> adminLink = newCreateEmailTemplateLink(linkMarkupId);
+        adminLink.add(createCreateEmailTemplateLinkLabel(labelMarkupId));
         return adminLink;
     }
 
-    private Label createCreateEmailTemplateLinkLabel() {
-        return new Label(getPageAdminBoxLinkLabelId(), getString("createLink"));
+    private Label createCreateEmailTemplateLinkLabel(String labelMarkupId) {
+        return new Label(labelMarkupId, getString("createLink"));
     }
 
-    private Link<EmailTemplate> newCreateEmailTemplateLink() {
-        return new Link<EmailTemplate>(getPageAdminBoxLinkId()) {
+    private Link<EmailTemplate> newCreateEmailTemplateLink(String linkMarkupId) {
+        return new Link<EmailTemplate>(linkMarkupId) {
             private static final long serialVersionUID = 1L;
 
             @Override
