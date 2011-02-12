@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>
-    <table width="100%">
-        <tr>
-            <td align="left"><h2><a wicket:id="backLink"><wicket:message key="back"/></a></h2></td>
-            <td align="right"><h2><a wicket:id="forwardLink"><wicket:message key="forward"/></a></h2></td>
-        </tr>
-    </table>
+    <div class="paging paging-left">
+        <a wicket:id="backLink"><wicket:message key="back"/></a> &nbsp;
+    </div>
+    <div class="paging paging-right">
+        <a wicket:id="forwardLink"><wicket:message key="forward"/></a>
+    </div>
 </wicket:panel>
 </html>

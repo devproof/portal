@@ -35,6 +35,7 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/blog/test-datasource.xml" })
 public class BlogPageTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
