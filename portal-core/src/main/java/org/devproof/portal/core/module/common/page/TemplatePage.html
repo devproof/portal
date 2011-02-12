@@ -8,6 +8,7 @@
     <link wicket:id="rss2reference"/>
     <link wicket:id="atom1reference"/>
     <title wicket:id="pageTitle">[page name]</title>
+    <script type="text/javascript" wicket:id="googleAnalytics"></script>
 </head>
 <body>
 <div id="modalMask"></div>
@@ -26,11 +27,10 @@
 
     <div id="contant">
         <div class="contant_1">
-            <div wicket:id="feedbackPanel"></div>
-            	<div class="contant_1_left">
-                    <wicket:child/>
-
-              </div>
+            <div class="contant_1_left">
+                <div wicket:id="feedbackPanel"></div>
+                <wicket:child/>
+            </div>
 
             <div class="sideBar">
                 <wicket:container wicket:id="repeatingSideNav">
@@ -48,37 +48,6 @@
                         <div wicket:id="box"/>
                     </div>
                 </wicket:fragment>
-                <!-- hier content fuer 2 boxen
-                <div class="sideBarListBox">
-                    <img src="../img/sideBarListBoxTop.png" alt="" width="240" height="10"/>
-                    <ul>
-                        <li><a href="#">What is Lorem Ipsum?</a></li>
-                        <li><a href="#">Why Do We Use It?</a></li>
-                        <li><a href="#">Where Does It Come From?</a></li>
-                        <li><a href="#">Where Can I Get Some?</a></li>
-                        <li><a href="#">There are many variations of passages of Lorem Ipsum available</a></li>
-                        <li><a href="#">Alteration In Some Form</a></li>
-                        <li><a href="#">If you are going to use a passage</a></li>
-                        <li><a href="#">You Need To Be Sure There</a></li>
-                        <li><a href="#">The generated Lorem Ipsum is</a></li>
-                    </ul>
-                    <img src="images/sideBarListBoxBottom.png" alt="" width="240" height="10"/>
-                </div>
-                <div class="sideBarItem">
-                    <h3>Blogroll</h3>
-                    <ul>
-                        <li><a href="#">Category One</a></li>
-                        <li class="cat002"><a href="#">There are many</a></li>
-                        <li class="cat003"><a href="#">Lorem Ipsum available</a></li>
-                        <li class="cat003"><a href="#">If you are going</a></li>
-                        <li class="cat003"><a href="#">All the Lorem Ipsum</a></li>
-                        <li class="cat003"><a href="#">200 Latin words</a></li>
-                        <li class="cat003"><a href="#">It uses a dictionary</a></li>
-                        <li class="cat003"><a href="#">Lorem ipsum dolor</a></li>
-                        <li class="cat003"><a href="#">Latin professor at</a></li>
-                    </ul>
-                </div>
-                -->
                 <div></div>
             </div>
             <br class="clear"/>
@@ -92,11 +61,5 @@
             wicket:id="footerLabel">[copy right - footer line]</span></a>
     </p>
 </div>
-
-<script type="text/javascript" wicket:id="googleAnalytics1">
-    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript" wicket:id="googleAnalytics2"></script>
 </body>
 </html>

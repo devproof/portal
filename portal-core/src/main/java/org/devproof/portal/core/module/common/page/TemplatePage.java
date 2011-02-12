@@ -93,8 +93,7 @@ public abstract class TemplatePage extends WebPage {
         add(createAtom1LinkReference());
         add(createPageTitleLabel());
         add(createFeedbackPanel());
-        add(createGoogleAnalyticsPart1());
-        add(createGoogleAnalyticsPart2());
+        add(createGoogleAnalytics());
         add(createFooterLink());
         add(createCopyrightLabel());
         add(createRepeatingMainNavigation());
@@ -138,36 +137,24 @@ public abstract class TemplatePage extends WebPage {
         };
     }
 
-    private WebComponent createGoogleAnalyticsPart2() {
+    private WebComponent createGoogleAnalytics() {
         boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
-        WebComponent googleAnalytics2 = newGoogleAnalyticsPart2();
+        WebComponent googleAnalytics2 = newGoogleAnalytics();
         googleAnalytics2.setVisible(googleEnabled);
         return googleAnalytics2;
     }
 
-    private WebComponent newGoogleAnalyticsPart2() {
-        return new WebComponent("googleAnalytics2") {
+    private WebComponent newGoogleAnalytics() {
+        return new WebComponent("googleAnalytics") {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
-                StringBuilder buf = new StringBuilder();
-                buf.append("try {\n");
-                buf.append("var pageTracker = _gat._getTracker(\"");
-                buf.append(configurationService.findAsString(CommonConstants.CONF_GOOGLE_WEBPROPERTY_ID));
-                buf.append("\");\n");
-                buf.append("pageTracker._trackPageview();");
-                buf.append("} catch(err) {}");
-                replaceComponentTagBody(markupStream, openTag, buf.toString());
+                String googleAnalytics = "  var _gaq = _gaq || [];\n" + "  _gaq.push(['_setAccount', '$WEBPROPERTYID']);\n" + "  _gaq.push(['_trackPageview']);\n" + "\n" + "  (function() {\n" + "    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n" + "    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n" + "    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n" + "  })();";
+                googleAnalytics = StringUtils.replace(googleAnalytics, "$WEBPROPERTYID", configurationService.findAsString(CommonConstants.CONF_GOOGLE_WEBPROPERTY_ID));
+                replaceComponentTagBody(markupStream, openTag, googleAnalytics);
             }
         };
-    }
-
-    private WebMarkupContainer createGoogleAnalyticsPart1() {
-        boolean googleEnabled = configurationService.findAsBoolean(CommonConstants.CONF_GOOGLE_ANALYTICS_ENABLED);
-        WebMarkupContainer googleAnalytics1 = new WebMarkupContainer("googleAnalytics1");
-        googleAnalytics1.setVisible(googleEnabled);
-        return googleAnalytics1;
     }
 
     private FeedbackPanel createFeedbackPanel() {

@@ -70,7 +70,7 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 
             @Override
             public void onClick() {
-                setResponsePage(MessagePage.getMessagePageWithLogout(getString("loggedout")));
+                info(getString("loggedout"));
             }
         };
     }

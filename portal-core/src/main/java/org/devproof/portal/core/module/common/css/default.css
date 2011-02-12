@@ -537,22 +537,6 @@ ul.controls li a.more {
     background-image: url('../img/icon-more.gif');
 }
 
-.feedbackPanelERROR {
-    color: red;
-    list-style: none;
-    font-weight: bold;
-    font-size: 8pt;
-    padding: 2px 0;
-}
-
-.feedbackPanelINFO {
-    color: #446666;
-    list-style: none;
-    font-weight: bold;
-    font-size: 8pt;
-    padding: 2px 0;
-}
-
 #modalMask {
     position: absolute;
     left: 0;
@@ -759,4 +743,25 @@ div.wicket-aa ul li.selected {
     background-color:#e9e9e9;
     font-size: 18px;
     font-weight:bold;
+}
+
+span.feedbackPanelERROR,span.feedbackPanelINFO {
+    -moz-border-radius: 3px 3px 3px 3px;
+    border: 2px solid #DDDDDD;
+    margin-bottom: 1em;
+    padding: 0.8em;
+    display: block;
+}
+span.feedbackPanelERROR {
+   background: url("../img/error-msg.png") no-repeat scroll 15px 10px #FBE3E4;
+   padding-left: 40px;
+   border-color: #FBC2C4;
+   color: #8A1F11;
+}
+
+span.feedbackPanelINFO {
+    background: url("../img/success-msg.png") no-repeat scroll 15px 10px #E6EFC2;
+    padding-left: 40px;
+    border-color: #C6D880;
+    color: #264409;
 }

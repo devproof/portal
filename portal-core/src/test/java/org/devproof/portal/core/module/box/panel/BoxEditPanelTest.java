@@ -74,7 +74,7 @@ public class BoxEditPanelTest {
         ft.select("boxType", 1);
         ft.setValue("title", "mytitle");
         ft.setValue("otherPageConfiguration:content", "mycontent");
-        ft.setValue("otherPageConfiguration:customStyle", "myCss");
+        ft.setValue("customStyle", "myCss");
         tester.executeAjaxEvent("panel:form:saveButton", "onclick");
         tester.assertNoErrorMessage();
         assertTrue(calledSave);

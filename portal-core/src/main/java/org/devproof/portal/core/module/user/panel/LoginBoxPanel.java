@@ -83,34 +83,11 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
                     String message = session.authenticate(username, password);
                     if (message == null) {
                         info(getString("logged.in"));
-                        redirectToSamePage();
                     } else {
                         error(getString(message));
                     }
                 } catch (UserNotConfirmedException e) {
                     setResponsePage(new ReenterEmailPage(Model.of(valueMap.getString("username"))));
-                }
-            }
-
-            private void redirectToSamePage() {
-                // redirect to the same page so that the rights will be
-                // rechecked!
-                String optParam = valueMap.getString("optparam");
-                if (getPage() instanceof MessagePage) {
-                    MessagePage msgPage = (MessagePage) getPage();
-                    String redirectUrl = msgPage.getRedirectURLAfterLogin();
-                    if (redirectUrl != null) {
-                        setResponsePage(new RedirectPage(redirectUrl));
-                    } else {
-                    	Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-                        setResponsePage(homePage);
-                    }
-                } else {
-                    if (optParam == null) {
-                        setResponsePage(getPage().getClass());
-                    } else {
-                        setResponsePage(getPage().getClass(), new PageParameters("0=" + optParam));
-                    }
                 }
             }
         };
