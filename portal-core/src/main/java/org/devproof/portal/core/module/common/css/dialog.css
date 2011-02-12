@@ -74,6 +74,7 @@
 
 .dialog h1, .dialog h2 {
     padding-bottom: 0;
+    color: #FFF;
 }
 
 .dialog.type2 .dialogContent, .dialog.type2 .t, .dialog.type2 .b, .dialog.type2 .b div {

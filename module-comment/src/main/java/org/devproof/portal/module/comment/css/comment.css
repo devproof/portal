@@ -1,60 +1,169 @@
-.commentsLink {
- color : #666;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
+/*
+#footer {
+    background:#4A4A4A;
+	padding:10px;
+	padding-bottom:20px;
+	margin-bottom:30px;
+}
+#footer p{
+    color:#E1E1E1;
+	font-size:14px;
+	line-height:20px;
+}
+.footerForm {
+	float:right;
+	width:600px;
 }
 
-.commentsLink:hover {
-    text-decoration: underline;
+
+.footerForm h3{
+       font-family:Georgia, "Times New Roman", Times, serif;
+       font-size:38px;
+       color:#e9e9e9;
+       font-weight:bold;
+       margin-bottom:10px;
+       text-align:left;
+       margin-bottom:5px;
 }
+.footerForm h4{
+       font-family:Georgia, "Times New Roman", Times, serif;
+       font-size:18px;
+       color:#b7b7b7;
+       font-weight:bold;
+       margin-bottom:10px;
+       text-align:left;
+}
+.footerFormR {
+	width:285px;
+	margin-right:10px;
+	float:left;
+	margin-top:20px;
+}
+.footerForm p{
+	margin-bottom:5px;
+}
+.footerForm p label{
+	display:block;
+	font-size:14px;
+	font-weight:bold;
+	padding-bottom:2px;
+}
+input.footerInputArea {
+	background:#FFFFFF;
+	border:none;
+	padding:6px;
+	width:274px;
+	height:20px;
+	padding-top:4px;
+	font-size:18px;
+	font-weight:normal;
+}
+textarea.footertextarea {
+	background:#FFFFFF;
+	border:none;
+	padding:6px;
+	width:274px;
+	height:133px;
+	padding-top:6px;
+	font-size:18px;
+	font-weight:normal;
+}
+input.footerSubmit {
+	background:url(../img/submit.png);
+	border:none;
+	width:108px;
+	height:37px;
+	font-size:18px;
+	font-weight:normal;
+	float:right;
+	cursor:pointer;
+}
+#footerContainer {
+	background:url(../img/footerContainerBgR.png) repeat-x left top;
+	height:50px;
+	line-height:50px;
+	font-size:12px;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:#B7B7B7;
+	width:100%;
+}
+#footerContainer p{
+	width:960px;
+	margin:auto;
+	padding:0px 10px;
+}
+#footerContainer p label{
+	float:right;
+}
+#footerContainer p label a{
+	color:#B7B7B7;
+}#footerContainer p label a:hover{
+	color:#666666;
+}
+*/
+ /* -------------------------- */
+
 
 .commentsMain {
-    text-align: left;
-    width: 580px;
-    margin: 0 auto;
-    border: 3px dashed #CCC;
-    padding: 15px;
-    margin-top: 20px;
+    background:#4A4A4A;
+	padding: 10px 20px 20px 20px;
+	margin-top:20px;
+   color:#e9e9e9;
 }
 
-.commentsMain h3 {
-    color: #666;
-    padding-left: 15px;
-    padding-bottom: 15px;
+.commentsMain h3{
+   background: none;
+   border: none;
+   font-family:Georgia, "Times New Roman", Times, serif;
+   font-size:26px;
+   color:#e9e9e9;
+   font-weight:bold;
+   margin-bottom:10px;
+   text-align:left;
+   padding: 10px 0px 10px 0px;
 }
 
-.noCommentsHint {
-    color: #666;
-    padding: 15px 15px 3px 15px;
+.commentsMain p {
+    color:#E1E1E1;
+	font-size:14px;
+	line-height:20px;
+    border-top:2px dotted #E1E1E1;
+    padding-top:20px;
 }
 
-.commentsView {
-    border-top: 1px solid #CCC;
-    padding: 15px 15px 15px 15px;
+.commentsMain a {
+    color: #FFFFFF;
 }
 
-.commentsView {
-    border-top: 1px solid #CCC;
-    padding: 15px 15px 15px 15px;
+.commentsMain img {
+    float: none;
 }
 
-.comment {
-    color: #666;
+.commentsMain .paging {
+    width:330px;
+    float: left;
+    margin-bottom:20px;
+    font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:24px;
+}
+
+.commentsMain .paging-left {
+    text-align:left;
+}
+
+.commentsMain .paging-right {
+    text-align:right;
 }
 
 .commentMetaInfo {
-    color: #888;
-    font-size: 8pt;
-    padding-top: 0.5em;
+    color: #CCC;
+    font-size: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .commentAdmin {
-    padding-top: 10px;
-}
-
-.commentAdmin * {
-    vertical-align: middle;
+    padding-bottom:20px;
 }
 
 .commentAccepted {
@@ -75,12 +184,62 @@
     padding: 2px;
 }
 
-.commentsForm {
-    padding-top: 15px;
-    border-top: 1px solid #CCC;
+.commentForm {
+	float:right;
+	width:630px;
+    display:block;
 }
 
-.commentsForm th {
-    color: #666;
-    vertical-align: text-top;
+.commentFormL {
+	width:170px;
+	margin-right:10px;
+	float:left;
+	margin-top:20px;
+}
+.commentFormR {
+	width:362px;
+	margin-right:10px;
+	float:left;
+	margin-top:20px;
+}
+.commentForm p{
+	margin-bottom:5px;
+    border:none;
+}
+.commentForm p label{
+	display:block;
+	font-size:14px;
+	font-weight:bold;
+	padding-bottom:2px;
+}
+input.commentInputArea {
+	background:#FFFFFF;
+	border:none;
+	padding:6px;
+	width:150px;
+	height:20px;
+	padding-top:4px;
+	font-size:18px;
+	font-weight:normal;
+}
+textarea.commenttextarea {
+	background:#FFFFFF;
+	border:none;
+	padding:6px;
+	width:350px;
+	height:133px;
+	padding-top:6px;
+	font-size:18px;
+	font-weight:normal;
+}
+
+input.commentSubmit {
+	background:url(../img/submit.png);
+	border:none;
+	width:108px;
+	height:37px;
+	font-size:18px;
+	font-weight:normal;
+	float:right;
+	cursor:pointer;
 }
