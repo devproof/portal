@@ -36,12 +36,12 @@ import org.devproof.portal.module.comment.service.CommentService;
 /**
  * @author Carsten Hufe
  */
-// TODO rendering test
 public abstract class CommentLinkPanel extends Panel {
     private static final long serialVersionUID = 688295761944565000L;
     @SpringBean(name = "commentService")
     private CommentService commentService;
     private CommentConfiguration configuration;
+    private WebMarkupContainer commentLink;
 
     public CommentLinkPanel(String id, CommentConfiguration configuration) {
         super(id);
@@ -52,7 +52,7 @@ public abstract class CommentLinkPanel extends Panel {
     }
 
     private Component createCommentLink() {
-        WebMarkupContainer commentLink = newCommentLink();
+        commentLink = newCommentLink();
         commentLink.add(createCommentsLinkLabel());
         commentLink.setOutputMarkupId(true);
         return commentLink;
@@ -68,6 +68,7 @@ public abstract class CommentLinkPanel extends Panel {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
+                target.addComponent(commentLink);
                 CommentLinkPanel.this.onClick(target);
             }
         };

@@ -82,6 +82,11 @@
     _background-image: url(../img/dialog2-dark-alpha-drip.gif);
 }
 
+.dialog img {
+    float:none;
+    margin: 0px;
+}
+
 /* "drip" variant */
 .dialog.drip .b, .dialog.drip .b div {
     height: 75px;
