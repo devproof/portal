@@ -2,19 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:panel>
     <h3 wicket:id="title"><wicket:message key="boxTitle">[Login]</wicket:message></h3>
-
+    <br />
     <form wicket:id="loginForm">
-        <div>
-            <input type="hidden" wicket:id="optparam"/>
+        <p><input type="hidden" wicket:id="optparam"/>
 
-            <div><wicket:message key="username">[Username]</wicket:message></div>
-            <input type="text" wicket:id="username" class="boxinput"/>
+        <p><label><wicket:message key="username">[Username]</wicket:message></label></p>
+        <p><input type="text" wicket:id="username"/></p>
 
-            <div><wicket:message key="password">[Password]</wicket:message></div>
-            <input type="password" wicket:id="password" class="boxinput"/> <input type="submit"
-                                                                                  wicket:message="value:button"
-                                                                                  class="button"/> <br/><br/>
-        </div>
+        <p><label><wicket:message key="password">[Password]</wicket:message></label></p>
+        <p><input type="password" wicket:id="password"/></p>
+        <p><input type="submit" wicket:message="value:button"/></p>
     </form>
     <ul>
         <li><a wicket:id="registerLink" href="#"><wicket:message
