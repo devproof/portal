@@ -305,6 +305,7 @@ p.quoteBar {
 	color:#000000;
 	font-weight:bold;
 }
+
 .sideBar{
     width:240px;
 	float:left;
@@ -321,6 +322,9 @@ p.quoteBar {
     font-family:Georgia, "Times New Roman", Times, serif;
 	font-size:18px;
 	color:#3A3A3A;
+}
+.sideBar .selsidenav {
+    background:#EEEEEE;
 }
 .sideBarItem ul li{
     background:url(../img/sideBarArrow.png) no-repeat 5px 12px;
@@ -346,6 +350,18 @@ p.quoteBar {
 	font-weight:bold;
 	padding-right:10px;
 	line-height:20px;
+}
+.sideBarListBox .top {
+    width: 240px;
+    height: 10px;
+    display: block;
+    background:url(../img/sideBarListBoxTop.png) no-repeat;
+}
+.sideBarListBox .bottom {
+    width: 240px;
+    height: 10px;
+    display: block;
+    background:url(../img/sideBarListBoxBottom.png) no-repeat;
 }
 .sideBarListBox {
 	margin-bottom:20px;

@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.box.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -74,17 +73,17 @@ public abstract class BoxEditPanel extends Panel {
         form.add(createBoxTypeChoice());
         form.add(createTitleField());
         form.add(createHideTitleCheckBox());
-        form.add(createOtherPageConfigurationContainer());
+        form.add(createCustomStyleField());
+        form.add(createOtherBoxConfigurationContainer());
         form.add(createAjaxButton());
         form.add(createCancelButton());
         form.setOutputMarkupId(true);
         return form;
     }
 
-    private WebMarkupContainer createOtherPageConfigurationContainer() {
+    private WebMarkupContainer createOtherBoxConfigurationContainer() {
         otherPageConfigurationContainer = newOtherPageConfigurationContainer();
         otherPageConfigurationContainer.add(createContentField());
-        otherPageConfigurationContainer.add(createCustomStyleField());
         otherPageConfigurationContainer.setOutputMarkupId(true);
         otherPageConfigurationContainer.setOutputMarkupPlaceholderTag(true);
         return otherPageConfigurationContainer;

@@ -31,8 +31,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -56,10 +55,7 @@ import org.devproof.portal.core.module.configuration.service.ConfigurationServic
 import org.devproof.portal.core.module.feed.component.Atom1Link;
 import org.devproof.portal.core.module.feed.component.Rss2Link;
 import org.devproof.portal.core.module.feed.panel.FeedBoxPanel;
-import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
-import org.devproof.portal.core.module.tag.service.TagService;
-import org.devproof.portal.core.module.user.page.LoginPage;
 import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
 
 import java.lang.reflect.Constructor;
@@ -231,6 +227,7 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * creates the Main Navigation on the top
+     * @return component
      */
     private Component createRepeatingMainNavigation() {
         IModel<List<Class<? extends Page>>> mainNavigationModel = createMainNavigationModel();
@@ -307,11 +304,31 @@ public abstract class TemplatePage extends WebPage {
 
             @Override
             protected void populateItem(ListItem<Box> item) {
-                Component box = createBoxItem(item);
-                setBoxTitleVisibility(item.getModelObject(), box);
-                item.add(box);
+                Box box = item.getModelObject();
+                String customStyle = box.getCustomStyle();
+                Fragment outerBoxComponent = createOuterBoxFragment(customStyle);
+                Component boxComponent = createInnerBox(item);
+                setBoxTitleVisibility(item.getModelObject(), boxComponent);
+                outerBoxComponent.add(boxComponent);
+                item.setVisible(boxComponent.isVisible());
+                item.add(outerBoxComponent);
             }
         };
+    }
+
+    private Fragment createOuterBoxFragment(String customStyle) {
+        if(StringUtils.isNotBlank(customStyle) && existsCustomStyleFragment(customStyle)) {
+            return new Fragment("outerBox", customStyle, this);
+        }
+        else {
+            return new Fragment("outerBox", "defaultBoxTemplate", this);
+        }
+    }
+
+    private boolean existsCustomStyleFragment(String fragmentId) {
+        MarkupStream associatedMarkupStream = TemplatePage.this.getAssociatedMarkupStream(false);
+        int defaultBoxTemplateIndex = associatedMarkupStream.findComponentIndex(null, fragmentId);
+        return defaultBoxTemplateIndex != -1;
     }
 
     private IModel<List<Box>> createRepeatingBoxesModel() {
@@ -325,8 +342,8 @@ public abstract class TemplatePage extends WebPage {
             };
     }
 
-    private Component createBoxItem(ListItem<Box> itemA) {
-        Box box = itemA.getModelObject();
+    private Component createInnerBox(ListItem<Box> item) {
+        Box box = item.getModelObject();
         Class<? extends Component> boxClazz = boxRegistry.getClassBySimpleClassName(box.getBoxType());
         if (boxClazz == null) {
             return createBoxNotFoundPanel();
@@ -337,7 +354,6 @@ public abstract class TemplatePage extends WebPage {
         } else if (boxClazz.isAssignableFrom(PageAdminBoxPanel.class)) {
             return createPageAdminBox();
         } else if (boxClazz.isAssignableFrom(LoginBoxPanel.class)) {
-//            item.setVisible(isNotLoginPage());
             return createLoginBox();
         } else if (boxClazz.isAssignableFrom(TagCloudBoxPanel.class)) {
             return newTagCloudBox(getBoxId());
@@ -384,10 +400,6 @@ public abstract class TemplatePage extends WebPage {
         }
     }
 
-    private boolean isNotLoginPage() {
-        return !(this instanceof LoginPage);
-    }
-
     private LoginBoxPanel createLoginBox() {
         return new LoginBoxPanel(getBoxId(), params);
     }
@@ -417,29 +429,27 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * Create the Filter Box e.g. search or tags
+     * @param markupId markup id
+     * @return filter component
      */
     protected Component newFilterBox(String markupId) {
         return createEmptyFilterBox();
-//        if (this.filterBox != null) {
-//            if (filterBox instanceof BoxTitleVisibility) {
-//                ((BoxTitleVisibility) filterBox).setTitleVisible(!filterBoxHideTitle);
-//            }
-//            this.filterBox = filterBox;
-//        }
     }
 
     /**
      * Create the TagCloud Box e.g. search or tags
+     * @param markupId markup id
+     * @return tag cloud component
      */
     protected Component newTagCloudBox(String markupId) {
         return createEmptyFilterBox();
-//        TagCloudBoxPanel<?> newTagCloudBox = new TagCloudBoxPanel<T>("box", tagService, page);
-//        newTagCloudBox.setTitleVisible(!tagCloudBoxHideTitle);
-//        tagCloudBox = newTagCloudBox;
     }
 
     /**
      * Returns a custom list with page admin links
+     * @param linkMarkupId link markup id
+     * @param labelMarkupId link label markup id
+     * @return list with links
      */
     protected List<Component> newPageAdminBoxLinks(String linkMarkupId, String labelMarkupId) {
         Component component = newPageAdminBoxLink(linkMarkupId, labelMarkupId);
@@ -449,6 +459,13 @@ public abstract class TemplatePage extends WebPage {
         return new ArrayList<Component>();
     }
 
+    /**
+     * Returns just one page admin link, convience method
+     *
+     * @param linkMarkupId link markup id
+     * @param labelMarkupId link label markup id
+     * @return one link
+     */
     protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
         return null;
     }

@@ -31,15 +31,20 @@
 
             <div class="sideBar">
                 <wicket:container wicket:id="repeatingSideNav">
-                    <div class="sideBarListBox">
-                            <!-- TODO -->
-                        <img src="http://opensourcetemplates.org/templates/preview/magazine/images/sideBarListBoxTop.png" alt="" width="240" height="10"/>
-                        <div wicket:id="box" >
-                        </div>
-                        <img src="http://opensourcetemplates.org/templates/preview/magazine/images/sideBarListBoxBottom.png" alt="" width="240" height="10"/>
-
-                    </div>
+                    <wicket:container wicket:id="outerBox"/>
                 </wicket:container>
+                <wicket:fragment wicket:id="defaultBoxTemplate">
+                    <div class="sideBarListBox">
+                        <div class="top"/>
+                        <div wicket:id="box"/>
+                        <div class="bottom"/>
+                    </div>
+                </wicket:fragment>
+                <wicket:fragment wicket:id="whiteBoxTemplate">
+                    <div class="sideBarItem">
+                        <div wicket:id="box"/>
+                    </div>
+                </wicket:fragment>
                 <!-- hier content fuer 2 boxen
                 <div class="sideBarListBox">
                     <img src="../img/sideBarListBoxTop.png" alt="" width="240" height="10"/>
