@@ -93,7 +93,7 @@ public class ArticleReadPage extends ArticleBasePage {
     }
 
     private Component createTagCloudBox(String markupId) {
-        return new TagCloudBoxPanel<ArticleTag>(markupId, articleTagService, getClass());
+        return new TagCloudBoxPanel<ArticleTag>(markupId, articleTagService, org.devproof.portal.module.article.page.ArticlePage.class);
     }
 
 	private Integer getContentId() {
