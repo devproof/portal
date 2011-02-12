@@ -1,21 +1,11 @@
-* {
-    margin: 0;
-    padding: 0;
+#footerContainer {
+    padding-top: 20px;
+}
+
+#branding {
+	height:80px;
 }
 
 body {
-    background: url(../img/bg.png) repeat-x;
-    color: #222;
-    margin: 0;
-}
-
-.printMain {
-    clear: both;
-    padding: 0 12px 0 12px;
-}
-
-.printTitle {
-    float: left;
-    padding: 62px 0 0 260px;
-    background: #FFF url(../img/logo.png) no-repeat;
+    background:none;
 }

@@ -55,13 +55,13 @@ body {
 	font-size:62px;
 	font-weight:normal;
 }
-#topbar {
-    background-image:url(../img/topbg.gif);
-	background-repeat:repeat-x;
-	width:960px;
-	height:40px;
-	float:left;
-}
+/*#topbar {*/
+    /*background-image:url(../img/topbg.gif);*/
+	/*background-repeat:repeat-x;*/
+	/*width:960px;*/
+	/*height:40px;*/
+	/*float:left;*/
+/*}*/
 ul.topNav  {
 	margin:0px;
 	padding:0px;
@@ -156,13 +156,7 @@ ul.topNav  {
 	display:inline-block;
 	text-indent:999999px;
 }
-#banner {
-    background-image:url(../img/banner.png);
-	background-repeat:no-repeat;
-	width:960px;
-	height:454px;
-	float:left;
-}
+
 .logo {
     background-image:url(../img/logo.png);
 	background-repeat:no-repeat;
