@@ -23,7 +23,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
@@ -49,6 +48,7 @@ import org.devproof.portal.module.blog.query.BlogQuery;
 import org.devproof.portal.module.blog.service.BlogService;
 import org.devproof.portal.module.blog.service.BlogTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
+import org.devproof.portal.module.comment.panel.CommentLinkPanel;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 import java.util.Iterator;
@@ -145,6 +145,7 @@ public class BlogPage extends BlogBasePage {
         private static final long serialVersionUID = 1L;
 
         private IModel<Blog> blogModel;
+        private ExpandableCommentPanel commentsPanel;
 
         public BlogView(String id, Item<Blog> item) {
             super(id, "blogView", BlogPage.this);
@@ -155,18 +156,29 @@ public class BlogPage extends BlogBasePage {
             add(createPrintLink());
             add(createTagPanel());
             add(createContentLabel());
+            add(createCommentLinkPanel());
             add(createCommentPanel());
+        }
+
+        private CommentLinkPanel createCommentLinkPanel() {
+            return new CommentLinkPanel("commentsLink", createCommentConfiguration(blogModel.getObject())) {
+                private static final long serialVersionUID = -4023802441634483395L;
+
+                @Override
+                protected boolean isCommentPanelVisible() {
+                    return commentsPanel.isCommentsVisible();
+                }
+
+                @Override
+                protected void onClick(AjaxRequestTarget target) {
+                    commentsPanel.toggle(target);
+                }
+            };
         }
 
         private Component createPrintLink() {
             Blog blog = blogModel.getObject();
-            BookmarkablePageLink<BlogPrintPage> link = new BookmarkablePageLink<BlogPrintPage>("printLink", BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
-            link.add(createPrintImage());
-            return link;
-        }
-
-        private Component createPrintImage() {
-            return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
+            return new BookmarkablePageLink<BlogPrintPage>("printLink", BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
         }
 
         private Component createAppropriateAuthorPanel(Item<Blog> item) {
@@ -241,12 +253,18 @@ public class BlogPage extends BlogBasePage {
 
         private Component createCommentPanel() {
             Blog blog = blogModel.getObject();
+            DefaultCommentConfiguration conf = createCommentConfiguration(blog);
+            commentsPanel = new ExpandableCommentPanel("comments", conf);
+            return commentsPanel;
+        }
+
+        private DefaultCommentConfiguration createCommentConfiguration(Blog blog) {
             DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
             conf.setModuleContentId(blog.getId().toString());
             conf.setModuleName(BlogPage.class.getSimpleName());
             conf.setViewRights(blog.getCommentViewRights());
             conf.setWriteRights(blog.getCommentWriteRights());
-            return new ExpandableCommentPanel("comments", conf);
+            return conf;
         }
 
         private TagContentPanel<BlogTag> createTagPanel() {

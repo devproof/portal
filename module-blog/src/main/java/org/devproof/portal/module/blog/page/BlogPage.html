@@ -16,21 +16,14 @@
            <span wicket:id="tags">tag1 tag2</span>
         </div>
 
-        <div wicket:id="content">[content]</div>
+        <div wicket:id="content" class="owncontent">[content]</div>
         <ul class="controls">
-            <li><a class="printerfriendly" href="#">Printer Friendly</a></li>
-            <li><a class="comments" href="#">Comments (18)</a></li>
-            <li><a class="more" href="#">Read More</a></li>
+            <li><a wicket:id="printLink" target="_blank" class="printerfriendly"><wicket:message key="print"/></a></li>
+            <li><wicket:container wicket:id="commentsLink">[Comments (18)]</wicket:container></li>
+            <!--<li><a class="more" href="#">Read More</a></li>-->
         </ul>
-
-
-        <br/>
-        <br/>
-        <br/>
         <div wicket:id="comments">[comments]</div>
-        <a wicket:id="printLink" target="_blank"><img
-                wicket:id="printImage"/></a> <br/>
-        <br /><br />
+        <div style="padding-bottom:30px;"></div>
     </wicket:fragment>
 </wicket:extend>
 </body>

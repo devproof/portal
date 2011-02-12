@@ -244,6 +244,18 @@ ul.topNav  {
 	padding-top:4px;
 	border-bottom:1px solid #C8C8C8;
 }
+
+.owncontent ul {
+    margin: 5px 0px 5px 18px;
+    color: #3A3A3A;
+    font-size:14px;
+    line-height: 20px;
+}
+
+.owncontent ul li {
+    list-style: disc outside url("../img/li.gif");
+}
+
 .bottomClear {
 	clear:right;
 	margin-bottom:15px;
@@ -596,7 +608,7 @@ input.footerSubmit {
 }
 
 ul.controls {
-    padding-top:15px;
+    padding-top:10px;
     clear: both;
 }
 

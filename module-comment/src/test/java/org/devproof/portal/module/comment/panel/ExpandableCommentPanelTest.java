@@ -37,7 +37,8 @@ import javax.servlet.ServletContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/comment/test-datasource.xml" })
-public class ExpandableCommentInfoPanelTest {
+public class ExpandableCommentPanelTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;

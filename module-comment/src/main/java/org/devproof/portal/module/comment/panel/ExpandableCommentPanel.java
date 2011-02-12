@@ -52,7 +52,34 @@ public class ExpandableCommentPanel extends Panel {
         addJQuery();
         add(createCSSHeaderContributor());
         add(createRefreshCommentContainer());
-        add(createCommentLink());
+    }
+
+
+    private CommentPanel createCommentPanel() {
+        return new CommentPanel("comments", configuration);
+    }
+
+    public void show(AjaxRequestTarget target) {
+        refreshContainer.replace(createCommentPanel());
+        target.addComponent(refreshContainer);
+        target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
+    }
+
+    public void hide(AjaxRequestTarget target) {
+        target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
+    }
+
+    public void toggle(AjaxRequestTarget target) {
+        if (visible) {
+            hide(target);
+        } else {
+            show(target);
+        }
+        visible = !visible;
+    }
+
+    public boolean isCommentsVisible() {
+        return visible && isVisible();
     }
 
     @Override
@@ -82,55 +109,5 @@ public class ExpandableCommentPanel extends Panel {
 
     private HeaderContributor createCSSHeaderContributor() {
         return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
-    }
-
-    private Component createCommentLink() {
-        WebMarkupContainer commentLink = newCommentLink();
-        commentLink.add(createCommentsLinkLabel());
-        commentLink.setOutputMarkupId(true);
-        return commentLink;
-    }
-
-    private Label createCommentsLinkLabel() {
-        return new Label("commentsLinkLabel", createLinkLabelTextModel());
-    }
-
-    private AjaxLink<Void> newCommentLink() {
-        return new AjaxLink<Void>("commentsLink") {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                if (visible) {
-                    target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
-                } else {
-                    refreshContainer.replace(createCommentPanel());
-                    target.addComponent(refreshContainer);
-                    target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
-                }
-                target.addComponent(this);
-                visible = !visible;
-            }
-
-            private CommentPanel createCommentPanel() {
-                return new CommentPanel("comments", configuration);
-            }
-        };
-    }
-
-    private IModel<String> createLinkLabelTextModel() {
-        return new AbstractReadOnlyModel<String>() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public String getObject() {
-                if (visible) {
-                    return getString("hideComments");
-                } else {
-                    long numberOfComments = commentService.findNumberOfComments(configuration.getModuleName(), configuration.getModuleContentId());
-                    return numberOfComments == 0 && configuration.isAllowedToWrite() ? getString("writeComment") : getString("numberOfComments", Model.of(numberOfComments));
-                }
-            }
-        };
     }
 }
