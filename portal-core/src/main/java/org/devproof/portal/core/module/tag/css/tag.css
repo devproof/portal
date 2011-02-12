@@ -9,14 +9,7 @@ div.wicket-aa {
 }
 
 .tagView {
-    font: normal 8pt 'Arial', 'Helvetica', 'Sans-serif', 'sans';
-    background-color: white;
     border-width: 1px;
-    color: #777;
-    /*
-     border-color: #cccccc;
-     border-style: solid;
-     padding: 3px; */
     text-align: left;
 }
 
@@ -32,6 +25,6 @@ div.wicket-aa {
 
 .tagViewSelected a {
     color: #111;
-    background-color: #D4D0C8;
+    background-color: #EEEEEE;
     text-decoration: none;
 }
