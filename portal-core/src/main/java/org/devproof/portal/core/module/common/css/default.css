@@ -501,11 +501,11 @@ table.dataview tr th {
 }
 
 table.dataview tr th.wicket_orderDown {
-    background-color: #D6EEFF;
+    background-color: #EBE8D9;
 }
 
 table.dataview tr th.wicket_orderUp {
-    background-color: #D6EEFF;
+    background-color: #EBE8D9;
 }
 
 table.dataview tr th a {
