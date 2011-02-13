@@ -2,25 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
-    <h1 wicket:id="title">[title]</h1>
-
-    <div class="descr">
-        <span wicket:id="metaInfo">[meta info panel]</span>&nbsp; <a wicket:id="printLink" target="_blank"><img
-            wicket:id="printImage"/></a> <span wicket:id="authorButtons">[edit / delete buttons]</span>
+    <h2 wicket:id="title">title</h2>
+    <div class="sub">
+       <span wicket:id="authorButtons"></span>
+       <span wicket:id="metaInfo">[author name]</span>&nbsp;
+       <span wicket:id="tags">tag1 tag2</span>
     </div>
-    <div wicket:id="tags">tag1 tag2</div>
-    <br/>
+    <div wicket:id="content" class="owncontent">[content]</div>
 
-    <div wicket:id="content">[content]</div>
-    <table width="100%">
-        <tr>
-            <td align="left"><h2><a wicket:id="backLink"><wicket:message key="back"/></a></h2></td>
-            <td align="right"><h2><a wicket:id="forwardLink"><wicket:message key="forward"/></a></h2></td>
-        </tr>
-    </table>
-    <p></p>
-
-    <div wicket:id="comments" style="text-align: center;">[comments]</div>
+    <ul class="controls">
+        <li><a wicket:id="printLink" target="_blank" class="printerfriendly"><wicket:message key="print"/></a></li>
+        <li><wicket:container wicket:id="commentsLink">[Comments (18)]</wicket:container></li>
+    </ul>
+    <div wicket:id="comments">[comments]</div>
+    <div class="paging paging-left">
+        <a wicket:id="backLink"><wicket:message key="back"/></a> &nbsp;
+    </div>
+    <div class="paging paging-right">
+        <a wicket:id="forwardLink"><wicket:message key="forward"/></a>
+    </div>
+    <div style="padding-bottom:30px;"></div>
 </wicket:extend>
 </body>
 </html>

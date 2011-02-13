@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -52,6 +51,7 @@ import org.devproof.portal.module.article.query.ArticleQuery;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.article.service.ArticleTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
+import org.devproof.portal.module.comment.panel.CommentLinkPanel;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 import java.util.Iterator;
@@ -63,25 +63,25 @@ import java.util.List;
 @ModulePage(mountPath = "/articles", registerMainNavigationLink = true)
 public class ArticlePage extends ArticleBasePage {
 
-	private static final long serialVersionUID = 1L;
-	@SpringBean(name = "articleService")
-	private ArticleService articleService;
-	@SpringBean(name = "articleDataProvider")
-	private QueryDataProvider<Article, ArticleQuery> articleDataProvider;
-	@SpringBean(name = "articleTagService")
-	private ArticleTagService articleTagService;
-	@SpringBean(name = "configurationService")
-	private ConfigurationService configurationService;
+    private static final long serialVersionUID = 1L;
+    @SpringBean(name = "articleService")
+    private ArticleService articleService;
+    @SpringBean(name = "articleDataProvider")
+    private QueryDataProvider<Article, ArticleQuery> articleDataProvider;
+    @SpringBean(name = "articleTagService")
+    private ArticleTagService articleTagService;
+    @SpringBean(name = "configurationService")
+    private ConfigurationService configurationService;
 
-	private ArticleDataView dataView;
-	private IModel<ArticleQuery> searchQueryModel;
+    private ArticleDataView dataView;
+    private IModel<ArticleQuery> searchQueryModel;
 
-	public ArticlePage(PageParameters params) {
-		super(params);
-		searchQueryModel = articleDataProvider.getSearchQueryModel();
-		add(createRepeatingArticles());
-		add(createPagingPanel());
-	}
+    public ArticlePage(PageParameters params) {
+        super(params);
+        searchQueryModel = articleDataProvider.getSearchQueryModel();
+        add(createRepeatingArticles());
+        add(createPagingPanel());
+    }
 
     @Override
     protected Component newFilterBox(String markupId) {
@@ -97,193 +97,227 @@ public class ArticlePage extends ArticleBasePage {
         return new TagCloudBoxPanel<ArticleTag>(markupId, articleTagService, getClass());
     }
 
-	private ArticleSearchBoxPanel createArticleSearchBoxPanel(String markupId) {
-		return new ArticleSearchBoxPanel(markupId, searchQueryModel);
-	}
+    private ArticleSearchBoxPanel createArticleSearchBoxPanel(String markupId) {
+        return new ArticleSearchBoxPanel(markupId, searchQueryModel);
+    }
 
-	private ArticleDataView createRepeatingArticles() {
-		dataView = new ArticleDataView("repeatingArticles");
-		return dataView;
-	}
+    private ArticleDataView createRepeatingArticles() {
+        dataView = new ArticleDataView("repeatingArticles");
+        return dataView;
+    }
 
-	private BookmarkablePagingPanel createPagingPanel() {
-		return new BookmarkablePagingPanel("paging", dataView, searchQueryModel, ArticlePage.class);
-	}
+    private BookmarkablePagingPanel createPagingPanel() {
+        return new BookmarkablePagingPanel("paging", dataView, searchQueryModel, ArticlePage.class);
+    }
 
-	@Override
-	public String getPageTitle() {
-		if (articleDataProvider.size() == 1) {
-			Iterator<? extends Article> it = articleDataProvider.iterator(0, 1);
-			Article article = it.next();
-			return article.getTitle();
-		}
-		return "";
-	}
+    @Override
+    public String getPageTitle() {
+        if (articleDataProvider.size() == 1) {
+            Iterator<? extends Article> it = articleDataProvider.iterator(0, 1);
+            Article article = it.next();
+            return article.getTitle();
+        }
+        return "";
+    }
 
-	private class ArticleDataView extends AutoPagingDataView<Article> {
-		private static final long serialVersionUID = 1L;
+    private class ArticleDataView extends AutoPagingDataView<Article> {
+        private static final long serialVersionUID = 1L;
 
-		public ArticleDataView(String id) {
-			super(id, articleDataProvider);
-			setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
+        public ArticleDataView(String id) {
+            super(id, articleDataProvider);
+            setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
 //			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
-		}
+        }
 
-		@Override
-		protected void populateItem(Item<Article> item) {
-			item.add(createArticleView(item));
-			item.setOutputMarkupId(true);
-		}
+        @Override
+        protected void populateItem(Item<Article> item) {
+            item.add(createArticleView(item));
+            item.setOutputMarkupId(true);
+        }
 
-		private ArticleView createArticleView(Item<Article> item) {
-			return new ArticleView("articleView", item);
-		}
-	}
+        private ArticleView createArticleView(Item<Article> item) {
+            return new ArticleView("articleView", item);
+        }
+    }
 
-	/**
-	 * Shows an article teaser
-	 */
-	private class ArticleView extends Fragment {
+    /**
+     * Shows an article teaser
+     */
+    private class ArticleView extends Fragment {
 
-		private static final long serialVersionUID = 1L;
-		private IModel<Article> articleModel;
-		private boolean allowedToRead = false;
+        private static final long serialVersionUID = 1L;
+        private IModel<Article> articleModel;
+        private ExpandableCommentPanel commentsPanel;
 
-		public ArticleView(String id, Item<Article> item) {
-			super(id, "articleView", ArticlePage.this);
-			articleModel = item.getModel();
-			allowedToRead = isAllowedToRead(articleModel);
-			add(createAppropriateAuthorPanel(item));
-			add(createTitleLink());
-			add(createMetaInfoPanel());
-			add(createPrintLink());
-			add(createTeaserLabel());
-			add(createTagPanel());
-			add(createReadMoreLink());
-			add(createCommentPanel());
-		}
+        public ArticleView(String id, Item<Article> item) {
+            super(id, "articleView", ArticlePage.this);
+            articleModel = item.getModel();
+            add(createAppropriateAuthorPanel(item));
+            add(createTitleLink());
+            add(createMetaInfoPanel());
+            add(createPrintLink());
+            add(createTeaserLabel());
+            add(createTagPanel());
+            add(createReadMoreLink());
+            add(createCommentLinkPanel());
+            add(createCommentPanel());
+        }
 
-		private Component createCommentPanel() {
-			Article article = articleModel.getObject();
-			DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-			conf.setModuleContentId(article.getId().toString());
-			conf.setModuleName(ArticlePage.class.getSimpleName());
-			conf.setViewRights(article.getCommentViewRights());
-			conf.setWriteRights(article.getCommentWriteRights());
-			return new ExpandableCommentPanel("comments", conf);
-		}
+        private CommentLinkPanel createCommentLinkPanel() {
+            return new CommentLinkPanel("commentsLink", createCommentConfiguration()) {
+                private static final long serialVersionUID = -4023802441634483395L;
 
-		private Component createPrintLink() {
-			Article article = articleModel.getObject();
-			PageParameters params = new PageParameters("0=" + article.getId());
-			BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
-					ArticlePrintPage.class, params);
-			link.add(createPrintImage());
-			link.setVisible(allowedToRead);
-			return link;
-		}
+                @Override
+                protected boolean isCommentPanelVisible() {
+                    return commentsPanel.isCommentsVisible();
+                }
 
-		private Component createPrintImage() {
-			return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
-		}
+                @Override
+                protected void onClick(AjaxRequestTarget target) {
+                    commentsPanel.toggle(target);
+                }
+            };
+        }
 
-		private Component createAppropriateAuthorPanel(Item<Article> item) {
-			if (isAuthor()) {
-				return createAuthorPanel(item);
-			} else {
-				return createEmptyAuthorPanel();
-			}
-		}
+        private Component createCommentPanel() {
+            DefaultCommentConfiguration conf = createCommentConfiguration();
+            commentsPanel = new ExpandableCommentPanel("comments", conf);
+            return commentsPanel;
+        }
 
-		private BookmarkablePageLink<ArticleReadPage> createReadMoreLink() {
-			Article article = articleModel.getObject();
-			BookmarkablePageLink<ArticleReadPage> readMoreLink = new BookmarkablePageLink<ArticleReadPage>(
-					"readMoreLink", ArticleReadPage.class);
-			readMoreLink.add(createReadMoreImage());
-			readMoreLink.add(createReadMoreLabel());
-			readMoreLink.setParameter("0", article.getId());
-			readMoreLink.setEnabled(allowedToRead);
-			return readMoreLink;
-		}
+        private DefaultCommentConfiguration createCommentConfiguration() {
+            Article article = articleModel.getObject();
+            DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+            conf.setModuleContentId(article.getId().toString());
+            conf.setModuleName(ArticlePage.class.getSimpleName());
+            conf.setViewRights(article.getCommentViewRights());
+            conf.setWriteRights(article.getCommentWriteRights());
+            return conf;
+        }
 
-		private Image createReadMoreImage() {
-			return new Image("readMoreImage", CommonConstants.REF_VIEW_IMG);
-		}
+        private Component createPrintLink() {
+            Article article = articleModel.getObject();
+            PageParameters params = new PageParameters("0=" + article.getId());
+            return new BookmarkablePageLink<ArticlePrintPage>("printLink", ArticlePrintPage.class, params) {
+                private static final long serialVersionUID = 1289408920992789194L;
 
-		private Label createReadMoreLabel() {
-			IModel<String> readMoreModel = createReadMoreModel();
-			return new Label("readMoreLabel", readMoreModel);
-		}
+                @Override
+                public boolean isVisible() {
+                    return isAllowedToRead(articleModel);
+                }
+            };
+        }
 
-		private AbstractReadOnlyModel<String> createReadMoreModel() {
-			return new AbstractReadOnlyModel<String>() {
-				private static final long serialVersionUID = 118766734564336104L;
+        private Component createAppropriateAuthorPanel(Item<Article> item) {
+            if (isAuthor()) {
+                return createAuthorPanel(item);
+            } else {
+                return createEmptyAuthorPanel();
+            }
+        }
 
-				@Override
-				public String getObject() {
-					String labelKey = allowedToRead ? "readMore" : "loginToReadMore";
-					return ArticlePage.this.getString(labelKey);
-				}
-			};
-		}
+        private BookmarkablePageLink<ArticleReadPage> createReadMoreLink() {
+            Article article = articleModel.getObject();
+            BookmarkablePageLink<ArticleReadPage> readMoreLink = newReadMoreLink();
+            readMoreLink.add(createReadMoreLabel());
+            readMoreLink.setParameter("0", article.getId());
+            return readMoreLink;
+        }
 
-		private TagContentPanel<ArticleTag> createTagPanel() {
-			IModel<List<ArticleTag>> tagModel = new PropertyModel<List<ArticleTag>>(articleModel, "tags");
-			return new TagContentPanel<ArticleTag>("tags", tagModel, ArticlePage.class);
-		}
+        private BookmarkablePageLink<ArticleReadPage> newReadMoreLink() {
+            return new BookmarkablePageLink<ArticleReadPage>("readMoreLink", ArticleReadPage.class) {
+                private static final long serialVersionUID = -4230704759939474616L;
 
-		private ExtendedLabel createTeaserLabel() {
-			IModel<String> teaserModel = new PropertyModel<String>(articleModel, "teaser");
-			return new ExtendedLabel("teaser", teaserModel);
-		}
+                @Override
+                public boolean isEnabled() {
+                    return isAllowedToRead(articleModel);
+                }
+            };
+        }
 
-		private MetaInfoPanel<?> createMetaInfoPanel() {
-			return new MetaInfoPanel<Article>("metaInfo", articleModel);
-		}
+        private Label createReadMoreLabel() {
+            IModel<String> readMoreModel = createReadMoreModel();
+            return new Label("readMoreLabel", readMoreModel);
+        }
 
-		private WebMarkupContainer createEmptyAuthorPanel() {
-			return new WebMarkupContainer("authorButtons");
-		}
+        private AbstractReadOnlyModel<String> createReadMoreModel() {
+            return new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = 118766734564336104L;
 
-		private boolean isAllowedToRead(IModel<Article> articleModel) {
-			Article article = articleModel.getObject();
-			PortalSession session = (PortalSession) getSession();
-			return session.hasRight("article.read") || session.hasRight(article.getReadRights());
-		}
+                @Override
+                public String getObject() {
+                    String labelKey = isAllowedToRead(articleModel) ? "readMore" : "loginToReadMore";
+                    return ArticlePage.this.getString(labelKey);
+                }
+            };
+        }
 
-		private BookmarkablePageLink<ArticleReadPage> createTitleLink() {
-			Article article = articleModel.getObject();
-			BookmarkablePageLink<ArticleReadPage> titleLink = new BookmarkablePageLink<ArticleReadPage>("titleLink",
-					ArticleReadPage.class);
-			titleLink.add(createTitleLabel());
-			titleLink.setParameter("0", article.getId());
-			titleLink.setEnabled(allowedToRead);
-			return titleLink;
-		}
+        private TagContentPanel<ArticleTag> createTagPanel() {
+            IModel<List<ArticleTag>> tagModel = new PropertyModel<List<ArticleTag>>(articleModel, "tags");
+            return new TagContentPanel<ArticleTag>("tags", tagModel, ArticlePage.class);
+        }
 
-		private Label createTitleLabel() {
-			IModel<String> titleModel = new PropertyModel<String>(articleModel, "title");
-			return new Label("titleLabel", titleModel);
-		}
+        private ExtendedLabel createTeaserLabel() {
+            IModel<String> teaserModel = new PropertyModel<String>(articleModel, "teaser");
+            return new ExtendedLabel("teaser", teaserModel);
+        }
 
-		private AuthorPanel<Article> createAuthorPanel(final Item<Article> item) {
-			return new AuthorPanel<Article>("authorButtons", articleModel) {
-				private static final long serialVersionUID = 1L;
+        private MetaInfoPanel<?> createMetaInfoPanel() {
+            return new MetaInfoPanel<Article>("metaInfo", articleModel);
+        }
 
-				@Override
-				public void onDelete(AjaxRequestTarget target) {
-					articleService.delete(getEntityModel().getObject());
-					item.setVisible(false);
-					target.addComponent(item);
-					target.addComponent(getFeedback());
-					info(getString("msg.deleted"));
-				}
+        private WebMarkupContainer createEmptyAuthorPanel() {
+            return new WebMarkupContainer("authorButtons");
+        }
 
-				@Override
-				public void onEdit(AjaxRequestTarget target) {
-					IModel<Article> articleModel = createArticleModel();
-					setResponsePage(new ArticleEditPage(articleModel));
-				}
+        private boolean isAllowedToRead(IModel<Article> articleModel) {
+            Article article = articleModel.getObject();
+            PortalSession session = (PortalSession) getSession();
+            return session.hasRight("article.read") || session.hasRight(article.getReadRights());
+        }
+
+        private BookmarkablePageLink<ArticleReadPage> createTitleLink() {
+            Article article = articleModel.getObject();
+            BookmarkablePageLink<ArticleReadPage> titleLink = newTitleLink();
+            titleLink.add(createTitleLabel());
+            titleLink.setParameter("0", article.getId());
+            return titleLink;
+        }
+
+        private BookmarkablePageLink<ArticleReadPage> newTitleLink() {
+            return new BookmarkablePageLink<ArticleReadPage>("titleLink", ArticleReadPage.class) {
+                private static final long serialVersionUID = -1166238358025078721L;
+
+                @Override
+                public boolean isEnabled() {
+                    return isAllowedToRead(articleModel);
+                }
+            };
+        }
+
+        private Label createTitleLabel() {
+            IModel<String> titleModel = new PropertyModel<String>(articleModel, "title");
+            return new Label("titleLabel", titleModel);
+        }
+
+        private AuthorPanel<Article> createAuthorPanel(final Item<Article> item) {
+            return new AuthorPanel<Article>("authorButtons", articleModel) {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public void onDelete(AjaxRequestTarget target) {
+                    articleService.delete(getEntityModel().getObject());
+                    item.setVisible(false);
+                    target.addComponent(item);
+                    target.addComponent(getFeedback());
+                    info(getString("msg.deleted"));
+                }
+
+                @Override
+                public void onEdit(AjaxRequestTarget target) {
+                    IModel<Article> articleModel = createArticleModel();
+                    setResponsePage(new ArticleEditPage(articleModel));
+                }
 
                 @Override
                 protected MarkupContainer newHistorizationLink(String markupId) {
@@ -300,17 +334,17 @@ public class ArticlePage extends ArticleBasePage {
                 }
 
                 private IModel<Article> createArticleModel() {
-					return new LoadableDetachableModel<Article>() {
-						private static final long serialVersionUID = 1L;
+                    return new LoadableDetachableModel<Article>() {
+                        private static final long serialVersionUID = 1L;
 
-						@Override
-						protected Article load() {
-							Article article = articleModel.getObject();
-							return articleService.findById(article.getId());
-						}
-					};
-				}
-			};
-		}
-	}
+                        @Override
+                        protected Article load() {
+                            Article article = articleModel.getObject();
+                            return articleService.findById(article.getId());
+                        }
+                    };
+                }
+            };
+        }
+    }
 }

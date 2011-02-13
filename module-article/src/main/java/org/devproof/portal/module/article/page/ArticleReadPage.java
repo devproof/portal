@@ -41,6 +41,7 @@ import org.devproof.portal.module.article.entity.ArticleTag;
 import org.devproof.portal.module.article.service.ArticleService;
 import org.devproof.portal.module.article.service.ArticleTagService;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
+import org.devproof.portal.module.comment.panel.CommentLinkPanel;
 import org.devproof.portal.module.comment.panel.ExpandableCommentPanel;
 
 import java.util.List;
@@ -65,8 +66,9 @@ public class ArticleReadPage extends ArticleBasePage {
 	private int currentPageNumber;
 	private int numberOfPages;
 	private Integer contentId;
+    private ExpandableCommentPanel commentsPanel;
 
-	public ArticleReadPage(PageParameters params) {
+    public ArticleReadPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		this.contentId = getContentId();
@@ -81,12 +83,34 @@ public class ArticleReadPage extends ArticleBasePage {
 		add(createContentLabel());
 		add(createBackLink());
 		add(createForwardLink());
+        add(createCommentLinkPanel());
 		add(createCommentPanel());
 	}
 
     @Override
     protected Component newTagCloudBox(String markupId) {
         return createTagCloudBox(markupId);
+    }
+
+    private Component createCommentLinkPanel() {
+        ArticlePage articlePage = displayedPageModel.getObject();
+		if(articlePage != null) {
+            return new CommentLinkPanel("commentsLink", createCommentConfiguration(articlePage)) {
+                private static final long serialVersionUID = -4023802441634483395L;
+
+                @Override
+                protected boolean isCommentPanelVisible() {
+                    return commentsPanel.isCommentsVisible();
+                }
+
+                @Override
+                protected void onClick(AjaxRequestTarget target) {
+                    commentsPanel.toggle(target);
+                }
+            };
+		}
+		return new WebMarkupContainer("comments").setVisible(false);
+
     }
 
     private Component createTagCloudBox(String markupId) {
@@ -120,20 +144,26 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private Component createCommentPanel() {
-		DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
-		org.devproof.portal.module.article.entity.ArticlePage articlePage = displayedPageModel.getObject();
+		ArticlePage articlePage = displayedPageModel.getObject();
 		if(articlePage != null) {
-			Article article = articlePage.getArticle();
-			conf.setModuleContentId(article.getId().toString());
-			conf.setModuleName(org.devproof.portal.module.article.page.ArticlePage.class.getSimpleName());
-			conf.setViewRights(article.getCommentViewRights());
-			conf.setWriteRights(article.getCommentWriteRights());
-			return new ExpandableCommentPanel("comments", conf);
+            DefaultCommentConfiguration conf = createCommentConfiguration(articlePage);
+            commentsPanel = new ExpandableCommentPanel("comments", conf);
+            return commentsPanel;
 		}
-		return new WebMarkupContainer("comments");
+		return new WebMarkupContainer("comments").setVisible(false);
 	}
 
-	private IModel<ArticlePage> createDisplayedPageModel() {
+    private DefaultCommentConfiguration createCommentConfiguration(ArticlePage articlePage) {
+        Article article = articlePage.getArticle();
+        DefaultCommentConfiguration conf = new DefaultCommentConfiguration();
+        conf.setModuleContentId(article.getId().toString());
+        conf.setModuleName(org.devproof.portal.module.article.page.ArticlePage.class.getSimpleName());
+        conf.setViewRights(article.getCommentViewRights());
+        conf.setWriteRights(article.getCommentWriteRights());
+        return conf;
+    }
+
+    private IModel<ArticlePage> createDisplayedPageModel() {
 		return new LoadableDetachableModel<ArticlePage>() {
 			private static final long serialVersionUID = 5844734752344587663L;
 
@@ -165,14 +195,8 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private Component createPrintLink() {
-		BookmarkablePageLink<ArticlePrintPage> link = new BookmarkablePageLink<ArticlePrintPage>("printLink",
-				ArticlePrintPage.class, new PageParameters("0=" + contentId));
-		link.add(createPrintImage());
-		return link;
-	}
-
-	private Component createPrintImage() {
-		return new Image("printImage", PrintConstants.REF_PRINTER_IMG);
+        return new BookmarkablePageLink<ArticlePrintPage>("printLink",
+                ArticlePrintPage.class, new PageParameters("0=" + contentId));
 	}
 
 	private Component createAppropriateAuthorPanel() {

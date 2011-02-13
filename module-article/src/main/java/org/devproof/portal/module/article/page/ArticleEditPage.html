@@ -1,54 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:extend>
+    <h2><wicket:message key="contentTitle"/></h2>
     <div class="form">
-        <h1><wicket:message key="contentTitle"/></h1>
-
         <form wicket:id="form">
-            <table cellspacing="10">
-                <tr>
-                    <td><label for="title"><wicket:message key="title"/></label></td>
-                    <td><input type="text" wicket:id="title" class="editTitle"/></td>
-                </tr>
-                <tr>
-                    <td><label for="teaser"><wicket:message key="teaser"/></label></td>
-                    <td><textarea wicket:id="teaser" cols="220" rows="12"></textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="fullArticle"><wicket:message key="fullArticle"/></label></td>
-                    <td><textarea wicket:id="fullArticle" cols="220" rows="40"></textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="tags"><wicket:message key="tags"/></label></td>
-                    <td><input type="text" wicket:id="tags" class="tagInputArticle"/></td>
-                </tr>
-                <tr>
-                    <td><label for="mountUrls"><wicket:message key="mountUrls"/></label></td>
-                    <td wicket:id="mountUrls">content</td>
-                </tr>
-                <tr>
-                    <td><label><wicket:message key="viewrights"/></label></td>
-                    <td>
-                        <span wicket:id="viewright">[rights]</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label><wicket:message key="readrights"/></label></td>
-                    <td>
-                        <span wicket:id="readright">[rights]</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label><wicket:message key="commentrights"/></label></td>
-                    <td>
-                        <span wicket:id="commentright">[rights]</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" wicket:message="value:save" class="button"/></td>
-                </tr>
-            </table>
+            <div class="formForm">
+                <p>
+                    <label for="title"><wicket:message key="title"/></label>
+                    <input type="text" id="title" wicket:id="title" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="teaser"><wicket:message key="teaser"/></label>
+                    <textarea wicket:id="teaser" cols="50" rows="10" class="formtextarea"></textarea>
+                </p>
+                <p>
+                    <label for="fullArticle"><wicket:message key="fullArticle"/></label>
+                    <textarea wicket:id="fullArticle" cols="50" rows="50" class="formtextarea"></textarea>
+                </p>
+                <p>
+                    <label for="tags"><wicket:message key="tags"/></label>
+                    <input type="text" wicket:id="tags" class="formInputArea"/>
+                </p>
+                <p>
+                    <label for="mountUrls"><wicket:message key="mountUrls"/></label>
+                    <div wicket:id="mountUrls">content</div>
+                </p>
+                <p>
+                    <label><wicket:message key="viewrights"/></label>
+                    <div wicket:id="viewright">[view rights]</div>
+                </p>
+                <p>
+                    <label><wicket:message key="readrights"/></label>
+                    <div wicket:id="readright">[read rights]</div>
+                </p>
+                <p>
+                    <label><wicket:message key="commentrights"/></label>
+                    <div wicket:id="commentright">[comment rights]</div>
+                </p>
+                <input type="submit" class="formSubmit" value=""/>
+            </div>
+            <br class="clear">
         </form>
     </div>
 </wicket:extend>

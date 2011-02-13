@@ -36,6 +36,7 @@ public abstract class AbstractRestoreViewPage extends TemplatePage {
 
     public AbstractRestoreViewPage() {
         super(new PageParameters());
+        addSyntaxHighlighter();
         add(newHistorizedView("view"));
         add(newRestoreLink("topRestore"));
         add(newRestoreLink("bottomRestore"));

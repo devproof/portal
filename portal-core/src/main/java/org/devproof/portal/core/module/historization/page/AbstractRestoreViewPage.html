@@ -2,11 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
-    <button wicket:id="topRestore"><wicket:message key="restoreButton"></wicket:message></button>
-    <button wicket:id="topBack"><wicket:message key="backButton"></wicket:message></button>
-    <div wicket:id="view"></div>
-    <button wicket:id="bottomRestore"><wicket:message key="restoreButton"></wicket:message></button>
-    <button wicket:id="bottomBack"><wicket:message key="backButton"></wicket:message></button>
+    <p>
+        <button wicket:id="topRestore"><wicket:message key="restoreButton"></wicket:message></button>
+        <button wicket:id="topBack"><wicket:message key="backButton"></wicket:message></button>
+    </p>
+    <p>&nbsp;</p>
+    <div wicket:id="view" class="owncontent"></div>
+    <p>&nbsp;</p>
+    <p>
+        <button wicket:id="bottomRestore"><wicket:message key="restoreButton"></wicket:message></button>
+        <button wicket:id="bottomBack"><wicket:message key="backButton"></wicket:message></button>
+    </p>
+    <p>&nbsp;</p>
 </wicket:extend>
 </body>
 </html>
