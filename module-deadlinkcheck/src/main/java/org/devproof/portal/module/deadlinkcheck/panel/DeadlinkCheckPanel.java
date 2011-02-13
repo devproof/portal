@@ -145,6 +145,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLink> extends Panel {
 
                     private boolean isHttpCallBroken(String url) {
                         HttpClient client = new HttpClient();
+                        client.getHttpConnectionManager().getParams().setConnectionTimeout(120000);
                         HttpMethod method = new GetMethod(url);
                         boolean isBroken;
                         try {
