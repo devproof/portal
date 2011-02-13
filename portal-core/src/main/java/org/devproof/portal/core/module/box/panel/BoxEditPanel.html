@@ -3,45 +3,39 @@
 <wicket:panel>
     <div class="modalform">
         <h1><wicket:message key="contentTitle"/></h1>
-
-        <div style="text-align: left;">
-            <div wicket:id="feedbackPanel"></div>
-            <form wicket:id="form">
-                <table cellspacing="10">
-                    <tr>
-                        <td><label for="boxType"><wicket:message key="boxType"/></label></td>
-                        <td>
-                            <select wicket:id="boxType">
-                                <option>admin</option>
-                                <option>search</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="title"><wicket:message key="title"/></label></td>
-                        <td><input type="text" wicket:id="title"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"
-                                                                                                 wicket:id="hideTitle"/>
-                            <wicket:message key="hideTitle"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="customStyle"><wicket:message key="customStyle"/></label></td>
-                        <td><input type="text" wicket:id="customStyle"/></td>
-                    </tr>
-                    <tbody wicket:id="otherPageConfiguration">
-                    <tr>
-                        <td><label for="content"><wicket:message key="content"/></label></td>
-                        <td><textarea wicket:id="content" cols="65" rows="5"></textarea></td>
-                    </tr>
-                    </tbody>
-                    <tr>
-                        <td></td>
-                        <td><input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/>
-                            <input type="submit" wicket:id="cancelButton" wicket:message="value:cancel" class="button"/>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+        <p></p>
+        <div wicket:id="feedbackPanel"></div>
+        <form wicket:id="form">
+            <div class="formForm">
+                <p>
+                    <label for="boxType"><wicket:message key="boxType"/></label>
+                    <select wicket:id="boxType" class="formInputArea">
+                        <option>admin</option>
+                        <option>search</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="title"><wicket:message key="title"/></label>
+                    <input type="text" id="title" wicket:id="title" class="formInputArea" />
+                </p>
+                <p>
+                    <input type="checkbox" wicket:id="hideTitle"/>  <wicket:message key="hideTitle"/>
+                </p>
+                <p>
+                    <label for="customStyle"><wicket:message key="customStyle"/></label>
+                    <input type="text" id="customStyle" wicket:id="customStyle" class="formInputArea" />
+                </p>
+                <p wicket:id="otherPageConfiguration">
+                    <label for="content"><wicket:message key="content"/></label>
+                    <textarea wicket:id="content" cols="65" rows="5" class="formtextarea"></textarea>
+                </p>
+                <p style="text-align:center;">
+                    <input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/>
+                    <input type="submit" wicket:id="cancelButton" wicket:message="value:cancel" class="button"/>
+                </p>
+            </div>
+            <br class="clear">
+        </form>
     </div>
 </wicket:panel>
 </html>

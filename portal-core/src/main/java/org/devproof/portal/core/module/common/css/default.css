@@ -620,7 +620,7 @@ textarea.formtextarea {
 	background:#FFFFFF;
 	border:none;
 	padding:6px;
-	width:350px;
+	width:655px;
 	height:133px;
 	padding-top:6px;
 	font-size:18px;
@@ -738,5 +738,31 @@ table.palette td.buttons button {
 
 .login span {
     color: #5A5A5A;
-    white-space:
 }
+
+.mfuex {
+    padding: 10px;
+    margin: 5px;
+}
+
+.mfuex .wicket-mfu-container {
+    padding: 5px;
+    margin-top: 3px;
+    border: 1px solid black;
+    font-size: small;
+    text-align: left;
+    width: 300px;
+}
+
+.mfuex .wicket-mfu-caption {
+    font-weight: bold;
+}
+
+.mfuex .wicket-mfu-container input {
+    margin-left: 5px;
+}
+
+input.mfuex  {
+    color: #FFF;
+}
+

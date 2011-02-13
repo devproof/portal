@@ -3,64 +3,58 @@
 <wicket:panel>
     <div class="modalform">
         <h1><wicket:message key="contentTitle"/></h1>
-
+        <p></p>
         <div wicket:id="feedbackPanel"></div>
         <form wicket:id="form">
-            <div style="text-align:left;">
-                <table cellspacing="10">
-                    <tr>
-                        <td><label for="username"><wicket:message key="username"/></label></td>
-                        <td><input type="text" wicket:id="username"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="firstname"><wicket:message key="firstname"/></label></td>
-                        <td><input type="text" wicket:id="firstname"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="lastname"><wicket:message key="lastname"/></label></td>
-                        <td><input type="text" wicket:id="lastname"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="birthday"><wicket:message key="birthday"/></label></td>
-                        <td><input type="text" wicket:id="birthday"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="email"><wicket:message key="email"/></label></td>
-                        <td><input type="text" wicket:id="email"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="role"><wicket:message key="role"/></label></td>
-                        <td>
-                            <select wicket:id="role">
-                                <option>Admin</option>
-                                <option>User</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label for="password1"><wicket:message key="password1"/></label></td>
-                        <td><input type="password" wicket:id="password1"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="password2"><wicket:message key="password2"/></label></td>
-                        <td><input type="password" wicket:id="password2"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="active"><wicket:message key="active"/></label></td>
-                        <td><input type="checkbox" wicket:id="active"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="confirmed"><wicket:message key="confirmed"/></label></td>
-                        <td><input type="checkbox" wicket:id="confirmed"/></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/>
-                            <input type="submit" wicket:id="cancelButton" wicket:message="value:cancel" class="button"/>
-                        </td>
-                    </tr>
-                </table>
+            <div class="formForm">
+                               <p>
+                    <label for="username"><wicket:message key="username"/></label>
+                    <input type="text" id="username" wicket:id="username" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="firstname"><wicket:message key="firstname"/></label>
+                    <input type="text" id="firstname" wicket:id="firstname" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="lastname"><wicket:message key="lastname"/></label>
+                    <input type="text" id="lastname" wicket:id="lastname" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="birthday"><wicket:message key="birthday"/></label>
+                    <input type="text" id="birthday" wicket:id="birthday" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="email"><wicket:message key="email"/></label>
+                    <input type="text" id="email" wicket:id="email" class="formInputArea" />
+                </p>
+                <p>
+                   <label for="role"><wicket:message key="role"/></label>
+                   <select wicket:id="role">
+                        <option>Admin</option>
+                        <option>User</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="password1"><wicket:message key="password1"/></label>
+                    <input type="password" id="password1" wicket:id="password1" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="password2"><wicket:message key="password2"/></label>
+                    <input type="password" id="password2" wicket:id="password2" class="formInputArea" />
+                </p>
+                <p>
+                    <label>&nbsp;</label>
+                    <input type="checkbox" wicket:id="active"/>
+                    <wicket:message key="active"/>
+                    <input type="checkbox" wicket:id="confirmed"/>
+                    <wicket:message key="confirmed"/>
+                </p>
+                <p style="text-align:center;">
+                    <input type="submit" wicket:id="saveButton" wicket:message="value:save" class="button"/>
+                    <input type="submit" wicket:id="cancelButton" wicket:message="value:cancel" class="button"/>
+                </p>
             </div>
+            <br class="clear">
         </form>
     </div>
 </wicket:panel>

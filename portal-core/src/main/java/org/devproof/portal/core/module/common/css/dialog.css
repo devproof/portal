@@ -132,6 +132,7 @@
     text-align: left;
 }
 
-.modalform input.formInputArea {
+.modalform input.formInputArea, .modalform textarea.formtextarea {
     width: 527px;
 }
+
