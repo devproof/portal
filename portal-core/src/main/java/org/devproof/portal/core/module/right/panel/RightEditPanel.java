@@ -139,7 +139,7 @@ public abstract class RightEditPanel extends Panel {
     }
 
     private FormComponent<String> createDescriptionField() {
-        TextArea<String> textArea = new TextArea<String>("description");
+        TextField<String> textArea = new TextField<String>("description");
         textArea.setRequired(true);
         return textArea;
     }

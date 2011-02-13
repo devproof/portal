@@ -20,6 +20,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
@@ -70,7 +71,9 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
 
             @Override
             public void onClick() {
+                PortalSession.get().logoutUser();
                 info(getString("loggedout"));
+                setResponsePage(PortalApplication.get().getHomePage());
             }
         };
     }

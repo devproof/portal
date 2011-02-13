@@ -126,7 +126,7 @@ public class ArticlePage extends ArticleBasePage {
 		public ArticleDataView(String id) {
 			super(id, articleDataProvider);
 			setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
-			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
+//			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override

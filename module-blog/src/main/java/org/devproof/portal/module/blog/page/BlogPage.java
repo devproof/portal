@@ -130,7 +130,7 @@ public class BlogPage extends BlogBasePage {
         public BlogDataView(String id) {
             super(id, blogDataProvider);
             setItemsPerPage(configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
-            setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
+//            setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
         }
 
         @Override

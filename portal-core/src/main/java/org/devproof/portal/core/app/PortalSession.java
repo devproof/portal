@@ -333,4 +333,5 @@ public class PortalSession extends WebSession {
 	public static PortalSession get() {
 		return (PortalSession) Session.get();
 	}
+
 }

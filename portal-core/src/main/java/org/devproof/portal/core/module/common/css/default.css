@@ -218,7 +218,7 @@ ul.topNav  {
 	float:left;
 }
 .contant_1_left img{
-	float: left;
+	/*float: left;*/
 	margin-right:10px;
 }
 .contant_1_left p{
@@ -596,7 +596,7 @@ table.dataview tr td {
 }
 
 table.dataview tr th {
-    color: #E73;
+    color: #650000;
     padding: 3px 30px 3px 8px;
     background: #FFF no-repeat right;
     border-bottom: 1px solid #CCC;
@@ -764,4 +764,43 @@ span.feedbackPanelINFO {
     padding-left: 40px;
     border-color: #C6D880;
     color: #264409;
+}
+
+
+table.palette {
+    border: 0;
+}
+
+table.palette td.header {
+    color: #000;
+    padding: 3px 30px 3px 8px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    text-align: left;
+    height: 20px;
+    font: bold 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+}
+
+table.palette td.pane {
+    width: 100px;
+    text-align: center;
+}
+
+table.palette td.pane select {
+    width: 250px;
+    border: 3px double #AAA;
+    color: #555;
+    font: normal 1.1em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
+}
+
+table.palette td.buttons {
+    text-align: center;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+table.palette td.buttons button {
+    width: 30px;
+    height: 30px;
+    background: white;
 }

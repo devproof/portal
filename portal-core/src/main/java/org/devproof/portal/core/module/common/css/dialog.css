@@ -47,7 +47,7 @@
     background-position: bottom right;
 }
 
-.dialog input {
+.dialog input[type=submit], .dialog button {
     color: #FFF;
 }
 
@@ -122,4 +122,16 @@
 .bubblePopup {
     z-index: 9999;
     position: absolute;
+}
+
+.modalform {
+/* background: url(../img/bgcode.gif); */
+    padding-left: 10px;
+    padding-right: 10px;
+    display: block;
+    text-align: left;
+}
+
+.modalform input.formInputArea {
+    width: 527px;
 }

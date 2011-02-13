@@ -135,7 +135,7 @@ public class BookmarkPage extends BookmarkBasePage {
 		public BookmarkDataView(String id) {
 			super(id, bookmarkDataProvider);
 			setItemsPerPage(configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARKS_PER_PAGE));
-			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
+//			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override

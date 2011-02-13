@@ -164,7 +164,7 @@ public class DownloadPage extends DownloadBasePage {
 		public DownloadDataView(String id) {
 			super(id, downloadDataProvider);
 			setItemsPerPage(configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOADS_PER_PAGE));
-			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
+//			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override
