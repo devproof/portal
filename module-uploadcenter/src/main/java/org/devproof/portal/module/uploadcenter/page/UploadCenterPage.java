@@ -56,8 +56,6 @@ public class UploadCenterPage extends TemplatePage {
 
     private static final long serialVersionUID = 3247255196536400455L;
 
-//	private DefaultMutableTreeNode rootNode;
-//	private DefaultMutableTreeNode selectedNode;
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
     private File rootFolder;
@@ -104,8 +102,7 @@ public class UploadCenterPage extends TemplatePage {
     }
 
     private TreeTable createFolderTreeTable() {
-        IColumn columns[] = new IColumn[]{new PropertyTreeColumn(new ColumnLocation(Alignment.MIDDLE, 8, Unit.PROPORTIONAL), this.getString("tableFilename"), "userObject.name"), new PropertyRenderableColumn(new ColumnLocation(Alignment.MIDDLE, 4, Unit.PROPORTIONAL), this.getString("tableFilesize"), "userObject.size"), new PropertyRenderableColumn(new ColumnLocation(Alignment.MIDDLE, 4, Unit.PROPORTIONAL), this.getString("tableFiledate"), "userObject.date"), new PropertyLinkedColumn(new ColumnLocation(Alignment.RIGHT, 80, Unit.PX), "", "userObject.file", bubblePanel)};
-
+        IColumn columns[] = new IColumn[]{new PropertyTreeColumn(new ColumnLocation(Alignment.LEFT, 500, Unit.PX), getString("tableFilename"), "userObject.name"), new PropertyRenderableColumn(new ColumnLocation(Alignment.LEFT, 80, Unit.PX), getString("tableFilesize"), "userObject.size"), new PropertyLinkedColumn(new ColumnLocation(Alignment.RIGHT, 100, Unit.PX), "", "userObject.file", bubblePanel)};
         folderTreeTable = newFolderTreeTable(columns);
         folderTreeTable.getTreeState().collapseAll();
         folderTreeTable.setRootLess(true);
@@ -234,13 +231,6 @@ public class UploadCenterPage extends TemplatePage {
     }
 
     private void forceRefresh(AjaxRequestTarget target) {
-//        // no refresh works?
         setResponsePage(UploadCenterPage.class);
-//        folderTreeTable.markNodeDirty(fileTreeModel.getRoot());
-//        folderTreeTable.modelChanged();
-//        selectedFolderModel.setObject(rootFolder);
-//        fileTreeModel.forceReload();
-//		folderTreeTable.updateTree(target);
-//        target.addComponent(this);
     }
 }

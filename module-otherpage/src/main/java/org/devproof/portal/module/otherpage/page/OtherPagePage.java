@@ -98,7 +98,7 @@ public class OtherPagePage extends OtherPageBasePage {
                 public String getObject() {
                     String content = otherPageModel.getObject().getContent();
                     if(StringUtils.isNotBlank(content)) {
-                        return StringUtils.abbreviate(content.replaceAll("\\<.*?>",""), 80) + " ...";
+                        return StringUtils.abbreviate(content.replaceAll("\\<.*?>",""), 80);
                     }
                     return "";
                 }
