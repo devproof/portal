@@ -748,7 +748,7 @@ table.palette td.buttons button {
 .mfuex .wicket-mfu-container {
     padding: 5px;
     margin-top: 3px;
-    border: 1px solid black;
+    border: 1px solid white;
     font-size: small;
     text-align: left;
     width: 300px;
@@ -760,9 +760,13 @@ table.palette td.buttons button {
 
 .mfuex .wicket-mfu-container input {
     margin-left: 5px;
+    color: #FFF;
 }
 
 input.mfuex  {
     color: #FFF;
 }
 
+#contant div.wicket-tree-table {
+    margin: 0;
+}

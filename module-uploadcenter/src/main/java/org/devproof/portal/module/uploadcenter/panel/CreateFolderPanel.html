@@ -3,20 +3,19 @@
 <wicket:panel>
     <div class="modalform">
         <h1><wicket:message key="contentTitle"/></h1>
-
+        <p></p>
         <div wicket:id="feedbackPanel"></div>
         <form wicket:id="form">
-            <table cellspacing="10">
-                <tr>
-                    <td><label for="foldername"><wicket:message key="foldername"/></label></td>
-                    <td><input type="text" wicket:id="foldername" style="width: 250px"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" wicket:id="createButton" wicket:message="value:create" class="button"/>
-                    </td>
-                </tr>
-            </table>
+            <div class="formForm">
+                <p>
+                    <label for="foldername"><wicket:message key="foldername"/></label>
+                    <input type="text" wicket:id="foldername" class="formInputArea"/>
+                </p>
+                <p style="text-align:center;">
+                    <input type="submit" wicket:id="createButton" wicket:message="value:create"/>
+                </p>
+            </div>
+            <br class="clear">
         </form>
     </div>
 </wicket:panel>
