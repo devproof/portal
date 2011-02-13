@@ -303,7 +303,6 @@ public class DownloadPage extends DownloadBasePage {
 		private BookmarkablePageLink<?> createDownloadLink() {
 			Download download = downloadModel.getObject();
 			BookmarkablePageLink<?> downloadLink = newDownloadLink();
-			downloadLink.add(createDownloadLinkImage());
 			downloadLink.add(createDownloadLinkLabel());
 			downloadLink.setParameter("0", download.getId());
 			return downloadLink;
@@ -335,10 +334,6 @@ public class DownloadPage extends DownloadBasePage {
 					return DownloadPage.this.getString(labelKey);
 				}
 			};
-		}
-
-		private Image createDownloadLinkImage() {
-			return new Image("downloadImage", DownloadConstants.REF_DOWNLOAD_IMG);
 		}
 
 		private Component createRatingPanel() {

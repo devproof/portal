@@ -1,23 +1,25 @@
-.tagInputDownload {
-    width: 629px;
+.downloadheadline {
+	border-bottom:2px dotted #3a3a3a;
+    padding-bottom: 2px;
 }
 
-.downloadDescription {
-    border-bottom: 1px solid #E0E0E0;
-    vertical-align: top;
+#contant div.downloadsub {
+	border:none;
 }
 
-.downloadInfoTable {
-    border-bottom: 1px solid #E0E0E0;
-    color: #555;
-    font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
-    margin-bottom: 12px;
-    padding: 8px 10px;
-    vertical-align: middle;
+.downloadLeft {
+    float:left;
+    width: 505px;
 }
 
-.downloadLink {
-    color: #555;
-    font: bold 1.3em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
-    text-decoration: none;
+.downloadRight {
+    margin-top:10px;
+    float:right;
+    width: 190px;
+}
+
+.downloadLabel {
+    width: 80px;
+    display: block;
+    float: left;
 }

@@ -72,10 +72,10 @@ public abstract class DownloadBasePage extends TemplatePage {
 
     private WebMarkupContainer createHiddenBubbleWindow() {
         if (isAuthor()) {
-            bubblePanel = new BubblePanel("bubblePanel");
+            bubblePanel = new BubblePanel("bubbleWindow");
 
         } else {
-            bubblePanel = new WebMarkupContainer("bubblePanel");
+            bubblePanel = new WebMarkupContainer("bubbleWindow");
             bubblePanel.setVisible(false);
         }
         return bubblePanel;

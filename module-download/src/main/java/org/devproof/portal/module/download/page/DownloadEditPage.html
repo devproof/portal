@@ -1,84 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:extend>
+    <h2><wicket:message key="contentTitle"/></h2>
     <div class="form">
-        <h1><wicket:message key="contentTitle"/></h1>
-
         <form wicket:id="form">
-            <table cellspacing="10">
-                <tr>
-                    <td><label for="title"><wicket:message key="title"/></label></td>
-                    <td colspan="4"><input type="text" wicket:id="title" class="editTitle"/></td>
-                </tr>
-                <tr>
-                    <td><label for="description"><wicket:message key="description"/></label></td>
-                    <td colspan="4"><textarea wicket:id="description" cols="220" rows="22"></textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="url"><wicket:message key="url"/></label></td>
-                    <td colspan="4"><input type="text" wicket:id="url" class="tagInputDownload"/></td>
-                </tr>
-                <tr>
-                    <td><label for="softwareVersion"><wicket:message key="softwareVersion"/></label></td>
-                    <td><input type="text" wicket:id="softwareVersion"/></td>
-                    <td width="150px">&nbsp;</td>
-                    <td><label for="downloadSize"><wicket:message key="downloadSize"/></label></td>
-                    <td><input type="text" wicket:id="downloadSize"/></td>
-                </tr>
-                <tr>
-                    <td><label for="manufacturer"><wicket:message key="manufacturer"/></label></td>
-                    <td><input type="text" wicket:id="manufacturer"/></td>
-                    <td>&nbsp;</td>
-                    <td><label for="licence"><wicket:message key="licence"/></label></td>
-                    <td><input type="text" wicket:id="licence"/></td>
-                </tr>
-                <tr>
-                    <td><label for="price"><wicket:message key="price"/></label></td>
-                    <td><input type="text" wicket:id="price"/></td>
-                    <td>&nbsp;</td>
-                    <td><label for="hits"><wicket:message key="hits"/></label></td>
-                    <td><input type="text" wicket:id="hits"/></td>
-                </tr>
-                <tr>
-                    <td><label for="numberOfVotes"><wicket:message key="numberOfVotes"/></label></td>
-                    <td><input type="text" wicket:id="numberOfVotes"/></td>
-                    <td>&nbsp;</td>
-                    <td><label for="sumOfRating"><wicket:message key="sumOfRating"/></label></td>
-                    <td><input type="text" wicket:id="sumOfRating"/></td>
-                </tr>
-                <tr>
-                    <td><label for="manufacturerHomepage"><wicket:message key="manufacturerHomepage"/></label></td>
-                    <td colspan="4"><input type="text" wicket:id="manufacturerHomepage" class="tagInputDownload"/></td>
-                </tr>
-                <tr>
-                    <td><label for="tags"><wicket:message key="tags"/></label></td>
-                    <td colspan="4"><input type="text" wicket:id="tags" class="tagInputDownload"/></td>
-                </tr>
-                <tr>
-                    <td><label><wicket:message key="viewRights"/></label></td>
-                    <td colspan="4">
-                        <span wicket:id="viewRights">[view rights]</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label><wicket:message key="downloadRights"/></label></td>
-                    <td colspan="4">
-                        <span wicket:id="downloadRights">[download rights]</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label><wicket:message key="voteRights"/></label></td>
-                    <td colspan="4">
-                        <span wicket:id="voteRights">[vote rights]</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td colspan="4"><input type="submit" wicket:message="value:save" class="button"/></td>
-                </tr>
-            </table>
+            <div class="formForm">
+                <p>
+                    <label for="title"><wicket:message key="title"/></label>
+                    <input type="text" id="title" wicket:id="title" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="description"><wicket:message key="description"/></label>
+                    <textarea wicket:id="description" cols="50" rows="6" class="formtextarea"></textarea>
+                </p>
+                <p>
+                    <label for="url"><wicket:message key="url"/></label>
+                    <input type="text" id="url" wicket:id="url" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="softwareVersion"><wicket:message key="softwareVersion"/></label>
+                    <input type="text" id="softwareVersion" wicket:id="softwareVersion" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="downloadSize"><wicket:message key="downloadSize"/></label>
+                    <input type="text" id="downloadSize" wicket:id="downloadSize" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="manufacturer"><wicket:message key="manufacturer"/></label>
+                    <input type="text" id="manufacturer" wicket:id="manufacturer" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="manufacturerHomepage"><wicket:message key="manufacturerHomepage"/></label>
+                    <input type="text" id="manufacturerHomepage" wicket:id="manufacturerHomepage" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="licence"><wicket:message key="licence"/></label>
+                    <input type="text" id="licence" wicket:id="licence" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="price"><wicket:message key="price"/></label>
+                    <input type="text" id="price" wicket:id="price" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="hits"><wicket:message key="hits"/></label>
+                    <input type="text" id="hits" wicket:id="hits" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="numberOfVotes"><wicket:message key="numberOfVotes"/></label>
+                    <input type="text" id="numberOfVotes" wicket:id="numberOfVotes" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="sumOfRating"><wicket:message key="sumOfRating"/></label>
+                    <input type="text" id="sumOfRating" wicket:id="sumOfRating" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="tags"><wicket:message key="tags"/></label>
+                    <input type="text" wicket:id="tags" class="formInputArea tagInputBlog"/>
+                </p>
+                <p>
+                    <label><wicket:message key="viewRights"/></label>
+                    <div wicket:id="viewRights">[view rights]</div>
+                </p>
+                <p>
+                    <label><wicket:message key="downloadRights"/></label>
+                    <div wicket:id="downloadRights">[download rights]</div>
+                </p>
+                <p>
+                    <label><wicket:message key="voteRights"/></label>
+                    <div wicket:id="voteRights">[vote rights]</div>
+                </p>
+                <input type="submit" class="formSubmit" value=""/>
+            </div>
+            <br class="clear">
         </form>
     </div>
-    <span wicket:id="bubblePanel"></span>
+    <div wicket:id="bubbleWindow"></div>
 </wicket:extend>
 </html>
