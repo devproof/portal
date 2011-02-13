@@ -19,6 +19,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authorization.Action;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.form.Form;
@@ -54,7 +55,7 @@ import org.devproof.portal.core.module.user.service.UserService;
 /**
  * @author Carsten Hufe
  */
-@Secured("contact")
+@Secured(value = "contact", action = Action.ENABLE)
 @ModulePage(mountPath = "/contact", indexMountedPath = true)
 public class ContactPage extends TemplatePage {
 

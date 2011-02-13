@@ -16,6 +16,7 @@
 package org.devproof.portal.core.app;
 
 import org.apache.wicket.*;
+import org.apache.wicket.authorization.Action;
 import org.apache.wicket.extensions.markup.html.tree.table.TreeTable;
 import org.apache.wicket.injection.web.InjectorHolder;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -221,13 +222,14 @@ public class PortalSession extends WebSession {
     /**
      * Whether an user has the right for this component
      * @param pageClazz page class
+     * @param action action render or enable
      * @return true if the user has the right
      */
-    public boolean hasRight(Class<? extends Page> pageClazz) {
+    public boolean hasRight(Class<? extends Page> pageClazz, Action action) {
         if (Page.class.isAssignableFrom(pageClazz)) {
             // false means the whole page is blocked
             if(pageClazz.isAnnotationPresent(Secured.class)) {
-                return evaluateSecuredAnnotation(pageClazz);
+                return evaluateSecuredAnnotation(pageClazz, action);
             }
             else {
                 List<Right> allRights = rightService.getAllRights();
@@ -243,10 +245,21 @@ public class PortalSession extends WebSession {
 
     /**
      * Whether an user has the right for this component
-     * @param component component
+     * @param pageClazz page class
      * @return true if the user has the right
      */
-    public boolean hasRight(Component component) {
+    public boolean hasRight(Class<? extends Page> pageClazz) {
+        return hasRight(pageClazz, null);
+    }
+
+    /**
+     * Whether an user has the right for this component
+     *
+     * @param component component
+     * @param action
+     * @return true if the user has the right
+     */
+    public boolean hasRight(Component component, Action action) {
         List<Right> allRights = rightService.getAllRights();
         if (component instanceof BookmarkablePageLink<?>) {
             /*
@@ -256,10 +269,10 @@ public class PortalSession extends WebSession {
                 */
             BookmarkablePageLink<?> l = (BookmarkablePageLink<?>) component;
             Class<? extends Page> pageClass = l.getPageClass();
-            return hasRight(pageClass);
+            return hasRight(pageClass, action);
         }
         else if(hasSecuredAnnotation(component.getClass())) {
-            return evaluateSecuredAnnotation(component.getClass());
+            return evaluateSecuredAnnotation(component.getClass(),action);
         }
         // problem with tree table, i dont know why
         else if (!(component instanceof TreeTable)) {
@@ -278,10 +291,13 @@ public class PortalSession extends WebSession {
         return true;
     }
 
-    private boolean evaluateSecuredAnnotation(Class<?> clazz) {
+    private boolean evaluateSecuredAnnotation(Class<?> clazz, Action action) {
         // if the user do not have the right when page is annotated with @Secured, he is not allowed to visit
         // page with this annotation is always protected
         Secured secured = getSecuredAnnotation(clazz);
+        if(action != null && !secured.action().equals(action.getName())) {
+            return true;
+        }
         for(String right : secured.value()) {
             if(hasRight(right)) {
                 return true;

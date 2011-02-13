@@ -41,7 +41,7 @@ import java.util.List;
 public class PortalAuthorizationStrategy implements IAuthorizationStrategy {
     @Override
     public boolean isActionAuthorized(Component component, Action action) {
-        return PortalSession.get().hasRight(component);
+        return PortalSession.get().hasRight(component, action);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

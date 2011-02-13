@@ -53,11 +53,6 @@ public abstract class AuthorPanel<T> extends Panel {
         add(createHistorizationLink());
     }
 
-//    @Override
-//    public boolean isVisible() {
-//        return PortalSession.get().isSignedIn();
-//    }
-
     private Component createHistorizationLink() {
         MarkupContainer link = newHistorizationLink("historizationLink");
         link.add(createHistorizationImage());

@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.config;
 
+import org.apache.wicket.authorization.Action;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Documented;
@@ -38,4 +39,9 @@ public @interface Secured {
      * Rights, which are required to see or access a page
      */
     String[] value();
+
+    /*
+     * Hides the linked component if the right is missing, otherwise it just disables the link
+     */
+    String action() default Action.RENDER;
 }
