@@ -28,16 +28,16 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.*;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.app.PortalApplication;
+import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
@@ -56,6 +56,10 @@ import org.devproof.portal.core.module.feed.component.Atom1Link;
 import org.devproof.portal.core.module.feed.component.Rss2Link;
 import org.devproof.portal.core.module.feed.panel.FeedBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
+import org.devproof.portal.core.module.user.entity.User;
+import org.devproof.portal.core.module.user.page.LoginPage;
+import org.devproof.portal.core.module.user.page.RegisterPage;
+import org.devproof.portal.core.module.user.page.SettingsPage;
 import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
 
 import java.lang.reflect.Constructor;
@@ -91,6 +95,11 @@ public abstract class TemplatePage extends WebPage {
         add(createBodyCSSHeaderContributor());
         add(createRss2LinkReference());
         add(createAtom1LinkReference());
+        add(createLoginMessageLabel());
+        add(createLoginLink());
+        add(createRegisterLink());
+        add(createSettingsLink());
+        add(createLogoutLink());
         add(createPageTitleLabel());
         add(createFeedbackPanel());
         add(createGoogleAnalytics());
@@ -99,6 +108,79 @@ public abstract class TemplatePage extends WebPage {
         add(createRepeatingMainNavigation());
         add(createRepeatingBoxes());
         setOutputMarkupId(true);
+    }
+
+    private Label createLoginMessageLabel() {
+        return new Label("loginMessage", createLoginMessageModel());
+    }
+
+    private LoadableDetachableModel<String> createLoginMessageModel() {
+        return new LoadableDetachableModel<String>() {
+
+            private static final long serialVersionUID = 4418736008117489964L;
+
+            @Override
+            protected String load() {
+                PortalSession session = PortalSession.get();
+                if(session.isSignedIn()) {
+                    return getString("loggedin", new PropertyModel<User>(session, "user"));
+                }
+                return getString("notloggedin");
+            }
+        };
+    }
+
+    private Link<Void> createLogoutLink() {
+        return new Link<Void>("logoutLink") {
+            private static final long serialVersionUID = 4418736008117489964L;
+
+            @Override
+            public void onClick() {
+                PortalSession.get().logoutUser();
+                info(getString("loggedout"));
+                setResponsePage(PortalApplication.get().getHomePage());
+            }
+
+            @Override
+            public boolean isVisible() {
+                return PortalSession.get().isSignedIn();
+            }
+        };
+    }
+
+    private BookmarkablePageLink<SettingsPage> createSettingsLink() {
+        return new BookmarkablePageLink<SettingsPage>("settingsLink", SettingsPage.class) {
+
+            private static final long serialVersionUID = -6899608689638446592L;
+
+            @Override
+            public boolean isVisible() {
+                return PortalSession.get().isSignedIn();
+            }
+        };
+    }
+
+    private BookmarkablePageLink<LoginPage> createRegisterLink() {
+        return new BookmarkablePageLink<LoginPage>("registerLink", RegisterPage.class) {
+
+            private static final long serialVersionUID = -554743907998591164L;
+
+            @Override
+            public boolean isVisible() {
+                return !PortalSession.get().isSignedIn();
+            }
+        };
+    }
+
+    private BookmarkablePageLink<LoginPage> createLoginLink() {
+        return new BookmarkablePageLink<LoginPage>("loginLink", LoginPage.class) {
+            private static final long serialVersionUID = -5974189785426103270L;
+
+            @Override
+            public boolean isVisible() {
+                return !PortalSession.get().isSignedIn();
+            }
+        };
     }
 
     @Override

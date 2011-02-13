@@ -20,7 +20,11 @@
             <li wicket:id="repeatingMainNav"><a href="#" wicket:id="mainNavigationLink"><wicket:container wicket:id="mainNavigationLinkLabel"/></a></li>
         </ul>
         <div class="login">
-        Sie sind nicht angemeldet.&nbsp;&nbsp;&nbsp; <a href="javascript:alert()">Anmelden</a> &nbsp;&nbsp;&nbsp;<a href="javascript:alert()">Registrieren</a>
+            <span wicket:id="loginMessage"></span>
+            <a wicket:id="loginLink"><wicket:message key="loginLinkLabel"></wicket:message></a>
+            <a wicket:id="registerLink"><wicket:message key="registerLinkLabel"></wicket:message></a>
+            <a wicket:id="settingsLink"><wicket:message key="settingsLinkLabel"></wicket:message></a>
+            <a wicket:id="logoutLink"><wicket:message key="logoutLinkLabel"></wicket:message></a>
         </div>
         <br class="clear"/>
     </div>

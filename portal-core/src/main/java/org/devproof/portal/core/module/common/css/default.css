@@ -726,5 +726,15 @@ table.palette td.buttons button {
 .login {
     float: right;
     padding-top: 20px;
+    padding-right: 5px;
     font-size: 12px;
+}
+
+.login a {
+    padding-left: 20px;
+}
+
+.login span {
+    color: #5A5A5A;
+    white-space:
 }

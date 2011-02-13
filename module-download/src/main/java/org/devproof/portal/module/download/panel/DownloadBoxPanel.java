@@ -28,6 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
+import org.devproof.portal.core.module.common.model.ShortenModel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
@@ -89,7 +90,7 @@ public class DownloadBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private Label createLinkToDownloadLabel(IModel<Download> downloadModel) {
-        IModel<Object> titleModel = new PropertyModel<Object>(downloadModel, "title");
+        IModel<String> titleModel = new ShortenModel(new PropertyModel<String>(downloadModel, "title"), 33);
         return new Label("linkName", titleModel);
     }
 

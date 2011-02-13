@@ -28,6 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
+import org.devproof.portal.core.module.common.model.ShortenModel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
@@ -84,7 +85,7 @@ public class BookmarkBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private Label createLinkNameLabel(IModel<Bookmark> bookmarkModel) {
-        IModel<String> titleModel = new PropertyModel<String>(bookmarkModel, "title");
+        IModel<String> titleModel = new ShortenModel(new PropertyModel<String>(bookmarkModel, "title"), 33);
         return new Label("linkName", titleModel);
     }
 
