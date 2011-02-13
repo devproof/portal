@@ -95,6 +95,8 @@ public class PortalApplication extends WebApplication {
         getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
         getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
         getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
+        getMarkupSettings().setDefaultBeforeDisabledLink("");
+        getMarkupSettings().setDefaultAfterDisabledLink("");
     }
 
     public boolean isProductionMode() {
