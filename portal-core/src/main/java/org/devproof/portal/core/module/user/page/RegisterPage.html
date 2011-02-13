@@ -3,52 +3,45 @@
 <body>
 <wicket:extend>
     <div wicket:id="bubblePanel"></div>
-    <div class="form">
-        <h1><wicket:message key="contentTitle"/></h1>
-
+    <h2><wicket:message key="contentTitle"/></h2>
+    <div class="form smallForm">
         <form wicket:id="form">
-            <table cellspacing="10">
-                <tr>
-                    <td><label for="username"><wicket:message key="username"/></label></td>
-                    <td><input type="text" id="username" wicket:id="username"/></td>
-                </tr>
-                <tr>
-                    <td><label for="firstname"><wicket:message key="firstname"/></label></td>
-                    <td><input type="text" id="firstname" wicket:id="firstname"/></td>
-                </tr>
-                <tr>
-                    <td><label for="lastname"><wicket:message key="lastname"/></label></td>
-                    <td><input type="text" id="lastname" wicket:id="lastname"/></td>
-                </tr>
-                <tr>
-                    <td><label for="birthday"><wicket:message key="birthday"/></label></td>
-                    <td><input type="text" wicket:id="birthday"/></td>
-                </tr>
-                <tr>
-                    <td><label for="email"><wicket:message key="email"/></label></td>
-                    <td><input type="text" id="email" wicket:id="email"/></td>
-                </tr>
-                <tr>
-                    <td><label for="password1"><wicket:message key="password1"/></label></td>
-                    <td><input type="password" id="password1" wicket:id="password1"/></td>
-                </tr>
-                <tr>
-                    <td><label for="password2"><wicket:message key="password2"/></label></td>
-                    <td><input type="password" id="password2" wicket:id="password2"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="checkbox" id="termsOfUse" wicket:id="termsOfUse"/> <wicket:message
-                            key="termsOfUseAccepting"/> [<a target="_blank" wicket:id="termsOfUseLink"><wicket:message
-                            key="termsOfUseLink"/></a>]
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" wicket:id="registerButton" wicket:message="value:registerButton"
-                               class="button"/></td>
-                </tr>
-            </table>
+            <div class="formForm">
+                <p>
+                    <label for="username"><wicket:message key="username"/></label>
+                    <input type="text" id="username" wicket:id="username" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <label for="firstname"><wicket:message key="firstname"/></label>
+                    <input type="text" id="firstname" wicket:id="firstname" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <label for="lastname"><wicket:message key="lastname"/></label>
+                    <input type="text" id="lastname" wicket:id="lastname" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <label for="birthday"><wicket:message key="birthday"/></label>
+                    <input type="text" id="birthday" wicket:id="birthday" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <label for="email"><wicket:message key="email"/></label>
+                    <input type="text" id="email" wicket:id="email" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <label for="password1"><wicket:message key="password1"/></label>
+                    <input type="password" id="password1" wicket:id="password1" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <label for="password2"><wicket:message key="password2"/></label>
+                    <input type="password" id="password2" wicket:id="password2" class="formInputAreaShort" />
+                </p>
+                <p>&nbsp;</p>
+                <p><input type="checkbox" id="termsOfUse" wicket:id="termsOfUse"/> <wicket:message
+                            key="termsOfUseAccepting"/> <a target="_blank" wicket:id="termsOfUseLink"><wicket:message
+                            key="termsOfUseLink"/></a></p>
+                <input type="submit" class="formSubmit" value="" wicket:id="registerButton"/>
+            </div>
+            <br class="clear">
         </form>
     </div>
 </wicket:extend>

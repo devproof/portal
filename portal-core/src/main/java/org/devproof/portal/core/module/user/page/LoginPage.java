@@ -45,14 +45,14 @@ public class LoginPage extends TemplatePage {
     public LoginPage(PageParameters params) {
         super(params);
         add(createLoginForm());
-        add(createRegisterLink());
-        add(createForgotPasswordLink());
     }
 
     private Form<ValueMap> createLoginForm() {
         Form<ValueMap> form = newLoginForm();
         form.add(createUsernameField());
         form.add(createPasswordField());
+        form.add(createRegisterLink());
+        form.add(createForgotPasswordLink());
         form.setOutputMarkupId(true);
         return form;
     }
@@ -87,12 +87,8 @@ public class LoginPage extends TemplatePage {
             }
 
             private void redirectToPortalHomePage() {
-                boolean productionMode = ((PortalApplication) getApplication()).isProductionMode();
-                // production mode check is for unit tests
-                if (productionMode) {
-                    Class<? extends Page> homePage = ((PortalApplication) getApplication()).getHomePage();
-                    setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
-                }
+                Class<? extends Page> homePage = getApplication().getHomePage();
+                setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
             }
         };
     }

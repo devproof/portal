@@ -2,32 +2,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
-    <div class="form">
-        <h1><wicket:message key="contentTitle"/></h1>
-
+    <h2><wicket:message key="contentTitle"/></h2>
+    <div class="form smallForm">
         <form wicket:id="loginForm">
-            <table cellspacing="10">
-                <tr>
-                    <td><label for="username"><wicket:message key="username"/></label></td>
-                    <td><input type="text" id="username" wicket:id="username"/></td>
-                </tr>
-                <tr>
-                    <td><label for="password"><wicket:message key="password"/></label></td>
-                    <td><input type="password" id="password" wicket:id="password"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" wicket:message="value:loginButton" class="button"/></td>
-                </tr>
-            </table>
+            <div class="formForm">
+                <p>
+                    <label for="username"><wicket:message key="username"/></label>
+                    <input type="text" id="username" wicket:id="username" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <label for="password"><wicket:message key="password"/></label>
+                    <input type="password" id="password1" wicket:id="password" class="formInputAreaShort" />
+                </p>
+                <p>
+                    <input type="submit" class="formSubmit" value=""/>
+                </p>
+                <p>
+                    &nbsp;
+                </p>
+                <p>
+                    <a wicket:id="registerLink" href="#"><wicket:message
+                                key="register">[register]</wicket:message></a>
+
+                    <a wicket:id="forgotPasswordLink" href="#"><wicket:message key="forgot.password">[forgot
+                            password]</wicket:message></a>
+                </p>
+
+            </div>
+            <br class="clear">
         </form>
-        <ul>
-            <li><a wicket:id="registerLink" href="#"><wicket:message
-                    key="register">[register]</wicket:message></a></li>
-            <li><a wicket:id="forgotPasswordLink" href="#"><wicket:message key="forgot.password">[forgot
-                password]</wicket:message></a></li>
-        </ul>
-    </div>
+     </div>
 </wicket:extend>
 </body>
 </html>

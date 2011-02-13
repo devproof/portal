@@ -193,9 +193,6 @@ public class OtherPageViewPage extends OtherPageBasePage {
 
     private Integer getContentId() {
         String id = params.getString("0");
-        if (id == null) {
-            id = getRequest().getParameter("optparam");
-        }
         return Integer.valueOf(id);
     }
 }

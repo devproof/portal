@@ -65,7 +65,6 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
         Form<ValueMap> form = newLoginForm();
         form.add(createUsernameField());
         form.add(createPasswordField());
-        form.add(createOptParamHiddenField());
         return form;
     }
 
@@ -93,11 +92,6 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
         };
     }
 
-    private HiddenField<String> createOptParamHiddenField() {
-        // View for ArticleViewPage and OtherPageViewPage
-        return new HiddenField<String>("optparam");
-    }
-
     private PasswordTextField createPasswordField() {
         return new PasswordTextField("password");
     }
@@ -116,7 +110,6 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
 
     private void setValueMap() {
         valueMap = new ValueMap();
-        valueMap.add("optparam", params.getString("0"));
     }
 
     private WebMarkupContainer createTitleContainer() {

@@ -98,9 +98,6 @@ public class ArticleReadPage extends ArticleBasePage {
 
 	private Integer getContentId() {
 		String id = params.getString("0");
-		if (id == null) {
-			id = getRequest().getParameter("optparam");
-		}
         contentId = Integer.valueOf(id);
 		return contentId;
 	}
