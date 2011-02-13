@@ -3,57 +3,42 @@
 <body>
 <wicket:extend>
     <div wicket:id="bubble"></div>
-    <div wicket:id="repeatingBookmarks">
+    <div wicket:id="bubbleWindow"></div>
+    <wicket:container wicket:id="repeatingBookmarks">
         <div wicket:id="bookmarkView"></div>
-    </div>
-    <br/>
-
+    </wicket:container>
     <div wicket:id="paging">paging</div>
-    <span wicket:id="bubbleWindow"></span>
     <wicket:fragment wicket:id="bookmarkView">
-        <table border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-                <td class="bookmarkDescription" style="width: 70%;">
-                    <h1><span wicket:id="broken" style="color: red;">[broken]</span><a href="#"
-                                                                                       wicket:id="titleLink"><span
-                            wicket:id="titleLabel">[title]</span></a></h1>
-
-                    <div class="descr">
-                        <img wicket:id="delicious" alt=""/> <span wicket:id="metaInfo">[author name]</span> <span
-                            wicket:id="authorButtons"></span>
+        <h3 class="bookmarkheadline">
+           <span wicket:id="broken" style="color: red;">[broken]</span>
+           <a href="#" wicket:id="titleLink"><wicket:container wicket:id="titleLabel">[title]</wicket:container></a>
+        </h3>
+        <div>
+            <div class="owncontent">
+                <div class="bookmarkLeft">
+                    <div class="bookmarksub sub">
+                       <img wicket:id="delicious" alt=""/>
+                       <span wicket:id="authorButtons"></span>
+                       <span wicket:id="metaInfo">[author name]</span>&nbsp;
+                       <span wicket:id="tags">tag1 tag2</span>
                     </div>
-                    <div wicket:id="tags">tag1 tag2</div>
-                    <br/>
+                    <div wicket:id="description"></div>
+                </div>
+                <div class="bookmarkRight">
+                    <span wicket:id="vote">[voting]</span><br/>
+                    <p><strong wicket:id="hits">[num of visits]</strong> <wicket:message key="hits"/></p>
 
-                    <div wicket:id="description">[description]</div>
-                </td>
-                <td class="bookmarkInfoTable" style="width: 30%;">
-                    <table style="height: 100%;">
-                        <tr>
-                            <td><wicket:message key="hits"/></td>
-                            <td style="width: 30px;">&nbsp;</td>
-                            <td><span wicket:id="hits">[num of visits]</span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><span wicket:id="vote">[voting]</span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><a href="#" target="_blank" wicket:id="bookmarkLink"
-                                               class="bookmarkLink"><img wicket:id="bookmarkImage"
-                                                                         alt=""/>&nbsp;&nbsp;<span
-                                    wicket:id="bookmarkLinkLabel"></span></a></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
+
+        <ul class="controls">
+            <li><a class="more" href="#" wicket:id="bookmarkLink"><wicket:container wicket:id="bookmarkLinkLabel"/></a></li>
+        </ul>
+        <div style="padding-bottom:30px;"></div>
     </wicket:fragment>
 </wicket:extend>
 </body>
 </html>
+
+

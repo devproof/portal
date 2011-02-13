@@ -1,27 +1,19 @@
-.tagInputSync {
-    width: 461px;
+.bookmarkheadline {
+	border-bottom:2px dotted #3a3a3a;
+    padding-bottom: 2px;
 }
 
-.tagInputBookmark {
-    width: 629px;
+#contant div.bookmarksub {
+	border:none;
 }
 
-.bookmarkDescription {
-    border-bottom: 1px solid #E0E0E0;
-    vertical-align: top;
+.bookmarkLeft {
+    float:left;
+    width: 520px;
 }
 
-.bookmarkInfoTable {
-    border-bottom: 1px solid #E0E0E0;
-    color: #555;
-    font: normal 1.0em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
-    margin-bottom: 12px;
-    padding: 8px 10px;
-    vertical-align: middle;
-}
-
-.bookmarkLink {
-    color: #555;
-    font: bold 1.3em 'Arial', 'Helvetica', 'Sans-serif', 'sans';
-    text-decoration: none;
+.bookmarkRight {
+    margin-top:10px;
+    float:right;
+    width: 170px;
 }

@@ -173,7 +173,6 @@ public class BookmarkPage extends BookmarkBasePage {
 		private BookmarkablePageLink<?> createVisitLink() {
 			Bookmark bookmark = bookmarkModel.getObject();
 			BookmarkablePageLink<?> visitLink = newVisitLink();
-			visitLink.add(createVisitLinkImage());
 			visitLink.add(createVisitLinkLabel());
 			visitLink.setParameter("0", bookmark.getId());
 			return visitLink;
@@ -188,10 +187,6 @@ public class BookmarkPage extends BookmarkBasePage {
 					return isAllowedToVisit();
 				}
 			};
-		}
-
-		private Image createVisitLinkImage() {
-			return new Image("bookmarkImage", BookmarkConstants.REF_LINK_IMG);
 		}
 
 		private Label createVisitLinkLabel() {

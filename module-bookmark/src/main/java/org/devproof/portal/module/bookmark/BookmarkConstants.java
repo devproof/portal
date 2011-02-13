@@ -29,7 +29,6 @@ public interface BookmarkConstants {
     String DELICIOUS_API = "https://api.del.icio.us/v1/posts/all?";
     String CONF_BOX_NUM_LATEST_BOOKMARKS = "box_num_latest_bookmarks";
     ResourceReference REF_DELICIOUS_IMG = new ResourceReference(BookmarkConstants.class, "img/delicious.gif");
-    ResourceReference REF_LINK_IMG = new ResourceReference(BookmarkConstants.class, "img/link.png");
     ResourceReference REF_BOOKMARK_CSS = new ResourceReference(BookmarkConstants.class, "css/bookmark.css");
     String CONF_BOOKMARK_ENTRIES_IN_FEED = "bookmark_entries_in_feed";
     String CONF_BOOKMARK_FEED_TITLE = "bookmark_feed_title";
