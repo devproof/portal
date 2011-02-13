@@ -48,13 +48,7 @@ body {
 	font-size:62px;
 	font-weight:normal;
 }
-/*#topbar {*/
-    /*background-image:url(../img/topbg.gif);*/
-	/*background-repeat:repeat-x;*/
-	/*width:960px;*/
-	/*height:40px;*/
-	/*float:left;*/
-/*}*/
+
 ul.topNav  {
 	margin:0px;
 	padding:0px;
@@ -116,40 +110,6 @@ ul.topNav  {
     text-align:right;
 }
 
-.search-container{
-	background-repeat:no-repeat;
-	width:260px;
-	height:37px;
-	float:right;
-	margin-right:60px;
-	margin-top:5px;
-}
-.search-container input.topSearch{
-    font-size:18px;
-	color:#CACACA;
-	line-height:18px;
-	background:url(../img/topInpurtArea.png) repeat-x left top;
-	border:none;
-	width:205px;
-	padding-top:5px;
-	padding-left:5px;
-	padding-right:5px;
-	height:32px;
-	float:left;
-	display:inline-block;
-}
-.searchBtn{
-    background-image:url(../img/seach_button.png);
-	background-repeat:no-repeat;
-	width:35px;
-	height:39px;
-	cursor:pointer;
-	border:none;
-	float:right;
-	display:inline-block;
-	text-indent:999999px;
-}
-
 .logo {
     background-image:url(../img/logo.png);
 	background-repeat:no-repeat;
@@ -171,29 +131,7 @@ ul.topNav  {
 	margin-top:12px;
 	margin-left:50px;
 }
-.start {
-    width:150px;
-	height:93px;
-	float:left;
-}
-.start a{
-    background-image:url(../img/start_now_n.png);
-	background-repeat:no-repeat;
-	width:150px;
-	height:93px;
-	float:left;
-	margin-left:355px;
-	margin-top:346px;
-}
-.start a:hover{
-    background-image:url(../img/start_now_r.png);
-	background-repeat:no-repeat;
-	width:150px;
-	height:93px;
-	float:left;
-	margin-left:355px;
-	margin-top:346px;
-}
+
 #contant {
 	width:960px;
 }
@@ -275,51 +213,6 @@ p.quoteBar {
 	margin-top:20px;
 	margin-bottom:20px;
 	font-style:italic;
-}
-.post_iteams {
-    width:625px;
-	margin-bottom:90px;
-}
-.post_iteams h3{
-	margin:0px;
-	padding:0px;
-    font-family:Arial, Helvetica, sans-serif;
-	font-size:36px;
-	color:#000000;
-	font-weight:normal;
-    background:url(../img/bpi1.png) no-repeat left top;
-	padding-left:83px;
-	padding-bottom:20px;
-}
-.post_iteams h3 p{
-	margin:0px;
-	padding:0px;
-	padding-top:8px;
-    font-family:Arial, Helvetica, sans-serif;
-	font-size:36px;
-	color:#000000;
-	font-weight:normal;
-}
-.post_iteams h3 span{
-    background:url(../img/bpi2.png) no-repeat left top;
-	display:block;
-	height:35px;
-	padding-left:40px;
-    font-family:Arial, Helvetica, sans-serif;
-	font-size:18px;
-	color:#959595;
-}
-.post_iteams_contant_box {
-	padding-left:80px;
-}
-.post_iteams_contant_box p {
-	margin:0px;
-	padding:0px;
-    font-family:Arial, Helvetica, sans-serif;
-	font-size:14px;
-	line-height:18px;
-	color:#000000;
-	font-weight:bold;
 }
 
 .sideBar{
@@ -828,4 +721,10 @@ table.palette td.buttons button {
     width: 30px;
     height: 30px;
     background: white;
+}
+
+.login {
+    float: right;
+    padding-top: 20px;
+    font-size: 12px;
 }
