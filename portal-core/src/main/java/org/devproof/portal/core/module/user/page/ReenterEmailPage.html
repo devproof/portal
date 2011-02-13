@@ -2,24 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
-    <div class="form">
-        <h1><wicket:message key="contentTitle"/></h1>
-
+    <h2><wicket:message key="contentTitle"/></h2>
+    <div class="form smallForm">
         <form wicket:id="form">
-            <table cellspacing="10">
-                <tr>
-                    <td colspan="2"><wicket:message key="info"/></td>
-                </tr>
-                <tr>
-                    <td><label for="email"><wicket:message key="email"/></label></td>
-                    <td><input type="text" wicket:id="email"/></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" wicket:id="requestButton" wicket:message="value:requestButton"
-                               class="button"/></td>
-                </tr>
-            </table>
+            <div class="formForm">
+                <p>
+                    <wicket:message key="info"/>
+                </p>
+                <p>&nbsp;</p>
+                <p>
+                    <label for="email"><wicket:message key="email"/></label>
+                    <input type="text" id="email" wicket:id="email" class="formInputAreaShort" />
+                </p>
+
+                <input type="submit" class="formSubmit" value="" wicket:id="requestButton"/>
+            </div>
+            <br class="clear">
         </form>
     </div>
 </wicket:extend>
