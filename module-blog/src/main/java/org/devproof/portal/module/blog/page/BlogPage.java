@@ -178,7 +178,7 @@ public class BlogPage extends BlogBasePage {
 
         private Component createPrintLink() {
             Blog blog = blogModel.getObject();
-            return new BookmarkablePageLink<BlogPrintPage>("printLink", BlogPrintPage.class, new PageParameters("0=" + blog.getId()));
+            return new BookmarkablePageLink<BlogPrintPage>("printLink", BlogPrintPage.class, new PageParameters("id=" + blog.getId()));
         }
 
         private Component createAppropriateAuthorPanel(Item<Blog> item) {

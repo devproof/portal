@@ -96,6 +96,7 @@ public class ArticleBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private BookmarkablePageLink<ArticlePage> createLinkToArticle(IModel<Article> articleModel) {
+        // this is a filter on article page
         Article article = articleModel.getObject();
         BookmarkablePageLink<ArticlePage> link = new BookmarkablePageLink<ArticlePage>("link", ArticlePage.class);
         link.setParameter("id", article.getId());

@@ -32,7 +32,7 @@ import org.devproof.portal.module.blog.service.BlogService;
 /**
  * @author Carsten Hufe
  */
-@ModulePage(mountPath = "/print/blog", indexMountedPath = true)
+@ModulePage(mountPath = "/print/blog")
 public class BlogPrintPage extends PrintPage {
     private static final long serialVersionUID = -861792869467871383L;
     @SpringBean(name = "blogService")
@@ -76,7 +76,7 @@ public class BlogPrintPage extends PrintPage {
     }
 
     private Integer getBlogId() {
-        Integer blogId = params.getAsInteger("0");
+        Integer blogId = params.getAsInteger("id");
         if (blogId == null) {
             throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.parameter")));
         }

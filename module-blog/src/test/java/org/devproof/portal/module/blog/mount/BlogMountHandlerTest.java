@@ -21,6 +21,7 @@ import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.page.BlogPage;
+import org.devproof.portal.module.blog.page.BlogPrintPage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,6 +71,14 @@ public class BlogMountHandlerTest {
     }
 
     @Test
+    public void testCanHandlePageClass_print() throws Exception {
+        expect(mockMountService.existsMountPoint("123", BlogConstants.HANDLER_KEY)).andReturn(true);
+        replay(mockMountService);
+        assertTrue(impl.canHandlePageClass(BlogPrintPage.class, new PageParameters("id=123")));
+        verify(mockMountService);
+    }
+
+    @Test
     public void testUrlFor_null() throws Exception {
         expect(mockMountService.findDefaultMountPoint("123", BlogConstants.HANDLER_KEY)).andReturn(null);
         replay(mockMountService);
@@ -87,6 +96,20 @@ public class BlogMountHandlerTest {
         expect(mockMountService.findDefaultMountPoint("123", BlogConstants.HANDLER_KEY)).andReturn(mp);
         replay(mockMountService);
         assertEquals("/hello", impl.urlFor(BlogPage.class, new PageParameters("id=123")));
+        verify(mockMountService);
+    }
+
+
+    @Test
+    public void testUrlFor_print() throws Exception {
+        MountPoint mp = new MountPoint();
+        mp.setId(1);
+        mp.setMountPath("/hello");
+        mp.setDefaultUrl(true);
+        mp.setRelatedContentId("123");
+        expect(mockMountService.findDefaultMountPoint("123", BlogConstants.HANDLER_KEY)).andReturn(mp);
+        replay(mockMountService);
+        assertEquals("/hello/print", impl.urlFor(BlogPrintPage.class, new PageParameters("id=123")));
         verify(mockMountService);
     }
 

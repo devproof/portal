@@ -27,6 +27,8 @@ import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.module.blog.BlogConstants;
 import org.devproof.portal.module.blog.page.BlogPage;
+import org.devproof.portal.module.blog.page.BlogPrintPage;
+import org.devproof.portal.module.blog.panel.BlogPrintPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,13 +44,23 @@ public class BlogMountHandler implements MountHandler {
     public IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint) {
         String relatedContentId = mountPoint.getRelatedContentId();
         PageParameters pageParameters = new PageParameters("id=" + relatedContentId);
+        String rest = StringUtils.substringAfter(requestedUrl, mountPoint.getMountPath());
+        if(StringUtils.isNotBlank(rest)) {
+            String page = StringUtils.remove(rest, '/');
+            if("print".equals(page)) {
+                return new BookmarkablePageRequestTarget(BlogPrintPage.class, pageParameters);
+            }
+            else if(StringUtils.isNumeric(page)) {
+                pageParameters.put("page", page);
+            }
+        }
         return new BookmarkablePageRequestTarget(BlogPage.class, pageParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters) {
-        if(BlogPage.class.equals(pageClazz)) {
+        if(BlogPage.class.equals(pageClazz) || BlogPrintPage.class.equals(pageClazz)) {
             String relatedContentId = pageParameters.getString("id");
             if(StringUtils.isNumeric(relatedContentId)) {
                 return mountService.existsMountPoint(relatedContentId, getHandlerKey());
@@ -63,7 +75,16 @@ public class BlogMountHandler implements MountHandler {
         String relatedContentId = params.getString("id");
         MountPoint mountPoint = mountService.findDefaultMountPoint(relatedContentId, getHandlerKey());
         if(mountPoint != null) {
-            return mountPoint.getMountPath();
+            String mountPath = mountPoint.getMountPath();
+            if(BlogPage.class.equals(pageClazz)) {
+                if(params.containsKey("page")) {
+                    mountPath += "/" + params.getString("page");
+                }
+                return mountPath; // page
+            }
+            else if(BlogPrintPage.class.equals(pageClazz)) {
+                return mountPath + "/print";
+            }
         }
         return null;
     }
