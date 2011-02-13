@@ -14,7 +14,7 @@
            <a href="#" wicket:id="titleLink"><wicket:container wicket:id="titleLabel">[title]</wicket:container></a>
         </h3>
         <div>
-            <div class="owncontent">
+            <div>
                 <div class="bookmarkLeft">
                     <div class="bookmarksub sub">
                        <img wicket:id="delicious" alt=""/>
@@ -22,7 +22,10 @@
                        <span wicket:id="metaInfo">[author name]</span>&nbsp;
                        <span wicket:id="tags">tag1 tag2</span>
                     </div>
-                    <div wicket:id="description"></div>
+                    <div wicket:id="description"  class="owncontent"></div>
+                    <ul class="controls">
+                        <li><a class="more" href="#" wicket:id="bookmarkLink"><wicket:container wicket:id="bookmarkLinkLabel"/></a></li>
+                    </ul>
                 </div>
                 <div class="bookmarkRight">
                     <span wicket:id="vote">[voting]</span><br/>
@@ -31,11 +34,8 @@
                 </div>
             </div>
         </div>
-
-        <ul class="controls">
-            <li><a class="more" href="#" wicket:id="bookmarkLink"><wicket:container wicket:id="bookmarkLinkLabel"/></a></li>
-        </ul>
-        <div style="padding-bottom:30px;"></div>
+        <br class="clear"/>
+        <div style="padding-bottom:20px;"></div>
     </wicket:fragment>
 </wicket:extend>
 </body>

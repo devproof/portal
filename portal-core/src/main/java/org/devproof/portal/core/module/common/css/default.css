@@ -401,6 +401,7 @@ p.quoteBar {
 
 ul.controls {
     padding-top:10px;
+    padding-bottom:10px;
     clear: both;
 }
 
