@@ -3,66 +3,47 @@
 <wicket:panel>
     <div class="modalform">
         <h1><wicket:message key="title"/></h1>
-
-        <div style="text-align: left; width:615px;">
-            <div wicket:id="feedbackPanel"></div>
-            <form wicket:id="form">
-                <table cellspacing="10">
-                    <tr>
-                        <td colspan="5"><wicket:message key="description"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td><label for="username"><wicket:message key="username"/></label></td>
-                        <td><input type="text" wicket:id="username"/></td>
-                        <td>&nbsp;</td>
-                        <td><label for="password"><wicket:message key="password"/></label></td>
-                        <td><input type="password" wicket:id="password"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="tags"><wicket:message key="tags"/></label></td>
-                        <td colspan="4"><input type="text" wicket:id="tags" class="tagInputSync"/></td>
-                    </tr>
-                    <tr>
-                        <td><label><wicket:message key="viewRights"/></label></td>
-                        <td colspan="4">
-                            <span wicket:id="viewRights">[view rights]</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label><wicket:message key="visitRights"/></label></td>
-                        <td colspan="4">
-                            <span wicket:id="visitRights">[vitit rights]</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label><wicket:message key="voteRights"/></label></td>
-                        <td colspan="4">
-                            <span wicket:id="voteRights">[vote rights]</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">
-                            <div wicket:id="bar">[Progress bar here]</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5"><input type="submit" wicket:id="startButton" wicket:message="value:startButton"
-                                               class="button"/> <input type="submit" wicket:id="cancelButton"
-                                                                       wicket:message="value:cancelButton"
-                                                                       class="button"/></td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+        <p></p>
+        <div wicket:id="feedbackPanel"></div>
+        <form wicket:id="form">
+            <div class="formForm">
+                <p class="dialogDescription">
+                    <wicket:message key="description"/>
+                </p>
+                <p>
+                    <label for="username"><wicket:message key="username"/></label>
+                    <input type="text" id="username" wicket:id="username" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="password"><wicket:message key="password"/></label>
+                    <input type="password" id="password" wicket:id="password" class="formInputArea" />
+                </p>
+                <p>
+                    <label for="tags"><wicket:message key="tags"/></label>
+                    <input type="text" id="tags" wicket:id="tags" class="formInputArea" />
+                </p>
+                <p>
+                    <label><wicket:message key="viewRights"/></label>
+                    <div wicket:id="viewRights">[view rights]</div>
+                </p>
+                <p>
+                    <label><wicket:message key="visitRights"/></label>
+                    <div wicket:id="visitRights">[visit rights]</div>
+                </p>
+                <p>
+                    <label><wicket:message key="voteRights"/></label>
+                    <div wicket:id="voteRights">[vote rights]</div>
+                </p>
+                <p>
+                    <div wicket:id="bar">[Progress bar here]</div>
+                </p>
+                <p style="text-align:center;">
+                    <input type="submit" wicket:id="startButton" wicket:message="value:startButton"/>
+                    <input type="submit" wicket:id="cancelButton" wicket:message="value:cancelButton"/>
+                </p>
+            </div>
+            <br class="clear">
+        </form>
     </div>
 </wicket:panel>
 </html>
