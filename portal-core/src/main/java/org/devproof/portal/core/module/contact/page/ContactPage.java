@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.contact.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
@@ -78,7 +77,7 @@ public class ContactPage extends TemplatePage {
         this.toUserModel = createToUserModel();
         this.contactBeanModel = createContactBeanModel();
         add(createCSSHeaderContributor());
-        add(createBubblePanel());
+        add(createBubbleWindow());
         add(createContactForm());
     }
 
@@ -88,8 +87,8 @@ public class ContactPage extends TemplatePage {
         super.onBeforeRender();
     }
 
-    private Component createBubblePanel() {
-        bubblePanel = new BubblePanel("bubblePanel");
+    private Component createBubbleWindow() {
+        bubblePanel = new BubblePanel("bubbleWindow");
         return bubblePanel;
     }
 
