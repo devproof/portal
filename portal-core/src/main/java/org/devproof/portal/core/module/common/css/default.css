@@ -233,7 +233,8 @@ p.quoteBar {
 	color:#3A3A3A;
 }
 .sideBar .selsidenav {
-    background:#EEEEEE;
+    /*background:#EEEEEE;*/
+    font-weight:bold;
 }
 .sideBarItem ul li{
     background:url(../img/sideBarArrow.png) no-repeat 5px 12px;
