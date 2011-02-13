@@ -108,17 +108,15 @@ INSERT INTO core_email_tpl (id,created_at,created_by,modified_at,modified_by,con
 <p>Kind regards</p>
 <p>Your #PAGENAME# Team</p>','Contact request from #PAGENAME#');
 
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (1, {ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','<!-- AddThis Button BEGIN -->
+
+INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,custom_style,content,sort,title,hide_title) VALUES (1, {ts '2009-01-05 11:43:49.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','SearchBoxPanel',null,null,1,'Search Box',0);
+INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,custom_style,content,sort,title,hide_title) VALUES (2, {ts '2009-01-05 12:17:03.000'},'admin',{ts '2009-01-05 15:36:40.000'},'admin','PageAdminBoxPanel',null,null,2,'Page Administration Box',0);
+INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,custom_style,content,sort,title,hide_title) VALUES (3, {ts '2009-01-05 12:17:35.000'},'admin',{ts '2009-01-05 13:11:05.000'},'admin','GlobalAdminBoxPanel',null,null,3,'Global Administration Box',0);
+INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,custom_style,content,sort,title,hide_title) VALUES (4, {ts '2009-01-05 11:41:22.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','TagCloudBoxPanel', null,null,4,'Related Tags Box',0);
+INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,custom_style,content,sort,title,hide_title) VALUES (5, {ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','whiteBoxTemplate','A little <i>bit</i> content',8,'Other Test Box',0);
+INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,custom_style,content,sort,title,hide_title) VALUES (6, {ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','FeedBoxPanel','whiteBoxTemplate',null,9,'Feed Box',1);
+INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,custom_style,content,sort,title,hide_title) VALUES (7, {ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','whiteBoxTemplate', '<!-- AddThis Button BEGIN -->
 <a class="addthis_button" href="http://www.addthis.com/bookmark.php?v=250&amp"><img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
 <!-- AddThis Button END -->
-<br/>',1,'AddThis.com',1);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (2, {ts '2009-01-05 11:41:22.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','TagCloudBoxPanel',null,7,'Related Tags Box',0);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (3, {ts '2009-01-05 11:43:49.000'},'admin',{ts '2009-01-05 13:22:25.000'},'admin','SearchBoxPanel',null,2,'Search Box',0);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (4, {ts '2009-01-05 12:16:28.000'},'admin',{ts '2009-01-05 13:22:03.000'},'admin','LoginBoxPanel',null,6,'Login Box',0);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (5, {ts '2009-01-05 12:16:38.000'},'admin',{ts '2009-01-05 13:22:03.000'},'admin','UserBoxPanel',null,3,'User Box',0);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (6, {ts '2009-01-05 12:17:03.000'},'admin',{ts '2009-01-05 15:36:40.000'},'admin','PageAdminBoxPanel',null,4,'Page Administration Box',0);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (7, {ts '2009-01-05 12:17:35.000'},'admin',{ts '2009-01-05 13:11:05.000'},'admin','GlobalAdminBoxPanel',null,5,'Global Administration Box',0);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (8, {ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','OtherBoxPanel','A little <i>bit</i> content',11,'Other Test Box',0);
-INSERT INTO core_box (id, created_at,created_by,modified_at,modified_by,box_type,content,sort,title,hide_title) VALUES (9, {ts '2009-01-05 12:19:08.000'},'admin',{ts '2009-01-05 14:28:30.000'},'admin','FeedBoxPanel',null,12,'Feed Box',1);
-
+<br/>',10,'AddThis.com',1);
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('spring.fontService.findSyntaxHighlighterThemes.theme','Syntax Highlighter Theme','General','java.lang.String','Eclipse');

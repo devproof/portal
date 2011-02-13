@@ -16,7 +16,7 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'blog.view.registe
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('blog_entries_per_page','Blog entries per page','Blog','java.lang.Integer','5');
 
-INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2009-01-06 19:27:20.000'},'admin',{ts '2009-01-06 19:27:20.000'},'admin','<p>Congratulation. Devproof Portal is running.</p>
+INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2011-02-26 19:27:20.000'},'admin',{ts '2011-02-26 19:27:20.000'},'admin','<p>Congratulation. Devproof Portal is running.</p>
 <p>The default users are:</p>
 <ul>
 <li>admin (password: admin)&nbsp; (admin rights)</li>
@@ -29,7 +29,13 @@ portal.release();
 <p>[string2img size=14] and the string to image feature [/string2img].</p>
 ','Welcome to Devproof Portal');
 
+INSERT INTO blog_tag (tagname,created_at, created_by, modified_at, modified_by) VALUES ('devproof',{ts '2011-02-26 19:27:20.000'},'admin',{ts '2011-02-26 19:27:20.000'},'admin');
+INSERT INTO blog_tag (tagname,created_at, created_by, modified_at, modified_by) VALUES ('portal',{ts '2011-02-26 19:27:20.000'},'admin',{ts '2011-02-26 19:27:20.000'},'admin');
+INSERT INTO blog_tag (tagname,created_at, created_by, modified_at, modified_by) VALUES ('welcome',{ts '2011-02-26 19:27:20.000'},'admin',{ts '2011-02-26 19:27:20.000'},'admin');
 
+INSERT INTO blog_tag_xref (blog_id, tagname) VALUES (1, 'devproof');
+INSERT INTO blog_tag_xref (blog_id, tagname) VALUES (1, 'portal');
+INSERT INTO blog_tag_xref (blog_id, tagname) VALUES (1, 'welcome');
 
 INSERT INTO blog_right_xref (blog_id,right_id) VALUES (1,'blog.view.guest');
 INSERT INTO blog_right_xref (blog_id,right_id) VALUES (1,'blog.view.registered');

@@ -38,6 +38,7 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/blog/test-datasource.xml" })
 public class BlogPrintPageTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -54,7 +55,7 @@ public class BlogPrintPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        tester.startPage(BlogPrintPage.class, new PageParameters("0=1"));
+        tester.startPage(BlogPrintPage.class, new PageParameters("id=1"));
         // must be stateless to save memory (non-stateless creates HttpSession)
         assertTrue(tester.getLastRenderedPage().isPageStateless());
         tester.assertRenderedPage(BlogPrintPage.class);
