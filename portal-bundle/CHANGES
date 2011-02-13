@@ -1,3 +1,43 @@
+Devproof Portal 1.1.0
+---------------------
+
+Features
+- Better layout
+- Content historization for other pages, articles and blog entries
+- Define your own URLs for other pages, articles and blog entries
+- Login and registration links on top, so that you dont have to use boxes
+- Better layout for error hints
+- Custom styles for boxes are possible
+
+Technical stuff
+- GenericDao -> CrudRepository
+- HibernateTemplate and HibernateDaoSupport removed
+- Renamed DAO to Repository (e.g. EmailTemplateDao to EmailTemplateRepository)
+- Maven to gradle migrated
+- Some PortalTestUtil methods removed
+- No HSQLDB support anymore, switched to H2 database (it can handle MySql DML scripts)
+- Spring Configuration with Annotations @Autowired etc
+- Spring jdbc:embedded-datasource for unit tests
+- Unit tests with SrpingJUNit4TestRunner
+- Clean transaction border, dont make transactions over a whole request anymore
+- Commented more classes and methods
+- Update all framework versions
+- Cleanup Spring Bootstrapping of devproof modules
+- Mounting with Spring classpath scanning
+- Sometimes not all modules are registering in Tomcatfixed
+- Upgrade to Tomcat 7
+- Remove Jars from Git repo and load over Maven Repo to bundle the Tomcat
+- Updated Google Analytics deprected script
+- MountHandler interface to implement own global mounting strategies
+- Own Spring namespace and tag to register a module and enabling scanning <devproof:module-scan/>
+  Enables scan for the following annotations:
+    - @GenericRepository annotation
+    - @RegisterGenericDataProvider annotation for entities, to provide a generic dataprovider
+    - @Secured annotation to provide security for Wicket components
+    - @NavigationBox annotation to register a wicket panel as NavigationBox
+    - @ModulePage annotation to mount a page and register as ModulePage
+    - @Entity (from JPA) will be registered in SessionFactory
+
 Devproof Portal 1.0.0
 ---------------------
 - Final Release, no critical changes
@@ -31,7 +71,7 @@ Features
 - New KittenCaptcha
 - Nicer style and icons
 
-Technical
+Technical stuff
 - A lot of bugfixes
 - Caching added (Hibernate caching)
 - Replaced wicket-1.4rc with wicket 1.4.5 (1.4.6 contains an ajax linking bug)
