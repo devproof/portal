@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.contact.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -157,13 +158,13 @@ public class ContactPage extends TemplatePage {
     private void validateToUser() {
         User toUser = toUserModel.getObject();
         if (toUser == null) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.doesnotexist")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("user.doesnotexist")));
         }
         if (hasContactFormPermission(toUser)) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.missing.right")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("user.missing.right")));
         }
         if (isRecipientContactFormEnabled(toUser)) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(this.getString("user.contactform.disabled")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("user.contactform.disabled")));
         }
     }
 

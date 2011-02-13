@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.common.page;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
@@ -24,6 +25,7 @@ import org.devproof.portal.core.config.ModulePage;
 /**
  * @author Carsten Hufe
  */
+@ModulePage(mountPath = "/hello")
 public class MessagePage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
@@ -34,12 +36,14 @@ public class MessagePage extends TemplatePage {
         if (msg == null) {
             msg = "unknown.error";
         }
-        addOrReplace(new Label("message", this.getString(msg)));
+        add(new Label("message", getString(msg)));
     }
 
-    private MessagePage(PageParameters params, String message) {
+    private MessagePage(PageParameters params, String message, boolean error) {
         super(params);
-        addOrReplace(new Label("message", message));
+        Label label = new Label("message", message);
+        label.add(new SimpleAttributeModifier("class", error ? "feedbackPanelERROR" : "feedbackPanelINFO"));
+        add(label);
     }
 
     public static MessagePage getMessagePageByKey(String messageKey) {
@@ -50,28 +54,17 @@ public class MessagePage extends TemplatePage {
 
     public static MessagePage getMessagePage(String message) {
         PageParameters params = new PageParameters();
-        return new MessagePage(params, message);
+        return new MessagePage(params, message, false);
     }
 
-    public static MessagePage getMessagePage(String message, final String redirectUrl) {
+    public static MessagePage getErrorPage(String message) {
         PageParameters params = new PageParameters();
-        return new MessagePage(params, message) {
-            private static final long serialVersionUID = -2564907074560241906L;
-
-            @Override
-            public String getRedirectURLAfterLogin() {
-                return redirectUrl;
-            }
-        };
+        return new MessagePage(params, message, true);
     }
 
     public static MessagePage getMessagePageWithLogout(String messageKey) {
         ((PortalSession) Session.get()).logoutUser();
         PageParameters params = new PageParameters();
-        return new MessagePage(params, messageKey);
-    }
-
-    public String getRedirectURLAfterLogin() {
-        return null;
+        return new MessagePage(params, messageKey, false);
     }
 }

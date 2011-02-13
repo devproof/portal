@@ -15,10 +15,7 @@
  */
 package org.devproof.portal.module.article.page;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -151,10 +148,9 @@ public class ArticleReadPage extends ArticleBasePage {
 		ArticlePage displayedPage = displayedPageModel.getObject();
 		PortalSession session = (PortalSession) getSession();
 		if (displayedPage == null) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("error.page")));
+			throw new RestartResponseException(MessagePage.getErrorPage(getString("error.page")));
 		} else if (!session.hasRight("article.read") && !session.hasRight(displayedPage.getArticle().getReadRights())) {
-			throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"),
-					getRequestURL()));
+			throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.right")));
 		}
 	}
 

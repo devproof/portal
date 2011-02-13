@@ -18,6 +18,7 @@ package org.devproof.portal.module.article.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -77,7 +78,7 @@ public class ArticlePrintPage extends PrintPage {
 
     private Integer getArticleId() {
         if (!params.containsKey("0")) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.parameter")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.parameter")));
         }
         return params.getInt("0");
     }
@@ -85,7 +86,7 @@ public class ArticlePrintPage extends PrintPage {
     private void validateAccessRights() {
         Article article = getArticleModel().getObject();
         if (article == null || !isAllowedToRead(article)) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.right")));
         }
     }
 

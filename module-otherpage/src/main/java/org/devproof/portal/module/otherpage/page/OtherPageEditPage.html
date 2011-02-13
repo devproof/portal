@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <wicket:extend>
-    <form wicket:id="form">
-        <table cellspacing="10">
-            <tr>
-                <td><label for="content"><wicket:message key="content"/></label></td>
-                <td><textarea wicket:id="content" cols="85" rows="45"></textarea></td>
-            </tr>
-            <tr>
-                <td><label for="mountUrls"><wicket:message key="mountUrls"/></label></td>
-                <td wicket:id="mountUrls">content</td>
-            </tr>
-            <tr>
-                <td><label><wicket:message key="rights"/></label></td>
-                <td>
-                    <span wicket:id="viewright">[rights]</span>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" wicket:message="value:save" class="button"/></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <wicket:message key="placeholder"/>
-                </td>
-            </tr>
-        </table>
-    </form>
+    <h2><wicket:message key="contentTitle"/></h2>
+    <div class="form">
+        <form wicket:id="form">
+            <div class="formForm">
+                <p>
+                    <label for="content"><wicket:message key="content"/></label>
+                    <textarea wicket:id="content" cols="50" rows="6" class="formtextarea"></textarea>
+                </p>
+                <p>
+                    <label for="mountUrls"><wicket:message key="mountUrls"/></label>
+                    <div wicket:id="mountUrls">content</div>
+                </p>
+                <p>
+                    <label><wicket:message key="viewrights"/></label>
+                    <div wicket:id="viewright">[view rights]</div>
+                </p>
+                <p>
+                    <input type="submit" class="formSubmit" value=""/>
+                </p>
+            </div>
+            <br class="clear">
+        </form>
+    </div>
 </wicket:extend>
 </html>

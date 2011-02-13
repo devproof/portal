@@ -15,10 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.page;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.*;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -121,7 +118,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
     private void redirectToErrorPageIfHasNoRights() {
         OtherPage otherPage = otherPageModel.getObject();
         if (otherPage != null && hasRightToViewOtherPage(otherPage)) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right"), getRequestURL()));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.right")));
         }
     }
 

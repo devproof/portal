@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.user.page;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -119,9 +120,9 @@ public class ResetPasswordPage extends TemplatePage {
             protected User load() {
                 User user = userService.findUserByUsername(params.getString(PARAM_USER));
                 if (user == null) {
-                    throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("user.notregistered")));
+                    throw new RestartResponseException(MessagePage.getErrorPage(getString("user.notregistered")));
                 } else if (isConfirmationCodeNotCorrect(user)) {
-                    throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("wrong.key")));
+                    throw new RestartResponseException(MessagePage.getErrorPage(getString("wrong.key")));
                 }
                 return user;
             }
@@ -135,7 +136,7 @@ public class ResetPasswordPage extends TemplatePage {
 
     private void validateParameter() {
         if (!params.containsKey(PARAM_USER) || !params.containsKey(PARAM_CONFIRMATION_CODE)) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.params")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.params")));
         }
     }
 }

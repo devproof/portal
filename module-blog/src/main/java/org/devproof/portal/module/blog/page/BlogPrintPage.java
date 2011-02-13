@@ -18,6 +18,7 @@ package org.devproof.portal.module.blog.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -78,7 +79,7 @@ public class BlogPrintPage extends PrintPage {
     private Integer getBlogId() {
         Integer blogId = params.getAsInteger("id");
         if (blogId == null) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.parameter")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.parameter")));
         }
         return blogId;
     }
@@ -86,7 +87,7 @@ public class BlogPrintPage extends PrintPage {
     private void validateAccessRights() {
         Blog blog = getBlogModel().getObject();
         if (blog == null || !isAllowedToRead(blog)) {
-            throw new RestartResponseAtInterceptPageException(MessagePage.getMessagePage(getString("missing.right")));
+            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.right")));
         }
     }
 

@@ -267,7 +267,7 @@ public class RegisterPage extends TemplatePage {
         if (userService.activateUser(username, confirmationCode)) {
             setResponsePage(MessagePage.getMessagePage(getString("confirmed")));
         } else {
-            setResponsePage(MessagePage.getMessagePage(getString("notconfirmed")));
+            setResponsePage(MessagePage.getErrorPage(getString("notconfirmed")));
         }
     }
 }
