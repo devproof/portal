@@ -60,7 +60,7 @@ ul.topNav  {
 }
 .topNav li a{
 	 float:left;
-     font-family:tahoma, arial;
+     font-family:Tahoma, Arial;
 	 font-size:11px;
 	 color:#FFFFFF;
 	 text-align:center;
@@ -408,6 +408,7 @@ ul.controls {
 ul.controls li {
     display: inline;
     font-size: 11px;
+    font-family: Tahoma,Arial;
 }
 
 ul.controls li a {

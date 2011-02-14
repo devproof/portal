@@ -40,7 +40,7 @@ INSERT INTO core_user (id,active,birthday,changed_at,confirm_app_at,confirmation
 
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_real_author','Show real author name','General','java.lang.Boolean','true');
-INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_by','Show modified by','General','java.lang.Boolean','true');
+INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_by','Show modified by','General','java.lang.Boolean','false');
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('show_modified_at_as_created_at','Show modified at as created at','General','java.lang.Boolean','false');
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('input_date_format','Default input date format','General','java.lang.String','yyyy-MM-dd');
