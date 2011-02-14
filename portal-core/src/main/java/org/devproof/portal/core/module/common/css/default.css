@@ -145,7 +145,7 @@ ul.topNav  {
 }
 #contant .sub {
 	display:block;
-	font-size:10px;
+	font-size:11px;
 	color:#808080;
 	border-top:2px dotted #3a3a3a;
 	font-family:tahoma, arial;
@@ -407,7 +407,7 @@ ul.controls {
 
 ul.controls li {
     display: inline;
-    font-size: 0.8em;
+    font-size: 11px;
 }
 
 ul.controls li a {
