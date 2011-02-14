@@ -113,12 +113,11 @@ subprojects {
         // copy the rest and filter
         from(sourceSets.main.resources.srcDirs) {
             filter(ReplaceTokens, tokens: [devproofVersion: project.version])
+            include '**/*.xml'
         }
         // copy images
         from(sourceSets.main.resources.srcDirs) {
-            include '**/*.png'
-            include '**/*.jpg'
-            include '**/*.gif'
+            exclude '**/*.xml'
         }
     }
 }
