@@ -17,8 +17,6 @@ CREATE TABLE "ARTICLE_HISTORIZED"
   "ARTICLE_ID" NUMBER(10, 0) NOT NULL,
    PRIMARY KEY ("ID") ENABLE
  );
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.ArticleHistoryPage','Article: History',null,null,null,null);
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.ArticleHistoryPage');
 
 ALTER TABLE "CORE_ROLE_RIGHT_XREF" DISABLE CONSTRAINT "FK5AFA2427E35D2FF0";
 ALTER TABLE "CORE_ROLE_RIGHT_XREF" DISABLE CONSTRAINT "FK5AFA2427FEB2F584";

@@ -18,8 +18,6 @@ CREATE TABLE "BLOG_HISTORIZED"
  );
 
 -- since 1.1
-INSERT INTO core_right (right_id,description,created_at,created_by,modified_at,modified_by) VALUES ('page.BlogHistoryPage','Blog: History',null,null,null,null);
-INSERT INTO core_role_right_xref (role_id,right_id) VALUES (1,'page.BlogHistoryPage');
 
 ALTER TABLE "CORE_ROLE_RIGHT_XREF" DISABLE CONSTRAINT "FK5AFA2427E35D2FF0";
 ALTER TABLE "CORE_ROLE_RIGHT_XREF" DISABLE CONSTRAINT "FK5AFA2427FEB2F584";
