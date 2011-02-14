@@ -8,6 +8,7 @@ What you need to build your own Devproof Portal
 
 * Java 1.6 or higher (http://java.sun.com)
 * Gradle 0.9.2 or higher (http://www.gradle.org)
+  Gradle can be automatically bootstrapped by running ./gradlew or gradle.bat
 * Internet connection (for Maven artifacts and Tomcat download)
 
 How to build your own Devproof Portal
@@ -15,7 +16,9 @@ How to build your own Devproof Portal
 
 In the main directory of the distribution, type the following to build the project:
 
-`gradle build dist`
+If you have installed gradle `gradle build dist`
+On Windows run `gradlew.bat build dist`
+On Linux/Cygwin run `./gradlew build dist`
 
 Oh, that's it! You will find the bundled version under *portal-bundle/build/dist/*.
 Run the Apache Tomcat under 

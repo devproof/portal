@@ -110,15 +110,15 @@ subprojects {
 
     // filtering resources
     processResources {
+        // copy the rest and filter
+        from(sourceSets.main.resources.srcDirs) {
+            filter(ReplaceTokens, tokens: [devproofVersion: project.version])
+        }
         // copy images
         from(sourceSets.main.resources.srcDirs) {
             include '**/*.png'
             include '**/*.jpg'
             include '**/*.gif'
-        }
-        // copy the rest and filter
-        from(sourceSets.main.resources.srcDirs) {
-            filter(ReplaceTokens, tokens: [devproofVersion: project.version])
         }
     }
 }
@@ -133,4 +133,8 @@ buildscript {
     }
 }
 
-
+// generate gradle bootstrapping
+// run gradle createWrapper
+task createWrapper(type: Wrapper) {
+  gradleVersion = '0.9.2'
+}
