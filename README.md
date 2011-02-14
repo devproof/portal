@@ -14,11 +14,11 @@ What you need to build your own Devproof Portal
 How to build your own Devproof Portal
 -------------------------------------
 
-In the main directory of the distribution, type the following to build the project:
+In the main directory of the distribution, run the following command:
 
-If you have installed gradle `gradle build dist`
-On Windows run `gradlew.bat build dist`
-On Linux/Cygwin run `./gradlew build dist`
+* On Windows run `gradlew.bat build dist`
+* On Linux or Cygwin run `./gradlew build dist`
+* If you have installed gradle `gradle build dist`
 
 Oh, that's it! You will find the bundled version under *portal-bundle/build/dist/*.
 Run the Apache Tomcat under 
