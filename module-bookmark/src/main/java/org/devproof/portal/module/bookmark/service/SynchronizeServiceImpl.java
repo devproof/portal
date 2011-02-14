@@ -155,6 +155,9 @@ public class SynchronizeServiceImpl implements SynchronizeService {
     }
 
     private List<BookmarkTag> getTagsFromString(String tags) {
+        if(StringUtils.isBlank(tags)) {
+            return new ArrayList<BookmarkTag>();
+        }
         StringTokenizer tokenizer = new StringTokenizer(tags, TagConstants.TAG_SEPERATORS, false);
         List<BookmarkTag> newTags = new ArrayList<BookmarkTag>(tokenizer.countTokens());
         while (tokenizer.hasMoreTokens()) {
