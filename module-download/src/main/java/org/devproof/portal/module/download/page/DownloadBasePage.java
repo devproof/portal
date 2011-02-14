@@ -70,6 +70,7 @@ public abstract class DownloadBasePage extends TemplatePage {
         return CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS);
     }
 
+    // TODO remove or reuse from parent
     private WebMarkupContainer createHiddenBubbleWindow() {
         if (isAuthor()) {
             bubblePanel = new BubblePanel("bubbleWindow");

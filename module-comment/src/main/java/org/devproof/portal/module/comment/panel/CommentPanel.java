@@ -82,6 +82,7 @@ public class CommentPanel extends Panel {
         this.queryModel = createCommentQueryModel();
         this.commentModel = createNewCommentModelForForm();
         add(createCSSHeaderContributor());
+    // TODO remove bubblepanel and create call back
         add(createBubblePanel());
         add(createNoCommentsHintContainer());
         add(createRepeatingComments());

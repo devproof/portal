@@ -73,6 +73,7 @@ public abstract class BookmarkBasePage extends TemplatePage {
         return CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS);
     }
 
+    // TODO remove or reuse from parent
     private WebMarkupContainer createHiddenBubblePanel() {
         if (isAuthor()) {
             bubblePanel = new BubblePanel("bubbleWindow");
