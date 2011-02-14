@@ -23,5 +23,5 @@ INSERT INTO other_page_right_xref (other_id,right_id) VALUES (2,'otherPage.view.
 INSERT INTO other_page_right_xref (other_id,right_id) VALUES (2,'otherPage.view.registered');
 
 -- since 1.1.0
-INSERT INTO core_mount_point (id,mount_path,related_content_id,handler_key,default_url) VALUES (50,'/other/about', '1', 'otherPage', 1);
-INSERT INTO core_mount_point (id,mount_path,related_content_id,handler_key,default_url) VALUES (51,'/other/terms_of_use', '2', 'otherPage', 1);
+INSERT INTO core_mount_point (id,mount_path,related_content_id,handler_key,default_url) VALUES (50,'/about', '1', 'otherPage', 1);
+INSERT INTO core_mount_point (id,mount_path,related_content_id,handler_key,default_url) VALUES (51,'/terms_of_use', '2', 'otherPage', 1);

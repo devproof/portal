@@ -29,5 +29,5 @@ ALTER TABLE "CORE_ROLE_RIGHT_XREF" ENABLE CONSTRAINT "FK5AFA2427FEB2F584";
 
 -- copy current content ids to mount_points
 INSERT INTO core_mount_point (id, related_content_id, handler_key, mount_path, default_url)
-  (SELECT HIBERNATE_SEQUENCE.NEXTVAL, id , 'otherPage', concat('/other/', content_id), 1 from other_page);
+  (SELECT HIBERNATE_SEQUENCE.NEXTVAL, id , 'otherPage', concat('/', content_id), 1 from other_page);
 ALTER TABLE other_page DROP COLUMN content_id;
