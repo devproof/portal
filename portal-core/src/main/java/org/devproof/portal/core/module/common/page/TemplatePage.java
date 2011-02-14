@@ -138,6 +138,7 @@ public abstract class TemplatePage extends WebPage {
             public void onClick() {
                 PortalSession.get().logoutUser();
                 info(getString("loggedout"));
+                setRedirect(false);
                 setResponsePage(PortalApplication.get().getHomePage());
             }
 

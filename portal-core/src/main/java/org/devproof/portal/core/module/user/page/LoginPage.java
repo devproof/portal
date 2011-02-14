@@ -88,7 +88,9 @@ public class LoginPage extends TemplatePage {
 
             private void redirectToPortalHomePage() {
                 Class<? extends Page> homePage = getApplication().getHomePage();
-                setResponsePage(homePage, new PageParameters("infoMsg=" + getString("logged.in")));
+                info(getString("logged.in"));
+                setRedirect(false);
+                setResponsePage(homePage);
             }
         };
     }
