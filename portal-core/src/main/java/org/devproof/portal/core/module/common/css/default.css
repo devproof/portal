@@ -438,7 +438,7 @@ ul.controls li a.more {
     left: 0;
     top: 0;
     z-index: 9000;
-    background-color: #000;
+    background-image: url('../img/transparent.png');
     display: none;
 }
 

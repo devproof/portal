@@ -68,5 +68,9 @@ public abstract class CaptchaAjaxButton extends AjaxSubmitLink {
         return !PortalSession.get().hasRight("captcha.disabled");
     }
 
+   /**
+    * Gets executed when the captcha was valid
+    * @param target
+    */
     public abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
 }

@@ -22,13 +22,11 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -39,7 +37,6 @@ import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.SortableQueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
-import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -77,14 +74,12 @@ public class DownloadPage extends DownloadBasePage {
 
 	private IModel<DownloadQuery> queryModel;
 	private DownloadDataView dataView;
-	private BubblePanel bubblePanel;
 	private PageParameters params;
 
 	public DownloadPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		this.queryModel = downloadDataProvider.getSearchQueryModel();
-		add(createBubblePanel());
 		add(createRepeatingDownloads());
 		add(createPagingPanel());
 	}
@@ -108,11 +103,6 @@ public class DownloadPage extends DownloadBasePage {
     private Component createTagCloudBox(String markupId) {
         return new TagCloudBoxPanel<DownloadTag>(markupId, downloadTagService, getClass());
     }
-
-    private BubblePanel createBubblePanel() {
-		bubblePanel = new BubblePanel("bubble");
-		return bubblePanel;
-	}
 
 	private void redirectToCreateDownloadPage() {
 		// link from upload center
@@ -346,7 +336,7 @@ public class DownloadPage extends DownloadBasePage {
 			IModel<Integer> calculatedRatingModel = new PropertyModel<Integer>(downloadModel, "calculatedRating");
 			IModel<Integer> numberOfVotesModel = new PropertyModel<Integer>(downloadModel, "numberOfVotes");
 			return new CaptchaRatingPanel("vote", calculatedRatingModel, Model.of(5), numberOfVotesModel, hasVoted,
-					true, bubblePanel) {
+					true, getBubblePanel()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override

@@ -24,7 +24,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.*;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -35,7 +34,6 @@ import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
-import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
@@ -70,12 +68,10 @@ public class BookmarkPage extends BookmarkBasePage {
 
 	private BookmarkDataView dataView;
 	private IModel<BookmarkQuery> searchQueryModel;
-	private BubblePanel bubblePanel;
 
 	public BookmarkPage(PageParameters params) {
 		super(params);
 		searchQueryModel = bookmarkDataProvider.getSearchQueryModel();
-		add(createBubblePanel());
 		add(createRepeatingBookmarks());
 		add(createPagingPanel());
 	}
@@ -89,11 +85,6 @@ public class BookmarkPage extends BookmarkBasePage {
     protected Component newFilterBox(String markupId) {
         return createBookmarkSearchBoxPanel(markupId);
     }
-
-    private BubblePanel createBubblePanel() {
-		bubblePanel = new BubblePanel("bubble");
-		return bubblePanel;
-	}
 
     private Component createTagCloudBox(String markupId) {
         return new TagCloudBoxPanel<BookmarkTag>(markupId, bookmarkTagService, getClass());
@@ -210,7 +201,7 @@ public class BookmarkPage extends BookmarkBasePage {
 			IModel<Integer> calculatedRatingModel = new PropertyModel<Integer>(bookmarkModel, "calculatedRating");
 			IModel<Integer> numberOfVotesModel = new PropertyModel<Integer>(bookmarkModel, "numberOfVotes");
 			return new CaptchaRatingPanel("vote", calculatedRatingModel, Model.of(5), numberOfVotesModel, hasVoted,
-					true, bubblePanel) {
+					true, getBubblePanel()) {
 				private static final long serialVersionUID = 2020860765811355013L;
 
 				@Override

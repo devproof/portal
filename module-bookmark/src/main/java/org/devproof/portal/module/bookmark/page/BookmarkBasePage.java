@@ -21,7 +21,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
@@ -49,12 +48,12 @@ public abstract class BookmarkBasePage extends TemplatePage {
     @SpringBean(name = "bookmarkService")
     private BookmarkService bookmarkService;
 
-    private WebMarkupContainer bubblePanel;
+    private BubblePanel bubblePanel;
 
     public BookmarkBasePage(final PageParameters params) {
         super(params);
         add(createCSSHeaderContributor());
-        add(createHiddenBubblePanel());
+        add(createBubblePanel());
     }
 
     @Override
@@ -73,14 +72,8 @@ public abstract class BookmarkBasePage extends TemplatePage {
         return CSSPackageResource.getHeaderContribution(BookmarkConstants.REF_BOOKMARK_CSS);
     }
 
-    // TODO remove or reuse from parent
-    private WebMarkupContainer createHiddenBubblePanel() {
-        if (isAuthor()) {
-            bubblePanel = new BubblePanel("bubbleWindow");
-        } else {
-            bubblePanel = new WebMarkupContainer("bubbleWindow");
-            bubblePanel.setVisible(false);
-        }
+    private BubblePanel createBubblePanel() {
+        bubblePanel = new BubblePanel("bubbleWindow");
         return bubblePanel;
     }
 
@@ -203,5 +196,9 @@ public abstract class BookmarkBasePage extends TemplatePage {
     public boolean isAuthor() {
         PortalSession session = (PortalSession) getSession();
         return session.hasRight(BookmarkConstants.AUTHOR_RIGHT);
+    }
+
+    public BubblePanel getBubblePanel() {
+        return bubblePanel;
     }
 }
