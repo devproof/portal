@@ -46,7 +46,7 @@ subprojects {
     repositories {
         mavenCentral()
         mavenRepo(urls: 'http://wicketstuff.org/maven/repository')
-        mavenRepo(urls: 'http://repository.jboss.com/maven2')
+        mavenRepo(urls: 'http://repository.jboss.com/maven2', transitive: false)
     }
     
     dependencies {
