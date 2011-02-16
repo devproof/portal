@@ -438,6 +438,10 @@ ul.controls li a.more {
     left: 0;
     top: 0;
     z-index: 9000;
+    opacity: 0.1;
+	-moz-opacity:0.1;
+	/*background-color: black;*/
+	filter: alpha(opacity=10);
     background-image: url('../img/transparent.png');
     display: none;
 }
