@@ -43,6 +43,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
+import org.devproof.portal.core.module.common.page.BubbleWindowProvided;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
 import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxLink;
@@ -69,7 +70,6 @@ public class CommentPanel extends Panel {
     @SpringBean(name = "commentService")
     private CommentService commentService;
     private IModel<CommentQuery> queryModel;
-    private BubblePanel bubblePanel;
 
     private CommentDataView repeatingComments;
     private CommentConfiguration configuration;
@@ -83,7 +83,6 @@ public class CommentPanel extends Panel {
         this.commentModel = createNewCommentModelForForm();
         add(createCSSHeaderContributor());
     // TODO remove bubblepanel and create call back
-        add(createBubblePanel());
         add(createNoCommentsHintContainer());
         add(createRepeatingComments());
         add(createFeedbackPanel());
@@ -146,7 +145,7 @@ public class CommentPanel extends Panel {
     }
 
     private CaptchaAjaxButton createAddCommentButton() {
-        return new CaptchaAjaxButton("addCommentButton", bubblePanel) {
+        return new CaptchaAjaxButton("addCommentButton") {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -166,6 +165,11 @@ public class CommentPanel extends Panel {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.addComponent(CommentPanel.this);
+            }
+
+            @Override
+            public BubblePanel getBubbleWindow() {
+                return CommentPanel.this.getBubbleWindow();
             }
         };
     }
@@ -258,11 +262,6 @@ public class CommentPanel extends Panel {
         };
     }
 
-    private BubblePanel createBubblePanel() {
-        bubblePanel = new BubblePanel("bubble");
-        return bubblePanel;
-    }
-
     private HeaderContributor createCSSHeaderContributor() {
         return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
     }
@@ -310,14 +309,19 @@ public class CommentPanel extends Panel {
         }
 
         private CaptchaAjaxLink createReportViolationLink() {
-            return new CaptchaAjaxLink("reportViolationLink", bubblePanel) {
+            return new CaptchaAjaxLink("reportViolationLink") {
                 private static final long serialVersionUID = 1L;
 
                 @Override
                 public void onClickAndCaptchaValidated(AjaxRequestTarget target) {
                     Comment comment = item.getModelObject();
                     commentService.reportViolation(comment, getUrlCallback(), PortalSession.get().getIpAddress());
-                    bubblePanel.showMessage(getMarkupId(), target, getString("reported"));
+                    getBubbleWindow().showMessage(getMarkupId(), target, getString("reported"));
+                }
+
+                @Override
+                public BubblePanel getBubbleWindow() {
+                    return CommentPanel.this.getBubbleWindow();
                 }
             };
         }
@@ -376,7 +380,7 @@ public class CommentPanel extends Panel {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     commentService.rejectComment(item.getModelObject());
-                    bubblePanel.showMessage(getMarkupId(), target, getString("rejected"));
+                    getBubbleWindow().showMessage(getMarkupId(), target, getString("rejected"));
                     target.addComponent(item);
                 }
             };
@@ -395,7 +399,7 @@ public class CommentPanel extends Panel {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     commentService.acceptComment(item.getModelObject());
-                    bubblePanel.showMessage(getMarkupId(), target, getString("accepted"));
+                    getBubbleWindow().showMessage(getMarkupId(), target, getString("accepted"));
                     target.addComponent(item);
                 }
             };
@@ -477,5 +481,10 @@ public class CommentPanel extends Panel {
 
     public IModel<CommentQuery> getCommentQueryModel() {
         return queryModel;
+    }
+
+    public BubblePanel getBubbleWindow() {
+        BubbleWindowProvided bubbleWindowProvided = (BubbleWindowProvided)getPage();
+        return bubbleWindowProvided.getBubbleWindow();
     }
 }

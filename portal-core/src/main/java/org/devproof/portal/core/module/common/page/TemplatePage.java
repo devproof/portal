@@ -44,10 +44,7 @@ import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
-import org.devproof.portal.core.module.common.panel.GlobalAdminBoxPanel;
-import org.devproof.portal.core.module.common.panel.OtherBoxPanel;
-import org.devproof.portal.core.module.common.panel.PageAdminBoxPanel;
-import org.devproof.portal.core.module.common.panel.SearchBoxPanel;
+import org.devproof.portal.core.module.common.panel.*;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -72,7 +69,7 @@ import java.util.List;
  *
  * @author Carsten Hufe
  */
-public abstract class TemplatePage extends WebPage {
+public abstract class TemplatePage extends WebPage implements BubbleWindowProvided {
 
     private static final long serialVersionUID = -2077311506052517540L;
     @SpringBean(name = "configurationService")
@@ -88,9 +85,11 @@ public abstract class TemplatePage extends WebPage {
 
     private FeedbackPanel feedback;
     private PageParameters params;
+    private BubblePanel bubbleWindow;
 
     public TemplatePage(PageParameters params) {
         this.params = params;
+        add(createBubbleWindow());
         add(createDefaultCSSHeaderContributor());
         add(createBodyCSSHeaderContributor());
         add(createRss2LinkReference());
@@ -108,6 +107,11 @@ public abstract class TemplatePage extends WebPage {
         add(createRepeatingMainNavigation());
         add(createRepeatingBoxes());
         setOutputMarkupId(true);
+    }
+
+    private BubblePanel createBubbleWindow() {
+        bubbleWindow = new BubblePanel("bubbleWindow");
+        return bubbleWindow;
     }
 
     private Label createLoginMessageLabel() {
@@ -550,6 +554,11 @@ public abstract class TemplatePage extends WebPage {
 
     public FeedbackPanel getFeedback() {
         return feedback;
+    }
+
+    @Override
+    public BubblePanel getBubbleWindow() {
+        return bubbleWindow;
     }
 
     public String getRequestURL() {
