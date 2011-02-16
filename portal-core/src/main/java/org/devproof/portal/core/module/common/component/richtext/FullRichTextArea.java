@@ -15,13 +15,17 @@
  */
 package org.devproof.portal.core.module.common.component.richtext;
 
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
+import org.apache.wicket.markup.html.PackageResource;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.MapModel;
+import org.apache.wicket.protocol.http.RequestUtils;
 import org.apache.wicket.util.collections.MiniMap;
+import org.apache.wicket.util.string.UrlUtils;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -33,6 +37,8 @@ import java.util.Map;
  */
 public class FullRichTextArea extends TextArea<String> {
     private static final long serialVersionUID = 1L;
+    private static ResourceReference REF_CK_EDITOR_CONFIG = new ResourceReference(FullRichTextArea.class, "custom/config.js");
+
 
     public FullRichTextArea(String id) {
         this(id, null);
@@ -52,7 +58,7 @@ public class FullRichTextArea extends TextArea<String> {
     protected void onRender(MarkupStream markupStream) {
         super.onRender(markupStream);
         Map<String, Object> variables = new MiniMap<String, Object>(2);
-        variables.put("defaultCss", PortalUtil.toUrl(CommonConstants.REF_DEFAULT_CSS, getRequest()));
+        variables.put("defaultCss", RequestUtils.toAbsolutePath(urlFor(CommonConstants.REF_DEFAULT_CSS).toString()));
         variables.put("markupId", getMarkupId());
         String javascript = TextTemplateHeaderContributor.forJavaScript(FullRichTextArea.class, "FullRichTextArea.js", new MapModel<String, Object>(variables)).toString();
         getResponse().write(javascript);

@@ -18,7 +18,7 @@ CKEDITOR.config.toolbar_Full =
 	    ['Styles','Format','Font','FontSize'],
 	    ['TextColor','BGColor'],
 	    ['Maximize', 'ShowBlocks'],
-	    ['Code', 'Str2Image','Smiley','PageBreak'],
+	    ['Code', 'Str2Image','Smiley','PageBreak']
 	];
 CKEDITOR.config.toolbar_Basic =
 	[
@@ -27,7 +27,7 @@ CKEDITOR.config.toolbar_Basic =
 	    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 	    ['Link','Unlink','Anchor'],
 	    ['Font','FontSize'],
-	    ['TextColor','BGColor'],
+	    ['TextColor','BGColor']
 	];
 
 CKEDITOR.editorConfig = function( config )
