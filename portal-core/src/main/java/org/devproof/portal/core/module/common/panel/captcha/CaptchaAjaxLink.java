@@ -26,16 +26,11 @@ import org.devproof.portal.core.module.common.util.PortalUtil;
  */
 public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
     private static final long serialVersionUID = 1L;
-    private BubblePanel bubbleWindow;
+    private BubblePanel bubblePanel;
 
-
-    public CaptchaAjaxLink(String id) {
-        this(id, null);
-    }
-
-    public CaptchaAjaxLink(String id, BubblePanel bubbleWindow) {
+    public CaptchaAjaxLink(String id, BubblePanel bubblePanel) {
         super(id);
-        this.bubbleWindow = bubbleWindow;
+        this.bubblePanel = bubblePanel;
         PortalUtil.addJQuery(this);
         setOutputMarkupId(true);
     }
@@ -44,26 +39,26 @@ public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
     final public void onClick(AjaxRequestTarget target) {
         if (showCaptcha()) {
             CaptchaPanel captchaPanel = createCaptchaPanel();
-            bubbleWindow.setContent(captchaPanel);
-            bubbleWindow.showModal(target);
+            bubblePanel.setContent(captchaPanel);
+            bubblePanel.showModal(target);
         } else {
             onClickAndCaptchaValidated(target);
         }
     }
 
     private CaptchaPanel createCaptchaPanel() {
-        return new CaptchaPanel(bubbleWindow.getContentId()) {
+        return new CaptchaPanel(bubblePanel.getContentId()) {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onClickAndCaptchaValidated(AjaxRequestTarget target) {
-                bubbleWindow.hide(target);
+                bubblePanel.hide(target);
                 CaptchaAjaxLink.this.onClickAndCaptchaValidated(target);
             }
 
             @Override
             protected void onCancel(AjaxRequestTarget target) {
-                bubbleWindow.hide(target);
+                bubblePanel.hide(target);
             }
         };
     }
@@ -72,12 +67,5 @@ public abstract class CaptchaAjaxLink extends AjaxLink<Void> {
         return !PortalSession.get().hasRight("captcha.disabled");
     }
 
-    public BubblePanel getBubbleWindow() {
-        return bubbleWindow;
-    }
-    /**
-     * Gets executed when the captcha was valid
-     * @param target
-     */
     public abstract void onClickAndCaptchaValidated(AjaxRequestTarget target);
 }

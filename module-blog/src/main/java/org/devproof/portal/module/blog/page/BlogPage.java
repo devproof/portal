@@ -21,9 +21,11 @@ import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -35,6 +37,7 @@ import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
 import org.devproof.portal.module.blog.BlogConstants;
@@ -235,8 +238,8 @@ public class BlogPage extends BlogBasePage {
         }
 
         private Label headlineLinkLabel() {
-            IModel<String> headlineModel = new PropertyModel<String>(blogModel, "headline");
-            return new Label("headlineLabel", headlineModel);
+            IModel<String> headliineModel = new PropertyModel<String>(blogModel, "headline");
+            return new Label("headlineLabel", headliineModel);
         }
 
         private MetaInfoPanel<Blog> createMetaInfoPanel() {
