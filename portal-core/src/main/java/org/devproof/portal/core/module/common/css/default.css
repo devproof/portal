@@ -183,6 +183,10 @@ ul.topNav  {
 	margin-bottom:2px;
 }
 
+.owncontent h1,.owncontent h2,.owncontent h3, .owncontent h4 {
+    margin-top:0;
+}
+
 .owncontent ul {
     margin: 5px 0px 5px 18px;
     color: #3A3A3A;

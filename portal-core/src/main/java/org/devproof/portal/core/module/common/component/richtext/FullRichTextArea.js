@@ -1,5 +1,6 @@
 CKEDITOR.replace('${markupId}', {
     contentsCss : ['${defaultCss}'],
-    bodyClass: ['owncontent contant_1 contant_1_left'],
-    bodyId: ['contant']
+    bodyId: ['contant'],
+    bodyClass: ['contant_1 contant_1_left owncontent']
+
 });
