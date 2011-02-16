@@ -47,12 +47,12 @@ public abstract class DownloadBasePage extends TemplatePage {
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "downloadService")
     private DownloadService downloadService;
-    private WebMarkupContainer bubblePanel;
+    private BubblePanel bubblePanel;
 
     public DownloadBasePage(PageParameters params) {
         super(params);
         add(createCSSHeaderContributor());
-        add(createHiddenBubbleWindow());
+        add(createBubbleWindow());
     }
 
     @Override
@@ -70,15 +70,8 @@ public abstract class DownloadBasePage extends TemplatePage {
         return CSSPackageResource.getHeaderContribution(DownloadConstants.REF_DOWNLOAD_CSS);
     }
 
-    // TODO remove or reuse from parent
-    private WebMarkupContainer createHiddenBubbleWindow() {
-        if (isAuthor()) {
-            bubblePanel = new BubblePanel("bubbleWindow");
-
-        } else {
-            bubblePanel = new WebMarkupContainer("bubbleWindow");
-            bubblePanel.setVisible(false);
-        }
+    private WebMarkupContainer createBubbleWindow() {
+        bubblePanel = new BubblePanel("bubbleWindow");
         return bubblePanel;
     }
 
@@ -160,5 +153,9 @@ public abstract class DownloadBasePage extends TemplatePage {
     public boolean isAuthor() {
         PortalSession session = (PortalSession) getSession();
         return session.hasRight(DownloadConstants.AUTHOR_RIGHT);
+    }
+
+    public BubblePanel getBubblePanel() {
+        return bubblePanel;
     }
 }
