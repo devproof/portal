@@ -141,8 +141,12 @@ ul.topNav  {
 	font-size:28px;
 	color:#3a3a3a;
 	font-weight:normal;
-	margin-bottom:2px;
 }
+
+#contant .headline {
+    margin-bottom:2px;
+}
+
 #contant .sub {
 	display:block;
 	font-size:11px;
@@ -175,7 +179,7 @@ ul.topNav  {
 	text-decoration:none;
 }
 
-.contant_1_left h3{
+.contant_1_left h3, .contant_1_left h4{
     font-family:Georgia, "Times New Roman", Times, serif;
 	font-size:22px;
 	color:#3a3a3a;
@@ -183,8 +187,16 @@ ul.topNav  {
 	margin-bottom:2px;
 }
 
-.owncontent h1,.owncontent h2,.owncontent h3, .owncontent h4 {
-    margin-top:0;
+.contant_1_left h4{
+	font-size:18px;
+}
+
+.owncontent h1,
+.owncontent h2,
+.owncontent h3,
+.owncontent h4 {
+    margin-top: 10px;
+    margin-bottom: 7px;
 }
 
 .owncontent ul {
@@ -196,6 +208,10 @@ ul.topNav  {
 
 .owncontent ul li {
     list-style: disc outside url("../img/li.gif");
+}
+
+.owncontentwidth {
+    width: 710px;
 }
 
 .bottomClear {
