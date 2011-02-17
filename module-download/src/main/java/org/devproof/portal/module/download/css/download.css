@@ -18,6 +18,11 @@
     width: 190px;
 }
 
+.downloadRight p {
+    font-size: 11px;
+    line-height: normal;
+}
+
 .downloadLabel {
     width: 80px;
     display: block;

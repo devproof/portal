@@ -17,3 +17,8 @@
     float:right;
     width: 170px;
 }
+
+.bookmarkRight p {
+    font-size: 11px;
+    line-height: normal;
+}
