@@ -214,7 +214,7 @@ ul.topNav  {
     list-style: disc outside url("../img/li.gif");
 }
 
-.owncontentwidth {
+#contant.owncontentwidth {
     width: 710px;
 }
 
@@ -459,6 +459,7 @@ ul.controls li a.more {
     top: 0;
     z-index: 9000;
     /*opacity: 0.1;*/
+	/*-moz-opacity:0.1;*/
 	/*-moz-opacity:0.1;*/
 	filter: alpha(opacity=10);
     background-image: url('../img/transparent.png');
