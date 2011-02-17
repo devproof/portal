@@ -199,6 +199,10 @@ ul.topNav  {
     margin-bottom: 7px;
 }
 
+.syntaxhl pre {
+    background-color: #CCC;
+}
+
 .owncontent ul {
     margin: 5px 0px 5px 18px;
     color: #3A3A3A;
