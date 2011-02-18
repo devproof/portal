@@ -60,13 +60,13 @@ public class MainNavigationRegistryImplTest {
         PageConfiguration conf = new PageConfiguration();
         conf.setPageClass(LoginPage.class);
         confs.add(conf);
+        moduleServiceMock.rebuildModuleLinks();
         expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
         List<ModuleLink> links = new ArrayList<ModuleLink>();
         ModuleLink link = new ModuleLink();
         link.setPageName(LoginPage.class.getSimpleName());
         links.add(link);
         expect(moduleServiceMock.findAllVisibleMainNavigationLinks()).andReturn(links);
-        moduleServiceMock.rebuildModuleLinks();
         replay(pageLocatorMock, moduleServiceMock);
         impl.buildNavigation();
         verify(pageLocatorMock, moduleServiceMock);
