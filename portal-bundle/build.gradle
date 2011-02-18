@@ -124,6 +124,14 @@ def copyConfigFiles(bundlePath) {
   }
 }
 
+def copySources(bundlePath) {
+  println "copySources"
+  copy {
+    from fileTree('../').include('**/devproof*sources.jar')
+    into "${bundlePath}/sources/"
+  }
+}
+
 def copyReadmeAndChanges(bundlePath, readmePostfix) {
   println "copyReadmeAndChanges"
   copy {
