@@ -71,6 +71,7 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry {
     @PostConstruct
     public void buildNavigation() {
         clearRegistry();
+        moduleService.rebuildModuleLinks();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
         List<ModuleLink> links = moduleService.findAllVisibleMainNavigationLinks();
         for (ModuleLink link : links) {
@@ -79,7 +80,6 @@ public class MainNavigationRegistryImpl implements MainNavigationRegistry {
                 registerPage(conf.getPageClass());
             }
         }
-        moduleService.rebuildModuleLinks();
     }
 
     @Autowired

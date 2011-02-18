@@ -57,6 +57,7 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry {
     @PostConstruct
     public void buildNavigation() {
         adminPages.clear();
+        moduleService.rebuildModuleLinks();
         Collection<PageConfiguration> confs = pageLocator.getPageConfigurations();
         List<ModuleLink> links = moduleService.findAllVisiblePageAdministrationLinks();
         for (ModuleLink link : links) {
@@ -65,7 +66,6 @@ public class PageAdminPageRegistryImpl implements PageAdminPageRegistry {
                 registerPageAdminPage(conf.getPageClass());
             }
         }
-        moduleService.rebuildModuleLinks();
     }
 
     @Autowired
