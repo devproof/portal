@@ -53,17 +53,20 @@ def concatAllSqlScriptsAndWrite(bundlePath) {
   concatUpdateSqlAndWriteFile('oracle', bundlePath)
 }
 
-def tarGz(bundlePath) {
+def tarGz(fullBundlePath) {
   ant.tar(
-      destfile: bundlePath + '.tar',
-      basedir: bundlePath
-  )
-  def bundlePathTarGz = bundlePath + '.tar.gz'
+      destfile: fullBundlePath + '.tar',
+  ) {
+    tarfileset(dir: bundlePath) {
+      include(name: "devproof-portal-${version}-war/**")
+    }
+  }
+  def bundlePathTarGz = fullBundlePath + '.tar.gz'
   ant.gzip(
       destfile: bundlePathTarGz,
-      src: bundlePath + '.tar'
+      src: fullBundlePath + '.tar'
   )
-  delete(bundlePath + '.tar')
+  delete(fullBundlePath + '.tar')
   println "Devproof bundled distribution: $bundlePathTarGz"
 }
 
