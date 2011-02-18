@@ -63,7 +63,6 @@ public class PortalApplication extends WebApplication {
     }
 
     private void mountPagesAndSetStartPage() {
-        startPage = NoStartPage.class;
         PageLocator pageLocator = getSpringBean("pageLocator");
         Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
         for (PageConfiguration page : pages) {
@@ -121,6 +120,9 @@ public class PortalApplication extends WebApplication {
                 // First visible page in the main navigation is the startpage!
                 startPage = registeredPages.get(0);
             }
+        }
+        if(startPage == null) {
+            return  NoStartPage.class;
         }
         return startPage;
     }
