@@ -16,7 +16,7 @@ INSERT INTO core_role_right_xref (role_id,right_id) VALUES (3,'blog.view.registe
 
 INSERT INTO core_configuration (conf_key,conf_description,conf_group,conf_type,conf_value) VALUES ('blog_entries_per_page','Blog entries per page','Blog','java.lang.Integer','5');
 
-INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2011-02-18 19:27:20.000'},'admin',{ts '2011-02-18 19:27:20.000'},'admin','<p>Congratulation. Devproof Portal is running.</p>
+INSERT INTO blog (id,created_at,created_by,modified_at,modified_by,content,headline) VALUES (1,{ts '2011-02-18 18:27:20.000'},'admin',{ts '2011-02-18 18:27:20.000'},'admin','<p>Congratulation. Devproof Portal is running.</p>
 <p>The default users are:</p>
 <ul>
 <li>admin (password: admin)&nbsp; (admin rights)</li>
