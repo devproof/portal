@@ -19,18 +19,20 @@ task dist << {
 }
 
 def bundleWar() {
-  def bundleWarPath = "$bundlePath/devproof-portal-${version}-war"
+  def packageName = "devproof-portal-${version}-war"
+  def bundleWarPath = "$bundlePath/${packageName}"
   mkdir(bundleWarPath)
   copyReadmeAndChanges(bundleWarPath, 'TOMCAT7')
   copyLicences(bundleWarPath)
   copyWar(bundleWarPath)
   copyConfigFiles(bundleWarPath)
   concatAllSqlScriptsAndWrite(bundleWarPath)
-  tarGz(bundleWarPath)
+  tarGz(bundleWarPath, packageName)
 }
 
 def bundleTomcat() {
-  def bundleTomcatPath = "$bundlePath/devproof-portal-${version}-with-tomcat7"
+  def packageName = "devproof-portal-${version}-with-tomcat7"
+  def bundleTomcatPath = "$bundlePath/${packageName}"
   mkdir(bundleTomcatPath)
   copyReadmeAndChanges(bundleTomcatPath, 'WAR')
   copyLicences(bundleTomcatPath)
@@ -43,7 +45,7 @@ def bundleTomcat() {
   copyLibsForTomcat(tomcatPath)
   copyConfigForTomcat(tomcatPath)
   createH2DBFiles(bundleTomcatPath, tomcatPath)
-  tarGz(bundleTomcatPath)
+  tarGz(bundleTomcatPath, packageName)
 }
 
 def concatAllSqlScriptsAndWrite(bundlePath) {
@@ -53,12 +55,12 @@ def concatAllSqlScriptsAndWrite(bundlePath) {
   concatUpdateSqlAndWriteFile('oracle', bundlePath)
 }
 
-def tarGz(fullBundlePath) {
+def tarGz(fullBundlePath, packageName) {
   ant.tar(
       destfile: fullBundlePath + '.tar',
   ) {
     tarfileset(dir: bundlePath) {
-      include(name: "devproof-portal-${version}-war/**")
+      include(name: "${packageName}/**")
     }
   }
   def bundlePathTarGz = fullBundlePath + '.tar.gz'
