@@ -66,7 +66,7 @@ public class GlobalAdminPageRegistryImplTest {
         link.setPageName(RightPage.class.getSimpleName());
         links.add(link);
         expect(moduleServiceMock.findAllVisibleGlobalAdministrationLinks()).andReturn(links);
-        moduleServiceMock.rebuildModuleLinks();
+//        moduleServiceMock.rebuildModuleLinks();
         replay(pageLocatorMock, moduleServiceMock);
         impl.buildNavigation();
         verify(pageLocatorMock, moduleServiceMock);

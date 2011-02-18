@@ -59,13 +59,13 @@ public class PageAdminPageRegistryImplTest {
         PageConfiguration conf = new PageConfiguration();
         conf.setPageClass(RightPage.class);
         confs.add(conf);
+        moduleServiceMock.rebuildModuleLinks();
         expect(pageLocatorMock.getPageConfigurations()).andReturn(confs);
         List<ModuleLink> links = new ArrayList<ModuleLink>();
         ModuleLink link = new ModuleLink();
         link.setPageName(RightPage.class.getSimpleName());
         links.add(link);
         expect(moduleServiceMock.findAllVisiblePageAdministrationLinks()).andReturn(links);
-        moduleServiceMock.rebuildModuleLinks();
         replay(pageLocatorMock, moduleServiceMock);
         impl.buildNavigation();
         verify(pageLocatorMock, moduleServiceMock);
