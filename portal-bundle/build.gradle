@@ -23,7 +23,7 @@ def bundleWar() {
   def bundleWarPath = "$bundlePath/${packageName}"
   mkdir(bundleWarPath)
   copyReadmeAndChanges(bundleWarPath, 'WAR')
-  copyLicences(bundleWarPath)
+  copyLicenses(bundleWarPath)
   copyWar(bundleWarPath)
   copyConfigFiles(bundleWarPath)
   concatAllSqlScriptsAndWrite(bundleWarPath)
@@ -35,7 +35,7 @@ def bundleTomcat() {
   def bundleTomcatPath = "$bundlePath/${packageName}"
   mkdir(bundleTomcatPath)
   copyReadmeAndChanges(bundleTomcatPath, 'TOMCAT7')
-  copyLicences(bundleTomcatPath)
+  copyLicenses(bundleTomcatPath)
   copyWar(bundleTomcatPath)
   copyConfigFiles(bundleTomcatPath)
   concatAllSqlScriptsAndWrite(bundleTomcatPath)
@@ -141,10 +141,10 @@ def copyReadmeAndChanges(bundlePath, readmePostfix) {
   }
 }
 
-def copyLicences(bundlePath) {
-  println "copyLicences"
+def copyLicenses(bundlePath) {
+  println "copyLicenses"
   copy {
-    from '/licenses/'
+    from 'licenses/'
     into bundlePath + '/licenses/'
   }
 }
