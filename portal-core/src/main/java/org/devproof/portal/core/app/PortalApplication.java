@@ -64,8 +64,7 @@ public class PortalApplication extends WebApplication {
 
     private void mountPagesAndSetStartPage() {
         startPage = NoStartPage.class;
-        PageLocator pageLocator = this.getSpringBean("pageLocator");
-        MainNavigationRegistry mainNavigationRegistry = this.getSpringBean("mainNavigationRegistry");
+        PageLocator pageLocator = getSpringBean("pageLocator");
         Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
         for (PageConfiguration page : pages) {
             if (page.getMountPath() != null) {
@@ -75,12 +74,6 @@ public class PortalApplication extends WebApplication {
                     mountBookmarkablePage(page.getMountPath(), page.getPageClass());
                 }
             }
-        }
-
-        List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
-        if (!registeredPages.isEmpty()) {
-            // First visible page in the main navigation is the startpage!
-            startPage = registeredPages.get(0);
         }
     }
 
@@ -121,6 +114,14 @@ public class PortalApplication extends WebApplication {
 
     @Override
     public Class<? extends Page> getHomePage() {
+        if(startPage == null) {
+            MainNavigationRegistry mainNavigationRegistry = getSpringBean("mainNavigationRegistry");
+            List<Class<? extends Page>> registeredPages = mainNavigationRegistry.getRegisteredPages();
+            if (!registeredPages.isEmpty()) {
+                // First visible page in the main navigation is the startpage!
+                startPage = registeredPages.get(0);
+            }
+        }
         return startPage;
     }
 
