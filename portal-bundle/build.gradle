@@ -22,7 +22,7 @@ def bundleWar() {
   def packageName = "devproof-portal-${version}-war"
   def bundleWarPath = "$bundlePath/${packageName}"
   mkdir(bundleWarPath)
-  copyReadmeAndChanges(bundleWarPath, 'TOMCAT7')
+  copyReadmeAndChanges(bundleWarPath, 'WAR')
   copyLicences(bundleWarPath)
   copyWar(bundleWarPath)
   copyConfigFiles(bundleWarPath)
@@ -34,7 +34,7 @@ def bundleTomcat() {
   def packageName = "devproof-portal-${version}-with-tomcat7"
   def bundleTomcatPath = "$bundlePath/${packageName}"
   mkdir(bundleTomcatPath)
-  copyReadmeAndChanges(bundleTomcatPath, 'WAR')
+  copyReadmeAndChanges(bundleTomcatPath, 'TOMCAT7')
   copyLicences(bundleTomcatPath)
   copyWar(bundleTomcatPath)
   copyConfigFiles(bundleTomcatPath)

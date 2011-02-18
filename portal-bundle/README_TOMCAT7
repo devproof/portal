@@ -17,7 +17,7 @@ Installation instructions:
 Starting the Tomcat
 -------------------
 
-cd devproof-portal-<version>-with-tomcat6/apache-tomcat-<version>/bin/
+cd devproof-portal-<version>-with-tomcat7/apache-tomcat-<version>/bin/
 
 On Windows run: startup.bat 
 On Linux run: startup.sh
