@@ -23,8 +23,8 @@ Oh, that's it! You will find the bundled version under *portal-bundle/build/dist
 
 Run the Apache Tomcat under 
 
-for Windows `portal-bundle/build/dist/devproof-portal-1.1-rc1-SNAPSHOT-with-tomcat7/apache-tomcat-7.x.x/bin/startup.bat`
+for Windows `portal-bundle/build/dist/devproof-portal-<version>-with-tomcat7/apache-tomcat-7.x.x/bin/startup.bat`
 
-for Linux `portal-bundle/build/dist/devproof-portal-1.1-rc1-SNAPSHOT-with-tomcat7/apache-tomcat-7.x.x/bin/startup.sh`
+for Linux `portal-bundle/build/dist/devproof-portal-<version>-with-tomcat7/apache-tomcat-7.x.x/bin/startup.sh`
 
 Find more information on http://www.devproof.org/article/portal_getting_started
