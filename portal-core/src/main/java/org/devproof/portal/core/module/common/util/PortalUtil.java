@@ -185,8 +185,8 @@ public class PortalUtil {
     public static Integer getValidParameterAsInteger(String key) {
         Integer value = getParameterAsInteger(key);
         if (value == null) {
-            throw new AbortWithHttpStatusException(404, true);
-//            throw new RestartResponseException(NotFoundPage.class);
+//            throw new AbortWithHttpStatusException(404, true);
+            throw new RestartResponseException(NotFoundPage.class);
         }
         return value;
     }

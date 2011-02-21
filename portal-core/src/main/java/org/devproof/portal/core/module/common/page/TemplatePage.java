@@ -104,7 +104,9 @@ public abstract class TemplatePage extends WebPage {
         add(createFeedbackPanel());
         add(createGoogleAnalytics());
         add(createFooterLink());
-        add(createCopyrightLabel());
+        add(createMetaCopyrightLabel());
+        add(createMetaRevisit());
+        add(createMetaRobots());
         add(createRepeatingMainNavigation());
         add(createRepeatingBoxes());
         setOutputMarkupId(true);
@@ -191,10 +193,30 @@ public abstract class TemplatePage extends WebPage {
         super.onBeforeRender();
     }
 
-    private WebMarkupContainer createCopyrightLabel() {
-        WebMarkupContainer copyright = new WebMarkupContainer("copyright");
+    private WebMarkupContainer createMetaCopyrightLabel() {
+        WebMarkupContainer copyright = new WebMarkupContainer("metaCopyright");
         copyright.add(new SimpleAttributeModifier("content", configurationService.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
         return copyright;
+    }
+
+    private WebMarkupContainer createMetaRevisit() {
+        WebMarkupContainer copyright = new WebMarkupContainer("metaRevisit");
+        copyright.add(new SimpleAttributeModifier("content", getRevisitAfter()));
+        return copyright;
+    }
+
+    protected String getRevisitAfter() {
+        return getString("head.revisit");
+    }
+
+    private WebMarkupContainer createMetaRobots() {
+        WebMarkupContainer copyright = new WebMarkupContainer("metaRobots");
+        copyright.add(new SimpleAttributeModifier("content", getRobots()));
+        return copyright;
+    }
+
+    protected String getRobots() {
+        return getString("head.robots");
     }
 
     private Label createPageTitleLabel() {

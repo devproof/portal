@@ -25,7 +25,6 @@ public class NoStartPage extends MessagePage {
 
     public NoStartPage() {
         super("page.nostartpage", true);
-
     }
 
 }

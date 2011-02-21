@@ -26,6 +26,8 @@
     <filter-mapping>
         <filter-name>devproofPortal</filter-name>
         <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
     </filter-mapping>
 
     <session-config>
