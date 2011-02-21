@@ -11,7 +11,7 @@ subprojects {
     apply plugin: 'project-reports'
     apply plugin: 'eclipse'
   
-    version = '1.1.0'
+    version = '1.1.1-DEV'
   
     springVersion = '3.0.5.RELEASE'
     hibernateVersion = '3.5.1-Final'
