@@ -34,10 +34,15 @@ import org.devproof.portal.core.module.print.PrintConstants;
  */
 public abstract class PrintPage extends WebPage {
 
+    private static final long serialVersionUID = 1196744710832084617L;
+
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
+    private PageParameters params;
 
-    public PrintPage() {
+    public PrintPage(PageParameters params) {
+        super(params);
+        this.params = params;
         addSyntaxHighlighter();
         add(createDefaultCSSHeaderContributor());
         add(createPrinterCSSHeaderContributor());
@@ -77,6 +82,10 @@ public abstract class PrintPage extends WebPage {
 
     private Label createPageTitle() {
         return new Label("pageTitle", configurationService.findAsString(CommonConstants.CONF_PAGE_TITLE));
+    }
+
+    protected Integer getIntegerParameter(String key) {
+        return PortalUtil.getValidParameterAsInteger("0", params);
     }
 
     /**

@@ -41,6 +41,10 @@ public class ArticlePrintPage extends PrintPage {
     private ArticleService articleService;
     private IModel<Article> articleModel;
 
+    public ArticlePrintPage(PageParameters params) {
+        super(params);
+    }
+
     private LoadableDetachableModel<Article> createArticleModel() {
         return new LoadableDetachableModel<Article>() {
             private static final long serialVersionUID = 1826109490689274522L;
@@ -72,7 +76,7 @@ public class ArticlePrintPage extends PrintPage {
     }
 
     private Integer getArticleId() {
-        return PortalUtil.getValidParameterAsInteger("0");
+        return getIntegerParameter("0");
     }
 
     private void validateAccessRights() {

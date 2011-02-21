@@ -42,6 +42,10 @@ public class BlogPrintPage extends PrintPage {
     private BlogService blogService;
     private IModel<Blog> blogModel;
 
+    public BlogPrintPage(PageParameters params) {
+        super(params);
+    }
+
     private LoadableDetachableModel<Blog> createBlogModel() {
         return new LoadableDetachableModel<Blog>() {
             private static final long serialVersionUID = 2758949172939182113L;
@@ -73,7 +77,7 @@ public class BlogPrintPage extends PrintPage {
     }
 
     private Integer getBlogId() {
-        return PortalUtil.getValidParameterAsInteger("id");
+        return getIntegerParameter("id");
     }
 
     private void validateAccessRights() {
