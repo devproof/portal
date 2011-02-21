@@ -85,7 +85,7 @@ public abstract class PrintPage extends WebPage {
     }
 
     protected Integer getIntegerParameter(String key) {
-        return PortalUtil.getValidParameterAsInteger("0", params);
+        return PortalUtil.getValidParameterAsInteger(key, params);
     }
 
     /**
