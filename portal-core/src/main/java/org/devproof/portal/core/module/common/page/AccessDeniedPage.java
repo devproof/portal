@@ -24,6 +24,7 @@ public class AccessDeniedPage extends MessagePage {
     private static final long serialVersionUID = -483769243098631855L;
 
     public AccessDeniedPage() {
-        super(new PageParameters("message=access.denied"));
+        super("access.denied", true);
+
     }
 }

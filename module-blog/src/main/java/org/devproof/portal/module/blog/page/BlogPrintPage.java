@@ -25,10 +25,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.print.page.PrintPage;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.panel.BlogPrintPanel;
 import org.devproof.portal.module.blog.service.BlogService;
+import org.devproof.portal.test.PortalTestUtil;
 
 /**
  * @author Carsten Hufe
@@ -39,11 +41,6 @@ public class BlogPrintPage extends PrintPage {
     @SpringBean(name = "blogService")
     private BlogService blogService;
     private IModel<Blog> blogModel;
-    private PageParameters params;
-
-    public BlogPrintPage(PageParameters params) {
-        super(params);
-    }
 
     private LoadableDetachableModel<Blog> createBlogModel() {
         return new LoadableDetachableModel<Blog>() {
@@ -71,17 +68,12 @@ public class BlogPrintPage extends PrintPage {
     }
 
     @Override
-    protected Component createPrintableComponent(String id, PageParameters params) {
-        this.params = params;
+    protected Component createPrintableComponent(String id) {
         return new BlogPrintPanel(id, getBlogModel());
     }
 
     private Integer getBlogId() {
-        Integer blogId = params.getAsInteger("id");
-        if (blogId == null) {
-            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.parameter")));
-        }
-        return blogId;
+        return PortalUtil.getValidParameterAsInteger("id");
     }
 
     private void validateAccessRights() {

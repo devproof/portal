@@ -39,32 +39,25 @@ public class MessagePage extends TemplatePage {
         add(new Label("message", getString(msg)));
     }
 
-    private MessagePage(PageParameters params, String message, boolean error) {
-        super(params);
+    public MessagePage(String message, boolean error) {
+        super(new PageParameters());
         Label label = new Label("message", message);
         label.add(new SimpleAttributeModifier("class", error ? "feedbackPanelERROR" : "feedbackPanelINFO"));
         add(label);
     }
 
-    public static MessagePage getMessagePageByKey(String messageKey) {
-        PageParameters params = new PageParameters();
-        params.add("message", messageKey);
-        return new MessagePage(params);
-    }
+
 
     public static MessagePage getMessagePage(String message) {
-        PageParameters params = new PageParameters();
-        return new MessagePage(params, message, false);
+        return new MessagePage(message, false);
     }
 
     public static MessagePage getErrorPage(String message) {
-        PageParameters params = new PageParameters();
-        return new MessagePage(params, message, true);
+        return new MessagePage(message, true);
     }
 
     public static MessagePage getMessagePageWithLogout(String messageKey) {
         ((PortalSession) Session.get()).logoutUser();
-        PageParameters params = new PageParameters();
-        return new MessagePage(params, messageKey, false);
+        return new MessagePage(messageKey, false);
     }
 }

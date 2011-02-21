@@ -21,11 +21,14 @@ import org.apache.wicket.*;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.model.util.MapModel;
+import org.apache.wicket.protocol.http.servlet.AbortWithHttpStatusException;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.string.UrlUtils;
 import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.page.MessagePage;
+import org.devproof.portal.core.module.common.page.NotFoundPage;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.user.entity.User;
 
@@ -177,6 +180,15 @@ public class PortalUtil {
             return null;
         }
         return pageParameters.getAsInteger(key);
+    }
+
+    public static Integer getValidParameterAsInteger(String key) {
+        Integer value = getParameterAsInteger(key);
+        if (value == null) {
+            throw new AbortWithHttpStatusException(404, true);
+//            throw new RestartResponseException(NotFoundPage.class);
+        }
+        return value;
     }
 
     public static Boolean getParameterAsBoolean(String key) {

@@ -36,11 +36,8 @@ public abstract class PrintPage extends WebPage {
 
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
-    private PageParameters params;
 
-    public PrintPage(PageParameters params) {
-        super(params);
-        this.params = params;
+    public PrintPage() {
         addSyntaxHighlighter();
         add(createDefaultCSSHeaderContributor());
         add(createPrinterCSSHeaderContributor());
@@ -51,7 +48,7 @@ public abstract class PrintPage extends WebPage {
     }
 
     private Component createPrintableComponent() {
-        return createPrintableComponent("content", params);
+        return createPrintableComponent("content");
     }
 
     private void addSyntaxHighlighter() {
@@ -86,8 +83,7 @@ public abstract class PrintPage extends WebPage {
      * Returns the printable component
      *
      * @param id     wicket id
-     * @param params Page Parameter
-     * @return Instanciated component
+     * @return instanciated component
      */
-    protected abstract Component createPrintableComponent(String id, PageParameters params);
+    protected abstract Component createPrintableComponent(String id);
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,14 +16,16 @@
 package org.devproof.portal.core.module.common.page;
 
 import org.apache.wicket.PageParameters;
+import org.devproof.portal.core.config.ModulePage;
 
 /**
  * @author Carsten Hufe
  */
-public class UnsupportedOperationPage extends MessagePage {
-    private static final long serialVersionUID = 7297455365125624369L;
+@ModulePage(mountPath = "/notfound")
+public class NotFoundPage extends MessagePage {
+    private static final long serialVersionUID = -4034173163477304612L;
 
-    public UnsupportedOperationPage() {
-        super("unsupported.operation", true);
+    public NotFoundPage() {
+        super("page.notfound", true);
     }
 }

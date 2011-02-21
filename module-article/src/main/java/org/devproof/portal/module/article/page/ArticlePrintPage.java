@@ -25,6 +25,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.print.page.PrintPage;
 import org.devproof.portal.module.article.entity.Article;
 import org.devproof.portal.module.article.panel.ArticlePrintPanel;
@@ -39,11 +40,6 @@ public class ArticlePrintPage extends PrintPage {
     @SpringBean(name = "articleService")
     private ArticleService articleService;
     private IModel<Article> articleModel;
-    private PageParameters params;
-
-    public ArticlePrintPage(PageParameters params) {
-        super(params);
-    }
 
     private LoadableDetachableModel<Article> createArticleModel() {
         return new LoadableDetachableModel<Article>() {
@@ -65,8 +61,7 @@ public class ArticlePrintPage extends PrintPage {
     }
 
     @Override
-    protected Component createPrintableComponent(String id, PageParameters params) {
-        this.params = params;
+    protected Component createPrintableComponent(String id) {
         return new ArticlePrintPanel(id, getArticleModel());
     }
 
@@ -77,10 +72,7 @@ public class ArticlePrintPage extends PrintPage {
     }
 
     private Integer getArticleId() {
-        if (!params.containsKey("0")) {
-            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.parameter")));
-        }
-        return params.getInt("0");
+        return PortalUtil.getValidParameterAsInteger("0");
     }
 
     private void validateAccessRights() {
