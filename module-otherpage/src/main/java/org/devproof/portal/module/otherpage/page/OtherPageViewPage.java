@@ -43,9 +43,11 @@ public class OtherPageViewPage extends OtherPageBasePage {
     @SpringBean(name = "otherPageService")
     private OtherPageService otherPageService;
     private IModel<OtherPage> otherPageModel;
+    private PageParameters params;
 
     public OtherPageViewPage(PageParameters params) {
         super(params);
+        this.params = params;
         this.otherPageModel = createOtherPageModel();
         add(createAuthorContainer());
         add(createContentLabel());
@@ -187,6 +189,6 @@ public class OtherPageViewPage extends OtherPageBasePage {
     }
 
     private Integer getContentId() {
-        return PortalUtil.getValidParameterAsInteger("0");
+        return PortalUtil.getValidParameterAsInteger("0", params);
     }
 }

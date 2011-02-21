@@ -67,10 +67,12 @@ public class ArticleReadPage extends ArticleBasePage {
 	private int numberOfPages;
 	private Integer contentId;
     private ExpandableCommentPanel commentsPanel;
+    private PageParameters params;
 
     public ArticleReadPage(PageParameters params) {
 		super(params);
-		this.contentId = getContentId();
+        this.params = params;
+        this.contentId = getContentId();
 		this.currentPageNumber = getCurrentPageNumber();
 		this.numberOfPages = getPageCount();
 		this.displayedPageModel = createDisplayedPageModel();
@@ -117,7 +119,7 @@ public class ArticleReadPage extends ArticleBasePage {
     }
 
 	private Integer getContentId() {
-		return PortalUtil.getValidParameterAsInteger("0");
+		return PortalUtil.getValidParameterAsInteger("0", params);
 	}
 
 	private int getPageCount() {
@@ -125,7 +127,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private int getCurrentPageNumber() {
-		return RequestCycle.get().getPageParameters().getAsInteger("1", 1);
+		return params.getAsInteger("1", 1);
 	}
 
 	@Override

@@ -41,6 +41,11 @@ public class BlogPrintPage extends PrintPage {
     @SpringBean(name = "blogService")
     private BlogService blogService;
     private IModel<Blog> blogModel;
+    private PageParameters params;
+
+    public BlogPrintPage(PageParameters params) {
+        this.params = params;
+    }
 
     private LoadableDetachableModel<Blog> createBlogModel() {
         return new LoadableDetachableModel<Blog>() {
@@ -73,7 +78,7 @@ public class BlogPrintPage extends PrintPage {
     }
 
     private Integer getBlogId() {
-        return PortalUtil.getValidParameterAsInteger("id");
+        return PortalUtil.getValidParameterAsInteger("id", params);
     }
 
     private void validateAccessRights() {

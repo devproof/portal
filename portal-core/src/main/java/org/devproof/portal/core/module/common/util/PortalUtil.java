@@ -175,15 +175,18 @@ public class PortalUtil {
     }
 
     public static Integer getParameterAsInteger(String key) {
-        PageParameters pageParameters = RequestCycle.get().getPageParameters();
-        if (pageParameters == null) {
-            return null;
-        }
-        return pageParameters.getAsInteger(key);
+        return getParameterAsInteger(key, RequestCycle.get().getPageParameters());
     }
 
-    public static Integer getValidParameterAsInteger(String key) {
-        Integer value = getParameterAsInteger(key);
+    public static Integer getParameterAsInteger(String key, PageParameters params) {
+        if (params == null) {
+            return null;
+        }
+        return params.getAsInteger(key);
+    }
+
+    public static Integer getValidParameterAsInteger(String key, PageParameters params) {
+        Integer value = getParameterAsInteger(key, params);
         if (value == null) {
 //            throw new AbortWithHttpStatusException(404, true);
             throw new RestartResponseException(NotFoundPage.class);
