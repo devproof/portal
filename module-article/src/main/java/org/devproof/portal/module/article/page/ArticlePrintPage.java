@@ -40,11 +40,6 @@ public class ArticlePrintPage extends PrintPage {
     @SpringBean(name = "articleService")
     private ArticleService articleService;
     private IModel<Article> articleModel;
-    private PageParameters params;
-
-    public ArticlePrintPage(PageParameters params) {
-        this.params = params;
-    }
 
     private LoadableDetachableModel<Article> createArticleModel() {
         return new LoadableDetachableModel<Article>() {
@@ -77,7 +72,7 @@ public class ArticlePrintPage extends PrintPage {
     }
 
     private Integer getArticleId() {
-        return PortalUtil.getValidParameterAsInteger("0", params);
+        return PortalUtil.getValidParameterAsInteger("0");
     }
 
     private void validateAccessRights() {

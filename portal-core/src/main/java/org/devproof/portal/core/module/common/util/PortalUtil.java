@@ -178,6 +178,10 @@ public class PortalUtil {
         return getParameterAsInteger(key, RequestCycle.get().getPageParameters());
     }
 
+    public static Integer getValidParameterAsInteger(String key) {
+        return getValidParameterAsInteger(key, RequestCycle.get().getPageParameters());
+    }
+
     public static Integer getParameterAsInteger(String key, PageParameters params) {
         if (params == null) {
             return null;
