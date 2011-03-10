@@ -73,7 +73,7 @@ subprojects {
         compile  'rome:rome:0.9'
         compile  'net.sf.ehcache:ehcache-core:2.4.0'
         // start hibernate - transitive resolving does not work on hibernate
-        compile  'org.hibernate:hibernate-core:3.5.1-Final'
+        compile  "org.hibernate:hibernate-core:$hibernateVersion"
         compile  'antlr:antlr:2.7.6'
         compile  'commons-collections:commons-collections:3.1'
         compile  'commons-collections:commons-collections:3.1'
