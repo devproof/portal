@@ -24,6 +24,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -53,6 +55,7 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -239,38 +242,35 @@ public class DownloadPage extends DownloadBasePage {
 			return new WebMarkupContainer("authorButtons");
 		}
 
-		private RepeatingView createOptionalInfoLabels() {
-			String[] infoFields = new String[] { "softwareVersion", "downloadSize", "manufacturer", "licence", "price" };
-			RepeatingView repeating = new RepeatingView("repeatingInfoFields");
-			Download download = downloadModel.getObject();
-			for (String fieldName : infoFields) {
-				try {
-					String getter = PortalUtil.addGet(fieldName);
-					Method method = ReflectionUtils.findMethod(Download.class, getter);
-					String value = (String) method.invoke(download);
-					if (StringUtils.isNotEmpty(value)) {
-						repeating.add(createInfoLine(repeating.newChildId(), fieldName, value));
-					}
-				} catch (IllegalArgumentException e) {
-					throw new UnhandledException(e);
-				} catch (IllegalAccessException e) {
-					throw new UnhandledException(e);
-				} catch (InvocationTargetException e) {
-					throw new UnhandledException(e);
-				}
-			}
-			return repeating;
-		}
+		private Component createOptionalInfoLabels() {
+            List<String> infoFields = Arrays.asList("softwareVersion", "downloadSize", "manufacturer", "licence", "price");
+            return new ListView<String>("repeatingInfoFields", infoFields) {
+                private static final long serialVersionUID = 7604244607297097458L;
 
-		private WebMarkupContainer createInfoLine(String id, String fieldName, String value) {
-			WebMarkupContainer infoLine = new WebMarkupContainer(id);
-			infoLine.add(new Label("label", DownloadPage.this.getString(fieldName)));
-			if (isManufacturerHomepage(fieldName)) {
-				infoLine.add(createLinkFragment(value));
-			} else {
-				infoLine.add(createLabelFragment(value));
-			}
-			return infoLine;
+                @Override
+                protected void populateItem(ListItem<String> item) {
+                    String fieldName = item.getModelObject();
+                    try {
+                        Download download = downloadModel.getObject();
+                        String getter = PortalUtil.addGet(fieldName);
+                        Method method = ReflectionUtils.findMethod(Download.class, getter);
+                        String value = (String) method.invoke(download);
+                        item.add(new Label("label", DownloadPage.this.getString(fieldName)));
+                        if (isManufacturerHomepage(fieldName)) {
+                            item.add(createLinkFragment(value));
+                        } else {
+                            item.add(createLabelFragment(value));
+                        }
+                        item.setVisible(StringUtils.isNotEmpty(value));
+                    } catch (IllegalArgumentException e) {
+                        throw new UnhandledException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new UnhandledException(e);
+                    } catch (InvocationTargetException e) {
+                        throw new UnhandledException(e);
+                    }
+                }
+            };
 		}
 
 		private Fragment createLabelFragment(String value) {
