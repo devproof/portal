@@ -70,13 +70,21 @@ public class BlogPage extends BlogBasePage {
     private BlogDataView dataView;
     private IModel<BlogQuery> queryModel;
     private PageParameters params;
+    private WebMarkupContainer refreshContainerBlogEntries;
 
     public BlogPage(PageParameters params) {
         super(params);
         this.params = params;
         this.queryModel = blogDataProvider.getSearchQueryModel();
-        add(createRepeatingBlogEntries());
+        add(createRefreshContainerBlogEntries());
         add(createPagingPanel());
+    }
+
+    private WebMarkupContainer createRefreshContainerBlogEntries() {
+        refreshContainerBlogEntries = new WebMarkupContainer("refreshContainerBlogEntries");
+        refreshContainerBlogEntries.add(createRepeatingBlogEntries());
+        refreshContainerBlogEntries.setOutputMarkupId(true);
+        return refreshContainerBlogEntries;
     }
 
     @Override
@@ -127,13 +135,11 @@ public class BlogPage extends BlogBasePage {
         public BlogDataView(String id) {
             super(id, blogDataProvider);
             setItemsPerPage(configurationService.findAsInteger(BlogConstants.CONF_BLOG_ENTRIES_PER_PAGE));
-//            setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
         }
 
         @Override
         protected void populateItem(Item<Blog> item) {
             item.add(createBlogView(item));
-            item.setOutputMarkupId(true);
         }
     }
 
@@ -193,10 +199,9 @@ public class BlogPage extends BlogBasePage {
                 @Override
                 public void onDelete(AjaxRequestTarget target) {
                     blogService.delete(getEntityModel().getObject());
-                    item.setVisible(false);
-                    target.addComponent(item);
-                    target.addComponent(getFeedback());
                     info(getString("msg.deleted"));
+                    target.addComponent(refreshContainerBlogEntries);
+                    target.addComponent(getFeedback());
                 }
 
                 @Override

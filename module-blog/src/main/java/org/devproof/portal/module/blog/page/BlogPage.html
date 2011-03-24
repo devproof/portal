@@ -2,9 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
 <body>
 <wicket:extend>
+    <div wicket:id="refreshContainerBlogEntries">
     <wicket:container wicket:id="repeatingBlogEntries">
         <div wicket:id="blogView"></div>
     </wicket:container>
+    </div>
     <div wicket:id="paging">paging</div>
     <wicket:fragment wicket:id="blogView">
         <h2 class="headline">
