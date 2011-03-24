@@ -39,6 +39,7 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/bookmark/test-datasource.xml" })
 public class BookmarkEditPageTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -98,7 +99,7 @@ public class BookmarkEditPageTest {
         tester.assertRenderedPage(BookmarkPage.class);
         tester.assertContains("This a sample bookmark and refers to devproof.org");
         PortalTestUtil.callOnBeginRequest();
-        tester.clickLink("repeatingBookmarks:1:bookmarkView:authorButtons:editLink");
+        tester.clickLink("refreshContainerBookmarks:repeatingBookmarks:1:bookmarkView:authorButtons:editLink");
         tester.assertRenderedPage(BookmarkEditPage.class);
     }
 

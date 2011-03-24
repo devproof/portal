@@ -40,6 +40,7 @@ import static org.junit.Assert.assertFalse;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/module/download/test-datasource.xml" })
 public class DownloadEditPageTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -98,7 +99,7 @@ public class DownloadEditPageTest {
         tester.assertRenderedPage(DownloadPage.class);
         tester.assertContains("This is a sample.");
         PortalTestUtil.callOnBeginRequest();
-        tester.clickLink("repeatingDownloads:1:downloadView:authorButtons:editLink");
+        tester.clickLink("refreshContainerDownload:repeatingDownloads:1:downloadView:authorButtons:editLink");
         tester.assertRenderedPage(DownloadEditPage.class);
     }
 
