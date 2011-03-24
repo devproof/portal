@@ -68,13 +68,21 @@ public class BookmarkPage extends BookmarkBasePage {
 
 	private BookmarkDataView dataView;
 	private IModel<BookmarkQuery> searchQueryModel;
+    private WebMarkupContainer refreshContainerBookmarks;
 
-	public BookmarkPage(PageParameters params) {
+    public BookmarkPage(PageParameters params) {
 		super(params);
 		searchQueryModel = bookmarkDataProvider.getSearchQueryModel();
-		add(createRepeatingBookmarks());
+        add(createRefreshContainerBookmarks());
 		add(createPagingPanel());
 	}
+
+    private WebMarkupContainer createRefreshContainerBookmarks() {
+        refreshContainerBookmarks = new WebMarkupContainer("refreshContainerBookmarks");
+        refreshContainerBookmarks.add(createRepeatingBookmarks());
+        refreshContainerBookmarks.setOutputMarkupId(true);
+        return refreshContainerBookmarks;
+    }
 
     @Override
     protected Component newTagCloudBox(String markupId) {
@@ -126,13 +134,11 @@ public class BookmarkPage extends BookmarkBasePage {
 		public BookmarkDataView(String id) {
 			super(id, bookmarkDataProvider);
 			setItemsPerPage(configurationService.findAsInteger(BookmarkConstants.CONF_BOOKMARKS_PER_PAGE));
-//			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override
 		protected void populateItem(Item<Bookmark> item) {
 			item.add(createBookmarkView(item));
-			item.setOutputMarkupId(true);
 		}
 
 		private BookmarkView createBookmarkView(Item<Bookmark> item) {
@@ -256,15 +262,15 @@ public class BookmarkPage extends BookmarkBasePage {
 		}
 
 		private Component createDeliciousSourceImage() {
-			Bookmark bookmark = bookmarkModel.getObject();
-			if (isAuthor() && bookmark.getSource() == Source.DELICIOUS) {
-				// be aware... images are stateful
-				return new Image("delicious", BookmarkConstants.REF_DELICIOUS_IMG);
-			} else {
-				Component hiddenImage = new WebMarkupContainer("delicious");
-				hiddenImage.setVisible(false);
-				return hiddenImage;
-			}
+            return new Image("delicious", BookmarkConstants.REF_DELICIOUS_IMG) {
+                private static final long serialVersionUID = -8747992917254086281L;
+
+                @Override
+                public boolean isVisible() {
+                    Bookmark bookmark = bookmarkModel.getObject();
+                    return isAuthor() && bookmark.getSource() == Source.DELICIOUS;
+                }
+            };
 		}
 
 		private MetaInfoPanel<Bookmark> createMetaInfoPanel() {
@@ -327,10 +333,9 @@ public class BookmarkPage extends BookmarkBasePage {
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
 					bookmarkService.delete(bookmarkModel.getObject());
-					item.setVisible(false);
-					target.addComponent(item);
-					target.addComponent(getFeedback());
-					info(getString("msg.deleted"));
+                    info(getString("msg.deleted"));
+                    target.addComponent(refreshContainerBookmarks);
+                    target.addComponent(getFeedback());
 				}
 
 				@Override
