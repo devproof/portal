@@ -60,14 +60,14 @@ public class CommentPanelTest {
         tester.assertComponent("panel", CommentPanel.class);
     }
 
-    // FIXME dont know why it does not work
-//    @Test
+    @Test
     public void testWriteComment() throws Exception {
         PortalTestUtil.loginDefaultAdminUser(tester);
         tester.startPanel(createCommentPanel());
         tester.assertComponent("panel", CommentPanel.class);
         FormTester ft = tester.newFormTester("panel:form");
         ft.setValue("comment", "I believe I can fly.");
+        ft.submit();
         tester.clickLink("panel:form:addCommentButton", true);
         tester.assertNoErrorMessage();
         tester.assertInvisible("panel:form");
