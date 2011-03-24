@@ -75,16 +75,24 @@ public class DownloadPage extends DownloadBasePage {
 	private IModel<DownloadQuery> queryModel;
 	private DownloadDataView dataView;
 	private PageParameters params;
+    private WebMarkupContainer refreshContainerDownload;
 
-	public DownloadPage(PageParameters params) {
+    public DownloadPage(PageParameters params) {
 		super(params);
 		this.params = params;
 		this.queryModel = downloadDataProvider.getSearchQueryModel();
-		add(createRepeatingDownloads());
+        add(createRefreshContainerDownload());
 		add(createPagingPanel());
 	}
 
-	@Override
+    private WebMarkupContainer createRefreshContainerDownload() {
+        refreshContainerDownload = new WebMarkupContainer("refreshContainerDownload");
+        refreshContainerDownload.add(createRepeatingDownloads());
+        refreshContainerDownload.setOutputMarkupId(true);
+        return refreshContainerDownload;
+    }
+
+    @Override
 	protected void onBeforeRender() {
 		redirectToCreateDownloadPage();
 		super.onBeforeRender();
@@ -154,13 +162,11 @@ public class DownloadPage extends DownloadBasePage {
 		public DownloadDataView(String id) {
 			super(id, downloadDataProvider);
 			setItemsPerPage(configurationService.findAsInteger(DownloadConstants.CONF_DOWNLOADS_PER_PAGE));
-//			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
 		}
 
 		@Override
 		protected void populateItem(Item<Download> item) {
 			item.add(createDownloadViewPanel(item));
-			item.setOutputMarkupId(true);
 		}
 
 		private DownloadView createDownloadViewPanel(Item<Download> item) {
@@ -204,10 +210,9 @@ public class DownloadPage extends DownloadBasePage {
 				@Override
 				public void onDelete(AjaxRequestTarget target) {
 					downloadService.delete(downloadModel.getObject());
-					item.setVisible(false);
-					target.addComponent(item);
-					target.addComponent(getFeedback());
-					info(getString("msg.deleted"));
+                    info(getString("msg.deleted"));
+                    target.addComponent(refreshContainerDownload);
+                    target.addComponent(getFeedback());
 				}
 
 				@Override
