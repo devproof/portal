@@ -59,6 +59,7 @@ public class ThemePage extends TemplatePage {
     private ThemeService themeService;
 
     private BubblePanel bubblePanel;
+    private IModel<List<ThemeBean>> themeBeansModel;
 
     public ThemePage(PageParameters params) {
         super(params);
@@ -76,7 +77,7 @@ public class ThemePage extends TemplatePage {
     }
 
     private ListView<ThemeBean> createRepeatingThemes() {
-        IModel<List<ThemeBean>> themeBeansModel = createThemeBeansModel();
+        themeBeansModel = createThemeBeansModel();
         return new ListView<ThemeBean>("repeatingThemes", themeBeansModel) {
             private static final long serialVersionUID = -3440575235335312961L;
 
@@ -171,6 +172,7 @@ public class ThemePage extends TemplatePage {
                 themeService.uninstall(theme);
                 info(new StringResourceModel("msg.uninstalled", this, null, new Object[]{theme.getTheme()}).getString());
                 setDefaultTheme();
+                themeBeansModel.detach();
             }
 
             private void setDefaultTheme() {
