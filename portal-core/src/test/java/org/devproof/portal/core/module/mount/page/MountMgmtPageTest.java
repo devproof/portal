@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.devproof.portal.core.module.user.page;
+package org.devproof.portal.core.module.mount.page;
 
 import org.apache.wicket.util.tester.WicketTester;
+import org.devproof.portal.core.module.user.page.UserPage;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
@@ -34,7 +35,7 @@ import javax.servlet.ServletContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/core/test-datasource.xml"})
-public class UserPageTest {
+public class MountMgmtPageTest {
     @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
@@ -53,7 +54,7 @@ public class UserPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        tester.startPage(UserPage.class);
-        tester.assertRenderedPage(UserPage.class);
+        tester.startPage(MountMgmtPage.class);
+        tester.assertRenderedPage(MountMgmtPage.class);
     }
 }
