@@ -31,7 +31,7 @@
     </filter-mapping>
 
     <session-config>
-        <session-timeout>60</session-timeout>
+        <session-timeout>9</session-timeout>
     </session-config>
 
     <error-page>

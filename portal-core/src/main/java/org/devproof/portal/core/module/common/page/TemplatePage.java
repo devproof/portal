@@ -18,6 +18,9 @@ package org.devproof.portal.core.module.common.page;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.*;
+import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
@@ -34,8 +37,11 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.*;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.time.Duration;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.box.entity.Box;
@@ -109,7 +115,20 @@ public abstract class TemplatePage extends WebPage {
         add(createMetaRobots());
         add(createRepeatingMainNavigation());
         add(createRepeatingBoxes());
+        add(createSessionKeepAliveBehaviour());
         setOutputMarkupId(true);
+    }
+
+    private AbstractAjaxTimerBehavior createSessionKeepAliveBehaviour() {
+        // 9 minutes session alive, so there are two chances to hit with 4 minutes
+        return new AbstractAjaxTimerBehavior(Duration.minutes(4)) {
+            private static final long serialVersionUID = -12307329320284540L;
+
+            @Override
+            protected void onTimer(AjaxRequestTarget target) {
+                // Do nothing, just keep session alive
+            }
+        };
     }
 
     private Label createLoginMessageLabel() {
