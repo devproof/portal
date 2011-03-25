@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.user.repository;
 
 import org.devproof.portal.core.config.GenericRepository;
+import org.devproof.portal.core.module.common.annotation.BulkUpdate;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
 import org.devproof.portal.core.module.common.annotation.Query;
 import org.devproof.portal.core.module.common.repository.CrudRepository;
@@ -23,6 +24,7 @@ import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,4 +52,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
 	@Query(value = "from User u where exists (from User eu join eu.role.rights as r where r.right = ? and eu = u)")
 	List<User> findUserWithRight(String right);
+
+    @BulkUpdate("delete from User u where u.confirmed = false and u.confirmationRequestedAt < ?")
+    void deleteUnconfirmedUserOlderThan(Date confirmationRequestedAtOlderThan);
 }

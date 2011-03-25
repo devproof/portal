@@ -122,4 +122,9 @@ public interface UserService extends CrudService<User, Integer> {
      * @param urlCallback callback to build the URLs
      */
 	void resendConfirmationCode(User user, UrlCallback urlCallback);
+
+    /**
+     * Deletes all unconfirmed users which are older than 14 days
+     */
+    void deleteUnconfirmedUser();
 }

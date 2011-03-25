@@ -37,7 +37,6 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
     private static final long serialVersionUID = 1L;
     private BubblePanel bubblePanel;
     private IModel<Boolean> hasVoted;
-    // TODO remove bubblepanel and create call back
     public CaptchaRatingPanel(String id, IModel<Integer> rating, IModel<Integer> nrOfStars, IModel<Integer> nrOfVotes, IModel<Boolean> hasVoted, boolean addDefaultCssStyle, BubblePanel bubblePanel) {
         super(id, rating, nrOfStars, nrOfVotes, hasVoted, addDefaultCssStyle);
         this.bubblePanel = bubblePanel;

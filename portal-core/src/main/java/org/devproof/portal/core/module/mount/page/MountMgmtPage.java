@@ -42,7 +42,6 @@ import org.devproof.portal.core.module.mount.service.MountService;
 /**
  * @author Carsten Hufe
  */
-// TODO unit test
 @Secured(ModuleMgmtConstants.ADMIN_RIGHT)
 @ModulePage(mountPath = "/admin/mountpoint", registerGlobalAdminLink = true)
 public class MountMgmtPage extends TemplatePage {
