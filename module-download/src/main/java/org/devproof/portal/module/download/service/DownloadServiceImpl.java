@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.module.download.service;
 
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.role.entity.Role;
+import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.repository.DownloadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import java.util.List;
 public class DownloadServiceImpl implements DownloadService {
     private DownloadRepository downloadRepository;
     private DownloadTagService downloadTagService;
+    private MountService mountService;
 
     @Override
     @Transactional(readOnly = true)
@@ -76,6 +79,7 @@ public class DownloadServiceImpl implements DownloadService {
     public void delete(Download entity) {
         downloadRepository.delete(entity);
         downloadTagService.deleteUnusedTags();
+        mountService.delete(entity.getId().toString(), DownloadConstants.HANDLER_KEY);
     }
 
     @Override
@@ -105,5 +109,10 @@ public class DownloadServiceImpl implements DownloadService {
     @Autowired
     public void setDownloadTagService(DownloadTagService downloadTagService) {
         this.downloadTagService = downloadTagService;
+    }
+
+    @Autowired
+    public void setMountService(MountService mountService) {
+        this.mountService = mountService;
     }
 }

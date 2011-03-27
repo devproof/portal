@@ -20,12 +20,14 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
+import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.panel.RightGridPanel;
 import org.devproof.portal.core.module.tag.component.TagField;
@@ -49,6 +51,7 @@ public class DownloadEditPage extends DownloadBasePage {
     @SpringBean(name = "downloadTagService")
     private DownloadTagService downloadTagService;
     private IModel<Download> downloadModel;
+    private MountInputPanel mountInputPanel;
 
     public DownloadEditPage(IModel<Download> downloadModel) {
         super(new PageParameters());
@@ -66,6 +69,7 @@ public class DownloadEditPage extends DownloadBasePage {
         form.add(createManufacturerField());
         form.add(createLicenceField());
         form.add(createTagField());
+        form.add(createMountInputPanel());
         form.add(createPriceField());
         form.add(createHitsField());
         form.add(createNumberOfVotesField());
@@ -131,6 +135,27 @@ public class DownloadEditPage extends DownloadBasePage {
         return new TagField<DownloadTag>("tags", downloadListModel, downloadTagService);
     }
 
+
+    private MountInputPanel createMountInputPanel() {
+        mountInputPanel = new MountInputPanel("mountUrls", DownloadConstants.HANDLER_KEY, createDownloadIdModel());
+        return mountInputPanel;
+    }
+
+    private IModel<String> createDownloadIdModel() {
+        return new AbstractReadOnlyModel<String>() {
+            private static final long serialVersionUID = 1340993990243817302L;
+
+            @Override
+            public String getObject() {
+                Integer id = downloadModel.getObject().getId();
+                if(id != null) {
+                    return id.toString();
+                }
+                return null;
+            }
+        };
+    }
+
     private Form<Download> newDownloadEditForm() {
         IModel<Download> compoundModel = new CompoundPropertyModel<Download>(downloadModel);
         return new Form<Download>("form", compoundModel) {
@@ -142,6 +167,7 @@ public class DownloadEditPage extends DownloadBasePage {
                 Download download = downloadModel.getObject();
                 download.setBroken(Boolean.FALSE);
                 downloadService.save(download);
+                mountInputPanel.storeMountPoints();
                 setRedirect(false);
                 info(getString("msg.saved"));
                 setResponsePage(new DownloadPage(new PageParameters("id=" + download.getId())));

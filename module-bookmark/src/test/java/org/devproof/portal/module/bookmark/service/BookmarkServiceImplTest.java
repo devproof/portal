@@ -73,11 +73,10 @@ public class BookmarkServiceImplTest {
         mock.delete(e);
         mockTag.deleteUnusedTags();
         mockMountService.delete("1", BookmarkConstants.HANDLER_KEY);
-        replay(mock);
-        replay(mockTag);
+        replay(mock, mockTag, mockMountService);
+        replay();
         impl.delete(e);
-        verify(mock);
-        verify(mockTag);
+        verify(mock, mockTag, mockMountService);
     }
 
     @Test
