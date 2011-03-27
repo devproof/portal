@@ -15,8 +15,10 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.role.entity.Role;
+import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
@@ -36,15 +38,19 @@ public class BookmarkServiceImplTest {
     private BookmarkServiceImpl impl;
     private BookmarkRepository mock;
     private BookmarkTagService mockTag;
+    private MountService mockMountService;
+
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(BookmarkRepository.class);
         mockTag = createStrictMock(BookmarkTagService.class);
+        mockMountService = createStrictMock(MountService.class);
         impl = new BookmarkServiceImpl();
         impl.setBookmarkRepository(mock);
         impl.setBookmarkTagService(mockTag);
+        impl.setMountService(mockMountService);
     }
 
     @Test
@@ -66,6 +72,7 @@ public class BookmarkServiceImplTest {
         e.setId(1);
         mock.delete(e);
         mockTag.deleteUnusedTags();
+        mockMountService.delete("1", BookmarkConstants.HANDLER_KEY);
         replay(mock);
         replay(mockTag);
         impl.delete(e);

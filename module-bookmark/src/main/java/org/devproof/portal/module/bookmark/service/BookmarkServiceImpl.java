@@ -15,8 +15,10 @@
  */
 package org.devproof.portal.module.bookmark.service;
 
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.role.entity.Role;
+import org.devproof.portal.module.bookmark.BookmarkConstants;
 import org.devproof.portal.module.bookmark.entity.Bookmark;
 import org.devproof.portal.module.bookmark.entity.Bookmark.Source;
 import org.devproof.portal.module.bookmark.repository.BookmarkRepository;
@@ -33,6 +35,7 @@ import java.util.List;
 public class BookmarkServiceImpl implements BookmarkService {
     private BookmarkRepository bookmarkRepository;
     private BookmarkTagService bookmarkTagService;
+    private MountService mountService;
 
     @Override
     @Transactional(readOnly = true)
@@ -84,6 +87,7 @@ public class BookmarkServiceImpl implements BookmarkService {
     public void delete(Bookmark entity) {
         bookmarkRepository.delete(entity);
         bookmarkTagService.deleteUnusedTags();
+        mountService.delete(entity.getId().toString(), BookmarkConstants.HANDLER_KEY);
     }
 
     @Override
@@ -119,5 +123,10 @@ public class BookmarkServiceImpl implements BookmarkService {
     @Autowired
     public void setBookmarkTagService(BookmarkTagService bookmarkTagService) {
         this.bookmarkTagService = bookmarkTagService;
+    }
+
+    @Autowired
+    public void setMountService(MountService mountService) {
+        this.mountService = mountService;
     }
 }

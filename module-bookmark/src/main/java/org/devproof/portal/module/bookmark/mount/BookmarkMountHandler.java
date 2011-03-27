@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *        http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.devproof.portal.module.blog.mount;
+package org.devproof.portal.module.bookmark.mount;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.IRequestTarget;
@@ -25,40 +25,40 @@ import org.devproof.portal.core.module.mount.annotation.MountPointHandler;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.service.MountService;
-import org.devproof.portal.module.blog.BlogConstants;
-import org.devproof.portal.module.blog.page.BlogPage;
-import org.devproof.portal.module.blog.page.BlogPrintPage;
-import org.devproof.portal.module.blog.panel.BlogPrintPanel;
+import org.devproof.portal.module.bookmark.BookmarkConstants;
+import org.devproof.portal.module.bookmark.page.BookmarkPage;
+import org.devproof.portal.module.bookmark.page.BookmarkRedirectPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Carsten Hufe
  */
-@MountPointHandler("blogMountHandler")
-public class BlogMountHandler implements MountHandler {
+@MountPointHandler("bookmarkMountHandler")
+public class BookmarkMountHandler implements MountHandler {
     private MountService mountService;
 
     @Override
     @Transactional(readOnly = true)
     public IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint) {
         String relatedContentId = mountPoint.getRelatedContentId();
-        PageParameters pageParameters = new PageParameters("id=" + relatedContentId);
         String rest = StringUtils.substringAfter(requestedUrl, mountPoint.getMountPath());
         if(StringUtils.isNotBlank(rest)) {
             String page = StringUtils.remove(rest, '/');
-            if("print".equals(page)) {
-                return new BookmarkablePageRequestTarget(BlogPrintPage.class, pageParameters);
+            if("visit".equals(page)) {
+                PageParameters pageParameters = new PageParameters("0=" + relatedContentId);
+                return new BookmarkablePageRequestTarget(BookmarkRedirectPage.class, pageParameters);
             }
         }
-        return new BookmarkablePageRequestTarget(BlogPage.class, pageParameters);
+        PageParameters pageParameters = new PageParameters("id=" + relatedContentId);
+        return new BookmarkablePageRequestTarget(BookmarkPage.class, pageParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters) {
-        if(BlogPage.class.equals(pageClazz) || BlogPrintPage.class.equals(pageClazz)) {
-            String relatedContentId = pageParameters.getString("id");
+        if(BookmarkPage.class.equals(pageClazz) || BookmarkRedirectPage.class.equals(pageClazz)) {
+            String relatedContentId = pageParameters.getString(paramKey(pageClazz));
             if(StringUtils.isNumeric(relatedContentId)) {
                 return mountService.existsMountPoint(relatedContentId, getHandlerKey());
             }
@@ -66,21 +66,22 @@ public class BlogMountHandler implements MountHandler {
         return false;
     }
 
+    private String paramKey(Class<? extends Page> pageClazz) {
+        return BookmarkPage.class.equals(pageClazz) ? "id" : "0";
+    }
+
     @Override
     @Transactional(readOnly = true)
     public String urlFor(Class<? extends Page> pageClazz, PageParameters params) {
-        String relatedContentId = params.getString("id");
+        String relatedContentId = params.getString(paramKey(pageClazz));
         MountPoint mountPoint = mountService.findDefaultMountPoint(relatedContentId, getHandlerKey());
         if(mountPoint != null) {
             String mountPath = mountPoint.getMountPath();
-            if(BlogPage.class.equals(pageClazz)) {
-                if(params.containsKey("page")) {
-                    mountPath += "/" + params.getString("page");
-                }
-                return mountPath; // page
+            if(BookmarkPage.class.equals(pageClazz)) {
+                return mountPath;
             }
-            else if(BlogPrintPage.class.equals(pageClazz)) {
-                return mountPath + "/print";
+            else if(BookmarkRedirectPage.class.equals(pageClazz)) {
+                return mountPath + "/visit";
             }
         }
         return null;
@@ -88,7 +89,7 @@ public class BlogMountHandler implements MountHandler {
 
     @Override
     public String getHandlerKey() {
-        return BlogConstants.HANDLER_KEY;
+        return BookmarkConstants.HANDLER_KEY;
     }
 
     @Autowired
