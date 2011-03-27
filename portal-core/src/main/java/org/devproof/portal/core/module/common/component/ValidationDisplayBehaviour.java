@@ -29,6 +29,7 @@ import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.ValidationErrorFeedback;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.devproof.portal.core.module.common.CommonConstants;
 
 import java.util.Map;
 
@@ -37,7 +38,7 @@ import java.util.Map;
  */
 public class ValidationDisplayBehaviour extends AbstractBehavior {
     private static final long serialVersionUID = 1L;
-    public final static ResourceReference ERRORHINT_IMAGE_REF = new ResourceReference(ValidationDisplayBehaviour.class, "../img/errorhint.gif");
+    public final static ResourceReference ERRORHINT_IMAGE_REF = new ResourceReference(CommonConstants.class, "img/errorhint.gif");
     private IFeedbackMessageFilter errorLevelFilter = new ErrorLevelFeedbackMessageFilter(FeedbackMessage.ERROR);
 
     @Override
@@ -49,7 +50,6 @@ public class ValidationDisplayBehaviour extends AbstractBehavior {
 
     @Override
     public void onComponentTag(Component component, ComponentTag tag) {
-        super.onComponentTag(component, tag);
         FormComponent<?> formComponent = (FormComponent<?>) component;
         FeedbackMessages msgs = Session.get().getFeedbackMessages();
         IFeedbackMessageFilter componentMessageFilter = getFeedbackFilter(formComponent);

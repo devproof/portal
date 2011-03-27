@@ -604,6 +604,7 @@ a.dataview {
     color:#e9e9e9;
 }
 
+select.formInputArea:focus,
 input.formInputArea:focus,
 input.formInputAreaShort:focus{
     background-color:#FFEBAD;
@@ -615,6 +616,17 @@ input.formInputArea {
     padding:6px;
     width:620px;
     height:20px;
+    padding-top:4px;
+    font-size:18px;
+    font-weight:normal;
+}
+
+select.formInputArea {
+    background:#FFFFFF;
+    border:none;
+    padding:6px;
+    width:538px;
+    height:33px;
     padding-top:4px;
     font-size:18px;
     font-weight:normal;
@@ -658,7 +670,9 @@ textarea.formtextarea {
 	font-weight:normal;
 }
 
-input.error, textarea.error {
+input.error,
+select.error,
+textarea.error {
     background-color: #FFC700;
 }
 

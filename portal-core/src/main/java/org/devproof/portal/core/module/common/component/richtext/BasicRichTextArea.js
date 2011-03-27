@@ -1,6 +1,7 @@
 window.onload = function() {
     CKEDITOR.replace('${markupId}', {
         contentsCss : ['${defaultCss}'],
-        toolbar: 'Basic'
+        toolbar: 'Basic',
+        width: 632
     });
 };

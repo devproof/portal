@@ -2,7 +2,9 @@ function xstooltip_findPosX(obj) {
     var curleft = 0;
     if (obj.offsetParent) {
         while (obj.offsetParent) {
-            curleft += obj.offsetLeft;
+            if(obj.className != 'bubblePopup') {
+                curleft += obj.offsetLeft;
+            }
             obj = obj.offsetParent;
         }
     } else if (obj.x)
@@ -14,7 +16,9 @@ function xstooltip_findPosY(obj) {
     var curtop = 0;
     if (obj.offsetParent) {
         while (obj.offsetParent) {
-            curtop += obj.offsetTop;
+            if(obj.className != 'bubblePopup') {
+                curtop += obj.offsetTop;
+            }
             obj = obj.offsetParent;
         }
     } else if (obj.y)

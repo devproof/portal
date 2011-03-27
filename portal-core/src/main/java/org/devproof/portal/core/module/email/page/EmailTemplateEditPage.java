@@ -23,6 +23,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.email.EmailConstants;
 import org.devproof.portal.core.module.email.entity.EmailTemplate;
@@ -38,6 +39,7 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
     @SpringBean(name = "emailService")
     private EmailService emailService;
     private IModel<EmailTemplate> emailTemplateModel;
+    private Form<EmailTemplate> emailForm;
 
     public EmailTemplateEditPage(IModel<EmailTemplate> emailTemplateModel) {
         super(new PageParameters());
@@ -46,11 +48,11 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
     }
 
     private Form<EmailTemplate> createEditEmailTemplateForm() {
-        Form<EmailTemplate> form = newEditEmailTemplateForm();
-        form.add(createSubjectField());
-        form.add(createContentField());
-        form.setOutputMarkupId(true);
-        return form;
+        emailForm = newEditEmailTemplateForm();
+        emailForm.add(createSubjectField());
+        emailForm.add(createContentField());
+        emailForm.setOutputMarkupId(true);
+        return emailForm;
     }
 
     private Form<EmailTemplate> newEditEmailTemplateForm() {
@@ -70,10 +72,13 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
     private FormComponent<String> createContentField() {
         FormComponent<String> fc = new BasicRichTextArea("content", true);
         fc.setRequired(true);
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
     private FormComponent<String> createSubjectField() {
-        return new RequiredTextField<String>("subject");
+        RequiredTextField<String> tf = new RequiredTextField<String>("subject");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 }
