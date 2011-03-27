@@ -671,7 +671,6 @@ textarea.formtextarea {
 }
 
 input.error,
-select.error,
 textarea.error {
     background-color: #FFC700;
 }

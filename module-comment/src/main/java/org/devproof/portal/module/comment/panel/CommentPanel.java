@@ -42,6 +42,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
+import org.devproof.portal.core.module.common.component.PortalFeedbackPanel;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.dataprovider.QueryDataProvider;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
 import org.devproof.portal.core.module.common.panel.captcha.CaptchaAjaxButton;
@@ -120,6 +122,7 @@ public class CommentPanel extends Panel {
     private TextField<String> createGuestNameField() {
         TextField<String> guestNameField = new RequiredTextField<String>("guestName");
         guestNameField.add(StringValidator.lengthBetween(3, 50));
+        guestNameField.add(new ValidationDisplayBehaviour());
         return guestNameField;
     }
 
@@ -134,12 +137,14 @@ public class CommentPanel extends Panel {
         TextField<String> guestEmailField = new RequiredTextField<String>("guestEmail");
         guestEmailField.add(StringValidator.maximumLength(50));
         guestEmailField.add(EmailAddressValidator.getInstance());
+        guestEmailField.add(new ValidationDisplayBehaviour());
         return guestEmailField;
     }
 
     private TextArea<String> createCommentField() {
         TextArea<String> commentField = new TextArea<String>("comment");
         commentField.add(StringValidator.lengthBetween(10, 3000));
+        commentField.add(new ValidationDisplayBehaviour());
         commentField.setRequired(true);
         return commentField;
     }
@@ -236,7 +241,7 @@ public class CommentPanel extends Panel {
     }
 
     private FeedbackPanel createFeedbackPanel() {
-        FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        FeedbackPanel feedbackPanel = new PortalFeedbackPanel("feedback");
         feedbackPanel.setOutputMarkupId(true);
         return feedbackPanel;
     }
