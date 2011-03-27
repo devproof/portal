@@ -613,7 +613,7 @@ input.formInputArea {
     background:#FFFFFF;
     border:none;
     padding:6px;
-    width:655px;
+    width:620px;
     height:20px;
     padding-top:4px;
     font-size:18px;
@@ -635,10 +635,6 @@ input.mountPointPanelInput {
     width: 550px;
 }
 
-input.error {
-    background-color: #FFC700;
-}
-
 .mountPointHint {
     color: red;
     font-weight: bold;
@@ -655,11 +651,15 @@ textarea.formtextarea {
 	background:#FFFFFF;
 	border:none;
 	padding:6px;
-	width:655px;
+	width:620px;
 	height:133px;
 	padding-top:6px;
 	font-size:18px;
 	font-weight:normal;
+}
+
+input.error, textarea.error {
+    background-color: #FFC700;
 }
 
 input.formSubmit {
@@ -671,6 +671,7 @@ input.formSubmit {
 	font-weight:normal;
 	float:right;
 	cursor:pointer;
+    margin-right:35px;
 }
 
 .mountPointPanel img {
@@ -758,6 +759,18 @@ table.palette td.buttons button {
     width: 30px;
     height: 30px;
     background: white;
+}
+
+button.button.add div {
+	background: url("../img/arrow_right.png");
+	height: 15px;
+	width: 15px;
+}
+
+button.button.remove div {
+	background: url("../img/arrow_left.png");
+	height: 15px;
+	width: 15px;
 }
 
 .login {
