@@ -11,7 +11,7 @@ Features
 
 Technical stuff
 - Upgrade to JQuery 1.5.1
-- Page refresh errors on delete for Blog, Download, Bookmarks, Articlesand Theme Management
+- Page refresh errors on delete for Blog, Download, Bookmarks, Articles and Theme Management
 - Set print pages and blog headline to noindex
 - Session timeout reduced to 9 minutes, but added a keep alive script which refreshes every 4 minutes
 - Upgrade to Gradle 1.0-milestone1
