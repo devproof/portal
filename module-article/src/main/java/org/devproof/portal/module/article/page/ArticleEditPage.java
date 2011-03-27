@@ -25,6 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.component.richtext.BasicRichTextArea;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.mount.panel.MountInputPanel;
@@ -115,7 +116,9 @@ public class ArticleEditPage extends ArticleBasePage {
     }
 
     private RequiredTextField<String> createTitleField() {
-        return new RequiredTextField<String>("title");
+        RequiredTextField<String> tf = new RequiredTextField<String>("title");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createTeaserField() {

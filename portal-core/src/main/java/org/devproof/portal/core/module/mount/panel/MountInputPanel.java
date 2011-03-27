@@ -119,6 +119,7 @@ public class MountInputPanel extends Panel {
     private ListView<MountPoint> createMountUrlListView() {
         ListView<MountPoint> listView = newMountUrlListView();
         listView.setOutputMarkupId(true);
+        listView.setReuseItems(true);
         return listView;
     }
 

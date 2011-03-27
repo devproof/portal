@@ -25,6 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
@@ -78,27 +79,39 @@ public class BookmarkEditPage extends BookmarkBasePage {
     }
 
     private FormComponent<String> createUrlField() {
-        return new RequiredTextField<String>("url");
+        RequiredTextField<String> tf = new RequiredTextField<String>("url");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createTitleField() {
-        return new RequiredTextField<String>("title");
+        RequiredTextField<String> tf = new RequiredTextField<String>("title");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createDescriptionField() {
-        return new FullRichTextArea("description");
+        FullRichTextArea tf = new FullRichTextArea("description");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createHitsField() {
-        return new RequiredTextField<String>("hits");
+        RequiredTextField<String> tf = new RequiredTextField<String>("hits");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createNumberOfVotesField() {
-        return new RequiredTextField<String>("numberOfVotes");
+        RequiredTextField<String> tf = new RequiredTextField<String>("numberOfVotes");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createSumOfRatingField() {
-        return new RequiredTextField<String>("sumOfRating");
+        RequiredTextField<String> tf = new RequiredTextField<String>("sumOfRating");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private MountInputPanel createMountInputPanel() {

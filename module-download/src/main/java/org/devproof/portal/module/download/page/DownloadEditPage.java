@@ -26,6 +26,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
@@ -83,51 +84,75 @@ public class DownloadEditPage extends DownloadBasePage {
     }
 
     private FormComponent<String> createSoftwareVersionField() {
-        return new TextField<String>("softwareVersion");
+        TextField<String> tf = new TextField<String>("softwareVersion");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createSumOfRatingField() {
-        return new RequiredTextField<String>("sumOfRating");
+        RequiredTextField<String> tf = new RequiredTextField<String>("sumOfRating");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createNumberOfVotesField() {
-        return new RequiredTextField<String>("numberOfVotes");
+        RequiredTextField<String> tf = new RequiredTextField<String>("numberOfVotes");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createHitsField() {
-        return new RequiredTextField<String>("hits");
+        RequiredTextField<String> tf = new RequiredTextField<String>("hits");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createUrlField() {
-        return new RequiredTextField<String>("url");
+        RequiredTextField<String> tf = new RequiredTextField<String>("url");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createDescriptionField() {
-        return new FullRichTextArea("description");
+        FullRichTextArea area = new FullRichTextArea("description");
+        area.add(new ValidationDisplayBehaviour());
+        return area;
     }
 
     private FormComponent<String> createTitleField() {
-        return new RequiredTextField<String>("title");
+        RequiredTextField<String> tf = new RequiredTextField<String>("title");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createDownloadSizeField() {
-        return new TextField<String>("downloadSize");
+        TextField<String> tf = new TextField<String>("downloadSize");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createManufacturerField() {
-        return new TextField<String>("manufacturer");
+        TextField<String> tf = new TextField<String>("manufacturer");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createManufacturerHomepageField() {
-        return new TextField<String>("manufacturerHomepage");
+        TextField<String> tf = new TextField<String>("manufacturerHomepage");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createLicenceField() {
-        return new TextField<String>("licence");
+        TextField<String> tf = new TextField<String>("licence");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FormComponent<String> createPriceField() {
-        return new TextField<String>("price");
+        TextField<String> tf = new TextField<String>("price");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private TagField<DownloadTag> createTagField() {

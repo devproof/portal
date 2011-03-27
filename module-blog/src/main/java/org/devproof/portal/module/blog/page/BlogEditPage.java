@@ -25,6 +25,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.devproof.portal.core.module.mount.panel.MountInputPanel;
 import org.devproof.portal.core.module.right.entity.Right;
@@ -137,6 +138,8 @@ public class BlogEditPage extends BlogBasePage {
     }
 
     private FormComponent<String> createHeadlineField() {
-        return new RequiredTextField<String>("headline");
+        RequiredTextField<String> tf = new RequiredTextField<String>("headline");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 }
