@@ -37,6 +37,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
@@ -138,12 +139,14 @@ public class SettingsPage extends TemplatePage {
     private PasswordTextField createPasswordField1() {
         newPassword1 = new PasswordTextField("newPassword1", new Model<String>());
         newPassword1.setRequired(false);
+        newPassword1.add(new ValidationDisplayBehaviour());
         return newPassword1;
     }
 
     private PasswordTextField createPasswordField2() {
         newPassword2 = new PasswordTextField("newPassword2", new Model<String>());
         newPassword2.setRequired(false);
+        newPassword2.add(new ValidationDisplayBehaviour());
         return newPassword2;
     }
 
@@ -151,6 +154,7 @@ public class SettingsPage extends TemplatePage {
         currentPassword = new PasswordTextField("currentPassword", new Model<String>());
         currentPassword.add(createCurrentPasswordValidator());
         currentPassword.setRequired(false);
+        currentPassword.add(new ValidationDisplayBehaviour());
         return currentPassword;
     }
 
@@ -194,6 +198,7 @@ public class SettingsPage extends TemplatePage {
         FormComponent<String> fc = new RequiredTextField<String>("email");
         fc.add(EmailAddressValidator.getInstance());
         fc.add(StringValidator.maximumLength(100));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
@@ -202,6 +207,7 @@ public class SettingsPage extends TemplatePage {
         DateTextField dateTextField = new DateTextField("birthday", dateFormat);
         dateTextField.add(new DatePicker());
         dateTextField.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
+        dateTextField.add(new ValidationDisplayBehaviour());
         return dateTextField;
     }
 
@@ -209,6 +215,7 @@ public class SettingsPage extends TemplatePage {
         FormComponent<String> fc = new TextField<String>("lastname");
         fc.add(StringValidator.maximumLength(100));
         fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
@@ -216,6 +223,7 @@ public class SettingsPage extends TemplatePage {
         FormComponent<String> fc = new TextField<String>("firstname");
         fc.add(StringValidator.maximumLength(100));
         fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 

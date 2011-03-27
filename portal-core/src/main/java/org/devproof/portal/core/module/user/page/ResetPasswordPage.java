@@ -28,6 +28,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.user.entity.User;
@@ -102,12 +103,12 @@ public class ResetPasswordPage extends TemplatePage {
         PasswordTextField password = new PasswordTextField(id, new Model<String>());
         password.add(StringValidator.minimumLength(5));
         password.setRequired(true);
+        password.add(new ValidationDisplayBehaviour());
         return password;
     }
 
     private FormComponent<String> createUsernameField() {
-        FormComponent<String> fc;
-        fc = new RequiredTextField<String>("username");
+        FormComponent<String> fc = new RequiredTextField<String>("username");
         fc.setEnabled(false);
         return fc;
     }

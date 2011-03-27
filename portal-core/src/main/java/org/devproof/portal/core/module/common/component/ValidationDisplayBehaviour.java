@@ -27,17 +27,17 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.ValidationErrorFeedback;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 
 import java.util.Map;
-import java.util.UUID;
 
+/**
+ * @author Carsten Hufe
+ */
 public class ValidationDisplayBehaviour extends AbstractBehavior {
     private static final long serialVersionUID = 1L;
-    public final static ResourceReference ERRORHINT_IMAGE_REF = new ResourceReference(ValidationDisplayBehaviour.class,
-            "../img/errorhint.gif");
+    public final static ResourceReference ERRORHINT_IMAGE_REF = new ResourceReference(ValidationDisplayBehaviour.class, "../img/errorhint.gif");
     private IFeedbackMessageFilter errorLevelFilter = new ErrorLevelFeedbackMessageFilter(FeedbackMessage.ERROR);
 
     @Override
@@ -101,16 +101,8 @@ public class ValidationDisplayBehaviour extends AbstractBehavior {
 
     private String getFeedbackMessage(FormComponent<?> component) {
         FeedbackMessage feedbackMessage = component.getFeedbackMessage();
-        if ((feedbackMessage != null) && (feedbackMessage.getLevel() >= FeedbackMessage.ERROR) && !feedbackMessage.isRendered()) {
+        if ((feedbackMessage != null) && (feedbackMessage.getLevel() >= FeedbackMessage.ERROR)) {
             feedbackMessage.markRendered();
-            FeedbackMessages feedbackMessages = Session.get().getFeedbackMessages();
-            feedbackMessages.clear(getFeedbackFilter(component));
-
-            String errorHintMsg = component.getString("formErrorHint");
-            Page page = component.getPage();
-            if(feedbackMessages.size(createEqualMessageFilter(errorHintMsg)) == 0) {;
-                feedbackMessages.error(page, errorHintMsg);
-            }
             if (feedbackMessage.getMessage() instanceof ValidationErrorFeedback) {
                 ValidationErrorFeedback error = (ValidationErrorFeedback) feedbackMessage.getMessage();
                 return error.getMessage();
@@ -120,18 +112,4 @@ public class ValidationDisplayBehaviour extends AbstractBehavior {
         }
         return null;
     }
-
-    private IFeedbackMessageFilter createEqualMessageFilter(final String errorHintMsg) {
-        return new IFeedbackMessageFilter() {
-
-            private static final long serialVersionUID = 2130567510760902207L;
-
-            @Override
-            public boolean accept(FeedbackMessage message) {
-                return errorHintMsg.equals(message.getMessage());
-            }
-        };
-    }
-
-
 }

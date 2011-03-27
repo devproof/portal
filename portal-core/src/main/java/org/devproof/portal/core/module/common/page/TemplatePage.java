@@ -20,9 +20,11 @@ import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.*;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.feedback.FeedbackMessagesModel;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -37,8 +39,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.*;
-import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
@@ -49,7 +49,10 @@ import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
 import org.devproof.portal.core.module.common.CommonConstants;
+import org.devproof.portal.core.module.common.component.PortalFeedbackPanel;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
+import org.devproof.portal.core.module.common.model.PortalFeedbackMessagesModel;
 import org.devproof.portal.core.module.common.panel.GlobalAdminBoxPanel;
 import org.devproof.portal.core.module.common.panel.OtherBoxPanel;
 import org.devproof.portal.core.module.common.panel.PageAdminBoxPanel;
@@ -143,7 +146,7 @@ public abstract class TemplatePage extends WebPage {
             @Override
             protected String load() {
                 PortalSession session = PortalSession.get();
-                if(session.isSignedIn()) {
+                if (session.isSignedIn()) {
                     return getString("loggedin", new PropertyModel<User>(session, "user"));
                 }
                 return getString("notloggedin");
@@ -282,7 +285,7 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private FeedbackPanel createFeedbackPanel() {
-        feedback = new FeedbackPanel("feedbackPanel");
+        feedback = new PortalFeedbackPanel("feedbackPanel");
         feedback.setOutputMarkupId(true);
         return feedback;
     }
@@ -338,6 +341,7 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * creates the Main Navigation on the top
+     *
      * @return component
      */
     private Component createRepeatingMainNavigation() {
@@ -354,13 +358,13 @@ public abstract class TemplatePage extends WebPage {
 
     private IModel<List<Class<? extends Page>>> createMainNavigationModel() {
         return new LoadableDetachableModel<List<Class<? extends Page>>>() {
-                private static final long serialVersionUID = -164465304408431579L;
+            private static final long serialVersionUID = -164465304408431579L;
 
-                @Override
-                protected List<Class<? extends Page>> load() {
-                    return mainNavigationRegistry.getRegisteredPages();
-                }
-            };
+            @Override
+            protected List<Class<? extends Page>> load() {
+                return mainNavigationRegistry.getRegisteredPages();
+            }
+        };
     }
 
     private BookmarkablePageLink<Void> createMenuLink(ListItem<Class<? extends Page>> item) {
@@ -381,10 +385,9 @@ public abstract class TemplatePage extends WebPage {
 
             @Override
             public String getObject() {
-                if(item.getModelObject().equals(getPage().getClass())) {
+                if (item.getModelObject().equals(getPage().getClass())) {
                     return "topNavAct";
-                }
-                else if(isLastItem(item)) {
+                } else if (isLastItem(item)) {
                     return "topNavLast";
                 }
                 return "";
@@ -406,6 +409,7 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * Create the boxes on the right hand side
+     *
      * @return view
      */
     private Component createRepeatingBoxes() {
@@ -428,10 +432,9 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private Fragment createOuterBoxFragment(String customStyle) {
-        if(StringUtils.isNotBlank(customStyle) && existsCustomStyleFragment(customStyle)) {
+        if (StringUtils.isNotBlank(customStyle) && existsCustomStyleFragment(customStyle)) {
             return new Fragment("outerBox", customStyle, this);
-        }
-        else {
+        } else {
             return new Fragment("outerBox", "defaultBoxTemplate", this);
         }
     }
@@ -447,10 +450,10 @@ public abstract class TemplatePage extends WebPage {
             private static final long serialVersionUID = -8338162419354614447L;
 
             @Override
-                protected List<Box> load() {
-                    return boxService.findAllOrderedBySort();
-                }
-            };
+            protected List<Box> load() {
+                return boxService.findAllOrderedBySort();
+            }
+        };
     }
 
     private Component createInnerBox(ListItem<Box> item) {
@@ -519,7 +522,7 @@ public abstract class TemplatePage extends WebPage {
         PageAdminBoxPanel box = new PageAdminBoxPanel(getBoxId());
         // TODO bad interface!
         List<Component> components = newPageAdminBoxLinks("adminLink", "linkName");
-        for(Component component : components) {
+        for (Component component : components) {
             box.addLink(component);
         }
         return box;
@@ -540,6 +543,7 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * Create the Filter Box e.g. search or tags
+     *
      * @param markupId markup id
      * @return filter component
      */
@@ -549,6 +553,7 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * Create the TagCloud Box e.g. search or tags
+     *
      * @param markupId markup id
      * @return tag cloud component
      */
@@ -558,13 +563,14 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * Returns a custom list with page admin links
-     * @param linkMarkupId link markup id
+     *
+     * @param linkMarkupId  link markup id
      * @param labelMarkupId link label markup id
      * @return list with links
      */
     protected List<Component> newPageAdminBoxLinks(String linkMarkupId, String labelMarkupId) {
         Component component = newPageAdminBoxLink(linkMarkupId, labelMarkupId);
-        if(component != null) {
+        if (component != null) {
             return Arrays.asList(component);
         }
         return new ArrayList<Component>();
@@ -573,7 +579,7 @@ public abstract class TemplatePage extends WebPage {
     /**
      * Returns just one page admin link, convience method
      *
-     * @param linkMarkupId link markup id
+     * @param linkMarkupId  link markup id
      * @param labelMarkupId link label markup id
      * @return one link
      */
