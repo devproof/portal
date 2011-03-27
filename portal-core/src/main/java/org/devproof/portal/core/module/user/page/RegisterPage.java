@@ -36,6 +36,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -69,6 +70,7 @@ public class RegisterPage extends TemplatePage {
     private PasswordTextField password1;
     private PasswordTextField password2;
     private BubblePanel bubblePanel;
+    private Form<User> registerForm;
 
     public RegisterPage(PageParameters params) {
         super(params);
@@ -85,20 +87,20 @@ public class RegisterPage extends TemplatePage {
     }
 
     private Form<User> createRegisterForm() {
-        Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
-        form.add(createUsernameField());
-        form.add(createFirstnameField());
-        form.add(createLastnameField());
-        form.add(createBirthdayField());
-        form.add(createEmailField());
-        form.add(createPasswordField1());
-        form.add(createPasswordField2());
-        form.add(createEqualPasswordValidator());
-        form.add(createTermsOfUseCheckBox());
-        form.add(createTermsOfUseLink());
-        form.add(createRegisterButton());
-        form.setOutputMarkupId(true);
-        return form;
+        registerForm = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
+        registerForm.add(createUsernameField());
+        registerForm.add(createFirstnameField());
+        registerForm.add(createLastnameField());
+        registerForm.add(createBirthdayField());
+        registerForm.add(createEmailField());
+        registerForm.add(createPasswordField1());
+        registerForm.add(createPasswordField2());
+        registerForm.add(createEqualPasswordValidator());
+        registerForm.add(createTermsOfUseCheckBox());
+        registerForm.add(createTermsOfUseLink());
+        registerForm.add(createRegisterButton());
+        registerForm.setOutputMarkupId(true);
+        return registerForm;
     }
 
     private Component createTermsOfUseCheckBox() {
@@ -154,6 +156,7 @@ public class RegisterPage extends TemplatePage {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
+                target.addComponent(registerForm);
                 target.addComponent(getFeedback());
             }
 
@@ -181,11 +184,13 @@ public class RegisterPage extends TemplatePage {
 
     private PasswordTextField createPasswordField1() {
         password1 = createPasswordField("password1");
+        password1.add(new ValidationDisplayBehaviour());
         return password1;
     }
 
     private PasswordTextField createPasswordField2() {
         password2 = createPasswordField("password2");
+        password2.add(new ValidationDisplayBehaviour());
         return password2;
     }
 
@@ -201,6 +206,7 @@ public class RegisterPage extends TemplatePage {
         DateTextField dateTextField = new DateTextField("birthday", dateFormat);
         dateTextField.add(new DatePicker());
         dateTextField.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_BIRTHDAY));
+        dateTextField.add(new ValidationDisplayBehaviour());
         return dateTextField;
     }
 
@@ -208,6 +214,7 @@ public class RegisterPage extends TemplatePage {
         FormComponent<String> fc = new RequiredTextField<String>("email");
         fc.add(EmailAddressValidator.getInstance());
         fc.add(StringValidator.maximumLength(100));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
@@ -215,11 +222,13 @@ public class RegisterPage extends TemplatePage {
         FormComponent<String> fc = new TextField<String>("lastname");
         fc.add(StringValidator.maximumLength(100));
         fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
     private FormComponent<String> createFirstnameField() {
         FormComponent<String> fc = new TextField<String>("firstname");
+        fc.add(new ValidationDisplayBehaviour());
         fc.add(StringValidator.maximumLength(100));
         fc.setRequired(configurationService.findAsBoolean(UserConstants.CONF_REGISTRATION_REQUIRED_NAME));
         return fc;
@@ -230,6 +239,7 @@ public class RegisterPage extends TemplatePage {
         fc.add(StringValidator.lengthBetween(3, 30));
         fc.add(createExistingUsernameValidator());
         fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 

@@ -604,15 +604,20 @@ a.dataview {
     color:#e9e9e9;
 }
 
+input.formInputArea:focus,
+input.formInputAreaShort:focus{
+    background-color:#FFEBAD;
+}
+
 input.formInputArea {
-	background:#FFFFFF;
-	border:none;
-	padding:6px;
-	width:655px;
-	height:20px;
-	padding-top:4px;
-	font-size:18px;
-	font-weight:normal;
+    background:#FFFFFF;
+    border:none;
+    padding:6px;
+    width:655px;
+    height:20px;
+    padding-top:4px;
+    font-size:18px;
+    font-weight:normal;
 }
 
 input.formInputAreaShort {
@@ -628,6 +633,10 @@ input.formInputAreaShort {
 
 input.mountPointPanelInput {
     width: 550px;
+}
+
+input.error {
+    background-color: #FFC700;
 }
 
 .mountPointHint {
