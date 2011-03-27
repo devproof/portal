@@ -1,3 +1,21 @@
+Devproof Portal 1.1.1
+---------------------
+
+Features
+- Cleanup job for unconfirmed users (gets automatically deleted after 14 days)
+- Global mount url management page
+- Mount URLs for bookmarks
+- Mount URLs for downloads
+- Attach errors to form fields for a better usability
+- Some layout issues
+
+Technical stuff
+- Upgrade to JQuery 1.5.1
+- Page refresh errors on delete for Blog, Download, Bookmarks, Articlesand Theme Management
+- Set print pages and blog headline to noindex
+- Session timeout reduced to 9 minutes, but added a keep alive script which refreshes every 4 minutes
+- Upgrade to Gradle 1.0-milestone1
+
 Devproof Portal 1.1.0
 ---------------------
 
