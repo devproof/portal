@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.common.page;
 
-import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.config.ModulePage;
 
 /**

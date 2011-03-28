@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.historization;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * Contains common constants
@@ -23,5 +23,5 @@ import org.apache.wicket.ResourceReference;
  * @author Carsten Hufe
  */
 public interface HistorizationConstants {
-    ResourceReference REF_HISTORY = new ResourceReference(HistorizationConstants.class, "img/icon_history.gif");
+    PackageResourceReference REF_HISTORY = new PackageResourceReference(HistorizationConstants.class, "img/icon_history.gif");
 }

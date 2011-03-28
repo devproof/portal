@@ -15,7 +15,8 @@
  */
 package org.devproof.portal.core.module.common;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
 import org.hibernate.dialect.MySQL5Dialect;
 
@@ -50,7 +51,7 @@ public interface CommonConstants {
 
     String CONF_GOOGLE_ANALYTICS_ENABLED = "google_analytics_enabled";
     String CONF_GOOGLE_WEBPROPERTY_ID = "google_webproperty_id";
-    ResourceReference REF_SYNTAXHIGHLIGHTER_JS = new ResourceReference(CommonConstants.class, "js/SyntaxHighlighter/shCore.js");
+    ResourceReference REF_SYNTAXHIGHLIGHTER_JS = new PackageResourceReference(CommonConstants.class, "js/SyntaxHighlighter/shCore.js");
     String GLOBAL_ADMIN_BOX_LINK_LABEL = "adminLinkLabel";
     String MAIN_NAVIGATION_LINK_LABEL = "mainNavigationLinkLabel";
     String CONTENT_TITLE_LABEL = "contentTitle";
@@ -66,16 +67,16 @@ public interface CommonConstants {
     String CONF_STRING2IMG_FONT = "spring.fontService.findAllSystemFonts.name.name.string2image";
     String CONF_SYNTAXHL_THEME = "spring.fontService.findSyntaxHighlighterThemes.theme";
     String CONF_UNKNOWN_ERROR_EMAIL = "spring.emailService.findAll.subject.id.unknownerror";
-    ResourceReference REF_DEFAULT_CSS = new ResourceReference(CommonConstants.class, "css/default.css");
-    ResourceReference REF_ADD_IMG = new ResourceReference(CommonConstants.class, "img/add.gif");
-    ResourceReference REF_EDIT_IMG = new ResourceReference(CommonConstants.class, "img/edit.png");
-    ResourceReference REF_DELETE_IMG = new ResourceReference(CommonConstants.class, "img/delete.png");
-    ResourceReference REF_VIEW_IMG = new ResourceReference(CommonConstants.class, "img/view.png");
-    ResourceReference REF_DOWN_IMG = new ResourceReference(CommonConstants.class, "img/arrow_down.png");
-    ResourceReference REF_UP_IMG = new ResourceReference(CommonConstants.class, "img/arrow_up.png");
-    ResourceReference REF_INFORMATION_IMG = new ResourceReference(CommonConstants.class, "img/information.png");
-    ResourceReference REF_ICONCODE_IMG = new ResourceReference(FullRichTextArea.class, "img/iconcode.gif");
-    ResourceReference REF_STRING2IMG_IMG = new ResourceReference(FullRichTextArea.class, "img/string2img.gif");
+    ResourceReference REF_DEFAULT_CSS = new PackageResourceReference(CommonConstants.class, "css/default.css");
+    ResourceReference REF_ADD_IMG = new PackageResourceReference(CommonConstants.class, "img/add.gif");
+    ResourceReference REF_EDIT_IMG = new PackageResourceReference(CommonConstants.class, "img/edit.png");
+    ResourceReference REF_DELETE_IMG = new PackageResourceReference(CommonConstants.class, "img/delete.png");
+    ResourceReference REF_VIEW_IMG = new PackageResourceReference(CommonConstants.class, "img/view.png");
+    ResourceReference REF_DOWN_IMG = new PackageResourceReference(CommonConstants.class, "img/arrow_down.png");
+    ResourceReference REF_UP_IMG = new PackageResourceReference(CommonConstants.class, "img/arrow_up.png");
+    ResourceReference REF_INFORMATION_IMG = new PackageResourceReference(CommonConstants.class, "img/information.png");
+    ResourceReference REF_ICONCODE_IMG = new PackageResourceReference(FullRichTextArea.class, "img/iconcode.gif");
+    ResourceReference REF_STRING2IMG_IMG = new PackageResourceReference(FullRichTextArea.class, "img/string2img.gif");
 
     String ENTITY_CORE_CACHE_REGION = "entity.core";
     String QUERY_CORE_CACHE_REGION = "query.core";

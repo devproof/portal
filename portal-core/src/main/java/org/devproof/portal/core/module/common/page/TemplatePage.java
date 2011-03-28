@@ -20,18 +20,14 @@ import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.*;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.FeedbackMessagesModel;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
-import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.*;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -39,6 +35,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.*;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
@@ -50,9 +50,7 @@ import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.component.PortalFeedbackPanel;
-import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
-import org.devproof.portal.core.module.common.model.PortalFeedbackMessagesModel;
 import org.devproof.portal.core.module.common.panel.GlobalAdminBoxPanel;
 import org.devproof.portal.core.module.common.panel.OtherBoxPanel;
 import org.devproof.portal.core.module.common.panel.PageAdminBoxPanel;
@@ -71,6 +69,7 @@ import org.devproof.portal.core.module.user.page.RegisterPage;
 import org.devproof.portal.core.module.user.page.SettingsPage;
 import org.devproof.portal.core.module.user.panel.LoginBoxPanel;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,8 +99,6 @@ public abstract class TemplatePage extends WebPage {
 
     public TemplatePage(PageParameters params) {
         this.params = params;
-        add(createDefaultCSSHeaderContributor());
-        add(createBodyCSSHeaderContributor());
         add(createRss2LinkReference());
         add(createAtom1LinkReference());
         add(createLoginMessageLabel());
@@ -120,6 +117,12 @@ public abstract class TemplatePage extends WebPage {
         add(createRepeatingBoxes());
         add(createSessionKeepAliveBehaviour());
         setOutputMarkupId(true);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "css/body.css"));
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "css/default.css"));
     }
 
     private AbstractAjaxTimerBehavior createSessionKeepAliveBehaviour() {
@@ -162,7 +165,6 @@ public abstract class TemplatePage extends WebPage {
             public void onClick() {
                 PortalSession.get().logoutUser();
                 info(getString("loggedout"));
-                setRedirect(false);
                 setResponsePage(PortalApplication.get().getHomePage());
             }
 
@@ -276,7 +278,7 @@ public abstract class TemplatePage extends WebPage {
             private static final long serialVersionUID = 1L;
 
             @Override
-            protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+            public void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
                 String googleAnalytics = "  var _gaq = _gaq || [];\n" + "  _gaq.push(['_setAccount', '$WEBPROPERTYID']);\n" + "  _gaq.push(['_trackPageview']);\n" + "\n" + "  (function() {\n" + "    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;\n" + "    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';\n" + "    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);\n" + "  })();";
                 googleAnalytics = StringUtils.replace(googleAnalytics, "$WEBPROPERTYID", configurationService.findAsString(CommonConstants.CONF_GOOGLE_WEBPROPERTY_ID));
                 replaceComponentTagBody(markupStream, openTag, googleAnalytics);
@@ -291,14 +293,14 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private void handleErrorMessageParams() {
-        if (params.containsKey("errorMsg")) {
-            info(params.getString("errorMsg"));
+        if (params.getNamedKeys().contains("errorMsg")) {
+            info(params.get("errorMsg"));
         }
     }
 
     private void handleInfoMessageParams() {
-        if (params.containsKey("infoMsg")) {
-            info(params.getString("infoMsg"));
+        if (params.getNamedKeys().contains("infoMsg")) {
+            info(params.get("infoMsg"));
         }
     }
 
@@ -313,14 +315,6 @@ public abstract class TemplatePage extends WebPage {
         }
         footerLink.add(new Label("footerLabel", footerContent).setEscapeModelStrings(false));
         return footerLink;
-    }
-
-    private HeaderContributor createBodyCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/body.css");
-    }
-
-    private HeaderContributor createDefaultCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
     }
 
     private Atom1Link createAtom1LinkReference() {
@@ -600,7 +594,7 @@ public abstract class TemplatePage extends WebPage {
     }
 
     public String getRequestURL() {
-        StringBuffer url = getWebRequestCycle().getWebRequest().getHttpServletRequest().getRequestURL();
+        StringBuffer url = ((HttpServletRequest)RequestCycle.get().getRequest().getContainerRequest()).getRequestURL();
         return url.toString();
     }
 }

@@ -22,7 +22,9 @@ import com.sun.syndication.io.SyndFeedOutput;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.MarkupType;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
@@ -34,6 +36,8 @@ import java.io.PrintWriter;
  * @author Carsten Hufe
  */
 public abstract class BaseFeedPage extends WebPage {
+    private static final long serialVersionUID = -2301541781636426434L;
+
     @SpringBean(name = "feedProviderRegistry")
     private FeedProviderRegistry feedProviderRegistry;
     private PageParameters params;
@@ -85,7 +89,7 @@ public abstract class BaseFeedPage extends WebPage {
     protected abstract String getFeedType();
 
     @Override
-    public String getMarkupType() {
-        return "xml";
+    public MarkupType getMarkupType() {
+        return new MarkupType("xml", "application/xml");
     }
 }

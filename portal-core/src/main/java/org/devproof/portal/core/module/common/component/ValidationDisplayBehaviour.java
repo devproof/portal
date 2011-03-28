@@ -21,12 +21,15 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Session;
 import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.feedback.*;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.ValidationErrorFeedback;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.template.PackagedTextTemplate;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -36,15 +39,15 @@ import java.util.Map;
 /**
  * @author Carsten Hufe
  */
-public class ValidationDisplayBehaviour extends AbstractBehavior {
+public class ValidationDisplayBehaviour extends Behavior {
     private static final long serialVersionUID = 1L;
-    public final static ResourceReference ERRORHINT_IMAGE_REF = new ResourceReference(CommonConstants.class, "img/errorhint.gif");
+    public final static ResourceReference ERRORHINT_IMAGE_REF = new PackageResourceReference(CommonConstants.class, "img/errorhint.gif");
     private IFeedbackMessageFilter errorLevelFilter = new ErrorLevelFeedbackMessageFilter(FeedbackMessage.ERROR);
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(new ResourceReference(ValidationDisplayBehaviour.class, "ValidationDisplayBehaviour.css"));
-        response.renderJavascriptReference(new ResourceReference(TooltipLabel.class, "TooltipLabel.js"));
+        response.renderCSSReference(new PackageResourceReference(ValidationDisplayBehaviour.class, "ValidationDisplayBehaviour.css"));
+        response.renderJavaScriptReference(new PackageResourceReference(TooltipLabel.class, "TooltipLabel.js"));
         super.renderHead(response);
     }
 

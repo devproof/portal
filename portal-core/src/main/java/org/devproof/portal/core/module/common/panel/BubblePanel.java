@@ -18,9 +18,7 @@ package org.devproof.portal.core.module.common.panel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -87,7 +85,7 @@ public class BubblePanel extends Panel {
         js += "$(id).css( {'position': 'absolute', 'left': (pos.left - 45 + (p.width() / 2)) + 'px', 'top':(pos.top - $(id).height() - (p.height() / 2) + 50) + 'px' } );";
         js += "$('.bubblePopup').fadeOut('normal');";
         js += "$(id).fadeIn('normal');";
-        target.appendJavascript(js);
+        target.appendJavaScript(js);
     }
 
     public void showModal(AjaxRequestTarget target) {
@@ -104,7 +102,7 @@ public class BubblePanel extends Panel {
         js += "var winW = $(window).width();";
         js += "$(id).css({'top':  winH/2-$(id).height()/2, 'left': winW/2-$(id).width()/2}); ";
         js += "$(id).center(); $(id).fadeIn(1000); ";
-        target.appendJavascript(js);
+        target.appendJavaScript(js);
     }
 
     public void showMessage(String linkId, AjaxRequestTarget target, String message) {
@@ -113,7 +111,7 @@ public class BubblePanel extends Panel {
     }
 
     public void hide(AjaxRequestTarget target) {
-        target.appendJavascript("$('#modalMask').fadeOut('fast'); $('.bubblePopup').fadeOut('slow'); ");
+        target.appendJavaScript("$('#modalMask').fadeOut('fast'); $('.bubblePopup').fadeOut('slow'); ");
 
     }
 

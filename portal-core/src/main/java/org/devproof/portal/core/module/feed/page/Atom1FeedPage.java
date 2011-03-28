@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.feed.page;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.config.ModulePage;
 
 /**

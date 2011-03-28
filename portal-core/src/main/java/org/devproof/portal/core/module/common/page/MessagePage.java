@@ -15,12 +15,10 @@
  */
 package org.devproof.portal.core.module.common.page;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
-import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.app.PortalSession;
 
 /**
@@ -32,7 +30,7 @@ public class MessagePage extends TemplatePage {
 
     public MessagePage(PageParameters params) {
         super(params);
-        String msg = params.getString("message");
+        String msg = params.get("message").toString();
         if (msg == null) {
             msg = "unknown.error";
         }
