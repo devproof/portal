@@ -85,13 +85,13 @@
 }
 
 .commentFormL {
-	width:170px;
+	width:200px;
 	margin-right:10px;
 	float:left;
 	margin-top:20px;
 }
 .commentFormR {
-	width:362px;
+	width:400px;
 	margin-right:10px;
 	float:left;
 	margin-top:20px;
@@ -136,4 +136,17 @@ input.commentSubmit {
 	font-weight:normal;
 	float:right;
 	cursor:pointer;
+    margin-right: 38px;
+}
+
+input.error,
+select.error,
+textarea.error {
+    background-color: #FFDC60;
+}
+
+select.commentInputArea:focus,
+input.commentInputArea:focus,
+textarea.commenttextarea:focus{
+    background-color:#FFEBAD;
 }

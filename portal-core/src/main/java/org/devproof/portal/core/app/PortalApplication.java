@@ -18,6 +18,7 @@ package org.devproof.portal.core.app;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.*;
+import org.apache.wicket.javascript.NoOpJavascriptCompressor;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.IRequestCycleProcessor;
 import org.apache.wicket.request.RequestParameters;
@@ -89,6 +90,8 @@ public class PortalApplication extends WebApplication {
         getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
         getMarkupSettings().setDefaultBeforeDisabledLink("");
         getMarkupSettings().setDefaultAfterDisabledLink("");
+        // jquery script gets destroyed, see https://issues.apache.org/jira/browse/WICKET-3519
+        getResourceSettings().setJavascriptCompressor(new NoOpJavascriptCompressor());
     }
 
     public boolean isProductionMode() {

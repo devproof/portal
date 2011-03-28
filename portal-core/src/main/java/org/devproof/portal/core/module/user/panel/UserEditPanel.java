@@ -31,6 +31,8 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.PatternValidator;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.devproof.portal.core.module.common.component.PortalFeedbackPanel;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.role.entity.Role;
 import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.User;
@@ -53,6 +55,7 @@ public abstract class UserEditPanel extends Panel {
     private FeedbackPanel feedback;
     private PasswordTextField password1;
     private PasswordTextField password2;
+    private Form<User> userForm;
 
     public UserEditPanel(String id, IModel<User> userModel, boolean creation) {
         super(id, userModel);
@@ -63,22 +66,22 @@ public abstract class UserEditPanel extends Panel {
     }
 
     private Form<User> createUserEditForm() {
-        Form<User> form = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
-        form.add(createUsernameField());
-        form.add(createFirstnameField());
-        form.add(createLastnameField());
-        form.add(createBirthdayField());
-        form.add(createEmailField());
-        form.add(createRoleDropDown());
-        form.add(createPasswordField1());
-        form.add(createPasswordField2());
-        form.add(createActiveCheckBox());
-        form.add(createConfirmedCheckBox());
-        form.add(createEqualPasswordValidator());
-        form.add(createSaveButton());
-        form.add(createCancelButton());
-        form.setOutputMarkupId(true);
-        return form;
+        userForm = new Form<User>("form", new CompoundPropertyModel<User>(userModel));
+        userForm.add(createUsernameField());
+        userForm.add(createFirstnameField());
+        userForm.add(createLastnameField());
+        userForm.add(createBirthdayField());
+        userForm.add(createEmailField());
+        userForm.add(createRoleDropDown());
+        userForm.add(createPasswordField1());
+        userForm.add(createPasswordField2());
+        userForm.add(createActiveCheckBox());
+        userForm.add(createConfirmedCheckBox());
+        userForm.add(createEqualPasswordValidator());
+        userForm.add(createSaveButton());
+        userForm.add(createCancelButton());
+        userForm.setOutputMarkupId(true);
+        return userForm;
     }
 
     private CheckBox createConfirmedCheckBox() {
@@ -106,6 +109,7 @@ public abstract class UserEditPanel extends Panel {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.addComponent(feedback);
+                target.addComponent(userForm);
             }
         };
     }
@@ -128,12 +132,14 @@ public abstract class UserEditPanel extends Panel {
     private PasswordTextField createPasswordField1() {
         password1 = new PasswordTextField("password1", new Model<String>());
         password1.setRequired(creation);
+        password1.add(new ValidationDisplayBehaviour());
         return password1;
     }
 
     private PasswordTextField createPasswordField2() {
         password2 = new PasswordTextField("password2", new Model<String>());
         password2.setRequired(creation);
+        password2.add(new ValidationDisplayBehaviour());
         return password2;
     }
 
@@ -143,6 +149,7 @@ public abstract class UserEditPanel extends Panel {
         IModel<List<Role>> availableRolesModel = createAvailableRolesModel();
         DropDownChoice<?> role = new DropDownChoice<Role>("role", roleModel, availableRolesModel, renderer);
         role.setRequired(true);
+        role.add(new ValidationDisplayBehaviour());
         return role;
     }
 
@@ -161,24 +168,28 @@ public abstract class UserEditPanel extends Panel {
         FormComponent<String> fc = new RequiredTextField<String>("email");
         fc.add(EmailAddressValidator.getInstance());
         fc.add(StringValidator.maximumLength(100));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
     private DateTextField createBirthdayField() {
         DateTextField dateTextField = new DateTextField("birthday");
         dateTextField.add(new DatePicker());
+        dateTextField.add(new ValidationDisplayBehaviour());
         return dateTextField;
     }
 
     private FormComponent<String> createLastnameField() {
         FormComponent<String> fc = new TextField<String>("lastname");
         fc.add(StringValidator.maximumLength(100));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
     private FormComponent<String> createFirstnameField() {
         FormComponent<String> fc = new TextField<String>("firstname");
         fc.add(StringValidator.maximumLength(100));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
@@ -187,6 +198,7 @@ public abstract class UserEditPanel extends Panel {
         fc.add(StringValidator.lengthBetween(3, 30));
         fc.add(createExistingUsernameValidator());
         fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
@@ -220,7 +232,7 @@ public abstract class UserEditPanel extends Panel {
     }
 
     private FeedbackPanel createFeedbackPanel() {
-        feedback = new FeedbackPanel("feedbackPanel");
+        feedback = new PortalFeedbackPanel("feedbackPanel");
         feedback.setOutputMarkupId(true);
         return feedback;
     }

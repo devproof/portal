@@ -34,6 +34,8 @@ import org.devproof.portal.core.module.box.BoxConstants;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.core.module.box.registry.BoxRegistry;
 import org.devproof.portal.core.module.box.service.BoxService;
+import org.devproof.portal.core.module.common.component.PortalFeedbackPanel;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.panel.OtherBoxPanel;
 
 import java.util.List;
@@ -53,6 +55,7 @@ public abstract class BoxEditPanel extends Panel {
     private IModel<BoxConfiguration> boxSelectionModel;
     private IModel<Box> boxModel;
     private WebMarkupContainer otherPageConfigurationContainer;
+    private Form<Box> boxForm;
 
     public BoxEditPanel(String id, IModel<Box> boxModel) {
         super(id);
@@ -69,16 +72,16 @@ public abstract class BoxEditPanel extends Panel {
 
     private Form<Box> createBoxEditForm() {
         CompoundPropertyModel<Box> formModel = new CompoundPropertyModel<Box>(boxModel);
-        Form<Box> form = new Form<Box>("form", formModel);
-        form.add(createBoxTypeChoice());
-        form.add(createTitleField());
-        form.add(createHideTitleCheckBox());
-        form.add(createCustomStyleField());
-        form.add(createOtherBoxConfigurationContainer());
-        form.add(createAjaxButton());
-        form.add(createCancelButton());
-        form.setOutputMarkupId(true);
-        return form;
+        boxForm = new Form<Box>("form", formModel);
+        boxForm.add(createBoxTypeChoice());
+        boxForm.add(createTitleField());
+        boxForm.add(createHideTitleCheckBox());
+        boxForm.add(createCustomStyleField());
+        boxForm.add(createOtherBoxConfigurationContainer());
+        boxForm.add(createAjaxButton());
+        boxForm.add(createCancelButton());
+        boxForm.setOutputMarkupId(true);
+        return boxForm;
     }
 
     private WebMarkupContainer createOtherBoxConfigurationContainer() {
@@ -115,6 +118,7 @@ public abstract class BoxEditPanel extends Panel {
         DropDownChoice<BoxConfiguration> boxTypeChoice = new DropDownChoice<BoxConfiguration>("boxType", boxSelectionModel, confs, choiceRenderer);
         boxTypeChoice.add(createOnSelectUpdateBEaviour());
         boxTypeChoice.setRequired(true);
+        boxTypeChoice.add(new ValidationDisplayBehaviour());
         return boxTypeChoice;
     }
 
@@ -154,6 +158,7 @@ public abstract class BoxEditPanel extends Panel {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.addComponent(feedback);
+                target.addComponent(form);
             }
         };
     }
@@ -174,7 +179,7 @@ public abstract class BoxEditPanel extends Panel {
     }
 
     private FeedbackPanel createFeedbackPanel() {
-        feedback = new FeedbackPanel("feedbackPanel");
+        feedback = new PortalFeedbackPanel("feedbackPanel");
         feedback.setOutputMarkupId(true);
         return feedback;
     }

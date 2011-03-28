@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -46,6 +47,7 @@ public class ForgotPasswordPage extends TemplatePage {
     private UserService userService;
     private BubblePanel bubblePanel;
     private String emailOrUser = "";
+    private Form<Void> form;
 
     public ForgotPasswordPage(PageParameters params) {
         super(params);
@@ -58,8 +60,8 @@ public class ForgotPasswordPage extends TemplatePage {
         return bubblePanel;
     }
 
-    private Form<Serializable> createForgotPasswordForm() {
-        Form<Serializable> form = new Form<Serializable>("form");
+    private Form<Void> createForgotPasswordForm() {
+        form = new Form<Void>("form");
         form.add(createEmailOrUsernameField());
         form.add(createRequestButton());
         form.setOutputMarkupId(true);
@@ -79,6 +81,7 @@ public class ForgotPasswordPage extends TemplatePage {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.addComponent(getFeedback());
+                target.addComponent(form);
             }
 
             private UrlCallback createForgotPasswordUrlCallback() {
@@ -99,6 +102,8 @@ public class ForgotPasswordPage extends TemplatePage {
     }
 
     private TextField<String> createEmailOrUsernameField() {
-        return new RequiredTextField<String>("emailoruser", new PropertyModel<String>(this, "emailOrUser"));
+        RequiredTextField<String> tf = new RequiredTextField<String>("emailoruser", new PropertyModel<String>(this, "emailOrUser"));
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 }

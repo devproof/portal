@@ -16,14 +16,15 @@
 package org.devproof.portal.core.module.tag.panel;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -41,34 +42,30 @@ import java.util.List;
 public class TagContentPanel<T extends AbstractTag<?>> extends Panel {
     private static final long serialVersionUID = 1L;
 
-    private IModel<List<T>> tagModel;
+    private IModel<List<T>> tagsModel;
     private Class<? extends Page> page;
 
-    public TagContentPanel(String id, IModel<List<T>> tagModel, Class<? extends Page> page) {
+    public TagContentPanel(String id, IModel<List<T>> tagsModel, Class<? extends Page> page) {
         super(id);
-        this.tagModel = tagModel;
+        this.tagsModel = tagsModel;
         this.page = page;
         add(createCSSHeaderContributor());
         add(createRepeatingTags());
     }
 
-    private RepeatingView createRepeatingTags() {
-        RepeatingView repeating = new RepeatingView("repeatingTags");
-        List<T> tags = tagModel.getObject();
-        if(tags != null) {
-			for (T tag : tags) {
-	            repeating.add(createTagItem(repeating.newChildId(), tag));
-	        }
-        }
-        return repeating;
+    private Component createRepeatingTags() {
+        return new ListView<T>("repeatingTags", tagsModel) {
+            private static final long serialVersionUID = 8818475561624333195L;
+
+            @Override
+            protected void populateItem(ListItem<T> item) {
+                T tag = item.getModelObject();
+                item.add(createClassSelectedModifier(tag));
+                item.add(createTagLink(tag));
+            }
+        };
     }
 
-    private WebMarkupContainer createTagItem(String id, T tag) {
-        WebMarkupContainer item = new WebMarkupContainer(id);
-        item.add(createClassSelectedModifier(tag));
-        item.add(createTagLink(tag));
-        return item;
-    }
 
     private boolean isTagSelected(T tag) {
         String selectedTag = TagUtils.findSelectedTag();

@@ -17,17 +17,17 @@ package org.devproof.portal.core.module.common.page;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Session;
+import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.devproof.portal.core.app.PortalSession;
-import org.devproof.portal.core.config.ModulePage;
 
 /**
  * @author Carsten Hufe
  */
-@ModulePage(mountPath = "/hello")
+// TODO needs a full clean up ...
 public class MessagePage extends TemplatePage {
-
     private static final long serialVersionUID = 1L;
 
     public MessagePage(PageParameters params) {
@@ -39,32 +39,33 @@ public class MessagePage extends TemplatePage {
         add(new Label("message", getString(msg)));
     }
 
-    private MessagePage(PageParameters params, String message, boolean error) {
-        super(params);
-        Label label = new Label("message", message);
+    public MessagePage(String message, boolean error) {
+        this(message, error, true);
+    }
+
+
+    public MessagePage(String message, boolean error, boolean key) {
+        super(new PageParameters());
+        Label label = new Label("message", key ? getString(message): message);
         label.add(new SimpleAttributeModifier("class", error ? "feedbackPanelERROR" : "feedbackPanelINFO"));
         add(label);
     }
 
-    public static MessagePage getMessagePageByKey(String messageKey) {
-        PageParameters params = new PageParameters();
-        params.add("message", messageKey);
-        return new MessagePage(params);
-    }
-
     public static MessagePage getMessagePage(String message) {
-        PageParameters params = new PageParameters();
-        return new MessagePage(params, message, false);
+        return new MessagePage(message, false, false);
     }
 
     public static MessagePage getErrorPage(String message) {
-        PageParameters params = new PageParameters();
-        return new MessagePage(params, message, true);
+        return new MessagePage(message, true, false);
     }
 
-    public static MessagePage getMessagePageWithLogout(String messageKey) {
+    public static MessagePage getMessagePageWithLogout(String message) {
         ((PortalSession) Session.get()).logoutUser();
-        PageParameters params = new PageParameters();
-        return new MessagePage(params, messageKey, false);
+        return new MessagePage(message, false, false);
+    }
+
+    @Override
+    protected String getRobots() {
+        return "noindex";
     }
 }

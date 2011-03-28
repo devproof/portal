@@ -7,7 +7,7 @@ What you need to build your own Devproof Portal
 -----------------------------------------------
 
 * Java 1.6 or higher (http://java.sun.com)
-* Gradle 0.9.2 or higher (http://www.gradle.org or install it by running ./gradlew or gradle.bat)
+* Gradle 1.0-milestone-1 or higher (http://www.gradle.org or install it by running ./gradlew or gradle.bat)
 * Internet connection (for Maven artifacts and Tomcat download)
 
 How to build your own Devproof Portal

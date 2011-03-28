@@ -38,7 +38,7 @@ public class ModuleInfoPanel extends Panel {
     private static final long serialVersionUID = 1L;
 
     private ModuleConfiguration module;
-
+    // FIXME use models !!!
     public ModuleInfoPanel(String id, ModuleConfiguration module) {
         super(id);
         this.module = module;

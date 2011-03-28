@@ -1,0 +1,13 @@
+.xstooltipError {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.errorImage {
+    cursor:pointer;
+    padding: 0 0 0 5px;
+    vertical-align:middle;
+}

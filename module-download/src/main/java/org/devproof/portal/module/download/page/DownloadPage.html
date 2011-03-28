@@ -3,9 +3,11 @@
 <body>
 <wicket:extend>
     <div wicket:id="bubbleWindow"></div>
-    <wicket:container wicket:id="repeatingDownloads">
-        <div wicket:id="downloadView"></div>
-    </wicket:container>
+    <div wicket:id="refreshContainerDownload">
+        <wicket:container wicket:id="repeatingDownloads">
+            <div wicket:id="downloadView"></div>
+        </wicket:container>
+    </div>
     <div wicket:id="paging">paging</div>
     <wicket:fragment wicket:id="downloadView">
         <h3 class="downloadheadline">

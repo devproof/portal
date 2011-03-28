@@ -28,6 +28,7 @@ import org.apache.wicket.util.value.ValueMap;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 
@@ -59,12 +60,16 @@ public class LoginPage extends TemplatePage {
 
     private PasswordTextField createPasswordField() {
         IModel<String> passwordModel = new PropertyModel<String>(this, "password");
-        return new PasswordTextField("password", passwordModel);
+        PasswordTextField tf = new PasswordTextField("password", passwordModel);
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private RequiredTextField<String> createUsernameField() {
         IModel<String> usernameModel = new PropertyModel<String>(this, "username");
-        return new RequiredTextField<String>("username", usernameModel);
+        RequiredTextField<String> tf = new RequiredTextField<String>("username", usernameModel);
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private Form<ValueMap> newLoginForm() {

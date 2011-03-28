@@ -99,7 +99,6 @@ public class BlogMountHandlerTest {
         verify(mockMountService);
     }
 
-
     @Test
     public void testUrlFor_print() throws Exception {
         MountPoint mp = new MountPoint();

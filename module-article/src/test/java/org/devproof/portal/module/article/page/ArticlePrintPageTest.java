@@ -56,8 +56,8 @@ public class ArticlePrintPageTest {
     @Test
     public void testRenderDefaultPage() {
         tester.startPage(ArticlePrintPage.class, new PageParameters("0=1"));
+        tester.assertRenderedPage(ArticlePrintPage.class);
         // must be stateless to save memory (non-stateless creates HttpSession)
         assertTrue(tester.getLastRenderedPage().isPageStateless());
-        tester.assertRenderedPage(ArticlePrintPage.class);
     }
 }

@@ -15,11 +15,13 @@
  */
 package org.devproof.portal.core.module.modulemgmt.page;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.Secured;
@@ -48,23 +50,31 @@ public class ModuleOverviewPage extends TemplatePage {
         add(createRepeatingModuleOverview());
     }
 
-    private RepeatingView createRepeatingModuleOverview() {
-        List<ModuleBean> modules = moduleService.findModules();
-        RepeatingView table = new RepeatingView("repeatingModuleOverview");
-        for (ModuleBean module : modules) {
-            table.add(createModuleRow(table.newChildId(), module));
-        }
-        return table;
+    private Component createRepeatingModuleOverview() {
+        return new ListView<ModuleBean>("repeatingModuleOverview", createModulesModel()) {
+            private static final long serialVersionUID = -9135492215453030899L;
+
+            @Override
+            protected void populateItem(ListItem<ModuleBean> item) {
+                ModuleBean module = item.getModelObject();
+                item.add(createTooltipLabel(module));
+                item.add(createModuleVersionLabel(module));
+                item.add(createAuthorHomepageLink(module));
+                item.add(createPortalVersionLabel(module));
+                item.add(createLocationLabel(module));
+            }
+        };
     }
 
-    private WebMarkupContainer createModuleRow(String id, ModuleBean module) {
-        WebMarkupContainer row = new WebMarkupContainer(id);
-        row.add(createTooltipLabel(module));
-        row.add(createModuleVersionLabel(module));
-        row.add(createAuthorHomepageLink(module));
-        row.add(createPortalVersionLabel(module));
-        row.add(createLocationLabel(module));
-        return row;
+    private LoadableDetachableModel<List<? extends ModuleBean>> createModulesModel() {
+        return new LoadableDetachableModel<List<? extends ModuleBean>>() {
+            private static final long serialVersionUID = -581414395950171761L;
+
+            @Override
+            protected List<? extends ModuleBean> load() {
+                return moduleService.findModules();
+            }
+        };
     }
 
     private TooltipLabel createTooltipLabel(ModuleBean module) {

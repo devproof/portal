@@ -26,6 +26,7 @@ import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.repository.UserRepository;
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -77,6 +78,14 @@ public class UserServiceImplTest {
         userDaoMock.delete(e);
         replay(userDaoMock);
         impl.delete(e);
+        verify(userDaoMock);
+    }
+
+    @Test
+    public void testDeleteUnconfirmedUser() {
+        userDaoMock.deleteUnconfirmedUserOlderThan(anyObject(Date.class));
+        replay(userDaoMock);
+        impl.deleteUnconfirmedUser();
         verify(userDaoMock);
     }
 

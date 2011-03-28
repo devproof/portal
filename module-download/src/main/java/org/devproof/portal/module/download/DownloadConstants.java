@@ -32,4 +32,5 @@ public interface DownloadConstants {
 
     String QUERY_CACHE_REGION = "query.content";
     String AUTHOR_RIGHT = "download.author";
+    String HANDLER_KEY = "download";
 }

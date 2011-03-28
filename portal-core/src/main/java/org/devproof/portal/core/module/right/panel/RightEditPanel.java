@@ -31,6 +31,8 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.PatternValidator;
+import org.devproof.portal.core.module.common.component.PortalFeedbackPanel;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.Role;
@@ -51,6 +53,7 @@ public abstract class RightEditPanel extends Panel {
     private FeedbackPanel feedback;
     private IModel<Right> rightModel;
     private boolean rightNameEditable;
+    private Form<Right> rightForm;
 
     public RightEditPanel(String id, IModel<Right> rightModel, boolean rightNameEditable) {
         super(id, rightModel);
@@ -61,14 +64,14 @@ public abstract class RightEditPanel extends Panel {
     }
 
     private Form<Right> createRightEditForm() {
-        Form<Right> form = new Form<Right>("form", new CompoundPropertyModel<Right>(rightModel));
-        form.add(createRightNameField());
-        form.add(createDescriptionField());
-        form.add(createRolesPalette());
-        form.add(createSaveButton());
-        form.add(createCancelButton());
-        form.setOutputMarkupId(true);
-        return form;
+        rightForm = new Form<Right>("form", new CompoundPropertyModel<Right>(rightModel));
+        rightForm.add(createRightNameField());
+        rightForm.add(createDescriptionField());
+        rightForm.add(createRolesPalette());
+        rightForm.add(createSaveButton());
+        rightForm.add(createCancelButton());
+        rightForm.setOutputMarkupId(true);
+        return rightForm;
     }
 
     private AjaxButton createSaveButton() {
@@ -84,6 +87,7 @@ public abstract class RightEditPanel extends Panel {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.addComponent(feedback);
+                target.addComponent(rightForm);
             }
         };
     }
@@ -139,20 +143,21 @@ public abstract class RightEditPanel extends Panel {
     }
 
     private FormComponent<String> createDescriptionField() {
-        TextField<String> textArea = new TextField<String>("description");
-        textArea.setRequired(true);
-        return textArea;
+        TextField<String> fc = new RequiredTextField<String>("description");
+        fc.add(new ValidationDisplayBehaviour());
+        return fc;
     }
 
     private FormComponent<String> createRightNameField() {
         FormComponent<String> fc = new RequiredTextField<String>("right");
         fc.add(new PatternValidator("[A-Za-z0-9\\.]*"));
         fc.setEnabled(rightNameEditable);
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
     private FeedbackPanel createFeedbackPanel() {
-        feedback = new FeedbackPanel("feedbackPanel");
+        feedback = new PortalFeedbackPanel("feedbackPanel");
         feedback.setOutputMarkupId(true);
         return feedback;
     }

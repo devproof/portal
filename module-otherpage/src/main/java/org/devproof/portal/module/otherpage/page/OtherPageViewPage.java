@@ -42,8 +42,8 @@ public class OtherPageViewPage extends OtherPageBasePage {
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "otherPageService")
     private OtherPageService otherPageService;
-    private PageParameters params;
     private IModel<OtherPage> otherPageModel;
+    private PageParameters params;
 
     public OtherPageViewPage(PageParameters params) {
         super(params);
@@ -189,7 +189,6 @@ public class OtherPageViewPage extends OtherPageBasePage {
     }
 
     private Integer getContentId() {
-        String id = params.getString("0");
-        return Integer.valueOf(id);
+        return PortalUtil.getValidParameterAsInteger("0", params);
     }
 }

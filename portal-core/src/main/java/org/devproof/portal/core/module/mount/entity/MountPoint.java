@@ -16,8 +16,10 @@
 
 package org.devproof.portal.core.module.mount.entity;
 
+import org.devproof.portal.core.config.RegisterGenericDataProvider;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.CacheQuery;
+import org.devproof.portal.core.module.user.query.UserQuery;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 
@@ -33,6 +35,7 @@ import java.io.Serializable;
 @Table(name = "core_mount_point")
 @CacheQuery(region = CommonConstants.QUERY_CORE_CACHE_REGION)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CommonConstants.ENTITY_CORE_CACHE_REGION)
+@RegisterGenericDataProvider(value = "mountPointDataProvider", sortProperty = "handlerKey")
 public class MountPoint implements Serializable {
     private static final long serialVersionUID = -4190803563987971202L;
 

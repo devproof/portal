@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.user.service;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -29,10 +30,12 @@ import org.devproof.portal.core.module.user.exception.AuthentificationFailedExce
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -153,6 +156,14 @@ public class UserServiceImpl implements UserService {
             user.setConfirmed(true);
         }
         save(user);
+    }
+
+    @Override
+    @Transactional
+    @Scheduled(cron = "0 0 4 * * ?")
+    public void deleteUnconfirmedUser() {
+        Date confirmationBorder = DateUtils.addDays(new Date(), -14);
+        userRepository.deleteUnconfirmedUserOlderThan(confirmationBorder);
     }
 
     protected EmailPlaceholderBean generateEmailPlaceholderForConfirmation(User user, UrlCallback urlCallback) {

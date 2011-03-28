@@ -38,6 +38,7 @@ import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -71,6 +72,7 @@ public class ContactPage extends TemplatePage {
     private IModel<User> toUserModel;
     private IModel<ContactBean> contactBeanModel;
     private BubblePanel bubblePanel;
+    private Form<ContactBean> contactForm;
 
     public ContactPage(PageParameters params) {
         super(params);
@@ -94,19 +96,20 @@ public class ContactPage extends TemplatePage {
     }
 
     private Form<ContactBean> createContactForm() {
-        Form<ContactBean> form = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBeanModel));
-        form.add(createToUserField());
-        form.add(createFullnameField());
-        form.add(createEmailField());
-        form.add(createContentField());
-        form.add(createSendButton());
-        form.setOutputMarkupId(true);
-        return form;
+        contactForm = new Form<ContactBean>("form", new CompoundPropertyModel<ContactBean>(contactBeanModel));
+        contactForm.add(createToUserField());
+        contactForm.add(createFullnameField());
+        contactForm.add(createEmailField());
+        contactForm.add(createContentField());
+        contactForm.add(createSendButton());
+        contactForm.setOutputMarkupId(true);
+        return contactForm;
     }
 
     private FormComponent<String> createContentField() {
         FormComponent<String> fc = new TextArea<String>("content");
         fc.add(StringValidator.minimumLength(30));
+        fc.add(new ValidationDisplayBehaviour());
         fc.setRequired(true);
         return fc;
     }
@@ -115,6 +118,7 @@ public class ContactPage extends TemplatePage {
         FormComponent<String> fc = new RequiredTextField<String>("email");
         fc.add(EmailAddressValidator.getInstance());
         fc.add(StringValidator.maximumLength(100));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
@@ -122,6 +126,7 @@ public class ContactPage extends TemplatePage {
         FormComponent<String> fc = new RequiredTextField<String>("fullname");
         fc.add(StringValidator.minimumLength(5));
         fc.add(StringValidator.maximumLength(100));
+        fc.add(new ValidationDisplayBehaviour());
         return fc;
     }
 
@@ -215,6 +220,7 @@ public class ContactPage extends TemplatePage {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 target.addComponent(getFeedback());
+                target.addComponent(contactForm);
             }
 
             private EmailPlaceholderBean createEmailPlaceholderBean(User touser) {

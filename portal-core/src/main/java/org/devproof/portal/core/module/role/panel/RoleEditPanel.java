@@ -30,6 +30,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.common.component.PortalFeedbackPanel;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.Role;
@@ -50,6 +52,7 @@ public abstract class RoleEditPanel extends Panel {
     private RightService rightService;
     private FeedbackPanel feedback;
     private IModel<Role> roleModel;
+    private Form<Role> roleForm;
 
     public RoleEditPanel(String id, IModel<Role> roleModel) {
         super(id, roleModel);
@@ -59,14 +62,14 @@ public abstract class RoleEditPanel extends Panel {
     }
 
     private Form<Role> createRoleEditForm() {
-        Form<Role> form = new Form<Role>("form", new CompoundPropertyModel<Role>(roleModel));
-        form.add(createRoleDescriptionField());
-        form.add(createActiveCheckBox());
-        form.add(createRightPalette());
-        form.add(createSaveButton());
-        form.add(createCancelButton());
-        form.setOutputMarkupId(true);
-        return form;
+        roleForm = new Form<Role>("form", new CompoundPropertyModel<Role>(roleModel));
+        roleForm.add(createRoleDescriptionField());
+        roleForm.add(createActiveCheckBox());
+        roleForm.add(createRightPalette());
+        roleForm.add(createSaveButton());
+        roleForm.add(createCancelButton());
+        roleForm.setOutputMarkupId(true);
+        return roleForm;
     }
 
     private Palette<Right> createRightPalette() {
@@ -133,6 +136,7 @@ public abstract class RoleEditPanel extends Panel {
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 // repaint the feedback panel so errors are shown
                 target.addComponent(feedback);
+                target.addComponent(roleForm);
             }
         };
     }
@@ -142,11 +146,13 @@ public abstract class RoleEditPanel extends Panel {
     }
 
     private FormComponent<String> createRoleDescriptionField() {
-        return new RequiredTextField<String>("description");
+        RequiredTextField<String> tf = new RequiredTextField<String>("description");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private FeedbackPanel createFeedbackPanel() {
-        feedback = new FeedbackPanel("feedbackPanel");
+        feedback = new PortalFeedbackPanel("feedbackPanel");
         feedback.setOutputMarkupId(true);
         return feedback;
     }

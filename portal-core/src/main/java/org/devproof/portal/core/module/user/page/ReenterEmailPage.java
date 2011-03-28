@@ -25,6 +25,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.user.entity.User;
@@ -58,7 +59,9 @@ public class ReenterEmailPage extends TemplatePage {
     }
 
     private TextField<String> createEmailField() {
-        return new RequiredTextField<String>("email");
+        RequiredTextField<String> tf = new RequiredTextField<String>("email");
+        tf.add(new ValidationDisplayBehaviour());
+        return tf;
     }
 
     private Button createRequestButton() {

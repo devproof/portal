@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -75,12 +76,20 @@ public class ArticlePage extends ArticleBasePage {
 
     private ArticleDataView dataView;
     private IModel<ArticleQuery> searchQueryModel;
+    private WebMarkupContainer refreshContainerArticles;
 
     public ArticlePage(PageParameters params) {
         super(params);
         searchQueryModel = articleDataProvider.getSearchQueryModel();
-        add(createRepeatingArticles());
+        add(createRefreshContainerArticles());
         add(createPagingPanel());
+    }
+
+    private WebMarkupContainer createRefreshContainerArticles() {
+        refreshContainerArticles = new WebMarkupContainer("refreshContainerArticles");
+        refreshContainerArticles.add(createRepeatingArticles());
+        refreshContainerArticles.setOutputMarkupId(true);
+        return refreshContainerArticles;
     }
 
     @Override
@@ -126,13 +135,12 @@ public class ArticlePage extends ArticleBasePage {
         public ArticleDataView(String id) {
             super(id, articleDataProvider);
             setItemsPerPage(configurationService.findAsInteger(ArticleConstants.CONF_ARTICLES_PER_PAGE));
-//			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
+			setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance());
         }
 
         @Override
         protected void populateItem(Item<Article> item) {
             item.add(createArticleView(item));
-            item.setOutputMarkupId(true);
         }
 
         private ArticleView createArticleView(Item<Article> item) {
@@ -307,10 +315,9 @@ public class ArticlePage extends ArticleBasePage {
                 @Override
                 public void onDelete(AjaxRequestTarget target) {
                     articleService.delete(getEntityModel().getObject());
-                    item.setVisible(false);
-                    target.addComponent(item);
-                    target.addComponent(getFeedback());
                     info(getString("msg.deleted"));
+                    target.addComponent(getFeedback());
+                    target.addComponent(refreshContainerArticles);
                 }
 
                 @Override

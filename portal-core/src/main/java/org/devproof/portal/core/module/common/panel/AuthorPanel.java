@@ -123,6 +123,11 @@ public abstract class AuthorPanel<T> extends Panel {
             private static final long serialVersionUID = 1L;
 
             @Override
+            public boolean isVisible() {
+                return isEditButtonVisible();
+            }
+
+            @Override
             public void onClick(AjaxRequestTarget target) {
                 AuthorPanel.this.onEdit(target);
             }
@@ -149,6 +154,10 @@ public abstract class AuthorPanel<T> extends Panel {
     }
 
     public boolean isDeleteButtonVisible() {
+        return true;
+    }
+
+    public boolean isEditButtonVisible() {
         return true;
     }
 

@@ -32,6 +32,7 @@ import org.devproof.portal.core.module.common.component.ExtendedLabel;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.panel.AuthorPanel;
 import org.devproof.portal.core.module.common.panel.MetaInfoPanel;
+import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.print.PrintConstants;
 import org.devproof.portal.core.module.tag.panel.TagCloudBoxPanel;
 import org.devproof.portal.core.module.tag.panel.TagContentPanel;
@@ -61,17 +62,17 @@ public class ArticleReadPage extends ArticleBasePage {
 	@SpringBean(name = "articleTagService")
 	private ArticleTagService articleTagService;
 
-	private PageParameters params;
 	private IModel<ArticlePage> displayedPageModel;
 	private int currentPageNumber;
 	private int numberOfPages;
 	private Integer contentId;
     private ExpandableCommentPanel commentsPanel;
+    private PageParameters params;
 
     public ArticleReadPage(PageParameters params) {
 		super(params);
-		this.params = params;
-		this.contentId = getContentId();
+        this.params = params;
+        this.contentId = getContentId();
 		this.currentPageNumber = getCurrentPageNumber();
 		this.numberOfPages = getPageCount();
 		this.displayedPageModel = createDisplayedPageModel();
@@ -118,9 +119,7 @@ public class ArticleReadPage extends ArticleBasePage {
     }
 
 	private Integer getContentId() {
-		String id = params.getString("0");
-        contentId = Integer.valueOf(id);
-		return contentId;
+		return PortalUtil.getValidParameterAsInteger("0", params);
 	}
 
 	private int getPageCount() {
@@ -128,7 +127,7 @@ public class ArticleReadPage extends ArticleBasePage {
 	}
 
 	private int getCurrentPageNumber() {
-		return this.params.getAsInteger("1", 1);
+		return params.getAsInteger("1", 1);
 	}
 
 	@Override

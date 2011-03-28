@@ -3,9 +3,11 @@
 <body>
 <wicket:extend>
     <div wicket:id="bubbleWindow"></div>
-    <wicket:container wicket:id="repeatingBookmarks">
-        <div wicket:id="bookmarkView"></div>
-    </wicket:container>
+    <div wicket:id="refreshContainerBookmarks">
+        <wicket:container wicket:id="repeatingBookmarks">
+            <div wicket:id="bookmarkView"></div>
+        </wicket:container>
+    </div>
     <div wicket:id="paging">paging</div>
     <wicket:fragment wicket:id="bookmarkView">
         <h3 class="bookmarkheadline">

@@ -50,9 +50,6 @@ public class BlogMountHandler implements MountHandler {
             if("print".equals(page)) {
                 return new BookmarkablePageRequestTarget(BlogPrintPage.class, pageParameters);
             }
-            else if(StringUtils.isNumeric(page)) {
-                pageParameters.put("page", page);
-            }
         }
         return new BookmarkablePageRequestTarget(BlogPage.class, pageParameters);
     }

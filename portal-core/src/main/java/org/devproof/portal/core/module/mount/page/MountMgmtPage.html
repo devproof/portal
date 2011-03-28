@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+<body>
+<wicket:extend>
+    <div wicket:id="bubblePanel"></div>
+    <h2><wicket:message key="contentTitle">[edit user]</wicket:message></h2><br/>
+
+    <div wicket:id="refreshTable">
+        <p><span wicket:id="navigatorTop">[dataview navigator]</span></p>
+        <table class="dataview" cellspacing="0">
+            <tr>
+                <th wicket:id="table_mountPath"><wicket:message key="table_mountPath">[mount path]</wicket:message></th>
+                <th wicket:id="table_relatedContentId"><wicket:message key="table_relatedContentId">[related content id]</wicket:message></th>
+                <th wicket:id="table_handlerKey"><wicket:message key="table_handlerKey">[handler key]</wicket:message></th>
+                <th wicket:id="table_defaultUrl"><wicket:message key="table_defaultUrl">[default url]</wicket:message></th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr wicket:id="repeatingMountPoints">
+                <td wicket:id="mountPath">[firstname]</td>
+                <td wicket:id="relatedContentId">[lastname]</td>
+                <td wicket:id="handlerKey">[role]</td>
+                <td wicket:id="defaultUrl">[registration]</td>
+                <td style="white-space: nowrap"><span wicket:id="authorButtons">[edit/delete buttons]</span></td>
+            </tr>
+        </table>
+        <p><span wicket:id="navigatorBottom">[dataview navigator]</span></p>
+    </div>
+</wicket:extend>
+</body>
+</html>

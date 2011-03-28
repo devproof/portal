@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.module.download.service;
 
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.role.entity.Role;
+import org.devproof.portal.module.download.DownloadConstants;
 import org.devproof.portal.module.download.entity.Download;
 import org.devproof.portal.module.download.repository.DownloadRepository;
 import org.junit.Before;
@@ -37,15 +39,18 @@ public class DownloadServiceImplTest {
     private DownloadServiceImpl impl;
     private DownloadRepository mock;
     private DownloadTagService mockTag;
+    private MountService mockMountService;
 
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() throws Exception {
         mock = createStrictMock(DownloadRepository.class);
         mockTag = createStrictMock(DownloadTagService.class);
+        mockMountService = createStrictMock(MountService.class);
         impl = new DownloadServiceImpl();
         impl.setDownloadRepository(mock);
         impl.setDownloadTagService(mockTag);
+        impl.setMountService(mockMountService);
     }
 
     @Test
@@ -65,11 +70,10 @@ public class DownloadServiceImplTest {
         Download e = createDownloadEntity();
         mock.delete(e);
         mockTag.deleteUnusedTags();
-        replay(mock);
-        replay(mockTag);
+        mockMountService.delete("1", DownloadConstants.HANDLER_KEY);
+        replay(mock, mockTag, mockMountService);
         impl.delete(e);
-        verify(mock);
-        verify(mockTag);
+        verify(mock, mockTag, mockMountService);
     }
 
     @Test
