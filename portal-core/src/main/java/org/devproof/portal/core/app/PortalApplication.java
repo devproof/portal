@@ -17,13 +17,12 @@ package org.devproof.portal.core.app;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.wicket.*;
-import org.apache.wicket.javascript.NoOpJavascriptCompressor;
+import org.apache.wicket.Page;
+import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.IRequestCycleProcessor;
-import org.apache.wicket.request.RequestParameters;
-import org.apache.wicket.request.target.coding.IRequestTargetUrlCodingStrategy;
-import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
@@ -71,16 +70,16 @@ public class PortalApplication extends WebApplication {
                 if (page.isIndexMountedPath()) {
                     mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
                 } else {
-                    mountBookmarkablePage(page.getMountPath(), page.getPageClass());
+                    mountPage(page.getMountPath(), page.getPageClass());
                 }
             }
         }
     }
 
     private void configureWicket() {
-        productionMode = DEPLOYMENT.equals(getConfigurationType());
+        productionMode = RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType());
         getResourceSettings().setThrowExceptionOnMissingResource(false);
-        addComponentInstantiationListener(new SpringComponentInjector(this, getSpringContext(), true));
+        getComponentInstantiationListeners().add(new SpringComponentInjector(this, getSpringContext(), true));
         getMarkupSettings().setStripWicketTags(true);
         getMarkupSettings().setCompressWhitespace(true);
         getMarkupSettings().setStripComments(true);
@@ -90,8 +89,6 @@ public class PortalApplication extends WebApplication {
         getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
         getMarkupSettings().setDefaultBeforeDisabledLink("");
         getMarkupSettings().setDefaultAfterDisabledLink("");
-        // jquery script gets destroyed, see https://issues.apache.org/jira/browse/WICKET-3519
-        getResourceSettings().setJavascriptCompressor(new NoOpJavascriptCompressor());
     }
 
     public boolean isProductionMode() {

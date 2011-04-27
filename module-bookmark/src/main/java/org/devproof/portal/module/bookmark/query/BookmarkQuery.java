@@ -16,8 +16,8 @@
 package org.devproof.portal.module.bookmark.query;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
@@ -47,7 +47,7 @@ public class BookmarkQuery implements SearchQuery {
 	private Boolean author;
 
 	public BookmarkQuery() {
-		InjectorHolder.getInjector().inject(this);
+		Injector.get().inject(this);
 		id = PortalUtil.getParameterAsInteger(ID_PARAM);
 		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
 		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);

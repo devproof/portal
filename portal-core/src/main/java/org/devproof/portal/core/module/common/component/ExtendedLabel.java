@@ -17,10 +17,11 @@ package org.devproof.portal.core.module.common.component;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Resource;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.resource.String2ImageResource;
@@ -144,16 +145,16 @@ public class ExtendedLabel extends Label {
     public static class ImgResourceReference extends ResourceReference {
         private static final long serialVersionUID = 1L;
         private static final long MAX_AGE = 1000 * 60 * 10; // TEN MINUTES
-        private Resource resource;
+        private IResource resource;
         private Date time = PortalUtil.now();
 
-        public ImgResourceReference(String hash, Resource resource) {
+        public ImgResourceReference(String hash, IResource resource) {
             super(ExtendedLabel.class, hash);
             this.resource = resource;
         }
 
         @Override
-        public Resource newResource() {
+        public IResource getResource() {
             return resource;
         }
 

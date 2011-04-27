@@ -16,10 +16,10 @@
 package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.string.UrlUtils;
 
 /**
@@ -28,6 +28,7 @@ import org.apache.wicket.util.string.UrlUtils;
  *
  * @author Carsten Hufe
  */
+// TODO test
 public class ExternalImage extends WebComponent {
 
     private static final long serialVersionUID = 1L;

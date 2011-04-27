@@ -16,13 +16,13 @@
 package org.devproof.portal.core.module.print.page;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -44,12 +44,16 @@ public abstract class PrintPage extends WebPage {
         super(params);
         this.params = params;
         addSyntaxHighlighter();
-        add(createDefaultCSSHeaderContributor());
-        add(createPrinterCSSHeaderContributor());
         add(createPrintableComponent());
         add(createPageTitle());
         add(createCopyrightContainer());
         add(createFooterLabel());
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.renderCSSReference(new PackageResourceReference(PrintConstants.class, "css/print.css"));
+        response.renderCSSReference(new PackageResourceReference(PrintConstants.class, "css/print.css"));
     }
 
     private Component createPrintableComponent() {
@@ -59,14 +63,6 @@ public abstract class PrintPage extends WebPage {
     private void addSyntaxHighlighter() {
         String theme = configurationService.findAsString(CommonConstants.CONF_SYNTAXHL_THEME);
         PortalUtil.addSyntaxHightlighter(this, theme);
-    }
-
-    private HeaderContributor createPrinterCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(PrintConstants.class, "css/print.css");
-    }
-
-    private HeaderContributor createDefaultCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
     }
 
     private Component createFooterLabel() {

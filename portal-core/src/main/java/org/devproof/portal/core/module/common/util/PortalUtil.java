@@ -17,17 +17,19 @@ package org.devproof.portal.core.module.common.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
-import org.apache.wicket.*;
-import org.apache.wicket.markup.html.CSSPackageResource;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
+import org.apache.wicket.Component;
+import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.model.util.MapModel;
-import org.apache.wicket.protocol.http.servlet.AbortWithHttpStatusException;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.string.UrlUtils;
-import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.CommonConstants;
-import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.NotFoundPage;
 import org.devproof.portal.core.module.email.bean.EmailPlaceholderBean;
 import org.devproof.portal.core.module.user.entity.User;
@@ -161,49 +163,49 @@ public class PortalUtil {
         component.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class, "js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
     }
 
-    public static void addJQuery(Component component) {
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery-1.5.1.min.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/jquery.center.js"));
+    public static void addJQuery(IHeaderResponse response) {
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "js/jquery-1.5.1.min.js"));
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "js/jquery.center.js"));
     }
 
-    public static String getParameterAsString(String key) {
-        PageParameters pageParameters = RequestCycle.get().getPageParameters();
-        if (pageParameters == null) {
-            return null;
-        }
-        return pageParameters.getString(key);
-    }
-
-    public static Integer getParameterAsInteger(String key) {
-        return getParameterAsInteger(key, RequestCycle.get().getPageParameters());
-    }
-
-    public static Integer getValidParameterAsInteger(String key) {
-        return getValidParameterAsInteger(key, RequestCycle.get().getPageParameters());
-    }
-
-    public static Integer getParameterAsInteger(String key, PageParameters params) {
-        if (params == null) {
-            return null;
-        }
-        return params.getAsInteger(key);
-    }
-
-    public static Integer getValidParameterAsInteger(String key, PageParameters params) {
-        Integer value = getParameterAsInteger(key, params);
-        if (value == null) {
-//            throw new AbortWithHttpStatusException(404, true);
-            throw new RestartResponseException(NotFoundPage.class);
-        }
-        return value;
-    }
-
-    public static Boolean getParameterAsBoolean(String key) {
-        PageParameters pageParameters = RequestCycle.get().getPageParameters();
-        if (pageParameters == null) {
-            return null;
-        }
-        return pageParameters.getAsBoolean(key);
-    }
+//    public static String getParameterAsString(String key) {
+//        PageParameters pageParameters = RequestCycle.get().getPageParameters();
+//        if (pageParameters == null) {
+//            return null;
+//        }
+//        return pageParameters.get(key).toString();
+//    }
+//
+//    public static Integer getParameterAsInteger(String key) {
+//        return getParameterAsInteger(key, RequestCycle.get().getPageParameters());
+//    }
+//
+//    public static Integer getValidParameterAsInteger(String key) {
+//        return getValidParameterAsInteger(key, RequestCycle.get().getPageParameters());
+//    }
+//
+//    public static Integer getParameterAsInteger(String key, PageParameters params) {
+//        if (params == null) {
+//            return null;
+//        }
+//        return params.get(key).toInteger();
+//    }
+//
+//    public static Integer getValidParameterAsInteger(String key, PageParameters params) {
+//        Integer value = getParameterAsInteger(key, params);
+//        if (value == null) {
+////            throw new AbortWithHttpStatusException(404, true);
+//            throw new RestartResponseException(NotFoundPage.class);
+//        }
+//        return value;
+//    }
+//
+//    public static Boolean getParameterAsBoolean(String key) {
+//        PageParameters pageParameters = RequestCycle.get().getPageParameters();
+//        if (pageParameters == null) {
+//            return null;
+//        }
+//        return pageParameters.get(key).toBoolean();
+//    }
 
 }

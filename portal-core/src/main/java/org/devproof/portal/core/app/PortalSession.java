@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.core.app;
 
-import org.apache.wicket.*;
+import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.extensions.markup.html.tree.table.TreeTable;
 import org.apache.wicket.injection.web.InjectorHolder;
@@ -25,8 +27,8 @@ import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
+import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.devproof.portal.core.config.GenericRepository;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.right.RightConstants;
@@ -37,15 +39,12 @@ import org.devproof.portal.core.module.role.service.RoleService;
 import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
-import org.devproof.portal.core.module.user.page.UserPage;
 import org.devproof.portal.core.module.user.service.UserService;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import javax.servlet.http.Cookie;
-import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Global portal session

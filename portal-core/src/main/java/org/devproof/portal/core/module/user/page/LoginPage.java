@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.user.page;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -24,8 +23,8 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.value.ValueMap;
-import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
@@ -94,7 +93,8 @@ public class LoginPage extends TemplatePage {
             private void redirectToPortalHomePage() {
                 Class<? extends Page> homePage = getApplication().getHomePage();
                 info(getString("logged.in"));
-                setRedirect(false);
+                // TODO test it should be done automatically
+//                setRedirect(false);
                 setResponsePage(homePage);
             }
         };

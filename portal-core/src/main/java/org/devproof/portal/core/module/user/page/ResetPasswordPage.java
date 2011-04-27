@@ -16,8 +16,6 @@
 package org.devproof.portal.core.module.user.page;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
@@ -25,6 +23,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.config.ModulePage;
@@ -33,6 +32,8 @@ import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.service.UserService;
+
+import java.util.UUID;
 
 /**
  * @author Carsten Hufe
@@ -54,7 +55,6 @@ public class ResetPasswordPage extends TemplatePage {
     public ResetPasswordPage(PageParameters params) {
         super(params);
         this.params = params;
-        validateParameter();
         this.userModel = createUserModel();
         add(createResetPasswordForm());
     }
@@ -77,7 +77,8 @@ public class ResetPasswordPage extends TemplatePage {
             @Override
             public void onSubmit() {
                 User user = userModel.getObject();
-                if (params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode())) {
+                String code = params.get(PARAM_CONFIRMATION_CODE).toString();
+                if (code.equals(user.getForgotPasswordCode())) {
                     userService.saveNewPassword(user.getUsername(), password1.getValue());
                     setResponsePage(MessagePage.getMessagePage(getString("changed")));
                 }
@@ -119,7 +120,8 @@ public class ResetPasswordPage extends TemplatePage {
 
             @Override
             protected User load() {
-                User user = userService.findUserByUsername(params.getString(PARAM_USER));
+                String username = params.get(PARAM_USER).toString(UUID.randomUUID().toString());
+                User user = userService.findUserByUsername(username);
                 if (user == null) {
                     throw new RestartResponseException(MessagePage.getErrorPage(getString("user.notregistered")));
                 } else if (isConfirmationCodeNotCorrect(user)) {
@@ -130,14 +132,9 @@ public class ResetPasswordPage extends TemplatePage {
 
 
             private boolean isConfirmationCodeNotCorrect(User user) {
-                return StringUtils.isNotEmpty(user.getForgotPasswordCode()) && !params.getString(PARAM_CONFIRMATION_CODE).equals(user.getForgotPasswordCode());
+                String code = params.get(PARAM_CONFIRMATION_CODE).toString(UUID.randomUUID().toString());
+                return StringUtils.isNotEmpty(user.getForgotPasswordCode()) && !code.equals(user.getForgotPasswordCode());
             }
         };
-    }
-
-    private void validateParameter() {
-        if (!params.containsKey(PARAM_USER) || !params.containsKey(PARAM_CONFIRMATION_CODE)) {
-            throw new RestartResponseException(MessagePage.getErrorPage(getString("missing.params")));
-        }
     }
 }

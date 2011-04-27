@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.common.component;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 
 /**

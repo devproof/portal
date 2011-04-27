@@ -17,17 +17,21 @@ package org.devproof.portal.core.module.common.page;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.UnhandledException;
-import org.apache.wicket.*;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.feedback.FeedbackMessage;
-import org.apache.wicket.feedback.FeedbackMessagesModel;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.IMarkupFragment;
 import org.apache.wicket.markup.MarkupStream;
-import org.apache.wicket.markup.html.*;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -36,7 +40,6 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.*;
 import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
@@ -394,9 +397,10 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private Label createMenuLinkLabel(Class<? extends Page> pageClass) {
-        String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.MAIN_NAVIGATION_LINK_LABEL);
+        ClassStringResourceLoader loader = new ClassStringResourceLoader(pageClass);
+        String label = loader.loadStringResource(pageClass, CommonConstants.MAIN_NAVIGATION_LINK_LABEL, getLocale(), getStyle(), getVariation());
         if (StringUtils.isEmpty(label)) {
-            label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
+            label = loader.loadStringResource(pageClass, CommonConstants.CONTENT_TITLE_LABEL, getLocale(), getStyle(), getVariation());
         }
         return new Label("mainNavigationLinkLabel", label);
     }
@@ -435,8 +439,8 @@ public abstract class TemplatePage extends WebPage {
 
     private boolean existsCustomStyleFragment(String fragmentId) {
         MarkupStream associatedMarkupStream = TemplatePage.this.getAssociatedMarkupStream(false);
-        int defaultBoxTemplateIndex = associatedMarkupStream.findComponentIndex(null, fragmentId);
-        return defaultBoxTemplateIndex != -1;
+        IMarkupFragment defaultBoxTemplateIndex = associatedMarkupStream.getMarkupFragment().find(fragmentId);
+        return defaultBoxTemplateIndex != null;
     }
 
     private IModel<List<Box>> createRepeatingBoxesModel() {
