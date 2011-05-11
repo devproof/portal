@@ -157,8 +157,8 @@ public abstract class BoxEditPanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(feedback);
-                target.addComponent(form);
+                target.add(feedback);
+                target.add(form);
             }
         };
     }

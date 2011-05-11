@@ -24,7 +24,6 @@ import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
-import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.user.page.SettingsPage;
 
 /**
@@ -73,7 +72,8 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
             public void onClick() {
                 PortalSession.get().logoutUser();
                 info(getString("loggedout"));
-                setRedirect(false);
+                // TODO test redirect
+//                setRedirect(false);
                 setResponsePage(PortalApplication.get().getHomePage());
             }
         };

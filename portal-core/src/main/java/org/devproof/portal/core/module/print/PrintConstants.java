@@ -15,11 +15,11 @@
  */
 package org.devproof.portal.core.module.print;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * @author Carsten Hufe
  */
 public interface PrintConstants {
-    ResourceReference REF_PRINTER_IMG = new ResourceReference(PrintConstants.class, "img/printer.png");
+    PackageResourceReference REF_PRINTER_IMG = new PackageResourceReference(PrintConstants.class, "img/printer.png");
 }

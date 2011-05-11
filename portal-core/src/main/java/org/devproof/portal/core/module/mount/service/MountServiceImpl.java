@@ -18,7 +18,7 @@ package org.devproof.portal.core.module.mount.service;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.registry.MountHandlerRegistry;

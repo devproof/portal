@@ -3,7 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 defaultTasks "build"
 
 allprojects {
-	apply plugin: 'org.gradle.idea'
+	apply plugin: 'idea'
 }
 
 subprojects {
@@ -122,18 +122,8 @@ subprojects {
     }
 }
 
-// load IDEA plugin
-buildscript {
-    repositories {
-        mavenRepo urls: 'http://gradle.artifactoryonline.com/gradle/plugins'
-    }
-    dependencies {
-        classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
-    }
-}
-
 // generate gradle bootstrapping
 // run gradle createWrapper
 task createWrapper(type: Wrapper) {
-  gradleVersion = '1.0-milestone-1'
+  gradleVersion = '1.0-milestone-3'
 }
