@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.common.component;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -37,6 +37,7 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class StatelessRatingPanelTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;

@@ -15,12 +15,12 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.tester.ITestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.test.MockContextLoader;
@@ -42,6 +42,7 @@ import javax.servlet.ServletContext;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/core/test-datasource.xml" })
 public class BookmarkablePagingPanelTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;
@@ -63,8 +64,8 @@ public class BookmarkablePagingPanelTest {
         tester.assertComponent("panel", BookmarkablePagingPanel.class);
     }
 
-    private TestPanelSource createBookmarkablePagingPanel() {
-        return new TestPanelSource() {
+    private ITestPanelSource createBookmarkablePagingPanel() {
+        return new ITestPanelSource() {
             private static final long serialVersionUID = 1L;
 
             @Override

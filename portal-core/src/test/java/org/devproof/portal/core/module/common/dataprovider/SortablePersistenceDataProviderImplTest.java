@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.common.dataprovider;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.devproof.portal.core.module.common.query.SearchQuery;
@@ -53,7 +54,7 @@ public class SortablePersistenceDataProviderImplTest {
             }
         };
         impl.setEntityClass(EmailTemplate.class);
-        impl.setSort("subject", true);
+        impl.setSort("subject", SortOrder.ASCENDING);
         impl.setDataProviderRepository(dataProviderRepositoryMock);
     }
 

@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.contact.page;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.mock.EmailServiceMock;
@@ -43,6 +43,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(loader = MockContextLoader.class,
         locations = {"classpath:/org/devproof/portal/core/test-datasource.xml"})
 public class ContactPageTest {
+    @SuppressWarnings({"SpringJavaAutowiringInspection"})
     @Autowired
     private ServletContext servletContext;
     private WicketTester tester;

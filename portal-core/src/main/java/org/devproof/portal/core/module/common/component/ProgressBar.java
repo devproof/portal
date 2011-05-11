@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.CSSPackageResource;
@@ -26,6 +25,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.util.time.Duration;
 
 /**
@@ -90,7 +90,7 @@ public class ProgressBar extends Panel {
 
     private static final long serialVersionUID = 1L;
 
-    private static final ResourceReference CSS = new ResourceReference(ProgressBar.class, "ProgressBar.css");
+    private static final PackageResourceReference CSS = new PackageResourceReference(ProgressBar.class, "ProgressBar.css");
     private int width = 400;
     private ProgressionModel model;
 

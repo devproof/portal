@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.common.query;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.io.Serializable;
 

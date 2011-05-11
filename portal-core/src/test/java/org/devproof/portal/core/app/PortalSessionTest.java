@@ -57,7 +57,7 @@ public class PortalSessionTest {
         cookieCleaned = false;
         cookieSessionId = null;
         MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
-        ServletWebRequest servletWebRequest = new ServletWebRequest(mockHttpServletRequest);
+        ServletWebRequest servletWebRequest = new ServletWebRequest(mockHttpServletRequest, "/");
         portalSession = new PortalSession(servletWebRequest) {
             private static final long serialVersionUID = 1L;
 
