@@ -2,10 +2,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 defaultTasks "build"
 
-allprojects {
-	apply plugin: 'org.gradle.idea'
-}
-
 subprojects {
     apply plugin: 'java'
     apply plugin: 'project-reports'
@@ -119,16 +115,6 @@ subprojects {
         from(sourceSets.main.resources.srcDirs) {
             exclude '**/*.xml'
         }
-    }
-}
-
-// load IDEA plugin
-buildscript {
-    repositories {
-        mavenRepo urls: 'http://gradle.artifactoryonline.com/gradle/plugins'
-    }
-    dependencies {
-        classpath "org.gradle.plugins:gradle-idea-plugin:0.2"
     }
 }
 
