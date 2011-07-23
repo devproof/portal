@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.contact;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * @author Carsten Hufe
@@ -23,6 +23,6 @@ import org.apache.wicket.ResourceReference;
 public interface ContactConstants {
 
     String CONF_CONTACTFORM_EMAIL = "spring.emailService.findAll.subject.id.contactformemail";
-    ResourceReference REF_CONTACT_CSS = new ResourceReference(ContactConstants.class, "css/contact.css");
+    PackageResourceReference REF_CONTACT_CSS = new PackageResourceReference(ContactConstants.class, "css/contact.css");
     String CONTACT_RIGHT = "contact";
 }

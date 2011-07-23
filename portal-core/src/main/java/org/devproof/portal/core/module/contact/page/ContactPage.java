@@ -16,12 +16,10 @@
 package org.devproof.portal.core.module.contact.page;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authorization.Action;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -32,12 +30,16 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.ClientProperties;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
+import org.apache.wicket.request.ClientInfo;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.Secured;
+import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.MessagePage;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -79,9 +81,14 @@ public class ContactPage extends TemplatePage {
         this.params = params;
         this.toUserModel = createToUserModel();
         this.contactBeanModel = createContactBeanModel();
-        add(createCSSHeaderContributor());
         add(createBubbleWindow());
         add(createContactForm());
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(ContactConstants.REF_CONTACT_CSS);
     }
 
     @Override
@@ -192,13 +199,9 @@ public class ContactPage extends TemplatePage {
         return !touser.getRole().getRights().contains(new Right("contact.form.enable"));
     }
 
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(ContactConstants.REF_CONTACT_CSS);
-    }
-
     private String getToUsername() {
-        if (params != null && params.containsKey("0")) {
-            return params.getString("0");
+        if(params.getIndexedCount() > 0) {
+            return params.get(0).toString();
         }
         return "§$$§";
     }
@@ -234,8 +237,8 @@ public class ContactPage extends TemplatePage {
             }
 
             private String getIpAddress() {
-                ClientProperties prop = ((WebClientInfo) ContactPage.this.getWebRequestCycle().getClientInfo()).getProperties();
-                return prop.getRemoteAddress();
+                WebClientInfo prop = (WebClientInfo)getSession().getClientInfo();
+                return prop.getProperties().getRemoteAddress();
             }
         };
     }

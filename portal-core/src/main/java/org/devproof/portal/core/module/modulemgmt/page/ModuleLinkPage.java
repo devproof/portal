@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.modulemgmt.page;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.page.TemplatePage;

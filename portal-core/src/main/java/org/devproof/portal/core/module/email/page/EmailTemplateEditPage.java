@@ -21,6 +21,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
@@ -62,7 +63,8 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
             @Override
             public void onSubmit() {
                 emailService.save(emailTemplateModel.getObject());
-                setRedirect(false);
+//                setRedirect(false);
+                // TODO funktioniert das noch?
                 info(EmailTemplateEditPage.this.getString("msg.saved"));
                 setResponsePage(EmailTemplatePage.class);
             }

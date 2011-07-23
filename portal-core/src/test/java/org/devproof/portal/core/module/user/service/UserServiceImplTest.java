@@ -26,7 +26,6 @@ import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.core.module.user.exception.AuthentificationFailedException;
 import org.devproof.portal.core.module.user.exception.UserNotConfirmedException;
 import org.devproof.portal.core.module.user.repository.UserRepository;
-import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 

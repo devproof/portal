@@ -24,6 +24,11 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.request.IRequestParameters;
+import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.resource.DynamicImageResource;
+import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.util.time.Time;
 
 import javax.imageio.ImageIO;
@@ -141,20 +146,22 @@ public class KittenCaptchaPanel extends Panel {
             private static final long serialVersionUID = 7480352029955897654L;
 
             @Override
-            protected CharSequence getCallbackScript(boolean onlyTargetActivePage) {
+            protected CharSequence getCallbackScript() {
                 // Call-back script shows loading indicator and makes
                 // wicket
                 // ajax request passing in mouse co-ordinates
-                return generateCallbackScript("wicketAjaxGet('" + getCallbackUrl(onlyTargetActivePage) + "&x=' + getEventX(this, event) + '&y=' + getEventY(this, event)");
+                // TODO geht das noch?
+//                return generateCallbackScript("wicketAjaxGet('" + getCallbackUrl(onlyTargetActivePage) + "&x=' + getEventX(this, event) + '&y=' + getEventY(this, event)");
+                return generateCallbackScript("wicketAjaxGet('" + getCallbackUrl() + "&x=' + getEventX(this, event) + '&y=' + getEventY(this, event)");
             }
 
             @Override
             protected void onEvent(final AjaxRequestTarget target) {
                 // Get clicked cursor position
-                final WebRequest request = (WebRequest) RequestCycle.get().getRequest();
-                final Map<String, String[]> parameters = request.getParameterMap();
-                final int x = Integer.parseInt(parameters.get("x")[0]);
-                final int y = Integer.parseInt(parameters.get("y")[0]);
+//                 Map<String, String[]> parameters = request.getParameterMap();
+                IRequestParameters queryParameters = getWebRequest().getQueryParameters();
+                final int x = queryParameters.getParameterValue("x").toInt();
+                final int y = queryParameters.getParameterValue("y").toInt();
                 // Force refresh
                 imageResource.clearData();
                 // Find any animal at the clicked location
@@ -326,18 +333,15 @@ public class KittenCaptchaPanel extends Panel {
          */
         private CaptchaImageResource(final PlacedAnimalList animals) {
             this.animals = animals;
-            setCacheable(false);
+//            setCacheable(false); // TODO und jetzt?
             setFormat("jpg");
         }
 
-        /**
-         * @return Rendered image data
-         */
         @Override
-        protected byte[] getImageData() {
+        protected byte[] getImageData(Attributes attributes) {
             // Handle caching
             setLastModifiedTime(Time.now());
-            final WebResponse response = (WebResponse) RequestCycle.get().getResponse();
+            final WebResponse response = (WebResponse) getResponse();
             response.setHeader("Cache-Control", "no-cache, must-revalidate, max-age=0, no-store");
 
             // If we don't have data
@@ -349,13 +353,15 @@ public class KittenCaptchaPanel extends Panel {
             return data.get();
         }
 
-        /**
-         * Invalidates the image data
-         */
-        @Override
-        protected void invalidate() {
-            data = null;
-        }
+// TODO was soll ich hier machen?
+//
+//        /**
+//         * Invalidates the image data
+//         */
+//        @Override
+//        protected void invalidate() {
+//            data = null;
+//        }
 
         /**
          * @return True if all kittens have been selected
@@ -368,7 +374,7 @@ public class KittenCaptchaPanel extends Panel {
          * Clears out image data
          */
         private void clearData() {
-            invalidate();
+//            invalidate(); // TODO
             setLastModifiedTime(Time.now());
         }
 

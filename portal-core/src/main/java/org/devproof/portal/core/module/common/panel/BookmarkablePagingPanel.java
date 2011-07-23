@@ -16,11 +16,11 @@
 package org.devproof.portal.core.module.common.panel;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 
 /**
@@ -52,7 +52,7 @@ public class BookmarkablePagingPanel extends Panel {
             public PageParameters getPageParameters() {
                 SearchQuery resolver = searchQueryModel.getObject();
                 PageParameters pageParameters = resolver.getPageParameters();
-                pageParameters.put(PAGE_PARAM, pageable.getCurrentPage() + 2);
+                pageParameters.add(PAGE_PARAM, pageable.getCurrentPage() + 2);
                 return pageParameters;
             }
 
@@ -71,7 +71,7 @@ public class BookmarkablePagingPanel extends Panel {
             public PageParameters getPageParameters() {
                 SearchQuery resolver = searchQueryModel.getObject();
                 PageParameters pageParameters = resolver.getPageParameters();
-                pageParameters.put(PAGE_PARAM, pageable.getCurrentPage());
+                pageParameters.add(PAGE_PARAM, pageable.getCurrentPage());
                 return pageParameters;
             }
 

@@ -19,11 +19,14 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 
@@ -35,17 +38,21 @@ public class BubblePanel extends Panel {
 
     public BubblePanel(String id) {
         super(id);
-        PortalUtil.addJQuery(this);
-        add(createCssHeaderContributor());
         add(createStyleAttributeModifier());
         add(createClassAttributeModifier());
         add(createContent());
         setOutputMarkupId(true);
     }
 
-    private HeaderContributor createCssHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/dialog.css");
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        PortalUtil.addJQuery(response);
+        response.renderCSSReference(new PackageResourceReference(CommonConstants.class, "css/dialog.css"));
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "css/body.css"));
     }
+
+
 
     private SimpleAttributeModifier createStyleAttributeModifier() {
         return new SimpleAttributeModifier("style", "display:none;");

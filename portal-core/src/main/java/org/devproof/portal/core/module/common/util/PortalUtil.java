@@ -26,6 +26,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.resource.TextTemplateResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
 import org.apache.wicket.util.string.UrlUtils;
 import org.devproof.portal.core.config.PageConfiguration;
@@ -103,8 +104,9 @@ public class PortalUtil {
         return new Date();
     }
 
-    public static String toUrl(ResourceReference ref, Request request) {
-        return UrlUtils.rewriteToContextRelative("resources/" + ref.getSharedResourceKey(), request);
+    public static String toUrl(ResourceReference ref) {
+        return UrlUtils.rewriteToContextRelative("resources/" + ref.getName(), RequestCycle.get()); // TODO funktioniert das noch?
+//        return UrlUtils.rewriteToContextRelative("resources/" + ref.getSharedResourceKey(), request);
     }
 
     /**
@@ -150,17 +152,21 @@ public class PortalUtil {
         return null;
     }
 
-    public static void addSyntaxHightlighter(Component component, String theme) {
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shCore.js"));
-        component.add(JavascriptPackageResource.getHeaderContribution(CommonConstants.class, "js/SyntaxHighlighter/shAutoloader.js"));
-//        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shCore.css"));
-        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shCore" + theme + ".css"));
-//        component.add(CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/SyntaxHighlighter/shTheme" + theme + ".css"));
+
+    public static void addSyntaxHightlighter(IHeaderResponse response, String theme) {
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "js/SyntaxHighlighter/shCore.js"));
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "js/SyntaxHighlighter/shAutoloader.js"));
+        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "js/jquery-1.5.1.min.js"));
+        response.renderCSSReference(new PackageResourceReference(CommonConstants.class, "css/SyntaxHighlighter/shCore" + theme + ".css"));
         Map<String, Object> values = new MiniMap<String, Object>(1);
-        CharSequence urlWithShCore = RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_JS);
+        CharSequence urlWithShCore = RequestCycle.get().urlFor(CommonConstants.REF_SYNTAXHIGHLIGHTER_JS, new PageParameters());
         CharSequence urlWithoutShCore = StringUtils.removeEnd(urlWithShCore.toString(), "shCore.js");
         values.put("jsPath", urlWithoutShCore);
-        component.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class, "js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
+        TextTemplateResourceReference textTemplateResourceReference = new TextTemplateResourceReference(CommonConstants.class, "js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values));
+        response.renderJavaScriptReference(textTemplateResourceReference);
+
+
+//        component.add(TextTemplateHeaderContributor.forJavaScript(CommonConstants.class, "js/SyntaxHighlighter/SyntaxHighlighterCopy.js", new MapModel<String, Object>(values)));
     }
 
     public static void addJQuery(IHeaderResponse response) {

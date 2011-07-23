@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.core.module.feed;
 
-import org.apache.wicket.ResourceReference;
+
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * Contains common constants
@@ -23,6 +25,6 @@ import org.apache.wicket.ResourceReference;
  * @author Carsten Hufe
  */
 public interface FeedConstants {
-    ResourceReference REF_ATOM1 = new ResourceReference(FeedConstants.class, "img/feed_atom1-0.gif");
-    ResourceReference REF_RSS2 = new ResourceReference(FeedConstants.class, "img/feed_rss2-0.gif");
+    ResourceReference REF_ATOM1 = new PackageResourceReference(FeedConstants.class, "img/feed_atom1-0.gif");
+    ResourceReference REF_RSS2 = new PackageResourceReference(FeedConstants.class, "img/feed_rss2-0.gif");
 }

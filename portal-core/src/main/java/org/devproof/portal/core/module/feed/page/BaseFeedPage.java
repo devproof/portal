@@ -20,10 +20,10 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 import org.apache.commons.lang.UnhandledException;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.MarkupType;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
@@ -50,23 +50,20 @@ public abstract class BaseFeedPage extends WebPage {
     }
 
     private String getFeedPath() {
-        if (params.size() > 0) {
-            return params.getString("0");
+        if(params.getIndexedCount() > 0) {
+            return params.get(0).toString();
         }
         return "";
     }
 
+
     @Override
-    protected final void onRender(MarkupStream markupStream) {
-        getResponse().setContentType(getContentType());
-        PrintWriter writer = new PrintWriter(getResponse().getOutputStream());
+    protected void onRender() {
         SyndFeedOutput output = new SyndFeedOutput();
         try {
             SyndFeed feed = createAppropriateFeedProvider();
-            output.output(feed, writer);
-            writer.close();
-        } catch (IOException e) {
-            throw new UnhandledException("Error streaming feed.", e);
+            String feedXml = output.outputString(feed);
+            getResponse().write(feedXml);
         } catch (FeedException e) {
             throw new UnhandledException("Error streaming feed.", e);
         }
@@ -90,6 +87,6 @@ public abstract class BaseFeedPage extends WebPage {
 
     @Override
     public MarkupType getMarkupType() {
-        return new MarkupType("xml", "application/xml");
+        return new MarkupType("xml", getContentType());
     }
 }
