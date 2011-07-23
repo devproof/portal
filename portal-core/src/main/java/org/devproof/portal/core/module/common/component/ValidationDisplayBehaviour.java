@@ -17,10 +17,7 @@
 package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Page;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.Session;
-import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.feedback.*;
 import org.apache.wicket.markup.ComponentTag;
@@ -28,10 +25,11 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.ValidationErrorFeedback;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
-import org.apache.wicket.util.template.PackagedTextTemplate;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.devproof.portal.core.module.common.CommonConstants;
 
 import java.util.Map;
@@ -45,10 +43,10 @@ public class ValidationDisplayBehaviour extends Behavior {
     private IFeedbackMessageFilter errorLevelFilter = new ErrorLevelFeedbackMessageFilter(FeedbackMessage.ERROR);
 
     @Override
-    public void renderHead(IHeaderResponse response) {
+    public void renderHead(Component component, IHeaderResponse response) {
         response.renderCSSReference(new PackageResourceReference(ValidationDisplayBehaviour.class, "ValidationDisplayBehaviour.css"));
         response.renderJavaScriptReference(new PackageResourceReference(TooltipLabel.class, "TooltipLabel.js"));
-        super.renderHead(response);
+        super.renderHead(component, response);
     }
 
     @Override
@@ -84,19 +82,20 @@ public class ValidationDisplayBehaviour extends Behavior {
     }
 
     @Override
-    public void onRendered(Component component) {
+    public void afterRender(Component component) {
         FormComponent<?> formComponent = (FormComponent<?>) component;
         String msg = getFeedbackMessage(formComponent);
         if (msg != null) {
             printErrorMessage(msg, component);
         }
+        super.afterRender(component);
     }
 
     private void printErrorMessage(CharSequence msg, Component componentWithError) {
-        PackagedTextTemplate template = new PackagedTextTemplate(ValidationDisplayBehaviour.class, "ValidationDisplayBehaviour.html");
+        PackageTextTemplate template = new PackageTextTemplate(ValidationDisplayBehaviour.class, "ValidationDisplayBehaviour.html");
         Map<String, Object> variables = new MiniMap<String, Object>(4);
         variables.put("message", msg);
-        variables.put("imageUrl", componentWithError.urlFor(ERRORHINT_IMAGE_REF));
+        variables.put("imageUrl", componentWithError.urlFor(ERRORHINT_IMAGE_REF, new PageParameters()));
         variables.put("imageId", componentWithError.getMarkupId() + "Image");
         variables.put("popupId", componentWithError.getMarkupId() + "Popup");
         componentWithError.getResponse().write(template.asString(variables));

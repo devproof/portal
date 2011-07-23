@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.tag.component;
 
 import org.apache.wicket.extensions.ajax.markup.html.autocomplete.AutoCompleteTextField;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.IFormModelUpdateListener;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -42,9 +42,15 @@ public class TagField<T extends AbstractTag<?>> extends AutoCompleteTextField<St
 
     public TagField(String id, IModel<List<T>> tags, TagService<T> tagService) {
         super(id, Model.of(createModelString(tags.getObject())));
-        add(CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS));
         originalTagsModel = tags;
         this.tagService = tagService;
+    }
+
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(TagConstants.REF_TAG_CSS);
     }
 
     private static <T extends AbstractTag<?>> String createModelString(List<T> tags) {

@@ -15,7 +15,8 @@
  */
 package org.devproof.portal.core.module.tag;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * @author Carsten Hufe
@@ -24,7 +25,7 @@ public interface TagConstants {
     String TAG_DEFAULT_SEPERATOR = " ";
     String TAG_SEPERATORS = " ,;";
     String CONF_BOX_NUM_TAGS = "box_num_tags";
-    ResourceReference REF_TAG_CSS = new ResourceReference(TagConstants.class, "css/tag.css");
+    ResourceReference REF_TAG_CSS = new PackageResourceReference(TagConstants.class, "css/tag.css");
     String ENTITY_CACHE_REGION = "entity.content";
     String QUERY_CACHE_REGION = "query.content";
     String TAG_PARAM = "tag";

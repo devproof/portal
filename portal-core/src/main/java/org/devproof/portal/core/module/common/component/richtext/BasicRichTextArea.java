@@ -15,14 +15,15 @@
  */
 package org.devproof.portal.core.module.common.component.richtext;
 
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.MarkupStream;
-import org.apache.wicket.markup.html.JavascriptPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.model.util.MapModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.resource.TextTemplateResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
-import org.apache.wicket.util.template.TextTemplateHeaderContributor;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public class BasicRichTextArea extends TextArea<String> {
     private static final long serialVersionUID = 1L;
-    private static final ResourceReference REF_BASE_CSS = new ResourceReference(BasicRichTextArea.class, "css/base.css");
+    private static final ResourceReference REF_BASE_CSS = new PackageResourceReference(BasicRichTextArea.class, "css/base.css");
     private boolean baseStyle;
 
     public BasicRichTextArea(String id) {
@@ -43,21 +44,22 @@ public class BasicRichTextArea extends TextArea<String> {
     public BasicRichTextArea(String id, boolean baseStyle) {
         super(id);
         this.baseStyle = baseStyle;
-        add(createCKEditorResource());
         setOutputMarkupId(true);
     }
 
-    private HeaderContributor createCKEditorResource() {
-        return JavascriptPackageResource.getHeaderContribution(FullRichTextArea.class, "ckeditor/ckeditor.js");
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderJavaScriptReference(new PackageResourceReference(FullRichTextArea.class, "ckeditor/ckeditor.js"));
     }
 
     @Override
-    protected void onRender(MarkupStream markupStream) {
-        super.onRender(markupStream);
+    protected void onRender() {
         Map<String, Object> variables = new MiniMap<String, Object>(2);
-        variables.put("defaultCss", PortalUtil.toUrl(baseStyle ? REF_BASE_CSS : CommonConstants.REF_DEFAULT_CSS, getRequest()));
+        variables.put("defaultCss", PortalUtil.toUrl(baseStyle ? REF_BASE_CSS : CommonConstants.REF_DEFAULT_CSS));
         variables.put("markupId", getMarkupId());
-        String javascript = TextTemplateHeaderContributor.forJavaScript(FullRichTextArea.class, "BasicRichTextArea.js", new MapModel<String, Object>(variables)).toString();
-        getResponse().write(javascript);
+        TextTemplateResourceReference javascript = new TextTemplateResourceReference(FullRichTextArea.class, "BasicRichTextArea.js", new MapModel<String, Object>(variables));
+        getResponse().write(javascript.toString());
     }
 }

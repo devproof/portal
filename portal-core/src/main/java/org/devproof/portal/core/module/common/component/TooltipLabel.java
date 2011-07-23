@@ -17,8 +17,10 @@ package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * A label with tooltip functionality (on mouse over)
@@ -37,10 +39,16 @@ public class TooltipLabel extends Panel {
         this.tooltip = tooltip;
         this.tooltipMarkupId = generateTooltipMarkupId();
         modifyMarkupId();
-        add(createJavascriptHeaderContributor());
-        add(createCSSHeaderContributor());
         add(createTooltipLink());
         add(tooltip);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderJavaScriptReference(new PackageResourceReference(TooltipLabel.class, "TooltipLabel.js"));
+        response.renderCSSReference(new PackageResourceReference(TooltipLabel.class, "TooltipLabel.css"));
+
     }
 
     private String generateTooltipMarkupId() {
@@ -78,11 +86,4 @@ public class TooltipLabel extends Panel {
         return new SimpleAttributeModifier("onmouseover", "xstooltip_show('" + strTT + "', '" + tooltipMarkupId + "', 289, 49);");
     }
 
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.css");
-    }
-
-    private HeaderContributor createJavascriptHeaderContributor() {
-        return JavascriptPackageResource.getHeaderContribution(TooltipLabel.class, "TooltipLabel.js");
-    }
 }

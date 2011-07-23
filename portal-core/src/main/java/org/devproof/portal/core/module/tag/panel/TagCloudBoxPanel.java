@@ -17,10 +17,7 @@ package org.devproof.portal.core.module.tag.panel;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -30,6 +27,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.NavigationBox;
@@ -51,19 +50,26 @@ public class TagCloudBoxPanel<T extends AbstractTag<?>> extends Panel implements
     private static final long serialVersionUID = 1L;
     @SpringBean(name = "configurationService")
     private ConfigurationService configurationService;
+    private PageParameters params;
     private TagService<T> tagService;
     private Class<? extends Page> page;
     private WebMarkupContainer titleContainer;
     private IModel<List<T>> tagsModel;
 
-    public TagCloudBoxPanel(String id, TagService<T> tagService, Class<? extends Page> page) {
+    public TagCloudBoxPanel(String id, PageParameters params, TagService<T> tagService, Class<? extends Page> page) {
         super(id);
+        this.params = params;
         this.tagService = tagService;
         this.page = page;
         this.tagsModel = createTagsModel();
-        add(createCSSHeaderContributor());
         add(createRepeatingTags());
         add(createTitleContainer());
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(TagConstants.REF_TAG_CSS);
     }
 
     @Override
@@ -109,7 +115,7 @@ public class TagCloudBoxPanel<T extends AbstractTag<?>> extends Panel implements
                 BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("tagLink", page);
                 link.add(createTagLinkLabel(tag));
                 if (!isTagSelected(item.getModelObject())) {
-                    link.setParameter("tag", tag.getTagname());
+                    link.getPageParameters().set("tag", tag.getTagname());
                 }
                 return link;
             }
@@ -126,9 +132,8 @@ public class TagCloudBoxPanel<T extends AbstractTag<?>> extends Panel implements
     }
 
     private T getSelectedTag() {
-        PageParameters params = RequestCycle.get().getPageParameters();
-        if (params != null && params.containsKey("tag")) {
-            return tagService.findById(params.getString("tag"));
+        if (params != null && params.getNamedKeys().contains("tag")) {
+            return tagService.findById(params.get("tag").toString());
         }
         return null;
     }
@@ -153,10 +158,6 @@ public class TagCloudBoxPanel<T extends AbstractTag<?>> extends Panel implements
                 return tags;
             }
         };
-    }
-
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);
     }
 
     @Override

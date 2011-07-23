@@ -20,14 +20,15 @@ import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.extensions.markup.html.tree.table.TreeTable;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.protocol.http.ClientProperties;
-import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
 import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -71,7 +72,7 @@ public class PortalSession extends WebSession {
     }
 
     protected void injectSpringBeans() {
-        InjectorHolder.getInjector().inject(this);
+        Injector.get().inject(this);
     }
 
     /**
@@ -82,7 +83,7 @@ public class PortalSession extends WebSession {
      * @return null if there is no error, if there is an error it returns the
      *         error message key
      */
-    public final String authenticate(String username, String password) throws UserNotConfirmedException {
+    public final String authenticateUser(String username, String password) throws UserNotConfirmedException {
         try {
             user = userService.authentificate(username, password, getIpAddress());
             storeCookie();
