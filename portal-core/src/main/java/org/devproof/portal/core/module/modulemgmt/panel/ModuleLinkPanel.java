@@ -175,15 +175,14 @@ public class ModuleLinkPanel extends Panel {
                 private static final long serialVersionUID = 1L;
 
                 @Override
-                protected void onSelectionChanged(Object newSelection) {
+                protected void onSelectionChanged(Boolean newSelection) {
                     moduleService.save(item.getModelObject());
                     registryService.rebuildRegistries(item.getModelObject().getLinkType());
                     setSelectionMessage(newSelection);
                 }
 
-                private void setSelectionMessage(Object newSelection) {
-                    Boolean selection = (Boolean) newSelection;
-                    if (selection) {
+                private void setSelectionMessage(Boolean newSelection) {
+                    if (newSelection) {
                         info(getString("msg.selected"));
                     } else {
                         info(getString("msg.deselected"));
