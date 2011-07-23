@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel.captcha;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -23,11 +22,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.image.NonCachingImage;
-import org.apache.wicket.markup.html.image.resource.DynamicImageResource;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.util.time.Time;
 
 import javax.imageio.ImageIO;
@@ -82,7 +78,6 @@ public class KittenCaptchaPanel extends Panel {
         try {
             return ImageIO.read(new MemoryCacheImageInputStream(KittenCaptchaPanel.class.getResourceAsStream(filename)));
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }
