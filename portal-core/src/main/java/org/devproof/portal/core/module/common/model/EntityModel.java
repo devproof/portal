@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.common.model;
 
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -36,14 +36,14 @@ public class EntityModel<T extends EntityId> extends LoadableDetachableModel<T> 
         super(entity);
         entityId = entity.getId();
         entityClass = (Class<T>) entity.getClass();
-        InjectorHolder.getInjector().inject(this);
+        Injector.get().inject(this);
     }
 
     public EntityModel(Class<T> entityClass, Integer entityId) {
         super();
         this.entityClass = entityClass;
         this.entityId = entityId;
-        InjectorHolder.getInjector().inject(this);
+        Injector.get().inject(this);
     }
 
     @Override

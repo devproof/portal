@@ -79,7 +79,7 @@ public class LoginPage extends TemplatePage {
             protected void onSubmit() {
                 PortalSession session = (PortalSession) getSession();
                 try {
-                    String message = session.authenticate(username, password);
+                    String message = session.authenticateUser(username, password);
                     if (message == null) {
                         redirectToPortalHomePage();
                     } else {

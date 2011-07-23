@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.user.page;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -24,6 +23,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
 import org.devproof.portal.core.module.common.page.MessagePage;
@@ -85,7 +85,7 @@ public class ReenterEmailPage extends TemplatePage {
                         param.add(RegisterPage.PARAM_USER, user.getUsername());
                         param.add(RegisterPage.PARAM_KEY, generatedCode);
                         StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-                        url.append(ReenterEmailPage.this.getWebRequestCycle().urlFor(RegisterPage.class, param));
+                        url.append(getRequestCycle().urlFor(RegisterPage.class, param));
                         return url.toString();
                     }
                 };

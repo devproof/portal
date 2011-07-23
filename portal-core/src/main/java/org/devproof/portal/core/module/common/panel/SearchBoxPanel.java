@@ -34,7 +34,6 @@ public class SearchBoxPanel extends Component {
     }
 
     @Override
-    protected void onRender(MarkupStream markupStream) {
-
+    protected void onRender() {
     }
 }

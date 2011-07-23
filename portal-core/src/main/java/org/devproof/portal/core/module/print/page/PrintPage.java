@@ -43,7 +43,6 @@ public abstract class PrintPage extends WebPage {
     public PrintPage(PageParameters params) {
         super(params);
         this.params = params;
-        addSyntaxHighlighter();
         add(createPrintableComponent());
         add(createPageTitle());
         add(createCopyrightContainer());
@@ -54,15 +53,16 @@ public abstract class PrintPage extends WebPage {
     public void renderHead(IHeaderResponse response) {
         response.renderCSSReference(new PackageResourceReference(PrintConstants.class, "css/print.css"));
         response.renderCSSReference(new PackageResourceReference(PrintConstants.class, "css/print.css"));
+        addSyntaxHighlighter(response);
     }
 
     private Component createPrintableComponent() {
         return createPrintableComponent("content");
     }
 
-    private void addSyntaxHighlighter() {
+    private void addSyntaxHighlighter(IHeaderResponse response) {
         String theme = configurationService.findAsString(CommonConstants.CONF_SYNTAXHL_THEME);
-        PortalUtil.addSyntaxHightlighter(this, theme);
+        PortalUtil.addSyntaxHightlighter(response, theme);
     }
 
     private Component createFooterLabel() {
@@ -81,7 +81,7 @@ public abstract class PrintPage extends WebPage {
     }
 
     protected Integer getIntegerParameter(String key) {
-        return PortalUtil.getValidParameterAsInteger(key, params);
+        return params.get(key).toInteger();
     }
 
     /**

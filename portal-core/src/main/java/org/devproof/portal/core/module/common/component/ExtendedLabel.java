@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.common.component;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.Resource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;

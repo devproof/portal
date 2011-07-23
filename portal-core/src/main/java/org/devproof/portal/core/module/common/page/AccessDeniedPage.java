@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.common.page;
 
-import org.apache.wicket.PageParameters;
-
 /**
  * @author Carsten Hufe
  */

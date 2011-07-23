@@ -17,7 +17,7 @@
 package org.devproof.portal.core.module.common.model;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.FeedbackMessagesModel;
 import org.devproof.portal.core.module.common.component.ValidationDisplayBehaviour;
@@ -51,7 +51,7 @@ public class PortalFeedbackMessagesModel extends FeedbackMessagesModel {
 
         private boolean hasValidationDisplayBehaviour(Component reporter) {
             if (reporter != null) {
-                for (IBehavior behavior : reporter.getBehaviors()) {
+                for (Behavior behavior : reporter.getBehaviors()) {
                     if (behavior instanceof ValidationDisplayBehaviour) {
                         return true;
                     }

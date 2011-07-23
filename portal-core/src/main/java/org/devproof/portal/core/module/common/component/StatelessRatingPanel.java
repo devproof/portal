@@ -22,8 +22,11 @@ import org.apache.wicket.extensions.rating.RatingPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.Loop;
+import org.apache.wicket.markup.html.list.LoopItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import java.util.Set;
 
 /**
  * Is an extension of the rating panel Without ajax and with bookmarkable links
@@ -49,8 +52,8 @@ public abstract class StatelessRatingPanel extends RatingPanel {
 
     private void executeStatelessVoting() {
         if (hasNecessaryParameter()) {
-            Integer rateId = params.getAsInteger("rateid");
-            Integer vote = params.getAsInteger("vote");
+            Integer rateId = params.get("rateid").toInteger();
+            Integer vote = params.get("vote").toInteger();
             if (vote > nrOfStars.getObject()) {
                 vote = nrOfStars.getObject();
             }
@@ -62,7 +65,8 @@ public abstract class StatelessRatingPanel extends RatingPanel {
     }
 
     private boolean hasNecessaryParameter() {
-        return params.containsKey("rateid") && params.containsKey("vote");
+        Set<String> namedKeys = params.getNamedKeys();
+        return namedKeys.contains("rateid") && namedKeys.contains("vote");
     }
 
     @Override
@@ -92,23 +96,21 @@ public abstract class StatelessRatingPanel extends RatingPanel {
             BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link", getPage().getClass());
             link.setEnabled(!hasVoted.getObject());
             link.setParameter("rateid", contentId);
-            link.setParameter("vote", item.getIteration());
+            link.setParameter("vote", item.getIndex());
             link.add(createStarContainer(item));
             copyParameterToLink(link);
             return link;
         }
 
         private Component createStarContainer(LoopItem item) {
-            int iteration = item.getIteration();
+            int iteration = item.getIndex();
             // add the star image, which is either active (highlighted) or
             // inactive (no star)
             return new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
         }
 
         private void copyParameterToLink(BookmarkablePageLink<Void> link) {
-            for (String key : params.keySet()) {
-                link.setParameter(key, params.getString(key));
-            }
+            link.getPageParameters().overwriteWith(params);
         }
     }
 

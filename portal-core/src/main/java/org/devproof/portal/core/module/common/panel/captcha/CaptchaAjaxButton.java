@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.common.panel.captcha;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -32,8 +33,13 @@ public abstract class CaptchaAjaxButton extends AjaxSubmitLink {
     public CaptchaAjaxButton(String id, BubblePanel bubblePanel) {
         super(id);
         this.bubblePanel = bubblePanel;
-        PortalUtil.addJQuery(this);
         setOutputMarkupId(true);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        PortalUtil.addJQuery(response);
     }
 
     @Override

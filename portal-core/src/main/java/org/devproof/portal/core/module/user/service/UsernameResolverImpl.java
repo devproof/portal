@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.user.service;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.user.UserConstants;
 import org.devproof.portal.core.module.user.entity.User;

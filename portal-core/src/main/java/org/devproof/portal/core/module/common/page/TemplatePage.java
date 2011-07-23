@@ -331,9 +331,9 @@ public abstract class TemplatePage extends WebPage {
     /**
      * Adds the Css and JavaScript of the SyntaxHighligher to the page
      */
-    protected void addSyntaxHighlighter() {
+    protected void addSyntaxHighlighter(IHeaderResponse response) {
         String theme = configurationService.findAsString(CommonConstants.CONF_SYNTAXHL_THEME);
-        PortalUtil.addSyntaxHightlighter(this, theme);
+        PortalUtil.addSyntaxHightlighter(response, theme);
     }
 
     /**

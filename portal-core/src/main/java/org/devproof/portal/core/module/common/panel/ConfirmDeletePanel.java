@@ -55,6 +55,10 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
             private static final long serialVersionUID = 1L;
 
             @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+            }
+
+            @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 bubblePanel.hide(target);
             }
@@ -64,6 +68,10 @@ public abstract class ConfirmDeletePanel<T> extends Panel {
     private AjaxButton createYesAjaxButton() {
         return new AjaxButton("yesButton") {
             private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+            }
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {

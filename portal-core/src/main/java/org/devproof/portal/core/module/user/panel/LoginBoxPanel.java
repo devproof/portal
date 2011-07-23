@@ -75,7 +75,7 @@ public class LoginBoxPanel extends Panel implements BoxTitleVisibility {
                 PortalSession session = (PortalSession) getSession();
                 try {
 
-                    String message = session.authenticate(username, password);
+                    String message = session.authenticateUser(username, password);
                     if (message == null) {
                         info(getString("logged.in"));
                     } else {

@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.common.factory;
 
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
