@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.modulemgmt.panel;
 
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.config.ModuleConfiguration;
 import org.devproof.portal.test.MockContextLoader;
@@ -55,18 +53,7 @@ public class ModuleInfoPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createModuleInfoPanel());
+        tester.startComponentInPage(new ModuleInfoPanel("panel", new ModuleConfiguration()));
         tester.assertComponent("panel", ModuleInfoPanel.class);
-    }
-
-    private TestPanelSource createModuleInfoPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new ModuleInfoPanel(panelId, new ModuleConfiguration());
-            }
-        };
     }
 }

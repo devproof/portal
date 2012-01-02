@@ -58,7 +58,7 @@ public class String2ImageResource extends RenderedDynamicImageResource {
     }
 
     @Override
-    protected boolean render(Graphics2D g) {
+    protected boolean render(Graphics2D g, Attributes attributes) {
         g.setBackground(Color.WHITE);
         g.clearRect(0, 0, width, height);
         g.setColor(Color.BLACK);

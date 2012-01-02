@@ -288,7 +288,11 @@ public class MountInputPanel extends Panel {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     MountPoint mp = newMountPoint();
                     mountPointsModel.getObject().add(item.getIndex() + 1, mp);
-                    target.addComponent(form);
+                    target.add(form);
+                }
+
+                @Override
+                protected void onError(AjaxRequestTarget target, Form<?> form) {
                 }
             };
         }
@@ -315,7 +319,11 @@ public class MountInputPanel extends Panel {
                     MountPoint mountPoint = mountPoints.get(index);
                     mountPointsToRemoveModel.getObject().add(mountPoint);
                     mountPoints.remove(index);
-                    target.addComponent(form);
+                    target.add(form);
+                }
+
+                @Override
+                protected void onError(AjaxRequestTarget target, Form<?> form) {
                 }
 
                 @Override

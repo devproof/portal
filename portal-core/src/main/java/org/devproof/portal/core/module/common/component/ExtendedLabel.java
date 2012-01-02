@@ -94,7 +94,8 @@ public class ExtendedLabel extends Label {
     }
 
     private String replaceTagWithImage(String modifiedContent, String fullTag, ImgResourceReference imgResource) {
-        modifiedContent = modifiedContent.replace(fullTag, "<img src=\"" + getRequestCycle().urlFor(imgResource) + "\" alt=\"\"/>");
+        // TODO fix
+//        modifiedContent = modifiedContent.replace(fullTag, "<img src=\"" + getRequestCycle().urlFor(imgResource) + "\" alt=\"\"/>");
         return modifiedContent;
     }
 
@@ -104,8 +105,9 @@ public class ExtendedLabel extends Label {
             String key = it.next();
             ImgResourceReference ref = images.get(key);
             if (ref.isExpired()) {
-                ref.invalidate();
-                getApplication().getSharedResources().remove(key);
+                // TODO fix...
+//                ref.invalidate();
+//                getApplication().getSharedResources().remove(key);
                 it.remove();
             }
         }

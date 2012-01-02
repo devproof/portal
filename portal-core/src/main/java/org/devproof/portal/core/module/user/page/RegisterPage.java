@@ -16,6 +16,7 @@
 
 package org.devproof.portal.core.module.user.page;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -169,7 +170,7 @@ public class RegisterPage extends TemplatePage {
                         param.add(PARAM_USER, user.getUsername());
                         param.add(PARAM_KEY, generatedCode);
                         StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-                        url.append(getWebRequestCycle().urlFor(RegisterPage.class, param));
+                        url.append(urlFor(RegisterPage.class, param));
                         return url.toString();
                     }
                 };
@@ -265,14 +266,14 @@ public class RegisterPage extends TemplatePage {
     }
 
     private void activateUserIfParamsGiven() {
-        if (params.containsKey(PARAM_USER) && params.containsKey(PARAM_KEY)) {
+        if (!params.get(PARAM_USER).isEmpty() && !params.get(PARAM_KEY).isEmpty()) {
             activateUser();
         }
     }
 
     private void activateUser() {
-        String username = params.getString(PARAM_USER);
-        String confirmationCode = params.getString(PARAM_KEY);
+        String username = params.get(PARAM_USER).toString();
+        String confirmationCode = params.get(PARAM_KEY).toString();
         if (userService.activateUser(username, confirmationCode)) {
             setResponsePage(MessagePage.getMessagePage(getString("confirmed")));
         } else {

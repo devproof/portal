@@ -20,8 +20,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.rating.RatingPanel;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.Loop;
+import org.apache.wicket.markup.html.list.LoopItem;
 import org.apache.wicket.model.IModel;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.panel.BubblePanel;
@@ -41,7 +43,12 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
         super(id, rating, nrOfStars, nrOfVotes, hasVoted, addDefaultCssStyle);
         this.bubblePanel = bubblePanel;
         this.hasVoted = hasVoted;
-        PortalUtil.addJQuery(this);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        PortalUtil.addJQuery(response);
     }
 
     @Override
@@ -122,7 +129,7 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
                     // of our rating component, so other components can also get
                     // updated in case of an AJAX event.
 
-                    onRated(item.getIteration() + 1, target, getMarkupId());
+                    onRated(item.getIndex() + 1, target, getMarkupId());
                 }
 
                 @Override
@@ -131,7 +138,7 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
                 }
             };
 
-            int iteration = item.getIteration();
+            int iteration = item.getIndex();
 
             // add the star image, which is either active (highlighted) or
             // inactive (no star)

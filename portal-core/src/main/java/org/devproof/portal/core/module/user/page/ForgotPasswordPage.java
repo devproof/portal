@@ -79,8 +79,8 @@ public class ForgotPasswordPage extends TemplatePage {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(getFeedback());
-                target.addComponent(form);
+                target.add(getFeedback());
+                target.add(form);
             }
 
             private UrlCallback createForgotPasswordUrlCallback() {
@@ -92,7 +92,7 @@ public class ForgotPasswordPage extends TemplatePage {
                         param.add(ResetPasswordPage.PARAM_USER, emailOrUser);
                         param.add(ResetPasswordPage.PARAM_CONFIRMATION_CODE, generatedCode);
                         StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");
-                        url.append(ForgotPasswordPage.this.getWebRequestCycle().urlFor(ResetPasswordPage.class, param));
+                        url.append(urlFor(ResetPasswordPage.class, param));
                         return url.toString();
                     }
                 };

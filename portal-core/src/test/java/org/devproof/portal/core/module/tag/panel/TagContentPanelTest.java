@@ -18,7 +18,6 @@ package org.devproof.portal.core.module.tag.panel;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.tag.entity.AbstractTag;
@@ -60,23 +59,12 @@ public class TagContentPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createContentTagPanel());
+        List<TestTag> tags = new ArrayList<TestTag>();
+        TestTag tag = new TestTag();
+        tag.setTagname("foobar");
+        tags.add(tag);
+        tester.startComponentInPage(new TagContentPanel<TestTag>("panel", new ListModel<TestTag>(tags), WebPage.class));
         tester.assertComponent("panel", TagContentPanel.class);
-    }
-
-    private TestPanelSource createContentTagPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                List<TestTag> tags = new ArrayList<TestTag>();
-                TestTag tag = new TestTag();
-                tag.setTagname("foobar");
-                tags.add(tag);
-                return new TagContentPanel<TestTag>(panelId, new ListModel<TestTag>(tags), WebPage.class);
-            }
-        };
     }
 
     private static class TestTag extends AbstractTag<Configuration> {

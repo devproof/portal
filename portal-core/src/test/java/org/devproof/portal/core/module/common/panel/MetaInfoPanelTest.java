@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.common.entity.Modification;
 import org.devproof.portal.test.MockContextLoader;
@@ -57,24 +55,13 @@ public class MetaInfoPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createMetaInfoPanel());
+        TestEntity entity = new TestEntity();
+        entity.setCreatedAt(new Date());
+        entity.setModifiedAt(new Date());
+        entity.setCreatedBy("foo");
+        entity.setModifiedBy("bar");
+        tester.startComponentInPage(new MetaInfoPanel<TestEntity>("panel", Model.of(entity)));
         tester.assertComponent("panel", MetaInfoPanel.class);
-    }
-
-    private TestPanelSource createMetaInfoPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                TestEntity entity = new TestEntity();
-                entity.setCreatedAt(new Date());
-                entity.setModifiedAt(new Date());
-                entity.setCreatedBy("foo");
-                entity.setModifiedBy("bar");
-                return new MetaInfoPanel<TestEntity>(panelId, Model.of(entity));
-            }
-        };
     }
 
     private static class TestEntity extends Modification {

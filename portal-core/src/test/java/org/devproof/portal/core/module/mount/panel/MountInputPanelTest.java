@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.core.module.mount.panel;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -56,18 +54,7 @@ public class MountInputPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createMountInputPanelSource());
+        tester.startComponentInPage(new MountInputPanel("panel", "dummy", Model.of("1")));
         tester.assertComponent("panel", MountInputPanel.class);
-    }
-
-    private TestPanelSource createMountInputPanelSource() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 4216569876469661305L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new MountInputPanel(panelId, "dummy", Model.of("1"));
-            }
-        };
     }
 }

@@ -17,7 +17,7 @@ package org.devproof.portal.core.module.tag.panel;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.configuration.entity.Configuration;
 import org.devproof.portal.core.module.role.entity.Role;
@@ -61,19 +61,8 @@ public class TagCloudBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createTagCloudBoxPanel());
+        tester.startComponentInPage(new TagCloudBoxPanel<TestTag>("panel", new PageParameters(), new TestTagService(), WebPage.class));
         // tester.assertComponent("panel", TagCloudBoxPanel.class);
-    }
-
-    private TestPanelSource createTagCloudBoxPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new TagCloudBoxPanel<TestTag>(panelId, new TestTagService(), WebPage.class);
-            }
-        };
     }
 
     private static class TestTag extends AbstractTag<Configuration> {

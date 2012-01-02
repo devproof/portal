@@ -20,14 +20,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.extensions.ajax.markup.html.form.upload.UploadProgressBar;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.CommonConstants;
@@ -55,9 +55,14 @@ public abstract class UploadThemePanel extends Panel {
 
     public UploadThemePanel(String id) {
         super(id);
-        add(createCSSHeaderContributor());
         add(createFeedbackPanel());
         add(createUploadForm());
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(new CssResourceReference(CommonConstants.class, "css/default.css"));
     }
 
     private Form<FileUpload> createUploadForm() {
@@ -135,10 +140,6 @@ public abstract class UploadThemePanel extends Panel {
 
     private FeedbackPanel createFeedbackPanel() {
         return new FeedbackPanel("uploadFeedback");
-    }
-
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommonConstants.class, "css/default.css");
     }
 
     protected abstract void onSubmit();

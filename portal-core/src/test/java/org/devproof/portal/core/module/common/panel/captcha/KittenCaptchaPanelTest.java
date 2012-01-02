@@ -15,8 +15,6 @@
  */
 package org.devproof.portal.core.module.common.panel.captcha;
 
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -54,18 +52,7 @@ public class KittenCaptchaPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createKittenCaptchaPanel());
+        tester.startComponentInPage(new KittenCaptchaPanel("panel", new Dimension(400, 200)));
         tester.assertComponent("panel", KittenCaptchaPanel.class);
-    }
-
-    private TestPanelSource createKittenCaptchaPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new KittenCaptchaPanel(panelId, new Dimension(400, 200));
-            }
-        };
     }
 }

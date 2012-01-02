@@ -68,7 +68,8 @@ public class PortalApplication extends WebApplication {
         for (PageConfiguration page : pages) {
             if (page.getMountPath() != null) {
                 if (page.isIndexMountedPath()) {
-                    mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
+                    // TODO url handling
+//                    mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
                 } else {
                     mountPage(page.getMountPath(), page.getPageClass());
                 }
@@ -98,7 +99,7 @@ public class PortalApplication extends WebApplication {
     public void setThemeUuid(String themeUuid) {
         PortalResourceStreamLocator locator = (PortalResourceStreamLocator) getResourceSettings().getResourceStreamLocator();
         locator.setThemeUuid(themeUuid);
-        getMarkupSettings().getMarkupCache().clear();
+        getMarkupSettings().getMarkupFactory().getMarkupCache().clear();
         logger.debug("Theme " + themeUuid + " selected.");
     }
 
@@ -106,10 +107,11 @@ public class PortalApplication extends WebApplication {
      * Rollback on runtime exception Inform the admin about the runtime
      * exception
      */
-    @Override
-    protected IRequestCycleProcessor newRequestCycleProcessor() {
-        return new PortalRequestCycleProcessor(getSpringContext());
-    }
+// TODO was hiermit?
+//    @Override
+//    protected IRequestCycleProcessor newRequestCycleProcessor() {
+//        return new PortalRequestCycleProcessor(getSpringContext());
+//    }
 
     @Override
     public Class<? extends Page> getHomePage() {

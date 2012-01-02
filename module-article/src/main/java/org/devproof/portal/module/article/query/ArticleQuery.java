@@ -16,7 +16,6 @@
 package org.devproof.portal.module.article.query;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.PageParameters;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;

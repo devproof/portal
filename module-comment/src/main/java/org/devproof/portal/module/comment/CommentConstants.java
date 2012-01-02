@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.module.comment;
 
-import org.apache.wicket.ResourceReference;
-import org.devproof.portal.module.comment.page.CommentAdminPage;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * @author Carsten Hufe
@@ -24,10 +24,10 @@ import org.devproof.portal.module.comment.page.CommentAdminPage;
 public interface CommentConstants {
     String CONF_SHOW_REAL_AUTHOR = "comment_show_real_author";
 
-    ResourceReference REF_COMMENTS_ADD_IMG = new ResourceReference(CommentConstants.class, "img/comments_add.png");
-    ResourceReference REF_COMMENTS_IMG = new ResourceReference(CommentConstants.class, "img/comments.png");
-    ResourceReference REF_ACCEPT_IMG = new ResourceReference(CommentConstants.class, "img/accept.png");
-    ResourceReference REF_REJECT_IMG = new ResourceReference(CommentConstants.class, "img/deny.png");
+    ResourceReference REF_COMMENTS_ADD_IMG = new PackageResourceReference(CommentConstants.class, "img/comments_add.png");
+    ResourceReference REF_COMMENTS_IMG = new PackageResourceReference(CommentConstants.class, "img/comments.png");
+    ResourceReference REF_ACCEPT_IMG = new PackageResourceReference(CommentConstants.class, "img/accept.png");
+    ResourceReference REF_REJECT_IMG = new PackageResourceReference(CommentConstants.class, "img/deny.png");
     String CONF_COMMENT_BLAMED_THRESHOLD = "comment_blamed_threshold";
     String CONF_COMMENT_SHOW_REAL_AUTHOR = "comment_show_real_author";
     String CONF_COMMENT_NUMBER_PER_PAGE = "comment_number_per_page";

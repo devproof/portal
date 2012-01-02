@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.feed.page;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.feed.DummyFeedProviderImpl;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
@@ -60,6 +60,7 @@ public class Atom1FeedPageTest {
 
     @Test
     public void testRenderDefaultPage() {
+        // TODO use named parameters
         tester.startPage(Atom1FeedPage.class, new PageParameters("0=dummy"));
         tester.assertRenderedPage(Atom1FeedPage.class);
         tester.assertContains("dummy feed description");

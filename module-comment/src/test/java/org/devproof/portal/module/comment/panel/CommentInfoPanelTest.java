@@ -17,7 +17,6 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.entity.Comment;
 import org.devproof.portal.test.MockContextLoader;
@@ -57,23 +56,12 @@ public class CommentInfoPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createCommentInfoPanel());
+        Comment comment = new Comment();
+        comment.setId(1);
+        comment.setCreatedAt(new Date());
+        comment.setCreatedBy("someone");
+        comment.setModifiedAt(new Date());
+        tester.startComponentInPage(new CommentInfoPanel("panel", Model.of(comment)));
         tester.assertComponent("panel", CommentInfoPanel.class);
-    }
-
-    private TestPanelSource createCommentInfoPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                Comment comment = new Comment();
-                comment.setId(1);
-                comment.setCreatedAt(new Date());
-                comment.setCreatedBy("someone");
-                comment.setModifiedAt(new Date());
-                return new CommentInfoPanel(panelId, Model.of(comment));
-            }
-        };
     }
 }

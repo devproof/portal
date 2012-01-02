@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.common.repository;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.annotation.BeanJoin;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
@@ -27,8 +27,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.orm.hibernate3.SessionHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Arrays;
 import java.util.List;

@@ -15,12 +15,10 @@
  */
 package org.devproof.portal.module.comment.panel;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
@@ -28,6 +26,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.module.comment.CommentConstants;
@@ -49,11 +48,15 @@ public class ExpandableCommentPanel extends Panel {
     public ExpandableCommentPanel(String id, CommentConfiguration configuration) {
         super(id);
         this.configuration = configuration;
-        addJQuery();
-        add(createCSSHeaderContributor());
         add(createRefreshCommentContainer());
     }
 
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(new CssResourceReference(CommentConstants.class, "css/comment.css"));
+        PortalUtil.addJQuery(response);
+    }
 
     private CommentPanel createCommentPanel() {
         return new CommentPanel("comments", configuration);
@@ -61,12 +64,12 @@ public class ExpandableCommentPanel extends Panel {
 
     public void show(AjaxRequestTarget target) {
         refreshContainer.replace(createCommentPanel());
-        target.addComponent(refreshContainer);
-        target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
+        target.add(refreshContainer);
+        target.appendJavaScript("$(\"#" + refreshContainer.getMarkupId() + "\").slideDown(\"normal\");");
     }
 
     public void hide(AjaxRequestTarget target) {
-        target.appendJavascript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
+        target.appendJavaScript("$(\"#" + refreshContainer.getMarkupId() + "\").slideUp(\"normal\");");
     }
 
     public void toggle(AjaxRequestTarget target) {
@@ -101,13 +104,5 @@ public class ExpandableCommentPanel extends Panel {
 
     private SimpleAttributeModifier createDisplayNoneModifier() {
         return new SimpleAttributeModifier("style", "display:none;");
-    }
-
-    private void addJQuery() {
-        PortalUtil.addJQuery(this);
-    }
-
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
     }
 }

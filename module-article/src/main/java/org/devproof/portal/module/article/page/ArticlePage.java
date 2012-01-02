@@ -17,11 +17,9 @@ package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
@@ -30,6 +28,7 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
@@ -77,9 +76,11 @@ public class ArticlePage extends ArticleBasePage {
     private ArticleDataView dataView;
     private IModel<ArticleQuery> searchQueryModel;
     private WebMarkupContainer refreshContainerArticles;
+    private PageParameters params;
 
     public ArticlePage(PageParameters params) {
         super(params);
+        this.params = params;
         searchQueryModel = articleDataProvider.getSearchQueryModel();
         add(createRefreshContainerArticles());
         add(createPagingPanel());
@@ -103,7 +104,7 @@ public class ArticlePage extends ArticleBasePage {
     }
 
     private Component createTagCloudBox(String markupId) {
-        return new TagCloudBoxPanel<ArticleTag>(markupId, articleTagService, getClass());
+        return new TagCloudBoxPanel<ArticleTag>(markupId, params, articleTagService, getClass());
     }
 
     private ArticleSearchBoxPanel createArticleSearchBoxPanel(String markupId) {
@@ -334,7 +335,7 @@ public class ArticlePage extends ArticleBasePage {
                         @Override
                         public PageParameters getPageParameters() {
                             PageParameters params = new PageParameters();
-                            params.put("id", articleModel.getObject().getId());
+                            params.add("id", articleModel.getObject().getId());
                             return params;
                         }
                     };

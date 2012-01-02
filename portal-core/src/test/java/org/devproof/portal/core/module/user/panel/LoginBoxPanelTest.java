@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.core.module.user.panel;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -54,18 +52,7 @@ public class LoginBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createLoginBoxPanel());
+        tester.startComponentInPage(new LoginBoxPanel("panel", new PageParameters()));
         tester.assertComponent("panel", LoginBoxPanel.class);
-    }
-
-    private TestPanelSource createLoginBoxPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new LoginBoxPanel(panelId, new PageParameters());
-            }
-        };
     }
 }

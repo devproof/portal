@@ -15,7 +15,6 @@
  */
 package org.devproof.portal.core.module.mount.service;
 
-import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
@@ -35,7 +34,8 @@ public interface MountService {
      * @param requestedUrl requested URL
      * @return wicket request target
      */
-    IRequestTarget resolveRequestTarget(String requestedUrl);
+    // TODO entfernen?
+//    IRequestTarget resolveRequestTarget(String requestedUrl);
 
     /**
      * Returns the mount point which is marked as defaultUrl

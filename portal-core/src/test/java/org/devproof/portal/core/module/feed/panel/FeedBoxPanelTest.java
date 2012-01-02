@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.feed.panel;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.DummyPanelPage;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -54,18 +53,7 @@ public class FeedBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createFeedBoxPanel());
+        tester.startComponentInPage(new FeedBoxPanel("panel", DummyPanelPage.class));
         // tester.assertComponent("panel", FeedBoxPanel.class);
-    }
-
-    private TestPanelSource createFeedBoxPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new FeedBoxPanel(panelId, DummyPanelPage.class);
-            }
-        };
     }
 }

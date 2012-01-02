@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.module.article;
 
-import org.apache.wicket.ResourceReference;
-import org.devproof.portal.module.article.page.ArticleEditPage;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * @author Carsten Hufe
@@ -25,7 +25,7 @@ public interface ArticleConstants {
     String PAGEBREAK = "<div style=\"page-break-after: always;\">	<span style=\"display: none;\">&nbsp;</span></div>";
     String CONF_ARTICLES_PER_PAGE = "articles_per_page";
     String CONF_BOX_NUM_LATEST_ARTICLES = "box_num_latest_articles";
-    ResourceReference REF_ARTICLE_CSS = new ResourceReference(ArticleConstants.class, "css/article.css");
+    ResourceReference REF_ARTICLE_CSS = new CssResourceReference(ArticleConstants.class, "css/article.css");
     String CONF_ARTICLE_ENTRIES_IN_FEED = "article_entries_in_feed";
     String CONF_ARTICLE_FEED_TITLE = "article_feed_title";
     String ENTITY_CACHE_REGION = "entity.content";

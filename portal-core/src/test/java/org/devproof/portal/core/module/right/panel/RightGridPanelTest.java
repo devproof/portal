@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.core.module.right.panel;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.util.ListModel;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.test.MockContextLoader;
@@ -57,18 +55,7 @@ public class RightGridPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createRightGridPanel());
+        tester.startComponentInPage(new RightGridPanel("panel", "", new ListModel<Right>(new ArrayList<Right>())));
         tester.assertComponent("panel", RightGridPanel.class);
-    }
-
-    private TestPanelSource createRightGridPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new RightGridPanel(panelId, "", new ListModel<Right>(new ArrayList<Right>()));
-            }
-        };
     }
 }

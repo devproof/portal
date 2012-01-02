@@ -20,6 +20,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -54,9 +55,14 @@ public abstract class AbstractHistoryPage<T extends Historized> extends Template
 
     public AbstractHistoryPage(PageParameters params) {
         super(params);
-        addSyntaxHighlighter();
         add(createContentTitleLabel());
         add(createRefreshContainer());
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        addSyntaxHighlighter(response);
     }
 
     /**

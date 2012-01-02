@@ -15,6 +15,7 @@
  */
 package org.devproof.portal.core.module.common.util;
 
+import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.time.Time;
@@ -32,7 +33,9 @@ public class FileResourceStream implements IResourceStream {
     private static final long serialVersionUID = 1L;
     private FileInputStream fis;
     private File file;
-
+    private String style;
+    private String variation;
+    
     public FileResourceStream(File file) throws FileNotFoundException {
         this.file = file;
         fis = new FileInputStream(file);
@@ -54,15 +57,35 @@ public class FileResourceStream implements IResourceStream {
         return null;
     }
 
-    public long length() {
-        return file.length();
+    public Bytes length() {
+        return Bytes.bytes(file.length());
     }
 
     public void setLocale(Locale locale) {
     }
 
+    @Override
+    public String getStyle() {
+        return style;
+    }
+
+    @Override
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    @Override
+    public String getVariation() {
+        return variation;
+    }
+
+    @Override
+    public void setVariation(String variation) {
+        this.variation = variation;
+    }
+
     public Time lastModifiedTime() {
-        return Time.milliseconds(file.lastModified());
+        return Time.millis(file.lastModified());
     }
 
 }

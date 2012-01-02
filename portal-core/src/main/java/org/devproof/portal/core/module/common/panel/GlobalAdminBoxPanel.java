@@ -117,9 +117,9 @@ public class GlobalAdminBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private String getLinkNameByClass(Class<? extends Page> pageClass) {
-        String label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL);
+        String label = new ClassStringResourceLoader(pageClass).loadStringResource((Class<?>)null, CommonConstants.GLOBAL_ADMIN_BOX_LINK_LABEL, getLocale(), getStyle(), getVariation());
         if (StringUtils.isEmpty(label)) {
-            label = new ClassStringResourceLoader(pageClass).loadStringResource(null, CommonConstants.CONTENT_TITLE_LABEL);
+            label = new ClassStringResourceLoader(pageClass).loadStringResource((Class<?>)null, CommonConstants.CONTENT_TITLE_LABEL, getLocale(), getStyle(), getVariation());
         }
         return label;
     }

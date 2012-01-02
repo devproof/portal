@@ -19,14 +19,14 @@ package org.devproof.portal.module.comment.panel;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.module.comment.CommentConstants;
@@ -46,9 +46,14 @@ public abstract class CommentLinkPanel extends Panel {
     public CommentLinkPanel(String id, CommentConfiguration configuration) {
         super(id);
         this.configuration = configuration;
-        addJQuery();
-        add(createCSSHeaderContributor());
         add(createCommentLink());
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(new CssResourceReference(CommentConstants.class, "css/comment.css"));
+        PortalUtil.addJQuery(response);
     }
 
     private Component createCommentLink() {
@@ -68,7 +73,7 @@ public abstract class CommentLinkPanel extends Panel {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
-                target.addComponent(commentLink);
+                target.add(commentLink);
                 CommentLinkPanel.this.onClick(target);
             }
         };
@@ -88,14 +93,6 @@ public abstract class CommentLinkPanel extends Panel {
                 }
             }
         };
-    }
-
-    private void addJQuery() {
-        PortalUtil.addJQuery(this);
-    }
-
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
     }
 
     @Override

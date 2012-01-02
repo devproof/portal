@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.feed;
 
 import com.sun.syndication.feed.synd.*;
-import org.apache.wicket.RequestCycle;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.devproof.portal.core.module.common.page.TemplatePage;
 import org.devproof.portal.core.module.feed.provider.FeedProvider;
 

@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.module.comment.panel;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.util.tester.FormTester;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
 import org.devproof.portal.test.MockContextLoader;
@@ -56,14 +54,14 @@ public class CommentPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createCommentPanel());
+        tester.startComponentInPage(new CommentPanel("panel", new TestCommentConfiguration()));
         tester.assertComponent("panel", CommentPanel.class);
     }
 
     @Test
     public void testWriteComment() throws Exception {
         PortalTestUtil.loginDefaultAdminUser(tester);
-        tester.startPanel(createCommentPanel());
+        tester.startComponentInPage(new CommentPanel("panel", new TestCommentConfiguration()));
         tester.assertComponent("panel", CommentPanel.class);
         FormTester ft = tester.newFormTester("panel:form");
         ft.setValue("comment", "I believe I can fly.");
@@ -72,17 +70,6 @@ public class CommentPanelTest {
         tester.assertNoErrorMessage();
         tester.assertInvisible("panel:form");
         tester.assertContains("I believe I can fly.");
-    }
-
-    private TestPanelSource createCommentPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new CommentPanel(panelId, new TestCommentConfiguration());
-            }
-        };
     }
 
     private static class TestCommentConfiguration extends DefaultCommentConfiguration {

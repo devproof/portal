@@ -18,8 +18,7 @@ package org.devproof.portal.core.module.tag.panel;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -29,7 +28,6 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.devproof.portal.core.module.tag.TagConstants;
-import org.devproof.portal.core.module.tag.TagUtils;
 import org.devproof.portal.core.module.tag.entity.AbstractTag;
 
 import java.util.List;
@@ -49,8 +47,13 @@ public class TagContentPanel<T extends AbstractTag<?>> extends Panel {
         super(id);
         this.tagsModel = tagsModel;
         this.page = page;
-        add(createCSSHeaderContributor());
         add(createRepeatingTags());
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(TagConstants.REF_TAG_CSS);
     }
 
     private Component createRepeatingTags() {
@@ -68,7 +71,8 @@ public class TagContentPanel<T extends AbstractTag<?>> extends Panel {
 
 
     private boolean isTagSelected(T tag) {
-        String selectedTag = TagUtils.findSelectedTag();
+        // TODO getPageParameters wird hier wohl null sein ...
+        String selectedTag = getPage().getPageParameters().get(TagConstants.TAG_PARAM).toOptionalString();
         return tag.getTagname().equals(selectedTag);
     }
 
@@ -102,9 +106,5 @@ public class TagContentPanel<T extends AbstractTag<?>> extends Panel {
 
     private Label createTagLinkLabel(T tag) {
         return new Label("tagName", new PropertyModel<String>(tag, "tagname"));
-    }
-
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(TagConstants.REF_TAG_CSS);
     }
 }

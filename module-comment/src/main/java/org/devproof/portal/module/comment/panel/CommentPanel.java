@@ -19,11 +19,9 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -38,6 +36,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.*;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -83,7 +83,6 @@ public class CommentPanel extends Panel {
         this.configuration = configuration;
         this.queryModel = createCommentQueryModel();
         this.commentModel = createNewCommentModelForForm();
-        add(createCSSHeaderContributor());
         add(createBubblePanel());
         add(createNoCommentsHintContainer());
         add(createRepeatingComments());
@@ -93,6 +92,12 @@ public class CommentPanel extends Panel {
         add(createCommentForm());
         add(createLoginToWriteCommentMessageContainer());
         setOutputMarkupId(true);
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(new CssResourceReference(CommentConstants.class, "css/comment.css"));
     }
 
     private IModel<CommentQuery> createCommentQueryModel() {
@@ -265,10 +270,6 @@ public class CommentPanel extends Panel {
     private BubblePanel createBubblePanel() {
         bubblePanel = new BubblePanel("bubble");
         return bubblePanel;
-    }
-
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CommentConstants.class, "css/comment.css");
     }
 
     private class CommentDataView extends DataView<Comment> {
@@ -469,7 +470,8 @@ public class CommentPanel extends Panel {
         return new UrlCallback() {
             @Override
             public String getUrl(Comment comment) {
-                String requestUrl = getWebRequest().getHttpServletRequest().getRequestURL().toString();
+                // TODO war das die richtige url=
+                String requestUrl = getWebRequest().getClientUrl().toString();
                 PageParameters param = new PageParameters();
                 param.add(CommentAdminPage.PARAM_ID, String.valueOf(comment.getId()));
                 StringBuffer url = new StringBuffer(StringUtils.substringBeforeLast(requestUrl, "/")).append("/");

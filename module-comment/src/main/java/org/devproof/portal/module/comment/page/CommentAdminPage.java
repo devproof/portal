@@ -16,9 +16,9 @@
 package org.devproof.portal.module.comment.page;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.Secured;
@@ -70,7 +70,7 @@ public class CommentAdminPage extends TemplatePage {
 
     private IModel<CommentQuery> createCommentQueryModel() {
         IModel<CommentQuery> queryModel = commentPanel.getCommentQueryModel();
-        queryModel.getObject().setId(params.getAsInteger(PARAM_ID));
+        queryModel.getObject().setId(params.get(PARAM_ID).toOptionalInteger());
         return queryModel;
     }
 

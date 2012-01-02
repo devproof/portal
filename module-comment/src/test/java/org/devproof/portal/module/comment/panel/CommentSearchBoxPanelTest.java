@@ -16,9 +16,7 @@
 package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.query.CommentQuery;
 import org.devproof.portal.test.MockContextLoader;
@@ -56,19 +54,8 @@ public class CommentSearchBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createCommentSearchBoxPanel());
+        tester.startComponentInPage(new TestCommentSearchBoxPanel("panel", new CommentQuery()));
         tester.assertComponent("panel", CommentSearchBoxPanel.class);
-    }
-
-    private TestPanelSource createCommentSearchBoxPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new TestCommentSearchBoxPanel(panelId, new CommentQuery());
-            }
-        };
     }
 
     protected static class TestCommentSearchBoxPanel extends CommentSearchBoxPanel {

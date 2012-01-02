@@ -16,6 +16,7 @@
 package org.devproof.portal.core.module.historization.page;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -36,12 +37,17 @@ public abstract class AbstractRestoreViewPage extends TemplatePage {
 
     public AbstractRestoreViewPage() {
         super(new PageParameters());
-        addSyntaxHighlighter();
         add(newHistorizedView("view"));
         add(newRestoreLink("topRestore"));
         add(newRestoreLink("bottomRestore"));
         add(newBackLink("topBack"));
         add(newBackLink("bottomBack"));
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        addSyntaxHighlighter(response);
     }
 
     private Link<Void> newBackLink(final String markupId) {

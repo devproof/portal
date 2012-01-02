@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
@@ -35,7 +34,6 @@ import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
 import org.devproof.portal.core.module.tag.TagConstants;
-import org.devproof.portal.core.module.tag.TagUtils;
 import org.devproof.portal.core.module.tag.entity.AbstractTag;
 import org.devproof.portal.core.module.tag.service.TagService;
 
@@ -127,7 +125,7 @@ public class TagCloudBoxPanel<T extends AbstractTag<?>> extends Panel implements
     }
 
     private boolean isTagSelected(T tag) {
-        String selectedTag = TagUtils.findSelectedTag();
+        String selectedTag = params.get(TagConstants.TAG_PARAM).toOptionalString();
         return tag.getTagname().equals(selectedTag);
     }
 

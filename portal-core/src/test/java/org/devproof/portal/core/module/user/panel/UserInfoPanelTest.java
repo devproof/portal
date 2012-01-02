@@ -17,7 +17,6 @@ package org.devproof.portal.core.module.user.panel;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.user.entity.User;
 import org.devproof.portal.test.MockContextLoader;
@@ -56,18 +55,7 @@ public class UserInfoPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createUserInfoPanel());
+        tester.startComponentInPage(new UserInfoPanel("panel", Model.of(new User())));
         tester.assertComponent("panel", UserInfoPanel.class);
-    }
-
-    private TestPanelSource createUserInfoPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new UserInfoPanel(panelId, Model.of(new User()));
-            }
-        };
     }
 }

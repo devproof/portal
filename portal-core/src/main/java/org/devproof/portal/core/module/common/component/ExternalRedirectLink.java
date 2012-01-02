@@ -16,7 +16,7 @@
 package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.markup.html.link.StatelessLink;
-import org.apache.wicket.request.target.basic.RedirectRequestTarget;
+import org.apache.wicket.markup.html.pages.RedirectPage;
 
 /**
  * External link with redirection (if you wanna count the hits)
@@ -34,6 +34,6 @@ public class ExternalRedirectLink extends StatelessLink {
 
     @Override
     public void onClick() {
-        getRequestCycle().setRequestTarget(new RedirectRequestTarget(url));
+        setResponsePage(new RedirectPage(url));
     }
 }

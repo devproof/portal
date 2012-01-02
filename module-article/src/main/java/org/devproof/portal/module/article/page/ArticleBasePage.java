@@ -16,12 +16,11 @@
 package org.devproof.portal.module.article.page;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -40,9 +39,14 @@ public class ArticleBasePage extends TemplatePage {
 
 	public ArticleBasePage(PageParameters params) {
 		super(params);
-		add(createCSSHeaderContributor());
-		addSyntaxHighlighter();
 	}
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(ArticleConstants.REF_ARTICLE_CSS);
+        addSyntaxHighlighter(response);
+    }
 
     @Override
     protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {
@@ -51,10 +55,6 @@ public class ArticleBasePage extends TemplatePage {
 		}
         return super.newPageAdminBoxLink(linkMarkupId, labelMarkupId);
     }
-
-    private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(ArticleConstants.REF_ARTICLE_CSS);
-	}
 
 	private Link<?> createArticleAddLink(String linkMarkupId, String labelMarkupId) {
 		Link<?> addLink = newArticleAddLink(linkMarkupId);

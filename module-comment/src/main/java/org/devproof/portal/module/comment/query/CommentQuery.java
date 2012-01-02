@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.module.comment.query;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.injection.web.InjectorHolder;
+import org.apache.wicket.injection.Injector;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
@@ -43,7 +43,7 @@ public class CommentQuery implements SearchQuery {
     private Boolean author;
 
     public CommentQuery() {
-        InjectorHolder.getInjector().inject(this);
+        Injector.get().inject(this);
         boolean showOnlyReviewed = configurationService.findAsBoolean(CommentConstants.CONF_COMMENT_SHOW_ONLY_REVIEWED);
         if (!isAuthor()) {
             if (showOnlyReviewed) {

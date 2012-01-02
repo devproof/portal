@@ -18,8 +18,7 @@ package org.devproof.portal.core.module.common.component;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -90,22 +89,22 @@ public class ProgressBar extends Panel {
 
     private static final long serialVersionUID = 1L;
 
-    private static final PackageResourceReference CSS = new PackageResourceReference(ProgressBar.class, "ProgressBar.css");
     private int width = 400;
     private ProgressionModel model;
 
     public ProgressBar(String id, ProgressionModel model) {
         super(id, model);
         this.model = model;
-        add(createCSSHeaderContributor());
         add(createProgressPercentageLabel());
         add(createProgressMessageLabel());
         add(createProgressBarContainer());
         setOutputMarkupId(true);
     }
 
-    private HeaderContributor createCSSHeaderContributor() {
-        return CSSPackageResource.getHeaderContribution(CSS);
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.renderCSSReference(new PackageResourceReference(ProgressBar.class, "ProgressBar.css"));
     }
 
     private Component createProgressBarContainer() {

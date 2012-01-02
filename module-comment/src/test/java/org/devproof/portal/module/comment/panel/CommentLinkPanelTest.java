@@ -17,7 +17,6 @@ package org.devproof.portal.module.comment.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.comment.config.CommentConfiguration;
 import org.devproof.portal.module.comment.config.DefaultCommentConfiguration;
@@ -57,25 +56,14 @@ public class CommentLinkPanelTest {
 
     @Test
     public void testRenderDefaultPanel_withRight() {
-        tester.startPanel(createCommentLinkPanel(true));
+        tester.startComponentInPage(new TestCommentLinkPanel("panel", new TestCommentConfiguration(true)));
         tester.assertComponent("panel", CommentLinkPanel.class);
     }
 
     @Test
     public void testRenderDefaultPanel_withoutRight() {
-        tester.startPanel(createCommentLinkPanel(false));
+        tester.startComponentInPage(new TestCommentLinkPanel("panel", new TestCommentConfiguration(false)));
         tester.assertInvisible("panel");
-    }
-
-    private TestPanelSource createCommentLinkPanel(final boolean allowedToView) {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new TestCommentLinkPanel(panelId, new TestCommentConfiguration(allowedToView));
-            }
-        };
     }
 
     private static class TestCommentConfiguration extends DefaultCommentConfiguration {

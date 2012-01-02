@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.mount.service;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
@@ -140,20 +139,20 @@ public class MountServiceImpl implements MountService {
     public boolean existsMountPoint(String relatedContentId, String handlerKey) {
         return mountPointRepository.existsMountPoint(relatedContentId, handlerKey) > 0;
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    public IRequestTarget resolveRequestTarget(String requestedUrl) {
-        requestedUrl = addLeadingSlash(requestedUrl);
-        requestedUrl = removeEndingSlash(requestedUrl);
-        MountPoint mountPoint = resolveMountPoint(requestedUrl);
-        String handlerKey = mountPoint.getHandlerKey();
-        if(mountHandlerRegistry.isMountHandlerAvailable(handlerKey)) {
-            MountHandler mountHandler = mountHandlerRegistry.getMountHandler(handlerKey);
-            return mountHandler.getRequestTarget(requestedUrl, mountPoint);
-        }
-        throw new IllegalStateException("No mount handler available, should not occur because existing url is prechecked.");
-    }
+// TODO irgendwas hiermit machen
+//    @Override
+//    @Transactional(readOnly = true)
+//    public IRequestTarget resolveRequestTarget(String requestedUrl) {
+//        requestedUrl = addLeadingSlash(requestedUrl);
+//        requestedUrl = removeEndingSlash(requestedUrl);
+//        MountPoint mountPoint = resolveMountPoint(requestedUrl);
+//        String handlerKey = mountPoint.getHandlerKey();
+//        if(mountHandlerRegistry.isMountHandlerAvailable(handlerKey)) {
+//            MountHandler mountHandler = mountHandlerRegistry.getMountHandler(handlerKey);
+//            return mountHandler.getRequestTarget(requestedUrl, mountPoint);
+//        }
+//        throw new IllegalStateException("No mount handler available, should not occur because existing url is prechecked.");
+//    }
 
     @Override
     @Transactional(readOnly = true)

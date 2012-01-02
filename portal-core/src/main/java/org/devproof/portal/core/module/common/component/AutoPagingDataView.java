@@ -38,15 +38,16 @@ public abstract class AutoPagingDataView<T> extends DataView<T> {
     protected void onBeforeRender() {
         // if params is null, its a post search request ... so reset the
         // current page
-        PageParameters params = RequestCycle.get().getPageParameters();
-        if (params != null && params.containsKey(BookmarkablePagingPanel.PAGE_PARAM)) {
-            int page = params.getAsInteger(BookmarkablePagingPanel.PAGE_PARAM, 1);
-            if (page > 0 && page <= getPageCount()) {
-                setCurrentPage(page - 1);
-            }
-        } else {
-            setCurrentPage(0);
-        }
+// TODO fix it
+//        PageParameters params = RequestCycle.get().getPageParameters();
+//        if (params != null && params.containsKey(BookmarkablePagingPanel.PAGE_PARAM)) {
+//            int page = params.getAsInteger(BookmarkablePagingPanel.PAGE_PARAM, 1);
+//            if (page > 0 && page <= getPageCount()) {
+//                setCurrentPage(page - 1);
+//            }
+//        } else {
+//            setCurrentPage(0);
+//        }
         super.onBeforeRender();
     }
 

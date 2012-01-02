@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.box.entity.Box;
 import org.devproof.portal.test.MockContextLoader;
@@ -56,18 +54,7 @@ public class OtherBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createOtherBoxPanel());
+        tester.startComponentInPage(new OtherBoxPanel("panel", Model.of(new Box())));
         tester.assertComponent("panel", OtherBoxPanel.class);
-    }
-
-    private TestPanelSource createOtherBoxPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new OtherBoxPanel(panelId, Model.of(new Box()));
-            }
-        };
     }
 }
