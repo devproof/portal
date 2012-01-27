@@ -123,7 +123,7 @@ public class RolePage extends TemplatePage {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
-                target.addComponent(refreshTable);
+                target.add(refreshTable);
             }
         };
     }
@@ -158,8 +158,8 @@ public class RolePage extends TemplatePage {
                         rightService.refreshGlobalApplicationRights();
                         bubblePanel.hide(target);
                         info(getString("msg.saved"));
-                        target.addComponent(refreshTable);
-                        target.addComponent(RolePage.this.getFeedback());
+                        target.add(refreshTable);
+                        target.add(RolePage.this.getFeedback());
                     }
 
                     @Override
@@ -266,8 +266,8 @@ public class RolePage extends TemplatePage {
                             rightService.refreshGlobalApplicationRights();
                             bubblePanel.hide(target);
                             info(getString("msg.deleted"));
-                            target.addComponent(refreshTable);
-                            target.addComponent(getFeedback());
+                            target.add(refreshTable);
+                            target.add(getFeedback());
                         }
 
                     };

@@ -23,7 +23,6 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.IMarkupFragment;
 import org.apache.wicket.markup.MarkupStream;
@@ -222,13 +221,13 @@ public abstract class TemplatePage extends WebPage {
 
     private WebMarkupContainer createMetaCopyrightLabel() {
         WebMarkupContainer copyright = new WebMarkupContainer("metaCopyright");
-        copyright.add(new SimpleAttributeModifier("content", configurationService.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
+        copyright.add(AttributeModifier.replace("content", configurationService.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
         return copyright;
     }
 
     private WebMarkupContainer createMetaRevisit() {
         WebMarkupContainer copyright = new WebMarkupContainer("metaRevisit");
-        copyright.add(new SimpleAttributeModifier("content", getRevisitAfter()));
+        copyright.add(AttributeModifier.replace("content", getRevisitAfter()));
         return copyright;
     }
 
@@ -238,7 +237,7 @@ public abstract class TemplatePage extends WebPage {
 
     private WebMarkupContainer createMetaRobots() {
         WebMarkupContainer copyright = new WebMarkupContainer("metaRobots");
-        copyright.add(new SimpleAttributeModifier("content", getRobots()));
+        copyright.add(AttributeModifier.replace("content", getRobots()));
         return copyright;
     }
 
@@ -330,6 +329,7 @@ public abstract class TemplatePage extends WebPage {
 
     /**
      * Adds the Css and JavaScript of the SyntaxHighligher to the page
+     * @param response response
      */
     protected void addSyntaxHighlighter(IHeaderResponse response) {
         String theme = configurationService.findAsString(CommonConstants.CONF_SYNTAXHL_THEME);
@@ -373,7 +373,7 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private AttributeModifier createMainNavigationClassModifier(ListItem<Class<? extends Page>> item) {
-        return new AttributeModifier("class", true, createMainNavigationClassModifierModel(item));
+        return AttributeModifier.replace("class", createMainNavigationClassModifierModel(item));
     }
 
     private AbstractReadOnlyModel<String> createMainNavigationClassModifierModel(final ListItem<Class<? extends Page>> item) {

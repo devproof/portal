@@ -222,8 +222,8 @@ public class ContactPage extends TemplatePage {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(getFeedback());
-                target.addComponent(contactForm);
+                target.add(getFeedback());
+                target.add(contactForm);
             }
 
             private EmailPlaceholderBean createEmailPlaceholderBean(User touser) {

@@ -191,8 +191,8 @@ public class RightPage extends TemplatePage {
                         Right right = item.getModelObject();
                         rightService.delete(right);
                         rightService.refreshGlobalApplicationRights();
-                        target.addComponent(refreshTable);
-                        target.addComponent(getFeedback());
+                        target.add(refreshTable);
+                        target.add(getFeedback());
                         info(getString("msg.deleted"));
                     } catch (DeleteFailedException e) {
                         error(getString("msg.deleteFailed"));
@@ -214,8 +214,8 @@ public class RightPage extends TemplatePage {
                             rightService.refreshGlobalApplicationRights();
                             bubblePanel.hide(target);
                             info(getString("msg.saved"));
-                            target.addComponent(refreshTable);
-                            target.addComponent(getFeedback());
+                            target.add(refreshTable);
+                            target.add(getFeedback());
                         }
 
                         @Override
@@ -229,7 +229,7 @@ public class RightPage extends TemplatePage {
         }
 
         private AttributeModifier createAlternatingModifier(final Item<Right> item) {
-            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.common.component;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -74,16 +74,16 @@ public class TooltipLabel extends Panel {
         return link;
     }
 
-    private SimpleAttributeModifier createIdAttributeModifier(String tooltipMarkupId) {
-        return new SimpleAttributeModifier("id", tooltipMarkupId);
+    private AttributeModifier createIdAttributeModifier(String tooltipMarkupId) {
+        return AttributeModifier.replace("id", tooltipMarkupId);
     }
 
-    private SimpleAttributeModifier createOnMouseOutAttributeModifier(String strTT) {
-        return new SimpleAttributeModifier("onmouseout", "xstooltip_hide('" + strTT + "');");
+    private AttributeModifier createOnMouseOutAttributeModifier(String strTT) {
+        return AttributeModifier.replace("onmouseout", "xstooltip_hide('" + strTT + "');");
     }
 
-    private SimpleAttributeModifier createOnMouseOverAttributeModifier(String strTT, String tooltipMarkupId) {
-        return new SimpleAttributeModifier("onmouseover", "xstooltip_show('" + strTT + "', '" + tooltipMarkupId + "', 289, 49);");
+    private AttributeModifier createOnMouseOverAttributeModifier(String strTT, String tooltipMarkupId) {
+        return AttributeModifier.replace("onmouseover", "xstooltip_show('" + strTT + "', '" + tooltipMarkupId + "', 289, 49);");
     }
 
 }

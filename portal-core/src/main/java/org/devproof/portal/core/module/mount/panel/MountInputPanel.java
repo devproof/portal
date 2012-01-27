@@ -262,8 +262,8 @@ public class MountInputPanel extends Panel {
                         value = StringUtils.deleteWhitespace(value);
                         value = StringUtils.removeEnd(value, "/");
                         mountUrlField.setModelObject(value);
-                        target.addComponent(mountUrlField);
-                        target.addComponent(overrideDescriptionLabel);
+                        target.add(mountUrlField);
+                        target.add(overrideDescriptionLabel);
                     }
                 }
 

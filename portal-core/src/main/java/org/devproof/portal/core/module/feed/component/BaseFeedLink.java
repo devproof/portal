@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.core.module.feed.component;
 
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -47,14 +47,15 @@ public abstract class BaseFeedLink extends BookmarkablePageLink<BaseFeedLink> {
     private void setLinkParameter() {
         if (hasFeedSupport) {
             String path = getPagePath();
+            // TODO irgendwas?
             setParameter("0", path);
         }
     }
 
-    private SimpleAttributeModifier createTitleAttributeModifier() {
+    private AttributeModifier createTitleAttributeModifier() {
         String title = getFeedPageTitle();
         String feedName = new StringResourceModel("feedName", this, null, new String[]{title}).getString();
-        return new SimpleAttributeModifier("title", feedName);
+        return AttributeModifier.replace("title", feedName);
     }
 
     private String getFeedPageTitle() {
@@ -77,12 +78,12 @@ public abstract class BaseFeedLink extends BookmarkablePageLink<BaseFeedLink> {
         hasFeedSupport = feedProviderRegistry.hasFeedSupport(page);
     }
 
-    private SimpleAttributeModifier createTypeAttributeModifier() {
-        return new SimpleAttributeModifier("type", getContentType());
+    private AttributeModifier createTypeAttributeModifier() {
+        return AttributeModifier.replace("type", getContentType());
     }
 
-    private SimpleAttributeModifier createRelAttributeModifier() {
-        return new SimpleAttributeModifier("rel", "alternate");
+    private AttributeModifier createRelAttributeModifier() {
+        return AttributeModifier.replace("rel", "alternate");
     }
 
     protected abstract String getContentType();

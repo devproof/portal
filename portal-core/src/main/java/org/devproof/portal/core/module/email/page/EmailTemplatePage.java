@@ -93,7 +93,7 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
         }
 
         private AttributeModifier createAlternatingCssClassModifier(Item<EmailTemplate> item) {
-            return new AttributeModifier("class", true, createAlternatingModel(item));
+            return AttributeModifier.replace("class", createAlternatingModel(item));
         }
 
         private AbstractReadOnlyModel<String> createAlternatingModel(final Item<EmailTemplate> item) {
@@ -116,8 +116,8 @@ public class EmailTemplatePage extends EmailTemplateBasePage {
                     emailService.delete(getEntityModel().getObject());
                     info(EmailTemplatePage.this.getString("msg.deleted"));
                     item.setVisible(false);
-                    target.addComponent(item);
-                    target.addComponent(getFeedback());
+                    target.add(item);
+                    target.add(getFeedback());
                 }
 
                 @Override

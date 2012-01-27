@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.common.panel.captcha;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
@@ -170,17 +170,17 @@ public class KittenCaptchaPanel extends Panel {
                 if (animal != null) {
                     // Toggle the animal's highlighting
                     animal.isHighlighted = !animal.isHighlighted;
-                    target.addComponent(image);
+                    target.add(image);
                 }
                 // Update the selection label
-                target.addComponent(animalSelectionLabel);
+                target.add(animalSelectionLabel);
                 KittenCaptchaPanel.this.onClick(target);
             }
         });
 
         imageContainer.add(image);
+        imageContainer.add(AttributeModifier.replace("style", "height: " + imageSize.height + "px"));
         imageContainer.setOutputMarkupId(true);
-        imageContainer.add(new SimpleAttributeModifier("style", "height: " + imageSize.height + "px"));
         add(imageContainer);
     }
 

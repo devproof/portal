@@ -15,10 +15,10 @@
  */
 package org.devproof.portal.core.module.common.component;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.rating.RatingPanel;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -142,7 +142,7 @@ public abstract class CaptchaRatingPanel extends RatingPanel {
 
             // add the star image, which is either active (highlighted) or
             // inactive (no star)
-            link.add(new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
+            link.add(new WebMarkupContainer("star").add(AttributeModifier.replace("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration)))));
             link.setOutputMarkupId(true);
             item.add(link);
         }

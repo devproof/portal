@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.common.page;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Session;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.app.PortalSession;
@@ -45,7 +45,7 @@ public class MessagePage extends TemplatePage {
     public MessagePage(String message, boolean error, boolean key) {
         super(new PageParameters());
         Label label = new Label("message", key ? getString(message): message);
-        label.add(new SimpleAttributeModifier("class", error ? "feedbackPanelERROR" : "feedbackPanelINFO"));
+        label.add(AttributeModifier.replace("class", error ? "feedbackPanelERROR" : "feedbackPanelINFO"));
         add(label);
     }
 

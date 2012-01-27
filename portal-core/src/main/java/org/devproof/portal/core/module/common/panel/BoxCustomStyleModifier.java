@@ -29,7 +29,7 @@ import org.devproof.portal.core.module.box.entity.Box;
  */
 public class BoxCustomStyleModifier extends AttributeAppender {
     public BoxCustomStyleModifier(IModel<Box> boxModel) {
-        super("class", true, createAppendModel(boxModel), ";");
+        super("class", createAppendModel(boxModel), ";");
     }
     private static IModel<?> createAppendModel(IModel<Box> boxModel) {
         return new PropertyModel<String>(boxModel, "customStyle");

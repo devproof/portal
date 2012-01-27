@@ -15,15 +15,14 @@
  */
 package org.devproof.portal.core.module.common.panel;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.PackageResourceReference;
@@ -54,12 +53,12 @@ public class BubblePanel extends Panel {
 
 
 
-    private SimpleAttributeModifier createStyleAttributeModifier() {
-        return new SimpleAttributeModifier("style", "display:none;");
+    private AttributeModifier createStyleAttributeModifier() {
+        return AttributeModifier.replace("style", "display:none;");
     }
 
-    private SimpleAttributeModifier createClassAttributeModifier() {
-        return new SimpleAttributeModifier("class", "bubblePopup");
+    private AttributeModifier createClassAttributeModifier() {
+        return AttributeModifier.replace("class", "bubblePopup");
     }
 
     private Component createContent() {
@@ -87,7 +86,7 @@ public class BubblePanel extends Panel {
     }
 
     private void show(String linkId, AjaxRequestTarget target) {
-        target.addComponent(this);
+        target.add(this);
         String js = "var id = '#" + getMarkupId() + "'; var p = $(\"#" + linkId + "\"); var pos = p.position();";
         js += "$(id).css( {'position': 'absolute', 'left': (pos.left - 45 + (p.width() / 2)) + 'px', 'top':(pos.top - $(id).height() - (p.height() / 2) + 50) + 'px' } );";
         js += "$('.bubblePopup').fadeOut('normal');";
@@ -96,7 +95,7 @@ public class BubblePanel extends Panel {
     }
 
     public void showModal(AjaxRequestTarget target) {
-        target.addComponent(this);
+        target.add(this);
         String js = "";
 //        js = "var maskHeight = $(document).height(); var maskWidth = $(window).width();";
         js += "$('#modalMask').css({'width':$(window).width(),'height':$(document).height()});";

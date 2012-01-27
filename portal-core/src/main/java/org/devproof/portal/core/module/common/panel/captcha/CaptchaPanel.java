@@ -76,7 +76,7 @@ public abstract class CaptchaPanel extends Panel {
 
             @Override
             protected void onClick(AjaxRequestTarget target) {
-                target.addComponent(confirmButton);
+                target.add(confirmButton);
             }
         };
         return kittenCaptchaImagePanel;

@@ -15,9 +15,9 @@
  */
 package org.devproof.portal.core.module.common.component;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.rating.RatingPanel;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -95,6 +95,7 @@ public abstract class StatelessRatingPanel extends RatingPanel {
         private BookmarkablePageLink<Void> creatingStarBookmarkableLink(LoopItem item) {
             BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link", getPage().getClass());
             link.setEnabled(!hasVoted.getObject());
+            // TODO with url stuff
             link.setParameter("rateid", contentId);
             link.setParameter("vote", item.getIndex());
             link.add(createStarContainer(item));
@@ -106,7 +107,7 @@ public abstract class StatelessRatingPanel extends RatingPanel {
             int iteration = item.getIndex();
             // add the star image, which is either active (highlighted) or
             // inactive (no star)
-            return new WebMarkupContainer("star").add(new SimpleAttributeModifier("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
+            return new WebMarkupContainer("star").add(AttributeModifier.replace("src", (onIsStarActive(iteration) ? getActiveStarUrl(iteration) : getInactiveStarUrl(iteration))));
         }
 
         private void copyParameterToLink(BookmarkablePageLink<Void> link) {
