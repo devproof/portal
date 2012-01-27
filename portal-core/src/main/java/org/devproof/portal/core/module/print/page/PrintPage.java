@@ -15,8 +15,8 @@
  */
 package org.devproof.portal.core.module.print.page;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -52,7 +52,6 @@ public abstract class PrintPage extends WebPage {
     @Override
     public void renderHead(IHeaderResponse response) {
         response.renderCSSReference(new PackageResourceReference(PrintConstants.class, "css/print.css"));
-        response.renderCSSReference(new PackageResourceReference(PrintConstants.class, "css/print.css"));
         addSyntaxHighlighter(response);
     }
 
@@ -72,7 +71,7 @@ public abstract class PrintPage extends WebPage {
 
     private WebMarkupContainer createCopyrightContainer() {
         WebMarkupContainer copyright = new WebMarkupContainer("copyright");
-        copyright.add(new SimpleAttributeModifier("content", configurationService.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
+        copyright.add(AttributeModifier.replace("content", configurationService.findAsString(CommonConstants.CONF_COPYRIGHT_OWNER)));
         return copyright;
     }
 

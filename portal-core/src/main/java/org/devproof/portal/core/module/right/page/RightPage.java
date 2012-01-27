@@ -84,7 +84,7 @@ public class RightPage extends TemplatePage {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
-                target.addComponent(refreshTable);
+                target.add(refreshTable);
             }
         };
     }
