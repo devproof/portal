@@ -33,7 +33,7 @@ public class PortalMountRequestMapper implements IRequestMapper {
 
     @Override
     public int getCompatibilityScore(Request request) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 10000;
     }
 
     @Override
