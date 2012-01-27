@@ -17,13 +17,12 @@ package org.devproof.portal.module.otherpage.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.page.TemplatePage;
@@ -42,13 +41,14 @@ public class OtherPageBasePage extends TemplatePage {
 
 	public OtherPageBasePage(PageParameters params) {
 		super(params);
-		addSyntaxHighlighter();
-        add(createCSSHeaderContributor());
 	}
 
-    private HeaderContributor createCSSHeaderContributor() {
-		return CSSPackageResource.getHeaderContribution(OtherPageConstants.REF_OTHERPAGE_CSS);
-	}
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        addSyntaxHighlighter(response);
+        response.renderCSSReference(OtherPageConstants.REF_OTHERPAGE_CSS);
+    }
 
     @Override
     protected Component newPageAdminBoxLink(String linkMarkupId, String labelMarkupId) {

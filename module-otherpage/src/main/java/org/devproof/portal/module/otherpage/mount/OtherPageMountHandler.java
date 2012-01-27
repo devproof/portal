@@ -17,10 +17,8 @@
 package org.devproof.portal.module.otherpage.mount;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.IRequestTarget;
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.mount.annotation.MountPointHandler;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;

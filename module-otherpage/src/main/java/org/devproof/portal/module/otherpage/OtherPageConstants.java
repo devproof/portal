@@ -15,7 +15,9 @@
  */
 package org.devproof.portal.module.otherpage;
 
-import org.apache.wicket.ResourceReference;
+
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * @author Carsten Hufe
@@ -25,5 +27,5 @@ public interface OtherPageConstants {
     String QUERY_CACHE_REGION = "query.content";
     String AUTHOR_RIGHT = "otherPage.author";
     String HANDLER_KEY = "otherPage";
-    ResourceReference REF_OTHERPAGE_CSS = new ResourceReference(OtherPageConstants.class, "css/otherpage.css");
+    ResourceReference REF_OTHERPAGE_CSS = new CssResourceReference(OtherPageConstants.class, "css/otherpage.css");
 }

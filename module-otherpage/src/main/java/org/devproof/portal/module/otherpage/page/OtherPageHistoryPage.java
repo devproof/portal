@@ -16,11 +16,11 @@
 package org.devproof.portal.module.otherpage.page;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.Secured;
@@ -72,7 +72,7 @@ public class OtherPageHistoryPage extends AbstractHistoryPage<OtherPageHistorize
 
             @Override
             protected OtherPage load() {
-                return otherPageService.findById(params.getAsInteger("id"));
+                return otherPageService.findById(params.get("id").toInteger());
             }
         };
     }

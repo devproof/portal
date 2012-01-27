@@ -18,7 +18,6 @@ package org.devproof.portal.module.otherpage.page;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.OrderByBorder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
@@ -30,6 +29,7 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.config.Secured;
@@ -157,7 +157,7 @@ public class OtherPagePage extends OtherPageBasePage {
                         @Override
                         public PageParameters getPageParameters() {
                             PageParameters params = new PageParameters();
-                            params.put("id", otherPageModel.getObject().getId());
+                            params.add("id", otherPageModel.getObject().getId());
                             return params;
                         }
                     };

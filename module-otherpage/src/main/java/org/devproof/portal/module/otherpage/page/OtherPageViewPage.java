@@ -22,6 +22,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
@@ -36,7 +37,7 @@ import org.devproof.portal.module.otherpage.service.OtherPageService;
 /**
  * @author Carsten Hufe
  */
-@ModulePage(mountPath = "/other", indexMountedPath = true)
+@ModulePage(mountPath = "/other/{contentId}", indexMountedPath = true)
 public class OtherPageViewPage extends OtherPageBasePage {
 
     private static final long serialVersionUID = 1L;
@@ -164,7 +165,7 @@ public class OtherPageViewPage extends OtherPageBasePage {
                     @Override
                     public PageParameters getPageParameters() {
                         PageParameters params = new PageParameters();
-                        params.put("id", otherPageModel.getObject().getId());
+                        params.add("id", otherPageModel.getObject().getId());
                         return params;
                     }
 
@@ -189,6 +190,6 @@ public class OtherPageViewPage extends OtherPageBasePage {
     }
 
     private Integer getContentId() {
-        return PortalUtil.getValidParameterAsInteger("0", params);
+        return params.get("contentId").toInteger();
     }
 }

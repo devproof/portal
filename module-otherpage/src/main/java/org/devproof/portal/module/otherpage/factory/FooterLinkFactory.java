@@ -16,10 +16,9 @@
 package org.devproof.portal.module.otherpage.factory;
 
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.string.UrlUtils;
 import org.devproof.portal.core.app.PortalApplication;
 import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
@@ -40,8 +39,7 @@ public class FooterLinkFactory implements CommonMarkupContainerFactory, Initiali
 
     @Override
     public MarkupContainer newInstance(String id, Object... obj) {
-        Request request = RequestCycle.get().getRequest();
-        return new ExternalLink(id,  UrlUtils.rewriteToContextRelative("about", request));
+        return new ExternalLink(id,  UrlUtils.rewriteToContextRelative("about", RequestCycle.get()));
     }
 
     @Override

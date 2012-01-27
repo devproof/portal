@@ -16,10 +16,10 @@
 package org.devproof.portal.module.otherpage.factory;
 
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.string.UrlUtils;
 import org.devproof.portal.core.module.common.factory.CommonMarkupContainerFactory;
 import org.devproof.portal.core.module.common.registry.SharedRegistry;
@@ -39,8 +39,7 @@ public class TermsOfUseLinkFactory implements CommonMarkupContainerFactory, Init
 
     @Override
     public MarkupContainer newInstance(String id, Object... obj) {
-        Request request = RequestCycle.get().getRequest();
-        return new ExternalLink(id,  UrlUtils.rewriteToContextRelative("terms_of_use", request));
+        return new ExternalLink(id,  UrlUtils.rewriteToContextRelative("terms_of_use", RequestCycle.get()));
     }
 
     @Override

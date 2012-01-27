@@ -15,13 +15,13 @@
  */
 package org.devproof.portal.module.otherpage.page;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.config.Secured;
 import org.devproof.portal.core.module.common.component.richtext.FullRichTextArea;
@@ -100,7 +100,6 @@ public class OtherPageEditPage extends OtherPageBasePage {
                 OtherPage otherPage = otherPageModel.getObject();
                 otherPageService.save(otherPage);
                 mountInputPanel.storeMountPoints();
-                setRedirect(false);
                 info(OtherPageEditPage.this.getString("msg.saved"));
                 setResponsePage(new OtherPageViewPage(new PageParameters("0=" + otherPage.getId())));
             }

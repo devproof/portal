@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.otherpage.page;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
