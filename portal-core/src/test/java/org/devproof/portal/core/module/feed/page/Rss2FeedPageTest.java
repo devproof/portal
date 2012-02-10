@@ -60,8 +60,9 @@ public class Rss2FeedPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        // TODO use named parameters
-        tester.startPage(Rss2FeedPage.class, new PageParameters("0=dummy"));
+        PageParameters params = new PageParameters();
+        params.set("module", "dummy");
+        tester.startPage(Rss2FeedPage.class, params);
         tester.assertRenderedPage(Rss2FeedPage.class);
         tester.assertContains("dummy feed description");
         tester.assertContains("dummy title");

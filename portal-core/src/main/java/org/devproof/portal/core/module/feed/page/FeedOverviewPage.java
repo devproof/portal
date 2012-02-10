@@ -81,11 +81,15 @@ public class FeedOverviewPage extends TemplatePage {
 
 
     private BookmarkablePageLink<Rss2FeedPage> createRss2Link(String path) {
-        return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, new PageParameters("0=" + path));
+        PageParameters parameters = new PageParameters();
+        parameters.set("module", path);
+        return new BookmarkablePageLink<Rss2FeedPage>("rss2Link", Rss2FeedPage.class, parameters);
     }
 
     private BookmarkablePageLink<Atom1FeedPage> createAtom1Link(String path) {
-        return new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class, new PageParameters("0=" + path));
+        PageParameters parameters = new PageParameters();
+        parameters.set("module", path);
+        return new BookmarkablePageLink<Atom1FeedPage>("atom1Link", Atom1FeedPage.class, parameters);
     }
 
     private Component createSupportedPagesLabel(FeedProvider provider) {

@@ -165,8 +165,8 @@ public class MountMgmtPage extends TemplatePage {
                 @Override
                 public void onDelete(AjaxRequestTarget target) {
                     mountService.delete(mountPointModel.getObject());
-                    target.addComponent(mountRefreshTableContainer);
-                    target.addComponent(getFeedback());
+                    target.add(mountRefreshTableContainer);
+                    target.add(getFeedback());
                     info(getString("msg.deleted"));
                 }
 
@@ -183,7 +183,7 @@ public class MountMgmtPage extends TemplatePage {
         }
 
         private AttributeModifier createAlternatingModifier(final Item<MountPoint> item) {
-            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+            return new AttributeModifier("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

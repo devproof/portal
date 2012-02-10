@@ -156,8 +156,8 @@ public class RegisterPage extends TemplatePage {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(registerForm);
-                target.addComponent(getFeedback());
+                target.add(registerForm);
+                target.add(getFeedback());
             }
 
             private UrlCallback createRegisterUrlCallback() {

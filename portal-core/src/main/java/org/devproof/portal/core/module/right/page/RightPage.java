@@ -145,8 +145,8 @@ public class RightPage extends TemplatePage {
                         rightService.refreshGlobalApplicationRights();
                         bubblePanel.hide(target);
                         info(getString("msg.saved"));
-                        target.addComponent(refreshTable);
-                        target.addComponent(RightPage.this.getFeedback());
+                        target.add(refreshTable);
+                        target.add(RightPage.this.getFeedback());
                     }
 
                     @Override

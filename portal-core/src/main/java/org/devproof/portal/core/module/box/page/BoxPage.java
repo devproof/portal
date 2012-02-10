@@ -109,8 +109,8 @@ public class BoxPage extends TemplatePage {
 
                     @Override
                     public void onSave(AjaxRequestTarget target) {
-                        target.addComponent(repeatingBoxesInRefreshContainer);
-                        target.addComponent(BoxPage.this.getFeedback());
+                        target.add(repeatingBoxesInRefreshContainer);
+                        target.add(BoxPage.this.getFeedback());
                         info(getString("msg.saved"));
                         bubblePanel.hide(target);
                     }
@@ -183,7 +183,7 @@ public class BoxPage extends TemplatePage {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     boxService.moveDown(boxModel.getObject());
-                    target.addComponent(repeatingBoxesInRefreshContainer);
+                    target.add(repeatingBoxesInRefreshContainer);
                 }
             };
         }
@@ -205,7 +205,7 @@ public class BoxPage extends TemplatePage {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     boxService.moveUp(boxModel.getObject());
-                    target.addComponent(repeatingBoxesInRefreshContainer);
+                    target.add(repeatingBoxesInRefreshContainer);
                 }
             };
         }
@@ -218,8 +218,8 @@ public class BoxPage extends TemplatePage {
                 public void onDelete(AjaxRequestTarget target) {
                     boxService.delete(boxModel.getObject());
                     info(getString("msg.deleted"));
-                    target.addComponent(repeatingBoxesInRefreshContainer);
-                    target.addComponent(getFeedback());
+                    target.add(repeatingBoxesInRefreshContainer);
+                    target.add(getFeedback());
                 }
 
                 @Override
@@ -231,8 +231,8 @@ public class BoxPage extends TemplatePage {
                         public void onSave(AjaxRequestTarget target) {
                             bubblePanel.hide(target);
                             info(getString("msg.saved"));
-                            target.addComponent(repeatingBoxesInRefreshContainer);
-                            target.addComponent(getFeedback());
+                            target.add(repeatingBoxesInRefreshContainer);
+                            target.add(getFeedback());
                         }
 
                         @Override

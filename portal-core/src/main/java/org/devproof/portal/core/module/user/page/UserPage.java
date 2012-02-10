@@ -113,8 +113,8 @@ public class UserPage extends TemplatePage {
 
                     @Override
                     public void onSave(AjaxRequestTarget target) {
-                        target.addComponent(userRefreshTableContainer);
-                        target.addComponent(UserPage.this.getFeedback());
+                        target.add(userRefreshTableContainer);
+                        target.add(UserPage.this.getFeedback());
                         info(getString("msg.saved"));
                         bubblePanel.hide(target);
                     }
@@ -191,7 +191,7 @@ public class UserPage extends TemplatePage {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
-                target.addComponent(userRefreshTableContainer);
+                target.add(userRefreshTableContainer);
             }
         };
     }
@@ -305,8 +305,8 @@ public class UserPage extends TemplatePage {
                 @Override
                 public void onDelete(AjaxRequestTarget target) {
                     userService.delete(userModel.getObject());
-                    target.addComponent(userRefreshTableContainer);
-                    target.addComponent(getFeedback());
+                    target.add(userRefreshTableContainer);
+                    target.add(getFeedback());
                     info(getString("msg.deleted"));
                 }
 
@@ -322,8 +322,8 @@ public class UserPage extends TemplatePage {
 
                         @Override
                         public void onSave(AjaxRequestTarget target) {
-                            target.addComponent(userRefreshTableContainer);
-                            target.addComponent(getFeedback());
+                            target.add(userRefreshTableContainer);
+                            target.add(getFeedback());
                             info(getString("msg.saved"));
                             bubblePanel.hide(target);
                         }
@@ -338,7 +338,7 @@ public class UserPage extends TemplatePage {
         }
 
         private AttributeModifier createAlternatingModifier(final Item<User> item) {
-            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+            return new AttributeModifier("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

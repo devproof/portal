@@ -60,8 +60,9 @@ public class Atom1FeedPageTest {
 
     @Test
     public void testRenderDefaultPage() {
-        // TODO use named parameters
-        tester.startPage(Atom1FeedPage.class, new PageParameters("0=dummy"));
+        PageParameters params = new PageParameters();
+        params.set("module", "dummy");
+        tester.startPage(Atom1FeedPage.class, params);
         tester.assertRenderedPage(Atom1FeedPage.class);
         tester.assertContains("dummy feed description");
         tester.assertContains("http://dummy.url");

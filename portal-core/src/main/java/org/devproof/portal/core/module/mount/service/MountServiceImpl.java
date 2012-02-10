@@ -18,6 +18,7 @@ package org.devproof.portal.core.module.mount.service;
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Page;
 import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -145,14 +146,16 @@ public class MountServiceImpl implements MountService {
 
     @Override
     @Transactional(readOnly = true)
-    public IRequestHandler resolveRequestHandler(String requestedUrl) {
+    public IRequestHandler resolveRequestHandler(Request request) {
+        // TODO getABsoluteUrl, getPath anstelle von toString?
+        String requestedUrl = request.getUrl().toString();
         requestedUrl = addLeadingSlash(requestedUrl);
         requestedUrl = removeEndingSlash(requestedUrl);
         MountPoint mountPoint = resolveMountPoint(requestedUrl);
         String handlerKey = mountPoint.getHandlerKey();
         if(mountHandlerRegistry.isMountHandlerAvailable(handlerKey)) {
             MountHandler mountHandler = mountHandlerRegistry.getMountHandler(handlerKey);
-            return mountHandler.getRequestHandler(requestedUrl, mountPoint);
+            return mountHandler.getRequestHandler(request, mountPoint);
         }
         throw new IllegalStateException("No mount handler available, should not occur because existing url is prechecked.");
     }
@@ -205,7 +208,7 @@ public class MountServiceImpl implements MountService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters) {
+    public boolean canHandlePageClass(Class<? extends IRequestablePage> pageClazz, PageParameters pageParameters) {
         Collection<MountHandler> mountHandlers = mountHandlerRegistry.getRegisteredMountHandlers().values();
         for(MountHandler handler : mountHandlers) {
             if(handler.canHandlePageClass(pageClazz, pageParameters)) {

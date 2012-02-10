@@ -89,7 +89,9 @@ public class ContactPageTest {
     }
 
     private void callContactPage() {
-        tester.startPage(ContactPage.class, new PageParameters("0=admin"));
+        PageParameters params = new PageParameters();
+        params.set("username", "admin");
+        tester.startPage(ContactPage.class, params);
         tester.assertRenderedPage(ContactPage.class);
     }
 

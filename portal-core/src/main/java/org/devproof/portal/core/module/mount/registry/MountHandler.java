@@ -17,6 +17,7 @@ package org.devproof.portal.core.module.mount.registry;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -31,11 +32,11 @@ public interface MountHandler {
     /**
      * Builds the request target
      *
-     * @param requestedUrl original requested URL
+     * @param request original wicket request
      * @param mountPoint mount point
      * @return wicket request handler
      */
-    IRequestHandler getRequestHandler(String requestedUrl, MountPoint mountPoint);
+    IRequestHandler getRequestHandler(Request request, MountPoint mountPoint);
 
     /**
      * @return module handler key e.g. "article"

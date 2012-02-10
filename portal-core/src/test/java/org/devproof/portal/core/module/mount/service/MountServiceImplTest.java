@@ -15,16 +15,24 @@
  */
 package org.devproof.portal.core.module.mount.service;
 
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.handler.BookmarkablePageRequestHandler;
+import org.apache.wicket.request.handler.PageProvider;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.devproof.portal.core.module.common.page.NoStartPage;
+import org.devproof.portal.core.module.feed.DummyPage;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
+import org.devproof.portal.core.module.mount.registry.MountHandler;
 import org.devproof.portal.core.module.mount.registry.MountHandlerRegistry;
 import org.devproof.portal.core.module.mount.repository.MountPointRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.Charset;
+import java.util.*;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -139,16 +147,15 @@ public class MountServiceImplTest {
         verify(mockRepository);
     }
 
-    // TODO fix test
-//    @Test
-//    public void testResolveRequestTarget() throws Exception {
-//        expect(mockRepository.findMountPointByUrl("/path")).andReturn(createMountPoint(true));
-//        expect(mockRegistry.isMountHandlerAvailable("dummy")).andReturn(true);
-//        expect(mockRegistry.getMountHandler("dummy")).andReturn(new DummyMountHandler());
-//        replay(mockRegistry, mockRepository);
-//        assertNotNull(impl.resolveRequestTarget("/path"));
-//        verify(mockRegistry, mockRepository);
-//    }
+    @Test
+    public void testResolveRequestTarget() throws Exception {
+        expect(mockRepository.findMountPointByUrl("/path")).andReturn(createMountPoint(true));
+        expect(mockRegistry.isMountHandlerAvailable("dummy")).andReturn(true);
+        expect(mockRegistry.getMountHandler("dummy")).andReturn(new DummyMountHandler());
+        replay(mockRegistry, mockRepository);
+        assertNotNull(impl.resolveRequestHandler(new DummyRequest()));
+        verify(mockRegistry, mockRepository);
+    }
 
     @Test
     public void testFindDefaultMountPoint() throws Exception {
@@ -167,26 +174,26 @@ public class MountServiceImplTest {
         assertEquals(expected, impl.resolveMountPoint("/path"));
         verify(mockRepository);
     }
-// TODO fix test
-//    @Test
-//    public void testUrlFor() throws Exception {
-//        Map<String, MountHandler> handlers = new HashMap<String, MountHandler>();
-//        handlers.put("dummy", new DummyMountHandler());
-//        expect(mockRegistry.getRegisteredMountHandlers()).andReturn(handlers);
-//        replay(mockRegistry);
-//        assertEquals("/dummy", impl.urlFor(DummyPage.class, new PageParameters()));
-//        verify(mockRegistry);
-//    }
-//
-//    @Test
-//    public void testCanHandlePageClass() throws Exception {
-//        Map<String, MountHandler> handlers = new HashMap<String, MountHandler>();
-//        handlers.put("dummy", new DummyMountHandler());
-//        expect(mockRegistry.getRegisteredMountHandlers()).andReturn(handlers);
-//        replay(mockRegistry);
-//        assertTrue(impl.canHandlePageClass(DummyPage.class, new PageParameters()));
-//        verify(mockRegistry);
-//    }
+
+    @Test
+    public void testUrlFor() throws Exception {
+        Map<String, MountHandler> handlers = new HashMap<String, MountHandler>();
+        handlers.put("dummy", new DummyMountHandler());
+        expect(mockRegistry.getRegisteredMountHandlers()).andReturn(handlers);
+        replay(mockRegistry);
+        assertEquals("/dummy", impl.urlFor(DummyPage.class, new PageParameters()).toString());
+        verify(mockRegistry);
+    }
+
+    @Test
+    public void testCanHandlePageClass() throws Exception {
+        Map<String, MountHandler> handlers = new HashMap<String, MountHandler>();
+        handlers.put("dummy", new DummyMountHandler());
+        expect(mockRegistry.getRegisteredMountHandlers()).andReturn(handlers);
+        replay(mockRegistry);
+        assertTrue(impl.canHandlePageClass(DummyPage.class, new PageParameters()));
+        verify(mockRegistry);
+    }
 
     @Test
     public void testExistsPath() throws Exception {
@@ -207,26 +214,54 @@ public class MountServiceImplTest {
         verify(mockRepository);
 
     }
-// TODO fix test
-//    private static class DummyMountHandler implements MountHandler {
-//        @Override
-//        public IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint) {
-//            return new BookmarkablePageRequestTarget(DummyPage.class);
-//        }
-//
-//        @Override
-//        public String getHandlerKey() {
-//            return "dummy";
-//        }
-//
-//        @Override
-//        public boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters) {
-//            return true;
-//        }
-//
-//        @Override
-//        public String urlFor(Class<? extends Page> pageClazz, PageParameters params) {
-//            return "/dummy";
-//        }
-//    }
+
+    private static class DummyMountHandler implements MountHandler {
+        @Override
+        public IRequestHandler getRequestHandler(Request request, MountPoint mountPoint) {
+            return new BookmarkablePageRequestHandler(new PageProvider(DummyPage.class));
+        }
+
+        @Override
+        public boolean canHandlePageClass(Class<? extends IRequestablePage> pageClazz, PageParameters pageParameters) {
+            return true;
+        }
+
+        @Override
+        public Url urlFor(Class<? extends IRequestablePage> pageClazz, PageParameters params) {
+            return Url.parse("/dummy");
+        }
+
+        @Override
+        public String getHandlerKey() {
+            return "dummy";
+        }
+
+    }
+
+    private static class DummyRequest extends Request {
+        @Override
+        public Url getUrl() {
+            return Url.parse("/path");
+        }
+
+        @Override
+        public Url getClientUrl() {
+            return null;
+        }
+
+        @Override
+        public Locale getLocale() {
+            return null;
+        }
+
+        @Override
+        public Charset getCharset() {
+            return null;
+        }
+
+        @Override
+        public Object getContainerRequest() {
+            return null;
+        }
+    }
 }

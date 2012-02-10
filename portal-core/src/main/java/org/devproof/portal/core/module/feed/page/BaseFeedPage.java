@@ -50,10 +50,7 @@ public abstract class BaseFeedPage extends WebPage {
     }
 
     private String getFeedPath() {
-        if(params.getIndexedCount() > 0) {
-            return params.get(0).toString();
-        }
-        return "";
+        return params.get("module").toString("");
     }
 
 

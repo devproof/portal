@@ -23,7 +23,7 @@ import org.devproof.portal.core.config.ModulePage;
  *
  * @author Carsten Hufe
  */
-@ModulePage(mountPath = "/feed/atom1", indexMountedPath = true)
+@ModulePage(mountPath = "/feed/atom1/${module}")
 public class Atom1FeedPage extends BaseFeedPage {
     private static final long serialVersionUID = -5992008202571741459L;
 

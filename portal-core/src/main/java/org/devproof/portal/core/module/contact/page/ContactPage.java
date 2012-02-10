@@ -34,6 +34,7 @@ import org.apache.wicket.request.ClientInfo;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.string.*;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.devproof.portal.core.app.PortalSession;
@@ -59,7 +60,7 @@ import org.devproof.portal.core.module.user.service.UserService;
  * @author Carsten Hufe
  */
 @Secured(value = "contact", action = Action.ENABLE)
-@ModulePage(mountPath = "/contact", indexMountedPath = true)
+@ModulePage(mountPath = "/contact/${username}")
 public class ContactPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
@@ -200,10 +201,7 @@ public class ContactPage extends TemplatePage {
     }
 
     private String getToUsername() {
-        if(params.getIndexedCount() > 0) {
-            return params.get(0).toString();
-        }
-        return "§$$§";
+        return params.get("username").toString("§$$§");
     }
 
     private Component createSendButton() {

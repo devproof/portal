@@ -23,7 +23,7 @@ import org.devproof.portal.core.config.ModulePage;
  *
  * @author Carsten Hufe
  */
-@ModulePage(mountPath = "/feed/rss2", indexMountedPath = true)
+@ModulePage(mountPath = "/feed/rss2/${module}")
 public class Rss2FeedPage extends BaseFeedPage {
     private static final long serialVersionUID = -7224994016332605429L;
 
