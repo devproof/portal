@@ -32,6 +32,8 @@ import org.devproof.portal.core.module.common.page.NoStartPage;
 import org.devproof.portal.core.module.common.page.PageExpiredPage;
 import org.devproof.portal.core.module.common.registry.MainNavigationRegistry;
 import org.devproof.portal.core.module.configuration.service.ConfigurationService;
+import org.devproof.portal.core.module.mount.mapper.PortalMountRequestMapper;
+import org.devproof.portal.core.module.mount.service.MountService;
 import org.devproof.portal.core.module.theme.ThemeConstants;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -52,12 +54,18 @@ public class PortalApplication extends WebApplication {
         super.init();
         configureWicket();
         mountPagesAndSetStartPage();
+        configureMounting();
         loadTheme();
         logger.info("Portal is initialized!");
     }
 
+    private void configureMounting() {
+        MountService mountService = getSpringBean("mountService");
+        setRootRequestMapper(new PortalMountRequestMapper(mountService, getRootRequestMapper()));
+    }
+
     private void loadTheme() {
-        ConfigurationService configurationService = this.getSpringBean("configurationService");
+        ConfigurationService configurationService = getSpringBean("configurationService");
         String themeUuid = configurationService.findAsString(ThemeConstants.CONF_SELECTED_THEME_UUID);
         getResourceSettings().setResourceStreamLocator(new PortalResourceStreamLocator(getServletContext(), themeUuid));
     }
@@ -67,12 +75,7 @@ public class PortalApplication extends WebApplication {
         Collection<PageConfiguration> pages = pageLocator.getPageConfigurations();
         for (PageConfiguration page : pages) {
             if (page.getMountPath() != null) {
-                if (page.isIndexMountedPath()) {
-                    // TODO url handling
-//                    mount(new IndexedParamUrlCodingStrategy(page.getMountPath(), page.getPageClass()));
-                } else {
-                    mountPage(page.getMountPath(), page.getPageClass());
-                }
+                mountPage(page.getMountPath(), page.getPageClass());
             }
         }
     }

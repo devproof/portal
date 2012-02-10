@@ -15,10 +15,15 @@
  */
 package org.devproof.portal.core.module.mount.mapper;
 
+import org.apache.wicket.Page;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.handler.BookmarkablePageRequestHandler;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.devproof.portal.core.module.mount.service.MountService;
 
 /**
  * Provides the mount logic for the whole portal
@@ -26,9 +31,21 @@ import org.apache.wicket.request.Url;
  * @author Carsten Hufe
  */
 public class PortalMountRequestMapper implements IRequestMapper {
+    private MountService mountService;
+    private IRequestMapper delegate;
+
+    public PortalMountRequestMapper(MountService mountService, IRequestMapper delegate) {
+        this.mountService = mountService;
+        this.delegate = delegate;
+    }
+
     @Override
     public IRequestHandler mapRequest(Request request) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        // TODO oder getPath, getAbsolutPath anstelle von toString?
+        if(mountService.existsPath(request.getUrl().toString())) {
+            return mountService.resolveRequestHandler(request);
+        }
+        return delegate.mapRequest(request);
     }
 
     @Override
@@ -38,6 +55,15 @@ public class PortalMountRequestMapper implements IRequestMapper {
 
     @Override
     public Url mapHandler(IRequestHandler requestHandler) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        if(requestHandler instanceof BookmarkablePageRequestHandler) {
+            BookmarkablePageRequestHandler bp = (BookmarkablePageRequestHandler) requestHandler;
+            Class<? extends IRequestablePage> pageClass = bp.getPageClass();
+            PageParameters pageParameters = bp.getPageParameters();
+            Url url = mountService.urlFor(pageClass, pageParameters);
+            if(url != null) {
+                return url;
+            }
+        }
+        return delegate.mapHandler(requestHandler);
     }
 }

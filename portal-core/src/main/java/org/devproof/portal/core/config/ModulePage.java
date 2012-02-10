@@ -32,7 +32,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface ModulePage {
     /**
-     * Mount path
+     * Mount path with place holders, like the wicket 1.5 default....
      */
     String mountPath();
 
@@ -45,11 +45,6 @@ public @interface ModulePage {
      * Register global administration link
      */
     boolean registerGlobalAdminLink() default false;
-
-    /**
-     * Mount the page indexed without parameter names
-     */
-    boolean indexMountedPath() default false;
 
     /**
      * Should this page the default start page when you call /

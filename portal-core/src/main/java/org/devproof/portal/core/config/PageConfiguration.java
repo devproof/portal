@@ -31,7 +31,6 @@ public class PageConfiguration implements Serializable {
     private Class<? extends Page> pageClass;
     private boolean registerMainNavigationLink = false;
     private boolean registerGlobalAdminLink = false;
-    private boolean indexMountedPath = false;
     private boolean defaultStartPage = false;
     private boolean registerPageAdminLink = false;
     private ModuleConfiguration module;
@@ -45,7 +44,6 @@ public class PageConfiguration implements Serializable {
         this.pageClass = pageClass;
         this.registerMainNavigationLink = annotation.registerMainNavigationLink();
         this.registerGlobalAdminLink = annotation.registerGlobalAdminLink();
-        this.indexMountedPath = annotation.indexMountedPath();
         this.defaultStartPage = annotation.defaultStartPage();
         this.registerPageAdminLink = annotation.registerPageAdminLink();
     }
@@ -76,22 +74,6 @@ public class PageConfiguration implements Serializable {
      */
     public void setPageClass(Class<? extends Page> pageClass) {
         this.pageClass = pageClass;
-    }
-
-    /**
-     * @return true if the mount path is indexed: indexed means e.g.
-     *         /hello/arg0/arg1
-     */
-    public boolean isIndexMountedPath() {
-        return indexMountedPath;
-    }
-
-    /**
-     * @param indexMountedPath true if the mount path is indexed: indexed means e.g.
-     *                         /hello/arg0/arg1
-     */
-    public void setIndexMountedPath(boolean indexMountedPath) {
-        this.indexMountedPath = indexMountedPath;
     }
 
     /**
@@ -183,6 +165,6 @@ public class PageConfiguration implements Serializable {
 
     @Override
     public String toString() {
-        return "PageConfiguration [defaultStartPage=" + defaultStartPage + ", indexMountedPath=" + indexMountedPath + ", module=" + module + ", mountPath=" + mountPath + ", pageClass=" + pageClass + ", registerGlobalAdminLink=" + registerGlobalAdminLink + ", registerMainNavigationLink=" + registerMainNavigationLink + ", registerPageAdminLink=" + registerPageAdminLink + "]";
+        return "PageConfiguration [defaultStartPage=" + defaultStartPage + ", module=" + module + ", mountPath=" + mountPath + ", pageClass=" + pageClass + ", registerGlobalAdminLink=" + registerGlobalAdminLink + ", registerMainNavigationLink=" + registerMainNavigationLink + ", registerPageAdminLink=" + registerPageAdminLink + "]";
 	}
 }

@@ -17,6 +17,9 @@ package org.devproof.portal.core.module.mount.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.Page;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 import org.devproof.portal.core.module.mount.registry.MountHandler;
@@ -139,20 +142,20 @@ public class MountServiceImpl implements MountService {
     public boolean existsMountPoint(String relatedContentId, String handlerKey) {
         return mountPointRepository.existsMountPoint(relatedContentId, handlerKey) > 0;
     }
-// TODO irgendwas hiermit machen
-//    @Override
-//    @Transactional(readOnly = true)
-//    public IRequestTarget resolveRequestTarget(String requestedUrl) {
-//        requestedUrl = addLeadingSlash(requestedUrl);
-//        requestedUrl = removeEndingSlash(requestedUrl);
-//        MountPoint mountPoint = resolveMountPoint(requestedUrl);
-//        String handlerKey = mountPoint.getHandlerKey();
-//        if(mountHandlerRegistry.isMountHandlerAvailable(handlerKey)) {
-//            MountHandler mountHandler = mountHandlerRegistry.getMountHandler(handlerKey);
-//            return mountHandler.getRequestTarget(requestedUrl, mountPoint);
-//        }
-//        throw new IllegalStateException("No mount handler available, should not occur because existing url is prechecked.");
-//    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public IRequestHandler resolveRequestHandler(String requestedUrl) {
+        requestedUrl = addLeadingSlash(requestedUrl);
+        requestedUrl = removeEndingSlash(requestedUrl);
+        MountPoint mountPoint = resolveMountPoint(requestedUrl);
+        String handlerKey = mountPoint.getHandlerKey();
+        if(mountHandlerRegistry.isMountHandlerAvailable(handlerKey)) {
+            MountHandler mountHandler = mountHandlerRegistry.getMountHandler(handlerKey);
+            return mountHandler.getRequestHandler(requestedUrl, mountPoint);
+        }
+        throw new IllegalStateException("No mount handler available, should not occur because existing url is prechecked.");
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -190,7 +193,7 @@ public class MountServiceImpl implements MountService {
 
     @Override
     @Transactional(readOnly = true)
-    public String urlFor(Class<? extends Page> pageClazz, PageParameters params) {
+    public Url urlFor(Class<? extends IRequestablePage> pageClazz, PageParameters params) {
         Collection<MountHandler> mountHandlers = mountHandlerRegistry.getRegisteredMountHandlers().values();
         for(MountHandler handler : mountHandlers) {
             if(handler.canHandlePageClass(pageClazz, params)) {

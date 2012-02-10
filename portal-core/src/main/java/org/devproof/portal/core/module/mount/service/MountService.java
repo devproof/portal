@@ -16,6 +16,10 @@
 package org.devproof.portal.core.module.mount.service;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.module.mount.entity.MountPoint;
 
@@ -31,11 +35,10 @@ public interface MountService {
     /**
      * Builds the request target for a request URL
      *
-     * @param requestedUrl requested URL
+     * @param request request
      * @return wicket request target
      */
-    // TODO entfernen?
-//    IRequestTarget resolveRequestTarget(String requestedUrl);
+    IRequestHandler resolveRequestHandler(Request request);
 
     /**
      * Returns the mount point which is marked as defaultUrl
@@ -60,7 +63,7 @@ public interface MountService {
      * @param params page params
      * @return url
      */
-    String urlFor(Class<? extends Page> pageClazz, PageParameters params);
+    Url urlFor(Class<? extends IRequestablePage> pageClazz, PageParameters params);
 
     /**
      * Returns true if there is a mount handler which can manage the page
@@ -69,7 +72,7 @@ public interface MountService {
      * @param pageParameters page params
      * @return true if the page can be handled
      */
-    boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
+    boolean canHandlePageClass(Class<? extends IRequestablePage> pageClazz, PageParameters pageParameters);
 
     /**
      * Resolves or finds a mount point configuration by URL

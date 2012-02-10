@@ -16,7 +16,11 @@
 package org.devproof.portal.core.module.mount.registry;
 
 import org.apache.wicket.Page;
+import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.devproof.portal.core.module.mount.entity.MountPoint;
 
 /**
  * Mount handler handles global defined URLs for a module
@@ -29,10 +33,9 @@ public interface MountHandler {
      *
      * @param requestedUrl original requested URL
      * @param mountPoint mount point
-     * @return wicket request target
+     * @return wicket request handler
      */
-    // TODO irgendwas mit machen
-//    IRequestTarget getRequestTarget(String requestedUrl, MountPoint mountPoint);
+    IRequestHandler getRequestHandler(String requestedUrl, MountPoint mountPoint);
 
     /**
      * @return module handler key e.g. "article"
@@ -46,7 +49,7 @@ public interface MountHandler {
      * @param pageParameters page params
      * @return true if it can handle
      */
-    boolean canHandlePageClass(Class<? extends Page> pageClazz, PageParameters pageParameters);
+    boolean canHandlePageClass(Class<? extends IRequestablePage> pageClazz, PageParameters pageParameters);
 
     /**
      * Returns a URL for a wicket page
@@ -55,5 +58,5 @@ public interface MountHandler {
      * @param params page parameter
      * @return matching URL
      */
-    String urlFor(Class<? extends Page> pageClazz, PageParameters params);
+    Url urlFor(Class<? extends IRequestablePage> pageClazz, PageParameters params);
 }
