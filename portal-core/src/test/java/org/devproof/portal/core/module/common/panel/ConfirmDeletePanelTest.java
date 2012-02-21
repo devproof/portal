@@ -56,8 +56,8 @@ public class ConfirmDeletePanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestConfirmDeletePanel.class);
-        tester.assertComponent("panel", TestConfirmDeletePanel.class);
+        tester.startComponentInPage(TestConfirmDeletePanel.class);
+        tester.assertComponent("", TestConfirmDeletePanel.class);
     }
 
     public static class TestConfirmDeletePanel extends ConfirmDeletePanel<Configuration> {

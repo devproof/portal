@@ -55,8 +55,8 @@ public class RoleEditPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestRoleEditPanel.class);
-        tester.assertComponent("panel", TestRoleEditPanel.class);
+        tester.startComponentInPage(TestRoleEditPanel.class);
+        tester.assertComponent("", TestRoleEditPanel.class);
     }
 
     public static class TestRoleEditPanel extends RoleEditPanel {

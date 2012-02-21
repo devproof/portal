@@ -55,8 +55,8 @@ public class CaptchaRatingPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestCaptchaRatingPanel.class);
-        tester.assertComponent("panel", TestCaptchaRatingPanel.class);
+        tester.startComponentInPage(TestCaptchaRatingPanel.class);
+        tester.assertComponent("", TestCaptchaRatingPanel.class);
     }
 
     public static class TestCaptchaRatingPanel extends CaptchaRatingPanel {

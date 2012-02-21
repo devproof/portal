@@ -60,7 +60,7 @@ public class GlobalAdminBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(GlobalAdminBoxPanel.class);
-        tester.assertComponent("panel", GlobalAdminBoxPanel.class);
+        tester.startComponentInPage(GlobalAdminBoxPanel.class);
+        tester.assertComponent("", GlobalAdminBoxPanel.class);
     }
 }

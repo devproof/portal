@@ -37,7 +37,7 @@ public abstract class BaseFeedLink extends BookmarkablePageLink<BaseFeedLink> {
         super(id, feedPage);
         this.page = page;
         setHasFeedSupport();
-        setVisiblity();
+        setVisibility();
         setLinkParameter();
         add(createTitleAttributeModifier());
         add(createTypeAttributeModifier());
@@ -47,14 +47,14 @@ public abstract class BaseFeedLink extends BookmarkablePageLink<BaseFeedLink> {
     private void setLinkParameter() {
         if (hasFeedSupport) {
             String path = getPagePath();
-            // TODO irgendwas?
-            setParameter("0", path);
+            // TODO verfizieren obs geht
+            getPageParameters().set("module", path);
         }
     }
 
     private AttributeModifier createTitleAttributeModifier() {
         String title = getFeedPageTitle();
-        String feedName = new StringResourceModel("feedName", this, null, new String[]{title}).getString();
+        String feedName = new StringResourceModel("feedName", this, null, title).getString();
         return AttributeModifier.replace("title", feedName);
     }
 
@@ -70,7 +70,7 @@ public abstract class BaseFeedLink extends BookmarkablePageLink<BaseFeedLink> {
         return feedProviderRegistry.getPathByPageClass(page);
     }
 
-    private void setVisiblity() {
+    private void setVisibility() {
         setVisible(hasFeedSupport);
     }
 

@@ -93,6 +93,16 @@ public class PortalSession extends WebSession {
         }
     }
 
+    @Override
+    public boolean authenticate(String username, String password) {
+        try {
+            String message = authenticateUser(username, password);
+            return message == null;
+        } catch (UserNotConfirmedException e) {
+            return false;
+        }
+    }
+
     /**
      * User is logged in?
      *

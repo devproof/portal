@@ -55,8 +55,8 @@ public class AuthorPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestAuthorPanel.class);
-        tester.assertComponent("panel", TestAuthorPanel.class);
+        tester.startComponentInPage(TestAuthorPanel.class);
+        tester.assertComponent("", TestAuthorPanel.class);
     }
 
     public static class TestAuthorPanel extends AuthorPanel<Configuration> {

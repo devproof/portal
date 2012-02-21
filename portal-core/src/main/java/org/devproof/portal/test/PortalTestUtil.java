@@ -40,10 +40,6 @@ import java.util.Properties;
 public class PortalTestUtil {
     public static WicketTester createWicketTester(ServletContext servletContext) {
 		PortalApplication app = new TestPortalApplication(servletContext);
-
-		// Workaround for bug in WicketTester, mounted url does not work
-		// with stateless form
-		app.unmount("/login");
 		return new WicketTester(app);
 	}
 

@@ -52,7 +52,7 @@ public class UserBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(UserBoxPanel.class);
-        tester.assertComponent("panel", UserBoxPanel.class);
+        tester.startComponentInPage(UserBoxPanel.class);
+        tester.assertComponent("", UserBoxPanel.class);
     }
 }

@@ -15,15 +15,12 @@
  */
 package org.devproof.portal.core.module.common.component.richtext;
 
-import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
-import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.apache.wicket.resource.TextTemplateResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.util.PortalUtil;
 
@@ -51,15 +48,16 @@ public class BasicRichTextArea extends TextArea<String> {
     @Override
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
-        response.renderJavaScriptReference(new PackageResourceReference(FullRichTextArea.class, "ckeditor/ckeditor.js"));
+        response.renderJavaScriptReference(new PackageResourceReference(BasicRichTextArea.class, "ckeditor/ckeditor.js"));
     }
 
     @Override
     protected void onRender() {
+        super.onRender();
         Map<String, Object> variables = new MiniMap<String, Object>(2);
         variables.put("defaultCss", PortalUtil.toUrl(baseStyle ? REF_BASE_CSS : CommonConstants.REF_DEFAULT_CSS));
         variables.put("markupId", getMarkupId());
-        TextTemplateResourceReference javascript = new TextTemplateResourceReference(FullRichTextArea.class, "BasicRichTextArea.js", new MapModel<String, Object>(variables));
-        getResponse().write(javascript.toString());
+        PackageTextTemplate javascript = new PackageTextTemplate(BasicRichTextArea.class, "BasicRichTextArea.html");
+        getResponse().write(javascript.interpolate(variables).asString());
     }
 }

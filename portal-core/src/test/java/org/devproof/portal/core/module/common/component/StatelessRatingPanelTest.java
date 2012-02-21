@@ -55,8 +55,8 @@ public class StatelessRatingPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestStatelessRatingPanel.class);
-        tester.assertComponent("panel", TestStatelessRatingPanel.class);
+        tester.startComponentInPage(TestStatelessRatingPanel.class);
+        tester.assertComponent("", TestStatelessRatingPanel.class);
     }
 
     public static class TestStatelessRatingPanel extends StatelessRatingPanel {

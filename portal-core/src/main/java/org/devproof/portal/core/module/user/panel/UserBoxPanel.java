@@ -72,8 +72,6 @@ public class UserBoxPanel extends Panel implements BoxTitleVisibility {
             public void onClick() {
                 PortalSession.get().logoutUser();
                 info(getString("loggedout"));
-                // TODO test redirect
-//                setRedirect(false);
                 setResponsePage(PortalApplication.get().getHomePage());
             }
         };

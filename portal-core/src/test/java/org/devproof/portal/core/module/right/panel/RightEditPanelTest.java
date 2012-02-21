@@ -17,8 +17,10 @@ package org.devproof.portal.core.module.right.panel;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.entity.Right;
+import org.devproof.portal.core.module.right.page.RightPage;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
 import org.junit.After;
@@ -31,6 +33,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.servlet.ServletContext;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * @author Carsten Hufe
  */
@@ -42,7 +46,7 @@ public class RightEditPanelTest {
     private ServletContext servletContext;
     private WicketTester tester;
 
-    // private static boolean calledSave = false;
+    private static boolean calledSave = false;
 
     @Before
     public void setUp() throws Exception {
@@ -58,27 +62,23 @@ public class RightEditPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestRightEditPanel.class);
-        tester.assertComponent("panel", TestRightEditPanel.class);
+        tester.startComponentInPage(TestRightEditPanel.class);
+        tester.assertComponent("", TestRightEditPanel.class);
     }
-
-    /*
-      * Palette seems to have a bug, so it is not testable with the WicketTester
-      */
 
     @Test
     public void testSaveRight() {
-        // tester.startPanel(TestRightEditPanel.class);
-        // tester.assertComponent("panel", RightEditPanel.class);
-        // FormTester ft = tester.newFormTester("panel:form");
-        // ft.setValue("right", "myrightname");
-        // ft.setValue("description", "myrightdescription");
-        // tester.clickLink("panel:form:saveButton", true);
-        // tester.assertNoErrorMessage();
-        // assertTrue(calledSave);
-        // tester.startPage(RightPage.class);
-        // tester.assertContains("myrightname");
-        // tester.assertContains("myrightdescription");
+        tester.startComponentInPage(TestRightEditPanel.class);
+        tester.assertComponent("", RightEditPanel.class);
+        FormTester ft = tester.newFormTester("form");
+        ft.setValue("right", "myrightname");
+        ft.setValue("description", "myrightdescription");
+        tester.clickLink("form:saveButton", true);
+        tester.assertNoErrorMessage();
+        assertTrue(calledSave);
+        tester.startPage(RightPage.class);
+        tester.assertContains("myrightname");
+        tester.assertContains("myrightdescription");
     }
 
     public static class TestRightEditPanel extends RightEditPanel {
@@ -90,7 +90,7 @@ public class RightEditPanelTest {
 
         @Override
         public void onSave(AjaxRequestTarget target) {
-            // calledSave = true;
+            calledSave = true;
         }
 
         @Override

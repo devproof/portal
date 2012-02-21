@@ -15,9 +15,11 @@
  */
 package org.devproof.portal.core.module.user.panel;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.*;
@@ -92,14 +94,14 @@ public abstract class UserEditPanel extends Panel {
         return new CheckBox("active");
     }
 
-    private AjaxButton createSaveButton() {
-        return new AjaxButton("saveButton") {
+    private AjaxSubmitLink createSaveButton() {
+        return new AjaxSubmitLink("saveButton") {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 User user = (User) form.getModelObject();
-                if (password1.getValue() != null && !"".equals(password1.getValue().trim())) {
+                if (StringUtils.isNotBlank(password1.getValue())) {
                     user.setPlainPassword(password1.getValue());
                 }
                 userService.save(user);
@@ -108,8 +110,8 @@ public abstract class UserEditPanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(feedback);
-                target.addComponent(userForm);
+                target.add(feedback);
+                target.add(userForm);
             }
         };
     }

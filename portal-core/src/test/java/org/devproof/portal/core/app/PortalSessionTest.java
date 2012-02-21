@@ -16,6 +16,7 @@
 package org.devproof.portal.core.app;
 
 import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.right.entity.Right;
 import org.devproof.portal.core.module.right.service.RightService;
 import org.devproof.portal.core.module.role.entity.Role;
@@ -56,7 +57,8 @@ public class PortalSessionTest {
         cookieStored = false;
         cookieCleaned = false;
         cookieSessionId = null;
-        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
+        new WicketTester();
+        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest("", "/applicationPath");
         ServletWebRequest servletWebRequest = new ServletWebRequest(mockHttpServletRequest, "/");
         portalSession = new PortalSession(servletWebRequest) {
             private static final long serialVersionUID = 1L;
@@ -91,32 +93,32 @@ public class PortalSessionTest {
     }
 
     @Test
-    public void testAuthenticate_success() throws Exception {
+    public void testAuthenticateUser_success() throws Exception {
         User user = createUserWithRights();
         expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andReturn(user);
         replay(portalSession.userService);
-        assertNull(portalSession.authenticate("peter", "secretpasswd"));
+        assertNull(portalSession.authenticateUser("peter", "secretpasswd"));
         assertTrue(cookieStored);
         verify(portalSession.userService);
     }
 
     @Test
-    public void testAuthenticate_failed() throws Exception {
+    public void testAuthenticateUser_failed() throws Exception {
         //noinspection ThrowableInstanceNeverThrown
         expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andThrow(new AuthentificationFailedException("wrong password"));
         replay(portalSession.userService);
-        assertEquals("wrong password", portalSession.authenticate("peter", "secretpasswd"));
+        assertEquals("wrong password", portalSession.authenticateUser("peter", "secretpasswd"));
         assertFalse(cookieStored);
         verify(portalSession.userService);
     }
 
     @Test
-    public void testAuthenticate_userNotConfirmed() {
+    public void testAuthenticateUser_userNotConfirmed() {
         try {
             //noinspection ThrowableInstanceNeverThrown
             expect(portalSession.userService.authentificate("peter", "secretpasswd", "123.123.123.123")).andThrow(new UserNotConfirmedException());
             replay(portalSession.userService);
-            assertEquals("wrong password", portalSession.authenticate("peter", "secretpasswd"));
+            assertEquals("wrong password", portalSession.authenticateUser("peter", "secretpasswd"));
             verify(portalSession.userService);
             fail("Expect UserNotConfirmedException");
         } catch (UserNotConfirmedException e) {

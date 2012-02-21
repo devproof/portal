@@ -55,8 +55,8 @@ public class UserSearchBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestUserSearchBoxPanel.class);
-        tester.assertComponent("panel", TestUserSearchBoxPanel.class);
+        tester.startComponentInPage(TestUserSearchBoxPanel.class);
+        tester.assertComponent("", TestUserSearchBoxPanel.class);
     }
 
     public static class TestUserSearchBoxPanel extends UserSearchBoxPanel {

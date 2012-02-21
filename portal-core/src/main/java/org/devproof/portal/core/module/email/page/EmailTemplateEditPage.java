@@ -62,8 +62,6 @@ public class EmailTemplateEditPage extends EmailTemplateBasePage {
             @Override
             public void onSubmit() {
                 emailService.save(emailTemplateModel.getObject());
-//                setRedirect(false);
-                // TODO funktioniert das noch?
                 info(EmailTemplateEditPage.this.getString("msg.saved"));
                 setResponsePage(EmailTemplatePage.class);
             }

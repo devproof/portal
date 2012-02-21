@@ -21,11 +21,13 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.MapModel;
 import org.apache.wicket.protocol.http.RequestUtils;
+import org.apache.wicket.request.handler.resource.ResourceReferenceRequestHandler;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.resource.TextTemplateResourceReference;
 import org.apache.wicket.util.collections.MiniMap;
+import org.apache.wicket.util.template.PackageTextTemplate;
 import org.devproof.portal.core.module.common.CommonConstants;
 
 import java.util.Map;
@@ -53,11 +55,12 @@ public class FullRichTextArea extends TextArea<String> {
 
     @Override
     protected void onRender() {
+        super.onRender();
         Map<String, Object> variables = new MiniMap<String, Object>(2);
         String requestPath = urlFor(CommonConstants.REF_DEFAULT_CSS, new PageParameters()).toString();
         variables.put("defaultCss", RequestUtils.toAbsolutePath(requestPath, getPageRelativePath()));
         variables.put("markupId", getMarkupId());
-        String javascript = new TextTemplateResourceReference(FullRichTextArea.class, "FullRichTextArea.js", new MapModel<String, Object>(variables)).toString();
-        getResponse().write(javascript);
+        PackageTextTemplate javascript = new PackageTextTemplate(FullRichTextArea.class, "FullRichTextArea.html");
+        getResponse().write(javascript.interpolate(variables).asString());
     }
 }

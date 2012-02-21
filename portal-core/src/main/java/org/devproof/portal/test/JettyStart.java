@@ -63,6 +63,7 @@ public class JettyStart {
         bb.addEventListener(new PortalContextLoaderListener());
         FilterHolder filter = new FilterHolder();
         filter.setInitParameter("applicationClassName", PortalApplication.class.getName());
+        filter.setInitParameter("filterMappingUrlPattern", "/*");
         // servlet.setInitParameter("configuration", "deployment");
         filter.setClassName(WicketFilter.class.getName());
         filter.setName(WicketFilter.class.getName());

@@ -51,7 +51,7 @@ public class BoxPageTest {
     }
 
     @Test
-    public void testRenderDefaultPanel() {
+    public void testRenderPage() {
         tester.startPage(BoxPage.class);
         tester.assertRenderedPage(BoxPage.class);
     }

@@ -95,9 +95,9 @@ public abstract class StatelessRatingPanel extends RatingPanel {
         private BookmarkablePageLink<Void> creatingStarBookmarkableLink(LoopItem item) {
             BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link", getPage().getClass());
             link.setEnabled(!hasVoted.getObject());
-            // TODO with url stuff
-            link.setParameter("rateid", contentId);
-            link.setParameter("vote", item.getIndex());
+            // TODO verify
+            link.getPageParameters().set("rateid", contentId);
+            link.getPageParameters().set("vote", item.getIndex());
             link.add(createStarContainer(item));
             copyParameterToLink(link);
             return link;

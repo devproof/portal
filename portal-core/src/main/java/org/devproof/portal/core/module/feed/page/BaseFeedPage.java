@@ -20,6 +20,9 @@ import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
 import org.apache.commons.lang.UnhandledException;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.IMarkupFragment;
+import org.apache.wicket.markup.Markup;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.MarkupType;
 import org.apache.wicket.markup.html.WebPage;
@@ -53,6 +56,10 @@ public abstract class BaseFeedPage extends WebPage {
         return params.get("module").toString("");
     }
 
+    @Override
+    public IMarkupFragment getMarkup() {
+        return Markup.of("<xmlfeed/>");
+    }
 
     @Override
     protected void onRender() {

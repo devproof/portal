@@ -53,8 +53,8 @@ public class UploadThemePanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestUploadThemePanel.class);
-        tester.assertComponent("panel", UploadThemePanel.class);
+        tester.startComponentInPage(TestUploadThemePanel.class);
+        tester.assertComponent("", UploadThemePanel.class);
     }
 
     public static class TestUploadThemePanel extends UploadThemePanel {

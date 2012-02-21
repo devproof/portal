@@ -19,6 +19,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.markup.html.form.palette.Palette;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
@@ -74,8 +75,8 @@ public abstract class RightEditPanel extends Panel {
         return rightForm;
     }
 
-    private AjaxButton createSaveButton() {
-        return new AjaxButton("saveButton") {
+    private AjaxSubmitLink createSaveButton() {
+        return new AjaxSubmitLink("saveButton") {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -86,8 +87,8 @@ public abstract class RightEditPanel extends Panel {
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(feedback);
-                target.addComponent(rightForm);
+                target.add(feedback);
+                target.add(rightForm);
             }
         };
     }

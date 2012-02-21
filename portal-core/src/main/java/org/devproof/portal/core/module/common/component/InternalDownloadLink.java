@@ -18,6 +18,9 @@ package org.devproof.portal.core.module.common.component;
 import org.apache.commons.lang.UnhandledException;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.link.StatelessLink;
+import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
+import org.apache.wicket.request.resource.ContentDisposition;
+import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.time.Time;
@@ -30,7 +33,6 @@ import java.util.Locale;
  *
  * @author Carsten Hufe
  */
-// TODO fix that class
 public abstract class InternalDownloadLink extends Link {
     private static final long serialVersionUID = 1L;
 
@@ -40,57 +42,68 @@ public abstract class InternalDownloadLink extends Link {
 
     @Override
     public void onClick() {
-//        try {
-//            File file = getFile();
-//            FileInputStream fis = new FileInputStream(file);
-//            IResourceStream resourceStream = createFileResourceStream(file, fis);
-//            getRequestCycle().setRequestTarget(createFileResourceStreamRequestTarget(file, resourceStream));
-//        } catch (FileNotFoundException e) {
-//            throw new UnhandledException(e);
-//        }
+        try {
+            File file = getFile();
+            FileInputStream fis = new FileInputStream(file);
+            getRequestCycle().scheduleRequestHandlerAfterCurrent(new ResourceStreamRequestHandler(createFileResourceStream(file, fis))
+                    .setFileName(file.getName())
+                    .setContentDisposition(ContentDisposition.ATTACHMENT));
+        } catch (FileNotFoundException e) {
+            throw new UnhandledException(e);
+        }
     }
 
-//    private ResourceStreamRequestTarget createFileResourceStreamRequestTarget(final File file, IResourceStream resourceStream) {
-//        return new ResourceStreamRequestTarget(resourceStream) {
-//            @Override
-//            public String getFileName() {
-//                return (file.getName());
-//            }
-//        };
-//    }
-//
-//    private IResourceStream createFileResourceStream(final File file, final FileInputStream fis) {
-//        return new IResourceStream() {
-//            private static final long serialVersionUID = 1L;
-//
-//            public void close() throws IOException {
-//                fis.close();
-//            }
-//
-//            public String getContentType() {
-//                return "application/octet-stream";
-//            }
-//
-//            public InputStream getInputStream() throws ResourceStreamNotFoundException {
-//                return fis;
-//            }
-//
-//            public Locale getLocale() {
-//                return null;
-//            }
-//
-//            public long length() {
-//                return file.length();
-//            }
-//
-//            public void setLocale(Locale locale) {
-//            }
-//
-//            public Time lastModifiedTime() {
-//                return Time.millis(file.lastModified());
-//            }
-//        };
-//    }
+    private IResourceStream createFileResourceStream(final File file, final FileInputStream fis) {
+        return new IResourceStream() {
+            private static final long serialVersionUID = 1L;
+
+            public void close() throws IOException {
+                fis.close();
+            }
+
+            public String getContentType() {
+                return "application/octet-stream";
+            }
+
+            public InputStream getInputStream() throws ResourceStreamNotFoundException {
+                return fis;
+            }
+
+            public Locale getLocale() {
+                return null;
+            }
+
+            @Override
+            public String getStyle() {
+                return null;
+            }
+
+            @Override
+            public void setStyle(String style) {
+            }
+
+            @Override
+            public String getVariation() {
+                return null;
+            }
+
+            @Override
+            public void setVariation(String variation) {
+            }
+
+            @Override
+            public Bytes length() {
+                return Bytes.bytes(file.length());
+            }
+
+            public void setLocale(Locale locale) {
+            }
+
+            public Time lastModifiedTime() {
+                return Time.millis(file.lastModified());
+            }
+        };
+    }
 
     /**
      * @return must return the file which you want to download

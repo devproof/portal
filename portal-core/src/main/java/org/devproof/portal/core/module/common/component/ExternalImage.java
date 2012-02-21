@@ -15,9 +15,13 @@
  */
 package org.devproof.portal.core.module.common.component;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.string.UrlUtils;
@@ -28,24 +32,32 @@ import org.apache.wicket.util.string.UrlUtils;
  *
  * @author Carsten Hufe
  */
-// TODO test
 public class ExternalImage extends WebComponent {
 
     private static final long serialVersionUID = 1L;
+    private IModel<String> urlModel;
 
     public ExternalImage(String id, String imageUrl) {
         super(id);
         String url = UrlUtils.rewriteToContextRelative(imageUrl, getRequestCycle());
-        add(new AttributeModifier("src", true, Model.of(url)));
-        setVisible(!(url == null || "".equals(url)));
+        urlModel = Model.of(url);
+        add(new AttributeModifier("src", urlModel));
     }
 
-    public ExternalImage(String id, ResourceReference imageResource) {
+    public ExternalImage(String id, final ResourceReference imageResource) {
         super(id);
-        // TODO fix it
-//        String url = getRequestCycle().urlFor(imageResource).toString();
-//        add(new AttributeModifier("src", true, Model.of(url)));
-//        setVisible(!(url == null || "".equals(url)));
+        urlModel = new LoadableDetachableModel<String>() {
+            @Override
+            protected String load() {
+                return getRequestCycle().urlFor(imageResource, getPage().getPageParameters()).toString();
+            }
+        };
+        add(new AttributeModifier("src", urlModel));
+    }
+
+    @Override
+    public boolean isVisible() {
+        return StringUtils.isNotBlank(urlModel.getObject());
     }
 
     @Override

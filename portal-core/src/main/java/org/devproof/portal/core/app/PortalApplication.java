@@ -23,6 +23,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.settings.IRequestCycleSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.devproof.portal.core.config.PageConfiguration;
 import org.devproof.portal.core.module.common.locator.PageLocator;
@@ -91,8 +92,11 @@ public class PortalApplication extends WebApplication {
         getApplicationSettings().setAccessDeniedPage(AccessDeniedPage.class);
         getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
         getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
+        getRequestCycleListeners().add(new PortalErrorRequestCycleListener(getSpringContext()));
         getMarkupSettings().setDefaultBeforeDisabledLink("");
         getMarkupSettings().setDefaultAfterDisabledLink("");
+        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.ONE_PASS_RENDER);
+
     }
 
     public boolean isProductionMode() {
@@ -105,16 +109,6 @@ public class PortalApplication extends WebApplication {
         getMarkupSettings().getMarkupFactory().getMarkupCache().clear();
         logger.debug("Theme " + themeUuid + " selected.");
     }
-
-    /**
-     * Rollback on runtime exception Inform the admin about the runtime
-     * exception
-     */
-// TODO was hiermit?
-//    @Override
-//    protected IRequestCycleProcessor newRequestCycleProcessor() {
-//        return new PortalRequestCycleProcessor(getSpringContext());
-//    }
 
     @Override
     public Class<? extends Page> getHomePage() {

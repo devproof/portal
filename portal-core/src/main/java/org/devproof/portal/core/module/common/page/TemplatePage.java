@@ -25,6 +25,7 @@ import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.IMarkupFragment;
+import org.apache.wicket.markup.Markup;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebComponent;
@@ -37,6 +38,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Fragment;
+import org.apache.wicket.markup.html.panel.FragmentMarkupSourcingStrategy;
 import org.apache.wicket.model.*;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -123,8 +125,8 @@ public abstract class TemplatePage extends WebPage {
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "css/body.css"));
-        response.renderJavaScriptReference(new PackageResourceReference(CommonConstants.class, "css/default.css"));
+        response.renderCSSReference(new PackageResourceReference(CommonConstants.class, "css/body.css"));
+        response.renderCSSReference(new PackageResourceReference(CommonConstants.class, "css/default.css"));
     }
 
     private AbstractAjaxTimerBehavior createSessionKeepAliveBehaviour() {
@@ -438,8 +440,9 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private boolean existsCustomStyleFragment(String fragmentId) {
-        MarkupStream associatedMarkupStream = TemplatePage.this.getAssociatedMarkupStream(false);
-        IMarkupFragment defaultBoxTemplateIndex = associatedMarkupStream.getMarkupFragment().find(fragmentId);
+        FragmentMarkupSourcingStrategy fragmentStrategy = new FragmentMarkupSourcingStrategy(fragmentId, this);
+        IMarkupFragment markupElements = fragmentStrategy.chooseMarkup(TemplatePage.this);
+        IMarkupFragment defaultBoxTemplateIndex = markupElements.find(fragmentId);
         return defaultBoxTemplateIndex != null;
     }
 

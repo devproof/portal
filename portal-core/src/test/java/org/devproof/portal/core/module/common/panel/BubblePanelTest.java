@@ -51,7 +51,7 @@ public class BubblePanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(BubblePanel.class);
-        tester.assertComponent("panel", BubblePanel.class);
+        tester.startComponentInPage(BubblePanel.class);
+        tester.assertComponent("", BubblePanel.class);
     }
 }

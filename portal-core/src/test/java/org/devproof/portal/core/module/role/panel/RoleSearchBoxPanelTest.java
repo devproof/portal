@@ -55,8 +55,8 @@ public class RoleSearchBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestRoleSearchBoxPanel.class);
-        tester.assertComponent("panel", TestRoleSearchBoxPanel.class);
+        tester.startComponentInPage(TestRoleSearchBoxPanel.class);
+        tester.assertComponent("", TestRoleSearchBoxPanel.class);
     }
 
     public static class TestRoleSearchBoxPanel extends RoleSearchBoxPanel {

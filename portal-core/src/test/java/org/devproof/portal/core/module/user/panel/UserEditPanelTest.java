@@ -57,15 +57,15 @@ public class UserEditPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestUserEditPanel.class);
-        tester.assertComponent("panel", TestUserEditPanel.class);
+        tester.startComponentInPage(TestUserEditPanel.class);
+        tester.assertComponent("", TestUserEditPanel.class);
     }
 
     @Test
     public void testSaveUserTestCase() {
         tester.startPanel(TestUserEditPanel.class);
-        tester.assertComponent("panel", TestUserEditPanel.class);
-        FormTester ft = tester.newFormTester("panel:form");
+        tester.assertComponent("", TestUserEditPanel.class);
+        FormTester ft = tester.newFormTester("form");
         ft.setValue("username", "peterpan");
         ft.setValue("firstname", "Peter");
         ft.setValue("lastname", "Pan");
@@ -73,7 +73,7 @@ public class UserEditPanelTest {
         ft.select("role", 1);
         ft.setValue("password1", "testing");
         ft.setValue("password2", "testing");
-        tester.executeAjaxEvent("panel:form:saveButton", "onclick");
+        tester.clickLink("form:saveButton", true);
         tester.assertNoErrorMessage();
         tester.startPage(UserPage.class);
         tester.assertContains("Peter");

@@ -93,8 +93,6 @@ public class LoginPage extends TemplatePage {
             private void redirectToPortalHomePage() {
                 Class<? extends Page> homePage = getApplication().getHomePage();
                 info(getString("logged.in"));
-                // TODO test it should be done automatically
-//                setRedirect(false);
                 setResponsePage(homePage);
             }
         };

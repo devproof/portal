@@ -62,20 +62,20 @@ public class BoxEditPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestBoxEditPanel.class);
-        tester.assertComponent("panel", TestBoxEditPanel.class);
+        tester.startComponentInPage(TestBoxEditPanel.class);
+        tester.assertComponent("", TestBoxEditPanel.class);
     }
 
     @Test
     public void testSaveBox() {
-        tester.startPanel(TestBoxEditPanel.class);
-        tester.assertComponent("panel", TestBoxEditPanel.class);
-        FormTester ft = tester.newFormTester("panel:form");
+        tester.startComponentInPage(TestBoxEditPanel.class);
+        tester.assertComponent("", TestBoxEditPanel.class);
+        FormTester ft = tester.newFormTester("form");
         ft.select("boxType", 1);
         ft.setValue("title", "mytitle");
         ft.setValue("otherPageConfiguration:content", "mycontent");
         ft.setValue("customStyle", "myCss");
-        tester.executeAjaxEvent("panel:form:saveButton", "onclick");
+        tester.executeAjaxEvent("form:saveButton", "onclick");
         tester.assertNoErrorMessage();
         assertTrue(calledSave);
         tester.startPage(BoxPage.class);

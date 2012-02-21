@@ -19,6 +19,7 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.*;
 import org.devproof.portal.core.module.common.panel.BookmarkablePagingPanel;
 
 /**
@@ -38,16 +39,16 @@ public abstract class AutoPagingDataView<T> extends DataView<T> {
     protected void onBeforeRender() {
         // if params is null, its a post search request ... so reset the
         // current page
-// TODO fix it
-//        PageParameters params = RequestCycle.get().getPageParameters();
-//        if (params != null && params.containsKey(BookmarkablePagingPanel.PAGE_PARAM)) {
-//            int page = params.getAsInteger(BookmarkablePagingPanel.PAGE_PARAM, 1);
-//            if (page > 0 && page <= getPageCount()) {
-//                setCurrentPage(page - 1);
-//            }
-//        } else {
-//            setCurrentPage(0);
-//        }
+        PageParameters params = getPage().getPageParameters();
+        StringValue pageValue = params.get(BookmarkablePagingPanel.PAGE_PARAM);
+        if (!pageValue.isEmpty()) {
+            int page = pageValue.toInt(1);
+            if (page > 0 && page <= getPageCount()) {
+                setCurrentPage(page - 1);
+            }
+        } else {
+            setCurrentPage(0);
+        }
         super.onBeforeRender();
     }
 

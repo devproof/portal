@@ -1,0 +1,10 @@
+- FullRich etc fixen
+- hibernate updaten
+- spring updaten
+- wicket updaten
+- TODOs abarbeiten
+- CKeditor updaten
+- jquery
+- deprecations entfernen
+- organize imports
+- copyrights

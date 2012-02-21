@@ -60,7 +60,7 @@ public class PageAdminBoxPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(PageAdminBoxPanel.class);
-        tester.assertComponent("panel", PageAdminBoxPanel.class);
+        tester.startComponentInPage(PageAdminBoxPanel.class);
+        tester.assertComponent("", PageAdminBoxPanel.class);
     }
 }
