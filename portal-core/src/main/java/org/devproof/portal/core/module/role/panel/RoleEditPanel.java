@@ -135,8 +135,8 @@ public abstract class RoleEditPanel extends Panel {
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 // repaint the feedback panel so errors are shown
-                target.addComponent(feedback);
-                target.addComponent(roleForm);
+                target.add(feedback);
+                target.add(roleForm);
             }
         };
     }

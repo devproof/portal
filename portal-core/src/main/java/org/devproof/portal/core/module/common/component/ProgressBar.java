@@ -108,7 +108,7 @@ public class ProgressBar extends Panel {
     }
 
     private Component createProgressBarContainer() {
-        return new WebMarkupContainer("bar").add(new AttributeModifier("style", true, new AbstractReadOnlyModel<String>() {
+        return new WebMarkupContainer("bar").add(AttributeModifier.replace("style", new AbstractReadOnlyModel<String>() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -193,9 +193,9 @@ public class ProgressBar extends Panel {
             }
         });
         if (getParent() != null) {
-            target.addComponent(getParent());
+            target.add(getParent());
         } else {
-            target.addComponent(this);
+            target.add(this);
         }
     }
 

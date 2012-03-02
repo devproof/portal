@@ -15,17 +15,12 @@
  */
 package org.devproof.portal.module.comment.panel;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.module.common.util.PortalUtil;
@@ -102,7 +97,7 @@ public class ExpandableCommentPanel extends Panel {
         return new EmptyPanel("comments");
     }
 
-    private SimpleAttributeModifier createDisplayNoneModifier() {
-        return new SimpleAttributeModifier("style", "display:none;");
+    private AttributeModifier createDisplayNoneModifier() {
+        return AttributeModifier.replace("style", "display:none;");
     }
 }

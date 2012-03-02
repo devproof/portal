@@ -169,12 +169,12 @@ public class CommentPanel extends Panel {
                 repeatingComments.setCurrentPage(0);
                 commentService.saveNewComment(comment, getUrlCallback());
                 info(getString("saved"));
-                target.addComponent(CommentPanel.this);
+                target.add(CommentPanel.this);
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
-                target.addComponent(CommentPanel.this);
+                target.add(CommentPanel.this);
             }
         };
     }
@@ -217,7 +217,7 @@ public class CommentPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 repeatingComments.setCurrentPage(repeatingComments.getCurrentPage() + 1);
-                target.addComponent(CommentPanel.this);
+                target.add(CommentPanel.this);
             }
 
             @Override
@@ -234,7 +234,7 @@ public class CommentPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 repeatingComments.setCurrentPage(repeatingComments.getCurrentPage() - 1);
-                target.addComponent(CommentPanel.this);
+                target.add(CommentPanel.this);
             }
 
             @Override
@@ -382,7 +382,7 @@ public class CommentPanel extends Panel {
                 public void onClick(AjaxRequestTarget target) {
                     commentService.rejectComment(item.getModelObject());
                     bubblePanel.showMessage(getMarkupId(), target, getString("rejected"));
-                    target.addComponent(item);
+                    target.add(item);
                 }
             };
         }
@@ -401,7 +401,7 @@ public class CommentPanel extends Panel {
                 public void onClick(AjaxRequestTarget target) {
                     commentService.acceptComment(item.getModelObject());
                     bubblePanel.showMessage(getMarkupId(), target, getString("accepted"));
-                    target.addComponent(item);
+                    target.add(item);
                 }
             };
         }
@@ -447,7 +447,7 @@ public class CommentPanel extends Panel {
 
         private AttributeModifier createStyleModifier() {
             final Comment comment = item.getModelObject();
-            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

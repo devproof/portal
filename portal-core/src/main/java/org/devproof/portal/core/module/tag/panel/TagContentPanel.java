@@ -78,7 +78,7 @@ public class TagContentPanel<T extends AbstractTag<?>> extends Panel {
 
     private AttributeModifier createClassSelectedModifier(T tag) {
         IModel<String> cssStyle = createClassSelectedModifierModel(tag);
-        return new AttributeModifier("class", true, cssStyle);
+        return AttributeModifier.replace("class", cssStyle);
     }
 
     private IModel<String> createClassSelectedModifierModel(final T tag) {
@@ -99,7 +99,8 @@ public class TagContentPanel<T extends AbstractTag<?>> extends Panel {
         BookmarkablePageLink<String> link = new BookmarkablePageLink<String>("tagLink", page);
         link.add(createTagLinkLabel(tag));
         if (!isTagSelected(tag)) {
-            link.setParameter("tag", tag.getTagname());
+            // TODO geht das noch?
+            link.getPageParameters().set("tag", tag.getTagname());
         }
         return link;
     }

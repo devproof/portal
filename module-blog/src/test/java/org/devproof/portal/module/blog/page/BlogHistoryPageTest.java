@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.blog.page;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -54,6 +54,7 @@ public class BlogHistoryPageTest {
 
     @Test
     public void testRenderDefaultPage() {
+        // TODO was mit machen
         tester.startPage(new BlogHistoryPage(new PageParameters("id=1")));
         tester.assertRenderedPage(BlogHistoryPage.class);
     }

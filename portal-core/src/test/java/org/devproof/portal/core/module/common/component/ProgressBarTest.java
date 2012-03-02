@@ -16,7 +16,6 @@
 package org.devproof.portal.core.module.common.component;
 
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.util.tester.ITestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -54,19 +53,8 @@ public class ProgressBarTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createProgressBar());
+        tester.startComponentInPage(new ProgressBar("panel", new TestProgressionModel()));
         tester.assertComponent("panel", ProgressBar.class);
-    }
-
-    private ITestPanelSource createProgressBar() {
-        return new ITestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new ProgressBar(panelId, new TestProgressionModel());
-            }
-        };
     }
 
     private static class TestProgressionModel extends ProgressionModel {

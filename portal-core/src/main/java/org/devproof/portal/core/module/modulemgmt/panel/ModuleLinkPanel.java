@@ -130,7 +130,7 @@ public class ModuleLinkPanel extends Panel {
                 public void onClick(AjaxRequestTarget target) {
                     moduleService.moveUp(item.getModelObject());
                     registryService.rebuildRegistries(item.getModelObject().getLinkType());
-                    target.addComponent(refreshTable);
+                    target.add(refreshTable);
                 }
             };
         }
@@ -153,7 +153,7 @@ public class ModuleLinkPanel extends Panel {
                 public void onClick(AjaxRequestTarget target) {
                     moduleService.moveDown(item.getModelObject());
                     registryService.rebuildRegistries(item.getModelObject().getLinkType());
-                    target.addComponent(refreshTable);
+                    target.add(refreshTable);
                 }
             };
         }
@@ -197,7 +197,7 @@ public class ModuleLinkPanel extends Panel {
         }
 
         private AttributeModifier createAlternatingModifier(final Item<ModuleLink> item) {
-            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

@@ -41,7 +41,7 @@ public class ExternalImage extends WebComponent {
         super(id);
         String url = UrlUtils.rewriteToContextRelative(imageUrl, getRequestCycle());
         urlModel = Model.of(url);
-        add(new AttributeModifier("src", urlModel));
+        add(AttributeModifier.replace("src", urlModel));
     }
 
     public ExternalImage(String id, final ResourceReference imageResource) {
@@ -52,7 +52,7 @@ public class ExternalImage extends WebComponent {
                 return getRequestCycle().urlFor(imageResource, getPage().getPageParameters()).toString();
             }
         };
-        add(new AttributeModifier("src", urlModel));
+        add(AttributeModifier.replace("src", urlModel));
     }
 
     @Override

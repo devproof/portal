@@ -225,7 +225,7 @@ public class UserPage extends TemplatePage {
         }
 
         private AttributeModifier createUnconfirmedAttributeModifier(final IModel<User> userModel) {
-            return new AttributeModifier("style", true, new AbstractReadOnlyModel<Object>() {
+            return AttributeModifier.replace("style", new AbstractReadOnlyModel<Object>() {
                 private static final long serialVersionUID = -2152809502598433353L;
 
                 @Override
@@ -338,7 +338,7 @@ public class UserPage extends TemplatePage {
         }
 
         private AttributeModifier createAlternatingModifier(final Item<User> item) {
-            return new AttributeModifier("class", new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

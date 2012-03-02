@@ -318,7 +318,7 @@ public class RolePage extends TemplatePage {
         }
 
         private AttributeModifier createAlternatingModifier(final Item<Role> item) {
-            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

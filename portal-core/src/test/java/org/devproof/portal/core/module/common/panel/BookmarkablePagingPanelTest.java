@@ -17,10 +17,8 @@ package org.devproof.portal.core.module.common.panel;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.tester.ITestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.core.module.common.query.SearchQuery;
 import org.devproof.portal.test.MockContextLoader;
@@ -60,19 +58,8 @@ public class BookmarkablePagingPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createBookmarkablePagingPanel());
+        tester.startComponentInPage(new BookmarkablePagingPanel("panel", new TestIPageable(), Model.of(new TestSearchQuery()), WebPage.class));
         tester.assertComponent("panel", BookmarkablePagingPanel.class);
-    }
-
-    private ITestPanelSource createBookmarkablePagingPanel() {
-        return new ITestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                return new BookmarkablePagingPanel(panelId, new TestIPageable(), Model.of(new TestSearchQuery()), WebPage.class);
-            }
-        };
     }
 
     private static class TestIPageable implements IPageable {

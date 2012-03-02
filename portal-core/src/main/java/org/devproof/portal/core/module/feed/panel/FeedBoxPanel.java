@@ -26,6 +26,7 @@ import org.devproof.portal.core.config.NavigationBox;
 import org.devproof.portal.core.module.box.panel.BoxTitleVisibility;
 import org.devproof.portal.core.module.feed.FeedConstants;
 import org.devproof.portal.core.module.feed.page.Atom1FeedPage;
+import org.devproof.portal.core.module.feed.page.BaseFeedPage;
 import org.devproof.portal.core.module.feed.page.Rss2FeedPage;
 import org.devproof.portal.core.module.feed.registry.FeedProviderRegistry;
 
@@ -77,8 +78,11 @@ public class FeedBoxPanel extends Panel implements BoxTitleVisibility {
     }
 
     private PageParameters createLinkParameter() {
+        // TODO geht das noch?
         String pathByPageClass = feedProviderRegistry.getPathByPageClass(page);
-        return new PageParameters("0=" + pathByPageClass);
+        PageParameters pageParameters = new PageParameters();
+        pageParameters.set(BaseFeedPage.PARAM_MODULE, pathByPageClass);
+        return pageParameters;
     }
 
     private WebMarkupContainer createTitleContainer() {

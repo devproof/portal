@@ -183,7 +183,7 @@ public class MountMgmtPage extends TemplatePage {
         }
 
         private AttributeModifier createAlternatingModifier(final Item<MountPoint> item) {
-            return new AttributeModifier("class", new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

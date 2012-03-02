@@ -62,7 +62,7 @@ public class UsernamePanel extends Panel {
     private WebMarkupContainer createContactPageLink() {
         BookmarkablePageLink<ContactPage> link = newContactPageLink();
         link.add(createUsernameLabel());
-        link.setParameter("0", usernameModel.getObject());
+        link.getPageParameters().add(ContactPage.PARAM_USERNAME, usernameModel.getObject());
         return link;
     }
 

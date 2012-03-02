@@ -15,9 +15,7 @@
  */
 package org.devproof.portal.module.blog.panel;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.test.MockContextLoader;
@@ -57,23 +55,13 @@ public class BlogPrintPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(createBlogPrintPanel());
+        Blog blog = new Blog();
+        blog.setCreatedAt(new Date());
+        blog.setModifiedAt(new Date());
+        blog.setCreatedBy("foo");
+        blog.setModifiedBy("bar");
+        tester.startComponentInPage(new BlogPrintPanel("panel", Model.of(blog)));
         tester.assertComponent("panel", BlogPrintPanel.class);
     }
 
-    private TestPanelSource createBlogPrintPanel() {
-        return new TestPanelSource() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Panel getTestPanel(String panelId) {
-                Blog blog = new Blog();
-                blog.setCreatedAt(new Date());
-                blog.setModifiedAt(new Date());
-                blog.setCreatedBy("foo");
-                blog.setModifiedBy("bar");
-                return new BlogPrintPanel(panelId, Model.of(blog));
-            }
-        };
-    }
 }

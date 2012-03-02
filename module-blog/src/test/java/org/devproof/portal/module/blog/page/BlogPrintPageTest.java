@@ -15,7 +15,7 @@
  */
 package org.devproof.portal.module.blog.page;
 
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.tester.WicketTester;
 import org.devproof.portal.test.MockContextLoader;
 import org.devproof.portal.test.PortalTestUtil;
@@ -55,6 +55,7 @@ public class BlogPrintPageTest {
 
     @Test
     public void testRenderDefaultPage() {
+        // TODO was mit machen
         tester.startPage(BlogPrintPage.class, new PageParameters("id=1"));
         // must be stateless to save memory (non-stateless creates HttpSession)
         assertTrue(tester.getLastRenderedPage().isPageStateless());

@@ -91,7 +91,7 @@ public class TagCloudBoxPanel<T extends AbstractTag<?>> extends Panel implements
             }
 
             private AttributeModifier createClassTagSelectionModifier(T tag) {
-                return new AttributeModifier("class", true, createClassSelectedModifierModel(tag));
+                return AttributeModifier.replace("class", createClassSelectedModifierModel(tag));
             }
 
             private IModel<String> createClassSelectedModifierModel(final T tag) {

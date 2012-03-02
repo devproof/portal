@@ -63,7 +63,7 @@ public class CommentAdminPage extends TemplatePage {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target) {
-                target.addComponent(commentPanel);
+                target.add(commentPanel);
             }
         };
     }

@@ -55,8 +55,8 @@ public class DeadLinkCheckPanelTest {
 
     @Test
     public void testRenderDefaultPanel() {
-        tester.startPanel(TestDeadLinkCheckPanel.class);
-        tester.assertComponent("panel", TestDeadLinkCheckPanel.class);
+        tester.startComponentInPage(TestDeadLinkCheckPanel.class);
+        tester.assertComponent("", TestDeadLinkCheckPanel.class);
     }
 
     public static class TestDeadLinkCheckPanel extends DeadlinkCheckPanel<TestLinkEntity> {

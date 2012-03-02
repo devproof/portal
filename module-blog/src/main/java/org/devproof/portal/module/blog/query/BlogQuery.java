@@ -16,7 +16,7 @@
 package org.devproof.portal.module.blog.query;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.wicket.PageParameters;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.module.common.annotation.BeanQuery;
 import org.devproof.portal.core.module.common.query.SearchQuery;
@@ -36,9 +36,9 @@ public class BlogQuery implements SearchQuery {
 	private String tagname;
 	private String allTextFields;
 
-	public BlogQuery() {
-		id = PortalUtil.getParameterAsInteger(ID_PARAM);
-		allTextFields = PortalUtil.getParameterAsString(SEARCH_PARAM);
+	public BlogQuery(PageParameters params) {
+		id = params.get(ID_PARAM).toOptionalInteger();
+		allTextFields = params.get(SEARCH_PARAM).toOptionalString();
 		tagname = PortalUtil.getParameterAsString(TagConstants.TAG_PARAM);
 	}
 

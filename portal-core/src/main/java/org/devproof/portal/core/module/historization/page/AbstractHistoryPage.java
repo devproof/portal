@@ -240,7 +240,7 @@ public abstract class AbstractHistoryPage<T extends Historized> extends Template
         }
 
         private AttributeModifier createAlternatingModifier(final Item<T> item) {
-            return new AttributeModifier("class", new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

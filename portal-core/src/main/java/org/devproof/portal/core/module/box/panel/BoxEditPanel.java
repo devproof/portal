@@ -128,7 +128,7 @@ public abstract class BoxEditPanel extends Panel {
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                target.addComponent(otherPageConfigurationContainer);
+                target.add(otherPageConfigurationContainer);
             }
         };
     }

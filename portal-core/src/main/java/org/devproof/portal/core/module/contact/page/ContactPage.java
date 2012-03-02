@@ -64,7 +64,8 @@ import org.devproof.portal.core.module.user.service.UserService;
 public class ContactPage extends TemplatePage {
 
     private static final long serialVersionUID = 1L;
-
+    public static final String PARAM_USERNAME = "username";
+    
     @SpringBean(name = "emailService")
     private EmailService emailService;
     @SpringBean(name = "userService")

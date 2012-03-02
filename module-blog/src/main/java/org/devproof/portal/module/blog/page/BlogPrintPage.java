@@ -16,21 +16,18 @@
 package org.devproof.portal.module.blog.page;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.devproof.portal.core.app.PortalSession;
 import org.devproof.portal.core.config.ModulePage;
 import org.devproof.portal.core.module.common.page.MessagePage;
-import org.devproof.portal.core.module.common.util.PortalUtil;
 import org.devproof.portal.core.module.print.page.PrintPage;
 import org.devproof.portal.module.blog.entity.Blog;
 import org.devproof.portal.module.blog.panel.BlogPrintPanel;
 import org.devproof.portal.module.blog.service.BlogService;
-import org.devproof.portal.test.PortalTestUtil;
 
 /**
  * @author Carsten Hufe

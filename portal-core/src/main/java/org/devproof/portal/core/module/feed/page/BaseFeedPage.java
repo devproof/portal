@@ -40,7 +40,8 @@ import java.io.PrintWriter;
  */
 public abstract class BaseFeedPage extends WebPage {
     private static final long serialVersionUID = -2301541781636426434L;
-
+    public static final String PARAM_MODULE = "module";
+    
     @SpringBean(name = "feedProviderRegistry")
     private FeedProviderRegistry feedProviderRegistry;
     private PageParameters params;

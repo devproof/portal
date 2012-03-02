@@ -156,7 +156,7 @@ public class BoxPage extends TemplatePage {
         }
 
         private AttributeModifier createClassEvenOddModifier(final Item<Box> item) {
-            return new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+            return AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
                 private static final long serialVersionUID = 1L;
 
                 @Override

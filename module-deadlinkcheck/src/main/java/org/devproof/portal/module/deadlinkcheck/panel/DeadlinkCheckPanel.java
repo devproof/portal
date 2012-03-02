@@ -30,6 +30,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.RequestUtils;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.devproof.portal.core.module.common.CommonConstants;
 import org.devproof.portal.core.module.common.component.ProgressBar;
 import org.devproof.portal.core.module.common.component.Progression;
 import org.devproof.portal.core.module.common.component.ProgressionModel;
@@ -93,8 +95,13 @@ public abstract class DeadlinkCheckPanel<T extends BaseLink> extends Panel {
             private static final long serialVersionUID = 1L;
 
             @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+            }
+
+            @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                String baseUrl = RequestUtils.toAbsolutePath("");
+                // TODO geht das noch?
+                String baseUrl = getPageRelativePath();
                 progressBar.start(target);
                 newDeadlinkCheckThread(baseUrl).start();
                 setEnabled(false);
@@ -228,7 +235,7 @@ public abstract class DeadlinkCheckPanel<T extends BaseLink> extends Panel {
             @Override
             protected void onFinished(AjaxRequestTarget target) {
                 info(new StringResourceModel(section + "Finished", this, null, new Object[]{DeadlinkCheckPanel.this.brokenFound}).getString());
-                target.addComponent(feedbackPanel);
+                target.add(feedbackPanel);
             }
         };
         return progressBar;
