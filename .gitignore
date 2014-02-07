@@ -13,3 +13,5 @@ portal-bundle/true
 *.ids  
 .DS_Store
 .gradle
+/nbproject/private/
+/.nb-gradle/profiles/private/

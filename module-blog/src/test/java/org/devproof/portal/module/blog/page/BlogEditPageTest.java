@@ -92,7 +92,8 @@ public class BlogEditPageTest {
         tester.assertRenderedPage(BlogPage.class);
         tester.assertContains("This is a sample blog entry.");
         tester.debugComponentTrees();
-        tester.clickLink("refreshContainerBlogEntries:repeatingBlogEntries:2:blogView:authorButtons:editLink");
+//        tester.dumpPage();
+        tester.clickLink("refreshContainerBlogEntries:repeatingBlogEntries:2:blogView:authorButtons:editLink", true);
         tester.assertRenderedPage(BlogEditPage.class);
         tester.assertContains("This is a sample blog entry.");
     }

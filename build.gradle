@@ -118,5 +118,5 @@ subprojects {
 // generate gradle bootstrapping
 // run gradle createWrapper
 task createWrapper(type: Wrapper) {
-  gradleVersion = '1.0-milestone-5'
+  gradleVersion = '1.10'
 }
